@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of protectable item, i.e. InProgress,Succeeded,Failed. */
+/**
+ * Status of protectable item, i.e. InProgress,Succeeded,Failed.
+ */
 public final class InquiryStatus extends ExpandableStringEnum<InquiryStatus> {
-    /** Static value Invalid for InquiryStatus. */
+    /**
+     * Static value Invalid for InquiryStatus.
+     */
     public static final InquiryStatus INVALID = fromString("Invalid");
 
-    /** Static value Success for InquiryStatus. */
+    /**
+     * Static value Success for InquiryStatus.
+     */
     public static final InquiryStatus SUCCESS = fromString("Success");
 
-    /** Static value Failed for InquiryStatus. */
+    /**
+     * Static value Failed for InquiryStatus.
+     */
     public static final InquiryStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of InquiryStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class InquiryStatus extends ExpandableStringEnum<InquiryStatus> {
 
     /**
      * Creates or finds a InquiryStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InquiryStatus.
      */
@@ -41,7 +49,7 @@ public final class InquiryStatus extends ExpandableStringEnum<InquiryStatus> {
 
     /**
      * Gets known InquiryStatus values.
-     *
+     * 
      * @return known InquiryStatus values.
      */
     public static Collection<InquiryStatus> values() {

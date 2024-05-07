@@ -3,7 +3,11 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.Arrays;
 
 import static com.azure.cosmos.implementation.Utils.ValueHolder;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,7 +61,7 @@ public class SessionTokenTest {
     }
 
     @Test(groups = "unit")
-    public void validateSessionTokenComparison() throws Exception {
+    public void validateSessionTokenComparison() {
         // valid session token
         ValueHolder<ISessionToken> sessionToken1 = new ValueHolder<>(null);
         ValueHolder<ISessionToken> sessionToken2 = new ValueHolder<>(null);
@@ -113,6 +117,68 @@ public class SessionTokenTest {
             sessionToken2.v.isValid(sessionToken1.v);
             fail("Region progress can not be different when version is same");
         } catch (InternalServerErrorException e) {
+        }
+    }
+
+    @Test(groups = "unit")
+    public void invalidRegionsInSessionTokenTests() {
+        // same version but different number of regions
+        String sessionToken1 = "1#100#1=20#2=5#3=30";
+        String sessionToken2 = "1#100#1=20#2=5";
+        // same version but different regions
+        String sessionToken3 = "1#100#1=20#2=5#3=30";
+        String sessionToken4 = "1#100#4=20#5=5#6=6";
+
+        for (Pair<String, String> testCase : Arrays.asList(Pair.of(sessionToken1, sessionToken2), Pair.of(sessionToken3, sessionToken4))) {
+            try {
+                ValueHolder<ISessionToken> token1 = new ValueHolder<>(null);
+                ValueHolder<ISessionToken> token2 = new ValueHolder<>(null);
+
+                VectorSessionToken.tryCreate(testCase.getLeft(), token1);
+                VectorSessionToken.tryCreate(testCase.getRight(), token2);
+
+                token1.v.isValid(token2.v);
+                Assert.fail("Test should have failed due to invalid regions.");
+            } catch (InternalServerErrorException exception) {
+                assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
+                assertThat(exception.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.INVALID_REGIONS_IN_SESSION_TOKEN);
+                assertThat(exception.getMessage()).contains(
+                    String.format(
+                        RMResources.InvalidRegionsInSessionToken,
+                        testCase.getLeft(),
+                        testCase.getRight()));
+            }
+        }
+    }
+
+    @Test(groups = "unit")
+    public void mergeWithInvalidToken() {
+        // same version but different number of regions
+        String sessionToken1 = "1#100#1=20#2=5#3=30";
+        String sessionToken2 = "1#100#1=20#2=5";
+        // same version but different regions
+        String sessionToken3 = "1#100#1=20#2=5#3=30";
+        String sessionToken4 = "1#100#4=20#5=5#6=6";
+
+        for (Pair<String, String> testCase : Arrays.asList(Pair.of(sessionToken1, sessionToken2), Pair.of(sessionToken3, sessionToken4))) {
+            try {
+                ValueHolder<ISessionToken> token1 = new ValueHolder<>(null);
+                ValueHolder<ISessionToken> token2 = new ValueHolder<>(null);
+
+                VectorSessionToken.tryCreate(testCase.getLeft(), token1);
+                VectorSessionToken.tryCreate(testCase.getRight(), token2);
+
+                token1.v.merge(token2.v);
+                Assert.fail("Test should have failed due to invalid regions.");
+            } catch (InternalServerErrorException exception) {
+                assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR);
+                assertThat(exception.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.INVALID_REGIONS_IN_SESSION_TOKEN);
+                assertThat(exception.getMessage()).contains(
+                    String.format(
+                        RMResources.InvalidRegionsInSessionToken,
+                        testCase.getLeft(),
+                        testCase.getRight()));
+            }
         }
     }
 }

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestination;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestinationActivationState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -22,54 +19,44 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PartnerDestinationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"b2f8e38c-5843-42b0-8ac9-0374ce432bda\",\"endpointServiceContext\":\"hzrtd\",\"expirationTimeIfNotActivatedUtc\":\"2021-09-01T09:28:44Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"fvppkeqsifj\",\"messageForActivation\":\"lng\"},\"location\":\"nhr\",\"tags\":{\"ggorwjoqt\":\"bcdtajdo\",\"fyrlmwkptskwxj\":\"otpvclp\",\"bputmgvmuyakml\":\"vhxccbmkakmkoo\",\"flzqjimejtgzjxx\":\"ktfowzkroyrdur\"},\"id\":\"fejlzuqloiw\",\"name\":\"ayyzivrmitc\",\"type\":\"qlhchwhrktjle\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"efca1567-a126-4313-a61e-739836fcd077\",\"endpointServiceContext\":\"glskakddi\",\"expirationTimeIfNotActivatedUtc\":\"2021-04-14T05:06:40Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"mtlpbyxro\",\"messageForActivation\":\"uyqyp\"},\"location\":\"mnoiicsudy\",\"tags\":{\"h\":\"jjtalxrdsj\",\"dp\":\"luqwgusxxhd\",\"bdmvsby\":\"wyblv\",\"kmkwjfbo\":\"daelqpv\"},\"id\":\"loggdusxursu\",\"name\":\"v\",\"type\":\"xcjkcoqwczsy\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PartnerDestination response = manager.partnerDestinations()
+            .define("kluwz")
+            .withRegion("rdmvxyrxdhgv")
+            .withExistingResourceGroup("s")
+            .withTags(mapOf("gbzxmbtplefoioy", "bxaot", "gvdtmuuv", "doxzn", "erxrzutylcurza", "awsxmrszbknimxlp"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("94b5cdff-fc55-44aa-bb87-6abfb7cafbbf"))
+            .withEndpointServiceContext("zvtyevjhubn")
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-10-07T07:25:43Z"))
+            .withActivationState(PartnerDestinationActivationState.ACTIVATED)
+            .withEndpointBaseUrl("sqkpdmioyjpnm")
+            .withMessageForActivation("iqcpszpmcvq")
+            .create();
 
-        PartnerDestination response = manager.partnerDestinations().define("bgmusaictd").withRegion("me")
-            .withExistingResourceGroup("uymvecvzts").withTags(mapOf("s", "abcreuwz"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("8824eeff-c3c3-4c6e-aed7-8f6758c1a553"))
-            .withEndpointServiceContext("zzohn")
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-04-25T16:30:59Z"))
-            .withActivationState(PartnerDestinationActivationState.ACTIVATED).withEndpointBaseUrl("ozrehlbzqixbnjrq")
-            .withMessageForActivation("yuexozonyn").create();
-
-        Assertions.assertEquals("nhr", response.location());
-        Assertions.assertEquals("bcdtajdo", response.tags().get("ggorwjoqt"));
-        Assertions.assertEquals(UUID.fromString("b2f8e38c-5843-42b0-8ac9-0374ce432bda"),
+        Assertions.assertEquals("mnoiicsudy", response.location());
+        Assertions.assertEquals("jjtalxrdsj", response.tags().get("h"));
+        Assertions.assertEquals(UUID.fromString("efca1567-a126-4313-a61e-739836fcd077"),
             response.partnerRegistrationImmutableId());
-        Assertions.assertEquals("hzrtd", response.endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T09:28:44Z"),
+        Assertions.assertEquals("glskakddi", response.endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T05:06:40Z"),
             response.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerDestinationActivationState.NEVER_ACTIVATED, response.activationState());
-        Assertions.assertEquals("fvppkeqsifj", response.endpointBaseUrl());
-        Assertions.assertEquals("lng", response.messageForActivation());
+        Assertions.assertEquals("mtlpbyxro", response.endpointBaseUrl());
+        Assertions.assertEquals("uyqyp", response.messageForActivation());
     }
 
     // Use "Map.of" if available

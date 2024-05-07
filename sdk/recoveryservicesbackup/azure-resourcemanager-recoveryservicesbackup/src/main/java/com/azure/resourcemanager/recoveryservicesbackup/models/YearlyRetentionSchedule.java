@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Yearly retention schedule. */
+/**
+ * Yearly retention schedule.
+ */
 @Fluent
 public final class YearlyRetentionSchedule {
     /*
@@ -48,13 +50,15 @@ public final class YearlyRetentionSchedule {
     @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
-    /** Creates an instance of YearlyRetentionSchedule class. */
+    /**
+     * Creates an instance of YearlyRetentionSchedule class.
+     */
     public YearlyRetentionSchedule() {
     }
 
     /**
      * Get the retentionScheduleFormatType property: Retention schedule format for yearly retention policy.
-     *
+     * 
      * @return the retentionScheduleFormatType value.
      */
     public RetentionScheduleFormat retentionScheduleFormatType() {
@@ -63,19 +67,19 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the retentionScheduleFormatType property: Retention schedule format for yearly retention policy.
-     *
+     * 
      * @param retentionScheduleFormatType the retentionScheduleFormatType value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
-    public YearlyRetentionSchedule withRetentionScheduleFormatType(
-        RetentionScheduleFormat retentionScheduleFormatType) {
+    public YearlyRetentionSchedule
+        withRetentionScheduleFormatType(RetentionScheduleFormat retentionScheduleFormatType) {
         this.retentionScheduleFormatType = retentionScheduleFormatType;
         return this;
     }
 
     /**
      * Get the monthsOfYear property: List of months of year of yearly retention policy.
-     *
+     * 
      * @return the monthsOfYear value.
      */
     public List<MonthOfYear> monthsOfYear() {
@@ -84,7 +88,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the monthsOfYear property: List of months of year of yearly retention policy.
-     *
+     * 
      * @param monthsOfYear the monthsOfYear value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
@@ -95,7 +99,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Get the retentionScheduleDaily property: Daily retention format for yearly retention policy.
-     *
+     * 
      * @return the retentionScheduleDaily value.
      */
     public DailyRetentionFormat retentionScheduleDaily() {
@@ -104,7 +108,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the retentionScheduleDaily property: Daily retention format for yearly retention policy.
-     *
+     * 
      * @param retentionScheduleDaily the retentionScheduleDaily value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
@@ -115,7 +119,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Get the retentionScheduleWeekly property: Weekly retention format for yearly retention policy.
-     *
+     * 
      * @return the retentionScheduleWeekly value.
      */
     public WeeklyRetentionFormat retentionScheduleWeekly() {
@@ -124,7 +128,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the retentionScheduleWeekly property: Weekly retention format for yearly retention policy.
-     *
+     * 
      * @param retentionScheduleWeekly the retentionScheduleWeekly value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
@@ -135,7 +139,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Get the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @return the retentionTimes value.
      */
     public List<OffsetDateTime> retentionTimes() {
@@ -144,7 +148,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @param retentionTimes the retentionTimes value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
@@ -155,7 +159,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Get the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @return the retentionDuration value.
      */
     public RetentionDuration retentionDuration() {
@@ -164,7 +168,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Set the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @param retentionDuration the retentionDuration value to set.
      * @return the YearlyRetentionSchedule object itself.
      */
@@ -175,7 +179,7 @@ public final class YearlyRetentionSchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

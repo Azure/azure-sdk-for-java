@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class DiscoveredSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiscoveredSecuritySolutionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"securityFamily\":\"SaasWaf\",\"offer\":\"uzvoamktcqiosm\",\"publisher\":\"bzahgxqd\",\"sku\":\"yrtltlaprltzkat\"}")
-                .toObject(DiscoveredSecuritySolutionProperties.class);
+        DiscoveredSecuritySolutionProperties model = BinaryData
+            .fromString(
+                "{\"securityFamily\":\"SaasWaf\",\"offer\":\"lujkhn\",\"publisher\":\"cmrnkfmkhcq\",\"sku\":\"wmlmh\"}")
+            .toObject(DiscoveredSecuritySolutionProperties.class);
         Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
-        Assertions.assertEquals("uzvoamktcqiosm", model.offer());
-        Assertions.assertEquals("bzahgxqd", model.publisher());
-        Assertions.assertEquals("yrtltlaprltzkat", model.sku());
+        Assertions.assertEquals("lujkhn", model.offer());
+        Assertions.assertEquals("cmrnkfmkhcq", model.publisher());
+        Assertions.assertEquals("wmlmh", model.sku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscoveredSecuritySolutionProperties model =
-            new DiscoveredSecuritySolutionProperties()
-                .withSecurityFamily(SecurityFamily.SAAS_WAF)
-                .withOffer("uzvoamktcqiosm")
-                .withPublisher("bzahgxqd")
-                .withSku("yrtltlaprltzkat");
+        DiscoveredSecuritySolutionProperties model
+            = new DiscoveredSecuritySolutionProperties().withSecurityFamily(SecurityFamily.SAAS_WAF).withOffer("lujkhn")
+                .withPublisher("cmrnkfmkhcq").withSku("wmlmh");
         model = BinaryData.fromObject(model).toObject(DiscoveredSecuritySolutionProperties.class);
         Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
-        Assertions.assertEquals("uzvoamktcqiosm", model.offer());
-        Assertions.assertEquals("bzahgxqd", model.publisher());
-        Assertions.assertEquals("yrtltlaprltzkat", model.sku());
+        Assertions.assertEquals("lujkhn", model.offer());
+        Assertions.assertEquals("cmrnkfmkhcq", model.publisher());
+        Assertions.assertEquals("wmlmh", model.sku());
     }
 }

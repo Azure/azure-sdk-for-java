@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DpmErrorInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DpmErrorInfo model =
-            BinaryData
-                .fromString(
-                    "{\"errorString\":\"i\",\"recommendations\":[\"sdaultxij\",\"um\",\"qwazlnqnmcjngzq\",\"qxtbjwgnyf\"]}")
+        DpmErrorInfo model
+            = BinaryData.fromString("{\"errorString\":\"b\",\"recommendations\":[\"fhvfsl\",\"vntjlrigjk\"]}")
                 .toObject(DpmErrorInfo.class);
-        Assertions.assertEquals("i", model.errorString());
-        Assertions.assertEquals("sdaultxij", model.recommendations().get(0));
+        Assertions.assertEquals("b", model.errorString());
+        Assertions.assertEquals("fhvfsl", model.recommendations().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DpmErrorInfo model =
-            new DpmErrorInfo()
-                .withErrorString("i")
-                .withRecommendations(Arrays.asList("sdaultxij", "um", "qwazlnqnmcjngzq", "qxtbjwgnyf"));
+        DpmErrorInfo model
+            = new DpmErrorInfo().withErrorString("b").withRecommendations(Arrays.asList("fhvfsl", "vntjlrigjk"));
         model = BinaryData.fromObject(model).toObject(DpmErrorInfo.class);
-        Assertions.assertEquals("i", model.errorString());
-        Assertions.assertEquals("sdaultxij", model.recommendations().get(0));
+        Assertions.assertEquals("b", model.errorString());
+        Assertions.assertEquals("fhvfsl", model.recommendations().get(0));
     }
 }

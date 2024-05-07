@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Prot
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Protection container mapping collection class. */
+/**
+ * Protection container mapping collection class.
+ */
 @Fluent
 public final class ProtectionContainerMappingCollection {
     /*
@@ -24,13 +26,15 @@ public final class ProtectionContainerMappingCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ProtectionContainerMappingCollection class. */
+    /**
+     * Creates an instance of ProtectionContainerMappingCollection class.
+     */
     public ProtectionContainerMappingCollection() {
     }
 
     /**
      * Get the value property: List of container mappings.
-     *
+     * 
      * @return the value value.
      */
     public List<ProtectionContainerMappingInner> value() {
@@ -39,7 +43,7 @@ public final class ProtectionContainerMappingCollection {
 
     /**
      * Set the value property: List of container mappings.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProtectionContainerMappingCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class ProtectionContainerMappingCollection {
 
     /**
      * Get the nextLink property: Link to fetch rest of the data.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ProtectionContainerMappingCollection {
 
     /**
      * Set the nextLink property: Link to fetch rest of the data.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProtectionContainerMappingCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class ProtectionContainerMappingCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

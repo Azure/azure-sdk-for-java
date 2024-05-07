@@ -5,41 +5,42 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
 import com.azure.resourcemanager.streamanalytics.models.JsonOutputSerializationFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties that are associated with the JSON serialization type. */
+/**
+ * The properties that are associated with the JSON serialization type.
+ */
 @Fluent
 public final class JsonSerializationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonSerializationProperties.class);
-
     /*
-     * Specifies the encoding of the incoming data in the case of input and the
-     * encoding of outgoing data in the case of output. Required on PUT
-     * (CreateOrReplace) requests.
+     * Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case
+     * of output. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "encoding")
     private Encoding encoding;
 
     /*
-     * This property only applies to JSON serialization of outputs only. It is
-     * not applicable to inputs. This property specifies the format of the JSON
-     * the output will be written in. The currently supported values are
-     * 'lineSeparated' indicating the output will be formatted by having each
-     * JSON object separated by a new line and 'array' indicating the output
-     * will be formatted as an array of JSON objects. Default value is
-     * 'lineSeparated' if left null.
+     * This property only applies to JSON serialization of outputs only. It is not applicable to inputs. This property
+     * specifies the format of the JSON the output will be written in. The currently supported values are
+     * 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new line and
+     * 'array' indicating the output will be formatted as an array of JSON objects. Default value is 'lineSeparated' if
+     * left null.
      */
     @JsonProperty(value = "format")
     private JsonOutputSerializationFormat format;
 
     /**
+     * Creates an instance of JsonSerializationProperties class.
+     */
+    public JsonSerializationProperties() {
+    }
+
+    /**
      * Get the encoding property: Specifies the encoding of the incoming data in the case of input and the encoding of
      * outgoing data in the case of output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the encoding value.
      */
     public Encoding encoding() {
@@ -49,7 +50,7 @@ public final class JsonSerializationProperties {
     /**
      * Set the encoding property: Specifies the encoding of the incoming data in the case of input and the encoding of
      * outgoing data in the case of output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param encoding the encoding value to set.
      * @return the JsonSerializationProperties object itself.
      */
@@ -64,7 +65,7 @@ public final class JsonSerializationProperties {
      * values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new
      * line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is
      * 'lineSeparated' if left null.
-     *
+     * 
      * @return the format value.
      */
     public JsonOutputSerializationFormat format() {
@@ -77,7 +78,7 @@ public final class JsonSerializationProperties {
      * values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new
      * line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is
      * 'lineSeparated' if left null.
-     *
+     * 
      * @param format the format value to set.
      * @return the JsonSerializationProperties object itself.
      */
@@ -88,7 +89,7 @@ public final class JsonSerializationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

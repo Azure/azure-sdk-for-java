@@ -14,24 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationStatusJobsExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusJobsExtendedInfo model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"ocyvhhulrtywikdm\",\"lakuflgbhgauacd\",\"xmxufrsryjqgdk\"],\"failedJobsError\":{\"bvjhvefgwbmqj\":\"zoeo\"}}")
-                .toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("ocyvhhulrtywikdm", model.jobIds().get(0));
-        Assertions.assertEquals("zoeo", model.failedJobsError().get("bvjhvefgwbmqj"));
+        OperationStatusJobsExtendedInfo model = BinaryData.fromString(
+            "{\"objectType\":\"OperationStatusJobsExtendedInfo\",\"jobIds\":[\"nzhhhqos\"],\"failedJobsError\":{\"ohguabz\":\"jkutycyarnr\",\"z\":\"ghktdpy\",\"cnhz\":\"coe\",\"lohap\":\"rottjzcfyjzptw\"}}")
+            .toObject(OperationStatusJobsExtendedInfo.class);
+        Assertions.assertEquals("nzhhhqos", model.jobIds().get(0));
+        Assertions.assertEquals("jkutycyarnr", model.failedJobsError().get("ohguabz"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationStatusJobsExtendedInfo model =
-            new OperationStatusJobsExtendedInfo()
-                .withJobIds(Arrays.asList("ocyvhhulrtywikdm", "lakuflgbhgauacd", "xmxufrsryjqgdk"))
-                .withFailedJobsError(mapOf("bvjhvefgwbmqj", "zoeo"));
+        OperationStatusJobsExtendedInfo model
+            = new OperationStatusJobsExtendedInfo().withJobIds(Arrays.asList("nzhhhqos")).withFailedJobsError(
+                mapOf("ohguabz", "jkutycyarnr", "z", "ghktdpy", "cnhz", "coe", "lohap", "rottjzcfyjzptw"));
         model = BinaryData.fromObject(model).toObject(OperationStatusJobsExtendedInfo.class);
-        Assertions.assertEquals("ocyvhhulrtywikdm", model.jobIds().get(0));
-        Assertions.assertEquals("zoeo", model.failedJobsError().get("bvjhvefgwbmqj"));
+        Assertions.assertEquals("nzhhhqos", model.jobIds().get(0));
+        Assertions.assertEquals("jkutycyarnr", model.failedJobsError().get("ohguabz"));
     }
 
     // Use "Map.of" if available

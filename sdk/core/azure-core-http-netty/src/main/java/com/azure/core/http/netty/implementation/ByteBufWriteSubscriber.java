@@ -28,6 +28,13 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
     private Subscription subscription;
     private boolean done = false;
 
+    /**
+     * Creates a new {@link ByteBufWriteSubscriber}.
+     *
+     * @param writer Where to write the {@link ByteBuf ByteBufs}.
+     * @param emitter {@link MonoSink} to emit completion or error signals.
+     * @param bodySize The size of the request body, if known.
+     */
     public ByteBufWriteSubscriber(ExceptionThrowingConsumer<ByteBuffer> writer, MonoSink<Void> emitter, Long bodySize) {
         this.writer = writer;
         this.emitter = emitter;

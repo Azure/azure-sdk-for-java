@@ -8,12 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Infra network profile for HCI platform.
+ * Infrastructure network profile for HCI platform.
  */
 @Fluent
 public final class VirtualNetworkPropertiesInfraVnetProfileHci {
     /*
-     * Resource group in MOC(Microsoft On-premises Cloud)
+     * Group in MOC(Microsoft On-premises Cloud)
      */
     @JsonProperty(value = "mocGroup")
     private String mocGroup;
@@ -37,7 +37,7 @@ public final class VirtualNetworkPropertiesInfraVnetProfileHci {
     }
 
     /**
-     * Get the mocGroup property: Resource group in MOC(Microsoft On-premises Cloud).
+     * Get the mocGroup property: Group in MOC(Microsoft On-premises Cloud).
      * 
      * @return the mocGroup value.
      */
@@ -46,7 +46,7 @@ public final class VirtualNetworkPropertiesInfraVnetProfileHci {
     }
 
     /**
-     * Set the mocGroup property: Resource group in MOC(Microsoft On-premises Cloud).
+     * Set the mocGroup property: Group in MOC(Microsoft On-premises Cloud).
      * 
      * @param mocGroup the mocGroup value to set.
      * @return the VirtualNetworkPropertiesInfraVnetProfileHci object itself.

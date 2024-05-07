@@ -7,60 +7,62 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
 import java.util.Map;
 
-/** An immutable client-side representation of RecoveryPointResource. */
+/**
+ * An immutable client-side representation of RecoveryPointResource.
+ */
 public interface RecoveryPointResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the properties property: RecoveryPointResource properties.
-     *
+     * 
      * @return the properties value.
      */
     RecoveryPoint properties();
 
     /**
      * Gets the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     RecoveryPointResourceInner innerModel();

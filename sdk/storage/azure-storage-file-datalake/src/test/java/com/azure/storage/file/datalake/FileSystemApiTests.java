@@ -10,6 +10,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
 import com.azure.storage.file.datalake.models.DataLakeAudience;
@@ -53,6 +54,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -98,7 +100,14 @@ public class FileSystemApiTests extends DataLakeTestBase {
         dataLakeFileSystemClient.createWithResponse(metadata, null, null, null);
         Response<FileSystemProperties> response = dataLakeFileSystemClient.getPropertiesWithResponse(null, null, null);
 
-        assertEquals(metadata, response.getValue().getMetadata());
+        if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
+            // JDK HttpClient returns headers with names lowercased.
+            Map<String, String> lowercasedMetadata = metadata.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
+            assertEquals(lowercasedMetadata, response.getValue().getMetadata());
+        } else {
+            assertEquals(metadata, response.getValue().getMetadata());
+        }
     }
 
     @ParameterizedTest
@@ -171,7 +180,15 @@ public class FileSystemApiTests extends DataLakeTestBase {
 
         assertEquals(ENCRYPTION_SCOPE_STRING, properties.getEncryptionScope());
         assertTrue(properties.isEncryptionScopeOverridePrevented());
-        assertEquals(metadata, properties.getMetadata());
+
+        if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
+            // JDK HttpClient returns headers with names lowercased.
+            Map<String, String> lowercasedMetadata = metadata.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
+            assertEquals(lowercasedMetadata, properties.getMetadata());
+        } else {
+            assertEquals(metadata, properties.getMetadata());
+        }
     }
 
     @Test
@@ -209,7 +226,14 @@ public class FileSystemApiTests extends DataLakeTestBase {
         dataLakeFileSystemClient.createIfNotExistsWithResponse(metadata, null, null, null);
         Response<FileSystemProperties> response = dataLakeFileSystemClient.getPropertiesWithResponse(null, null, null);
 
-        assertEquals(metadata, response.getValue().getMetadata());
+        if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
+            // JDK HttpClient returns headers with names lowercased.
+            Map<String, String> lowercasedMetadata = metadata.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
+            assertEquals(lowercasedMetadata, response.getValue().getMetadata());
+        } else {
+            assertEquals(metadata, response.getValue().getMetadata());
+        }
     }
 
     @ParameterizedTest

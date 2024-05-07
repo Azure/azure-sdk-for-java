@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmEv
 public final class InMageRcmEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmEventDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageRcm\",\"protectedItemName\":\"wcnxtpzdlyseid\",\"vmName\":\"akatprytg\",\"latestAgentVersion\":\"zbqfdpfawrptvcsh\",\"jobId\":\"utzcttbqgdirda\",\"fabricName\":\"tzjgcfjfxtbwj\",\"applianceName\":\"rmuydgfttmdofg\",\"serverType\":\"agfuoftnxod\",\"componentDisplayName\":\"m\"}")
-                .toObject(InMageRcmEventDetails.class);
+        InMageRcmEventDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageRcm\",\"protectedItemName\":\"wcnxtpzdlyseid\",\"vmName\":\"akatprytg\",\"latestAgentVersion\":\"zbqfdpfawrptvcsh\",\"jobId\":\"utzcttbqgdirda\",\"fabricName\":\"tzjgcfjfxtbwj\",\"applianceName\":\"rmuydgfttmdofg\",\"serverType\":\"agfuoftnxod\",\"componentDisplayName\":\"m\"}")
+            .toObject(InMageRcmEventDetails.class);
     }
 
     @org.junit.jupiter.api.Test

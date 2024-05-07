@@ -26,9 +26,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.search.documents.indexes.implementation.models.DocumentKeysOrIds;
+import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListIndexersResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
-import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import java.util.UUID;
@@ -67,21 +67,21 @@ public final class IndexersImpl {
     public interface IndexersService {
         @Post("/indexers('{indexerName}')/search.reset")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> reset(@HostParam("endpoint") String endpoint, @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/indexers('{indexerName}')/search.reset")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<Void> resetSync(@HostParam("endpoint") String endpoint, @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/indexers('{indexerName}')/search.resetdocs")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> resetDocs(@HostParam("endpoint") String endpoint,
             @PathParam("indexerName") String indexerName, @QueryParam("overwrite") Boolean overwrite,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -90,7 +90,7 @@ public final class IndexersImpl {
 
         @Post("/indexers('{indexerName}')/search.resetdocs")
         @ExpectedResponses({ 204 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<Void> resetDocsSync(@HostParam("endpoint") String endpoint,
             @PathParam("indexerName") String indexerName, @QueryParam("overwrite") Boolean overwrite,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -99,21 +99,21 @@ public final class IndexersImpl {
 
         @Post("/indexers('{indexerName}')/search.run")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> run(@HostParam("endpoint") String endpoint, @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/indexers('{indexerName}')/search.run")
         @ExpectedResponses({ 202 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<Void> runSync(@HostParam("endpoint") String endpoint, @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/indexers('{indexerName}')")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchIndexer>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
@@ -126,7 +126,7 @@ public final class IndexersImpl {
 
         @Put("/indexers('{indexerName}')")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchIndexer> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
@@ -139,7 +139,7 @@ public final class IndexersImpl {
 
         @Delete("/indexers('{indexerName}')")
         @ExpectedResponses({ 204, 404 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
@@ -148,7 +148,7 @@ public final class IndexersImpl {
 
         @Delete("/indexers('{indexerName}')")
         @ExpectedResponses({ 204, 404 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
@@ -156,7 +156,7 @@ public final class IndexersImpl {
 
         @Get("/indexers('{indexerName}')")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchIndexer>> get(@HostParam("endpoint") String endpoint,
             @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -164,7 +164,7 @@ public final class IndexersImpl {
 
         @Get("/indexers('{indexerName}')")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchIndexer> getSync(@HostParam("endpoint") String endpoint,
             @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -172,21 +172,21 @@ public final class IndexersImpl {
 
         @Get("/indexers")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ListIndexersResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("$select") String select, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/indexers")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<ListIndexersResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("$select") String select, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/indexers")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchIndexer>> create(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -194,7 +194,7 @@ public final class IndexersImpl {
 
         @Post("/indexers")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchIndexer> createSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -202,7 +202,7 @@ public final class IndexersImpl {
 
         @Get("/indexers('{indexerName}')/search.status")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchIndexerStatus>> getStatus(@HostParam("endpoint") String endpoint,
             @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -210,7 +210,7 @@ public final class IndexersImpl {
 
         @Get("/indexers('{indexerName}')/search.status")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchIndexerStatus> getStatusSync(@HostParam("endpoint") String endpoint,
             @PathParam("indexerName") String indexerName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -223,7 +223,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer to reset.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -246,7 +246,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -269,7 +269,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer to reset.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -285,7 +285,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -301,7 +301,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -323,7 +323,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer to reset.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -340,7 +340,7 @@ public final class IndexersImpl {
      * @param keysOrIds The keysOrIds parameter.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -367,7 +367,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -393,7 +393,7 @@ public final class IndexersImpl {
      * @param keysOrIds The keysOrIds parameter.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -414,7 +414,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -435,7 +435,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -461,7 +461,7 @@ public final class IndexersImpl {
      * @param keysOrIds The keysOrIds parameter.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -476,7 +476,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer to run.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -499,7 +499,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -522,7 +522,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer to run.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -538,7 +538,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -554,7 +554,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -576,7 +576,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer to run.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -597,7 +597,7 @@ public final class IndexersImpl {
      * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -631,7 +631,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -664,7 +664,7 @@ public final class IndexersImpl {
      * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer on successful completion of {@link Mono}.
      */
@@ -691,7 +691,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer on successful completion of {@link Mono}.
      */
@@ -718,7 +718,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer along with {@link Response}.
      */
@@ -751,7 +751,7 @@ public final class IndexersImpl {
      * @param disableCacheReprocessingChangeDetection Disables cache reprocessing change detection.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer.
      */
@@ -774,7 +774,7 @@ public final class IndexersImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -802,7 +802,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -829,7 +829,7 @@ public final class IndexersImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -851,7 +851,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -873,7 +873,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -900,7 +900,7 @@ public final class IndexersImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -914,7 +914,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -937,7 +937,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -960,7 +960,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer on successful completion of {@link Mono}.
      */
@@ -976,7 +976,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer on successful completion of {@link Mono}.
      */
@@ -993,7 +993,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer along with {@link Response}.
      */
@@ -1015,7 +1015,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer.
      */
@@ -1031,7 +1031,7 @@ public final class IndexersImpl {
      * of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Indexers request along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -1056,7 +1056,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Indexers request along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -1081,7 +1081,7 @@ public final class IndexersImpl {
      * of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Indexers request on successful completion of {@link Mono}.
      */
@@ -1098,7 +1098,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Indexers request on successful completion of {@link Mono}.
      */
@@ -1115,7 +1115,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Indexers request along with {@link Response}.
      */
@@ -1139,7 +1139,7 @@ public final class IndexersImpl {
      * of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Indexers request.
      */
@@ -1154,7 +1154,7 @@ public final class IndexersImpl {
      * @param indexer The definition of the indexer to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1177,7 +1177,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -1200,7 +1200,7 @@ public final class IndexersImpl {
      * @param indexer The definition of the indexer to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer on successful completion of {@link Mono}.
      */
@@ -1216,7 +1216,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer on successful completion of {@link Mono}.
      */
@@ -1233,7 +1233,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer along with {@link Response}.
      */
@@ -1256,7 +1256,7 @@ public final class IndexersImpl {
      * @param indexer The definition of the indexer to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an indexer.
      */
@@ -1271,7 +1271,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer for which to retrieve status.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the current status and execution history of an indexer along with {@link Response} on
      * successful completion of {@link Mono}.
@@ -1296,7 +1296,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the current status and execution history of an indexer along with {@link Response} on
      * successful completion of {@link Mono}.
@@ -1320,7 +1320,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer for which to retrieve status.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the current status and execution history of an indexer on successful completion of
      * {@link Mono}.
@@ -1337,7 +1337,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the current status and execution history of an indexer on successful completion of
      * {@link Mono}.
@@ -1356,7 +1356,7 @@ public final class IndexersImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the current status and execution history of an indexer along with {@link Response}.
      */
@@ -1379,7 +1379,7 @@ public final class IndexersImpl {
      * @param indexerName The name of the indexer for which to retrieve status.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents the current status and execution history of an indexer.
      */

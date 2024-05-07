@@ -8,8 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Tiering Policy for a target tier. If the policy is not specified for a given target tier, service retains the
- * existing configured tiering policy for that tier.
+ * Tiering Policy for a target tier.
+ * If the policy is not specified for a given target tier, service retains the existing configured tiering policy for
+ * that tier.
  */
 @Fluent
 public final class TieringPolicy {
@@ -36,16 +37,19 @@ public final class TieringPolicy {
     @JsonProperty(value = "durationType")
     private RetentionDurationType durationType;
 
-    /** Creates an instance of TieringPolicy class. */
+    /**
+     * Creates an instance of TieringPolicy class.
+     */
     public TieringPolicy() {
     }
 
     /**
-     * Get the tieringMode property: Tiering Mode to control automatic tiering of recovery points. Supported values are:
-     * 1. TierRecommended: Tier all recovery points recommended to be tiered 2. TierAfter: Tier all recovery points
-     * after a fixed period, as specified in duration + durationType below. 3. DoNotTier: Do not tier any recovery
-     * points.
-     *
+     * Get the tieringMode property: Tiering Mode to control automatic tiering of recovery points. Supported values
+     * are:
+     * 1. TierRecommended: Tier all recovery points recommended to be tiered
+     * 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
+     * 3. DoNotTier: Do not tier any recovery points.
+     * 
      * @return the tieringMode value.
      */
     public TieringMode tieringMode() {
@@ -53,11 +57,12 @@ public final class TieringPolicy {
     }
 
     /**
-     * Set the tieringMode property: Tiering Mode to control automatic tiering of recovery points. Supported values are:
-     * 1. TierRecommended: Tier all recovery points recommended to be tiered 2. TierAfter: Tier all recovery points
-     * after a fixed period, as specified in duration + durationType below. 3. DoNotTier: Do not tier any recovery
-     * points.
-     *
+     * Set the tieringMode property: Tiering Mode to control automatic tiering of recovery points. Supported values
+     * are:
+     * 1. TierRecommended: Tier all recovery points recommended to be tiered
+     * 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
+     * 3. DoNotTier: Do not tier any recovery points.
+     * 
      * @param tieringMode the tieringMode value to set.
      * @return the TieringPolicy object itself.
      */
@@ -69,7 +74,7 @@ public final class TieringPolicy {
     /**
      * Get the duration property: Number of days/weeks/months/years to retain backups in current tier before tiering.
      * Used only if TieringMode is set to TierAfter.
-     *
+     * 
      * @return the duration value.
      */
     public Integer duration() {
@@ -79,7 +84,7 @@ public final class TieringPolicy {
     /**
      * Set the duration property: Number of days/weeks/months/years to retain backups in current tier before tiering.
      * Used only if TieringMode is set to TierAfter.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the TieringPolicy object itself.
      */
@@ -89,9 +94,9 @@ public final class TieringPolicy {
     }
 
     /**
-     * Get the durationType property: Retention duration type: days/weeks/months/years Used only if TieringMode is set
-     * to TierAfter.
-     *
+     * Get the durationType property: Retention duration type: days/weeks/months/years
+     * Used only if TieringMode is set to TierAfter.
+     * 
      * @return the durationType value.
      */
     public RetentionDurationType durationType() {
@@ -99,9 +104,9 @@ public final class TieringPolicy {
     }
 
     /**
-     * Set the durationType property: Retention duration type: days/weeks/months/years Used only if TieringMode is set
-     * to TierAfter.
-     *
+     * Set the durationType property: Retention duration type: days/weeks/months/years
+     * Used only if TieringMode is set to TierAfter.
+     * 
      * @param durationType the durationType value to set.
      * @return the TieringPolicy object itself.
      */
@@ -112,7 +117,7 @@ public final class TieringPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

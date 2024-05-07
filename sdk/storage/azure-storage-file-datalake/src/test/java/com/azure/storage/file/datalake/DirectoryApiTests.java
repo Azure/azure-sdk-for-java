@@ -2124,7 +2124,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         Response<DataLakeDirectoryClient> resp = dc.renameWithResponse(null, generatePathName(), null, null, null, null);
         DataLakeDirectoryClient renamedClient = resp.getValue();
 
-        assertDoesNotThrow(renamedClient::getProperties);
+        assertDoesNotThrow(() -> renamedClient.getProperties());
         assertThrows(DataLakeStorageException.class, () -> dc.getProperties());
     }
 
@@ -2136,7 +2136,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
 
         DataLakeDirectoryClient renamedClient = resp.getValue();
 
-        assertDoesNotThrow(renamedClient::getProperties);
+        assertDoesNotThrow(() -> renamedClient.getProperties());
         assertThrows(DataLakeStorageException.class, () -> dc.getProperties());
     }
 

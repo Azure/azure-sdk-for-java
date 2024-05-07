@@ -38,14 +38,16 @@ public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCus
     @JsonProperty(value = "updateLimit")
     private Integer updateLimit;
 
-    /** Creates an instance of ImageTemplateWindowsUpdateCustomizer class. */
+    /**
+     * Creates an instance of ImageTemplateWindowsUpdateCustomizer class.
+     */
     public ImageTemplateWindowsUpdateCustomizer() {
     }
 
     /**
      * Get the searchCriteria property: Criteria to search updates. Omit or specify empty string to use the default
      * (search all). Refer to above link for examples and detailed description of this field.
-     *
+     * 
      * @return the searchCriteria value.
      */
     public String searchCriteria() {
@@ -55,7 +57,7 @@ public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCus
     /**
      * Set the searchCriteria property: Criteria to search updates. Omit or specify empty string to use the default
      * (search all). Refer to above link for examples and detailed description of this field.
-     *
+     * 
      * @param searchCriteria the searchCriteria value to set.
      * @return the ImageTemplateWindowsUpdateCustomizer object itself.
      */
@@ -67,7 +69,7 @@ public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCus
     /**
      * Get the filters property: Array of filters to select updates to apply. Omit or specify empty array to use the
      * default (no filter). Refer to above link for examples and detailed description of this field.
-     *
+     * 
      * @return the filters value.
      */
     public List<String> filters() {
@@ -77,7 +79,7 @@ public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCus
     /**
      * Set the filters property: Array of filters to select updates to apply. Omit or specify empty array to use the
      * default (no filter). Refer to above link for examples and detailed description of this field.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the ImageTemplateWindowsUpdateCustomizer object itself.
      */
@@ -89,7 +91,7 @@ public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCus
     /**
      * Get the updateLimit property: Maximum number of updates to apply at a time. Omit or specify 0 to use the default
      * (1000).
-     *
+     * 
      * @return the updateLimit value.
      */
     public Integer updateLimit() {
@@ -99,7 +101,7 @@ public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCus
     /**
      * Set the updateLimit property: Maximum number of updates to apply at a time. Omit or specify 0 to use the default
      * (1000).
-     *
+     * 
      * @param updateLimit the updateLimit value to set.
      * @return the ImageTemplateWindowsUpdateCustomizer object itself.
      */
@@ -108,7 +110,9 @@ public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCus
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateWindowsUpdateCustomizer withName(String name) {
         super.withName(name);
@@ -117,7 +121,7 @@ public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCus
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

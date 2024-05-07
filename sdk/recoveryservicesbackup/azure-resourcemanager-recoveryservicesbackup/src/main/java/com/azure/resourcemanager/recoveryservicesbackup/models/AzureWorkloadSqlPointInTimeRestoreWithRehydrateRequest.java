@@ -12,7 +12,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** AzureWorkload SQL-specific restore with integrated rehydration of recovery point. */
+/**
+ * AzureWorkload SQL-specific restore with integrated rehydration of recovery point.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureWorkloadSQLPointInTimeRestoreWithRehydrateRequest")
 @Fluent
@@ -24,13 +26,15 @@ public final class AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
-    /** Creates an instance of AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest class. */
+    /**
+     * Creates an instance of AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest class.
+     */
     public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest() {
     }
 
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @return the recoveryPointRehydrationInfo value.
      */
     public RecoveryPointRehydrationInfo recoveryPointRehydrationInfo() {
@@ -39,92 +43,142 @@ public final class AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
 
     /**
      * Set the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @param recoveryPointRehydrationInfo the recoveryPointRehydrationInfo value to set.
      * @return the AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest object itself.
      */
-    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withRecoveryPointRehydrationInfo(
-        RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
+    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
+        withRecoveryPointRehydrationInfo(RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
         this.recoveryPointRehydrationInfo = recoveryPointRehydrationInfo;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withPointInTime(OffsetDateTime pointInTime) {
         super.withPointInTime(pointInTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withShouldUseAlternateTargetLocation(
-        Boolean shouldUseAlternateTargetLocation) {
+    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
+        withShouldUseAlternateTargetLocation(Boolean shouldUseAlternateTargetLocation) {
         super.withShouldUseAlternateTargetLocation(shouldUseAlternateTargetLocation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withIsNonRecoverable(Boolean isNonRecoverable) {
         super.withIsNonRecoverable(isNonRecoverable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withAlternateDirectoryPaths(
-        List<SqlDataDirectoryMapping> alternateDirectoryPaths) {
+    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
+        withAlternateDirectoryPaths(List<SqlDataDirectoryMapping> alternateDirectoryPaths) {
         super.withAlternateDirectoryPaths(alternateDirectoryPaths);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withRecoveryType(RecoveryType recoveryType) {
         super.withRecoveryType(recoveryType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withPropertyBag(Map<String, String> propertyBag) {
         super.withPropertyBag(propertyBag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withTargetInfo(TargetRestoreInfo targetInfo) {
         super.withTargetInfo(targetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest withTargetVirtualMachineId(
-        String targetVirtualMachineId) {
+    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
+        withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
+        withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails userAssignedManagedIdentityDetails) {
+        super.withUserAssignedManagedIdentityDetails(userAssignedManagedIdentityDetails);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
+        withSnapshotRestoreParameters(SnapshotRestoreParameters snapshotRestoreParameters) {
+        super.withSnapshotRestoreParameters(snapshotRestoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest
+        withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

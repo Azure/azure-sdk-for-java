@@ -24,22 +24,28 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobCancellationsClient;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobCancellationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobCancellationsClient.
+ */
 public final class JobCancellationsClientImpl implements JobCancellationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JobCancellationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of JobCancellationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JobCancellationsClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy.create(JobCancellationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(JobCancellationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,26 +56,20 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface JobCancellationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupJobs/{jobName}/cancel")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupJobs/{jobName}/cancel")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> trigger(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("jobName") String jobName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> trigger(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("vaultName") String vaultName, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("jobName") String jobName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
      * GetCancelOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job to cancel.
@@ -81,10 +81,8 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> triggerWithResponseAsync(String vaultName, String resourceGroupName, String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -94,35 +92,23 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .trigger(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            jobName,
-                            accept,
-                            context))
+            .withContext(context -> service.trigger(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), jobName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
      * GetCancelOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job to cancel.
@@ -133,13 +119,11 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> triggerWithResponseAsync(
-        String vaultName, String resourceGroupName, String jobName, Context context) {
+    private Mono<Response<Void>> triggerWithResponseAsync(String vaultName, String resourceGroupName, String jobName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -149,32 +133,22 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .trigger(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                jobName,
-                accept,
-                context);
+        return service.trigger(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), jobName, accept, context);
     }
 
     /**
      * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
      * GetCancelOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job to cancel.
@@ -191,7 +165,7 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
     /**
      * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
      * GetCancelOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job to cancel.
@@ -202,15 +176,15 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> triggerWithResponse(
-        String vaultName, String resourceGroupName, String jobName, Context context) {
+    public Response<Void> triggerWithResponse(String vaultName, String resourceGroupName, String jobName,
+        Context context) {
         return triggerWithResponseAsync(vaultName, resourceGroupName, jobName, context).block();
     }
 
     /**
      * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
      * GetCancelOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job to cancel.

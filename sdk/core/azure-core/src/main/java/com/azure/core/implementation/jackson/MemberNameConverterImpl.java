@@ -73,13 +73,12 @@ final class MemberNameConverterImpl implements MemberNameConverter {
              * If the method isn't a getter, is annotated with JsonIgnore, or isn't visible to the ObjectMapper ignore
              * it.
              */
-            if (!verifyGetter(m)
-                || m.isAnnotationPresent(JsonIgnore.class)
-                || !visibilityChecker.isGetterVisible(m)) {
+            if (!verifyGetter(m) || m.isAnnotationPresent(JsonIgnore.class) || !visibilityChecker.isGetterVisible(m)) {
                 if (m.isAnnotationPresent(JsonGetter.class) || m.isAnnotationPresent(JsonProperty.class)) {
                     LOGGER.atInfo()
                         .addKeyValue("method", m.getName())
-                        .log("Method is annotated with either JsonGetter or JsonProperty but isn't accessible  to JacksonJsonSerializer.");
+                        .log(
+                            "Method is annotated with either JsonGetter or JsonProperty but isn't accessible to JacksonJsonSerializer.");
                 }
                 return null;
             }
@@ -112,16 +111,14 @@ final class MemberNameConverterImpl implements MemberNameConverter {
     private static boolean verifyGetter(Method method) {
         Class<?> returnType = method.getReturnType();
 
-        return method.getParameterCount() == 0
-            && returnType != void.class
-            && returnType != Void.class;
+        return method.getParameterCount() == 0 && returnType != void.class && returnType != Void.class;
     }
 
     private String removePrefix(Method method) {
         MapperConfig<?> config = mapper.getSerializationConfig();
 
-        AnnotatedClass annotatedClass = AnnotatedClassResolver.resolve(config,
-            mapper.constructType(method.getDeclaringClass()), null);
+        AnnotatedClass annotatedClass
+            = AnnotatedClassResolver.resolve(config, mapper.constructType(method.getDeclaringClass()), null);
 
         AnnotatedMethod annotatedMethod = annotatedClass.findMethod(method.getName(), method.getParameterTypes());
         String annotatedMethodName = annotatedMethod.getName();

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.AllowedConnectionsResour
 public final class AllowedConnectionsResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllowedConnectionsResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"calculatedDateTime\":\"2021-07-31T17:06:26Z\",\"connectableResources\":[{\"id\":\"eekpndz\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"qmeqwigpibudqwyx\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"mzznrtffyaqitmhh\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"hvseufuqyrx\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]}]}")
-                .toObject(AllowedConnectionsResourceProperties.class);
+        AllowedConnectionsResourceProperties model = BinaryData.fromString(
+            "{\"calculatedDateTime\":\"2021-07-23T21:20:09Z\",\"connectableResources\":[{\"id\":\"pntghyks\",\"inboundConnectedResources\":[{\"connectedResourceId\":\"rnxsluvlzlad\",\"tcpPorts\":\"x\",\"udpPorts\":\"bqhvfdqqjwkr\"},{\"connectedResourceId\":\"zdanojis\",\"tcpPorts\":\"lmvokat\",\"udpPorts\":\"tjctibpvbkaeh\"}],\"outboundConnectedResources\":[{\"connectedResourceId\":\"ygdfwakwseiv\",\"tcpPorts\":\"kxh\",\"udpPorts\":\"owljuxlkbectvtfj\"}]},{\"id\":\"kdch\",\"inboundConnectedResources\":[{\"connectedResourceId\":\"bavlzwpvgmfalkz\",\"tcpPorts\":\"mgok\",\"udpPorts\":\"gjqafkmkrokzr\"},{\"connectedResourceId\":\"qetwpqrtvaozn\",\"tcpPorts\":\"ixiezeag\",\"udpPorts\":\"eituugedhfpjs\"},{\"connectedResourceId\":\"zmblsyjdeol\",\"tcpPorts\":\"aebfsyrled\",\"udpPorts\":\"ustbvtqigdx\"}],\"outboundConnectedResources\":[{\"connectedResourceId\":\"eafgfosehxlzsxe\",\"tcpPorts\":\"p\",\"udpPorts\":\"waaeskyfjl\"},{\"connectedResourceId\":\"eqtoyrpl\",\"tcpPorts\":\"lajmllp\",\"udpPorts\":\"evhamfowg\"},{\"connectedResourceId\":\"tmk\",\"tcpPorts\":\"xpk\",\"udpPorts\":\"aqxofqov\"}]}]}")
+            .toObject(AllowedConnectionsResourceProperties.class);
     }
 
     @org.junit.jupiter.api.Test

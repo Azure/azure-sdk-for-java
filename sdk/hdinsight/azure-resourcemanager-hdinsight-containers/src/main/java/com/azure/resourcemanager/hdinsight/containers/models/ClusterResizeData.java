@@ -7,18 +7,19 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterResizeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The parameters for resizing a cluster. */
+/**
+ * The parameters for resizing a cluster.
+ */
 @Fluent
 public final class ClusterResizeData extends Resource {
     /*
      * Sets the properties. Define cluster resize specific properties.
      */
     @JsonProperty(value = "properties")
-    private ClusterResizeProperties innerProperties;
+    private ClusterResizeProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -26,36 +27,53 @@ public final class ClusterResizeData extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ClusterResizeData class. */
+    /**
+     * Creates an instance of ClusterResizeData class.
+     */
     public ClusterResizeData() {
     }
 
     /**
-     * Get the innerProperties property: Sets the properties. Define cluster resize specific properties.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: Sets the properties. Define cluster resize specific properties.
+     * 
+     * @return the properties value.
      */
-    private ClusterResizeProperties innerProperties() {
-        return this.innerProperties;
+    public ClusterResizeProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Sets the properties. Define cluster resize specific properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the ClusterResizeData object itself.
+     */
+    public ClusterResizeData withProperties(ClusterResizeProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterResizeData withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterResizeData withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -63,36 +81,13 @@ public final class ClusterResizeData extends Resource {
     }
 
     /**
-     * Get the targetWorkerNodeCount property: Target node count of worker node.
-     *
-     * @return the targetWorkerNodeCount value.
-     */
-    public Integer targetWorkerNodeCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().targetWorkerNodeCount();
-    }
-
-    /**
-     * Set the targetWorkerNodeCount property: Target node count of worker node.
-     *
-     * @param targetWorkerNodeCount the targetWorkerNodeCount value to set.
-     * @return the ClusterResizeData object itself.
-     */
-    public ClusterResizeData withTargetWorkerNodeCount(Integer targetWorkerNodeCount) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterResizeProperties();
-        }
-        this.innerProperties().withTargetWorkerNodeCount(targetWorkerNodeCount);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Resource SKU location information. */
+/**
+ * Resource SKU location information.
+ */
 @Fluent
 public final class ResourceSkuLocationInfo {
     /*
@@ -23,13 +25,15 @@ public final class ResourceSkuLocationInfo {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
-    /** Creates an instance of ResourceSkuLocationInfo class. */
+    /**
+     * Creates an instance of ResourceSkuLocationInfo class.
+     */
     public ResourceSkuLocationInfo() {
     }
 
     /**
      * Get the location property: Location where this SKU is available.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -38,7 +42,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Set the location property: Location where this SKU is available.
-     *
+     * 
      * @param location the location value to set.
      * @return the ResourceSkuLocationInfo object itself.
      */
@@ -49,7 +53,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Get the zones property: Zones if any.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -58,7 +62,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Set the zones property: Zones if any.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ResourceSkuLocationInfo object itself.
      */
@@ -69,7 +73,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

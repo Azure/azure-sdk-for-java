@@ -56,7 +56,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
@@ -242,7 +241,6 @@ public class EventHubClientBuilder implements
     private static final String UNKNOWN = "UNKNOWN";
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
-    private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubClientBuilder.class);
     private final Object connectionLock = new Object();
@@ -326,6 +324,13 @@ public class EventHubClientBuilder implements
         return this;
     }
 
+    /**
+     * Creates a TokenCredential from the {@link ConnectionStringProperties}.
+     *
+     * @param properties Connection string components to create TokenCredential from.
+     *
+     * @return A {@link TokenCredential} represented by the connection string properties.
+     */
     private TokenCredential getTokenCredential(ConnectionStringProperties properties) {
         TokenCredential tokenCredential;
         if (properties.getSharedAccessSignature() == null) {
@@ -347,6 +352,13 @@ public class EventHubClientBuilder implements
     public EventHubClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;
+    }
+
+    /***
+     * Gets the client options.
+     */
+    ClientOptions getClientOptions() {
+        return clientOptions;
     }
 
     /**
@@ -393,10 +405,10 @@ public class EventHubClientBuilder implements
 
     /**
      * Sets the configuration store that is used during construction of the service client.
-     *
+     * <p>
      * If not specified, the default configuration store is used to configure the {@link EventHubAsyncClient}. Use
      * {@link Configuration#NONE} to bypass using configuration settings during construction.
-     *
+     * </p>
      * @param configuration The configuration store used to configure the {@link EventHubAsyncClient}.
      *
      * @return The updated {@link EventHubClientBuilder} object.
@@ -405,6 +417,13 @@ public class EventHubClientBuilder implements
     public EventHubClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
+    }
+
+    /**
+     * Gets the configuration to use.
+     */
+    Configuration getConfiguration() {
+        return configuration;
     }
 
     /**
@@ -436,6 +455,13 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Gets the custom endpoint address.
+     */
+    URL getCustomEndpointAddress() {
+        return this.customEndpointAddress;
+    }
+
+    /**
      * Sets the fully qualified name for the Event Hubs namespace.
      *
      * @param fullyQualifiedNamespace The fully qualified name for the Event Hubs namespace. This is likely to be
@@ -453,6 +479,13 @@ public class EventHubClientBuilder implements
                 new IllegalArgumentException("'fullyQualifiedNamespace' cannot be an empty string."));
         }
         return this;
+    }
+
+    /**
+     * Gets the fully qualified namespace.
+     */
+    String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
     }
 
     private String getAndValidateFullyQualifiedNamespace() {
@@ -479,6 +512,13 @@ public class EventHubClientBuilder implements
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
         }
         return this;
+    }
+
+    /**
+     * Gets the Event Hub name.
+     */
+    String getEventHubName() {
+        return eventHubName;
     }
 
     /**
@@ -647,6 +687,13 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Gets the credentials.
+     */
+    TokenCredential getCredentials() {
+        return credentials;
+    }
+
+    /**
      * Sets the proxy configuration to use for {@link EventHubAsyncClient}. When a proxy is configured, {@link
      * AmqpTransportType#AMQP_WEB_SOCKETS} must be used for the transport type.
      *
@@ -661,6 +708,13 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Gets proxy options.
+     */
+    ProxyOptions getProxyOptions() {
+        return proxyOptions;
+    }
+
+    /**
      * Sets the transport type by which all the communication with Azure Event Hubs occurs. Default value is {@link
      * AmqpTransportType#AMQP}.
      *
@@ -672,6 +726,15 @@ public class EventHubClientBuilder implements
     public EventHubClientBuilder transportType(AmqpTransportType transport) {
         this.transport = transport;
         return this;
+    }
+
+    /**
+     * Gets the transport type.
+     *
+     * @return The transport type.
+     */
+    AmqpTransportType getTransportType() {
+        return transport;
     }
 
     /**
@@ -702,6 +765,13 @@ public class EventHubClientBuilder implements
     }
 
     /**
+     * Gets the retry options.
+     */
+    AmqpRetryOptions getRetryOptions() {
+        return retryOptions;
+    }
+
+    /**
      * Sets the name of the consumer group this consumer is associated with. Events are read in the context of this
      * group. The name of the consumer group that is created by default is {@link #DEFAULT_CONSUMER_GROUP_NAME
      * "$Default"}.
@@ -718,10 +788,17 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Sets the count used by the receiver to control the number of events the Event Hub consumer will actively receive
+     * Gets the consumer group.
+     */
+    String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    /**
+     * Sets the count used by the receiver to control the number of events per partition the Event Hub consumer will actively receive
      * and queue locally without regard to whether a receive operation is currently active.
      *
-     * @param prefetchCount The amount of events to queue locally.
+     * @param prefetchCount The amount of events per partition to queue locally. Defaults to 500 events per partition.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      * @throws IllegalArgumentException if {@code prefetchCount} is less than {@link #MINIMUM_PREFETCH_COUNT 1} or
@@ -743,7 +820,7 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Package-private method that gets the prefetch count.
+     * Gets the prefetch count.
      *
      * @return Gets the prefetch count or {@code null} if it has not been set.
      * @see #DEFAULT_PREFETCH_COUNT for default prefetch count.
@@ -753,7 +830,7 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Package-private method that sets the scheduler for the created Event Hub client.
+     * Sets the scheduler for the created Event Hub client.
      *
      * @param scheduler Scheduler to set.
      *
@@ -765,7 +842,16 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Package-private method that sets the verify mode for this connection.
+     * Gets the scheduler used to subscribe Event Hub operations on.
+     *
+     * @return The scheduler.
+     */
+    Scheduler getScheduler() {
+        return this.scheduler;
+    }
+
+    /**
+     * Sets the verify mode for this connection.
      *
      * @param verifyMode The verification mode.
      * @return The updated {@link EventHubClientBuilder} object.
@@ -773,6 +859,13 @@ public class EventHubClientBuilder implements
     EventHubClientBuilder verifyMode(SslDomain.VerifyMode verifyMode) {
         this.verifyMode = verifyMode;
         return this;
+    }
+
+    /**
+     * Gets the verify mode.
+     */
+    SslDomain.VerifyMode getVerifyMode() {
+        return verifyMode;
     }
 
     /**

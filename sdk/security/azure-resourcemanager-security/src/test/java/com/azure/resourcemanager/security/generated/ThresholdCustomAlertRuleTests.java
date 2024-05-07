@@ -11,26 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ThresholdCustomAlertRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ThresholdCustomAlertRule model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":1382683860,\"maxThreshold\":1200482188,\"displayName\":\"yktz\",\"description\":\"u\",\"isEnabled\":false}")
-                .toObject(ThresholdCustomAlertRule.class);
+        ThresholdCustomAlertRule model = BinaryData.fromString(
+            "{\"ruleType\":\"ThresholdCustomAlertRule\",\"minThreshold\":415126829,\"maxThreshold\":593960415,\"displayName\":\"bxsjybvitvqkj\",\"description\":\"znumtggmuwdchoz\",\"isEnabled\":false}")
+            .toObject(ThresholdCustomAlertRule.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(1382683860, model.minThreshold());
-        Assertions.assertEquals(1200482188, model.maxThreshold());
+        Assertions.assertEquals(415126829, model.minThreshold());
+        Assertions.assertEquals(593960415, model.maxThreshold());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThresholdCustomAlertRule model =
-            new ThresholdCustomAlertRule()
-                .withIsEnabled(false)
-                .withMinThreshold(1382683860)
-                .withMaxThreshold(1200482188);
+        ThresholdCustomAlertRule model = new ThresholdCustomAlertRule().withIsEnabled(false).withMinThreshold(415126829)
+            .withMaxThreshold(593960415);
         model = BinaryData.fromObject(model).toObject(ThresholdCustomAlertRule.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(1382683860, model.minThreshold());
-        Assertions.assertEquals(1200482188, model.maxThreshold());
+        Assertions.assertEquals(415126829, model.minThreshold());
+        Assertions.assertEquals(593960415, model.maxThreshold());
     }
 }

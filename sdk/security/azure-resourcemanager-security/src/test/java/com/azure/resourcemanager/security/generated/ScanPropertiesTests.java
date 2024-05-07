@@ -14,62 +14,50 @@ import org.junit.jupiter.api.Assertions;
 public final class ScanPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScanProperties model =
-            BinaryData
-                .fromString(
-                    "{\"triggerType\":\"Recurring\",\"state\":\"Failed\",\"server\":\"dwwnl\",\"database\":\"fwxudgnhg\",\"sqlVersion\":\"krtalvn\",\"startTime\":\"2021-10-08T14:43:06Z\",\"endTime\":\"2021-07-31T12:16:21Z\",\"highSeverityFailedRulesCount\":518056276,\"mediumSeverityFailedRulesCount\":408640684,\"lowSeverityFailedRulesCount\":1742020192,\"totalPassedRulesCount\":426542999,\"totalFailedRulesCount\":1442817098,\"totalRulesCount\":1323472014,\"isBaselineApplied\":false,\"lastScanTime\":\"2021-08-28T23:34:11Z\"}")
-                .toObject(ScanProperties.class);
+        ScanProperties model = BinaryData.fromString(
+            "{\"triggerType\":\"Recurring\",\"state\":\"FailedToRun\",\"server\":\"c\",\"database\":\"xccybvpa\",\"sqlVersion\":\"kkudzp\",\"startTime\":\"2021-08-18T20:25:34Z\",\"endTime\":\"2021-05-27T09:18:41Z\",\"highSeverityFailedRulesCount\":704877183,\"mediumSeverityFailedRulesCount\":167130524,\"lowSeverityFailedRulesCount\":625665728,\"totalPassedRulesCount\":2097030241,\"totalFailedRulesCount\":1027576008,\"totalRulesCount\":1084901302,\"isBaselineApplied\":true,\"lastScanTime\":\"2021-04-17T08:19:07Z\"}")
+            .toObject(ScanProperties.class);
         Assertions.assertEquals(ScanTriggerType.RECURRING, model.triggerType());
-        Assertions.assertEquals(ScanState.FAILED, model.state());
-        Assertions.assertEquals("dwwnl", model.server());
-        Assertions.assertEquals("fwxudgnhg", model.database());
-        Assertions.assertEquals("krtalvn", model.sqlVersion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-08T14:43:06Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T12:16:21Z"), model.endTime());
-        Assertions.assertEquals(518056276, model.highSeverityFailedRulesCount());
-        Assertions.assertEquals(408640684, model.mediumSeverityFailedRulesCount());
-        Assertions.assertEquals(1742020192, model.lowSeverityFailedRulesCount());
-        Assertions.assertEquals(426542999, model.totalPassedRulesCount());
-        Assertions.assertEquals(1442817098, model.totalFailedRulesCount());
-        Assertions.assertEquals(1323472014, model.totalRulesCount());
-        Assertions.assertEquals(false, model.isBaselineApplied());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T23:34:11Z"), model.lastScanTime());
+        Assertions.assertEquals(ScanState.FAILED_TO_RUN, model.state());
+        Assertions.assertEquals("c", model.server());
+        Assertions.assertEquals("xccybvpa", model.database());
+        Assertions.assertEquals("kkudzp", model.sqlVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-18T20:25:34Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T09:18:41Z"), model.endTime());
+        Assertions.assertEquals(704877183, model.highSeverityFailedRulesCount());
+        Assertions.assertEquals(167130524, model.mediumSeverityFailedRulesCount());
+        Assertions.assertEquals(625665728, model.lowSeverityFailedRulesCount());
+        Assertions.assertEquals(2097030241, model.totalPassedRulesCount());
+        Assertions.assertEquals(1027576008, model.totalFailedRulesCount());
+        Assertions.assertEquals(1084901302, model.totalRulesCount());
+        Assertions.assertEquals(true, model.isBaselineApplied());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T08:19:07Z"), model.lastScanTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScanProperties model =
-            new ScanProperties()
-                .withTriggerType(ScanTriggerType.RECURRING)
-                .withState(ScanState.FAILED)
-                .withServer("dwwnl")
-                .withDatabase("fwxudgnhg")
-                .withSqlVersion("krtalvn")
-                .withStartTime(OffsetDateTime.parse("2021-10-08T14:43:06Z"))
-                .withEndTime(OffsetDateTime.parse("2021-07-31T12:16:21Z"))
-                .withHighSeverityFailedRulesCount(518056276)
-                .withMediumSeverityFailedRulesCount(408640684)
-                .withLowSeverityFailedRulesCount(1742020192)
-                .withTotalPassedRulesCount(426542999)
-                .withTotalFailedRulesCount(1442817098)
-                .withTotalRulesCount(1323472014)
-                .withIsBaselineApplied(false)
-                .withLastScanTime(OffsetDateTime.parse("2021-08-28T23:34:11Z"));
+        ScanProperties model = new ScanProperties().withTriggerType(ScanTriggerType.RECURRING)
+            .withState(ScanState.FAILED_TO_RUN).withServer("c").withDatabase("xccybvpa").withSqlVersion("kkudzp")
+            .withStartTime(OffsetDateTime.parse("2021-08-18T20:25:34Z"))
+            .withEndTime(OffsetDateTime.parse("2021-05-27T09:18:41Z")).withHighSeverityFailedRulesCount(704877183)
+            .withMediumSeverityFailedRulesCount(167130524).withLowSeverityFailedRulesCount(625665728)
+            .withTotalPassedRulesCount(2097030241).withTotalFailedRulesCount(1027576008).withTotalRulesCount(1084901302)
+            .withIsBaselineApplied(true).withLastScanTime(OffsetDateTime.parse("2021-04-17T08:19:07Z"));
         model = BinaryData.fromObject(model).toObject(ScanProperties.class);
         Assertions.assertEquals(ScanTriggerType.RECURRING, model.triggerType());
-        Assertions.assertEquals(ScanState.FAILED, model.state());
-        Assertions.assertEquals("dwwnl", model.server());
-        Assertions.assertEquals("fwxudgnhg", model.database());
-        Assertions.assertEquals("krtalvn", model.sqlVersion());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-08T14:43:06Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T12:16:21Z"), model.endTime());
-        Assertions.assertEquals(518056276, model.highSeverityFailedRulesCount());
-        Assertions.assertEquals(408640684, model.mediumSeverityFailedRulesCount());
-        Assertions.assertEquals(1742020192, model.lowSeverityFailedRulesCount());
-        Assertions.assertEquals(426542999, model.totalPassedRulesCount());
-        Assertions.assertEquals(1442817098, model.totalFailedRulesCount());
-        Assertions.assertEquals(1323472014, model.totalRulesCount());
-        Assertions.assertEquals(false, model.isBaselineApplied());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T23:34:11Z"), model.lastScanTime());
+        Assertions.assertEquals(ScanState.FAILED_TO_RUN, model.state());
+        Assertions.assertEquals("c", model.server());
+        Assertions.assertEquals("xccybvpa", model.database());
+        Assertions.assertEquals("kkudzp", model.sqlVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-18T20:25:34Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T09:18:41Z"), model.endTime());
+        Assertions.assertEquals(704877183, model.highSeverityFailedRulesCount());
+        Assertions.assertEquals(167130524, model.mediumSeverityFailedRulesCount());
+        Assertions.assertEquals(625665728, model.lowSeverityFailedRulesCount());
+        Assertions.assertEquals(2097030241, model.totalPassedRulesCount());
+        Assertions.assertEquals(1027576008, model.totalFailedRulesCount());
+        Assertions.assertEquals(1084901302, model.totalRulesCount());
+        Assertions.assertEquals(true, model.isBaselineApplied());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T08:19:07Z"), model.lastScanTime());
     }
 }

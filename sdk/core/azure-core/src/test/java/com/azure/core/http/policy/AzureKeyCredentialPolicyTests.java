@@ -26,11 +26,11 @@ public class AzureKeyCredentialPolicyTests {
     private static Stream<Arguments> setCredentialSupplier() {
         AzureKeyCredential credential = new AzureKeyCredential("asecret");
         return Stream.of(
-            Arguments.of(new AzureKeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, null), "asecret"),
-            Arguments.of(new AzureKeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, "SharedKeyCredential"),
-                "SharedKeyCredential asecret"),
-            Arguments.of(new AzureKeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, "SharedKeyCredential "),
-                "SharedKeyCredential asecret")
-        );
+            Arguments.of(new AzureKeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, null),
+                "asecret"),
+            Arguments.of(new AzureKeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential,
+                "SharedKeyCredential"), "SharedKeyCredential asecret"),
+            Arguments.of(new AzureKeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential,
+                "SharedKeyCredential "), "SharedKeyCredential asecret"));
     }
 }

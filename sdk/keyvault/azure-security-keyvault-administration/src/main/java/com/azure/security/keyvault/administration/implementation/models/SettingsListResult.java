@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** The settings list result. */
+/**
+ * The settings list result.
+ */
 @Immutable
 public final class SettingsListResult implements JsonSerializable<SettingsListResult> {
     /*
@@ -20,12 +22,15 @@ public final class SettingsListResult implements JsonSerializable<SettingsListRe
      */
     private List<Setting> settings;
 
-    /** Creates an instance of SettingsListResult class. */
-    public SettingsListResult() {}
+    /**
+     * Creates an instance of SettingsListResult class.
+     */
+    public SettingsListResult() {
+    }
 
     /**
      * Get the settings property: A response message containing a list of account settings with their associated value.
-     *
+     * 
      * @return the settings value.
      */
     public List<Setting> getSettings() {
@@ -40,29 +45,28 @@ public final class SettingsListResult implements JsonSerializable<SettingsListRe
 
     /**
      * Reads an instance of SettingsListResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SettingsListResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SettingsListResult.
      */
     public static SettingsListResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SettingsListResult deserializedSettingsListResult = new SettingsListResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SettingsListResult deserializedSettingsListResult = new SettingsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("settings".equals(fieldName)) {
-                            List<Setting> settings = reader.readArray(reader1 -> Setting.fromJson(reader1));
-                            deserializedSettingsListResult.settings = settings;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("settings".equals(fieldName)) {
+                    List<Setting> settings = reader.readArray(reader1 -> Setting.fromJson(reader1));
+                    deserializedSettingsListResult.settings = settings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedSettingsListResult;
-                });
+            return deserializedSettingsListResult;
+        });
     }
 }

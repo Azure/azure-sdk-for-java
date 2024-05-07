@@ -15,11 +15,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for StorageAccountType.
  */
 public enum StorageAccountType {
-    /** The data disk should use standard locally redundant storage. */
+    /** The data disk / OS disk should use standard locally redundant storage. */
     STANDARD_LRS("standard_lrs"),
 
-    /** The data disk should use premium locally redundant storage. */
-    PREMIUM_LRS("premium_lrs");
+    /** The data disk / OS disk should use premium locally redundant storage. */
+    PREMIUM_LRS("premium_lrs"),
+
+    /** The data disk / OS disk should use standard SSD locally redundant storage. */
+    STANDARD_SSDLRS("standardssd_lrs");
 
     /** The actual serialized value for a StorageAccountType instance. */
     private String value;

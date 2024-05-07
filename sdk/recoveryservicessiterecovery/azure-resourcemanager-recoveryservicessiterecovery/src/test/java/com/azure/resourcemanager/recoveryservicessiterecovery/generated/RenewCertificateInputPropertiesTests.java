@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RenewCertificateInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RenewCertificateInputProperties model =
-            BinaryData.fromString("{\"renewCertificateType\":\"glu\"}").toObject(RenewCertificateInputProperties.class);
+        RenewCertificateInputProperties model = BinaryData.fromString("{\"renewCertificateType\":\"glu\"}")
+            .toObject(RenewCertificateInputProperties.class);
         Assertions.assertEquals("glu", model.renewCertificateType());
     }
 

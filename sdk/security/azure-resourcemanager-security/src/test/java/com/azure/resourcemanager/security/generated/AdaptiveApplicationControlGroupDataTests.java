@@ -15,6 +15,7 @@ import com.azure.resourcemanager.security.models.ProtectionMode;
 import com.azure.resourcemanager.security.models.PublisherInfo;
 import com.azure.resourcemanager.security.models.RecommendationAction;
 import com.azure.resourcemanager.security.models.RecommendationType;
+import com.azure.resourcemanager.security.models.UserRecommendation;
 import com.azure.resourcemanager.security.models.VmRecommendation;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -22,92 +23,126 @@ import org.junit.jupiter.api.Assertions;
 public final class AdaptiveApplicationControlGroupDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdaptiveApplicationControlGroupData model =
-            BinaryData
-                .fromString(
-                    "{\"enforcementMode\":\"Audit\",\"protectionMode\":{\"exe\":\"None\",\"msi\":\"None\",\"script\":\"None\",\"executable\":\"Audit\"},\"configurationStatus\":\"InProgress\",\"recommendationStatus\":\"NotRecommended\",\"issues\":[{\"issue\":\"RulesViolatedManually\",\"numberOfVms\":15.610468}],\"sourceSystem\":\"Azure_AuditD\",\"vmRecommendations\":[{\"configurationStatus\":\"NoStatus\",\"recommendationAction\":\"Recommended\",\"resourceId\":\"hlf\",\"enforcementSupport\":\"Supported\"}],\"pathRecommendations\":[{\"path\":\"wahfbousnfepgfew\",\"action\":\"Add\",\"type\":\"IoT_SharedCredentials\",\"publisherInfo\":{\"publisherName\":\"ncxykxhdjhlimm\",\"productName\":\"x\",\"binaryName\":\"bcporxvxcjzhqizx\",\"version\":\"xtgqscjavftjuh\"},\"common\":true,\"userSids\":[\"mtggu\"],\"usernames\":[],\"fileType\":\"Script\",\"configurationStatus\":\"Failed\"}]}")
-                .toObject(AdaptiveApplicationControlGroupData.class);
-        Assertions.assertEquals(EnforcementMode.AUDIT, model.enforcementMode());
+        AdaptiveApplicationControlGroupData model = BinaryData.fromString(
+            "{\"enforcementMode\":\"None\",\"protectionMode\":{\"exe\":\"None\",\"msi\":\"Audit\",\"script\":\"None\",\"executable\":\"None\"},\"configurationStatus\":\"NotConfigured\",\"recommendationStatus\":\"NotAvailable\",\"issues\":[{\"issue\":\"RulesViolatedManually\",\"numberOfVms\":87.4437},{\"issue\":\"ViolationsAudited\",\"numberOfVms\":33.062153},{\"issue\":\"MsiAndScriptViolationsAudited\",\"numberOfVms\":68.688576}],\"sourceSystem\":\"Azure_AuditD\",\"vmRecommendations\":[{\"configurationStatus\":\"InProgress\",\"recommendationAction\":\"Recommended\",\"resourceId\":\"p\",\"enforcementSupport\":\"Unknown\"},{\"configurationStatus\":\"InProgress\",\"recommendationAction\":\"Add\",\"resourceId\":\"jtnhtukfac\",\"enforcementSupport\":\"Unknown\"}],\"pathRecommendations\":[{\"path\":\"tumeezbxvqxb\",\"action\":\"Add\",\"type\":\"IoT_ACRAuthentication\",\"publisherInfo\":{\"publisherName\":\"sgomtmjz\",\"productName\":\"uqgovsxpwwztjfm\",\"binaryName\":\"htgfred\",\"version\":\"scgrllccna\"},\"common\":true,\"userSids\":[\"azhpabacoml\",\"otgkwsxnsrqorcg\",\"nmvceb\"],\"usernames\":[{\"username\":\"qu\",\"recommendationAction\":\"Add\"},{\"username\":\"x\",\"recommendationAction\":\"Add\"},{\"username\":\"qjkedwqurc\",\"recommendationAction\":\"Add\"}],\"fileType\":\"Executable\",\"configurationStatus\":\"Failed\"},{\"path\":\"wjongzs\",\"action\":\"Add\",\"type\":\"IoT_VulnerableTLSCipherSuite\",\"publisherInfo\":{\"publisherName\":\"lcchskxxkansbvri\",\"productName\":\"gv\",\"binaryName\":\"jrulfucte\",\"version\":\"thcfj\"},\"common\":true,\"userSids\":[\"ubqjro\",\"tvrjeqmtz\"],\"usernames\":[{\"username\":\"rztrxalxrdhabsr\",\"recommendationAction\":\"Add\"},{\"username\":\"rhpqatiwkkvya\",\"recommendationAction\":\"Add\"},{\"username\":\"vcsemsvuvdj\",\"recommendationAction\":\"Recommended\"},{\"username\":\"tqmm\",\"recommendationAction\":\"Remove\"}],\"fileType\":\"Dll\",\"configurationStatus\":\"Failed\"},{\"path\":\"wxdchpojxlehzlx\",\"action\":\"Recommended\",\"type\":\"IoT_SharedCredentials\",\"publisherInfo\":{\"publisherName\":\"pwiibelw\",\"productName\":\"rwkwbpjxljtxbus\",\"binaryName\":\"bxxn\",\"version\":\"i\"},\"common\":true,\"userSids\":[\"bdgzpagsecnad\",\"u\"],\"usernames\":[{\"username\":\"xfllmqiyn\",\"recommendationAction\":\"Recommended\"}],\"fileType\":\"Msi\",\"configurationStatus\":\"NoStatus\"},{\"path\":\"kiiwvmtu\",\"action\":\"Remove\",\"type\":\"IoT_PrivilegedDockerOptions\",\"publisherInfo\":{\"publisherName\":\"fua\",\"productName\":\"oqvqpilr\",\"binaryName\":\"ncanlduwzor\",\"version\":\"bm\"},\"common\":false,\"userSids\":[\"xym\",\"kqv\",\"qepdx\"],\"usernames\":[{\"username\":\"ubwyv\",\"recommendationAction\":\"Add\"},{\"username\":\"wcpjqduqgi\",\"recommendationAction\":\"Add\"},{\"username\":\"ydfbwlj\",\"recommendationAction\":\"Remove\"}],\"fileType\":\"Exe\",\"configurationStatus\":\"NotConfigured\"}]}")
+            .toObject(AdaptiveApplicationControlGroupData.class);
+        Assertions.assertEquals(EnforcementMode.NONE, model.enforcementMode());
         Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().exe());
-        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().msi());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().msi());
         Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().script());
-        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().executable());
-        Assertions.assertEquals(ConfigurationStatus.NO_STATUS, model.vmRecommendations().get(0).configurationStatus());
-        Assertions
-            .assertEquals(RecommendationAction.RECOMMENDED, model.vmRecommendations().get(0).recommendationAction());
-        Assertions.assertEquals("hlf", model.vmRecommendations().get(0).resourceId());
-        Assertions.assertEquals(EnforcementSupport.SUPPORTED, model.vmRecommendations().get(0).enforcementSupport());
-        Assertions.assertEquals("wahfbousnfepgfew", model.pathRecommendations().get(0).path());
+        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().executable());
+        Assertions.assertEquals(ConfigurationStatus.IN_PROGRESS,
+            model.vmRecommendations().get(0).configurationStatus());
+        Assertions.assertEquals(RecommendationAction.RECOMMENDED,
+            model.vmRecommendations().get(0).recommendationAction());
+        Assertions.assertEquals("p", model.vmRecommendations().get(0).resourceId());
+        Assertions.assertEquals(EnforcementSupport.UNKNOWN, model.vmRecommendations().get(0).enforcementSupport());
+        Assertions.assertEquals("tumeezbxvqxb", model.pathRecommendations().get(0).path());
         Assertions.assertEquals(RecommendationAction.ADD, model.pathRecommendations().get(0).action());
-        Assertions.assertEquals(RecommendationType.IO_T_SHARED_CREDENTIALS, model.pathRecommendations().get(0).type());
-        Assertions.assertEquals("ncxykxhdjhlimm", model.pathRecommendations().get(0).publisherInfo().publisherName());
-        Assertions.assertEquals("x", model.pathRecommendations().get(0).publisherInfo().productName());
-        Assertions.assertEquals("bcporxvxcjzhqizx", model.pathRecommendations().get(0).publisherInfo().binaryName());
-        Assertions.assertEquals("xtgqscjavftjuh", model.pathRecommendations().get(0).publisherInfo().version());
+        Assertions.assertEquals(RecommendationType.IO_T_ACRAUTHENTICATION, model.pathRecommendations().get(0).type());
+        Assertions.assertEquals("sgomtmjz", model.pathRecommendations().get(0).publisherInfo().publisherName());
+        Assertions.assertEquals("uqgovsxpwwztjfm", model.pathRecommendations().get(0).publisherInfo().productName());
+        Assertions.assertEquals("htgfred", model.pathRecommendations().get(0).publisherInfo().binaryName());
+        Assertions.assertEquals("scgrllccna", model.pathRecommendations().get(0).publisherInfo().version());
         Assertions.assertEquals(true, model.pathRecommendations().get(0).common());
-        Assertions.assertEquals("mtggu", model.pathRecommendations().get(0).userSids().get(0));
-        Assertions.assertEquals(FileType.SCRIPT, model.pathRecommendations().get(0).fileType());
+        Assertions.assertEquals("azhpabacoml", model.pathRecommendations().get(0).userSids().get(0));
+        Assertions.assertEquals("qu", model.pathRecommendations().get(0).usernames().get(0).username());
+        Assertions.assertEquals(RecommendationAction.ADD,
+            model.pathRecommendations().get(0).usernames().get(0).recommendationAction());
+        Assertions.assertEquals(FileType.EXECUTABLE, model.pathRecommendations().get(0).fileType());
         Assertions.assertEquals(ConfigurationStatus.FAILED, model.pathRecommendations().get(0).configurationStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdaptiveApplicationControlGroupData model =
-            new AdaptiveApplicationControlGroupData()
-                .withEnforcementMode(EnforcementMode.AUDIT)
-                .withProtectionMode(
-                    new ProtectionMode()
-                        .withExe(EnforcementMode.NONE)
-                        .withMsi(EnforcementMode.NONE)
-                        .withScript(EnforcementMode.NONE)
-                        .withExecutable(EnforcementMode.AUDIT))
-                .withVmRecommendations(
-                    Arrays
-                        .asList(
-                            new VmRecommendation()
-                                .withConfigurationStatus(ConfigurationStatus.NO_STATUS)
-                                .withRecommendationAction(RecommendationAction.RECOMMENDED)
-                                .withResourceId("hlf")
-                                .withEnforcementSupport(EnforcementSupport.SUPPORTED)))
-                .withPathRecommendations(
-                    Arrays
-                        .asList(
-                            new PathRecommendation()
-                                .withPath("wahfbousnfepgfew")
-                                .withAction(RecommendationAction.ADD)
-                                .withType(RecommendationType.IO_T_SHARED_CREDENTIALS)
-                                .withPublisherInfo(
-                                    new PublisherInfo()
-                                        .withPublisherName("ncxykxhdjhlimm")
-                                        .withProductName("x")
-                                        .withBinaryName("bcporxvxcjzhqizx")
-                                        .withVersion("xtgqscjavftjuh"))
-                                .withCommon(true)
-                                .withUserSids(Arrays.asList("mtggu"))
-                                .withUsernames(Arrays.asList())
-                                .withFileType(FileType.SCRIPT)
-                                .withConfigurationStatus(ConfigurationStatus.FAILED)));
+        AdaptiveApplicationControlGroupData model
+            = new AdaptiveApplicationControlGroupData().withEnforcementMode(EnforcementMode.NONE)
+                .withProtectionMode(new ProtectionMode().withExe(EnforcementMode.NONE).withMsi(EnforcementMode.AUDIT)
+                    .withScript(EnforcementMode.NONE).withExecutable(EnforcementMode.NONE))
+                .withVmRecommendations(Arrays.asList(
+                    new VmRecommendation().withConfigurationStatus(ConfigurationStatus.IN_PROGRESS)
+                        .withRecommendationAction(RecommendationAction.RECOMMENDED).withResourceId("p")
+                        .withEnforcementSupport(EnforcementSupport.UNKNOWN),
+                    new VmRecommendation()
+                        .withConfigurationStatus(ConfigurationStatus.IN_PROGRESS)
+                        .withRecommendationAction(
+                            RecommendationAction.ADD)
+                        .withResourceId("jtnhtukfac").withEnforcementSupport(EnforcementSupport.UNKNOWN)))
+                .withPathRecommendations(Arrays.asList(
+                    new PathRecommendation().withPath("tumeezbxvqxb").withAction(RecommendationAction.ADD)
+                        .withType(RecommendationType.IO_T_ACRAUTHENTICATION)
+                        .withPublisherInfo(new PublisherInfo().withPublisherName("sgomtmjz")
+                            .withProductName("uqgovsxpwwztjfm").withBinaryName("htgfred").withVersion("scgrllccna"))
+                        .withCommon(true).withUserSids(Arrays.asList("azhpabacoml", "otgkwsxnsrqorcg", "nmvceb"))
+                        .withUsernames(Arrays.asList(
+                            new UserRecommendation().withUsername("qu")
+                                .withRecommendationAction(RecommendationAction.ADD),
+                            new UserRecommendation().withUsername("x")
+                                .withRecommendationAction(RecommendationAction.ADD),
+                            new UserRecommendation().withUsername("qjkedwqurc")
+                                .withRecommendationAction(RecommendationAction.ADD)))
+                        .withFileType(FileType.EXECUTABLE).withConfigurationStatus(ConfigurationStatus.FAILED),
+                    new PathRecommendation().withPath("wjongzs").withAction(RecommendationAction.ADD)
+                        .withType(RecommendationType.IO_T_VULNERABLE_TLSCIPHER_SUITE)
+                        .withPublisherInfo(new PublisherInfo().withPublisherName("lcchskxxkansbvri")
+                            .withProductName("gv").withBinaryName("jrulfucte").withVersion("thcfj"))
+                        .withCommon(true).withUserSids(Arrays.asList("ubqjro", "tvrjeqmtz"))
+                        .withUsernames(Arrays.asList(
+                            new UserRecommendation().withUsername("rztrxalxrdhabsr")
+                                .withRecommendationAction(RecommendationAction.ADD),
+                            new UserRecommendation().withUsername("rhpqatiwkkvya")
+                                .withRecommendationAction(RecommendationAction.ADD),
+                            new UserRecommendation().withUsername("vcsemsvuvdj")
+                                .withRecommendationAction(RecommendationAction.RECOMMENDED),
+                            new UserRecommendation().withUsername("tqmm")
+                                .withRecommendationAction(RecommendationAction.REMOVE)))
+                        .withFileType(FileType.DLL).withConfigurationStatus(ConfigurationStatus.FAILED),
+                    new PathRecommendation().withPath("wxdchpojxlehzlx").withAction(RecommendationAction.RECOMMENDED)
+                        .withType(RecommendationType.IO_T_SHARED_CREDENTIALS)
+                        .withPublisherInfo(new PublisherInfo().withPublisherName("pwiibelw")
+                            .withProductName("rwkwbpjxljtxbus").withBinaryName("bxxn").withVersion("i"))
+                        .withCommon(true).withUserSids(Arrays.asList("bdgzpagsecnad", "u"))
+                        .withUsernames(Arrays.asList(new UserRecommendation().withUsername("xfllmqiyn")
+                            .withRecommendationAction(RecommendationAction.RECOMMENDED)))
+                        .withFileType(FileType.MSI).withConfigurationStatus(ConfigurationStatus.NO_STATUS),
+                    new PathRecommendation().withPath("kiiwvmtu").withAction(RecommendationAction.REMOVE)
+                        .withType(RecommendationType.IO_T_PRIVILEGED_DOCKER_OPTIONS)
+                        .withPublisherInfo(new PublisherInfo().withPublisherName("fua").withProductName("oqvqpilr")
+                            .withBinaryName("ncanlduwzor").withVersion("bm"))
+                        .withCommon(false).withUserSids(Arrays.asList("xym", "kqv", "qepdx"))
+                        .withUsernames(Arrays.asList(
+                            new UserRecommendation().withUsername("ubwyv")
+                                .withRecommendationAction(RecommendationAction.ADD),
+                            new UserRecommendation().withUsername("wcpjqduqgi")
+                                .withRecommendationAction(RecommendationAction.ADD),
+                            new UserRecommendation().withUsername("ydfbwlj")
+                                .withRecommendationAction(RecommendationAction.REMOVE)))
+                        .withFileType(FileType.EXE).withConfigurationStatus(ConfigurationStatus.NOT_CONFIGURED)));
         model = BinaryData.fromObject(model).toObject(AdaptiveApplicationControlGroupData.class);
-        Assertions.assertEquals(EnforcementMode.AUDIT, model.enforcementMode());
+        Assertions.assertEquals(EnforcementMode.NONE, model.enforcementMode());
         Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().exe());
-        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().msi());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().msi());
         Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().script());
-        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().executable());
-        Assertions.assertEquals(ConfigurationStatus.NO_STATUS, model.vmRecommendations().get(0).configurationStatus());
-        Assertions
-            .assertEquals(RecommendationAction.RECOMMENDED, model.vmRecommendations().get(0).recommendationAction());
-        Assertions.assertEquals("hlf", model.vmRecommendations().get(0).resourceId());
-        Assertions.assertEquals(EnforcementSupport.SUPPORTED, model.vmRecommendations().get(0).enforcementSupport());
-        Assertions.assertEquals("wahfbousnfepgfew", model.pathRecommendations().get(0).path());
+        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().executable());
+        Assertions.assertEquals(ConfigurationStatus.IN_PROGRESS,
+            model.vmRecommendations().get(0).configurationStatus());
+        Assertions.assertEquals(RecommendationAction.RECOMMENDED,
+            model.vmRecommendations().get(0).recommendationAction());
+        Assertions.assertEquals("p", model.vmRecommendations().get(0).resourceId());
+        Assertions.assertEquals(EnforcementSupport.UNKNOWN, model.vmRecommendations().get(0).enforcementSupport());
+        Assertions.assertEquals("tumeezbxvqxb", model.pathRecommendations().get(0).path());
         Assertions.assertEquals(RecommendationAction.ADD, model.pathRecommendations().get(0).action());
-        Assertions.assertEquals(RecommendationType.IO_T_SHARED_CREDENTIALS, model.pathRecommendations().get(0).type());
-        Assertions.assertEquals("ncxykxhdjhlimm", model.pathRecommendations().get(0).publisherInfo().publisherName());
-        Assertions.assertEquals("x", model.pathRecommendations().get(0).publisherInfo().productName());
-        Assertions.assertEquals("bcporxvxcjzhqizx", model.pathRecommendations().get(0).publisherInfo().binaryName());
-        Assertions.assertEquals("xtgqscjavftjuh", model.pathRecommendations().get(0).publisherInfo().version());
+        Assertions.assertEquals(RecommendationType.IO_T_ACRAUTHENTICATION, model.pathRecommendations().get(0).type());
+        Assertions.assertEquals("sgomtmjz", model.pathRecommendations().get(0).publisherInfo().publisherName());
+        Assertions.assertEquals("uqgovsxpwwztjfm", model.pathRecommendations().get(0).publisherInfo().productName());
+        Assertions.assertEquals("htgfred", model.pathRecommendations().get(0).publisherInfo().binaryName());
+        Assertions.assertEquals("scgrllccna", model.pathRecommendations().get(0).publisherInfo().version());
         Assertions.assertEquals(true, model.pathRecommendations().get(0).common());
-        Assertions.assertEquals("mtggu", model.pathRecommendations().get(0).userSids().get(0));
-        Assertions.assertEquals(FileType.SCRIPT, model.pathRecommendations().get(0).fileType());
+        Assertions.assertEquals("azhpabacoml", model.pathRecommendations().get(0).userSids().get(0));
+        Assertions.assertEquals("qu", model.pathRecommendations().get(0).usernames().get(0).username());
+        Assertions.assertEquals(RecommendationAction.ADD,
+            model.pathRecommendations().get(0).usernames().get(0).recommendationAction());
+        Assertions.assertEquals(FileType.EXECUTABLE, model.pathRecommendations().get(0).fileType());
         Assertions.assertEquals(ConfigurationStatus.FAILED, model.pathRecommendations().get(0).configurationStatus());
     }
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The containers GCP offering. */
+/**
+ * The containers GCP offering.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
 @JsonTypeName("DefenderForContainersGcp")
 @Fluent
@@ -44,13 +46,27 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
     @JsonProperty(value = "policyAgentAutoProvisioningFlag")
     private Boolean policyAgentAutoProvisioningFlag;
 
-    /** Creates an instance of DefenderForContainersGcpOffering class. */
+    /*
+     * The Microsoft Defender Container image assessment configuration
+     */
+    @JsonProperty(value = "mdcContainersImageAssessment")
+    private DefenderForContainersGcpOfferingMdcContainersImageAssessment mdcContainersImageAssessment;
+
+    /*
+     * The Microsoft Defender Container agentless discovery configuration
+     */
+    @JsonProperty(value = "mdcContainersAgentlessDiscoveryK8s")
+    private DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S;
+
+    /**
+     * Creates an instance of DefenderForContainersGcpOffering class.
+     */
     public DefenderForContainersGcpOffering() {
     }
 
     /**
      * Get the nativeCloudConnection property: The native cloud connection configuration.
-     *
+     * 
      * @return the nativeCloudConnection value.
      */
     public DefenderForContainersGcpOfferingNativeCloudConnection nativeCloudConnection() {
@@ -59,19 +75,19 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
 
     /**
      * Set the nativeCloudConnection property: The native cloud connection configuration.
-     *
+     * 
      * @param nativeCloudConnection the nativeCloudConnection value to set.
      * @return the DefenderForContainersGcpOffering object itself.
      */
-    public DefenderForContainersGcpOffering withNativeCloudConnection(
-        DefenderForContainersGcpOfferingNativeCloudConnection nativeCloudConnection) {
+    public DefenderForContainersGcpOffering
+        withNativeCloudConnection(DefenderForContainersGcpOfferingNativeCloudConnection nativeCloudConnection) {
         this.nativeCloudConnection = nativeCloudConnection;
         return this;
     }
 
     /**
      * Get the dataPipelineNativeCloudConnection property: The native cloud connection configuration.
-     *
+     * 
      * @return the dataPipelineNativeCloudConnection value.
      */
     public DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection dataPipelineNativeCloudConnection() {
@@ -80,7 +96,7 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
 
     /**
      * Set the dataPipelineNativeCloudConnection property: The native cloud connection configuration.
-     *
+     * 
      * @param dataPipelineNativeCloudConnection the dataPipelineNativeCloudConnection value to set.
      * @return the DefenderForContainersGcpOffering object itself.
      */
@@ -92,7 +108,7 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
 
     /**
      * Get the auditLogsAutoProvisioningFlag property: Is audit logs data collection enabled.
-     *
+     * 
      * @return the auditLogsAutoProvisioningFlag value.
      */
     public Boolean auditLogsAutoProvisioningFlag() {
@@ -101,7 +117,7 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
 
     /**
      * Set the auditLogsAutoProvisioningFlag property: Is audit logs data collection enabled.
-     *
+     * 
      * @param auditLogsAutoProvisioningFlag the auditLogsAutoProvisioningFlag value to set.
      * @return the DefenderForContainersGcpOffering object itself.
      */
@@ -113,7 +129,7 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
     /**
      * Get the defenderAgentAutoProvisioningFlag property: Is Microsoft Defender for Cloud Kubernetes agent auto
      * provisioning enabled.
-     *
+     * 
      * @return the defenderAgentAutoProvisioningFlag value.
      */
     public Boolean defenderAgentAutoProvisioningFlag() {
@@ -123,19 +139,19 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
     /**
      * Set the defenderAgentAutoProvisioningFlag property: Is Microsoft Defender for Cloud Kubernetes agent auto
      * provisioning enabled.
-     *
+     * 
      * @param defenderAgentAutoProvisioningFlag the defenderAgentAutoProvisioningFlag value to set.
      * @return the DefenderForContainersGcpOffering object itself.
      */
-    public DefenderForContainersGcpOffering withDefenderAgentAutoProvisioningFlag(
-        Boolean defenderAgentAutoProvisioningFlag) {
+    public DefenderForContainersGcpOffering
+        withDefenderAgentAutoProvisioningFlag(Boolean defenderAgentAutoProvisioningFlag) {
         this.defenderAgentAutoProvisioningFlag = defenderAgentAutoProvisioningFlag;
         return this;
     }
 
     /**
      * Get the policyAgentAutoProvisioningFlag property: Is Policy Kubernetes agent auto provisioning enabled.
-     *
+     * 
      * @return the policyAgentAutoProvisioningFlag value.
      */
     public Boolean policyAgentAutoProvisioningFlag() {
@@ -144,19 +160,63 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
 
     /**
      * Set the policyAgentAutoProvisioningFlag property: Is Policy Kubernetes agent auto provisioning enabled.
-     *
+     * 
      * @param policyAgentAutoProvisioningFlag the policyAgentAutoProvisioningFlag value to set.
      * @return the DefenderForContainersGcpOffering object itself.
      */
-    public DefenderForContainersGcpOffering withPolicyAgentAutoProvisioningFlag(
-        Boolean policyAgentAutoProvisioningFlag) {
+    public DefenderForContainersGcpOffering
+        withPolicyAgentAutoProvisioningFlag(Boolean policyAgentAutoProvisioningFlag) {
         this.policyAgentAutoProvisioningFlag = policyAgentAutoProvisioningFlag;
         return this;
     }
 
     /**
+     * Get the mdcContainersImageAssessment property: The Microsoft Defender Container image assessment configuration.
+     * 
+     * @return the mdcContainersImageAssessment value.
+     */
+    public DefenderForContainersGcpOfferingMdcContainersImageAssessment mdcContainersImageAssessment() {
+        return this.mdcContainersImageAssessment;
+    }
+
+    /**
+     * Set the mdcContainersImageAssessment property: The Microsoft Defender Container image assessment configuration.
+     * 
+     * @param mdcContainersImageAssessment the mdcContainersImageAssessment value to set.
+     * @return the DefenderForContainersGcpOffering object itself.
+     */
+    public DefenderForContainersGcpOffering withMdcContainersImageAssessment(
+        DefenderForContainersGcpOfferingMdcContainersImageAssessment mdcContainersImageAssessment) {
+        this.mdcContainersImageAssessment = mdcContainersImageAssessment;
+        return this;
+    }
+
+    /**
+     * Get the mdcContainersAgentlessDiscoveryK8S property: The Microsoft Defender Container agentless discovery
+     * configuration.
+     * 
+     * @return the mdcContainersAgentlessDiscoveryK8S value.
+     */
+    public DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S() {
+        return this.mdcContainersAgentlessDiscoveryK8S;
+    }
+
+    /**
+     * Set the mdcContainersAgentlessDiscoveryK8S property: The Microsoft Defender Container agentless discovery
+     * configuration.
+     * 
+     * @param mdcContainersAgentlessDiscoveryK8S the mdcContainersAgentlessDiscoveryK8S value to set.
+     * @return the DefenderForContainersGcpOffering object itself.
+     */
+    public DefenderForContainersGcpOffering withMdcContainersAgentlessDiscoveryK8S(
+        DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S) {
+        this.mdcContainersAgentlessDiscoveryK8S = mdcContainersAgentlessDiscoveryK8S;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -167,6 +227,12 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
         }
         if (dataPipelineNativeCloudConnection() != null) {
             dataPipelineNativeCloudConnection().validate();
+        }
+        if (mdcContainersImageAssessment() != null) {
+            mdcContainersImageAssessment().validate();
+        }
+        if (mdcContainersAgentlessDiscoveryK8S() != null) {
+            mdcContainersAgentlessDiscoveryK8S().validate();
         }
     }
 }

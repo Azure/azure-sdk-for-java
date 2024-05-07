@@ -15,22 +15,24 @@ public final class BlobTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobTriggerTypeProperties model = BinaryData.fromString(
-            "{\"folderPath\":\"hknnvjgc\",\"maxConcurrency\":1468097285,\"linkedService\":{\"referenceName\":\"efewofhjonqkbn\",\"parameters\":{\"uvr\":\"dataattzxvfsrufj\"}}}")
+            "{\"folderPath\":\"rqtkzeopoxdwoxpn\",\"maxConcurrency\":1343583156,\"linkedService\":{\"referenceName\":\"zbsw\",\"parameters\":{\"lbflbax\":\"datatxfshaqpmlyzwgo\",\"yrdzogtrycb\":\"datawojt\",\"qw\":\"dataf\",\"jsxwukbcwym\":\"dataavgdzt\"}}}")
             .toObject(BlobTriggerTypeProperties.class);
-        Assertions.assertEquals("hknnvjgc", model.folderPath());
-        Assertions.assertEquals(1468097285, model.maxConcurrency());
-        Assertions.assertEquals("efewofhjonqkbn", model.linkedService().referenceName());
+        Assertions.assertEquals("rqtkzeopoxdwoxpn", model.folderPath());
+        Assertions.assertEquals(1343583156, model.maxConcurrency());
+        Assertions.assertEquals("zbsw", model.linkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobTriggerTypeProperties model = new BlobTriggerTypeProperties().withFolderPath("hknnvjgc")
-            .withMaxConcurrency(1468097285).withLinkedService(new LinkedServiceReference()
-                .withReferenceName("efewofhjonqkbn").withParameters(mapOf("uvr", "dataattzxvfsrufj")));
+        BlobTriggerTypeProperties model = new BlobTriggerTypeProperties().withFolderPath("rqtkzeopoxdwoxpn")
+            .withMaxConcurrency(1343583156)
+            .withLinkedService(new LinkedServiceReference().withReferenceName("zbsw")
+                .withParameters(mapOf("lbflbax", "datatxfshaqpmlyzwgo", "yrdzogtrycb", "datawojt", "qw", "dataf",
+                    "jsxwukbcwym", "dataavgdzt")));
         model = BinaryData.fromObject(model).toObject(BlobTriggerTypeProperties.class);
-        Assertions.assertEquals("hknnvjgc", model.folderPath());
-        Assertions.assertEquals(1468097285, model.maxConcurrency());
-        Assertions.assertEquals("efewofhjonqkbn", model.linkedService().referenceName());
+        Assertions.assertEquals("rqtkzeopoxdwoxpn", model.folderPath());
+        Assertions.assertEquals(1343583156, model.maxConcurrency());
+        Assertions.assertEquals("zbsw", model.linkedService().referenceName());
     }
 
     // Use "Map.of" if available

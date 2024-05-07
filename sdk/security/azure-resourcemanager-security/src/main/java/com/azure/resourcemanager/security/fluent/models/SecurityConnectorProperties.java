@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** A set of properties that defines the security connector configuration. */
+/**
+ * A set of properties that defines the security connector configuration.
+ */
 @Fluent
 public final class SecurityConnectorProperties {
     /*
@@ -47,14 +49,16 @@ public final class SecurityConnectorProperties {
     @JsonProperty(value = "environmentData")
     private EnvironmentData environmentData;
 
-    /** Creates an instance of SecurityConnectorProperties class. */
+    /**
+     * Creates an instance of SecurityConnectorProperties class.
+     */
     public SecurityConnectorProperties() {
     }
 
     /**
      * Get the hierarchyIdentifier property: The multi cloud resource identifier (account id in case of AWS connector,
      * project number in case of GCP connector).
-     *
+     * 
      * @return the hierarchyIdentifier value.
      */
     public String hierarchyIdentifier() {
@@ -64,7 +68,7 @@ public final class SecurityConnectorProperties {
     /**
      * Set the hierarchyIdentifier property: The multi cloud resource identifier (account id in case of AWS connector,
      * project number in case of GCP connector).
-     *
+     * 
      * @param hierarchyIdentifier the hierarchyIdentifier value to set.
      * @return the SecurityConnectorProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class SecurityConnectorProperties {
     /**
      * Get the hierarchyIdentifierTrialEndDate property: The date on which the trial period will end, if applicable.
      * Trial period exists for 30 days after upgrading to payed offerings.
-     *
+     * 
      * @return the hierarchyIdentifierTrialEndDate value.
      */
     public OffsetDateTime hierarchyIdentifierTrialEndDate() {
@@ -85,7 +89,7 @@ public final class SecurityConnectorProperties {
 
     /**
      * Get the environmentName property: The multi cloud resource's cloud name.
-     *
+     * 
      * @return the environmentName value.
      */
     public CloudName environmentName() {
@@ -94,7 +98,7 @@ public final class SecurityConnectorProperties {
 
     /**
      * Set the environmentName property: The multi cloud resource's cloud name.
-     *
+     * 
      * @param environmentName the environmentName value to set.
      * @return the SecurityConnectorProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class SecurityConnectorProperties {
 
     /**
      * Get the offerings property: A collection of offerings for the security connector.
-     *
+     * 
      * @return the offerings value.
      */
     public List<CloudOffering> offerings() {
@@ -114,7 +118,7 @@ public final class SecurityConnectorProperties {
 
     /**
      * Set the offerings property: A collection of offerings for the security connector.
-     *
+     * 
      * @param offerings the offerings value to set.
      * @return the SecurityConnectorProperties object itself.
      */
@@ -125,7 +129,7 @@ public final class SecurityConnectorProperties {
 
     /**
      * Get the environmentData property: The security connector environment data.
-     *
+     * 
      * @return the environmentData value.
      */
     public EnvironmentData environmentData() {
@@ -134,7 +138,7 @@ public final class SecurityConnectorProperties {
 
     /**
      * Set the environmentData property: The security connector environment data.
-     *
+     * 
      * @param environmentData the environmentData value to set.
      * @return the SecurityConnectorProperties object itself.
      */
@@ -145,7 +149,7 @@ public final class SecurityConnectorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

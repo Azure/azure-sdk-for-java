@@ -15,8 +15,8 @@ public final class AscOperationImpl implements AscOperation {
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    AscOperationImpl(
-        AscOperationInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
+    AscOperationImpl(AscOperationInner innerObject,
+        com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -28,22 +28,28 @@ import com.azure.resourcemanager.security.fluent.models.SecurityOperatorInner;
 import com.azure.resourcemanager.security.fluent.models.SecurityOperatorListInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SecurityOperatorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SecurityOperatorsClient.
+ */
 public final class SecurityOperatorsClientImpl implements SecurityOperatorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SecurityOperatorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of SecurityOperatorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SecurityOperatorsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy.create(SecurityOperatorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SecurityOperatorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,64 +60,47 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecuri")
     public interface SecurityOperatorsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityOperatorListInner>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<SecurityOperatorListInner>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("pricingName") String pricingName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SecurityOperatorInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("pricingName") String pricingName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("securityOperatorName") String securityOperatorName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityOperatorInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<SecurityOperatorInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("pricingName") String pricingName,
-            @PathParam("securityOperatorName") String securityOperatorName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("securityOperatorName") String securityOperatorName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityOperatorInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("pricingName") String pricingName,
-            @PathParam("securityOperatorName") String securityOperatorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/pricings/{pricingName}/securityOperators/{securityOperatorName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("pricingName") String pricingName,
-            @PathParam("securityOperatorName") String securityOperatorName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("pricingName") String pricingName,
+            @PathParam("securityOperatorName") String securityOperatorName, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Lists Microsoft Defender for Cloud securityOperators in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -121,16 +110,12 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityOperatorListInner>> listWithResponseAsync(String pricingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
@@ -138,22 +123,14 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
         final String apiVersion = "2023-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            pricingName,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                pricingName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists Microsoft Defender for Cloud securityOperators in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,16 +141,12 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityOperatorListInner>> listWithResponseAsync(String pricingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
@@ -181,13 +154,13 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
         final String apiVersion = "2023-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), pricingName, accept, context);
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), pricingName, accept,
+            context);
     }
 
     /**
      * Lists Microsoft Defender for Cloud securityOperators in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -201,7 +174,7 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
 
     /**
      * Lists Microsoft Defender for Cloud securityOperators in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -216,7 +189,7 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
 
     /**
      * Lists Microsoft Defender for Cloud securityOperators in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -230,29 +203,25 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
 
     /**
      * Get a specific security operator for the requested scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific security operator for the requested scope along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityOperatorInner>> getWithResponseAsync(
-        String pricingName, String securityOperatorName) {
+    private Mono<Response<SecurityOperatorInner>> getWithResponseAsync(String pricingName,
+        String securityOperatorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
@@ -264,23 +233,14 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
         final String apiVersion = "2023-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            pricingName,
-                            securityOperatorName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                pricingName, securityOperatorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a specific security operator for the requested scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @param context The context to associate with this operation.
@@ -288,22 +248,18 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific security operator for the requested scope along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityOperatorInner>> getWithResponseAsync(
-        String pricingName, String securityOperatorName, Context context) {
+    private Mono<Response<SecurityOperatorInner>> getWithResponseAsync(String pricingName, String securityOperatorName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
@@ -315,20 +271,13 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
         final String apiVersion = "2023-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                pricingName,
-                securityOperatorName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), pricingName,
+            securityOperatorName, accept, context);
     }
 
     /**
      * Get a specific security operator for the requested scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -343,7 +292,7 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
 
     /**
      * Get a specific security operator for the requested scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @param context The context to associate with this operation.
@@ -353,14 +302,14 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
      * @return a specific security operator for the requested scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityOperatorInner> getWithResponse(
-        String pricingName, String securityOperatorName, Context context) {
+    public Response<SecurityOperatorInner> getWithResponse(String pricingName, String securityOperatorName,
+        Context context) {
         return getWithResponseAsync(pricingName, securityOperatorName, context).block();
     }
 
     /**
      * Get a specific security operator for the requested scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -375,29 +324,25 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
 
     /**
      * Creates Microsoft Defender for Cloud security operator on the given scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security operator under a given subscription and pricing along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityOperatorInner>> createOrUpdateWithResponseAsync(
-        String pricingName, String securityOperatorName) {
+    private Mono<Response<SecurityOperatorInner>> createOrUpdateWithResponseAsync(String pricingName,
+        String securityOperatorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
@@ -409,23 +354,14 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
         final String apiVersion = "2023-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            pricingName,
-                            securityOperatorName,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), pricingName, securityOperatorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates Microsoft Defender for Cloud security operator on the given scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @param context The context to associate with this operation.
@@ -433,22 +369,18 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security operator under a given subscription and pricing along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityOperatorInner>> createOrUpdateWithResponseAsync(
-        String pricingName, String securityOperatorName, Context context) {
+    private Mono<Response<SecurityOperatorInner>> createOrUpdateWithResponseAsync(String pricingName,
+        String securityOperatorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
@@ -460,20 +392,13 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
         final String apiVersion = "2023-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                pricingName,
-                securityOperatorName,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            pricingName, securityOperatorName, accept, context);
     }
 
     /**
      * Creates Microsoft Defender for Cloud security operator on the given scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -489,7 +414,7 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
 
     /**
      * Creates Microsoft Defender for Cloud security operator on the given scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @param context The context to associate with this operation.
@@ -499,14 +424,14 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
      * @return security operator under a given subscription and pricing along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityOperatorInner> createOrUpdateWithResponse(
-        String pricingName, String securityOperatorName, Context context) {
+    public Response<SecurityOperatorInner> createOrUpdateWithResponse(String pricingName, String securityOperatorName,
+        Context context) {
         return createOrUpdateWithResponseAsync(pricingName, securityOperatorName, context).block();
     }
 
     /**
      * Creates Microsoft Defender for Cloud security operator on the given scope.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -521,7 +446,7 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
 
     /**
      * Delete Microsoft Defender for Cloud securityOperator in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,16 +457,12 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String pricingName, String securityOperatorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
@@ -553,23 +474,14 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
         final String apiVersion = "2023-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            pricingName,
-                            securityOperatorName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), pricingName, securityOperatorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete Microsoft Defender for Cloud securityOperator in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @param context The context to associate with this operation.
@@ -579,19 +491,15 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String pricingName, String securityOperatorName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String pricingName, String securityOperatorName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (pricingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter pricingName is required and cannot be null."));
@@ -603,20 +511,13 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
         final String apiVersion = "2023-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                pricingName,
-                securityOperatorName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), pricingName,
+            securityOperatorName, accept, context);
     }
 
     /**
      * Delete Microsoft Defender for Cloud securityOperator in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -631,7 +532,7 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
 
     /**
      * Delete Microsoft Defender for Cloud securityOperator in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @param context The context to associate with this operation.
@@ -647,7 +548,7 @@ public final class SecurityOperatorsClientImpl implements SecurityOperatorsClien
 
     /**
      * Delete Microsoft Defender for Cloud securityOperator in the subscription.
-     *
+     * 
      * @param pricingName name of the pricing configuration.
      * @param securityOperatorName name of the securityOperator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

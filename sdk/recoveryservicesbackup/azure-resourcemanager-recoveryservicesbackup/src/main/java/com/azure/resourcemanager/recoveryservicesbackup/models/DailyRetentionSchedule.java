@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Daily retention schedule. */
+/**
+ * Daily retention schedule.
+ */
 @Fluent
 public final class DailyRetentionSchedule {
     /*
@@ -24,13 +26,15 @@ public final class DailyRetentionSchedule {
     @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
-    /** Creates an instance of DailyRetentionSchedule class. */
+    /**
+     * Creates an instance of DailyRetentionSchedule class.
+     */
     public DailyRetentionSchedule() {
     }
 
     /**
      * Get the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @return the retentionTimes value.
      */
     public List<OffsetDateTime> retentionTimes() {
@@ -39,7 +43,7 @@ public final class DailyRetentionSchedule {
 
     /**
      * Set the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @param retentionTimes the retentionTimes value to set.
      * @return the DailyRetentionSchedule object itself.
      */
@@ -50,7 +54,7 @@ public final class DailyRetentionSchedule {
 
     /**
      * Get the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @return the retentionDuration value.
      */
     public RetentionDuration retentionDuration() {
@@ -59,7 +63,7 @@ public final class DailyRetentionSchedule {
 
     /**
      * Set the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @param retentionDuration the retentionDuration value to set.
      * @return the DailyRetentionSchedule object itself.
      */
@@ -70,7 +74,7 @@ public final class DailyRetentionSchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.Migratio
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of migration resources. */
+/**
+ * A list of migration resources.
+ */
 @Immutable
 public final class MigrationResourceListResult {
     /*
@@ -24,13 +26,15 @@ public final class MigrationResourceListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of MigrationResourceListResult class. */
+    /**
+     * Creates an instance of MigrationResourceListResult class.
+     */
     public MigrationResourceListResult() {
     }
 
     /**
      * Get the value property: A list of migration resources.
-     *
+     * 
      * @return the value value.
      */
     public List<MigrationResourceInner> value() {
@@ -39,7 +43,7 @@ public final class MigrationResourceListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of migrations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class MigrationResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

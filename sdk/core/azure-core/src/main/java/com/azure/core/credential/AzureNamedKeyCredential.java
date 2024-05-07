@@ -8,21 +8,31 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Objects;
 
 /**
- * <p>The {@link AzureNamedKeyCredential} is used to authenticate and authorize requests made to Azure services.
+ * <p>
+ * The {@link AzureNamedKeyCredential} is used to authenticate and authorize requests made to Azure services.
  * It is specifically designed for scenarios where you need to authenticate using a key with a name identifier
- * associated with it.</p>
+ * associated with it.
+ * </p>
  *
- * <p>A key is a unique identifier or token that is associated with a specific user or application. It serves as a
+ * <p>
+ * A key is a unique identifier or token that is associated with a specific user or application. It serves as a
  * simple form of authentication to ensure that only authorized clients can access the protected resources or APIs.
  * This authentication is commonly used for accessing certain services, such as Azure Tables and Azure Event Hubs.
- * Each service may have its own specific way of using API keys, but the general concept remains the same.</p>
+ * Each service may have its own specific way of using API keys, but the general concept remains the same.
+ * </p>
  *
- * <p>The {@link com.azure.core.credential.AzureNamedKeyCredential} can be created for keys which have a name
- * identifier associated with them.</p>
+ * <p>
+ * The {@link com.azure.core.credential.AzureNamedKeyCredential} can be created for keys which have a name
+ * identifier associated with them.
+ * </p>
  *
- * <p><strong>Code Samples</strong></p>
+ * <p>
+ * <strong>Code Samples</strong>
+ * </p>
  *
- * <p>Create a named credential for a service specific sas key.</p>
+ * <p>
+ * Create a named credential for a service specific sas key.
+ * </p>
  *
  * <!-- src_embed com.azure.core.credential.azureNamedKeyCredenialSasKey -->
  * <pre>

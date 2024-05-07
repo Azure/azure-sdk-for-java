@@ -5,7 +5,6 @@ package com.azure.core.http.jdk.httpclient.implementation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 
 import java.net.http.HttpResponse;
 import java.nio.ByteBuffer;
@@ -30,6 +29,11 @@ public final class BodyIgnoringSubscriber implements HttpResponse.BodySubscriber
     private final ClientLogger logger;
     private final AtomicBoolean subscribed = new AtomicBoolean();
 
+    /**
+     * Creates a new {@link BodyIgnoringSubscriber}.
+     *
+     * @param logger The logger to log any warnings to.
+     */
     public BodyIgnoringSubscriber(ClientLogger logger) {
         this.completableFuture = new CompletableFuture<>();
         this.logger = logger;
@@ -52,8 +56,7 @@ public final class BodyIgnoringSubscriber implements HttpResponse.BodySubscriber
 
     @Override
     public void onNext(List<ByteBuffer> item) {
-        logger.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
-            + "Response body will be ignored as directed.");
+        logger.info("Received HTTP response body when one wasn't expected. Response body will be ignored as directed.");
     }
 
     @Override

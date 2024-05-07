@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMage disable protection provider specific input. */
+/**
+ * InMage disable protection provider specific input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMage")
 @Fluent
@@ -20,14 +22,16 @@ public final class InMageDisableProtectionProviderSpecificInput extends DisableP
     @JsonProperty(value = "replicaVmDeletionStatus")
     private String replicaVmDeletionStatus;
 
-    /** Creates an instance of InMageDisableProtectionProviderSpecificInput class. */
+    /**
+     * Creates an instance of InMageDisableProtectionProviderSpecificInput class.
+     */
     public InMageDisableProtectionProviderSpecificInput() {
     }
 
     /**
      * Get the replicaVmDeletionStatus property: A value indicating whether the replica VM should be destroyed or
      * retained. Values from Delete and Retain.
-     *
+     * 
      * @return the replicaVmDeletionStatus value.
      */
     public String replicaVmDeletionStatus() {
@@ -37,7 +41,7 @@ public final class InMageDisableProtectionProviderSpecificInput extends DisableP
     /**
      * Set the replicaVmDeletionStatus property: A value indicating whether the replica VM should be destroyed or
      * retained. Values from Delete and Retain.
-     *
+     * 
      * @param replicaVmDeletionStatus the replicaVmDeletionStatus value to set.
      * @return the InMageDisableProtectionProviderSpecificInput object itself.
      */
@@ -48,7 +52,7 @@ public final class InMageDisableProtectionProviderSpecificInput extends DisableP
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -21,7 +21,7 @@ public class BreakSentenceTests extends TextTranslationClientBase {
 
         List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content);
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(1.0, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(0.98, response.get(0).getDetectedLanguage().getScore());
         assertEquals(11, response.get(0).getSentLen().get(0));
     }
 

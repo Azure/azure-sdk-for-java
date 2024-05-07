@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.newrelicobservability.models.LogRules;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The updatable properties of the TagRule. */
+/**
+ * The updatable properties of the TagRule.
+ */
 @Fluent
 public final class TagRuleUpdatePropertiesInner {
     /*
@@ -23,13 +25,15 @@ public final class TagRuleUpdatePropertiesInner {
     @JsonProperty(value = "metricRules")
     private MetricRulesInner metricRules;
 
-    /** Creates an instance of TagRuleUpdatePropertiesInner class. */
+    /**
+     * Creates an instance of TagRuleUpdatePropertiesInner class.
+     */
     public TagRuleUpdatePropertiesInner() {
     }
 
     /**
      * Get the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @return the logRules value.
      */
     public LogRules logRules() {
@@ -38,7 +42,7 @@ public final class TagRuleUpdatePropertiesInner {
 
     /**
      * Set the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @param logRules the logRules value to set.
      * @return the TagRuleUpdatePropertiesInner object itself.
      */
@@ -49,7 +53,7 @@ public final class TagRuleUpdatePropertiesInner {
 
     /**
      * Get the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @return the metricRules value.
      */
     public MetricRulesInner metricRules() {
@@ -58,7 +62,7 @@ public final class TagRuleUpdatePropertiesInner {
 
     /**
      * Set the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @param metricRules the metricRules value to set.
      * @return the TagRuleUpdatePropertiesInner object itself.
      */
@@ -69,7 +73,7 @@ public final class TagRuleUpdatePropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

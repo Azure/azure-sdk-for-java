@@ -46,12 +46,12 @@ import java.util.function.Supplier;
  * "<i>session-records/{@code testName}.json</i>"
  *
  * <ul>
- *     <li>If the {@code testMode} is {@link TestMode#PLAYBACK}, the manager tries to find an existing test session
- *     record to read network calls from.</li>
- *     <li>If the {@code testMode} is {@link TestMode#RECORD}, the manager creates a new test session record and saves
- *     all the network calls to it.</li>
- *     <li>If the {@code testMode} is {@link TestMode#LIVE}, the manager won't attempt to read or create a test session
- *     record.</li>
+ * <li>If the {@code testMode} is {@link TestMode#PLAYBACK}, the manager tries to find an existing test session
+ * record to read network calls from.</li>
+ * <li>If the {@code testMode} is {@link TestMode#RECORD}, the manager creates a new test session record and saves
+ * all the network calls to it.</li>
+ * <li>If the {@code testMode} is {@link TestMode#LIVE}, the manager won't attempt to read or create a test session
+ * record.</li>
  * </ul>
  *
  * When the {@link InterceptorManager} is disposed, if the {@code testMode} is {@link TestMode#RECORD}, the network
@@ -127,10 +127,12 @@ public class InterceptorManager implements AutoCloseable {
     public InterceptorManager(TestContextManager testContextManager) {
         this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(),
             testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
-            testContextManager.isTestProxyEnabled(), testContextManager.skipRecordingRequestBody(), testContextManager.getTestClassPath());
+            testContextManager.isTestProxyEnabled(), testContextManager.skipRecordingRequestBody(),
+            testContextManager.getTestClassPath());
     }
 
-    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy, boolean skipRecordingRequestBody, Path testClassPath) {
+    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord,
+        boolean enableTestProxy, boolean skipRecordingRequestBody, Path testClassPath) {
         this.testProxyEnabled = enableTestProxy;
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
@@ -332,8 +334,8 @@ public class InterceptorManager implements AutoCloseable {
             }
             if (testProxyPlaybackClient == null) {
                 testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, skipRecordingRequestBody);
-                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(),
-                    testClassPath));
+                proxyVariableQueue
+                    .addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(), testClassPath));
                 xRecordingFileLocation = testProxyPlaybackClient.getRecordingFileLocation();
             }
             return testProxyPlaybackClient;
@@ -357,8 +359,8 @@ public class InterceptorManager implements AutoCloseable {
                 try (BufferedWriter writer = Files.newBufferedWriter(createRecordFile(playbackRecordName).toPath())) {
                     RECORD_MAPPER.writeValue(writer, recordedData);
                 } catch (IOException ex) {
-                    throw LOGGER.logExceptionAsError(
-                        new UncheckedIOException("Unable to write data to playback file.", ex));
+                    throw LOGGER
+                        .logExceptionAsError(new UncheckedIOException("Unable to write data to playback file.", ex));
                 }
             }
         } else if (isPlaybackMode() && testProxyEnabled && allowedToReadRecordedValues) {
@@ -394,7 +396,8 @@ public class InterceptorManager implements AutoCloseable {
     private File getTestProxyRecordFile() {
         Path repoRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
         Path targetFolderRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "target");
-        Path filePath = Paths.get(targetFolderRoot.toString(), "src/test/resources/session-records", playbackRecordName + ".json");
+        Path filePath = Paths.get(targetFolderRoot.toString(), "src/test/resources/session-records",
+            playbackRecordName + ".json");
         return repoRoot.relativize(filePath).toFile();
     }
 
@@ -407,9 +410,9 @@ public class InterceptorManager implements AutoCloseable {
         File oldPlaybackFile = new File(recordFolder, testName + ".json");
 
         if (!playbackFile.exists() && !oldPlaybackFile.exists()) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
-                "Missing both new and old playback files. Files are %s and %s.", playbackFile.getPath(),
-                oldPlaybackFile.getPath())));
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException(String.format("Missing both new and old playback files. Files are %s and %s.",
+                    playbackFile.getPath(), oldPlaybackFile.getPath())));
         }
 
         if (playbackFile.exists()) {

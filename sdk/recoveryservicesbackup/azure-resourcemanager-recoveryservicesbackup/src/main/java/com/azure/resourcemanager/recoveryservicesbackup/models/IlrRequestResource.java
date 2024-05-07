@@ -9,7 +9,9 @@ import com.azure.core.management.Resource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to Provision ILR API. */
+/**
+ * Parameters to Provision ILR API.
+ */
 @Fluent
 public final class IlrRequestResource extends Resource {
     /*
@@ -24,13 +26,15 @@ public final class IlrRequestResource extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
-    /** Creates an instance of IlrRequestResource class. */
+    /**
+     * Creates an instance of IlrRequestResource class.
+     */
     public IlrRequestResource() {
     }
 
     /**
      * Get the properties property: ILRRequestResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public IlrRequest properties() {
@@ -39,7 +43,7 @@ public final class IlrRequestResource extends Resource {
 
     /**
      * Set the properties property: ILRRequestResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the IlrRequestResource object itself.
      */
@@ -50,7 +54,7 @@ public final class IlrRequestResource extends Resource {
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -59,7 +63,7 @@ public final class IlrRequestResource extends Resource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the IlrRequestResource object itself.
      */
@@ -68,14 +72,18 @@ public final class IlrRequestResource extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IlrRequestResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IlrRequestResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -84,7 +92,7 @@ public final class IlrRequestResource extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -14,20 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class RecurrenceScheduleOccurrenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecurrenceScheduleOccurrence model = BinaryData
-            .fromString("{\"day\":\"Monday\",\"occurrence\":30318410,\"\":{\"dumhpbcixday\":\"datakvsnfnkfsfga\"}}")
+        RecurrenceScheduleOccurrence model = BinaryData.fromString(
+            "{\"day\":\"Monday\",\"occurrence\":1370922840,\"\":{\"njiwzqnbjk\":\"dataldbkuq\",\"bmfnjuzvwwowy\":\"datat\"}}")
             .toObject(RecurrenceScheduleOccurrence.class);
         Assertions.assertEquals(DayOfWeek.MONDAY, model.day());
-        Assertions.assertEquals(30318410, model.occurrence());
+        Assertions.assertEquals(1370922840, model.occurrence());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecurrenceScheduleOccurrence model = new RecurrenceScheduleOccurrence().withDay(DayOfWeek.MONDAY)
-            .withOccurrence(30318410).withAdditionalProperties(mapOf());
+            .withOccurrence(1370922840)
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(RecurrenceScheduleOccurrence.class);
         Assertions.assertEquals(DayOfWeek.MONDAY, model.day());
-        Assertions.assertEquals(30318410, model.occurrence());
+        Assertions.assertEquals(1370922840, model.occurrence());
     }
 
     // Use "Map.of" if available

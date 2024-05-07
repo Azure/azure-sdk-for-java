@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.models.AuthenticationDetailsProperties
 import com.azure.resourcemanager.security.models.HybridComputeSettingsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The connector setting. */
+/**
+ * The connector setting.
+ */
 @Fluent
 public final class ConnectorSettingInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class ConnectorSettingInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ConnectorSettingProperties innerProperties;
 
-    /** Creates an instance of ConnectorSettingInner class. */
+    /**
+     * Creates an instance of ConnectorSettingInner class.
+     */
     public ConnectorSettingInner() {
     }
 
     /**
      * Get the innerProperties property: Connector setting data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConnectorSettingProperties innerProperties() {
@@ -35,7 +39,7 @@ public final class ConnectorSettingInner extends ProxyResource {
     /**
      * Get the hybridComputeSettings property: Settings for hybrid compute management. These settings are relevant only
      * for Arc autoProvision (Hybrid Compute).
-     *
+     * 
      * @return the hybridComputeSettings value.
      */
     public HybridComputeSettingsProperties hybridComputeSettings() {
@@ -45,7 +49,7 @@ public final class ConnectorSettingInner extends ProxyResource {
     /**
      * Set the hybridComputeSettings property: Settings for hybrid compute management. These settings are relevant only
      * for Arc autoProvision (Hybrid Compute).
-     *
+     * 
      * @param hybridComputeSettings the hybridComputeSettings value to set.
      * @return the ConnectorSettingInner object itself.
      */
@@ -60,7 +64,7 @@ public final class ConnectorSettingInner extends ProxyResource {
     /**
      * Get the authenticationDetails property: Settings for authentication management, these settings are relevant only
      * for the cloud connector.
-     *
+     * 
      * @return the authenticationDetails value.
      */
     public AuthenticationDetailsProperties authenticationDetails() {
@@ -70,7 +74,7 @@ public final class ConnectorSettingInner extends ProxyResource {
     /**
      * Set the authenticationDetails property: Settings for authentication management, these settings are relevant only
      * for the cloud connector.
-     *
+     * 
      * @param authenticationDetails the authenticationDetails value to set.
      * @return the ConnectorSettingInner object itself.
      */
@@ -84,7 +88,7 @@ public final class ConnectorSettingInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

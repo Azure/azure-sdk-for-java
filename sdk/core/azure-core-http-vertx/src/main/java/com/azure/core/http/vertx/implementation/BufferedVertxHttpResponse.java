@@ -13,10 +13,20 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
+/**
+ * A buffered {@link HttpResponse} implementation.
+ */
 public final class BufferedVertxHttpResponse extends VertxHttpResponseBase {
 
     private final byte[] body;
 
+    /**
+     * Creates an instance of buffered http response.
+     *
+     * @param azureHttpRequest the original azure http request
+     * @param vertxHttpResponse the vertx http response
+     * @param body the buffered body
+     */
     public BufferedVertxHttpResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse, Buffer body) {
         super(azureHttpRequest, vertxHttpResponse);
         this.body = body.getBytes();

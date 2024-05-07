@@ -31,41 +31,28 @@ public final class VirtualMachineImageTemplatesListRunOutputsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"artifactId\":\"tttxfvjrb\",\"artifactUri\":\"phxepcyvahf\",\"provisioningState\":\"Failed\"},\"id\":\"yq\",\"name\":\"j\",\"type\":\"uujqgidokgjljyo\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"artifactId\":\"ermclfplphoxuscr\",\"artifactUri\":\"bgyepsbj\",\"provisioningState\":\"Succeeded\"},\"id\":\"ugxywpmueef\",\"name\":\"zwfqkqujidsuyon\",\"type\":\"bglaocqxtccm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ImageBuilderManager manager =
-            ImageBuilderManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ImageBuilderManager manager = ImageBuilderManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<RunOutput> response =
-            manager
-                .virtualMachineImageTemplates()
-                .listRunOutputs("nkymuctqhjfbebrj", "xerf", com.azure.core.util.Context.NONE);
+        PagedIterable<RunOutput> response
+            = manager.virtualMachineImageTemplates().listRunOutputs("nv", "t", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tttxfvjrb", response.iterator().next().artifactId());
-        Assertions.assertEquals("phxepcyvahf", response.iterator().next().artifactUri());
+        Assertions.assertEquals("ermclfplphoxuscr", response.iterator().next().artifactId());
+        Assertions.assertEquals("bgyepsbj", response.iterator().next().artifactUri());
     }
 }

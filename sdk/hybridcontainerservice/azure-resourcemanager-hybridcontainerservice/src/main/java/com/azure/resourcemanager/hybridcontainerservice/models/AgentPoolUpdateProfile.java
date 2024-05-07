@@ -8,22 +8,28 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * AgentPool update configuration.
+ * Profile for agent pool properties that can be updated.
  */
 @Fluent
 public class AgentPoolUpdateProfile {
     /*
-     * Count - Number of agents to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive).
-     * The default value is 1.
+     * Number of nodes in the agent pool. The default value is 1.
      */
     @JsonProperty(value = "count")
     private Integer count;
 
     /*
-     * VmSize - The size of the agent pool VMs.
+     * The VM sku size of the agent pool node VMs.
      */
     @JsonProperty(value = "vmSize")
     private String vmSize;
+
+    /*
+     * Version of Kubernetes in use by the agent pool. This is inherited from the kubernetesVersion of the provisioned
+     * cluster.
+     */
+    @JsonProperty(value = "kubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String kubernetesVersion;
 
     /**
      * Creates an instance of AgentPoolUpdateProfile class.
@@ -32,8 +38,7 @@ public class AgentPoolUpdateProfile {
     }
 
     /**
-     * Get the count property: Count - Number of agents to host docker containers. Allowed values must be in the range
-     * of 1 to 100 (inclusive). The default value is 1.
+     * Get the count property: Number of nodes in the agent pool. The default value is 1.
      * 
      * @return the count value.
      */
@@ -42,8 +47,7 @@ public class AgentPoolUpdateProfile {
     }
 
     /**
-     * Set the count property: Count - Number of agents to host docker containers. Allowed values must be in the range
-     * of 1 to 100 (inclusive). The default value is 1.
+     * Set the count property: Number of nodes in the agent pool. The default value is 1.
      * 
      * @param count the count value to set.
      * @return the AgentPoolUpdateProfile object itself.
@@ -54,7 +58,7 @@ public class AgentPoolUpdateProfile {
     }
 
     /**
-     * Get the vmSize property: VmSize - The size of the agent pool VMs.
+     * Get the vmSize property: The VM sku size of the agent pool node VMs.
      * 
      * @return the vmSize value.
      */
@@ -63,7 +67,7 @@ public class AgentPoolUpdateProfile {
     }
 
     /**
-     * Set the vmSize property: VmSize - The size of the agent pool VMs.
+     * Set the vmSize property: The VM sku size of the agent pool node VMs.
      * 
      * @param vmSize the vmSize value to set.
      * @return the AgentPoolUpdateProfile object itself.
@@ -71,6 +75,16 @@ public class AgentPoolUpdateProfile {
     public AgentPoolUpdateProfile withVmSize(String vmSize) {
         this.vmSize = vmSize;
         return this;
+    }
+
+    /**
+     * Get the kubernetesVersion property: Version of Kubernetes in use by the agent pool. This is inherited from the
+     * kubernetesVersion of the provisioned cluster.
+     * 
+     * @return the kubernetesVersion value.
+     */
+    public String kubernetesVersion() {
+        return this.kubernetesVersion;
     }
 
     /**

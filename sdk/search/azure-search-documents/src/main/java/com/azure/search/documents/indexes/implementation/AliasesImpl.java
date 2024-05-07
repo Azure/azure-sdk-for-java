@@ -29,9 +29,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListAliasesResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
-import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.models.SearchAlias;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -69,7 +69,7 @@ public final class AliasesImpl {
     public interface AliasesService {
         @Post("/aliases")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchAlias>> create(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -77,7 +77,7 @@ public final class AliasesImpl {
 
         @Post("/aliases")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchAlias> createSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -85,21 +85,21 @@ public final class AliasesImpl {
 
         @Get("/aliases")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ListAliasesResult>> list(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/aliases")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<ListAliasesResult> listSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/aliases('{aliasName}')")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchAlias>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @PathParam("aliasName") String aliasName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
@@ -108,7 +108,7 @@ public final class AliasesImpl {
 
         @Put("/aliases('{aliasName}')")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchAlias> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @PathParam("aliasName") String aliasName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
@@ -117,7 +117,7 @@ public final class AliasesImpl {
 
         @Delete("/aliases('{aliasName}')")
         @ExpectedResponses({ 204, 404 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("aliasName") String aliasName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
@@ -125,7 +125,7 @@ public final class AliasesImpl {
 
         @Delete("/aliases('{aliasName}')")
         @ExpectedResponses({ 204, 404 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("aliasName") String aliasName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
@@ -133,14 +133,14 @@ public final class AliasesImpl {
 
         @Get("/aliases('{aliasName}')")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchAlias>> get(@HostParam("endpoint") String endpoint,
             @PathParam("aliasName") String aliasName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/aliases('{aliasName}')")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchAlias> getSync(@HostParam("endpoint") String endpoint, @PathParam("aliasName") String aliasName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -152,7 +152,7 @@ public final class AliasesImpl {
      * @param alias The definition of the alias to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index along with
      * {@link Response} on successful completion of {@link Mono}.
@@ -176,7 +176,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index along with
      * {@link Response} on successful completion of {@link Mono}.
@@ -200,7 +200,7 @@ public final class AliasesImpl {
      * @param alias The definition of the alias to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
      * completion of {@link Mono}.
@@ -217,7 +217,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
      * completion of {@link Mono}.
@@ -234,7 +234,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index along with
      * {@link Response}.
@@ -257,7 +257,7 @@ public final class AliasesImpl {
      * @param alias The definition of the alias to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index.
      */
@@ -271,7 +271,7 @@ public final class AliasesImpl {
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Aliases request along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -297,7 +297,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Aliases request along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
@@ -320,7 +320,7 @@ public final class AliasesImpl {
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Aliases request as paginated response with {@link PagedFlux}.
      */
@@ -335,7 +335,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Aliases request as paginated response with {@link PagedFlux}.
      */
@@ -349,7 +349,7 @@ public final class AliasesImpl {
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Aliases request along with {@link PagedResponse}.
      */
@@ -373,7 +373,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Aliases request along with {@link PagedResponse}.
      */
@@ -396,7 +396,7 @@ public final class AliasesImpl {
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Aliases request as paginated response with {@link PagedIterable}.
      */
@@ -411,7 +411,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Aliases request as paginated response with {@link PagedIterable}.
      */
@@ -431,7 +431,7 @@ public final class AliasesImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index along with
      * {@link Response} on successful completion of {@link Mono}.
@@ -462,7 +462,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index along with
      * {@link Response} on successful completion of {@link Mono}.
@@ -492,7 +492,7 @@ public final class AliasesImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
      * completion of {@link Mono}.
@@ -516,7 +516,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
      * completion of {@link Mono}.
@@ -540,7 +540,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index along with
      * {@link Response}.
@@ -570,7 +570,7 @@ public final class AliasesImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index.
      */
@@ -592,7 +592,7 @@ public final class AliasesImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -621,7 +621,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -649,7 +649,7 @@ public final class AliasesImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -671,7 +671,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -694,7 +694,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -722,7 +722,7 @@ public final class AliasesImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -736,7 +736,7 @@ public final class AliasesImpl {
      * @param aliasName The name of the alias to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index along with
      * {@link Response} on successful completion of {@link Mono}.
@@ -760,7 +760,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index along with
      * {@link Response} on successful completion of {@link Mono}.
@@ -784,7 +784,7 @@ public final class AliasesImpl {
      * @param aliasName The name of the alias to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
      * completion of {@link Mono}.
@@ -801,7 +801,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
      * completion of {@link Mono}.
@@ -819,7 +819,7 @@ public final class AliasesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index along with
      * {@link Response}.
@@ -842,7 +842,7 @@ public final class AliasesImpl {
      * @param aliasName The name of the alias to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index.
      */

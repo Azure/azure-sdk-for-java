@@ -31,124 +31,108 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.Protection
 import com.azure.resourcemanager.recoveryservicesbackup.models.PreValidateEnableBackupRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProtectionIntentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectionIntentsClient.
+ */
 public final class ProtectionIntentsClientImpl implements ProtectionIntentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProtectionIntentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of ProtectionIntentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProtectionIntentsClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy.create(ProtectionIntentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ProtectionIntentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesBackupClientProtectionIntents to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesBackupClientProtectionIntents to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface ProtectionIntentsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupPreValidateProtection")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/Subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupPreValidateProtection")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PreValidateEnableBackupResponseInner>> validate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("azureRegion") String azureRegion,
+        Mono<Response<PreValidateEnableBackupResponseInner>> validate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("azureRegion") String azureRegion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") PreValidateEnableBackupRequest parameters,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ProtectionIntentResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("intentObjectName") String intentObjectName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectionIntentResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<ProtectionIntentResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("intentObjectName") String intentObjectName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectionIntentResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("intentObjectName") String intentObjectName,
             @BodyParam("application/json") ProtectionIntentResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
-        @ExpectedResponses({204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("intentObjectName") String intentObjectName,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("vaultName") String vaultName, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("intentObjectName") String intentObjectName, Context context);
     }
 
     /**
-     * It will validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed
-     * in properties.
-     *
+     * It will validate followings
+     * 1. Vault capacity
+     * 2. VM is already protected
+     * 3. Any VM related configuration passed in properties.
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Enable backup validation request on Virtual Machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response contract for enable backup validation request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PreValidateEnableBackupResponseInner>> validateWithResponseAsync(
-        String azureRegion, PreValidateEnableBackupRequest parameters) {
+    private Mono<Response<PreValidateEnableBackupResponseInner>> validateWithResponseAsync(String azureRegion,
+        PreValidateEnableBackupRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (azureRegion == null) {
             return Mono.error(new IllegalArgumentException("Parameter azureRegion is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -157,24 +141,17 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            azureRegion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.validate(this.client.getEndpoint(), this.client.getApiVersion(),
+                azureRegion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * It will validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed
-     * in properties.
-     *
+     * It will validate followings
+     * 1. Vault capacity
+     * 2. VM is already protected
+     * 3. Any VM related configuration passed in properties.
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Enable backup validation request on Virtual Machine.
      * @param context The context to associate with this operation.
@@ -182,25 +159,21 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response contract for enable backup validation request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PreValidateEnableBackupResponseInner>> validateWithResponseAsync(
-        String azureRegion, PreValidateEnableBackupRequest parameters, Context context) {
+    private Mono<Response<PreValidateEnableBackupResponseInner>> validateWithResponseAsync(String azureRegion,
+        PreValidateEnableBackupRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (azureRegion == null) {
             return Mono.error(new IllegalArgumentException("Parameter azureRegion is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -209,21 +182,16 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                azureRegion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.validate(this.client.getEndpoint(), this.client.getApiVersion(), azureRegion,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
-     * It will validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed
-     * in properties.
-     *
+     * It will validate followings
+     * 1. Vault capacity
+     * 2. VM is already protected
+     * 3. Any VM related configuration passed in properties.
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Enable backup validation request on Virtual Machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,15 +200,17 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return response contract for enable backup validation request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PreValidateEnableBackupResponseInner> validateAsync(
-        String azureRegion, PreValidateEnableBackupRequest parameters) {
+    private Mono<PreValidateEnableBackupResponseInner> validateAsync(String azureRegion,
+        PreValidateEnableBackupRequest parameters) {
         return validateWithResponseAsync(azureRegion, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * It will validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed
-     * in properties.
-     *
+     * It will validate followings
+     * 1. Vault capacity
+     * 2. VM is already protected
+     * 3. Any VM related configuration passed in properties.
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Enable backup validation request on Virtual Machine.
      * @param context The context to associate with this operation.
@@ -250,15 +220,17 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return response contract for enable backup validation request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PreValidateEnableBackupResponseInner> validateWithResponse(
-        String azureRegion, PreValidateEnableBackupRequest parameters, Context context) {
+    public Response<PreValidateEnableBackupResponseInner> validateWithResponse(String azureRegion,
+        PreValidateEnableBackupRequest parameters, Context context) {
         return validateWithResponseAsync(azureRegion, parameters, context).block();
     }
 
     /**
-     * It will validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed
-     * in properties.
-     *
+     * It will validate followings
+     * 1. Vault capacity
+     * 2. VM is already protected
+     * 3. Any VM related configuration passed in properties.
+     * 
      * @param azureRegion Azure region to hit Api.
      * @param parameters Enable backup validation request on Virtual Machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -267,15 +239,16 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return response contract for enable backup validation request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PreValidateEnableBackupResponseInner validate(
-        String azureRegion, PreValidateEnableBackupRequest parameters) {
+    public PreValidateEnableBackupResponseInner validate(String azureRegion,
+        PreValidateEnableBackupRequest parameters) {
         return validateWithResponse(azureRegion, parameters, Context.NONE).getValue();
     }
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
-     *
+     * the operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -283,17 +256,15 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionIntentResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
+    private Mono<Response<ProtectionIntentResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, String fabricName, String intentObjectName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -303,10 +274,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -317,26 +286,16 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            intentObjectName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, intentObjectName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
-     *
+     * the operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -345,17 +304,15 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionIntentResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName, Context context) {
+    private Mono<Response<ProtectionIntentResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, String fabricName, String intentObjectName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -365,10 +322,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -379,23 +334,15 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                intentObjectName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, intentObjectName, accept, context);
     }
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
-     *
+     * the operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -406,16 +353,17 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return base class for backup ProtectionIntent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionIntentResourceInner> getAsync(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
+    private Mono<ProtectionIntentResourceInner> getAsync(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
-     *
+     * the operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -427,15 +375,16 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return base class for backup ProtectionIntent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectionIntentResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName, Context context) {
+    public Response<ProtectionIntentResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String intentObjectName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName, context).block();
     }
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
-     *
+     * the operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -446,14 +395,14 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return base class for backup ProtectionIntent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionIntentResourceInner get(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
+    public ProtectionIntentResourceInner get(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName) {
         return getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE).getValue();
     }
 
     /**
      * Create Intent for Enabling backup of an item. This is a synchronous operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -462,21 +411,16 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionIntentResourceInner>> createOrUpdateWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String intentObjectName,
+    private Mono<Response<ProtectionIntentResourceInner>> createOrUpdateWithResponseAsync(String vaultName,
+        String resourceGroupName, String fabricName, String intentObjectName,
         ProtectionIntentResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -486,10 +430,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -505,26 +447,15 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            intentObjectName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                vaultName, resourceGroupName, this.client.getSubscriptionId(), fabricName, intentObjectName, parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create Intent for Enabling backup of an item. This is a synchronous operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -534,22 +465,16 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return base class for backup ProtectionIntent along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionIntentResourceInner>> createOrUpdateWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String intentObjectName,
-        ProtectionIntentResourceInner parameters,
+    private Mono<Response<ProtectionIntentResourceInner>> createOrUpdateWithResponseAsync(String vaultName,
+        String resourceGroupName, String fabricName, String intentObjectName, ProtectionIntentResourceInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -559,10 +484,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -578,23 +501,14 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                intentObjectName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+            resourceGroupName, this.client.getSubscriptionId(), fabricName, intentObjectName, parameters, accept,
+            context);
     }
 
     /**
      * Create Intent for Enabling backup of an item. This is a synchronous operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -606,19 +520,15 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return base class for backup ProtectionIntent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionIntentResourceInner> createOrUpdateAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String intentObjectName,
-        ProtectionIntentResourceInner parameters) {
+    private Mono<ProtectionIntentResourceInner> createOrUpdateAsync(String vaultName, String resourceGroupName,
+        String fabricName, String intentObjectName, ProtectionIntentResourceInner parameters) {
         return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create Intent for Enabling backup of an item. This is a synchronous operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -631,21 +541,16 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return base class for backup ProtectionIntent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectionIntentResourceInner> createOrUpdateWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String intentObjectName,
-        ProtectionIntentResourceInner parameters,
+    public Response<ProtectionIntentResourceInner> createOrUpdateWithResponse(String vaultName,
+        String resourceGroupName, String fabricName, String intentObjectName, ProtectionIntentResourceInner parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                vaultName, resourceGroupName, fabricName, intentObjectName, parameters, context)
-            .block();
+        return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName, parameters,
+            context).block();
     }
 
     /**
      * Create Intent for Enabling backup of an item. This is a synchronous operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -657,20 +562,15 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return base class for backup ProtectionIntent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionIntentResourceInner createOrUpdate(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String intentObjectName,
-        ProtectionIntentResourceInner parameters) {
-        return createOrUpdateWithResponse(
-                vaultName, resourceGroupName, fabricName, intentObjectName, parameters, Context.NONE)
-            .getValue();
+    public ProtectionIntentResourceInner createOrUpdate(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName, ProtectionIntentResourceInner parameters) {
+        return createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Used to remove intent from an item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the intent.
@@ -681,13 +581,11 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -697,10 +595,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -710,24 +606,14 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
                 .error(new IllegalArgumentException("Parameter intentObjectName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            intentObjectName,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, intentObjectName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Used to remove intent from an item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the intent.
@@ -739,13 +625,11 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -755,10 +639,8 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -768,21 +650,13 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
                 .error(new IllegalArgumentException("Parameter intentObjectName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                intentObjectName,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, intentObjectName, context);
     }
 
     /**
      * Used to remove intent from an item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the intent.
@@ -793,15 +667,15 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName) {
+    private Mono<Void> deleteAsync(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName) {
         return deleteWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Used to remove intent from an item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the intent.
@@ -813,14 +687,14 @@ public final class ProtectionIntentsClientImpl implements ProtectionIntentsClien
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName, Context context) {
+    public Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String intentObjectName, Context context) {
         return deleteWithResponseAsync(vaultName, resourceGroupName, fabricName, intentObjectName, context).block();
     }
 
     /**
      * Used to remove intent from an item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the intent.

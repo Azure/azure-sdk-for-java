@@ -13,28 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class JobDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"JobDetails\",\"affectedObjectDetails\":{\"jwpfilkm\":\"qlafcbahhpzpofoi\",\"dviauogp\":\"kholvd\",\"kyefchnmnahmnxhk\":\"uartvti\",\"ooxf\":\"jqirwrw\"}}")
-                .toObject(JobDetails.class);
+        JobDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"JobDetails\",\"affectedObjectDetails\":{\"jwpfilkm\":\"qlafcbahhpzpofoi\",\"dviauogp\":\"kholvd\",\"kyefchnmnahmnxhk\":\"uartvti\",\"ooxf\":\"jqirwrw\"}}")
+            .toObject(JobDetails.class);
         Assertions.assertEquals("qlafcbahhpzpofoi", model.affectedObjectDetails().get("jwpfilkm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobDetails model =
-            new JobDetails()
-                .withAffectedObjectDetails(
-                    mapOf(
-                        "jwpfilkm",
-                        "qlafcbahhpzpofoi",
-                        "dviauogp",
-                        "kholvd",
-                        "kyefchnmnahmnxhk",
-                        "uartvti",
-                        "ooxf",
-                        "jqirwrw"));
+        JobDetails model = new JobDetails().withAffectedObjectDetails(mapOf("jwpfilkm", "qlafcbahhpzpofoi", "dviauogp",
+            "kholvd", "kyefchnmnahmnxhk", "uartvti", "ooxf", "jqirwrw"));
         model = BinaryData.fromObject(model).toObject(JobDetails.class);
         Assertions.assertEquals("qlafcbahhpzpofoi", model.affectedObjectDetails().get("jwpfilkm"));
     }

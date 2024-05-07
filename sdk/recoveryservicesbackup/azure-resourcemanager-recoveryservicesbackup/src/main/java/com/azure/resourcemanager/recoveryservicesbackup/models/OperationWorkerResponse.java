@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** This is the base class for operation result responses. */
+/**
+ * This is the base class for operation result responses.
+ */
 @Fluent
 public class OperationWorkerResponse {
     /*
@@ -26,13 +28,15 @@ public class OperationWorkerResponse {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, List<String>> headers;
 
-    /** Creates an instance of OperationWorkerResponse class. */
+    /**
+     * Creates an instance of OperationWorkerResponse class.
+     */
     public OperationWorkerResponse() {
     }
 
     /**
      * Get the statusCode property: HTTP Status Code of the operation.
-     *
+     * 
      * @return the statusCode value.
      */
     public HttpStatusCode statusCode() {
@@ -41,7 +45,7 @@ public class OperationWorkerResponse {
 
     /**
      * Set the statusCode property: HTTP Status Code of the operation.
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the OperationWorkerResponse object itself.
      */
@@ -52,7 +56,7 @@ public class OperationWorkerResponse {
 
     /**
      * Get the headers property: HTTP headers associated with this operation.
-     *
+     * 
      * @return the headers value.
      */
     public Map<String, List<String>> headers() {
@@ -61,7 +65,7 @@ public class OperationWorkerResponse {
 
     /**
      * Set the headers property: HTTP headers associated with this operation.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the OperationWorkerResponse object itself.
      */
@@ -72,7 +76,7 @@ public class OperationWorkerResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

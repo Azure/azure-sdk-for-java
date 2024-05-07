@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of association of a data collection rule with a monitored Azure resource. */
+/**
+ * Definition of association of a data collection rule with a monitored Azure resource.
+ */
 @Fluent
 public class DataCollectionRuleAssociation {
     /*
@@ -40,13 +42,15 @@ public class DataCollectionRuleAssociation {
     @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private DataCollectionRuleAssociationMetadata metadata;
 
-    /** Creates an instance of DataCollectionRuleAssociation class. */
+    /**
+     * Creates an instance of DataCollectionRuleAssociation class.
+     */
     public DataCollectionRuleAssociation() {
     }
 
     /**
      * Get the description property: Description of the association.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -55,7 +59,7 @@ public class DataCollectionRuleAssociation {
 
     /**
      * Set the description property: Description of the association.
-     *
+     * 
      * @param description the description value to set.
      * @return the DataCollectionRuleAssociation object itself.
      */
@@ -66,7 +70,7 @@ public class DataCollectionRuleAssociation {
 
     /**
      * Get the dataCollectionRuleId property: The resource ID of the data collection rule that is to be associated.
-     *
+     * 
      * @return the dataCollectionRuleId value.
      */
     public String dataCollectionRuleId() {
@@ -75,7 +79,7 @@ public class DataCollectionRuleAssociation {
 
     /**
      * Set the dataCollectionRuleId property: The resource ID of the data collection rule that is to be associated.
-     *
+     * 
      * @param dataCollectionRuleId the dataCollectionRuleId value to set.
      * @return the DataCollectionRuleAssociation object itself.
      */
@@ -87,7 +91,7 @@ public class DataCollectionRuleAssociation {
     /**
      * Get the dataCollectionEndpointId property: The resource ID of the data collection endpoint that is to be
      * associated.
-     *
+     * 
      * @return the dataCollectionEndpointId value.
      */
     public String dataCollectionEndpointId() {
@@ -97,7 +101,7 @@ public class DataCollectionRuleAssociation {
     /**
      * Set the dataCollectionEndpointId property: The resource ID of the data collection endpoint that is to be
      * associated.
-     *
+     * 
      * @param dataCollectionEndpointId the dataCollectionEndpointId value to set.
      * @return the DataCollectionRuleAssociation object itself.
      */
@@ -108,7 +112,7 @@ public class DataCollectionRuleAssociation {
 
     /**
      * Get the provisioningState property: The resource provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public KnownDataCollectionRuleAssociationProvisioningState provisioningState() {
@@ -117,7 +121,7 @@ public class DataCollectionRuleAssociation {
 
     /**
      * Get the metadata property: Metadata about the resource.
-     *
+     * 
      * @return the metadata value.
      */
     public DataCollectionRuleAssociationMetadata metadata() {
@@ -126,7 +130,7 @@ public class DataCollectionRuleAssociation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

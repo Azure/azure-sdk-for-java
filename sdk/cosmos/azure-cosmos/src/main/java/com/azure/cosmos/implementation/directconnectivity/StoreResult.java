@@ -94,7 +94,9 @@ public class StoreResult {
             String message = "Exception should be available but found none";
             assert false : message;
             logger.error(message);
-            throw new InternalServerErrorException(RMResources.InternalServerError);
+            throw new InternalServerErrorException(
+                Exceptions.getInternalServerErrorMessage(message),
+                HttpConstants.SubStatusCodes.INVALID_RESULT);
         }
 
         return exception;
@@ -107,8 +109,11 @@ public class StoreResult {
     public StoreResponse toResponse(RequestChargeTracker requestChargeTracker) {
         if (!this.isValid) {
             if (this.exception == null) {
-                logger.error("Exception not set for invalid response");
-                throw new InternalServerErrorException(RMResources.InternalServerError);
+                String errorMessage = "Exception not set for invalid response";
+                logger.error(errorMessage);
+                throw new InternalServerErrorException(
+                    Exceptions.getInternalServerErrorMessage(errorMessage),
+                    HttpConstants.SubStatusCodes.INVALID_RESULT);
             }
 
             throw this.exception;

@@ -8,16 +8,28 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ManagedIntegrationRuntimeTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Managed integration runtime, including managed elastic and managed dedicated integration runtimes.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ManagedIntegrationRuntime.class,
+    visible = true)
 @JsonTypeName("Managed")
 @Fluent
 public final class ManagedIntegrationRuntime extends IntegrationRuntime {
+    /*
+     * Type of integration runtime.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private IntegrationRuntimeType type = IntegrationRuntimeType.MANAGED;
+
     /*
      * Integration runtime state, only valid for managed dedicated integration runtime.
      */
@@ -40,6 +52,16 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
      * Creates an instance of ManagedIntegrationRuntime class.
      */
     public ManagedIntegrationRuntime() {
+    }
+
+    /**
+     * Get the type property: Type of integration runtime.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public IntegrationRuntimeType type() {
+        return this.type;
     }
 
     /**
@@ -136,8 +158,8 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     }
 
     /**
-     * Get the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime
-     * will join.
+     * Get the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime will
+     * join.
      * 
      * @return the customerVirtualNetwork value.
      */
@@ -146,8 +168,8 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     }
 
     /**
-     * Set the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime
-     * will join.
+     * Set the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime will
+     * join.
      * 
      * @param customerVirtualNetwork the customerVirtualNetwork value to set.
      * @return the ManagedIntegrationRuntime object itself.
@@ -170,8 +192,9 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model ManagedIntegrationRuntime"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ManagedIntegrationRuntime"));
         } else {
             innerTypeProperties().validate();
         }

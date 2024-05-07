@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Unit of the usage. */
+/**
+ * Unit of the usage.
+ */
 public final class UsagesUnit extends ExpandableStringEnum<UsagesUnit> {
-    /** Static value Count for UsagesUnit. */
+    /**
+     * Static value Count for UsagesUnit.
+     */
     public static final UsagesUnit COUNT = fromString("Count");
 
-    /** Static value Bytes for UsagesUnit. */
+    /**
+     * Static value Bytes for UsagesUnit.
+     */
     public static final UsagesUnit BYTES = fromString("Bytes");
 
-    /** Static value Seconds for UsagesUnit. */
+    /**
+     * Static value Seconds for UsagesUnit.
+     */
     public static final UsagesUnit SECONDS = fromString("Seconds");
 
-    /** Static value Percent for UsagesUnit. */
+    /**
+     * Static value Percent for UsagesUnit.
+     */
     public static final UsagesUnit PERCENT = fromString("Percent");
 
-    /** Static value CountPerSecond for UsagesUnit. */
+    /**
+     * Static value CountPerSecond for UsagesUnit.
+     */
     public static final UsagesUnit COUNT_PER_SECOND = fromString("CountPerSecond");
 
-    /** Static value BytesPerSecond for UsagesUnit. */
+    /**
+     * Static value BytesPerSecond for UsagesUnit.
+     */
     public static final UsagesUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
     /**
      * Creates a new instance of UsagesUnit value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class UsagesUnit extends ExpandableStringEnum<UsagesUnit> {
 
     /**
      * Creates or finds a UsagesUnit from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UsagesUnit.
      */
@@ -50,7 +64,7 @@ public final class UsagesUnit extends ExpandableStringEnum<UsagesUnit> {
 
     /**
      * Gets known UsagesUnit values.
-     *
+     * 
      * @return known UsagesUnit values.
      */
     public static Collection<UsagesUnit> values() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Encapsulates information regarding data directory. */
+/**
+ * Encapsulates information regarding data directory.
+ */
 @Fluent
 public final class SqlDataDirectoryMapping {
     /*
@@ -34,13 +36,15 @@ public final class SqlDataDirectoryMapping {
     @JsonProperty(value = "targetPath")
     private String targetPath;
 
-    /** Creates an instance of SqlDataDirectoryMapping class. */
+    /**
+     * Creates an instance of SqlDataDirectoryMapping class.
+     */
     public SqlDataDirectoryMapping() {
     }
 
     /**
      * Get the mappingType property: Type of data directory mapping.
-     *
+     * 
      * @return the mappingType value.
      */
     public SqlDataDirectoryType mappingType() {
@@ -49,7 +53,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Set the mappingType property: Type of data directory mapping.
-     *
+     * 
      * @param mappingType the mappingType value to set.
      * @return the SqlDataDirectoryMapping object itself.
      */
@@ -60,7 +64,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Get the sourceLogicalName property: Restore source logical name path.
-     *
+     * 
      * @return the sourceLogicalName value.
      */
     public String sourceLogicalName() {
@@ -69,7 +73,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Set the sourceLogicalName property: Restore source logical name path.
-     *
+     * 
      * @param sourceLogicalName the sourceLogicalName value to set.
      * @return the SqlDataDirectoryMapping object itself.
      */
@@ -80,7 +84,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Get the sourcePath property: Restore source path.
-     *
+     * 
      * @return the sourcePath value.
      */
     public String sourcePath() {
@@ -89,7 +93,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Set the sourcePath property: Restore source path.
-     *
+     * 
      * @param sourcePath the sourcePath value to set.
      * @return the SqlDataDirectoryMapping object itself.
      */
@@ -100,7 +104,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Get the targetPath property: Target path.
-     *
+     * 
      * @return the targetPath value.
      */
     public String targetPath() {
@@ -109,7 +113,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Set the targetPath property: Target path.
-     *
+     * 
      * @param targetPath the targetPath value to set.
      * @return the SqlDataDirectoryMapping object itself.
      */
@@ -120,7 +124,7 @@ public final class SqlDataDirectoryMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

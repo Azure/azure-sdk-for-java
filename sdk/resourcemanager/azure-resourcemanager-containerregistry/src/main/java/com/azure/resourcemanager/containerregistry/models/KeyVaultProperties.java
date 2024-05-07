@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The KeyVaultProperties model. */
+/**
+ * The KeyVaultProperties model.
+ */
 @Fluent
 public final class KeyVaultProperties {
     /*
@@ -41,13 +43,15 @@ public final class KeyVaultProperties {
     @JsonProperty(value = "lastKeyRotationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastKeyRotationTimestamp;
 
-    /** Creates an instance of KeyVaultProperties class. */
+    /**
+     * Creates an instance of KeyVaultProperties class.
+     */
     public KeyVaultProperties() {
     }
 
     /**
      * Get the keyIdentifier property: Key vault uri to access the encryption key.
-     *
+     * 
      * @return the keyIdentifier value.
      */
     public String keyIdentifier() {
@@ -56,7 +60,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyIdentifier property: Key vault uri to access the encryption key.
-     *
+     * 
      * @param keyIdentifier the keyIdentifier value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class KeyVaultProperties {
     /**
      * Get the versionedKeyIdentifier property: The fully qualified key identifier that includes the version of the key
      * that is actually used for encryption.
-     *
+     * 
      * @return the versionedKeyIdentifier value.
      */
     public String versionedKeyIdentifier() {
@@ -77,7 +81,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the identity property: The client id of the identity which will be used to access key vault.
-     *
+     * 
      * @return the identity value.
      */
     public String identity() {
@@ -86,7 +90,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the identity property: The client id of the identity which will be used to access key vault.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -97,7 +101,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyRotationEnabled property: Auto key rotation status for a CMK enabled registry.
-     *
+     * 
      * @return the keyRotationEnabled value.
      */
     public Boolean keyRotationEnabled() {
@@ -106,7 +110,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the lastKeyRotationTimestamp property: Timestamp of the last successful key rotation.
-     *
+     * 
      * @return the lastKeyRotationTimestamp value.
      */
     public OffsetDateTime lastKeyRotationTimestamp() {
@@ -115,7 +119,7 @@ public final class KeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

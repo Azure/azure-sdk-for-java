@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Profile of the managed cluster NAT gateway. */
+/**
+ * Profile of the managed cluster NAT gateway.
+ */
 @Fluent
 public final class ManagedClusterNatGatewayProfile {
     /*
@@ -30,14 +32,16 @@ public final class ManagedClusterNatGatewayProfile {
     @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
-    /** Creates an instance of ManagedClusterNatGatewayProfile class. */
+    /**
+     * Creates an instance of ManagedClusterNatGatewayProfile class.
+     */
     public ManagedClusterNatGatewayProfile() {
     }
 
     /**
      * Get the managedOutboundIpProfile property: Profile of the managed outbound IP resources of the cluster NAT
      * gateway.
-     *
+     * 
      * @return the managedOutboundIpProfile value.
      */
     public ManagedClusterManagedOutboundIpProfile managedOutboundIpProfile() {
@@ -47,19 +51,19 @@ public final class ManagedClusterNatGatewayProfile {
     /**
      * Set the managedOutboundIpProfile property: Profile of the managed outbound IP resources of the cluster NAT
      * gateway.
-     *
+     * 
      * @param managedOutboundIpProfile the managedOutboundIpProfile value to set.
      * @return the ManagedClusterNatGatewayProfile object itself.
      */
-    public ManagedClusterNatGatewayProfile withManagedOutboundIpProfile(
-        ManagedClusterManagedOutboundIpProfile managedOutboundIpProfile) {
+    public ManagedClusterNatGatewayProfile
+        withManagedOutboundIpProfile(ManagedClusterManagedOutboundIpProfile managedOutboundIpProfile) {
         this.managedOutboundIpProfile = managedOutboundIpProfile;
         return this;
     }
 
     /**
      * Get the effectiveOutboundIPs property: The effective outbound IP resources of the cluster NAT gateway.
-     *
+     * 
      * @return the effectiveOutboundIPs value.
      */
     public List<ResourceReference> effectiveOutboundIPs() {
@@ -68,7 +72,7 @@ public final class ManagedClusterNatGatewayProfile {
 
     /**
      * Set the effectiveOutboundIPs property: The effective outbound IP resources of the cluster NAT gateway.
-     *
+     * 
      * @param effectiveOutboundIPs the effectiveOutboundIPs value to set.
      * @return the ManagedClusterNatGatewayProfile object itself.
      */
@@ -80,7 +84,7 @@ public final class ManagedClusterNatGatewayProfile {
     /**
      * Get the idleTimeoutInMinutes property: Desired outbound flow idle timeout in minutes. Allowed values are in the
      * range of 4 to 120 (inclusive). The default value is 4 minutes.
-     *
+     * 
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -90,7 +94,7 @@ public final class ManagedClusterNatGatewayProfile {
     /**
      * Set the idleTimeoutInMinutes property: Desired outbound flow idle timeout in minutes. Allowed values are in the
      * range of 4 to 120 (inclusive). The default value is 4 minutes.
-     *
+     * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the ManagedClusterNatGatewayProfile object itself.
      */
@@ -101,7 +105,7 @@ public final class ManagedClusterNatGatewayProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

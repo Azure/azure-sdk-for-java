@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The AWS connector environment data. */
+/**
+ * The AWS connector environment data.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "environmentType")
 @JsonTypeName("AwsAccount")
 @Fluent
@@ -33,13 +35,21 @@ public final class AwsEnvironmentData extends EnvironmentData {
     @JsonProperty(value = "accountName", access = JsonProperty.Access.WRITE_ONLY)
     private String accountName;
 
-    /** Creates an instance of AwsEnvironmentData class. */
+    /*
+     * Scan interval in hours (value should be between 1-hour to 24-hours)
+     */
+    @JsonProperty(value = "scanInterval")
+    private Long scanInterval;
+
+    /**
+     * Creates an instance of AwsEnvironmentData class.
+     */
     public AwsEnvironmentData() {
     }
 
     /**
      * Get the organizationalData property: The AWS account's organizational data.
-     *
+     * 
      * @return the organizationalData value.
      */
     public AwsOrganizationalData organizationalData() {
@@ -48,7 +58,7 @@ public final class AwsEnvironmentData extends EnvironmentData {
 
     /**
      * Set the organizationalData property: The AWS account's organizational data.
-     *
+     * 
      * @param organizationalData the organizationalData value to set.
      * @return the AwsEnvironmentData object itself.
      */
@@ -59,7 +69,7 @@ public final class AwsEnvironmentData extends EnvironmentData {
 
     /**
      * Get the regions property: list of regions to scan.
-     *
+     * 
      * @return the regions value.
      */
     public List<String> regions() {
@@ -68,7 +78,7 @@ public final class AwsEnvironmentData extends EnvironmentData {
 
     /**
      * Set the regions property: list of regions to scan.
-     *
+     * 
      * @param regions the regions value to set.
      * @return the AwsEnvironmentData object itself.
      */
@@ -79,7 +89,7 @@ public final class AwsEnvironmentData extends EnvironmentData {
 
     /**
      * Get the accountName property: The AWS account name.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -87,8 +97,28 @@ public final class AwsEnvironmentData extends EnvironmentData {
     }
 
     /**
+     * Get the scanInterval property: Scan interval in hours (value should be between 1-hour to 24-hours).
+     * 
+     * @return the scanInterval value.
+     */
+    public Long scanInterval() {
+        return this.scanInterval;
+    }
+
+    /**
+     * Set the scanInterval property: Scan interval in hours (value should be between 1-hour to 24-hours).
+     * 
+     * @param scanInterval the scanInterval value to set.
+     * @return the AwsEnvironmentData object itself.
+     */
+    public AwsEnvironmentData withScanInterval(Long scanInterval) {
+        this.scanInterval = scanInterval;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

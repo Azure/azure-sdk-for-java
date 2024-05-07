@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The AzureDevOps scope connector's environment data. */
+/**
+ * The AzureDevOps scope connector's environment data.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "environmentType")
 @JsonTypeName("AzureDevOpsScope")
 @Immutable
 public final class AzureDevOpsScopeEnvironmentData extends EnvironmentData {
-    /** Creates an instance of AzureDevOpsScopeEnvironmentData class. */
+    /**
+     * Creates an instance of AzureDevOpsScopeEnvironmentData class.
+     */
     public AzureDevOpsScopeEnvironmentData() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

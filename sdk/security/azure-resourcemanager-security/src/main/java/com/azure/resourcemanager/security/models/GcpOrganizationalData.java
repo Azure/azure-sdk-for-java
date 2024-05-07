@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The gcpOrganization data. */
+/**
+ * The gcpOrganization data.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -18,17 +20,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("GcpOrganizationalData")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Organization", value = GcpOrganizationalDataOrganization.class),
-    @JsonSubTypes.Type(name = "Member", value = GcpOrganizationalDataMember.class)
-})
+    @JsonSubTypes.Type(name = "Member", value = GcpOrganizationalDataMember.class) })
 @Immutable
 public class GcpOrganizationalData {
-    /** Creates an instance of GcpOrganizationalData class. */
+    /**
+     * Creates an instance of GcpOrganizationalData class.
+     */
     public GcpOrganizationalData() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

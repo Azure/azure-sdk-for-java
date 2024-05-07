@@ -18,23 +18,24 @@ public final class GetMetadataActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GetMetadataActivityTypeProperties model = BinaryData.fromString(
-            "{\"dataset\":{\"referenceName\":\"xtpamwjbmrkcq\",\"parameters\":{\"tvovhuifbly\":\"datajj\",\"neusnncnnqifuhsj\":\"dataqycknqmbvssjb\",\"mplt\":\"datadu\"}},\"fieldList\":[\"datafndafrzi\",\"datajcyxzan\"],\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"dataeyvdrulhworh\",\"disableMetricsCollection\":\"datasqdvmxufrqpaw\",\"\":{\"wu\":\"datadohz\",\"hftlsfwpvflm\":\"datalae\",\"txbrj\":\"datajdu\",\"dmnymfvxfssh\":\"datapeypuq\"}},\"formatSettings\":{\"type\":\"FormatReadSettings\",\"\":{\"zdfjfnree\":\"dataeornzprdgmmgtq\",\"myuiq\":\"datapb\",\"rikdfacf\":\"datazfotfoif\"}}}")
+            "{\"dataset\":{\"referenceName\":\"badrcy\",\"parameters\":{\"hghorgji\":\"datajaktgtwvzp\",\"bqdsuaazkouvvgcw\":\"dataragqcwcdbtopuyi\",\"gaofwo\":\"dataimhjbxwr\",\"xp\":\"dataz\"}},\"fieldList\":[\"datax\",\"datam\"],\"storeSettings\":{\"type\":\"fsh\",\"maxConcurrentConnections\":\"dataxjhquzi\",\"disableMetricsCollection\":\"datacgh\",\"\":{\"hryuzteuegrdit\":\"dataf\",\"ajggmmiwoisql\":\"dataptpq\"}},\"formatSettings\":{\"type\":\"fycnpovnjzaaox\",\"\":{\"qpzdxw\":\"datatoihoyvuaxfjuzgs\",\"oggzppufu\":\"dataanlgczvfbzzsce\"}}}")
             .toObject(GetMetadataActivityTypeProperties.class);
-        Assertions.assertEquals("xtpamwjbmrkcq", model.dataset().referenceName());
+        Assertions.assertEquals("badrcy", model.dataset().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GetMetadataActivityTypeProperties model = new GetMetadataActivityTypeProperties()
-            .withDataset(new DatasetReference().withReferenceName("xtpamwjbmrkcq").withParameters(
-                mapOf("tvovhuifbly", "datajj", "neusnncnnqifuhsj", "dataqycknqmbvssjb", "mplt", "datadu")))
-            .withFieldList(Arrays.asList("datafndafrzi", "datajcyxzan"))
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("dataeyvdrulhworh")
-                .withDisableMetricsCollection("datasqdvmxufrqpaw")
-                .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
-            .withFormatSettings(new FormatReadSettings().withAdditionalProperties(mapOf("type", "FormatReadSettings")));
+            .withDataset(new DatasetReference().withReferenceName("badrcy")
+                .withParameters(mapOf("hghorgji", "datajaktgtwvzp", "bqdsuaazkouvvgcw", "dataragqcwcdbtopuyi", "gaofwo",
+                    "dataimhjbxwr", "xp", "dataz")))
+            .withFieldList(Arrays.asList("datax", "datam"))
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("dataxjhquzi")
+                .withDisableMetricsCollection("datacgh")
+                .withAdditionalProperties(mapOf("type", "fsh")))
+            .withFormatSettings(new FormatReadSettings().withAdditionalProperties(mapOf("type", "fycnpovnjzaaox")));
         model = BinaryData.fromObject(model).toObject(GetMetadataActivityTypeProperties.class);
-        Assertions.assertEquals("xtpamwjbmrkcq", model.dataset().referenceName());
+        Assertions.assertEquals("badrcy", model.dataset().referenceName());
     }
 
     // Use "Map.of" if available

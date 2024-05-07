@@ -11,7 +11,9 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseState;
 import com.azure.resourcemanager.hybridcompute.models.LicenseTarget;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LicenseUpdatePropertiesLicenseDetails model. */
+/**
+ * The LicenseUpdatePropertiesLicenseDetails model.
+ */
 @Fluent
 public final class LicenseUpdatePropertiesLicenseDetails {
     /*
@@ -44,13 +46,15 @@ public final class LicenseUpdatePropertiesLicenseDetails {
     @JsonProperty(value = "processors")
     private Integer processors;
 
-    /** Creates an instance of LicenseUpdatePropertiesLicenseDetails class. */
+    /**
+     * Creates an instance of LicenseUpdatePropertiesLicenseDetails class.
+     */
     public LicenseUpdatePropertiesLicenseDetails() {
     }
 
     /**
      * Get the state property: Describes the state of the license.
-     *
+     * 
      * @return the state value.
      */
     public LicenseState state() {
@@ -59,7 +63,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Set the state property: Describes the state of the license.
-     *
+     * 
      * @param state the state value to set.
      * @return the LicenseUpdatePropertiesLicenseDetails object itself.
      */
@@ -70,7 +74,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Get the target property: Describes the license target server.
-     *
+     * 
      * @return the target value.
      */
     public LicenseTarget target() {
@@ -79,7 +83,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Set the target property: Describes the license target server.
-     *
+     * 
      * @param target the target value to set.
      * @return the LicenseUpdatePropertiesLicenseDetails object itself.
      */
@@ -90,7 +94,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Get the edition property: Describes the edition of the license. The values are either Standard or Datacenter.
-     *
+     * 
      * @return the edition value.
      */
     public LicenseEdition edition() {
@@ -99,7 +103,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Set the edition property: Describes the edition of the license. The values are either Standard or Datacenter.
-     *
+     * 
      * @param edition the edition value to set.
      * @return the LicenseUpdatePropertiesLicenseDetails object itself.
      */
@@ -110,7 +114,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Get the type property: Describes the license core type (pCore or vCore).
-     *
+     * 
      * @return the type value.
      */
     public LicenseCoreType type() {
@@ -119,7 +123,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Set the type property: Describes the license core type (pCore or vCore).
-     *
+     * 
      * @param type the type value to set.
      * @return the LicenseUpdatePropertiesLicenseDetails object itself.
      */
@@ -130,7 +134,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Get the processors property: Describes the number of processors.
-     *
+     * 
      * @return the processors value.
      */
     public Integer processors() {
@@ -139,7 +143,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Set the processors property: Describes the number of processors.
-     *
+     * 
      * @param processors the processors value to set.
      * @return the LicenseUpdatePropertiesLicenseDetails object itself.
      */
@@ -150,7 +154,7 @@ public final class LicenseUpdatePropertiesLicenseDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

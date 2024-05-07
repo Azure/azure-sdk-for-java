@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data encryption properties of a server. */
+/**
+ * Data encryption properties of a server.
+ */
 @Fluent
 public final class DataEncryption {
     /*
@@ -52,13 +54,15 @@ public final class DataEncryption {
     @JsonProperty(value = "geoBackupEncryptionKeyStatus")
     private KeyStatusEnum geoBackupEncryptionKeyStatus;
 
-    /** Creates an instance of DataEncryption class. */
+    /**
+     * Creates an instance of DataEncryption class.
+     */
     public DataEncryption() {
     }
 
     /**
      * Get the primaryKeyUri property: URI for the key in keyvault for data encryption of the primary server.
-     *
+     * 
      * @return the primaryKeyUri value.
      */
     public String primaryKeyUri() {
@@ -67,7 +71,7 @@ public final class DataEncryption {
 
     /**
      * Set the primaryKeyUri property: URI for the key in keyvault for data encryption of the primary server.
-     *
+     * 
      * @param primaryKeyUri the primaryKeyUri value to set.
      * @return the DataEncryption object itself.
      */
@@ -79,7 +83,7 @@ public final class DataEncryption {
     /**
      * Get the primaryUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
      * encryption of the primary server.
-     *
+     * 
      * @return the primaryUserAssignedIdentityId value.
      */
     public String primaryUserAssignedIdentityId() {
@@ -89,7 +93,7 @@ public final class DataEncryption {
     /**
      * Set the primaryUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
      * encryption of the primary server.
-     *
+     * 
      * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
      * @return the DataEncryption object itself.
      */
@@ -100,7 +104,7 @@ public final class DataEncryption {
 
     /**
      * Get the geoBackupKeyUri property: URI for the key in keyvault for data encryption for geo-backup of server.
-     *
+     * 
      * @return the geoBackupKeyUri value.
      */
     public String geoBackupKeyUri() {
@@ -109,7 +113,7 @@ public final class DataEncryption {
 
     /**
      * Set the geoBackupKeyUri property: URI for the key in keyvault for data encryption for geo-backup of server.
-     *
+     * 
      * @param geoBackupKeyUri the geoBackupKeyUri value to set.
      * @return the DataEncryption object itself.
      */
@@ -121,7 +125,7 @@ public final class DataEncryption {
     /**
      * Get the geoBackupUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
      * encryption for geo-backup of server.
-     *
+     * 
      * @return the geoBackupUserAssignedIdentityId value.
      */
     public String geoBackupUserAssignedIdentityId() {
@@ -131,7 +135,7 @@ public final class DataEncryption {
     /**
      * Set the geoBackupUserAssignedIdentityId property: Resource Id for the User assigned identity to be used for data
      * encryption for geo-backup of server.
-     *
+     * 
      * @param geoBackupUserAssignedIdentityId the geoBackupUserAssignedIdentityId value to set.
      * @return the DataEncryption object itself.
      */
@@ -142,7 +146,7 @@ public final class DataEncryption {
 
     /**
      * Get the type property: Data encryption type to depict if it is System Managed vs Azure Key vault.
-     *
+     * 
      * @return the type value.
      */
     public ArmServerKeyType type() {
@@ -151,7 +155,7 @@ public final class DataEncryption {
 
     /**
      * Set the type property: Data encryption type to depict if it is System Managed vs Azure Key vault.
-     *
+     * 
      * @param type the type value to set.
      * @return the DataEncryption object itself.
      */
@@ -162,7 +166,7 @@ public final class DataEncryption {
 
     /**
      * Get the primaryEncryptionKeyStatus property: Primary encryption key status for Data encryption enabled server.
-     *
+     * 
      * @return the primaryEncryptionKeyStatus value.
      */
     public KeyStatusEnum primaryEncryptionKeyStatus() {
@@ -171,7 +175,7 @@ public final class DataEncryption {
 
     /**
      * Set the primaryEncryptionKeyStatus property: Primary encryption key status for Data encryption enabled server.
-     *
+     * 
      * @param primaryEncryptionKeyStatus the primaryEncryptionKeyStatus value to set.
      * @return the DataEncryption object itself.
      */
@@ -183,7 +187,7 @@ public final class DataEncryption {
     /**
      * Get the geoBackupEncryptionKeyStatus property: Geo-backup encryption key status for Data encryption enabled
      * server.
-     *
+     * 
      * @return the geoBackupEncryptionKeyStatus value.
      */
     public KeyStatusEnum geoBackupEncryptionKeyStatus() {
@@ -193,7 +197,7 @@ public final class DataEncryption {
     /**
      * Set the geoBackupEncryptionKeyStatus property: Geo-backup encryption key status for Data encryption enabled
      * server.
-     *
+     * 
      * @param geoBackupEncryptionKeyStatus the geoBackupEncryptionKeyStatus value to set.
      * @return the DataEncryption object itself.
      */
@@ -204,7 +208,7 @@ public final class DataEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

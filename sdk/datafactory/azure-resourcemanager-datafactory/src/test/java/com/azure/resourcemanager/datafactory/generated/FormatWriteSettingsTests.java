@@ -13,14 +13,13 @@ public final class FormatWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FormatWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"FormatWriteSettings\",\"\":{\"pbvdlkpzd\":\"dataspqvxzicurufn\",\"nbtqejfq\":\"dataiywwenvxuhzixr\"}}")
+            "{\"type\":\"hgnugcbjx\",\"\":{\"wrjuiuzlf\":\"datadg\",\"ujunqwkjfmt\":\"datahzihlzljqcmmgsm\",\"xbckxen\":\"dataybdz\"}}")
             .toObject(FormatWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FormatWriteSettings model
-            = new FormatWriteSettings().withAdditionalProperties(mapOf("type", "FormatWriteSettings"));
+        FormatWriteSettings model = new FormatWriteSettings().withAdditionalProperties(mapOf("type", "hgnugcbjx"));
         model = BinaryData.fromObject(model).toObject(FormatWriteSettings.class);
     }
 

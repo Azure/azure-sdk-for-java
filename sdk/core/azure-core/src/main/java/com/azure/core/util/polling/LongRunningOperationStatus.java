@@ -37,8 +37,7 @@ public final class LongRunningOperationStatus extends ExpandableStringEnum<LongR
     public static final LongRunningOperationStatus IN_PROGRESS = fromString("IN_PROGRESS", false);
 
     /** Represent that the long-running operation is completed successfully. */
-    public static final LongRunningOperationStatus SUCCESSFULLY_COMPLETED = fromString("SUCCESSFULLY_COMPLETED",
-        true);
+    public static final LongRunningOperationStatus SUCCESSFULLY_COMPLETED = fromString("SUCCESSFULLY_COMPLETED", true);
 
     /**
      * Represents that the long-running operation has failed to successfully complete, however this is still
@@ -78,8 +77,8 @@ public final class LongRunningOperationStatus extends ExpandableStringEnum<LongR
         }
 
         // Get the known status first and validate as it's a smaller lookup map.
-        LongRunningOperationStatus operationStatus = (OPERATION_STATUS_MAP != null)
-            ? OPERATION_STATUS_MAP.get(name) : null;
+        LongRunningOperationStatus operationStatus
+            = (OPERATION_STATUS_MAP != null) ? OPERATION_STATUS_MAP.get(name) : null;
         if (operationStatus != null) {
             if (operationStatus.isComplete() != isComplete) {
                 throw new IllegalArgumentException(

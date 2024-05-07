@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Rule results properties. */
+/**
+ * Rule results properties.
+ */
 @Fluent
 public final class RuleResultsProperties {
     /*
@@ -17,13 +19,15 @@ public final class RuleResultsProperties {
     @JsonProperty(value = "results")
     private List<List<String>> results;
 
-    /** Creates an instance of RuleResultsProperties class. */
+    /**
+     * Creates an instance of RuleResultsProperties class.
+     */
     public RuleResultsProperties() {
     }
 
     /**
      * Get the results property: Expected results in the baseline.
-     *
+     * 
      * @return the results value.
      */
     public List<List<String>> results() {
@@ -32,7 +36,7 @@ public final class RuleResultsProperties {
 
     /**
      * Set the results property: Expected results in the baseline.
-     *
+     * 
      * @param results the results value to set.
      * @return the RuleResultsProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class RuleResultsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

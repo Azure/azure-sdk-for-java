@@ -32,17 +32,23 @@ import com.azure.resourcemanager.security.models.SecurityTaskList;
 import com.azure.resourcemanager.security.models.TaskUpdateActionType;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TasksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TasksClient.
+ */
 public final class TasksClientImpl implements TasksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TasksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of TasksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TasksClientImpl(SecurityCenterImpl client) {
@@ -57,229 +63,158 @@ public final class TasksClientImpl implements TasksClient {
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterTasks")
     public interface TasksService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/tasks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityTaskList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SecurityTaskList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityTaskList>> listByHomeRegion(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("ascLocation") String ascLocation,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SecurityTaskList>> listByHomeRegion(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("ascLocation") String ascLocation, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityTaskInner>> getSubscriptionLevelTask(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("ascLocation") String ascLocation,
-            @PathParam("taskName") String taskName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SecurityTaskInner>> getSubscriptionLevelTask(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("ascLocation") String ascLocation, @PathParam("taskName") String taskName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> updateSubscriptionLevelTaskState(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("ascLocation") String ascLocation,
+        Mono<Response<Void>> updateSubscriptionLevelTaskState(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("ascLocation") String ascLocation, @PathParam("taskName") String taskName,
+            @PathParam("taskUpdateActionType") TaskUpdateActionType taskUpdateActionType,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SecurityTaskList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ascLocation") String ascLocation,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SecurityTaskInner>> getResourceGroupLevelTask(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ascLocation") String ascLocation,
+            @PathParam("taskName") String taskName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> updateResourceGroupLevelTaskState(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("ascLocation") String ascLocation,
             @PathParam("taskName") String taskName,
             @PathParam("taskUpdateActionType") TaskUpdateActionType taskUpdateActionType,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityTaskList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ascLocation") String ascLocation,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityTaskInner>> getResourceGroupLevelTask(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ascLocation") String ascLocation,
-            @PathParam("taskName") String taskName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> updateResourceGroupLevelTaskState(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("ascLocation") String ascLocation,
-            @PathParam("taskName") String taskName,
-            @PathParam("taskUpdateActionType") TaskUpdateActionType taskUpdateActionType,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityTaskList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SecurityTaskList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityTaskList>> listByHomeRegionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityTaskList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listSinglePageAsync(String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<SecurityTaskInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                filter, accept, context))
+            .<PagedResponse<SecurityTaskInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listSinglePageAsync(String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), filter, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -293,7 +228,7 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of security task recommendations as paginated response with {@link PagedFlux}.
@@ -306,7 +241,7 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,13 +251,13 @@ public final class TasksClientImpl implements TasksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listAsync(String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of security task recommendations as paginated response with {@link PagedIterable}.
@@ -335,7 +270,7 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -350,29 +285,25 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param filter OData filter. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listByHomeRegionSinglePageAsync(String ascLocation, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -380,56 +311,36 @@ public final class TasksClientImpl implements TasksClient {
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByHomeRegion(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            ascLocation,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<SecurityTaskInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByHomeRegion(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), ascLocation, filter, accept, context))
+            .<PagedResponse<SecurityTaskInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param filter OData filter. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SecurityTaskInner>> listByHomeRegionSinglePageAsync(
-        String ascLocation, String filter, Context context) {
+    private Mono<PagedResponse<SecurityTaskInner>> listByHomeRegionSinglePageAsync(String ascLocation, String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -438,30 +349,17 @@ public final class TasksClientImpl implements TasksClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByHomeRegion(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                ascLocation,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByHomeRegion(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), ascLocation,
+                filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param filter OData filter. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -470,16 +368,15 @@ public final class TasksClientImpl implements TasksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listByHomeRegionAsync(String ascLocation, String filter) {
-        return new PagedFlux<>(
-            () -> listByHomeRegionSinglePageAsync(ascLocation, filter),
+        return new PagedFlux<>(() -> listByHomeRegionSinglePageAsync(ascLocation, filter),
             nextLink -> listByHomeRegionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -488,16 +385,15 @@ public final class TasksClientImpl implements TasksClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listByHomeRegionAsync(String ascLocation) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByHomeRegionSinglePageAsync(ascLocation, filter),
+        return new PagedFlux<>(() -> listByHomeRegionSinglePageAsync(ascLocation, filter),
             nextLink -> listByHomeRegionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param filter OData filter. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -507,16 +403,15 @@ public final class TasksClientImpl implements TasksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listByHomeRegionAsync(String ascLocation, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listByHomeRegionSinglePageAsync(ascLocation, filter, context),
+        return new PagedFlux<>(() -> listByHomeRegionSinglePageAsync(ascLocation, filter, context),
             nextLink -> listByHomeRegionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -530,9 +425,9 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param filter OData filter. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -547,30 +442,26 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security task that we recommend to do in order to strengthen security along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityTaskInner>> getSubscriptionLevelTaskWithResponseAsync(
-        String ascLocation, String taskName) {
+    private Mono<Response<SecurityTaskInner>> getSubscriptionLevelTaskWithResponseAsync(String ascLocation,
+        String taskName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -581,47 +472,34 @@ public final class TasksClientImpl implements TasksClient {
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getSubscriptionLevelTask(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            ascLocation,
-                            taskName,
-                            accept,
-                            context))
+            .withContext(context -> service.getSubscriptionLevelTask(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), ascLocation, taskName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security task that we recommend to do in order to strengthen security along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityTaskInner>> getSubscriptionLevelTaskWithResponseAsync(
-        String ascLocation, String taskName, Context context) {
+    private Mono<Response<SecurityTaskInner>> getSubscriptionLevelTaskWithResponseAsync(String ascLocation,
+        String taskName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -632,28 +510,21 @@ public final class TasksClientImpl implements TasksClient {
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getSubscriptionLevelTask(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                ascLocation,
-                taskName,
-                accept,
-                context);
+        return service.getSubscriptionLevelTask(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            ascLocation, taskName, accept, context);
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security on successful completion of {@link
-     *     Mono}.
+     * @return security task that we recommend to do in order to strengthen security on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SecurityTaskInner> getSubscriptionLevelTaskAsync(String ascLocation, String taskName) {
@@ -663,9 +534,9 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -674,16 +545,16 @@ public final class TasksClientImpl implements TasksClient {
      * @return security task that we recommend to do in order to strengthen security along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityTaskInner> getSubscriptionLevelTaskWithResponse(
-        String ascLocation, String taskName, Context context) {
+    public Response<SecurityTaskInner> getSubscriptionLevelTaskWithResponse(String ascLocation, String taskName,
+        Context context) {
         return getSubscriptionLevelTaskWithResponseAsync(ascLocation, taskName, context).block();
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -697,9 +568,9 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -708,19 +579,15 @@ public final class TasksClientImpl implements TasksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateSubscriptionLevelTaskStateWithResponseAsync(
-        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
+    private Mono<Response<Void>> updateSubscriptionLevelTaskStateWithResponseAsync(String ascLocation, String taskName,
+        TaskUpdateActionType taskUpdateActionType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -735,26 +602,16 @@ public final class TasksClientImpl implements TasksClient {
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateSubscriptionLevelTaskState(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            ascLocation,
-                            taskName,
-                            taskUpdateActionType,
-                            accept,
-                            context))
+            .withContext(context -> service.updateSubscriptionLevelTaskState(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), ascLocation, taskName, taskUpdateActionType, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
      * @param context The context to associate with this operation.
@@ -764,19 +621,15 @@ public final class TasksClientImpl implements TasksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateSubscriptionLevelTaskStateWithResponseAsync(
-        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType, Context context) {
+    private Mono<Response<Void>> updateSubscriptionLevelTaskStateWithResponseAsync(String ascLocation, String taskName,
+        TaskUpdateActionType taskUpdateActionType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
@@ -791,23 +644,15 @@ public final class TasksClientImpl implements TasksClient {
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateSubscriptionLevelTaskState(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                ascLocation,
-                taskName,
-                taskUpdateActionType,
-                accept,
-                context);
+        return service.updateSubscriptionLevelTaskState(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), ascLocation, taskName, taskUpdateActionType, accept, context);
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -816,17 +661,17 @@ public final class TasksClientImpl implements TasksClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateSubscriptionLevelTaskStateAsync(
-        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
+    private Mono<Void> updateSubscriptionLevelTaskStateAsync(String ascLocation, String taskName,
+        TaskUpdateActionType taskUpdateActionType) {
         return updateSubscriptionLevelTaskStateWithResponseAsync(ascLocation, taskName, taskUpdateActionType)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
      * @param context The context to associate with this operation.
@@ -836,17 +681,17 @@ public final class TasksClientImpl implements TasksClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateSubscriptionLevelTaskStateWithResponse(
-        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType, Context context) {
+    public Response<Void> updateSubscriptionLevelTaskStateWithResponse(String ascLocation, String taskName,
+        TaskUpdateActionType taskUpdateActionType, Context context) {
         return updateSubscriptionLevelTaskStateWithResponseAsync(ascLocation, taskName, taskUpdateActionType, context)
             .block();
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -854,39 +699,35 @@ public final class TasksClientImpl implements TasksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateSubscriptionLevelTaskState(
-        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
+    public void updateSubscriptionLevelTaskState(String ascLocation, String taskName,
+        TaskUpdateActionType taskUpdateActionType) {
         updateSubscriptionLevelTaskStateWithResponse(ascLocation, taskName, taskUpdateActionType, Context.NONE);
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param filter OData filter. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SecurityTaskInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String ascLocation, String filter) {
+    private Mono<PagedResponse<SecurityTaskInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String ascLocation, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -898,59 +739,38 @@ public final class TasksClientImpl implements TasksClient {
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            ascLocation,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<SecurityTaskInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, ascLocation, filter, accept, context))
+            .<PagedResponse<SecurityTaskInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param filter OData filter. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SecurityTaskInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String ascLocation, String filter, Context context) {
+    private Mono<PagedResponse<SecurityTaskInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String ascLocation, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -963,33 +783,19 @@ public final class TasksClientImpl implements TasksClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                ascLocation,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, ascLocation, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param filter OData filter. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -997,20 +803,19 @@ public final class TasksClientImpl implements TasksClient {
      * @return list of security task recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SecurityTaskInner> listByResourceGroupAsync(
-        String resourceGroupName, String ascLocation, String filter) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, ascLocation, filter),
+    private PagedFlux<SecurityTaskInner> listByResourceGroupAsync(String resourceGroupName, String ascLocation,
+        String filter) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, ascLocation, filter),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1019,18 +824,17 @@ public final class TasksClientImpl implements TasksClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityTaskInner> listByResourceGroupAsync(String resourceGroupName, String ascLocation) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, ascLocation, filter),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, ascLocation, filter),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param filter OData filter. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1039,8 +843,8 @@ public final class TasksClientImpl implements TasksClient {
      * @return list of security task recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SecurityTaskInner> listByResourceGroupAsync(
-        String resourceGroupName, String ascLocation, String filter, Context context) {
+    private PagedFlux<SecurityTaskInner> listByResourceGroupAsync(String resourceGroupName, String ascLocation,
+        String filter, Context context) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, ascLocation, filter, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
@@ -1048,11 +852,11 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1066,11 +870,11 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param filter OData filter. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1079,39 +883,35 @@ public final class TasksClientImpl implements TasksClient {
      * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecurityTaskInner> listByResourceGroup(
-        String resourceGroupName, String ascLocation, String filter, Context context) {
+    public PagedIterable<SecurityTaskInner> listByResourceGroup(String resourceGroupName, String ascLocation,
+        String filter, Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, ascLocation, filter, context));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security task that we recommend to do in order to strengthen security along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityTaskInner>> getResourceGroupLevelTaskWithResponseAsync(
-        String resourceGroupName, String ascLocation, String taskName) {
+    private Mono<Response<SecurityTaskInner>> getResourceGroupLevelTaskWithResponseAsync(String resourceGroupName,
+        String ascLocation, String taskName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1126,50 +926,36 @@ public final class TasksClientImpl implements TasksClient {
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getResourceGroupLevelTask(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            ascLocation,
-                            taskName,
-                            accept,
-                            context))
+            .withContext(context -> service.getResourceGroupLevelTask(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, ascLocation, taskName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security task that we recommend to do in order to strengthen security along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityTaskInner>> getResourceGroupLevelTaskWithResponseAsync(
-        String resourceGroupName, String ascLocation, String taskName, Context context) {
+    private Mono<Response<SecurityTaskInner>> getResourceGroupLevelTaskWithResponseAsync(String resourceGroupName,
+        String ascLocation, String taskName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1184,46 +970,38 @@ public final class TasksClientImpl implements TasksClient {
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getResourceGroupLevelTask(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                ascLocation,
-                taskName,
-                accept,
-                context);
+        return service.getResourceGroupLevelTask(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, ascLocation, taskName, accept, context);
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security on successful completion of {@link
-     *     Mono}.
+     * @return security task that we recommend to do in order to strengthen security on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SecurityTaskInner> getResourceGroupLevelTaskAsync(
-        String resourceGroupName, String ascLocation, String taskName) {
+    private Mono<SecurityTaskInner> getResourceGroupLevelTaskAsync(String resourceGroupName, String ascLocation,
+        String taskName) {
         return getResourceGroupLevelTaskWithResponseAsync(resourceGroupName, ascLocation, taskName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1232,18 +1010,18 @@ public final class TasksClientImpl implements TasksClient {
      * @return security task that we recommend to do in order to strengthen security along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityTaskInner> getResourceGroupLevelTaskWithResponse(
-        String resourceGroupName, String ascLocation, String taskName, Context context) {
+    public Response<SecurityTaskInner> getResourceGroupLevelTaskWithResponse(String resourceGroupName,
+        String ascLocation, String taskName, Context context) {
         return getResourceGroupLevelTaskWithResponseAsync(resourceGroupName, ascLocation, taskName, context).block();
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1257,11 +1035,11 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1270,19 +1048,15 @@ public final class TasksClientImpl implements TasksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateResourceGroupLevelTaskStateWithResponseAsync(
-        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
+    private Mono<Response<Void>> updateResourceGroupLevelTaskStateWithResponseAsync(String resourceGroupName,
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1301,29 +1075,19 @@ public final class TasksClientImpl implements TasksClient {
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateResourceGroupLevelTaskState(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            ascLocation,
-                            taskName,
-                            taskUpdateActionType,
-                            accept,
-                            context))
+            .withContext(context -> service.updateResourceGroupLevelTaskState(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, ascLocation, taskName, taskUpdateActionType, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
      * @param context The context to associate with this operation.
@@ -1333,23 +1097,15 @@ public final class TasksClientImpl implements TasksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateResourceGroupLevelTaskStateWithResponseAsync(
-        String resourceGroupName,
-        String ascLocation,
-        String taskName,
-        TaskUpdateActionType taskUpdateActionType,
-        Context context) {
+    private Mono<Response<Void>> updateResourceGroupLevelTaskStateWithResponseAsync(String resourceGroupName,
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1368,26 +1124,18 @@ public final class TasksClientImpl implements TasksClient {
         final String apiVersion = "2015-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateResourceGroupLevelTaskState(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                ascLocation,
-                taskName,
-                taskUpdateActionType,
-                accept,
-                context);
+        return service.updateResourceGroupLevelTaskState(this.client.getEndpoint(), apiVersion,
+            this.client.getSubscriptionId(), resourceGroupName, ascLocation, taskName, taskUpdateActionType, accept,
+            context);
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1396,20 +1144,19 @@ public final class TasksClientImpl implements TasksClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateResourceGroupLevelTaskStateAsync(
-        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
-        return updateResourceGroupLevelTaskStateWithResponseAsync(
-                resourceGroupName, ascLocation, taskName, taskUpdateActionType)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> updateResourceGroupLevelTaskStateAsync(String resourceGroupName, String ascLocation,
+        String taskName, TaskUpdateActionType taskUpdateActionType) {
+        return updateResourceGroupLevelTaskStateWithResponseAsync(resourceGroupName, ascLocation, taskName,
+            taskUpdateActionType).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
      * @param context The context to associate with this operation.
@@ -1419,24 +1166,19 @@ public final class TasksClientImpl implements TasksClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateResourceGroupLevelTaskStateWithResponse(
-        String resourceGroupName,
-        String ascLocation,
-        String taskName,
-        TaskUpdateActionType taskUpdateActionType,
-        Context context) {
-        return updateResourceGroupLevelTaskStateWithResponseAsync(
-                resourceGroupName, ascLocation, taskName, taskUpdateActionType, context)
-            .block();
+    public Response<Void> updateResourceGroupLevelTaskStateWithResponse(String resourceGroupName, String ascLocation,
+        String taskName, TaskUpdateActionType taskUpdateActionType, Context context) {
+        return updateResourceGroupLevelTaskStateWithResponseAsync(resourceGroupName, ascLocation, taskName,
+            taskUpdateActionType, context).block();
     }
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param taskName Name of the task object, will be a GUID.
      * @param taskUpdateActionType Type of the action to do on the task.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1444,22 +1186,23 @@ public final class TasksClientImpl implements TasksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateResourceGroupLevelTaskState(
-        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType) {
-        updateResourceGroupLevelTaskStateWithResponse(
-            resourceGroupName, ascLocation, taskName, taskUpdateActionType, Context.NONE);
+    public void updateResourceGroupLevelTaskState(String resourceGroupName, String ascLocation, String taskName,
+        TaskUpdateActionType taskUpdateActionType) {
+        updateResourceGroupLevelTaskStateWithResponse(resourceGroupName, ascLocation, taskName, taskUpdateActionType,
+            Context.NONE);
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listNextSinglePageAsync(String nextLink) {
@@ -1467,37 +1210,28 @@ public final class TasksClientImpl implements TasksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SecurityTaskInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SecurityTaskInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1505,36 +1239,27 @@ public final class TasksClientImpl implements TasksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listByHomeRegionNextSinglePageAsync(String nextLink) {
@@ -1542,75 +1267,58 @@ public final class TasksClientImpl implements TasksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHomeRegionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SecurityTaskInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SecurityTaskInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SecurityTaskInner>> listByHomeRegionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SecurityTaskInner>> listByHomeRegionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByHomeRegionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByHomeRegionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityTaskInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1618,63 +1326,45 @@ public final class TasksClientImpl implements TasksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SecurityTaskInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SecurityTaskInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of security task recommendations along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SecurityTaskInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SecurityTaskInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

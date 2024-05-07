@@ -11,7 +11,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.OperationStatusVa
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Operation status. */
+/**
+ * Operation status.
+ */
 @Fluent
 public final class OperationStatusInner {
     /*
@@ -56,13 +58,15 @@ public final class OperationStatusInner {
     @JsonProperty(value = "properties")
     private OperationStatusExtendedInfo properties;
 
-    /** Creates an instance of OperationStatusInner class. */
+    /**
+     * Creates an instance of OperationStatusInner class.
+     */
     public OperationStatusInner() {
     }
 
     /**
      * Get the id property: ID of the operation.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -71,7 +75,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the id property: ID of the operation.
-     *
+     * 
      * @param id the id value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -82,7 +86,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -91,7 +95,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the name property: Name of the operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -102,7 +106,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public OperationStatusValues status() {
@@ -111,7 +115,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the status property: Operation status.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -122,7 +126,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the startTime property: Operation start time. Format: ISO-8601.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -131,7 +135,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the startTime property: Operation start time. Format: ISO-8601.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -142,7 +146,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the endTime property: Operation end time. Format: ISO-8601.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -151,7 +155,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the endTime property: Operation end time. Format: ISO-8601.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -162,7 +166,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the error property: Error information related to this operation.
-     *
+     * 
      * @return the error value.
      */
     public OperationStatusError error() {
@@ -171,7 +175,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the error property: Error information related to this operation.
-     *
+     * 
      * @param error the error value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -182,7 +186,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the properties property: Additional information associated with this operation.
-     *
+     * 
      * @return the properties value.
      */
     public OperationStatusExtendedInfo properties() {
@@ -191,7 +195,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the properties property: Additional information associated with this operation.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -202,7 +206,7 @@ public final class OperationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

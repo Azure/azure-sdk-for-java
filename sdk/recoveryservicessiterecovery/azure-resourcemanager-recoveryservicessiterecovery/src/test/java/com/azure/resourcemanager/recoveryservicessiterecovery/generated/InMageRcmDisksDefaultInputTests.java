@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageRcmDisksDefaultInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmDisksDefaultInput model =
-            BinaryData
-                .fromString(
-                    "{\"logStorageAccountId\":\"mwovyztxlnomfpb\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"egvyieztkutnj\"}")
-                .toObject(InMageRcmDisksDefaultInput.class);
+        InMageRcmDisksDefaultInput model = BinaryData.fromString(
+            "{\"logStorageAccountId\":\"mwovyztxlnomfpb\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"egvyieztkutnj\"}")
+            .toObject(InMageRcmDisksDefaultInput.class);
         Assertions.assertEquals("mwovyztxlnomfpb", model.logStorageAccountId());
         Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.diskType());
         Assertions.assertEquals("egvyieztkutnj", model.diskEncryptionSetId());
@@ -24,11 +22,8 @@ public final class InMageRcmDisksDefaultInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmDisksDefaultInput model =
-            new InMageRcmDisksDefaultInput()
-                .withLogStorageAccountId("mwovyztxlnomfpb")
-                .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
-                .withDiskEncryptionSetId("egvyieztkutnj");
+        InMageRcmDisksDefaultInput model = new InMageRcmDisksDefaultInput().withLogStorageAccountId("mwovyztxlnomfpb")
+            .withDiskType(DiskAccountType.STANDARD_SSD_LRS).withDiskEncryptionSetId("egvyieztkutnj");
         model = BinaryData.fromObject(model).toObject(InMageRcmDisksDefaultInput.class);
         Assertions.assertEquals("mwovyztxlnomfpb", model.logStorageAccountId());
         Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.diskType());

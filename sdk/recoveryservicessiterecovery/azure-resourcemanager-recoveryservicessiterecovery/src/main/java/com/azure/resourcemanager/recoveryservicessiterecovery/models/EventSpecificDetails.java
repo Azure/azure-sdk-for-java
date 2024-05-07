@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Model class for event specific details for an event. */
+/**
+ * Model class for event specific details for an event.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = EventSpecificDetails.class)
 @JsonTypeName("EventSpecificDetails")
-@JsonSubTypes({@JsonSubTypes.Type(name = "JobStatus", value = JobStatusEventDetails.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "JobStatus", value = JobStatusEventDetails.class) })
 @Immutable
 public class EventSpecificDetails {
-    /** Creates an instance of EventSpecificDetails class. */
+    /**
+     * Creates an instance of EventSpecificDetails class.
+     */
     public EventSpecificDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describe the additional data of governance assignment - optional. */
+/**
+ * Describe the additional data of governance assignment - optional.
+ */
 @Fluent
 public final class GovernanceAssignmentAdditionalData {
     /*
@@ -28,13 +30,15 @@ public final class GovernanceAssignmentAdditionalData {
     @JsonProperty(value = "ticketStatus")
     private String ticketStatus;
 
-    /** Creates an instance of GovernanceAssignmentAdditionalData class. */
+    /**
+     * Creates an instance of GovernanceAssignmentAdditionalData class.
+     */
     public GovernanceAssignmentAdditionalData() {
     }
 
     /**
      * Get the ticketNumber property: Ticket number associated with this governance assignment.
-     *
+     * 
      * @return the ticketNumber value.
      */
     public Integer ticketNumber() {
@@ -43,7 +47,7 @@ public final class GovernanceAssignmentAdditionalData {
 
     /**
      * Set the ticketNumber property: Ticket number associated with this governance assignment.
-     *
+     * 
      * @param ticketNumber the ticketNumber value to set.
      * @return the GovernanceAssignmentAdditionalData object itself.
      */
@@ -55,7 +59,7 @@ public final class GovernanceAssignmentAdditionalData {
     /**
      * Get the ticketLink property: Ticket link associated with this governance assignment - for example:
      * https://snow.com.
-     *
+     * 
      * @return the ticketLink value.
      */
     public String ticketLink() {
@@ -65,7 +69,7 @@ public final class GovernanceAssignmentAdditionalData {
     /**
      * Set the ticketLink property: Ticket link associated with this governance assignment - for example:
      * https://snow.com.
-     *
+     * 
      * @param ticketLink the ticketLink value to set.
      * @return the GovernanceAssignmentAdditionalData object itself.
      */
@@ -77,7 +81,7 @@ public final class GovernanceAssignmentAdditionalData {
     /**
      * Get the ticketStatus property: The ticket status associated with this governance assignment - for example:
      * Active.
-     *
+     * 
      * @return the ticketStatus value.
      */
     public String ticketStatus() {
@@ -87,7 +91,7 @@ public final class GovernanceAssignmentAdditionalData {
     /**
      * Set the ticketStatus property: The ticket status associated with this governance assignment - for example:
      * Active.
-     *
+     * 
      * @param ticketStatus the ticketStatus value to set.
      * @return the GovernanceAssignmentAdditionalData object itself.
      */
@@ -98,7 +102,7 @@ public final class GovernanceAssignmentAdditionalData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

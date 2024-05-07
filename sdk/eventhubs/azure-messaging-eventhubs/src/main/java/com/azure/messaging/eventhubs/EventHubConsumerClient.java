@@ -171,7 +171,7 @@ public class EventHubConsumerClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventHubProperties getEventHubProperties() {
-        return consumer.getEventHubProperties().block(timeout);
+        return consumer.getEventHubProperties().block();
     }
 
     /**
@@ -196,7 +196,7 @@ public class EventHubConsumerClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PartitionProperties getPartitionProperties(String partitionId) {
-        return consumer.getPartitionProperties(partitionId).block(timeout);
+        return consumer.getPartitionProperties(partitionId).block();
     }
 
     /**

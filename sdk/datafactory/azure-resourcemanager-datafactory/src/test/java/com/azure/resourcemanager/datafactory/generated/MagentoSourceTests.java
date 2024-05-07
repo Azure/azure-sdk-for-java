@@ -11,15 +11,19 @@ public final class MagentoSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MagentoSource model = BinaryData.fromString(
-            "{\"type\":\"MagentoSource\",\"query\":\"datavyktfu\",\"queryTimeout\":\"dataaabibvslo\",\"additionalColumns\":\"datakpvvkqlkhdxnz\",\"sourceRetryCount\":\"dataas\",\"sourceRetryWait\":\"dataiz\",\"maxConcurrentConnections\":\"datamibwzuhyda\",\"disableMetricsCollection\":\"datakgwtbfxxsfj\",\"\":{\"mkdsvayyhti\":\"datascjig\",\"tlnmmyznwrc\":\"dataxehmnizoybtehk\",\"ohwi\":\"dataqwkqulkzov\"}}")
+            "{\"type\":\"omdlsps\",\"query\":\"datagdkpyavfcpohlfv\",\"queryTimeout\":\"dataucxtyufso\",\"additionalColumns\":\"datakmcu\",\"sourceRetryCount\":\"dataxpnyg\",\"sourceRetryWait\":\"dataqi\",\"maxConcurrentConnections\":\"datalxoxwndfuyj\",\"disableMetricsCollection\":\"datagal\",\"\":{\"oa\":\"datalzuztdwx\",\"p\":\"datab\"}}")
             .toObject(MagentoSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MagentoSource model = new MagentoSource().withSourceRetryCount("dataas").withSourceRetryWait("dataiz")
-            .withMaxConcurrentConnections("datamibwzuhyda").withDisableMetricsCollection("datakgwtbfxxsfj")
-            .withQueryTimeout("dataaabibvslo").withAdditionalColumns("datakpvvkqlkhdxnz").withQuery("datavyktfu");
+        MagentoSource model = new MagentoSource().withSourceRetryCount("dataxpnyg")
+            .withSourceRetryWait("dataqi")
+            .withMaxConcurrentConnections("datalxoxwndfuyj")
+            .withDisableMetricsCollection("datagal")
+            .withQueryTimeout("dataucxtyufso")
+            .withAdditionalColumns("datakmcu")
+            .withQuery("datagdkpyavfcpohlfv");
         model = BinaryData.fromObject(model).toObject(MagentoSource.class);
     }
 }

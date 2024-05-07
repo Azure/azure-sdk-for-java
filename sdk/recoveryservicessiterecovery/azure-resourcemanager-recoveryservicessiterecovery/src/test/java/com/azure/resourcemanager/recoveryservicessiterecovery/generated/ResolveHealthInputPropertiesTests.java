@@ -13,22 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ResolveHealthInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResolveHealthInputProperties model =
-            BinaryData
-                .fromString("{\"healthErrors\":[{\"healthErrorId\":\"vpa\"},{\"healthErrorId\":\"sreuzvxurisjnh\"}]}")
-                .toObject(ResolveHealthInputProperties.class);
+        ResolveHealthInputProperties model = BinaryData
+            .fromString("{\"healthErrors\":[{\"healthErrorId\":\"vpa\"},{\"healthErrorId\":\"sreuzvxurisjnh\"}]}")
+            .toObject(ResolveHealthInputProperties.class);
         Assertions.assertEquals("vpa", model.healthErrors().get(0).healthErrorId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResolveHealthInputProperties model =
-            new ResolveHealthInputProperties()
-                .withHealthErrors(
-                    Arrays
-                        .asList(
-                            new ResolveHealthError().withHealthErrorId("vpa"),
-                            new ResolveHealthError().withHealthErrorId("sreuzvxurisjnh")));
+        ResolveHealthInputProperties model = new ResolveHealthInputProperties()
+            .withHealthErrors(Arrays.asList(new ResolveHealthError().withHealthErrorId("vpa"),
+                new ResolveHealthError().withHealthErrorId("sreuzvxurisjnh")));
         model = BinaryData.fromObject(model).toObject(ResolveHealthInputProperties.class);
         Assertions.assertEquals("vpa", model.healthErrors().get(0).healthErrorId());
     }

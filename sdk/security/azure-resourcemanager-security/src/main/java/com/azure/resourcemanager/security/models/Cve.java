@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CVE details. */
+/**
+ * CVE details.
+ */
 @Immutable
 public final class Cve {
     /*
@@ -22,13 +24,15 @@ public final class Cve {
     @JsonProperty(value = "link", access = JsonProperty.Access.WRITE_ONLY)
     private String link;
 
-    /** Creates an instance of Cve class. */
+    /**
+     * Creates an instance of Cve class.
+     */
     public Cve() {
     }
 
     /**
      * Get the title property: CVE title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -37,7 +41,7 @@ public final class Cve {
 
     /**
      * Get the link property: Link url.
-     *
+     * 
      * @return the link value.
      */
     public String link() {
@@ -46,7 +50,7 @@ public final class Cve {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

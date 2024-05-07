@@ -20,22 +20,18 @@ public final class ProtectionPoliciesImpl implements ProtectionPolicies {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ProtectionPoliciesImpl(
-        ProtectionPoliciesClient innerClient,
+    public ProtectionPoliciesImpl(ProtectionPoliciesClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ProtectionPolicyResource> getWithResponse(
-        String vaultName, String resourceGroupName, String policyName, Context context) {
-        Response<ProtectionPolicyResourceInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, policyName, context);
+    public Response<ProtectionPolicyResource> getWithResponse(String vaultName, String resourceGroupName,
+        String policyName, Context context) {
+        Response<ProtectionPolicyResourceInner> inner
+            = this.serviceClient().getWithResponse(vaultName, resourceGroupName, policyName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProtectionPolicyResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -60,109 +56,77 @@ public final class ProtectionPoliciesImpl implements ProtectionPolicies {
     }
 
     public ProtectionPolicyResource getById(String id) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String policyName = Utils.getValueFromIdByName(id, "backupPolicies");
+        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
         if (policyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
         }
         return this.getWithResponse(vaultName, resourceGroupName, policyName, Context.NONE).getValue();
     }
 
     public Response<ProtectionPolicyResource> getByIdWithResponse(String id, Context context) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String policyName = Utils.getValueFromIdByName(id, "backupPolicies");
+        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
         if (policyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
         }
         return this.getWithResponse(vaultName, resourceGroupName, policyName, context);
     }
 
     public void deleteById(String id) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String policyName = Utils.getValueFromIdByName(id, "backupPolicies");
+        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
         if (policyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
         }
         this.delete(vaultName, resourceGroupName, policyName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String policyName = Utils.getValueFromIdByName(id, "backupPolicies");
+        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "backupPolicies");
         if (policyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupPolicies'.", id)));
         }
         this.delete(vaultName, resourceGroupName, policyName, context);
     }

@@ -11,7 +11,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The PeriodFeedbackValue model.
@@ -77,7 +76,7 @@ public final class PeriodFeedbackValue implements JsonSerializable<PeriodFeedbac
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("periodType", Objects.toString(this.periodType, null));
+        jsonWriter.writeStringField("periodType", this.periodType == null ? null : this.periodType.toString());
         jsonWriter.writeIntField("periodValue", this.periodValue);
         return jsonWriter.writeEndObject();
     }

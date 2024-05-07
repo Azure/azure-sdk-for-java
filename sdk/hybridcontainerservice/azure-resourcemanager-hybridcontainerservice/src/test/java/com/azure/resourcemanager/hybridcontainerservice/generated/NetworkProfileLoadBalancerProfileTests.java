@@ -12,14 +12,14 @@ public final class NetworkProfileLoadBalancerProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkProfileLoadBalancerProfile model
-            = BinaryData.fromString("{\"count\":1077251222}").toObject(NetworkProfileLoadBalancerProfile.class);
-        Assertions.assertEquals(1077251222, model.count());
+            = BinaryData.fromString("{\"count\":1450276464}").toObject(NetworkProfileLoadBalancerProfile.class);
+        Assertions.assertEquals(1450276464, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkProfileLoadBalancerProfile model = new NetworkProfileLoadBalancerProfile().withCount(1077251222);
+        NetworkProfileLoadBalancerProfile model = new NetworkProfileLoadBalancerProfile().withCount(1450276464);
         model = BinaryData.fromObject(model).toObject(NetworkProfileLoadBalancerProfile.class);
-        Assertions.assertEquals(1077251222, model.count());
+        Assertions.assertEquals(1450276464, model.count());
     }
 }

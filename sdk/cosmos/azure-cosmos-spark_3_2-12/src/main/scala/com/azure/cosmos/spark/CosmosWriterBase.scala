@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
@@ -27,13 +28,14 @@ private abstract class CosmosWriterBase(
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName} - ($partitionId, $taskId, $epochId)")
   private val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
   private val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, inputSchema)
+  private val cosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(userConfig)
   private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(userConfig)
   private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
 
   private val cacheItemReleasedCount = new AtomicInteger(0)
 
   private val clientCacheItem = CosmosClientCache(
-    CosmosClientConfiguration(userConfig, useEventualConsistency = true, sparkEnvironmentInfo),
+    CosmosClientConfiguration(userConfig, cosmosReadConfig.forceEventualConsistency, sparkEnvironmentInfo),
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"CosmosWriter($partitionId, $taskId, $epochId)"
   )
@@ -51,9 +53,9 @@ private abstract class CosmosWriterBase(
       cosmosTargetContainerConfig,
       clientCacheItem,
       throughputControlClientCacheItemOpt)
-  SparkUtils.safeOpenConnectionInitCaches(container, log)
 
-  private val containerDefinition = container.read().block().getProperties
+  private val containerDefinition = SparkBridgeInternal
+    .getContainerPropertiesFromCollectionCache(container)
   private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition
 
   private val writer = if (cosmosWriteConfig.bulkEnabled) {

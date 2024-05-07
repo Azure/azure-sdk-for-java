@@ -13,15 +13,17 @@ public final class CopySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CopySource model = BinaryData.fromString(
-            "{\"type\":\"CopySource\",\"sourceRetryCount\":\"databrdwfhhwt\",\"sourceRetryWait\":\"datagefaycbvgotbjnx\",\"maxConcurrentConnections\":\"dataiotxnp\",\"disableMetricsCollection\":\"dataflxluvmsgdis\",\"\":{\"uozdvokxuyhhrd\":\"dataxt\",\"ahgsibldxyaqdaa\":\"datakdbq\"}}")
+            "{\"type\":\"wjwbht\",\"sourceRetryCount\":\"databch\",\"sourceRetryWait\":\"dataneuzueikadhu\",\"maxConcurrentConnections\":\"datax\",\"disableMetricsCollection\":\"datagljcywyrzx\",\"\":{\"yejyavxgmogcnw\":\"datahlxxkviyjru\",\"nlceggyqlvnhm\":\"datakqqxpnjqtzdahvet\",\"wsyfsgikgcbjclf\":\"datautkwwtymbcc\",\"zebifktnx\":\"datapfdsatrzqmtuxwtd\"}}")
             .toObject(CopySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CopySource model = new CopySource().withSourceRetryCount("databrdwfhhwt")
-            .withSourceRetryWait("datagefaycbvgotbjnx").withMaxConcurrentConnections("dataiotxnp")
-            .withDisableMetricsCollection("dataflxluvmsgdis").withAdditionalProperties(mapOf("type", "CopySource"));
+        CopySource model = new CopySource().withSourceRetryCount("databch")
+            .withSourceRetryWait("dataneuzueikadhu")
+            .withMaxConcurrentConnections("datax")
+            .withDisableMetricsCollection("datagljcywyrzx")
+            .withAdditionalProperties(mapOf("type", "wjwbht"));
         model = BinaryData.fromObject(model).toObject(CopySource.class);
     }
 

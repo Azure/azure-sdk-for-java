@@ -388,6 +388,11 @@ public final class CosmosContainerProperties {
         ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.setCosmosContainerPropertiesAccessor(
             new ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor() {
                 @Override
+                public CosmosContainerProperties create(DocumentCollection documentCollection) {
+                    return new CosmosContainerProperties(documentCollection);
+                }
+
+                @Override
                 public String getSelfLink(CosmosContainerProperties cosmosContainerProperties) {
                     return cosmosContainerProperties.getSelfLink();
                 }

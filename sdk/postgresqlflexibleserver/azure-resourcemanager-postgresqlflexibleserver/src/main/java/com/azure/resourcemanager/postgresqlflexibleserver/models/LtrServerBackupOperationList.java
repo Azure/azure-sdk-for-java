@@ -9,7 +9,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.LtrServe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of long term retention backup operations for server. */
+/**
+ * A list of long term retention backup operations for server.
+ */
 @Fluent
 public final class LtrServerBackupOperationList {
     /*
@@ -24,13 +26,15 @@ public final class LtrServerBackupOperationList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LtrServerBackupOperationList class. */
+    /**
+     * Creates an instance of LtrServerBackupOperationList class.
+     */
     public LtrServerBackupOperationList() {
     }
 
     /**
      * Get the value property: The list of long term retention server backup operations.
-     *
+     * 
      * @return the value value.
      */
     public List<LtrServerBackupOperationInner> value() {
@@ -39,7 +43,7 @@ public final class LtrServerBackupOperationList {
 
     /**
      * Set the value property: The list of long term retention server backup operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the LtrServerBackupOperationList object itself.
      */
@@ -50,7 +54,7 @@ public final class LtrServerBackupOperationList {
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class LtrServerBackupOperationList {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LtrServerBackupOperationList object itself.
      */
@@ -70,7 +74,7 @@ public final class LtrServerBackupOperationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

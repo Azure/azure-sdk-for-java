@@ -11,14 +11,16 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Details of the On Premise resource that was assessed. */
+/**
+ * Details of the On Premise resource that was assessed.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "source",
     defaultImpl = OnPremiseResourceDetails.class)
 @JsonTypeName("OnPremise")
-@JsonSubTypes({@JsonSubTypes.Type(name = "OnPremiseSql", value = OnPremiseSqlResourceDetails.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "OnPremiseSql", value = OnPremiseSqlResourceDetails.class) })
 @Fluent
 public class OnPremiseResourceDetails extends ResourceDetails {
     /*
@@ -45,13 +47,15 @@ public class OnPremiseResourceDetails extends ResourceDetails {
     @JsonProperty(value = "machineName", required = true)
     private String machineName;
 
-    /** Creates an instance of OnPremiseResourceDetails class. */
+    /**
+     * Creates an instance of OnPremiseResourceDetails class.
+     */
     public OnPremiseResourceDetails() {
     }
 
     /**
      * Get the workspaceId property: Azure resource Id of the workspace the machine is attached to.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -60,7 +64,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Set the workspaceId property: Azure resource Id of the workspace the machine is attached to.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the OnPremiseResourceDetails object itself.
      */
@@ -71,7 +75,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Get the vmuuid property: The unique Id of the machine.
-     *
+     * 
      * @return the vmuuid value.
      */
     public String vmuuid() {
@@ -80,7 +84,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Set the vmuuid property: The unique Id of the machine.
-     *
+     * 
      * @param vmuuid the vmuuid value to set.
      * @return the OnPremiseResourceDetails object itself.
      */
@@ -91,7 +95,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Get the sourceComputerId property: The oms agent Id installed on the machine.
-     *
+     * 
      * @return the sourceComputerId value.
      */
     public String sourceComputerId() {
@@ -100,7 +104,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Set the sourceComputerId property: The oms agent Id installed on the machine.
-     *
+     * 
      * @param sourceComputerId the sourceComputerId value to set.
      * @return the OnPremiseResourceDetails object itself.
      */
@@ -111,7 +115,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Get the machineName property: The name of the machine.
-     *
+     * 
      * @return the machineName value.
      */
     public String machineName() {
@@ -120,7 +124,7 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Set the machineName property: The name of the machine.
-     *
+     * 
      * @param machineName the machineName value to set.
      * @return the OnPremiseResourceDetails object itself.
      */
@@ -131,34 +135,27 @@ public class OnPremiseResourceDetails extends ResourceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (workspaceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property workspaceId in model OnPremiseResourceDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property workspaceId in model OnPremiseResourceDetails"));
         }
         if (vmuuid() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property vmuuid in model OnPremiseResourceDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vmuuid in model OnPremiseResourceDetails"));
         }
         if (sourceComputerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceComputerId in model OnPremiseResourceDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceComputerId in model OnPremiseResourceDetails"));
         }
         if (machineName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property machineName in model OnPremiseResourceDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property machineName in model OnPremiseResourceDetails"));
         }
     }
 

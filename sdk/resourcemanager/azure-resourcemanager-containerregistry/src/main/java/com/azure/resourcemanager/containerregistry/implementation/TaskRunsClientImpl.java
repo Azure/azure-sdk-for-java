@@ -41,17 +41,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TaskRunsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TaskRunsClient.
+ */
 public final class TaskRunsClientImpl implements TaskRunsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TaskRunsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerRegistryManagementClientImpl client;
 
     /**
      * Initializes an instance of TaskRunsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TaskRunsClientImpl(ContainerRegistryManagementClientImpl client) {
@@ -66,111 +72,77 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ContainerRegistryMan")
     public interface TaskRunsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TaskRunInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<TaskRunInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("taskRunName") String taskRunName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @QueryParam("api-version") String apiVersion, @PathParam("taskRunName") String taskRunName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("taskRunName") String taskRunName,
-            @BodyParam("application/json") TaskRunInner taskRun,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @QueryParam("api-version") String apiVersion, @PathParam("taskRunName") String taskRunName,
+            @BodyParam("application/json") TaskRunInner taskRun, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("taskRunName") String taskRunName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @QueryParam("api-version") String apiVersion, @PathParam("taskRunName") String taskRunName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("taskRunName") String taskRunName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @QueryParam("api-version") String apiVersion, @PathParam("taskRunName") String taskRunName,
             @BodyParam("application/json") TaskRunUpdateParameters updateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}/listDetails")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}/listDetails")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TaskRunInner>> getDetails(
-            @HostParam("$host") String endpoint,
+        Mono<Response<TaskRunInner>> getDetails(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("taskRunName") String taskRunName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @QueryParam("api-version") String apiVersion, @PathParam("taskRunName") String taskRunName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TaskRunListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<TaskRunListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("registryName") String registryName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TaskRunListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TaskRunListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the detailed information for a given task run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -178,22 +150,18 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the detailed information for a given task run along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TaskRunInner>> getWithResponseAsync(
-        String resourceGroupName, String registryName, String taskRunName) {
+    public Mono<Response<TaskRunInner>> getWithResponseAsync(String resourceGroupName, String registryName,
+        String taskRunName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -208,24 +176,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            apiVersion,
-                            taskRunName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, registryName, apiVersion, taskRunName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the detailed information for a given task run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -234,22 +192,18 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the detailed information for a given task run along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TaskRunInner>> getWithResponseAsync(
-        String resourceGroupName, String registryName, String taskRunName, Context context) {
+    private Mono<Response<TaskRunInner>> getWithResponseAsync(String resourceGroupName, String registryName,
+        String taskRunName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -264,21 +218,13 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                apiVersion,
-                taskRunName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
+            apiVersion, taskRunName, accept, context);
     }
 
     /**
      * Gets the detailed information for a given task run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -295,7 +241,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
 
     /**
      * Gets the detailed information for a given task run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -306,14 +252,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the detailed information for a given task run along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TaskRunInner> getWithResponse(
-        String resourceGroupName, String registryName, String taskRunName, Context context) {
+    public Response<TaskRunInner> getWithResponse(String resourceGroupName, String registryName, String taskRunName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, registryName, taskRunName, context).block();
     }
 
     /**
      * Gets the detailed information for a given task run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -329,7 +275,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
 
     /**
      * Creates a task run for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -338,22 +284,18 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task run that has the ARM resource and properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunInner taskRun) {
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
+        String taskRunName, TaskRunInner taskRun) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -373,25 +315,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            apiVersion,
-                            taskRunName,
-                            taskRun,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, registryName, apiVersion, taskRunName, taskRun, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a task run for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -401,22 +332,18 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task run that has the ARM resource and properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunInner taskRun, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
+        String taskRunName, TaskRunInner taskRun, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -436,22 +363,13 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                apiVersion,
-                taskRunName,
-                taskRun,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            registryName, apiVersion, taskRunName, taskRun, accept, context);
     }
 
     /**
      * Creates a task run for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -462,19 +380,17 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link PollerFlux} for polling of the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<TaskRunInner>, TaskRunInner> beginCreateAsync(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunInner taskRun) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, registryName, taskRunName, taskRun);
-        return this
-            .client
-            .<TaskRunInner, TaskRunInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TaskRunInner.class, TaskRunInner.class, this.client.getContext());
+    public PollerFlux<PollResult<TaskRunInner>, TaskRunInner> beginCreateAsync(String resourceGroupName,
+        String registryName, String taskRunName, TaskRunInner taskRun) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, registryName, taskRunName, taskRun);
+        return this.client.<TaskRunInner, TaskRunInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TaskRunInner.class, TaskRunInner.class, this.client.getContext());
     }
 
     /**
      * Creates a task run for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -486,20 +402,18 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link PollerFlux} for polling of the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TaskRunInner>, TaskRunInner> beginCreateAsync(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunInner taskRun, Context context) {
+    private PollerFlux<PollResult<TaskRunInner>, TaskRunInner> beginCreateAsync(String resourceGroupName,
+        String registryName, String taskRunName, TaskRunInner taskRun, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, registryName, taskRunName, taskRun, context);
-        return this
-            .client
-            .<TaskRunInner, TaskRunInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TaskRunInner.class, TaskRunInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, registryName, taskRunName, taskRun, context);
+        return this.client.<TaskRunInner, TaskRunInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TaskRunInner.class, TaskRunInner.class, context);
     }
 
     /**
      * Creates a task run for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -510,14 +424,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link SyncPoller} for polling of the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TaskRunInner>, TaskRunInner> beginCreate(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunInner taskRun) {
+    public SyncPoller<PollResult<TaskRunInner>, TaskRunInner> beginCreate(String resourceGroupName, String registryName,
+        String taskRunName, TaskRunInner taskRun) {
         return this.beginCreateAsync(resourceGroupName, registryName, taskRunName, taskRun).getSyncPoller();
     }
 
     /**
      * Creates a task run for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -529,14 +443,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link SyncPoller} for polling of the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TaskRunInner>, TaskRunInner> beginCreate(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunInner taskRun, Context context) {
+    public SyncPoller<PollResult<TaskRunInner>, TaskRunInner> beginCreate(String resourceGroupName, String registryName,
+        String taskRunName, TaskRunInner taskRun, Context context) {
         return this.beginCreateAsync(resourceGroupName, registryName, taskRunName, taskRun, context).getSyncPoller();
     }
 
     /**
      * Creates a task run for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -547,16 +461,15 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the task run that has the ARM resource and properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TaskRunInner> createAsync(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunInner taskRun) {
-        return beginCreateAsync(resourceGroupName, registryName, taskRunName, taskRun)
-            .last()
+    public Mono<TaskRunInner> createAsync(String resourceGroupName, String registryName, String taskRunName,
+        TaskRunInner taskRun) {
+        return beginCreateAsync(resourceGroupName, registryName, taskRunName, taskRun).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a task run for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -568,16 +481,15 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the task run that has the ARM resource and properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TaskRunInner> createAsync(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunInner taskRun, Context context) {
-        return beginCreateAsync(resourceGroupName, registryName, taskRunName, taskRun, context)
-            .last()
+    private Mono<TaskRunInner> createAsync(String resourceGroupName, String registryName, String taskRunName,
+        TaskRunInner taskRun, Context context) {
+        return beginCreateAsync(resourceGroupName, registryName, taskRunName, taskRun, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a task run for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -588,14 +500,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskRunInner create(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunInner taskRun) {
+    public TaskRunInner create(String resourceGroupName, String registryName, String taskRunName,
+        TaskRunInner taskRun) {
         return createAsync(resourceGroupName, registryName, taskRunName, taskRun).block();
     }
 
     /**
      * Creates a task run for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -607,14 +519,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskRunInner create(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunInner taskRun, Context context) {
+    public TaskRunInner create(String resourceGroupName, String registryName, String taskRunName, TaskRunInner taskRun,
+        Context context) {
         return createAsync(resourceGroupName, registryName, taskRunName, taskRun, context).block();
     }
 
     /**
      * Deletes a specified task run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -624,19 +536,15 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String registryName, String taskRunName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+        String taskRunName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -651,24 +559,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            apiVersion,
-                            taskRunName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, registryName, apiVersion, taskRunName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a specified task run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -679,19 +577,15 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String registryName, String taskRunName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+        String taskRunName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -706,21 +600,13 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                apiVersion,
-                taskRunName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            registryName, apiVersion, taskRunName, accept, context);
     }
 
     /**
      * Deletes a specified task run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -730,18 +616,16 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String registryName, String taskRunName) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String taskRunName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, taskRunName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a specified task run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -752,19 +636,18 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String registryName, String taskRunName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String taskRunName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, registryName, taskRunName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, registryName, taskRunName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a specified task run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -774,14 +657,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String registryName, String taskRunName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String taskRunName) {
         return this.beginDeleteAsync(resourceGroupName, registryName, taskRunName).getSyncPoller();
     }
 
     /**
      * Deletes a specified task run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -792,14 +675,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String registryName, String taskRunName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String taskRunName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, registryName, taskRunName, context).getSyncPoller();
     }
 
     /**
      * Deletes a specified task run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -810,14 +693,13 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String taskRunName) {
-        return beginDeleteAsync(resourceGroupName, registryName, taskRunName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, registryName, taskRunName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a specified task run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -829,14 +711,13 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String registryName, String taskRunName, Context context) {
-        return beginDeleteAsync(resourceGroupName, registryName, taskRunName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, registryName, taskRunName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a specified task run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -851,7 +732,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
 
     /**
      * Deletes a specified task run resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -867,7 +748,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
 
     /**
      * Updates a task run with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -876,22 +757,18 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task run that has the ARM resource and properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunUpdateParameters updateParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
+        String taskRunName, TaskRunUpdateParameters updateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -912,25 +789,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            apiVersion,
-                            taskRunName,
-                            updateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, registryName, apiVersion, taskRunName, updateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a task run with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -940,26 +806,18 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task run that has the ARM resource and properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        String taskRunName,
-        TaskRunUpdateParameters updateParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
+        String taskRunName, TaskRunUpdateParameters updateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -980,22 +838,13 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                apiVersion,
-                taskRunName,
-                updateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            registryName, apiVersion, taskRunName, updateParameters, accept, context);
     }
 
     /**
      * Updates a task run with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1006,19 +855,17 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link PollerFlux} for polling of the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<TaskRunInner>, TaskRunInner> beginUpdateAsync(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunUpdateParameters updateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, registryName, taskRunName, updateParameters);
-        return this
-            .client
-            .<TaskRunInner, TaskRunInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TaskRunInner.class, TaskRunInner.class, this.client.getContext());
+    public PollerFlux<PollResult<TaskRunInner>, TaskRunInner> beginUpdateAsync(String resourceGroupName,
+        String registryName, String taskRunName, TaskRunUpdateParameters updateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, registryName, taskRunName, updateParameters);
+        return this.client.<TaskRunInner, TaskRunInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TaskRunInner.class, TaskRunInner.class, this.client.getContext());
     }
 
     /**
      * Updates a task run with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1030,24 +877,18 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link PollerFlux} for polling of the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TaskRunInner>, TaskRunInner> beginUpdateAsync(
-        String resourceGroupName,
-        String registryName,
-        String taskRunName,
-        TaskRunUpdateParameters updateParameters,
-        Context context) {
+    private PollerFlux<PollResult<TaskRunInner>, TaskRunInner> beginUpdateAsync(String resourceGroupName,
+        String registryName, String taskRunName, TaskRunUpdateParameters updateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, registryName, taskRunName, updateParameters, context);
-        return this
-            .client
-            .<TaskRunInner, TaskRunInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TaskRunInner.class, TaskRunInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, registryName, taskRunName, updateParameters, context);
+        return this.client.<TaskRunInner, TaskRunInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TaskRunInner.class, TaskRunInner.class, context);
     }
 
     /**
      * Updates a task run with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1058,14 +899,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link SyncPoller} for polling of the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TaskRunInner>, TaskRunInner> beginUpdate(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunUpdateParameters updateParameters) {
+    public SyncPoller<PollResult<TaskRunInner>, TaskRunInner> beginUpdate(String resourceGroupName, String registryName,
+        String taskRunName, TaskRunUpdateParameters updateParameters) {
         return this.beginUpdateAsync(resourceGroupName, registryName, taskRunName, updateParameters).getSyncPoller();
     }
 
     /**
      * Updates a task run with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1077,20 +918,15 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link SyncPoller} for polling of the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TaskRunInner>, TaskRunInner> beginUpdate(
-        String resourceGroupName,
-        String registryName,
-        String taskRunName,
-        TaskRunUpdateParameters updateParameters,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, registryName, taskRunName, updateParameters, context)
+    public SyncPoller<PollResult<TaskRunInner>, TaskRunInner> beginUpdate(String resourceGroupName, String registryName,
+        String taskRunName, TaskRunUpdateParameters updateParameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, registryName, taskRunName, updateParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Updates a task run with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1101,16 +937,15 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the task run that has the ARM resource and properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TaskRunInner> updateAsync(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunUpdateParameters updateParameters) {
-        return beginUpdateAsync(resourceGroupName, registryName, taskRunName, updateParameters)
-            .last()
+    public Mono<TaskRunInner> updateAsync(String resourceGroupName, String registryName, String taskRunName,
+        TaskRunUpdateParameters updateParameters) {
+        return beginUpdateAsync(resourceGroupName, registryName, taskRunName, updateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a task run with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1122,20 +957,15 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the task run that has the ARM resource and properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TaskRunInner> updateAsync(
-        String resourceGroupName,
-        String registryName,
-        String taskRunName,
-        TaskRunUpdateParameters updateParameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, registryName, taskRunName, updateParameters, context)
-            .last()
+    private Mono<TaskRunInner> updateAsync(String resourceGroupName, String registryName, String taskRunName,
+        TaskRunUpdateParameters updateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, registryName, taskRunName, updateParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a task run with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1146,14 +976,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskRunInner update(
-        String resourceGroupName, String registryName, String taskRunName, TaskRunUpdateParameters updateParameters) {
+    public TaskRunInner update(String resourceGroupName, String registryName, String taskRunName,
+        TaskRunUpdateParameters updateParameters) {
         return updateAsync(resourceGroupName, registryName, taskRunName, updateParameters).block();
     }
 
     /**
      * Updates a task run with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1165,18 +995,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the task run that has the ARM resource and properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskRunInner update(
-        String resourceGroupName,
-        String registryName,
-        String taskRunName,
-        TaskRunUpdateParameters updateParameters,
-        Context context) {
+    public TaskRunInner update(String resourceGroupName, String registryName, String taskRunName,
+        TaskRunUpdateParameters updateParameters, Context context) {
         return updateAsync(resourceGroupName, registryName, taskRunName, updateParameters, context).block();
     }
 
     /**
      * Gets the detailed information for a given task run that includes all secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1184,22 +1010,18 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the detailed information for a given task run that includes all secrets along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TaskRunInner>> getDetailsWithResponseAsync(
-        String resourceGroupName, String registryName, String taskRunName) {
+    public Mono<Response<TaskRunInner>> getDetailsWithResponseAsync(String resourceGroupName, String registryName,
+        String taskRunName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1214,24 +1036,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDetails(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            apiVersion,
-                            taskRunName,
-                            accept,
-                            context))
+            .withContext(context -> service.getDetails(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, registryName, apiVersion, taskRunName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the detailed information for a given task run that includes all secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1240,22 +1052,18 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the detailed information for a given task run that includes all secrets along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TaskRunInner>> getDetailsWithResponseAsync(
-        String resourceGroupName, String registryName, String taskRunName, Context context) {
+    private Mono<Response<TaskRunInner>> getDetailsWithResponseAsync(String resourceGroupName, String registryName,
+        String taskRunName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1270,21 +1078,13 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getDetails(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                apiVersion,
-                taskRunName,
-                accept,
-                context);
+        return service.getDetails(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            registryName, apiVersion, taskRunName, accept, context);
     }
 
     /**
      * Gets the detailed information for a given task run that includes all secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1292,7 +1092,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the detailed information for a given task run that includes all secrets on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TaskRunInner> getDetailsAsync(String resourceGroupName, String registryName, String taskRunName) {
@@ -1302,7 +1102,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
 
     /**
      * Gets the detailed information for a given task run that includes all secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1313,14 +1113,14 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the detailed information for a given task run that includes all secrets along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TaskRunInner> getDetailsWithResponse(
-        String resourceGroupName, String registryName, String taskRunName, Context context) {
+    public Response<TaskRunInner> getDetailsWithResponse(String resourceGroupName, String registryName,
+        String taskRunName, Context context) {
         return getDetailsWithResponseAsync(resourceGroupName, registryName, taskRunName, context).block();
     }
 
     /**
      * Gets the detailed information for a given task run that includes all secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskRunName The name of the task run.
@@ -1336,7 +1136,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
 
     /**
      * Lists all the task runs for a specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1347,16 +1147,12 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TaskRunInner>> listSinglePageAsync(String resourceGroupName, String registryName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1368,32 +1164,16 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            registryName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<TaskRunInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, registryName, apiVersion, accept, context))
+            .<PagedResponse<TaskRunInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the task runs for a specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
@@ -1403,19 +1183,15 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the collection of task runs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TaskRunInner>> listSinglePageAsync(
-        String resourceGroupName, String registryName, Context context) {
+    private Mono<PagedResponse<TaskRunInner>> listSinglePageAsync(String resourceGroupName, String registryName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1428,28 +1204,15 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                registryName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the task runs for a specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1459,13 +1222,13 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TaskRunInner> listAsync(String resourceGroupName, String registryName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, registryName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the task runs for a specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
@@ -1476,14 +1239,13 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TaskRunInner> listAsync(String resourceGroupName, String registryName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, registryName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all the task runs for a specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1498,7 +1260,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
 
     /**
      * Lists all the task runs for a specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
@@ -1514,9 +1276,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1528,31 +1291,22 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TaskRunInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TaskRunInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1565,23 +1319,13 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

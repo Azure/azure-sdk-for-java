@@ -9,14 +9,16 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequestResource;
 
-/** An instance of this class provides access to all the operations defined in ValidateOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ValidateOperationsClient.
+ */
 public interface ValidateOperationsClient {
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -26,13 +28,13 @@ public interface ValidateOperationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginTrigger(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters);
+    SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters);
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -43,13 +45,13 @@ public interface ValidateOperationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginTrigger(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
+        ValidateOperationRequestResource parameters, Context context);
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -58,12 +60,12 @@ public interface ValidateOperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void trigger(String vaultName, String resourceGroupName, ValidateOperationRequest parameters);
+    void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters);
 
     /**
      * Validate operation for specified backed up item in the form of an asynchronous operation. Returns tracking
      * headers which can be tracked using GetValidateOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource validate operation request.
@@ -73,5 +75,6 @@ public interface ValidateOperationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void trigger(String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context);
+    void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters,
+        Context context);
 }

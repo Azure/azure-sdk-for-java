@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The status of the archive. */
+/**
+ * The status of the archive.
+ */
 @Immutable
 public final class AmlFilesystemArchiveStatus {
     /*
@@ -47,13 +49,15 @@ public final class AmlFilesystemArchiveStatus {
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /** Creates an instance of AmlFilesystemArchiveStatus class. */
+    /**
+     * Creates an instance of AmlFilesystemArchiveStatus class.
+     */
     public AmlFilesystemArchiveStatus() {
     }
 
     /**
      * Get the state property: The state of the archive operation.
-     *
+     * 
      * @return the state value.
      */
     public ArchiveStatusType state() {
@@ -62,7 +66,7 @@ public final class AmlFilesystemArchiveStatus {
 
     /**
      * Get the lastCompletionTime property: The time of the last completed archive operation.
-     *
+     * 
      * @return the lastCompletionTime value.
      */
     public OffsetDateTime lastCompletionTime() {
@@ -71,7 +75,7 @@ public final class AmlFilesystemArchiveStatus {
 
     /**
      * Get the lastStartedTime property: The time the latest archive operation started.
-     *
+     * 
      * @return the lastStartedTime value.
      */
     public OffsetDateTime lastStartedTime() {
@@ -80,7 +84,7 @@ public final class AmlFilesystemArchiveStatus {
 
     /**
      * Get the percentComplete property: The completion percentage of the archive operation.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -89,7 +93,7 @@ public final class AmlFilesystemArchiveStatus {
 
     /**
      * Get the errorCode property: Server-defined error code for the archive operation.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -98,7 +102,7 @@ public final class AmlFilesystemArchiveStatus {
 
     /**
      * Get the errorMessage property: Server-defined error message for the archive operation.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -107,7 +111,7 @@ public final class AmlFilesystemArchiveStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

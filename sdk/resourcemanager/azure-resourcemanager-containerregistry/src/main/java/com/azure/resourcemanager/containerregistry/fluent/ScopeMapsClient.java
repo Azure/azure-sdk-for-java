@@ -19,70 +19,72 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ScopeMapsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ScopeMapsClient.
+ */
 public interface ScopeMapsClient {
     /**
      * Lists all the scope maps for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list scope maps for a container registry as paginated response with {@link
-     *     PagedFlux}.
+     * @return the result of a request to list scope maps for a container registry as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ScopeMapInner> listAsync(String resourceGroupName, String registryName);
 
     /**
      * Lists all the scope maps for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list scope maps for a container registry as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list scope maps for a container registry as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScopeMapInner> list(String resourceGroupName, String registryName);
 
     /**
      * Lists all the scope maps for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list scope maps for a container registry as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list scope maps for a container registry as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScopeMapInner> list(String resourceGroupName, String registryName, Context context);
 
     /**
      * Gets the properties of the specified scope map.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified scope map along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of the specified scope map along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ScopeMapInner>> getWithResponseAsync(
-        String resourceGroupName, String registryName, String scopeMapName);
+    Mono<Response<ScopeMapInner>> getWithResponseAsync(String resourceGroupName, String registryName,
+        String scopeMapName);
 
     /**
      * Gets the properties of the specified scope map.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -96,7 +98,7 @@ public interface ScopeMapsClient {
 
     /**
      * Gets the properties of the specified scope map.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -107,12 +109,12 @@ public interface ScopeMapsClient {
      * @return the properties of the specified scope map along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScopeMapInner> getWithResponse(
-        String resourceGroupName, String registryName, String scopeMapName, Context context);
+    Response<ScopeMapInner> getWithResponse(String resourceGroupName, String registryName, String scopeMapName,
+        Context context);
 
     /**
      * Gets the properties of the specified scope map.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -126,7 +128,7 @@ public interface ScopeMapsClient {
 
     /**
      * Creates a scope map for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -135,15 +137,15 @@ public interface ScopeMapsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a scope map for a container registry along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String registryName, String scopeMapName, ScopeMapInner scopeMapCreateParameters);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
+        String scopeMapName, ScopeMapInner scopeMapCreateParameters);
 
     /**
      * Creates a scope map for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -154,12 +156,12 @@ public interface ScopeMapsClient {
      * @return the {@link PollerFlux} for polling of an object that represents a scope map for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ScopeMapInner>, ScopeMapInner> beginCreateAsync(
-        String resourceGroupName, String registryName, String scopeMapName, ScopeMapInner scopeMapCreateParameters);
+    PollerFlux<PollResult<ScopeMapInner>, ScopeMapInner> beginCreateAsync(String resourceGroupName, String registryName,
+        String scopeMapName, ScopeMapInner scopeMapCreateParameters);
 
     /**
      * Creates a scope map for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -170,12 +172,12 @@ public interface ScopeMapsClient {
      * @return the {@link SyncPoller} for polling of an object that represents a scope map for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginCreate(
-        String resourceGroupName, String registryName, String scopeMapName, ScopeMapInner scopeMapCreateParameters);
+    SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginCreate(String resourceGroupName, String registryName,
+        String scopeMapName, ScopeMapInner scopeMapCreateParameters);
 
     /**
      * Creates a scope map for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -187,16 +189,12 @@ public interface ScopeMapsClient {
      * @return the {@link SyncPoller} for polling of an object that represents a scope map for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginCreate(
-        String resourceGroupName,
-        String registryName,
-        String scopeMapName,
-        ScopeMapInner scopeMapCreateParameters,
-        Context context);
+    SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginCreate(String resourceGroupName, String registryName,
+        String scopeMapName, ScopeMapInner scopeMapCreateParameters, Context context);
 
     /**
      * Creates a scope map for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -207,12 +205,12 @@ public interface ScopeMapsClient {
      * @return an object that represents a scope map for a container registry on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ScopeMapInner> createAsync(
-        String resourceGroupName, String registryName, String scopeMapName, ScopeMapInner scopeMapCreateParameters);
+    Mono<ScopeMapInner> createAsync(String resourceGroupName, String registryName, String scopeMapName,
+        ScopeMapInner scopeMapCreateParameters);
 
     /**
      * Creates a scope map for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -223,12 +221,12 @@ public interface ScopeMapsClient {
      * @return an object that represents a scope map for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScopeMapInner create(
-        String resourceGroupName, String registryName, String scopeMapName, ScopeMapInner scopeMapCreateParameters);
+    ScopeMapInner create(String resourceGroupName, String registryName, String scopeMapName,
+        ScopeMapInner scopeMapCreateParameters);
 
     /**
      * Creates a scope map for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -240,16 +238,12 @@ public interface ScopeMapsClient {
      * @return an object that represents a scope map for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScopeMapInner create(
-        String resourceGroupName,
-        String registryName,
-        String scopeMapName,
-        ScopeMapInner scopeMapCreateParameters,
-        Context context);
+    ScopeMapInner create(String resourceGroupName, String registryName, String scopeMapName,
+        ScopeMapInner scopeMapCreateParameters, Context context);
 
     /**
      * Deletes a scope map from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -259,12 +253,12 @@ public interface ScopeMapsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String registryName, String scopeMapName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+        String scopeMapName);
 
     /**
      * Deletes a scope map from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -274,12 +268,12 @@ public interface ScopeMapsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String registryName, String scopeMapName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String scopeMapName);
 
     /**
      * Deletes a scope map from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -293,7 +287,7 @@ public interface ScopeMapsClient {
 
     /**
      * Deletes a scope map from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -304,12 +298,12 @@ public interface ScopeMapsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String registryName, String scopeMapName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, String scopeMapName,
+        Context context);
 
     /**
      * Deletes a scope map from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -323,7 +317,7 @@ public interface ScopeMapsClient {
 
     /**
      * Deletes a scope map from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -336,7 +330,7 @@ public interface ScopeMapsClient {
 
     /**
      * Deletes a scope map from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -350,7 +344,7 @@ public interface ScopeMapsClient {
 
     /**
      * Updates a scope map with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -359,18 +353,15 @@ public interface ScopeMapsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a scope map for a container registry along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        String scopeMapName,
-        ScopeMapUpdateParameters scopeMapUpdateParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
+        String scopeMapName, ScopeMapUpdateParameters scopeMapUpdateParameters);
 
     /**
      * Updates a scope map with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -381,15 +372,12 @@ public interface ScopeMapsClient {
      * @return the {@link PollerFlux} for polling of an object that represents a scope map for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ScopeMapInner>, ScopeMapInner> beginUpdateAsync(
-        String resourceGroupName,
-        String registryName,
-        String scopeMapName,
-        ScopeMapUpdateParameters scopeMapUpdateParameters);
+    PollerFlux<PollResult<ScopeMapInner>, ScopeMapInner> beginUpdateAsync(String resourceGroupName, String registryName,
+        String scopeMapName, ScopeMapUpdateParameters scopeMapUpdateParameters);
 
     /**
      * Updates a scope map with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -400,15 +388,12 @@ public interface ScopeMapsClient {
      * @return the {@link SyncPoller} for polling of an object that represents a scope map for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginUpdate(
-        String resourceGroupName,
-        String registryName,
-        String scopeMapName,
-        ScopeMapUpdateParameters scopeMapUpdateParameters);
+    SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginUpdate(String resourceGroupName, String registryName,
+        String scopeMapName, ScopeMapUpdateParameters scopeMapUpdateParameters);
 
     /**
      * Updates a scope map with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -420,16 +405,12 @@ public interface ScopeMapsClient {
      * @return the {@link SyncPoller} for polling of an object that represents a scope map for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginUpdate(
-        String resourceGroupName,
-        String registryName,
-        String scopeMapName,
-        ScopeMapUpdateParameters scopeMapUpdateParameters,
-        Context context);
+    SyncPoller<PollResult<ScopeMapInner>, ScopeMapInner> beginUpdate(String resourceGroupName, String registryName,
+        String scopeMapName, ScopeMapUpdateParameters scopeMapUpdateParameters, Context context);
 
     /**
      * Updates a scope map with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -440,15 +421,12 @@ public interface ScopeMapsClient {
      * @return an object that represents a scope map for a container registry on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ScopeMapInner> updateAsync(
-        String resourceGroupName,
-        String registryName,
-        String scopeMapName,
+    Mono<ScopeMapInner> updateAsync(String resourceGroupName, String registryName, String scopeMapName,
         ScopeMapUpdateParameters scopeMapUpdateParameters);
 
     /**
      * Updates a scope map with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -459,15 +437,12 @@ public interface ScopeMapsClient {
      * @return an object that represents a scope map for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScopeMapInner update(
-        String resourceGroupName,
-        String registryName,
-        String scopeMapName,
+    ScopeMapInner update(String resourceGroupName, String registryName, String scopeMapName,
         ScopeMapUpdateParameters scopeMapUpdateParameters);
 
     /**
      * Updates a scope map with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param scopeMapName The name of the scope map.
@@ -479,10 +454,6 @@ public interface ScopeMapsClient {
      * @return an object that represents a scope map for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScopeMapInner update(
-        String resourceGroupName,
-        String registryName,
-        String scopeMapName,
-        ScopeMapUpdateParameters scopeMapUpdateParameters,
-        Context context);
+    ScopeMapInner update(String resourceGroupName, String registryName, String scopeMapName,
+        ScopeMapUpdateParameters scopeMapUpdateParameters, Context context);
 }

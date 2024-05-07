@@ -31,6 +31,10 @@ public final class InputImpl implements Input, Input.Definition, Input.Update {
         return this.innerModel().type();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public InputInner innerModel() {
         return this.innerObject;
     }
@@ -58,30 +62,14 @@ public final class InputImpl implements Input, Input.Definition, Input.Update {
     }
 
     public Input create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInputs()
-                .createOrReplaceWithResponse(
-                    resourceGroupName,
-                    jobName,
-                    inputName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInputs().createOrReplaceWithResponse(resourceGroupName,
+            jobName, inputName, this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE).getValue();
         return this;
     }
 
     public Input create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInputs()
-                .createOrReplaceWithResponse(
-                    resourceGroupName, jobName, inputName, this.innerModel(), createIfMatch, createIfNoneMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInputs().createOrReplaceWithResponse(resourceGroupName,
+            jobName, inputName, this.innerModel(), createIfMatch, createIfNoneMatch, context).getValue();
         return this;
     }
 
@@ -99,56 +87,37 @@ public final class InputImpl implements Input, Input.Definition, Input.Update {
     }
 
     public Input apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInputs()
-                .updateWithResponse(
-                    resourceGroupName, jobName, inputName, this.innerModel(), updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInputs()
+            .updateWithResponse(resourceGroupName, jobName, inputName, this.innerModel(), updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Input apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInputs()
-                .updateWithResponse(resourceGroupName, jobName, inputName, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInputs()
+            .updateWithResponse(resourceGroupName, jobName, inputName, this.innerModel(), updateIfMatch, context)
+            .getValue();
         return this;
     }
 
     InputImpl(InputInner innerObject, com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.jobName = Utils.getValueFromIdByName(innerObject.id(), "streamingjobs");
-        this.inputName = Utils.getValueFromIdByName(innerObject.id(), "inputs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.jobName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "streamingjobs");
+        this.inputName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "inputs");
     }
 
     public Input refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInputs()
-                .getWithResponse(resourceGroupName, jobName, inputName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInputs()
+            .getWithResponse(resourceGroupName, jobName, inputName, Context.NONE).getValue();
         return this;
     }
 
     public Input refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInputs()
-                .getWithResponse(resourceGroupName, jobName, inputName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInputs()
+            .getWithResponse(resourceGroupName, jobName, inputName, context).getValue();
         return this;
-    }
-
-    public ResourceTestStatus test(InputInner input) {
-        return serviceManager.inputs().test(resourceGroupName, jobName, inputName, input);
     }
 
     public ResourceTestStatus test() {

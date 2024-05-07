@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceAsse
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of regulatory compliance assessment response. */
+/**
+ * List of regulatory compliance assessment response.
+ */
 @Fluent
 public final class RegulatoryComplianceAssessmentList {
     /*
@@ -25,13 +27,15 @@ public final class RegulatoryComplianceAssessmentList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RegulatoryComplianceAssessmentList class. */
+    /**
+     * Creates an instance of RegulatoryComplianceAssessmentList class.
+     */
     public RegulatoryComplianceAssessmentList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<RegulatoryComplianceAssessmentInner> value() {
@@ -40,7 +44,7 @@ public final class RegulatoryComplianceAssessmentList {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the RegulatoryComplianceAssessmentList object itself.
      */
@@ -51,7 +55,7 @@ public final class RegulatoryComplianceAssessmentList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class RegulatoryComplianceAssessmentList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model RegulatoryComplianceAssessmentList"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model RegulatoryComplianceAssessmentList"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -14,8 +14,7 @@ public final class AsyncOperationStatusImpl implements AsyncOperationStatus {
 
     private final com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager;
 
-    AsyncOperationStatusImpl(
-        AsyncOperationStatusInner innerObject,
+    AsyncOperationStatusImpl(AsyncOperationStatusInner innerObject,
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

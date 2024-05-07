@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.models.TrustedAccessRoleRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Trusted access role definition. */
+/**
+ * Trusted access role definition.
+ */
 @Immutable
 public final class TrustedAccessRoleInner {
     /*
@@ -31,13 +33,15 @@ public final class TrustedAccessRoleInner {
     @JsonProperty(value = "rules", access = JsonProperty.Access.WRITE_ONLY)
     private List<TrustedAccessRoleRule> rules;
 
-    /** Creates an instance of TrustedAccessRoleInner class. */
+    /**
+     * Creates an instance of TrustedAccessRoleInner class.
+     */
     public TrustedAccessRoleInner() {
     }
 
     /**
      * Get the sourceResourceType property: Resource type of Azure resource.
-     *
+     * 
      * @return the sourceResourceType value.
      */
     public String sourceResourceType() {
@@ -46,7 +50,7 @@ public final class TrustedAccessRoleInner {
 
     /**
      * Get the name property: Name of role, name is unique under a source resource type.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +60,7 @@ public final class TrustedAccessRoleInner {
     /**
      * Get the rules property: List of rules for the role. This maps to 'rules' property of [Kubernetes Cluster
      * Role](https://kubernetes.io/docs/reference/kubernetes-api/authorization-resources/cluster-role-v1/#ClusterRole).
-     *
+     * 
      * @return the rules value.
      */
     public List<TrustedAccessRoleRule> rules() {
@@ -65,7 +69,7 @@ public final class TrustedAccessRoleInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

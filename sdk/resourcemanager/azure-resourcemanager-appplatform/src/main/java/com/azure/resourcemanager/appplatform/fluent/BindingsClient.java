@@ -18,13 +18,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BindingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BindingsClient.
+ */
 public interface BindingsClient {
     /**
      * Get a Binding and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -34,14 +36,14 @@ public interface BindingsClient {
      * @return a Binding and its properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BindingResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName);
+    Mono<Response<BindingResourceInner>> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String bindingName);
 
     /**
      * Get a Binding and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -51,14 +53,32 @@ public interface BindingsClient {
      * @return a Binding and its properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BindingResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName);
+    Mono<BindingResourceInner> getAsync(String resourceGroupName, String serviceName, String appName,
+        String bindingName);
 
     /**
      * Get a Binding and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param bindingName The name of the Binding resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Binding and its properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BindingResourceInner> getWithResponse(String resourceGroupName, String serviceName, String appName,
+        String bindingName, Context context);
+
+    /**
+     * Get a Binding and its properties.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -71,28 +91,10 @@ public interface BindingsClient {
     BindingResourceInner get(String resourceGroupName, String serviceName, String appName, String bindingName);
 
     /**
-     * Get a Binding and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param bindingName The name of the Binding resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Binding and its properties along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BindingResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String appName, String bindingName, Context context);
-
-    /**
      * Create a new Binding or update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -103,18 +105,14 @@ public interface BindingsClient {
      * @return binding resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String bindingName, BindingResourceInner bindingResource);
 
     /**
      * Create a new Binding or update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -126,17 +124,14 @@ public interface BindingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
+        String resourceGroupName, String serviceName, String appName, String bindingName,
         BindingResourceInner bindingResource);
 
     /**
      * Create a new Binding or update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -147,18 +142,14 @@ public interface BindingsClient {
      * @return the {@link SyncPoller} for polling of binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource);
+    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String appName, String bindingName, BindingResourceInner bindingResource);
 
     /**
      * Create a new Binding or update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -170,19 +161,14 @@ public interface BindingsClient {
      * @return the {@link SyncPoller} for polling of binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource,
-        Context context);
+    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String appName, String bindingName, BindingResourceInner bindingResource, Context context);
 
     /**
      * Create a new Binding or update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -193,18 +179,14 @@ public interface BindingsClient {
      * @return binding resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BindingResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource);
+    Mono<BindingResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String appName,
+        String bindingName, BindingResourceInner bindingResource);
 
     /**
      * Create a new Binding or update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -215,18 +197,14 @@ public interface BindingsClient {
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BindingResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource);
+    BindingResourceInner createOrUpdate(String resourceGroupName, String serviceName, String appName,
+        String bindingName, BindingResourceInner bindingResource);
 
     /**
      * Create a new Binding or update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -238,19 +216,14 @@ public interface BindingsClient {
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BindingResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource,
-        Context context);
+    BindingResourceInner createOrUpdate(String resourceGroupName, String serviceName, String appName,
+        String bindingName, BindingResourceInner bindingResource, Context context);
 
     /**
      * Operation to delete a Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -260,14 +233,14 @@ public interface BindingsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String bindingName);
 
     /**
      * Operation to delete a Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -277,14 +250,14 @@ public interface BindingsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String appName, String bindingName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName, String appName,
+        String bindingName);
 
     /**
      * Operation to delete a Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -294,14 +267,14 @@ public interface BindingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String appName, String bindingName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String appName,
+        String bindingName);
 
     /**
      * Operation to delete a Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -312,14 +285,14 @@ public interface BindingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String appName, String bindingName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String appName,
+        String bindingName, Context context);
 
     /**
      * Operation to delete a Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -333,9 +306,9 @@ public interface BindingsClient {
 
     /**
      * Operation to delete a Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -348,9 +321,9 @@ public interface BindingsClient {
 
     /**
      * Operation to delete a Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -364,9 +337,9 @@ public interface BindingsClient {
 
     /**
      * Operation to update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -377,18 +350,14 @@ public interface BindingsClient {
      * @return binding resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String bindingName, BindingResourceInner bindingResource);
 
     /**
      * Operation to update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -399,18 +368,14 @@ public interface BindingsClient {
      * @return the {@link PollerFlux} for polling of binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource);
+    PollerFlux<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdateAsync(String resourceGroupName,
+        String serviceName, String appName, String bindingName, BindingResourceInner bindingResource);
 
     /**
      * Operation to update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -421,18 +386,14 @@ public interface BindingsClient {
      * @return the {@link SyncPoller} for polling of binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource);
+    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdate(String resourceGroupName,
+        String serviceName, String appName, String bindingName, BindingResourceInner bindingResource);
 
     /**
      * Operation to update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -444,19 +405,14 @@ public interface BindingsClient {
      * @return the {@link SyncPoller} for polling of binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource,
-        Context context);
+    SyncPoller<PollResult<BindingResourceInner>, BindingResourceInner> beginUpdate(String resourceGroupName,
+        String serviceName, String appName, String bindingName, BindingResourceInner bindingResource, Context context);
 
     /**
      * Operation to update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -467,18 +423,14 @@ public interface BindingsClient {
      * @return binding resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BindingResourceInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource);
+    Mono<BindingResourceInner> updateAsync(String resourceGroupName, String serviceName, String appName,
+        String bindingName, BindingResourceInner bindingResource);
 
     /**
      * Operation to update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -489,18 +441,14 @@ public interface BindingsClient {
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BindingResourceInner update(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
+    BindingResourceInner update(String resourceGroupName, String serviceName, String appName, String bindingName,
         BindingResourceInner bindingResource);
 
     /**
      * Operation to update an exiting Binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param bindingName The name of the Binding resource.
@@ -512,51 +460,46 @@ public interface BindingsClient {
      * @return binding resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BindingResourceInner update(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String bindingName,
-        BindingResourceInner bindingResource,
-        Context context);
+    BindingResourceInner update(String resourceGroupName, String serviceName, String appName, String bindingName,
+        BindingResourceInner bindingResource, Context context);
 
     /**
      * Handles requests to list all resources in an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Binding resources and a possible link for next set as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<BindingResourceInner> listAsync(String resourceGroupName, String serviceName, String appName);
 
     /**
      * Handles requests to list all resources in an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Binding resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BindingResourceInner> list(String resourceGroupName, String serviceName, String appName);
 
     /**
      * Handles requests to list all resources in an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param context The context to associate with this operation.
@@ -564,9 +507,9 @@ public interface BindingsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Binding resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BindingResourceInner> list(
-        String resourceGroupName, String serviceName, String appName, Context context);
+    PagedIterable<BindingResourceInner> list(String resourceGroupName, String serviceName, String appName,
+        Context context);
 }

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProx
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ResourceGuardProxyBaseResource model. */
+/**
+ * The ResourceGuardProxyBaseResource model.
+ */
 @Fluent
 public final class ResourceGuardProxyBaseResourceInner extends Resource {
     /*
@@ -25,13 +27,15 @@ public final class ResourceGuardProxyBaseResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
-    /** Creates an instance of ResourceGuardProxyBaseResourceInner class. */
+    /**
+     * Creates an instance of ResourceGuardProxyBaseResourceInner class.
+     */
     public ResourceGuardProxyBaseResourceInner() {
     }
 
     /**
      * Get the properties property: ResourceGuardProxyBaseResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public ResourceGuardProxyBase properties() {
@@ -40,7 +44,7 @@ public final class ResourceGuardProxyBaseResourceInner extends Resource {
 
     /**
      * Set the properties property: ResourceGuardProxyBaseResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResourceGuardProxyBaseResourceInner object itself.
      */
@@ -51,7 +55,7 @@ public final class ResourceGuardProxyBaseResourceInner extends Resource {
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -60,7 +64,7 @@ public final class ResourceGuardProxyBaseResourceInner extends Resource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ResourceGuardProxyBaseResourceInner object itself.
      */
@@ -69,14 +73,18 @@ public final class ResourceGuardProxyBaseResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceGuardProxyBaseResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceGuardProxyBaseResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,7 +93,7 @@ public final class ResourceGuardProxyBaseResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -32,44 +32,29 @@ public final class ResourceProvidersGetRequiredAmlFSSubnetsSizeWithResponseMockT
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"filesystemSubnetSize\":2127235728}";
+        String responseStr = "{\"filesystemSubnetSize\":1810862586}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        StorageCacheManager manager =
-            StorageCacheManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        StorageCacheManager manager = StorageCacheManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RequiredAmlFilesystemSubnetsSize response =
-            manager
-                .resourceProviders()
-                .getRequiredAmlFSSubnetsSizeWithResponse(
-                    new RequiredAmlFilesystemSubnetsSizeInfo()
-                        .withStorageCapacityTiB(34.47978F)
-                        .withSku(new SkuName().withName("mmsbvdkcrodtjin")),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        RequiredAmlFilesystemSubnetsSize response = manager.resourceProviders()
+            .getRequiredAmlFSSubnetsSizeWithResponse(new RequiredAmlFilesystemSubnetsSizeInfo()
+                .withStorageCapacityTiB(17.457623F).withSku(new SkuName().withName("pfrlazsz")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(2127235728, response.filesystemSubnetSize());
+        Assertions.assertEquals(1810862586, response.filesystemSubnetSize());
     }
 }

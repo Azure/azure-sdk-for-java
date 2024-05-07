@@ -20,8 +20,7 @@ public final class OperationsStatusImpl implements OperationsStatus {
 
     private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
-    public OperationsStatusImpl(
-        OperationsStatusClient innerClient,
+    public OperationsStatusImpl(OperationsStatusClient innerClient,
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,10 +29,7 @@ public final class OperationsStatusImpl implements OperationsStatus {
     public Response<OperationStatus> getWithResponse(String location, String operationId, Context context) {
         Response<OperationStatusInner> inner = this.serviceClient().getWithResponse(location, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

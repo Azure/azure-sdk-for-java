@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Disk configuration. */
+/**
+ * Disk configuration.
+ */
 @Fluent
 public final class RecoveryPointDiskConfiguration {
     /*
@@ -35,13 +37,15 @@ public final class RecoveryPointDiskConfiguration {
     @JsonProperty(value = "excludedDiskList")
     private List<DiskInformation> excludedDiskList;
 
-    /** Creates an instance of RecoveryPointDiskConfiguration class. */
+    /**
+     * Creates an instance of RecoveryPointDiskConfiguration class.
+     */
     public RecoveryPointDiskConfiguration() {
     }
 
     /**
      * Get the numberOfDisksIncludedInBackup property: Number of disks included in backup.
-     *
+     * 
      * @return the numberOfDisksIncludedInBackup value.
      */
     public Integer numberOfDisksIncludedInBackup() {
@@ -50,7 +54,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Set the numberOfDisksIncludedInBackup property: Number of disks included in backup.
-     *
+     * 
      * @param numberOfDisksIncludedInBackup the numberOfDisksIncludedInBackup value to set.
      * @return the RecoveryPointDiskConfiguration object itself.
      */
@@ -61,7 +65,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Get the numberOfDisksAttachedToVm property: Number of disks attached to the VM.
-     *
+     * 
      * @return the numberOfDisksAttachedToVm value.
      */
     public Integer numberOfDisksAttachedToVm() {
@@ -70,7 +74,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Set the numberOfDisksAttachedToVm property: Number of disks attached to the VM.
-     *
+     * 
      * @param numberOfDisksAttachedToVm the numberOfDisksAttachedToVm value to set.
      * @return the RecoveryPointDiskConfiguration object itself.
      */
@@ -81,7 +85,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Get the includedDiskList property: Information of disks included in backup.
-     *
+     * 
      * @return the includedDiskList value.
      */
     public List<DiskInformation> includedDiskList() {
@@ -90,7 +94,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Set the includedDiskList property: Information of disks included in backup.
-     *
+     * 
      * @param includedDiskList the includedDiskList value to set.
      * @return the RecoveryPointDiskConfiguration object itself.
      */
@@ -101,7 +105,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Get the excludedDiskList property: Information of disks excluded from backup.
-     *
+     * 
      * @return the excludedDiskList value.
      */
     public List<DiskInformation> excludedDiskList() {
@@ -110,7 +114,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Set the excludedDiskList property: Information of disks excluded from backup.
-     *
+     * 
      * @param excludedDiskList the excludedDiskList value to set.
      * @return the RecoveryPointDiskConfiguration object itself.
      */
@@ -121,7 +125,7 @@ public final class RecoveryPointDiskConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

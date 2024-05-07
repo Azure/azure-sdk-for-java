@@ -8,17 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.WebhookActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /**
  * WebHook activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = WebhookActivity.class, visible = true)
 @JsonTypeName("WebHook")
 @Fluent
 public final class WebhookActivity extends ControlActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "WebHook";
+
     /*
      * WebHook activity properties.
      */
@@ -35,6 +44,16 @@ public final class WebhookActivity extends ControlActivity {
      * Creates an instance of WebhookActivity class.
      */
     public WebhookActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -202,7 +221,7 @@ public final class WebhookActivity extends ControlActivity {
      * 
      * @return the headers value.
      */
-    public Object headers() {
+    public Map<String, Object> headers() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().headers();
     }
 
@@ -214,7 +233,7 @@ public final class WebhookActivity extends ControlActivity {
      * @param headers the headers value to set.
      * @return the WebhookActivity object itself.
      */
-    public WebhookActivity withHeaders(Object headers) {
+    public WebhookActivity withHeaders(Map<String, Object> headers) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new WebhookActivityTypeProperties();
         }
@@ -306,8 +325,9 @@ public final class WebhookActivity extends ControlActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerTypeProperties in model WebhookActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model WebhookActivity"));
         } else {
             innerTypeProperties().validate();
         }

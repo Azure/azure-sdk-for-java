@@ -10,10 +10,6 @@ module com.azure.resourcemanager.elasticsan {
     exports com.azure.resourcemanager.elasticsan.fluent.models;
     exports com.azure.resourcemanager.elasticsan.models;
 
-    opens com.azure.resourcemanager.elasticsan.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.elasticsan.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.elasticsan.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.elasticsan.models to com.azure.core, com.fasterxml.jackson.databind;
 }

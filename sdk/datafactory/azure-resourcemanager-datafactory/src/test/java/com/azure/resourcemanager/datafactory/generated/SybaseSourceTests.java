@@ -11,16 +11,19 @@ public final class SybaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SybaseSource model = BinaryData.fromString(
-            "{\"type\":\"SybaseSource\",\"query\":\"dataodrvwnqbpxyofft\",\"queryTimeout\":\"dataovbhqelsslfxejp\",\"additionalColumns\":\"datasgigs\",\"sourceRetryCount\":\"datatx\",\"sourceRetryWait\":\"datayjwmglgstrzfh\",\"maxConcurrentConnections\":\"datadzovkbcbefohny\",\"disableMetricsCollection\":\"datahmlj\",\"\":{\"szxdbgl\":\"datagfvzvmtjcxig\",\"ivmbu\":\"dataeet\",\"wfhfptbdxtvl\":\"dataizw\"}}")
+            "{\"type\":\"upcio\",\"query\":\"dataqzhtmeuip\",\"queryTimeout\":\"datasrpsjkqfabju\",\"additionalColumns\":\"datats\",\"sourceRetryCount\":\"datarjdeyfnqanbadkzp\",\"sourceRetryWait\":\"datatuplpkjexq\",\"maxConcurrentConnections\":\"datanzlalugoeftrbxom\",\"disableMetricsCollection\":\"dataovarfqverx\",\"\":{\"epgvj\":\"datauq\",\"mddwqiucpjprtb\":\"datallzykalbau\",\"zelxrft\":\"datasjtj\",\"lvrofhhitjhh\":\"datadb\"}}")
             .toObject(SybaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SybaseSource model = new SybaseSource().withSourceRetryCount("datatx").withSourceRetryWait("datayjwmglgstrzfh")
-            .withMaxConcurrentConnections("datadzovkbcbefohny").withDisableMetricsCollection("datahmlj")
-            .withQueryTimeout("dataovbhqelsslfxejp").withAdditionalColumns("datasgigs")
-            .withQuery("dataodrvwnqbpxyofft");
+        SybaseSource model = new SybaseSource().withSourceRetryCount("datarjdeyfnqanbadkzp")
+            .withSourceRetryWait("datatuplpkjexq")
+            .withMaxConcurrentConnections("datanzlalugoeftrbxom")
+            .withDisableMetricsCollection("dataovarfqverx")
+            .withQueryTimeout("datasrpsjkqfabju")
+            .withAdditionalColumns("datats")
+            .withQuery("dataqzhtmeuip");
         model = BinaryData.fromObject(model).toObject(SybaseSource.class);
     }
 }

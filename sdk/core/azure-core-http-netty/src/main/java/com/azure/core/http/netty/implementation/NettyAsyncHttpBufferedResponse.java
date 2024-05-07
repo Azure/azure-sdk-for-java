@@ -23,6 +23,14 @@ import java.nio.charset.Charset;
 public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponseBase {
     private final byte[] body;
 
+    /**
+     * Creates a new buffered response.
+     *
+     * @param httpClientResponse The Reactor Netty HTTP response.
+     * @param httpRequest The HTTP request that initiated this response.
+     * @param body The buffered response body.
+     * @param headersEagerlyConverted Whether the headers were eagerly converted.
+     */
     public NettyAsyncHttpBufferedResponse(HttpClientResponse httpClientResponse, HttpRequest httpRequest, byte[] body,
         boolean headersEagerlyConverted) {
         super(httpClientResponse, httpRequest, headersEagerlyConverted);

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Hyper-V Replica Blue specific protection profile details. */
+/**
+ * Hyper-V Replica Blue specific protection profile details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplica2012")
 @Fluent
@@ -74,13 +76,15 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
     @JsonProperty(value = "replicaDeletionOption")
     private String replicaDeletionOption;
 
-    /** Creates an instance of HyperVReplicaPolicyDetails class. */
+    /**
+     * Creates an instance of HyperVReplicaPolicyDetails class.
+     */
     public HyperVReplicaPolicyDetails() {
     }
 
     /**
      * Get the recoveryPoints property: A value indicating the number of recovery points.
-     *
+     * 
      * @return the recoveryPoints value.
      */
     public Integer recoveryPoints() {
@@ -89,7 +93,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the recoveryPoints property: A value indicating the number of recovery points.
-     *
+     * 
      * @param recoveryPoints the recoveryPoints value to set.
      * @return the HyperVReplicaPolicyDetails object itself.
      */
@@ -101,7 +105,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
     /**
      * Get the applicationConsistentSnapshotFrequencyInHours property: A value indicating the application consistent
      * frequency.
-     *
+     * 
      * @return the applicationConsistentSnapshotFrequencyInHours value.
      */
     public Integer applicationConsistentSnapshotFrequencyInHours() {
@@ -111,20 +115,20 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
     /**
      * Set the applicationConsistentSnapshotFrequencyInHours property: A value indicating the application consistent
      * frequency.
-     *
+     * 
      * @param applicationConsistentSnapshotFrequencyInHours the applicationConsistentSnapshotFrequencyInHours value to
-     *     set.
+     * set.
      * @return the HyperVReplicaPolicyDetails object itself.
      */
-    public HyperVReplicaPolicyDetails withApplicationConsistentSnapshotFrequencyInHours(
-        Integer applicationConsistentSnapshotFrequencyInHours) {
+    public HyperVReplicaPolicyDetails
+        withApplicationConsistentSnapshotFrequencyInHours(Integer applicationConsistentSnapshotFrequencyInHours) {
         this.applicationConsistentSnapshotFrequencyInHours = applicationConsistentSnapshotFrequencyInHours;
         return this;
     }
 
     /**
      * Get the compression property: A value indicating whether compression has to be enabled.
-     *
+     * 
      * @return the compression value.
      */
     public String compression() {
@@ -133,7 +137,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the compression property: A value indicating whether compression has to be enabled.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the HyperVReplicaPolicyDetails object itself.
      */
@@ -144,7 +148,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Get the initialReplicationMethod property: A value indicating whether IR is online.
-     *
+     * 
      * @return the initialReplicationMethod value.
      */
     public String initialReplicationMethod() {
@@ -153,7 +157,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the initialReplicationMethod property: A value indicating whether IR is online.
-     *
+     * 
      * @param initialReplicationMethod the initialReplicationMethod value to set.
      * @return the HyperVReplicaPolicyDetails object itself.
      */
@@ -164,7 +168,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Get the onlineReplicationStartTime property: A value indicating the online IR start time.
-     *
+     * 
      * @return the onlineReplicationStartTime value.
      */
     public String onlineReplicationStartTime() {
@@ -173,7 +177,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the onlineReplicationStartTime property: A value indicating the online IR start time.
-     *
+     * 
      * @param onlineReplicationStartTime the onlineReplicationStartTime value to set.
      * @return the HyperVReplicaPolicyDetails object itself.
      */
@@ -184,7 +188,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Get the offlineReplicationImportPath property: A value indicating the offline IR import path.
-     *
+     * 
      * @return the offlineReplicationImportPath value.
      */
     public String offlineReplicationImportPath() {
@@ -193,7 +197,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the offlineReplicationImportPath property: A value indicating the offline IR import path.
-     *
+     * 
      * @param offlineReplicationImportPath the offlineReplicationImportPath value to set.
      * @return the HyperVReplicaPolicyDetails object itself.
      */
@@ -204,7 +208,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Get the offlineReplicationExportPath property: A value indicating the offline IR export path.
-     *
+     * 
      * @return the offlineReplicationExportPath value.
      */
     public String offlineReplicationExportPath() {
@@ -213,7 +217,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the offlineReplicationExportPath property: A value indicating the offline IR export path.
-     *
+     * 
      * @param offlineReplicationExportPath the offlineReplicationExportPath value to set.
      * @return the HyperVReplicaPolicyDetails object itself.
      */
@@ -224,7 +228,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Get the replicationPort property: A value indicating the recovery HTTPS port.
-     *
+     * 
      * @return the replicationPort value.
      */
     public Integer replicationPort() {
@@ -233,7 +237,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the replicationPort property: A value indicating the recovery HTTPS port.
-     *
+     * 
      * @param replicationPort the replicationPort value to set.
      * @return the HyperVReplicaPolicyDetails object itself.
      */
@@ -244,7 +248,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Get the allowedAuthenticationType property: A value indicating the authentication type.
-     *
+     * 
      * @return the allowedAuthenticationType value.
      */
     public Integer allowedAuthenticationType() {
@@ -253,7 +257,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the allowedAuthenticationType property: A value indicating the authentication type.
-     *
+     * 
      * @param allowedAuthenticationType the allowedAuthenticationType value to set.
      * @return the HyperVReplicaPolicyDetails object itself.
      */
@@ -265,7 +269,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
     /**
      * Get the replicaDeletionOption property: A value indicating whether the VM has to be auto deleted. Supported
      * Values: String.Empty, None, OnRecoveryCloud.
-     *
+     * 
      * @return the replicaDeletionOption value.
      */
     public String replicaDeletionOption() {
@@ -275,7 +279,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
     /**
      * Set the replicaDeletionOption property: A value indicating whether the VM has to be auto deleted. Supported
      * Values: String.Empty, None, OnRecoveryCloud.
-     *
+     * 
      * @param replicaDeletionOption the replicaDeletionOption value to set.
      * @return the HyperVReplicaPolicyDetails object itself.
      */
@@ -286,7 +290,7 @@ public final class HyperVReplicaPolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

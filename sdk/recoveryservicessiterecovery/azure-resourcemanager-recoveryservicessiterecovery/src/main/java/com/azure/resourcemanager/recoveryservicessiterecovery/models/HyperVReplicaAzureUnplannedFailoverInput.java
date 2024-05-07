@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** HvrA provider specific input for unplanned failover. */
+/**
+ * HvrA provider specific input for unplanned failover.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplicaAzure")
 @Fluent
@@ -33,13 +35,15 @@ public final class HyperVReplicaAzureUnplannedFailoverInput extends UnplannedFai
     @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
-    /** Creates an instance of HyperVReplicaAzureUnplannedFailoverInput class. */
+    /**
+     * Creates an instance of HyperVReplicaAzureUnplannedFailoverInput class.
+     */
     public HyperVReplicaAzureUnplannedFailoverInput() {
     }
 
     /**
      * Get the primaryKekCertificatePfx property: Primary kek certificate pfx.
-     *
+     * 
      * @return the primaryKekCertificatePfx value.
      */
     public String primaryKekCertificatePfx() {
@@ -48,7 +52,7 @@ public final class HyperVReplicaAzureUnplannedFailoverInput extends UnplannedFai
 
     /**
      * Set the primaryKekCertificatePfx property: Primary kek certificate pfx.
-     *
+     * 
      * @param primaryKekCertificatePfx the primaryKekCertificatePfx value to set.
      * @return the HyperVReplicaAzureUnplannedFailoverInput object itself.
      */
@@ -59,7 +63,7 @@ public final class HyperVReplicaAzureUnplannedFailoverInput extends UnplannedFai
 
     /**
      * Get the secondaryKekCertificatePfx property: Secondary kek certificate pfx.
-     *
+     * 
      * @return the secondaryKekCertificatePfx value.
      */
     public String secondaryKekCertificatePfx() {
@@ -68,7 +72,7 @@ public final class HyperVReplicaAzureUnplannedFailoverInput extends UnplannedFai
 
     /**
      * Set the secondaryKekCertificatePfx property: Secondary kek certificate pfx.
-     *
+     * 
      * @param secondaryKekCertificatePfx the secondaryKekCertificatePfx value to set.
      * @return the HyperVReplicaAzureUnplannedFailoverInput object itself.
      */
@@ -80,7 +84,7 @@ public final class HyperVReplicaAzureUnplannedFailoverInput extends UnplannedFai
     /**
      * Get the recoveryPointId property: The recovery point id to be passed to failover to a particular recovery point.
      * In case of latest recovery point, null should be passed.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -90,7 +94,7 @@ public final class HyperVReplicaAzureUnplannedFailoverInput extends UnplannedFai
     /**
      * Set the recoveryPointId property: The recovery point id to be passed to failover to a particular recovery point.
      * In case of latest recovery point, null should be passed.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the HyperVReplicaAzureUnplannedFailoverInput object itself.
      */
@@ -101,7 +105,7 @@ public final class HyperVReplicaAzureUnplannedFailoverInput extends UnplannedFai
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

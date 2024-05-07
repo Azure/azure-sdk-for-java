@@ -3,37 +3,38 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.models.CosmosItemIdentity;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.implementation.ItemOperations;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.ItemOperations;
 import com.azure.cosmos.implementation.QueryMetrics;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.guava25.base.Function;
+import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.azure.cosmos.implementation.guava27.Strings;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.groups.Tuple;
-import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -67,7 +68,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public ParallelDocumentQueryTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -93,7 +94,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
-        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> 99 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop") ).collect(Collectors.toList());
+        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> 99 == d.getInt("prop") ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         FeedResponseListValidator<InternalObjectNode> validator = new FeedResponseListValidator.Builder<InternalObjectNode>()
@@ -354,7 +355,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         options.setMaxDegreeOfParallelism(2);
 
-        List<Integer> expectedValues = createdDocuments.stream().map(d -> ModelBridgeInternal.getIntFromJsonSerializable(d,"prop")).collect(Collectors.toList());
+        List<Integer> expectedValues = createdDocuments.stream().map(d -> d.getInt("prop")).collect(Collectors.toList());
 
         String query = "Select value c.prop from c";
 
@@ -374,7 +375,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         List<Boolean> expectedValues = createdDocuments
                                            .stream()
-                                           .map(d -> ModelBridgeInternal.getBooleanFromJsonSerializable(d, "boolProp"))
+                                           .map(d -> d.getBoolean("boolProp"))
                                            .collect(Collectors.toList());
 
         String query = "Select value c.boolProp from c";
@@ -394,7 +395,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
 
         List<Double> expectedValues = createdDocuments.stream()
-                                           .map(d -> ModelBridgeInternal.getDoubleFromJsonSerializable(d, "_value"))
+                                           .map(d ->d.getDouble("_value"))
                                            .collect(Collectors.toList());
 
         String query = "Select value c._value from c";
@@ -437,9 +438,9 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         List<Tuple> assertTuples = createdDocuments.stream()
             .map(internalObjectNode -> tuple(internalObjectNode.getId(),
-                ModelBridgeInternal.getObjectFromJsonSerializable(internalObjectNode, "mypk"),
-                ModelBridgeInternal.getObjectFromJsonSerializable(internalObjectNode, "prop"),
-                ModelBridgeInternal.getObjectFromJsonSerializable(internalObjectNode, "boolProp")))
+                internalObjectNode.get("mypk"),
+                internalObjectNode.get("prop"),
+                internalObjectNode.get("boolProp")))
             .collect(Collectors.toList());
 
         assertThat(fetchedResults).extracting(TestObject::getId,
@@ -456,7 +457,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
 
         List<NestedObject> expectedValues = createdDocuments.stream()
-            .map(d -> ModelBridgeInternal.toObjectFromJsonSerializable(d,TestObject.class))
+            .map(d -> d.toObject(TestObject.class))
             .map(d -> d.getNestedProp()).collect(Collectors.toList());
 
         String query = "Select value c.nestedProp from c";
@@ -472,7 +473,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "query" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_ParallelDocumentQueryTest() {
-        client = getClientBuilder().consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
+        client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
 
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
@@ -686,14 +687,12 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         return receivedDocuments;
     }
 
-    //TODO: Fix the test for GW mode
     @Test(groups = { "query" }, timeOut = TIMEOUT)
-    public void readManyWithItemOperations() throws Exception {
-
+    public void readManyWithItemOperations() {
         List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {
             pairList.add(Pair.of(createdDocuments.get(i).getId(),
-                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocuments.get(i), "mypk"))));
+                new PartitionKey(createdDocuments.get(i).get("mypk"))));
         }
         FeedResponse<JsonNode> documentFeedResponse =
             ItemOperations.readManyAsync(createdCollection, pairList, JsonNode.class).block();
@@ -702,18 +701,13 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));
     }
 
-    //TODO: Fix the test for GW mode
     @Test(groups = { "query" }, timeOut = TIMEOUT)
-    public void readMany() throws Exception {
-        if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("Skipping gateway mode. This needs to be fixed");
-        }
-
+    public void readMany() {
         List<CosmosItemIdentity> itemIdentities = new ArrayList<>();
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {
             itemIdentities.add(
                 new CosmosItemIdentity(
-                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocuments.get(i), "mypk")),
+                    new PartitionKey(createdDocuments.get(i).get("mypk")),
                     createdDocuments.get(i).getId()));
         }
         FeedResponse<JsonNode> documentFeedResponse =
@@ -724,20 +718,15 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         assertThat(documentFeedResponse.getCosmosDiagnostics()).isNotNull();
     }
 
-    //TODO: Fix the test for GW mode
     @Test(groups = { "query" }, timeOut = TIMEOUT)
-    public void readManyIdSameAsPartitionKey() throws Exception {
-        if (this.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("Skipping gateway mode. This needs to be fixed");
-        }
-
+    public void readManyIdSameAsPartitionKey() {
         CosmosAsyncContainer containerWithIdAsPartitionKey = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(client);
         List<InternalObjectNode> newItems = prepareCosmosContainer(containerWithIdAsPartitionKey);
         List<CosmosItemIdentity> itemIdentities = new ArrayList<>();
         for (int i = 0; i < newItems.size(); i = i + 3) {
             itemIdentities.add(
                 new CosmosItemIdentity(
-                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newItems.get(i), "id")),
+                    new PartitionKey(newItems.get(i).get("id")),
                     newItems.get(i).getId()));
         }
         FeedResponse<JsonNode> documentFeedResponse =
@@ -745,5 +734,51 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         assertThat(documentFeedResponse.getResults().size()).isEqualTo(itemIdentities.size());
         assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
             .containsAll(itemIdentities.stream().map(i -> i.getId()).collect(Collectors.toList()));
+    }
+
+    @Test(groups = { "query" }, timeOut = TIMEOUT)
+    public void readManyWithFactoryMethod() {
+        List<CosmosItemIdentity> itemIdentities = new ArrayList<>();
+        for (int i = 0; i < createdDocuments.size(); i = i + 3) {
+            itemIdentities.add(
+                    new CosmosItemIdentity(
+                            new PartitionKey(createdDocuments.get(i).get("mypk")),
+                            createdDocuments.get(i).getId()));
+        }
+
+        Function<JsonNode, String> factoryMethod = (objectNode) -> objectNode.get("id").asText();
+        CosmosReadManyRequestOptions queryRequestOptions = new CosmosReadManyRequestOptions();
+        ImplementationBridgeHelpers
+                .CosmosReadManyRequestOptionsHelper
+                .getCosmosReadManyRequestOptionsAccessor()
+                .getImpl(queryRequestOptions)
+                .setCustomItemSerializer(
+                    new CosmosItemSerializer() {
+                        @Override
+                        public <T> Map<String, Object> serialize(T item) {
+                            throw new NotImplementedException("Not supported");
+                        }
+
+                        @Override
+                        public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
+                            if (classType == String.class) {
+                                return (T)jsonNodeMap.get("id");
+                            }
+
+                            return CosmosItemSerializer.DEFAULT_SERIALIZER.deserialize(jsonNodeMap, classType);
+                        }
+                    });
+
+        FeedResponse<String> documentFeedResponse =
+                ImplementationBridgeHelpers
+                        .CosmosAsyncContainerHelper
+                        .getCosmosAsyncContainerAccessor()
+                        .readMany(createdCollection, itemIdentities, queryRequestOptions, String.class)
+                        .block();
+
+        assertThat(documentFeedResponse.getResults().size()).isEqualTo(itemIdentities.size());
+        assertThat(documentFeedResponse.getResults())
+                .containsAll(itemIdentities.stream().map(i -> i.getId()).collect(Collectors.toList()));
+        assertThat(documentFeedResponse.getCosmosDiagnostics()).isNotNull();
     }
 }

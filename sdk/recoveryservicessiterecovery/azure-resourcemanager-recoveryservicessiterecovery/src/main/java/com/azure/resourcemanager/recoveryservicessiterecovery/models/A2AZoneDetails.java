@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Zone details data. */
+/**
+ * Zone details data.
+ */
 @Fluent
 public final class A2AZoneDetails {
     /*
@@ -22,13 +24,15 @@ public final class A2AZoneDetails {
     @JsonProperty(value = "target")
     private String target;
 
-    /** Creates an instance of A2AZoneDetails class. */
+    /**
+     * Creates an instance of A2AZoneDetails class.
+     */
     public A2AZoneDetails() {
     }
 
     /**
      * Get the source property: Source zone info.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -37,7 +41,7 @@ public final class A2AZoneDetails {
 
     /**
      * Set the source property: Source zone info.
-     *
+     * 
      * @param source the source value to set.
      * @return the A2AZoneDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class A2AZoneDetails {
 
     /**
      * Get the target property: The target zone info.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -57,7 +61,7 @@ public final class A2AZoneDetails {
 
     /**
      * Set the target property: The target zone info.
-     *
+     * 
      * @param target the target value to set.
      * @return the A2AZoneDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class A2AZoneDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

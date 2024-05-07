@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectedItemResourceInner;
 
-/** An instance of this class provides access to all the operations defined in ProtectedItemOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectedItemOperationResultsClient.
+ */
 public interface ProtectedItemOperationResultsClient {
     /**
      * Fetches the result of any operation on the backup item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -28,18 +30,12 @@ public interface ProtectedItemOperationResultsClient {
      * @return base class for backup items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectedItemResourceInner> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId,
-        Context context);
+    Response<ProtectedItemResourceInner> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String operationId, Context context);
 
     /**
      * Fetches the result of any operation on the backup item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -52,11 +48,6 @@ public interface ProtectedItemOperationResultsClient {
      * @return base class for backup items.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectedItemResourceInner get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId);
+    ProtectedItemResourceInner get(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String operationId);
 }

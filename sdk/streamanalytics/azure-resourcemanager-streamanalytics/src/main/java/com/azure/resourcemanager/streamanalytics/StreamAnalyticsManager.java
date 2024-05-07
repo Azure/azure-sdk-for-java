@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -28,6 +30,7 @@ import com.azure.resourcemanager.streamanalytics.implementation.InputsImpl;
 import com.azure.resourcemanager.streamanalytics.implementation.OperationsImpl;
 import com.azure.resourcemanager.streamanalytics.implementation.OutputsImpl;
 import com.azure.resourcemanager.streamanalytics.implementation.PrivateEndpointsImpl;
+import com.azure.resourcemanager.streamanalytics.implementation.SkusImpl;
 import com.azure.resourcemanager.streamanalytics.implementation.StreamAnalyticsManagementClientBuilder;
 import com.azure.resourcemanager.streamanalytics.implementation.StreamingJobsImpl;
 import com.azure.resourcemanager.streamanalytics.implementation.SubscriptionsImpl;
@@ -38,6 +41,7 @@ import com.azure.resourcemanager.streamanalytics.models.Inputs;
 import com.azure.resourcemanager.streamanalytics.models.Operations;
 import com.azure.resourcemanager.streamanalytics.models.Outputs;
 import com.azure.resourcemanager.streamanalytics.models.PrivateEndpoints;
+import com.azure.resourcemanager.streamanalytics.models.Skus;
 import com.azure.resourcemanager.streamanalytics.models.StreamingJobs;
 import com.azure.resourcemanager.streamanalytics.models.Subscriptions;
 import com.azure.resourcemanager.streamanalytics.models.Transformations;
@@ -48,21 +52,26 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to StreamAnalyticsManager. Stream Analytics Client. */
+/**
+ * Entry point to StreamAnalyticsManager.
+ * Stream Analytics Client.
+ */
 public final class StreamAnalyticsManager {
-    private Operations operations;
-
-    private StreamingJobs streamingJobs;
+    private Functions functions;
 
     private Inputs inputs;
 
     private Outputs outputs;
 
-    private Transformations transformations;
+    private Operations operations;
 
-    private Functions functions;
+    private StreamingJobs streamingJobs;
+
+    private Skus skus;
 
     private Subscriptions subscriptions;
+
+    private Transformations transformations;
 
     private Clusters clusters;
 
@@ -73,18 +82,14 @@ public final class StreamAnalyticsManager {
     private StreamAnalyticsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new StreamAnalyticsManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new StreamAnalyticsManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
      * Creates an instance of StreamAnalytics service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the StreamAnalytics service API instance.
@@ -96,23 +101,39 @@ public final class StreamAnalyticsManager {
     }
 
     /**
+     * Creates an instance of StreamAnalytics service API entry point.
+     * 
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the StreamAnalytics service API instance.
+     */
+    public static StreamAnalyticsManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new StreamAnalyticsManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create StreamAnalyticsManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new StreamAnalyticsManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -174,15 +195,30 @@ public final class StreamAnalyticsManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -199,21 +235,12 @@ public final class StreamAnalyticsManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
-                .append("-")
-                .append("com.azure.resourcemanager.streamanalytics")
-                .append("/")
-                .append("1.0.0-beta.2");
+            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.streamanalytics")
+                .append("/").append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
-                    .append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.name"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version"))
-                    .append("; auto-generated)");
+                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -222,81 +249,37 @@ public final class StreamAnalyticsManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
             return new StreamAnalyticsManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
-    /** @return Resource collection API of Operations. */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
-        }
-        return operations;
-    }
-
-    /** @return Resource collection API of StreamingJobs. */
-    public StreamingJobs streamingJobs() {
-        if (this.streamingJobs == null) {
-            this.streamingJobs = new StreamingJobsImpl(clientObject.getStreamingJobs(), this);
-        }
-        return streamingJobs;
-    }
-
-    /** @return Resource collection API of Inputs. */
-    public Inputs inputs() {
-        if (this.inputs == null) {
-            this.inputs = new InputsImpl(clientObject.getInputs(), this);
-        }
-        return inputs;
-    }
-
-    /** @return Resource collection API of Outputs. */
-    public Outputs outputs() {
-        if (this.outputs == null) {
-            this.outputs = new OutputsImpl(clientObject.getOutputs(), this);
-        }
-        return outputs;
-    }
-
-    /** @return Resource collection API of Transformations. */
-    public Transformations transformations() {
-        if (this.transformations == null) {
-            this.transformations = new TransformationsImpl(clientObject.getTransformations(), this);
-        }
-        return transformations;
-    }
-
-    /** @return Resource collection API of Functions. */
+    /**
+     * Gets the resource collection API of Functions. It manages Function.
+     * 
+     * @return Resource collection API of Functions.
+     */
     public Functions functions() {
         if (this.functions == null) {
             this.functions = new FunctionsImpl(clientObject.getFunctions(), this);
@@ -304,7 +287,71 @@ public final class StreamAnalyticsManager {
         return functions;
     }
 
-    /** @return Resource collection API of Subscriptions. */
+    /**
+     * Gets the resource collection API of Inputs. It manages Input.
+     * 
+     * @return Resource collection API of Inputs.
+     */
+    public Inputs inputs() {
+        if (this.inputs == null) {
+            this.inputs = new InputsImpl(clientObject.getInputs(), this);
+        }
+        return inputs;
+    }
+
+    /**
+     * Gets the resource collection API of Outputs. It manages Output.
+     * 
+     * @return Resource collection API of Outputs.
+     */
+    public Outputs outputs() {
+        if (this.outputs == null) {
+            this.outputs = new OutputsImpl(clientObject.getOutputs(), this);
+        }
+        return outputs;
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     * 
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
+    }
+
+    /**
+     * Gets the resource collection API of StreamingJobs. It manages StreamingJob.
+     * 
+     * @return Resource collection API of StreamingJobs.
+     */
+    public StreamingJobs streamingJobs() {
+        if (this.streamingJobs == null) {
+            this.streamingJobs = new StreamingJobsImpl(clientObject.getStreamingJobs(), this);
+        }
+        return streamingJobs;
+    }
+
+    /**
+     * Gets the resource collection API of Skus.
+     * 
+     * @return Resource collection API of Skus.
+     */
+    public Skus skus() {
+        if (this.skus == null) {
+            this.skus = new SkusImpl(clientObject.getSkus(), this);
+        }
+        return skus;
+    }
+
+    /**
+     * Gets the resource collection API of Subscriptions.
+     * 
+     * @return Resource collection API of Subscriptions.
+     */
     public Subscriptions subscriptions() {
         if (this.subscriptions == null) {
             this.subscriptions = new SubscriptionsImpl(clientObject.getSubscriptions(), this);
@@ -312,7 +359,23 @@ public final class StreamAnalyticsManager {
         return subscriptions;
     }
 
-    /** @return Resource collection API of Clusters. */
+    /**
+     * Gets the resource collection API of Transformations. It manages Transformation.
+     * 
+     * @return Resource collection API of Transformations.
+     */
+    public Transformations transformations() {
+        if (this.transformations == null) {
+            this.transformations = new TransformationsImpl(clientObject.getTransformations(), this);
+        }
+        return transformations;
+    }
+
+    /**
+     * Gets the resource collection API of Clusters. It manages Cluster.
+     * 
+     * @return Resource collection API of Clusters.
+     */
     public Clusters clusters() {
         if (this.clusters == null) {
             this.clusters = new ClustersImpl(clientObject.getClusters(), this);
@@ -320,7 +383,11 @@ public final class StreamAnalyticsManager {
         return clusters;
     }
 
-    /** @return Resource collection API of PrivateEndpoints. */
+    /**
+     * Gets the resource collection API of PrivateEndpoints. It manages PrivateEndpoint.
+     * 
+     * @return Resource collection API of PrivateEndpoints.
+     */
     public PrivateEndpoints privateEndpoints() {
         if (this.privateEndpoints == null) {
             this.privateEndpoints = new PrivateEndpointsImpl(clientObject.getPrivateEndpoints(), this);
@@ -329,8 +396,10 @@ public final class StreamAnalyticsManager {
     }
 
     /**
-     * @return Wrapped service client StreamAnalyticsManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client StreamAnalyticsManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client StreamAnalyticsManagementClient.
      */
     public StreamAnalyticsManagementClient serviceClient() {
         return this.clientObject;

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PricingDimensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PricingDimension model =
-            BinaryData.fromString("{\"id\":\"aljutiiswac\",\"name\":\"gdkz\"}").toObject(PricingDimension.class);
-        Assertions.assertEquals("aljutiiswac", model.id());
-        Assertions.assertEquals("gdkz", model.name());
+        PricingDimension model = BinaryData.fromString("{\"id\":\"wiwubm\",\"name\":\"besldnkwwtppjflc\"}")
+            .toObject(PricingDimension.class);
+        Assertions.assertEquals("wiwubm", model.id());
+        Assertions.assertEquals("besldnkwwtppjflc", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PricingDimension model = new PricingDimension().withId("aljutiiswac").withName("gdkz");
+        PricingDimension model = new PricingDimension().withId("wiwubm").withName("besldnkwwtppjflc");
         model = BinaryData.fromObject(model).toObject(PricingDimension.class);
-        Assertions.assertEquals("aljutiiswac", model.id());
-        Assertions.assertEquals("gdkz", model.name());
+        Assertions.assertEquals("wiwubm", model.id());
+        Assertions.assertEquals("besldnkwwtppjflc", model.name());
     }
 }

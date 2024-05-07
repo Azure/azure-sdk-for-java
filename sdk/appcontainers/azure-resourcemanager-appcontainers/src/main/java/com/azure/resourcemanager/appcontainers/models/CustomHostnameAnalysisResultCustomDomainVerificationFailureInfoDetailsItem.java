@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Detailed errors. */
+/**
+ * Detailed errors.
+ */
 @Immutable
 public final class CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem {
     /*
@@ -28,13 +30,15 @@ public final class CustomHostnameAnalysisResultCustomDomainVerificationFailureIn
     @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
-    /** Creates an instance of CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem class. */
+    /**
+     * Creates an instance of CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem class.
+     */
     public CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem() {
     }
 
     /**
      * Get the code property: Standardized string to programmatically identify the error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -43,7 +47,7 @@ public final class CustomHostnameAnalysisResultCustomDomainVerificationFailureIn
 
     /**
      * Get the message property: Detailed error description and debugging information.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -52,7 +56,7 @@ public final class CustomHostnameAnalysisResultCustomDomainVerificationFailureIn
 
     /**
      * Get the target property: Detailed error description and debugging information.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -61,7 +65,7 @@ public final class CustomHostnameAnalysisResultCustomDomainVerificationFailureIn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

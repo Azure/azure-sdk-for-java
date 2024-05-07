@@ -16,8 +16,8 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.data.tables.implementation.models.TableServiceJsonErrorException;
 import com.azure.data.tables.implementation.models.TransactionalBatchRequestBody;
-import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import com.azure.data.tables.implementation.models.TransactionalBatchSubmitBatchHeaders;
 import com.azure.data.tables.models.TableTransactionActionResponse;
 import reactor.core.publisher.Mono;
@@ -57,7 +57,7 @@ public final class TransactionalBatchImpl {
     public interface TransactionalBatchService {
         @Post("/$batch")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         Mono<ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]>> submitTransactionalBatch(
             @HostParam("url") String url,
             @HeaderParam("Content-Type") String multipartContentType,
@@ -69,7 +69,7 @@ public final class TransactionalBatchImpl {
 
         @Post("/$batch")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(TableServiceErrorException.class)
+        @UnexpectedResponseExceptionType(TableServiceJsonErrorException.class)
         ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> submitTransactionalBatchSync(
             @HostParam("url") String url,
             @HeaderParam("Content-Type") String multipartContentType,

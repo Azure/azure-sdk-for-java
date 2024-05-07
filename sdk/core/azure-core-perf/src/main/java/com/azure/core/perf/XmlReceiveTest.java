@@ -21,8 +21,7 @@ public class XmlReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     private static Function<HttpRequest, HttpResponse> createMockResponseSupplier(CorePerfStressOptions options) {
         byte[] bodyBytes = generateBodyBytes(options.getSize());
-        return httpRequest -> createMockResponse(httpRequest,
-            "application/xml",  bodyBytes);
+        return httpRequest -> createMockResponse(httpRequest, "application/xml", bodyBytes);
     }
 
     @Override
@@ -37,11 +36,10 @@ public class XmlReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getUserDatabaseXmlAsync(endpoint, id)
-            .map(userdatabase -> {
-                userdatabase.getValue();
-                return 1;
-            }).then();
+        return service.getUserDatabaseXmlAsync(endpoint, id).map(userdatabase -> {
+            userdatabase.getValue();
+            return 1;
+        }).then();
     }
 
     private static byte[] generateBodyBytes(long size) {

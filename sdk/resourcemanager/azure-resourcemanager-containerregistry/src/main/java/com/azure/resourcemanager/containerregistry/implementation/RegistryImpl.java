@@ -29,6 +29,7 @@ import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
 import com.azure.resourcemanager.containerregistry.models.WebhookOperations;
+import com.azure.resourcemanager.containerregistry.models.ZoneRedundancy;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
@@ -222,6 +223,11 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     @Override
     public boolean isDedicatedDataEndpointsEnabled() {
         return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().dataEndpointEnabled());
+    }
+
+    @Override
+    public boolean isZoneRedundancyEnabled() {
+        return !Objects.isNull(this.innerModel().zoneRedundancy()) && ZoneRedundancy.ENABLED.equals(this.innerModel().zoneRedundancy());
     }
 
     @Override
@@ -451,6 +457,14 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
         return this.manager().serviceClient().getRegistries()
             .listPrivateLinkResourcesAsync(this.resourceGroupName(), this.name())
             .mapPage(PrivateLinkResourceImpl::new);
+    }
+
+    @Override
+    public RegistryImpl withZoneRedundancy() {
+        if (isInCreateMode()) {
+            this.innerModel().withZoneRedundancy(ZoneRedundancy.ENABLED);
+        }
+        return this;
     }
 
     private static final class PrivateLinkResourceImpl implements PrivateLinkResource {

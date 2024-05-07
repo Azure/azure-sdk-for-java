@@ -20,7 +20,24 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * An abstract geo object.
+ * Represents an abstract geometric object in GeoJSON format.
+ *
+ * <p>This class encapsulates the common properties of a geometric object, including the bounding box and additional
+ * custom properties. It provides methods to access these properties.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geometric object to JSON,
+ * and a {@link #fromJson(JsonReader)} method to deserialize a geometric object from JSON.</p>
+ *
+ * @see GeoBoundingBox
+ * @see GeoPosition
+ * @see GeoPoint
+ * @see GeoLineString
+ * @see GeoPolygon
+ * @see GeoPointCollection
+ * @see GeoLineStringCollection
+ * @see GeoPolygonCollection
+ * @see GeoCollection
+ * @see JsonSerializable
  */
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Point", value = GeoPoint.class),
@@ -29,8 +46,7 @@ import java.util.Objects;
     @JsonSubTypes.Type(name = "MultiPoint", value = GeoPointCollection.class),
     @JsonSubTypes.Type(name = "MultiLineString", value = GeoLineStringCollection.class),
     @JsonSubTypes.Type(name = "MultiPolygon", value = GeoPolygonCollection.class),
-    @JsonSubTypes.Type(name = "GeometryCollection", value = GeoCollection.class)
-})
+    @JsonSubTypes.Type(name = "GeometryCollection", value = GeoCollection.class) })
 @Immutable
 public abstract class GeoObject implements JsonSerializable<GeoObject> {
     private final GeoBoundingBox boundingBox;
@@ -99,8 +115,8 @@ public abstract class GeoObject implements JsonSerializable<GeoObject> {
 
         GeoObject other = (GeoObject) obj;
 
-        return Objects.equals(boundingBox, other.boundingBox) && Objects.equals(
-            customProperties, other.customProperties);
+        return Objects.equals(boundingBox, other.boundingBox)
+            && Objects.equals(customProperties, other.customProperties);
     }
 
     @Override

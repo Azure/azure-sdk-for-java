@@ -49,176 +49,136 @@ import reactor.core.publisher.Mono;
  */
 public final class ReplicationProtectionContainerMappingsClientImpl
     implements ReplicationProtectionContainerMappingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReplicationProtectionContainerMappingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SiteRecoveryManagementClientImpl client;
 
     /**
      * Initializes an instance of ReplicationProtectionContainerMappingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReplicationProtectionContainerMappingsClientImpl(SiteRecoveryManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ReplicationProtectionContainerMappingsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ReplicationProtectionContainerMappingsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for SiteRecoveryManagementClientReplicationProtectionContainerMappings to
-     * be used by the proxy service to perform REST calls.
+     * The interface defining all the services for SiteRecoveryManagementClientReplicationProtectionContainerMappings
+     * to be used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "SiteRecoveryManageme")
     public interface ReplicationProtectionContainerMappingsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionContainerMappingCollection>> listByReplicationProtectionContainers(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("protectionContainerName") String protectionContainerName,
-            @HeaderParam("Accept") String accept,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceName") String resourceName, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("protectionContainerName") String protectionContainerName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectionContainerMappingInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<ProtectionContainerMappingInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
-            @PathParam("mappingName") String mappingName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("mappingName") String mappingName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("mappingName") String mappingName,
             @BodyParam("application/json") CreateProtectionContainerMappingInput creationInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> purge(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> purge(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
-            @PathParam("mappingName") String mappingName,
-            Context context);
+            @PathParam("mappingName") String mappingName, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("mappingName") String mappingName,
             @BodyParam("application/json") UpdateProtectionContainerMappingInput updateInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}/remove")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}/remove")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("mappingName") String mappingName,
-            @BodyParam("application/json") RemoveProtectionContainerMappingInput removalInput,
-            Context context);
+            @BodyParam("application/json") RemoveProtectionContainerMappingInput removalInput, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionContainerMappings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionContainerMappings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectionContainerMappingCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<ProtectionContainerMappingCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionContainerMappingCollection>> listByReplicationProtectionContainersNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionContainerMappingCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the list of protection container mappings for a protection container.
-     *
-     * <p>Lists the protection container mappings for a protection container.
-     *
+     * 
+     * Lists the protection container mappings for a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -227,16 +187,14 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container mapping collection class along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectionContainerMappingInner>> listByReplicationProtectionContainersSinglePageAsync(
         String resourceName, String resourceGroupName, String fabricName, String protectionContainerName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -246,51 +204,31 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByReplicationProtectionContainers(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            protectionContainerName,
-                            accept,
-                            context))
-            .<PagedResponse<ProtectionContainerMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByReplicationProtectionContainers(this.client.getEndpoint(),
+                this.client.getApiVersion(), resourceName, resourceGroupName, this.client.getSubscriptionId(),
+                fabricName, protectionContainerName, accept, context))
+            .<PagedResponse<ProtectionContainerMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of protection container mappings for a protection container.
-     *
-     * <p>Lists the protection container mappings for a protection container.
-     *
+     * 
+     * Lists the protection container mappings for a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -300,20 +238,15 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container mapping collection class along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectionContainerMappingInner>> listByReplicationProtectionContainersSinglePageAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -323,48 +256,31 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationProtectionContainers(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                protectionContainerName,
-                accept,
+            .listByReplicationProtectionContainers(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of protection container mappings for a protection container.
-     *
-     * <p>Lists the protection container mappings for a protection container.
-     *
+     * 
+     * Lists the protection container mappings for a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -375,20 +291,19 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping collection class as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProtectionContainerMappingInner> listByReplicationProtectionContainersAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName) {
+    private PagedFlux<ProtectionContainerMappingInner> listByReplicationProtectionContainersAsync(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName) {
         return new PagedFlux<>(
-            () ->
-                listByReplicationProtectionContainersSinglePageAsync(
-                    resourceName, resourceGroupName, fabricName, protectionContainerName),
+            () -> listByReplicationProtectionContainersSinglePageAsync(resourceName, resourceGroupName, fabricName,
+                protectionContainerName),
             nextLink -> listByReplicationProtectionContainersNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of protection container mappings for a protection container.
-     *
-     * <p>Lists the protection container mappings for a protection container.
-     *
+     * 
+     * Lists the protection container mappings for a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -400,24 +315,19 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping collection class as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProtectionContainerMappingInner> listByReplicationProtectionContainersAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        Context context) {
+    private PagedFlux<ProtectionContainerMappingInner> listByReplicationProtectionContainersAsync(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName, Context context) {
         return new PagedFlux<>(
-            () ->
-                listByReplicationProtectionContainersSinglePageAsync(
-                    resourceName, resourceGroupName, fabricName, protectionContainerName, context),
+            () -> listByReplicationProtectionContainersSinglePageAsync(resourceName, resourceGroupName, fabricName,
+                protectionContainerName, context),
             nextLink -> listByReplicationProtectionContainersNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of protection container mappings for a protection container.
-     *
-     * <p>Lists the protection container mappings for a protection container.
-     *
+     * 
+     * Lists the protection container mappings for a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -428,18 +338,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping collection class as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProtectionContainerMappingInner> listByReplicationProtectionContainers(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName) {
-        return new PagedIterable<>(
-            listByReplicationProtectionContainersAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName));
+    public PagedIterable<ProtectionContainerMappingInner> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName) {
+        return new PagedIterable<>(listByReplicationProtectionContainersAsync(resourceName, resourceGroupName,
+            fabricName, protectionContainerName));
     }
 
     /**
      * Gets the list of protection container mappings for a protection container.
-     *
-     * <p>Lists the protection container mappings for a protection container.
-     *
+     * 
+     * Lists the protection container mappings for a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -451,22 +360,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping collection class as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProtectionContainerMappingInner> listByReplicationProtectionContainers(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        Context context) {
-        return new PagedIterable<>(
-            listByReplicationProtectionContainersAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, context));
+    public PagedIterable<ProtectionContainerMappingInner> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName, Context context) {
+        return new PagedIterable<>(listByReplicationProtectionContainersAsync(resourceName, resourceGroupName,
+            fabricName, protectionContainerName, context));
     }
 
     /**
      * Gets a protection container mapping.
-     *
-     * <p>Gets the details of a protection container mapping.
-     *
+     * 
+     * Gets the details of a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -476,20 +380,14 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a protection container mapping along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionContainerMappingInner>> getWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName) {
+    private Mono<Response<ProtectionContainerMappingInner>> getWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName, String mappingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -499,46 +397,32 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         if (mappingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            protectionContainerName,
-                            mappingName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, mappingName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a protection container mapping.
-     *
-     * <p>Gets the details of a protection container mapping.
-     *
+     * 
+     * Gets the details of a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -549,21 +433,15 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a protection container mapping along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectionContainerMappingInner>> getWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
+    private Mono<Response<ProtectionContainerMappingInner>> getWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName, String mappingName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -573,43 +451,30 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         if (mappingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, protectionContainerName, mappingName, accept, context);
     }
 
     /**
      * Gets a protection container mapping.
-     *
-     * <p>Gets the details of a protection container mapping.
-     *
+     * 
+     * Gets the details of a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -621,21 +486,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the details of a protection container mapping on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerMappingInner> getAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName) {
+    private Mono<ProtectionContainerMappingInner> getAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName) {
         return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a protection container mapping.
-     *
-     * <p>Gets the details of a protection container mapping.
-     *
+     * 
+     * Gets the details of a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -648,23 +509,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the details of a protection container mapping along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectionContainerMappingInner> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, context)
-            .block();
+    public Response<ProtectionContainerMappingInner> getWithResponse(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName, Context context) {
+        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            context).block();
     }
 
     /**
      * Gets a protection container mapping.
-     *
-     * <p>Gets the details of a protection container mapping.
-     *
+     * 
+     * Gets the details of a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -676,22 +531,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the details of a protection container mapping.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerMappingInner get(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName) {
-        return getWithResponse(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, Context.NONE)
-            .getValue();
+    public ProtectionContainerMappingInner get(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName) {
+        return getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            Context.NONE).getValue();
     }
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -704,18 +554,12 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
         CreateProtectionContainerMappingInput creationInput) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -725,18 +569,15 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         if (mappingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
@@ -748,29 +589,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            protectionContainerName,
-                            mappingName,
-                            creationInput,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, mappingName,
+                creationInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -784,19 +613,12 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
+        CreateProtectionContainerMappingInput creationInput, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -806,18 +628,15 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         if (mappingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
@@ -829,26 +648,16 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                creationInput,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, protectionContainerName, mappingName, creationInput, accept,
+            context);
     }
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -862,30 +671,20 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginCreateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, creationInput);
-        return this
-            .client
-            .<ProtectionContainerMappingInner, ProtectionContainerMappingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ProtectionContainerMappingInner.class,
-                ProtectionContainerMappingInner.class,
-                this.client.getContext());
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, CreateProtectionContainerMappingInput creationInput) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, mappingName, creationInput);
+        return this.client.<ProtectionContainerMappingInner, ProtectionContainerMappingInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ProtectionContainerMappingInner.class, ProtectionContainerMappingInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -900,38 +699,21 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginCreateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput,
-        Context context) {
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, CreateProtectionContainerMappingInput creationInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                creationInput,
-                context);
-        return this
-            .client
-            .<ProtectionContainerMappingInner, ProtectionContainerMappingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ProtectionContainerMappingInner.class,
-                ProtectionContainerMappingInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, mappingName, creationInput, context);
+        return this.client.<ProtectionContainerMappingInner, ProtectionContainerMappingInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ProtectionContainerMappingInner.class, ProtectionContainerMappingInner.class,
+            context);
     }
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -945,23 +727,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput) {
-        return this
-            .beginCreateAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, creationInput)
-            .getSyncPoller();
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, CreateProtectionContainerMappingInput creationInput) {
+        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            creationInput).getSyncPoller();
     }
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -976,30 +752,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput,
-        Context context) {
-        return this
-            .beginCreateAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                creationInput,
-                context)
-            .getSyncPoller();
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, CreateProtectionContainerMappingInput creationInput, Context context) {
+        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            creationInput, context).getSyncPoller();
     }
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1012,24 +775,18 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerMappingInner> createAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
+    private Mono<ProtectionContainerMappingInner> createAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
         CreateProtectionContainerMappingInput creationInput) {
-        return beginCreateAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, creationInput)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            creationInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1043,31 +800,18 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerMappingInner> createAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput,
-        Context context) {
-        return beginCreateAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                creationInput,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<ProtectionContainerMappingInner> createAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
+        CreateProtectionContainerMappingInput creationInput, Context context) {
+        return beginCreateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            creationInput, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1080,23 +824,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerMappingInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput) {
-        return createAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, creationInput)
-            .block();
+    public ProtectionContainerMappingInner create(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, CreateProtectionContainerMappingInput creationInput) {
+        return createAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            creationInput).block();
     }
 
     /**
      * Create protection container mapping.
-     *
-     * <p>The operation to create a protection container mapping.
-     *
+     * 
+     * The operation to create a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1110,30 +848,18 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerMappingInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        CreateProtectionContainerMappingInput creationInput,
+    public ProtectionContainerMappingInner create(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, CreateProtectionContainerMappingInput creationInput,
         Context context) {
-        return createAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                creationInput,
-                context)
-            .block();
+        return createAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            creationInput, context).block();
     }
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1145,17 +871,11 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName) {
+    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1165,44 +885,31 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         if (mappingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .purge(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            protectionContainerName,
-                            mappingName,
-                            context))
+            .withContext(context -> service.purge(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, mappingName,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1215,18 +922,11 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1236,41 +936,29 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         if (mappingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .purge(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                context);
+        return service.purge(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, protectionContainerName, mappingName, context);
     }
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1282,25 +970,19 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            purgeWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = purgeWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1313,27 +995,20 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            purgeWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = purgeWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, mappingName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1345,22 +1020,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPurge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName) {
-        return this
-            .beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName)
+    public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName) {
+        return this.beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName)
             .getSyncPoller();
     }
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1373,13 +1043,8 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPurge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName, Context context) {
         return this
             .beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, context)
             .getSyncPoller();
@@ -1387,9 +1052,9 @@ public final class ReplicationProtectionContainerMappingsClientImpl
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1401,22 +1066,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> purgeAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName) {
-        return beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName)
-            .last()
+    private Mono<Void> purgeAsync(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName) {
+        return beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1429,24 +1089,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> purgeAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        Context context) {
-        return beginPurgeAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> purgeAsync(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, Context context) {
+        return beginPurgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1457,20 +1110,16 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
+    public void purge(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String mappingName) {
         purgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName).block();
     }
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1482,21 +1131,16 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        Context context) {
+    public void purge(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, Context context) {
         purgeAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, context).block();
     }
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1509,18 +1153,12 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
         UpdateProtectionContainerMappingInput updateInput) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1530,18 +1168,15 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         if (mappingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
@@ -1553,29 +1188,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            protectionContainerName,
-                            mappingName,
-                            updateInput,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, mappingName,
+                updateInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1589,19 +1212,12 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
+        UpdateProtectionContainerMappingInput updateInput, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1611,18 +1227,15 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         if (mappingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
@@ -1634,26 +1247,16 @@ public final class ReplicationProtectionContainerMappingsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                updateInput,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, protectionContainerName, mappingName, updateInput, accept,
+            context);
     }
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1667,30 +1270,20 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginUpdateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, updateInput);
-        return this
-            .client
-            .<ProtectionContainerMappingInner, ProtectionContainerMappingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ProtectionContainerMappingInner.class,
-                ProtectionContainerMappingInner.class,
-                this.client.getContext());
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, UpdateProtectionContainerMappingInput updateInput) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, mappingName, updateInput);
+        return this.client.<ProtectionContainerMappingInner, ProtectionContainerMappingInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ProtectionContainerMappingInner.class, ProtectionContainerMappingInner.class,
+            this.client.getContext());
     }
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1705,38 +1298,21 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginUpdateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput,
-        Context context) {
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, UpdateProtectionContainerMappingInput updateInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                updateInput,
-                context);
-        return this
-            .client
-            .<ProtectionContainerMappingInner, ProtectionContainerMappingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ProtectionContainerMappingInner.class,
-                ProtectionContainerMappingInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, mappingName, updateInput, context);
+        return this.client.<ProtectionContainerMappingInner, ProtectionContainerMappingInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ProtectionContainerMappingInner.class, ProtectionContainerMappingInner.class,
+            context);
     }
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1750,23 +1326,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput) {
-        return this
-            .beginUpdateAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, updateInput)
-            .getSyncPoller();
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, UpdateProtectionContainerMappingInput updateInput) {
+        return this.beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            updateInput).getSyncPoller();
     }
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1781,24 +1351,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ProtectionContainerMappingInner>, ProtectionContainerMappingInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput,
-        Context context) {
-        return this
-            .beginUpdateAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, updateInput, context)
-            .getSyncPoller();
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, UpdateProtectionContainerMappingInput updateInput, Context context) {
+        return this.beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            updateInput, context).getSyncPoller();
     }
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1811,24 +1374,18 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerMappingInner> updateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
+    private Mono<ProtectionContainerMappingInner> updateAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
         UpdateProtectionContainerMappingInput updateInput) {
-        return beginUpdateAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, updateInput)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            updateInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1842,25 +1399,18 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectionContainerMappingInner> updateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput,
-        Context context) {
-        return beginUpdateAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, updateInput, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<ProtectionContainerMappingInner> updateAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
+        UpdateProtectionContainerMappingInput updateInput, Context context) {
+        return beginUpdateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            updateInput, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1873,23 +1423,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerMappingInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput) {
-        return updateAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, updateInput)
-            .block();
+    public ProtectionContainerMappingInner update(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, UpdateProtectionContainerMappingInput updateInput) {
+        return updateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            updateInput).block();
     }
 
     /**
      * Update protection container mapping.
-     *
-     * <p>The operation to update protection container mapping.
-     *
+     * 
+     * The operation to update protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1903,24 +1447,18 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionContainerMappingInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        UpdateProtectionContainerMappingInput updateInput,
+    public ProtectionContainerMappingInner update(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, UpdateProtectionContainerMappingInput updateInput,
         Context context) {
-        return updateAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, updateInput, context)
-            .block();
+        return updateAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            updateInput, context).block();
     }
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1933,18 +1471,12 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
         RemoveProtectionContainerMappingInput removalInput) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1954,18 +1486,15 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         if (mappingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
@@ -1976,28 +1505,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
             removalInput.validate();
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            protectionContainerName,
-                            mappingName,
-                            removalInput,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, mappingName,
+                removalInput, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -2011,19 +1529,12 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
+        RemoveProtectionContainerMappingInput removalInput, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2033,18 +1544,15 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (protectionContainerName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter protectionContainerName is required and cannot be null."));
         }
         if (mappingName == null) {
             return Mono.error(new IllegalArgumentException("Parameter mappingName is required and cannot be null."));
@@ -2055,25 +1563,15 @@ public final class ReplicationProtectionContainerMappingsClientImpl
             removalInput.validate();
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                removalInput,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, protectionContainerName, mappingName, removalInput, context);
     }
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -2086,27 +1584,20 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
         RemoveProtectionContainerMappingInput removalInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, mappingName, removalInput);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -2120,34 +1611,21 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
+        RemoveProtectionContainerMappingInput removalInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                removalInput,
-                context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, mappingName, removalInput, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -2160,24 +1638,18 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
         RemoveProtectionContainerMappingInput removalInput) {
-        return this
-            .beginDeleteAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput)
-            .getSyncPoller();
+        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            removalInput).getSyncPoller();
     }
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -2191,31 +1663,18 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput,
-        Context context) {
-        return this
-            .beginDeleteAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                removalInput,
-                context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName,
+        RemoveProtectionContainerMappingInput removalInput, Context context) {
+        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            removalInput, context).getSyncPoller();
     }
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -2228,24 +1687,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput) {
-        return beginDeleteAsync(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, RemoveProtectionContainerMappingInput removalInput) {
+        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            removalInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -2259,31 +1711,18 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput,
+    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName, RemoveProtectionContainerMappingInput removalInput,
         Context context) {
-        return beginDeleteAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                removalInput,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName,
+            removalInput, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -2295,22 +1734,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput) {
+    public void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, RemoveProtectionContainerMappingInput removalInput) {
         deleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput)
             .block();
     }
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -2323,46 +1757,31 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput,
-        Context context) {
-        deleteAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                mappingName,
-                removalInput,
-                context)
-            .block();
+    public void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, RemoveProtectionContainerMappingInput removalInput, Context context) {
+        deleteAsync(resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput,
+            context).block();
     }
 
     /**
      * Gets the list of all protection container mappings in a vault.
-     *
-     * <p>Lists the protection container mappings in the vault.
-     *
+     * 
+     * Lists the protection container mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container mapping collection class along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProtectionContainerMappingInner>> listSinglePageAsync(
-        String resourceName, String resourceGroupName) {
+    private Mono<PagedResponse<ProtectionContainerMappingInner>> listSinglePageAsync(String resourceName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2372,41 +1791,23 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ProtectionContainerMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ProtectionContainerMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of all protection container mappings in a vault.
-     *
-     * <p>Lists the protection container mappings in the vault.
-     *
+     * 
+     * Lists the protection container mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -2414,16 +1815,14 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container mapping collection class along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProtectionContainerMappingInner>> listSinglePageAsync(
-        String resourceName, String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ProtectionContainerMappingInner>> listSinglePageAsync(String resourceName,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2433,38 +1832,23 @@ public final class ReplicationProtectionContainerMappingsClientImpl
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of all protection container mappings in a vault.
-     *
-     * <p>Lists the protection container mappings in the vault.
-     *
+     * 
+     * Lists the protection container mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2474,15 +1858,15 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProtectionContainerMappingInner> listAsync(String resourceName, String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceName, resourceGroupName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of all protection container mappings in a vault.
-     *
-     * <p>Lists the protection container mappings in the vault.
-     *
+     * 
+     * Lists the protection container mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -2492,18 +1876,17 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping collection class as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProtectionContainerMappingInner> listAsync(
-        String resourceName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceName, resourceGroupName, context),
+    private PagedFlux<ProtectionContainerMappingInner> listAsync(String resourceName, String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of all protection container mappings in a vault.
-     *
-     * <p>Lists the protection container mappings in the vault.
-     *
+     * 
+     * Lists the protection container mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2518,9 +1901,9 @@ public final class ReplicationProtectionContainerMappingsClientImpl
 
     /**
      * Gets the list of all protection container mappings in a vault.
-     *
-     * <p>Lists the protection container mappings in the vault.
-     *
+     * 
+     * Lists the protection container mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -2530,21 +1913,22 @@ public final class ReplicationProtectionContainerMappingsClientImpl
      * @return protection container mapping collection class as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProtectionContainerMappingInner> list(
-        String resourceName, String resourceGroupName, Context context) {
+    public PagedIterable<ProtectionContainerMappingInner> list(String resourceName, String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceName, resourceGroupName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container mapping collection class along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectionContainerMappingInner>>
@@ -2553,41 +1937,30 @@ public final class ReplicationProtectionContainerMappingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByReplicationProtectionContainersNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProtectionContainerMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByReplicationProtectionContainersNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ProtectionContainerMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container mapping collection class along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectionContainerMappingInner>>
@@ -2596,36 +1969,27 @@ public final class ReplicationProtectionContainerMappingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByReplicationProtectionContainersNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByReplicationProtectionContainersNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container mapping collection class along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectionContainerMappingInner>> listNextSinglePageAsync(String nextLink) {
@@ -2633,62 +1997,43 @@ public final class ReplicationProtectionContainerMappingsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProtectionContainerMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ProtectionContainerMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container mapping collection class along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProtectionContainerMappingInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ProtectionContainerMappingInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

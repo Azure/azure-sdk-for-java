@@ -21,8 +21,7 @@ public final class ReplicationAlertSettingsImpl implements ReplicationAlertSetti
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    public ReplicationAlertSettingsImpl(
-        ReplicationAlertSettingsClient innerClient,
+    public ReplicationAlertSettingsImpl(ReplicationAlertSettingsClient innerClient,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,23 +29,20 @@ public final class ReplicationAlertSettingsImpl implements ReplicationAlertSetti
 
     public PagedIterable<Alert> list(String resourceName, String resourceGroupName) {
         PagedIterable<AlertInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Alert> list(String resourceName, String resourceGroupName, Context context) {
         PagedIterable<AlertInner> inner = this.serviceClient().list(resourceName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertImpl(inner1, this.manager()));
     }
 
-    public Response<Alert> getWithResponse(
-        String resourceName, String resourceGroupName, String alertSettingName, Context context) {
-        Response<AlertInner> inner =
-            this.serviceClient().getWithResponse(resourceName, resourceGroupName, alertSettingName, context);
+    public Response<Alert> getWithResponse(String resourceName, String resourceGroupName, String alertSettingName,
+        Context context) {
+        Response<AlertInner> inner
+            = this.serviceClient().getWithResponse(resourceName, resourceGroupName, alertSettingName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AlertImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -63,59 +59,39 @@ public final class ReplicationAlertSettingsImpl implements ReplicationAlertSetti
     }
 
     public Alert getById(String id) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String alertSettingName = Utils.getValueFromIdByName(id, "replicationAlertSettings");
+        String alertSettingName = ResourceManagerUtils.getValueFromIdByName(id, "replicationAlertSettings");
         if (alertSettingName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationAlertSettings'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'replicationAlertSettings'.", id)));
         }
         return this.getWithResponse(resourceName, resourceGroupName, alertSettingName, Context.NONE).getValue();
     }
 
     public Response<Alert> getByIdWithResponse(String id, Context context) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String alertSettingName = Utils.getValueFromIdByName(id, "replicationAlertSettings");
+        String alertSettingName = ResourceManagerUtils.getValueFromIdByName(id, "replicationAlertSettings");
         if (alertSettingName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationAlertSettings'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'replicationAlertSettings'.", id)));
         }
         return this.getWithResponse(resourceName, resourceGroupName, alertSettingName, context);
     }

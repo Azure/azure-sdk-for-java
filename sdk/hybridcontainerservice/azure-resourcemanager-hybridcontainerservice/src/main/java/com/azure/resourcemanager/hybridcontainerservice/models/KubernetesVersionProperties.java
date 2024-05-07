@@ -21,12 +21,6 @@ public final class KubernetesVersionProperties {
     private String version;
 
     /*
-     * Capabilities on this kubernetes version
-     */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
-    private KubernetesVersionCapabilities capabilities;
-
-    /*
      * Whether this version is in preview mode.
      */
     @JsonProperty(value = "isPreview", access = JsonProperty.Access.WRITE_ONLY)
@@ -55,15 +49,6 @@ public final class KubernetesVersionProperties {
     }
 
     /**
-     * Get the capabilities property: Capabilities on this kubernetes version.
-     * 
-     * @return the capabilities value.
-     */
-    public KubernetesVersionCapabilities capabilities() {
-        return this.capabilities;
-    }
-
-    /**
      * Get the isPreview property: Whether this version is in preview mode.
      * 
      * @return the isPreview value.
@@ -87,9 +72,6 @@ public final class KubernetesVersionProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (capabilities() != null) {
-            capabilities().validate();
-        }
         if (patchVersions() != null) {
             patchVersions().values().forEach(e -> {
                 if (e != null) {

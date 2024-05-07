@@ -13,6 +13,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
@@ -2260,6 +2261,55 @@ class FileApiTests extends FileShareTestBase {
         FileShareTestHelper.deleteFileIfExists(testFolder.getPath(), fileName);
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-05-04")
+    @ParameterizedTest
+    @MethodSource("listRangesDiffWithRenameSupplier")
+    public void listRangesDiffWithRename(Boolean renameSupport) throws IOException {
+        //create a file
+        String fileName = generateShareName();
+        primaryFileClient.create(Constants.MB);
+
+        //upload some content
+        ByteArrayInputStream content = new ByteArrayInputStream(FileShareTestHelper.getRandomBuffer(Constants.KB));
+        String uploadFile = FileShareTestHelper.createRandomFileWithLength(Constants.KB, testFolder, fileName);
+        primaryFileClient.uploadFromFile(uploadFile);
+        primaryFileClient.uploadRange(content, Constants.KB);
+
+        //take snapshot
+        ShareSnapshotInfo previousSnapshot = shareClient.createSnapshot();
+
+        //rename file
+        ShareFileClient destFile = primaryFileClient.rename(generatePathName());
+
+        //take another snapshot
+        shareClient.createSnapshot();
+
+        //setup options
+        ShareFileListRangesDiffOptions options = new ShareFileListRangesDiffOptions(previousSnapshot.getSnapshot());
+        options.setRenameIncluded(renameSupport);
+
+        //call
+        if (renameSupport == null || !renameSupport) {
+            ShareStorageException e = assertThrows(ShareStorageException.class,
+                () -> destFile.listRangesDiffWithResponse(options, null, null));
+            assertEquals(ShareErrorCode.PREVIOUS_SNAPSHOT_NOT_FOUND, e.getErrorCode());
+        } else {
+            Response<ShareFileRangeList> response = destFile.listRangesDiffWithResponse(options, null, null);
+            assertEquals(200, response.getStatusCode());
+            assertEquals(0, response.getValue().getRanges().size());
+        }
+
+        FileShareTestHelper.deleteFileIfExists(testFolder.getPath(), fileName);
+        destFile.delete();
+    }
+
+    private static Stream<Arguments> listRangesDiffWithRenameSupplier() {
+        return Stream.of(
+            Arguments.of(true),
+            Arguments.of(false),
+            Arguments.of((Boolean) null));
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
     @Test
     public void listRangesDiffTrailingDot() throws IOException {
@@ -2414,6 +2464,17 @@ class FileApiTests extends FileShareTestBase {
     public void renameMin() {
         primaryFileClient.create(512);
         assertNotNull(primaryFileClient.rename(generatePathName()));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
+    @ParameterizedTest
+    @ValueSource(strings = {"\u200B", "\u200C", "\u200D", "\uFEFF"})
+    public void renameWithUnicodeChars(String specialChar) {
+        ShareFileClient fileClient = shareClient.getFileClient("test-file-source" + specialChar + " pdf.txt");
+        fileClient.create(512);
+        ShareFileClient destClient = fileClient.rename("test-file-destination" + specialChar + " pdf.txt");
+        assertNotNull(destClient);
+        assertTrue(Utility.urlEncode(destClient.getFileUrl()).contains(Utility.urlEncode(specialChar)));
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
@@ -2696,6 +2757,24 @@ class FileApiTests extends FileShareTestBase {
         assertEquals(filePath, primaryFileClient.getFilePath());
     }
 
+    private static Stream<Arguments> getNonEncodedFileNameSupplier() {
+        return Stream.of(
+            Arguments.of("test%test"),
+            Arguments.of("%Россия 한국 中国!"),
+            Arguments.of("%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getNonEncodedFileNameSupplier")
+    public void getNonEncodedFileName(String fileName) {
+        ShareFileClient fileClient = shareClient.getFileClient(fileName);
+        assertEquals(fileName, fileClient.getFilePath());
+        fileClient.create(1024);
+        assertTrue(fileClient.exists());
+    }
+
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
@@ -2768,7 +2847,6 @@ class FileApiTests extends FileShareTestBase {
         assertTrue(aadFileClient.exists());
     }
 
-    /* Uncomment this test when Client Name is enabled with STG 93.
     @PlaybackOnly
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-02-04")
     @Test
@@ -2778,7 +2856,5 @@ class FileApiTests extends FileShareTestBase {
         ShareFileClient fileClient = directoryClient.getFileClient("test.txt");
         List<HandleItem> list = fileClient.listHandles().stream().collect(Collectors.toList());
         assertNotNull(list.get(0).getClientName());
-
     }
-     */
 }

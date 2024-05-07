@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A condition of the scheduled query rule. */
+/**
+ * A condition of the scheduled query rule.
+ */
 @Fluent
 public final class Condition {
     /*
@@ -68,13 +70,15 @@ public final class Condition {
     @JsonProperty(value = "metricName")
     private String metricName;
 
-    /** Creates an instance of Condition class. */
+    /**
+     * Creates an instance of Condition class.
+     */
     public Condition() {
     }
 
     /**
      * Get the query property: Log query alert.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -83,7 +87,7 @@ public final class Condition {
 
     /**
      * Set the query property: Log query alert.
-     *
+     * 
      * @param query the query value to set.
      * @return the Condition object itself.
      */
@@ -94,7 +98,7 @@ public final class Condition {
 
     /**
      * Get the timeAggregation property: Aggregation type. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the timeAggregation value.
      */
     public TimeAggregation timeAggregation() {
@@ -103,7 +107,7 @@ public final class Condition {
 
     /**
      * Set the timeAggregation property: Aggregation type. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param timeAggregation the timeAggregation value to set.
      * @return the Condition object itself.
      */
@@ -113,9 +117,9 @@ public final class Condition {
     }
 
     /**
-     * Get the metricMeasureColumn property: The column containing the metric measure number. Relevant only for rules of
-     * the kind LogAlert.
-     *
+     * Get the metricMeasureColumn property: The column containing the metric measure number. Relevant only for rules
+     * of the kind LogAlert.
+     * 
      * @return the metricMeasureColumn value.
      */
     public String metricMeasureColumn() {
@@ -123,9 +127,9 @@ public final class Condition {
     }
 
     /**
-     * Set the metricMeasureColumn property: The column containing the metric measure number. Relevant only for rules of
-     * the kind LogAlert.
-     *
+     * Set the metricMeasureColumn property: The column containing the metric measure number. Relevant only for rules
+     * of the kind LogAlert.
+     * 
      * @param metricMeasureColumn the metricMeasureColumn value to set.
      * @return the Condition object itself.
      */
@@ -135,9 +139,9 @@ public final class Condition {
     }
 
     /**
-     * Get the resourceIdColumn property: The column containing the resource id. The content of the column must be a uri
-     * formatted as resource id. Relevant only for rules of the kind LogAlert.
-     *
+     * Get the resourceIdColumn property: The column containing the resource id. The content of the column must be a
+     * uri formatted as resource id. Relevant only for rules of the kind LogAlert.
+     * 
      * @return the resourceIdColumn value.
      */
     public String resourceIdColumn() {
@@ -145,9 +149,9 @@ public final class Condition {
     }
 
     /**
-     * Set the resourceIdColumn property: The column containing the resource id. The content of the column must be a uri
-     * formatted as resource id. Relevant only for rules of the kind LogAlert.
-     *
+     * Set the resourceIdColumn property: The column containing the resource id. The content of the column must be a
+     * uri formatted as resource id. Relevant only for rules of the kind LogAlert.
+     * 
      * @param resourceIdColumn the resourceIdColumn value to set.
      * @return the Condition object itself.
      */
@@ -158,7 +162,7 @@ public final class Condition {
 
     /**
      * Get the dimensions property: List of Dimensions conditions.
-     *
+     * 
      * @return the dimensions value.
      */
     public List<Dimension> dimensions() {
@@ -167,7 +171,7 @@ public final class Condition {
 
     /**
      * Set the dimensions property: List of Dimensions conditions.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the Condition object itself.
      */
@@ -178,7 +182,7 @@ public final class Condition {
 
     /**
      * Get the operator property: The criteria operator. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the operator value.
      */
     public ConditionOperator operator() {
@@ -187,7 +191,7 @@ public final class Condition {
 
     /**
      * Set the operator property: The criteria operator. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the Condition object itself.
      */
@@ -197,9 +201,9 @@ public final class Condition {
     }
 
     /**
-     * Get the threshold property: the criteria threshold value that activates the alert. Relevant and required only for
-     * rules of the kind LogAlert.
-     *
+     * Get the threshold property: the criteria threshold value that activates the alert. Relevant and required only
+     * for rules of the kind LogAlert.
+     * 
      * @return the threshold value.
      */
     public Double threshold() {
@@ -207,9 +211,9 @@ public final class Condition {
     }
 
     /**
-     * Set the threshold property: the criteria threshold value that activates the alert. Relevant and required only for
-     * rules of the kind LogAlert.
-     *
+     * Set the threshold property: the criteria threshold value that activates the alert. Relevant and required only
+     * for rules of the kind LogAlert.
+     * 
      * @param threshold the threshold value to set.
      * @return the Condition object itself.
      */
@@ -221,7 +225,7 @@ public final class Condition {
     /**
      * Get the failingPeriods property: The minimum number of violations required within the selected lookback time
      * window required to raise an alert. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the failingPeriods value.
      */
     public ConditionFailingPeriods failingPeriods() {
@@ -231,7 +235,7 @@ public final class Condition {
     /**
      * Set the failingPeriods property: The minimum number of violations required within the selected lookback time
      * window required to raise an alert. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param failingPeriods the failingPeriods value to set.
      * @return the Condition object itself.
      */
@@ -243,7 +247,7 @@ public final class Condition {
     /**
      * Get the metricName property: The name of the metric to be sent. Relevant and required only for rules of the kind
      * LogToMetric.
-     *
+     * 
      * @return the metricName value.
      */
     public String metricName() {
@@ -253,7 +257,7 @@ public final class Condition {
     /**
      * Set the metricName property: The name of the metric to be sent. Relevant and required only for rules of the kind
      * LogToMetric.
-     *
+     * 
      * @param metricName the metricName value to set.
      * @return the Condition object itself.
      */
@@ -264,7 +268,7 @@ public final class Condition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** VMware Cbt specific policy details. */
+/**
+ * VMware Cbt specific policy details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
 @Fluent
@@ -32,14 +34,16 @@ public final class VmwareCbtPolicyDetails extends PolicyProviderSpecificDetails 
     @JsonProperty(value = "crashConsistentFrequencyInMinutes")
     private Integer crashConsistentFrequencyInMinutes;
 
-    /** Creates an instance of VmwareCbtPolicyDetails class. */
+    /**
+     * Creates an instance of VmwareCbtPolicyDetails class.
+     */
     public VmwareCbtPolicyDetails() {
     }
 
     /**
      * Get the recoveryPointHistoryInMinutes property: The duration in minutes until which the recovery points need to
      * be stored.
-     *
+     * 
      * @return the recoveryPointHistoryInMinutes value.
      */
     public Integer recoveryPointHistoryInMinutes() {
@@ -49,7 +53,7 @@ public final class VmwareCbtPolicyDetails extends PolicyProviderSpecificDetails 
     /**
      * Set the recoveryPointHistoryInMinutes property: The duration in minutes until which the recovery points need to
      * be stored.
-     *
+     * 
      * @param recoveryPointHistoryInMinutes the recoveryPointHistoryInMinutes value to set.
      * @return the VmwareCbtPolicyDetails object itself.
      */
@@ -60,7 +64,7 @@ public final class VmwareCbtPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Get the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency in minutes.
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public Integer appConsistentFrequencyInMinutes() {
@@ -69,7 +73,7 @@ public final class VmwareCbtPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Set the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency in minutes.
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the VmwareCbtPolicyDetails object itself.
      */
@@ -80,7 +84,7 @@ public final class VmwareCbtPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Get the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency in minutes.
-     *
+     * 
      * @return the crashConsistentFrequencyInMinutes value.
      */
     public Integer crashConsistentFrequencyInMinutes() {
@@ -89,7 +93,7 @@ public final class VmwareCbtPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Set the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency in minutes.
-     *
+     * 
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the VmwareCbtPolicyDetails object itself.
      */
@@ -100,7 +104,7 @@ public final class VmwareCbtPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

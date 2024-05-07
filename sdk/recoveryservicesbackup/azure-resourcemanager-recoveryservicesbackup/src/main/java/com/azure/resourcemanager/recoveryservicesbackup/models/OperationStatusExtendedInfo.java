@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for additional information of operation status. */
+/**
+ * Base class for additional information of operation status.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -24,17 +26,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = OperationStatusProvisionIlrExtendedInfo.class),
     @JsonSubTypes.Type(
         name = "OperationStatusValidateOperationExtendedInfo",
-        value = OperationStatusValidateOperationExtendedInfo.class)
-})
+        value = OperationStatusValidateOperationExtendedInfo.class) })
 @Immutable
 public class OperationStatusExtendedInfo {
-    /** Creates an instance of OperationStatusExtendedInfo class. */
+    /**
+     * Creates an instance of OperationStatusExtendedInfo class.
+     */
     public OperationStatusExtendedInfo() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

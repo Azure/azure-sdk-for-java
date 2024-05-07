@@ -25,60 +25,56 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemOper
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProtectedItemOperationStatusesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectedItemOperationStatusesClient.
+ */
 public final class ProtectedItemOperationStatusesClientImpl implements ProtectedItemOperationStatusesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProtectedItemOperationStatusesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of ProtectedItemOperationStatusesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProtectedItemOperationStatusesClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ProtectedItemOperationStatusesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ProtectedItemOperationStatusesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesBackupClientProtectedItemOperationStatuses to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesBackupClientProtectedItemOperationStatuses to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface ProtectedItemOperationStatusesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/operationsStatus/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/operationsStatus/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<OperationStatusInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("containerName") String containerName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("containerName") String containerName, @PathParam("protectedItemName") String protectedItemName,
+            @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
      * or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some
-     * operations create jobs. This method returns the list of jobs associated with the operation.
-     *
+     * operations
+     * create jobs. This method returns the list of jobs associated with the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -91,18 +87,11 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
      * @return operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -112,10 +101,8 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -132,29 +119,18 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            containerName,
-                            protectedItemName,
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName, protectedItemName,
+                operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
      * or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some
-     * operations create jobs. This method returns the list of jobs associated with the operation.
-     *
+     * operations
+     * create jobs. This method returns the list of jobs associated with the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -168,19 +144,11 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
      * @return operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId,
-        Context context) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -190,10 +158,8 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -210,26 +176,17 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                containerName,
-                protectedItemName,
-                operationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, containerName, protectedItemName, operationId, accept,
+            context);
     }
 
     /**
      * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
      * or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some
-     * operations create jobs. This method returns the list of jobs associated with the operation.
-     *
+     * operations
+     * create jobs. This method returns the list of jobs associated with the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -242,23 +199,18 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
      * @return operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> getAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId) {
-        return getWithResponseAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<OperationStatusInner> getAsync(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String operationId) {
+        return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
      * or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some
-     * operations create jobs. This method returns the list of jobs associated with the operation.
-     *
+     * operations
+     * create jobs. This method returns the list of jobs associated with the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -272,24 +224,18 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
      * @return operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusInner> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId,
-        Context context) {
-        return getWithResponseAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId, context)
-            .block();
+    public Response<OperationStatusInner> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String operationId, Context context) {
+        return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            operationId, context).block();
     }
 
     /**
      * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
      * or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some
-     * operations create jobs. This method returns the list of jobs associated with the operation.
-     *
+     * operations
+     * create jobs. This method returns the list of jobs associated with the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -302,15 +248,9 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
      * @return operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId) {
-        return getWithResponse(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId, Context.NONE)
-            .getValue();
+    public OperationStatusInner get(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String operationId) {
+        return getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId,
+            Context.NONE).getValue();
     }
 }

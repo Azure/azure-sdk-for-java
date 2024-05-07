@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A2A create protection intent input. */
+/**
+ * A2A create protection intent input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -148,13 +150,15 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
     @JsonProperty(value = "automationAccountArmId")
     private String automationAccountArmId;
 
-    /** Creates an instance of A2ACreateProtectionIntentInput class. */
+    /**
+     * Creates an instance of A2ACreateProtectionIntentInput class.
+     */
     public A2ACreateProtectionIntentInput() {
     }
 
     /**
      * Get the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -163,7 +167,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @param fabricObjectId the fabricObjectId value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -174,7 +178,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the primaryLocation property: The primary location for the virtual machine.
-     *
+     * 
      * @return the primaryLocation value.
      */
     public String primaryLocation() {
@@ -183,7 +187,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the primaryLocation property: The primary location for the virtual machine.
-     *
+     * 
      * @param primaryLocation the primaryLocation value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -194,7 +198,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the recoveryLocation property: The recovery location for the virtual machine.
-     *
+     * 
      * @return the recoveryLocation value.
      */
     public String recoveryLocation() {
@@ -203,7 +207,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the recoveryLocation property: The recovery location for the virtual machine.
-     *
+     * 
      * @param recoveryLocation the recoveryLocation value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -214,7 +218,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the recoverySubscriptionId property: The recovery subscription Id of the virtual machine.
-     *
+     * 
      * @return the recoverySubscriptionId value.
      */
     public String recoverySubscriptionId() {
@@ -223,7 +227,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the recoverySubscriptionId property: The recovery subscription Id of the virtual machine.
-     *
+     * 
      * @param recoverySubscriptionId the recoverySubscriptionId value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -234,7 +238,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the recoveryAvailabilityType property: The recovery availability type of the virtual machine.
-     *
+     * 
      * @return the recoveryAvailabilityType value.
      */
     public A2ARecoveryAvailabilityType recoveryAvailabilityType() {
@@ -243,19 +247,19 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the recoveryAvailabilityType property: The recovery availability type of the virtual machine.
-     *
+     * 
      * @param recoveryAvailabilityType the recoveryAvailabilityType value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
-    public A2ACreateProtectionIntentInput withRecoveryAvailabilityType(
-        A2ARecoveryAvailabilityType recoveryAvailabilityType) {
+    public A2ACreateProtectionIntentInput
+        withRecoveryAvailabilityType(A2ARecoveryAvailabilityType recoveryAvailabilityType) {
         this.recoveryAvailabilityType = recoveryAvailabilityType;
         return this;
     }
 
     /**
      * Get the protectionProfileCustomInput property: The protection profile custom inputs.
-     *
+     * 
      * @return the protectionProfileCustomInput value.
      */
     public ProtectionProfileCustomDetails protectionProfileCustomInput() {
@@ -264,19 +268,19 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the protectionProfileCustomInput property: The protection profile custom inputs.
-     *
+     * 
      * @param protectionProfileCustomInput the protectionProfileCustomInput value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
-    public A2ACreateProtectionIntentInput withProtectionProfileCustomInput(
-        ProtectionProfileCustomDetails protectionProfileCustomInput) {
+    public A2ACreateProtectionIntentInput
+        withProtectionProfileCustomInput(ProtectionProfileCustomDetails protectionProfileCustomInput) {
         this.protectionProfileCustomInput = protectionProfileCustomInput;
         return this;
     }
 
     /**
      * Get the recoveryResourceGroupId property: The recovery resource group Id. Valid for V2 scenarios.
-     *
+     * 
      * @return the recoveryResourceGroupId value.
      */
     public String recoveryResourceGroupId() {
@@ -285,7 +289,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the recoveryResourceGroupId property: The recovery resource group Id. Valid for V2 scenarios.
-     *
+     * 
      * @param recoveryResourceGroupId the recoveryResourceGroupId value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -296,7 +300,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the primaryStagingStorageAccountCustomInput property: The primary staging storage account input.
-     *
+     * 
      * @return the primaryStagingStorageAccountCustomInput value.
      */
     public StorageAccountCustomDetails primaryStagingStorageAccountCustomInput() {
@@ -305,7 +309,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the primaryStagingStorageAccountCustomInput property: The primary staging storage account input.
-     *
+     * 
      * @param primaryStagingStorageAccountCustomInput the primaryStagingStorageAccountCustomInput value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -317,7 +321,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the recoveryAvailabilitySetCustomInput property: The recovery availability set input.
-     *
+     * 
      * @return the recoveryAvailabilitySetCustomInput value.
      */
     public RecoveryAvailabilitySetCustomDetails recoveryAvailabilitySetCustomInput() {
@@ -326,7 +330,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the recoveryAvailabilitySetCustomInput property: The recovery availability set input.
-     *
+     * 
      * @param recoveryAvailabilitySetCustomInput the recoveryAvailabilitySetCustomInput value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -338,7 +342,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the recoveryVirtualNetworkCustomInput property: The recovery virtual network input.
-     *
+     * 
      * @return the recoveryVirtualNetworkCustomInput value.
      */
     public RecoveryVirtualNetworkCustomDetails recoveryVirtualNetworkCustomInput() {
@@ -347,19 +351,20 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the recoveryVirtualNetworkCustomInput property: The recovery virtual network input.
-     *
+     * 
      * @param recoveryVirtualNetworkCustomInput the recoveryVirtualNetworkCustomInput value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
-    public A2ACreateProtectionIntentInput withRecoveryVirtualNetworkCustomInput(
-        RecoveryVirtualNetworkCustomDetails recoveryVirtualNetworkCustomInput) {
+    public A2ACreateProtectionIntentInput
+        withRecoveryVirtualNetworkCustomInput(RecoveryVirtualNetworkCustomDetails recoveryVirtualNetworkCustomInput) {
         this.recoveryVirtualNetworkCustomInput = recoveryVirtualNetworkCustomInput;
         return this;
     }
 
     /**
-     * Get the recoveryProximityPlacementGroupCustomInput property: The recovery proximity placement group custom input.
-     *
+     * Get the recoveryProximityPlacementGroupCustomInput property: The recovery proximity placement group custom
+     * input.
+     * 
      * @return the recoveryProximityPlacementGroupCustomInput value.
      */
     public RecoveryProximityPlacementGroupCustomDetails recoveryProximityPlacementGroupCustomInput() {
@@ -367,8 +372,9 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
     }
 
     /**
-     * Set the recoveryProximityPlacementGroupCustomInput property: The recovery proximity placement group custom input.
-     *
+     * Set the recoveryProximityPlacementGroupCustomInput property: The recovery proximity placement group custom
+     * input.
+     * 
      * @param recoveryProximityPlacementGroupCustomInput the recoveryProximityPlacementGroupCustomInput value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -380,7 +386,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the autoProtectionOfDataDisk property: A value indicating whether the auto protection is enabled.
-     *
+     * 
      * @return the autoProtectionOfDataDisk value.
      */
     public AutoProtectionOfDataDisk autoProtectionOfDataDisk() {
@@ -389,19 +395,19 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the autoProtectionOfDataDisk property: A value indicating whether the auto protection is enabled.
-     *
+     * 
      * @param autoProtectionOfDataDisk the autoProtectionOfDataDisk value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
-    public A2ACreateProtectionIntentInput withAutoProtectionOfDataDisk(
-        AutoProtectionOfDataDisk autoProtectionOfDataDisk) {
+    public A2ACreateProtectionIntentInput
+        withAutoProtectionOfDataDisk(AutoProtectionOfDataDisk autoProtectionOfDataDisk) {
         this.autoProtectionOfDataDisk = autoProtectionOfDataDisk;
         return this;
     }
 
     /**
      * Get the vmDisks property: The list of vm disk inputs.
-     *
+     * 
      * @return the vmDisks value.
      */
     public List<A2AProtectionIntentDiskInputDetails> vmDisks() {
@@ -410,7 +416,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the vmDisks property: The list of vm disk inputs.
-     *
+     * 
      * @param vmDisks the vmDisks value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -421,7 +427,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the vmManagedDisks property: The list of vm managed disk inputs.
-     *
+     * 
      * @return the vmManagedDisks value.
      */
     public List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks() {
@@ -430,19 +436,19 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the vmManagedDisks property: The list of vm managed disk inputs.
-     *
+     * 
      * @param vmManagedDisks the vmManagedDisks value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
-    public A2ACreateProtectionIntentInput withVmManagedDisks(
-        List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks) {
+    public A2ACreateProtectionIntentInput
+        withVmManagedDisks(List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks) {
         this.vmManagedDisks = vmManagedDisks;
         return this;
     }
 
     /**
      * Get the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -451,7 +457,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @param multiVmGroupName the multiVmGroupName value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -462,7 +468,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the multiVmGroupId property: The multi vm group id.
-     *
+     * 
      * @return the multiVmGroupId value.
      */
     public String multiVmGroupId() {
@@ -471,7 +477,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the multiVmGroupId property: The multi vm group id.
-     *
+     * 
      * @param multiVmGroupId the multiVmGroupId value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -482,7 +488,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the recoveryBootDiagStorageAccount property: The boot diagnostic storage account.
-     *
+     * 
      * @return the recoveryBootDiagStorageAccount value.
      */
     public StorageAccountCustomDetails recoveryBootDiagStorageAccount() {
@@ -491,19 +497,19 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the recoveryBootDiagStorageAccount property: The boot diagnostic storage account.
-     *
+     * 
      * @param recoveryBootDiagStorageAccount the recoveryBootDiagStorageAccount value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
-    public A2ACreateProtectionIntentInput withRecoveryBootDiagStorageAccount(
-        StorageAccountCustomDetails recoveryBootDiagStorageAccount) {
+    public A2ACreateProtectionIntentInput
+        withRecoveryBootDiagStorageAccount(StorageAccountCustomDetails recoveryBootDiagStorageAccount) {
         this.recoveryBootDiagStorageAccount = recoveryBootDiagStorageAccount;
         return this;
     }
 
     /**
      * Get the diskEncryptionInfo property: The recovery disk encryption information (for two pass flows).
-     *
+     * 
      * @return the diskEncryptionInfo value.
      */
     public DiskEncryptionInfo diskEncryptionInfo() {
@@ -512,7 +518,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the diskEncryptionInfo property: The recovery disk encryption information (for two pass flows).
-     *
+     * 
      * @param diskEncryptionInfo the diskEncryptionInfo value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -523,7 +529,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @return the recoveryAvailabilityZone value.
      */
     public String recoveryAvailabilityZone() {
@@ -532,7 +538,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @param recoveryAvailabilityZone the recoveryAvailabilityZone value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -543,7 +549,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the agentAutoUpdateStatus property: A value indicating whether the auto update is enabled.
-     *
+     * 
      * @return the agentAutoUpdateStatus value.
      */
     public AgentAutoUpdateStatus agentAutoUpdateStatus() {
@@ -552,7 +558,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the agentAutoUpdateStatus property: A value indicating whether the auto update is enabled.
-     *
+     * 
      * @param agentAutoUpdateStatus the agentAutoUpdateStatus value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -564,7 +570,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
     /**
      * Get the automationAccountAuthenticationType property: A value indicating the authentication type for automation
      * account. The default value is "RunAsAccount".
-     *
+     * 
      * @return the automationAccountAuthenticationType value.
      */
     public AutomationAccountAuthenticationType automationAccountAuthenticationType() {
@@ -574,7 +580,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
     /**
      * Set the automationAccountAuthenticationType property: A value indicating the authentication type for automation
      * account. The default value is "RunAsAccount".
-     *
+     * 
      * @param automationAccountAuthenticationType the automationAccountAuthenticationType value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -586,7 +592,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Get the automationAccountArmId property: The automation account arm id.
-     *
+     * 
      * @return the automationAccountArmId value.
      */
     public String automationAccountArmId() {
@@ -595,7 +601,7 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Set the automationAccountArmId property: The automation account arm id.
-     *
+     * 
      * @param automationAccountArmId the automationAccountArmId value to set.
      * @return the A2ACreateProtectionIntentInput object itself.
      */
@@ -606,50 +612,38 @@ public final class A2ACreateProtectionIntentInput extends CreateProtectionIntent
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (fabricObjectId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fabricObjectId in model A2ACreateProtectionIntentInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property fabricObjectId in model A2ACreateProtectionIntentInput"));
         }
         if (primaryLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property primaryLocation in model A2ACreateProtectionIntentInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property primaryLocation in model A2ACreateProtectionIntentInput"));
         }
         if (recoveryLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryLocation in model A2ACreateProtectionIntentInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryLocation in model A2ACreateProtectionIntentInput"));
         }
         if (recoverySubscriptionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoverySubscriptionId in model A2ACreateProtectionIntentInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoverySubscriptionId in model A2ACreateProtectionIntentInput"));
         }
         if (recoveryAvailabilityType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryAvailabilityType in model A2ACreateProtectionIntentInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryAvailabilityType in model A2ACreateProtectionIntentInput"));
         }
         if (protectionProfileCustomInput() != null) {
             protectionProfileCustomInput().validate();
         }
         if (recoveryResourceGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryResourceGroupId in model A2ACreateProtectionIntentInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryResourceGroupId in model A2ACreateProtectionIntentInput"));
         }
         if (primaryStagingStorageAccountCustomInput() != null) {
             primaryStagingStorageAccountCustomInput().validate();

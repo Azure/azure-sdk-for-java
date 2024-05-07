@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedClusterPodIdentityProvisioningInfo model. */
+/**
+ * The ManagedClusterPodIdentityProvisioningInfo model.
+ */
 @Fluent
 public final class ManagedClusterPodIdentityProvisioningInfo {
     /*
@@ -16,13 +18,15 @@ public final class ManagedClusterPodIdentityProvisioningInfo {
     @JsonProperty(value = "error")
     private ManagedClusterPodIdentityProvisioningError error;
 
-    /** Creates an instance of ManagedClusterPodIdentityProvisioningInfo class. */
+    /**
+     * Creates an instance of ManagedClusterPodIdentityProvisioningInfo class.
+     */
     public ManagedClusterPodIdentityProvisioningInfo() {
     }
 
     /**
      * Get the error property: Pod identity assignment error (if any).
-     *
+     * 
      * @return the error value.
      */
     public ManagedClusterPodIdentityProvisioningError error() {
@@ -31,7 +35,7 @@ public final class ManagedClusterPodIdentityProvisioningInfo {
 
     /**
      * Set the error property: Pod identity assignment error (if any).
-     *
+     * 
      * @param error the error value to set.
      * @return the ManagedClusterPodIdentityProvisioningInfo object itself.
      */
@@ -42,7 +46,7 @@ public final class ManagedClusterPodIdentityProvisioningInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

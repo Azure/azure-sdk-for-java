@@ -9,26 +9,35 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Tiering Mode to control automatic tiering of recovery points. Supported values are: 1. TierRecommended: Tier all
- * recovery points recommended to be tiered 2. TierAfter: Tier all recovery points after a fixed period, as specified in
- * duration + durationType below. 3. DoNotTier: Do not tier any recovery points.
+ * Tiering Mode to control automatic tiering of recovery points. Supported values are:
+ * 1. TierRecommended: Tier all recovery points recommended to be tiered
+ * 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
+ * 3. DoNotTier: Do not tier any recovery points.
  */
 public final class TieringMode extends ExpandableStringEnum<TieringMode> {
-    /** Static value Invalid for TieringMode. */
+    /**
+     * Static value Invalid for TieringMode.
+     */
     public static final TieringMode INVALID = fromString("Invalid");
 
-    /** Static value TierRecommended for TieringMode. */
+    /**
+     * Static value TierRecommended for TieringMode.
+     */
     public static final TieringMode TIER_RECOMMENDED = fromString("TierRecommended");
 
-    /** Static value TierAfter for TieringMode. */
+    /**
+     * Static value TierAfter for TieringMode.
+     */
     public static final TieringMode TIER_AFTER = fromString("TierAfter");
 
-    /** Static value DoNotTier for TieringMode. */
+    /**
+     * Static value DoNotTier for TieringMode.
+     */
     public static final TieringMode DO_NOT_TIER = fromString("DoNotTier");
 
     /**
      * Creates a new instance of TieringMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,7 +46,7 @@ public final class TieringMode extends ExpandableStringEnum<TieringMode> {
 
     /**
      * Creates or finds a TieringMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TieringMode.
      */
@@ -48,7 +57,7 @@ public final class TieringMode extends ExpandableStringEnum<TieringMode> {
 
     /**
      * Gets known TieringMode values.
-     *
+     * 
      * @return known TieringMode values.
      */
     public static Collection<TieringMode> values() {

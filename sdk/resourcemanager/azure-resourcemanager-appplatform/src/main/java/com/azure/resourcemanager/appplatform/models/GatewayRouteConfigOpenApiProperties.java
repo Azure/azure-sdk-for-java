@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** OpenAPI properties of Spring Cloud Gateway route config. */
+/**
+ * OpenAPI properties of Spring Cloud Gateway route config.
+ */
 @Fluent
 public final class GatewayRouteConfigOpenApiProperties {
     /*
@@ -17,8 +19,14 @@ public final class GatewayRouteConfigOpenApiProperties {
     private String uri;
 
     /**
+     * Creates an instance of GatewayRouteConfigOpenApiProperties class.
+     */
+    public GatewayRouteConfigOpenApiProperties() {
+    }
+
+    /**
      * Get the uri property: The URI of OpenAPI specification.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -27,7 +35,7 @@ public final class GatewayRouteConfigOpenApiProperties {
 
     /**
      * Set the uri property: The URI of OpenAPI specification.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the GatewayRouteConfigOpenApiProperties object itself.
      */
@@ -38,7 +46,7 @@ public final class GatewayRouteConfigOpenApiProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

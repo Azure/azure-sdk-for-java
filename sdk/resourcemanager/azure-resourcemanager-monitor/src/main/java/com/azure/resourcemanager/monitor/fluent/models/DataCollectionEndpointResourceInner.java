@@ -15,7 +15,9 @@ import com.azure.resourcemanager.monitor.models.KnownDataCollectionEndpointResou
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Definition of ARM tracked top level resource. */
+/**
+ * Definition of ARM tracked top level resource.
+ */
 @Fluent
 public final class DataCollectionEndpointResourceInner extends Resource {
     /*
@@ -42,13 +44,15 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DataCollectionEndpointResourceInner class. */
+    /**
+     * Creates an instance of DataCollectionEndpointResourceInner class.
+     */
     public DataCollectionEndpointResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DataCollectionEndpointResourceProperties innerProperties() {
@@ -57,7 +61,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the kind property: The kind of the resource.
-     *
+     * 
      * @return the kind value.
      */
     public KnownDataCollectionEndpointResourceKind kind() {
@@ -66,7 +70,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Set the kind property: The kind of the resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
@@ -77,7 +81,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the etag property: Resource entity tag (ETag).
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -86,21 +90,25 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionEndpointResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataCollectionEndpointResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -109,7 +117,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the description property: Description of the data collection endpoint.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -118,7 +126,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Set the description property: Description of the data collection endpoint.
-     *
+     * 
      * @param description the description value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
@@ -133,7 +141,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     /**
      * Get the immutableId property: The immutable ID of this data collection endpoint resource. This property is
      * READ-ONLY.
-     *
+     * 
      * @return the immutableId value.
      */
     public String immutableId() {
@@ -143,7 +151,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
     /**
      * Set the immutableId property: The immutable ID of this data collection endpoint resource. This property is
      * READ-ONLY.
-     *
+     * 
      * @param immutableId the immutableId value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
@@ -157,7 +165,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the configurationAccess property: The endpoint used by clients to access their configuration.
-     *
+     * 
      * @return the configurationAccess value.
      */
     public DataCollectionEndpointConfigurationAccess configurationAccess() {
@@ -166,12 +174,12 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Set the configurationAccess property: The endpoint used by clients to access their configuration.
-     *
+     * 
      * @param configurationAccess the configurationAccess value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
-    public DataCollectionEndpointResourceInner withConfigurationAccess(
-        DataCollectionEndpointConfigurationAccess configurationAccess) {
+    public DataCollectionEndpointResourceInner
+        withConfigurationAccess(DataCollectionEndpointConfigurationAccess configurationAccess) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DataCollectionEndpointResourceProperties();
         }
@@ -181,7 +189,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the logsIngestion property: The endpoint used by clients to ingest logs.
-     *
+     * 
      * @return the logsIngestion value.
      */
     public DataCollectionEndpointLogsIngestion logsIngestion() {
@@ -190,7 +198,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Set the logsIngestion property: The endpoint used by clients to ingest logs.
-     *
+     * 
      * @param logsIngestion the logsIngestion value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
@@ -204,7 +212,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the networkAcls property: Network access control rules for the endpoints.
-     *
+     * 
      * @return the networkAcls value.
      */
     public DataCollectionEndpointNetworkAcls networkAcls() {
@@ -213,7 +221,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Set the networkAcls property: Network access control rules for the endpoints.
-     *
+     * 
      * @param networkAcls the networkAcls value to set.
      * @return the DataCollectionEndpointResourceInner object itself.
      */
@@ -227,7 +235,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: The resource provisioning state. This property is READ-ONLY.
-     *
+     * 
      * @return the provisioningState value.
      */
     public KnownDataCollectionEndpointProvisioningState provisioningState() {
@@ -236,7 +244,7 @@ public final class DataCollectionEndpointResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

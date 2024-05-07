@@ -42,6 +42,31 @@ import java.util.Objects;
 
 /**
  * A builder for creating a new instance of the ImageAnalysisClient type.
+ *
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.sync-client -->
+ * <pre>
+ * &#47;&#47;
+ * &#47;&#47; Create a synchronous Image Analysis client.
+ * &#47;&#47;
+ * ImageAnalysisClient client = new ImageAnalysisClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.vision.imageanalysis.sync-client -->
+ * 
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client -->
+ * <pre>
+ * &#47;&#47;
+ * &#47;&#47; Create an asynchronous Image Analysis client.
+ * &#47;&#47;
+ * ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.vision.imageanalysis.async-client -->
+ *
  */
 @ServiceClientBuilder(serviceClients = { ImageAnalysisClient.class, ImageAnalysisAsyncClient.class })
 public final class ImageAnalysisClientBuilder
@@ -219,7 +244,7 @@ public final class ImageAnalysisClientBuilder
 
     /**
      * Sets Service version.
-     * 
+     *
      * @param serviceVersion the serviceVersion value.
      * @return the ImageAnalysisClientBuilder.
      */
@@ -237,7 +262,7 @@ public final class ImageAnalysisClientBuilder
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the ImageAnalysisClientBuilder.
      */
@@ -249,7 +274,7 @@ public final class ImageAnalysisClientBuilder
 
     /**
      * Builds an instance of ImageAnalysisClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of ImageAnalysisClientImpl.
      */
     @Generated
@@ -292,7 +317,7 @@ public final class ImageAnalysisClientBuilder
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient).clientOptions(localClientOptions).build();
         return httpPipeline;
@@ -300,7 +325,7 @@ public final class ImageAnalysisClientBuilder
 
     /**
      * Builds an instance of ImageAnalysisAsyncClient class.
-     * 
+     *
      * @return an instance of ImageAnalysisAsyncClient.
      */
     @Generated
@@ -310,7 +335,7 @@ public final class ImageAnalysisClientBuilder
 
     /**
      * Builds an instance of ImageAnalysisClient class.
-     * 
+     *
      * @return an instance of ImageAnalysisClient.
      */
     @Generated

@@ -11,12 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequestResource;
 
-/** An instance of this class provides access to all the operations defined in RestoresClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestoresClient.
+ */
 public interface RestoresClient {
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -30,19 +33,14 @@ public interface RestoresClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginTrigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters);
+    SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String recoveryPointId, RestoreRequestResource parameters);
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -57,20 +55,15 @@ public interface RestoresClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginTrigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters,
+    SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String recoveryPointId, RestoreRequestResource parameters,
         Context context);
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -83,19 +76,14 @@ public interface RestoresClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters);
+    void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters);
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -109,13 +97,6 @@ public interface RestoresClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters,
-        Context context);
+    void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters, Context context);
 }

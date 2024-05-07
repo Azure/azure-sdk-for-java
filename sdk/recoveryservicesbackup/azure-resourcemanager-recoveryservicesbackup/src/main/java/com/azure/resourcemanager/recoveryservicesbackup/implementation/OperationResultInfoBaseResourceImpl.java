@@ -17,8 +17,7 @@ public final class OperationResultInfoBaseResourceImpl implements OperationResul
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    OperationResultInfoBaseResourceImpl(
-        OperationResultInfoBaseResourceInner innerObject,
+    OperationResultInfoBaseResourceImpl(OperationResultInfoBaseResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

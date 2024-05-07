@@ -14,8 +14,7 @@ public final class ClusterServerImpl implements ClusterServer {
 
     private final com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager;
 
-    ClusterServerImpl(
-        ClusterServerInner innerObject,
+    ClusterServerImpl(ClusterServerInner innerObject,
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -13,16 +13,19 @@ public final class AzureSearchIndexSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSearchIndexSink model = BinaryData.fromString(
-            "{\"type\":\"AzureSearchIndexSink\",\"writeBehavior\":\"Merge\",\"writeBatchSize\":\"datallbbdfulvhpwpsx\",\"writeBatchTimeout\":\"datarn\",\"sinkRetryCount\":\"datanxpsebazbtyrjr\",\"sinkRetryWait\":\"datagn\",\"maxConcurrentConnections\":\"datazrrapimtuojq\",\"disableMetricsCollection\":\"datayymyy\",\"\":{\"o\":\"datadkjykvez\",\"z\":\"datatzd\",\"r\":\"databmzldplamccql\"}}")
+            "{\"type\":\"ko\",\"writeBehavior\":\"Merge\",\"writeBatchSize\":\"dataquvf\",\"writeBatchTimeout\":\"dataaaozpcc\",\"sinkRetryCount\":\"datawfqtqbnakmgyd\",\"sinkRetryWait\":\"datakzgwf\",\"maxConcurrentConnections\":\"dataeqz\",\"disableMetricsCollection\":\"datae\",\"\":{\"qwfvxvoqbruyma\":\"datascrkkankjkszud\",\"fofxi\":\"dataj\",\"stuhlwzcn\":\"datajfmvydjax\",\"mnyfhkxcplhqzpw\":\"datavugb\"}}")
             .toObject(AzureSearchIndexSink.class);
         Assertions.assertEquals(AzureSearchIndexWriteBehaviorType.MERGE, model.writeBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSearchIndexSink model = new AzureSearchIndexSink().withWriteBatchSize("datallbbdfulvhpwpsx")
-            .withWriteBatchTimeout("datarn").withSinkRetryCount("datanxpsebazbtyrjr").withSinkRetryWait("datagn")
-            .withMaxConcurrentConnections("datazrrapimtuojq").withDisableMetricsCollection("datayymyy")
+        AzureSearchIndexSink model = new AzureSearchIndexSink().withWriteBatchSize("dataquvf")
+            .withWriteBatchTimeout("dataaaozpcc")
+            .withSinkRetryCount("datawfqtqbnakmgyd")
+            .withSinkRetryWait("datakzgwf")
+            .withMaxConcurrentConnections("dataeqz")
+            .withDisableMetricsCollection("datae")
             .withWriteBehavior(AzureSearchIndexWriteBehaviorType.MERGE);
         model = BinaryData.fromObject(model).toObject(AzureSearchIndexSink.class);
         Assertions.assertEquals(AzureSearchIndexWriteBehaviorType.MERGE, model.writeBehavior());

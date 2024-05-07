@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties pertaining to the BlobNfsTarget. */
+/**
+ * Properties pertaining to the BlobNfsTarget.
+ */
 @Fluent
 public final class BlobNfsTarget {
     /*
@@ -35,13 +37,15 @@ public final class BlobNfsTarget {
     @JsonProperty(value = "writeBackTimer")
     private Integer writeBackTimer;
 
-    /** Creates an instance of BlobNfsTarget class. */
+    /**
+     * Creates an instance of BlobNfsTarget class.
+     */
     public BlobNfsTarget() {
     }
 
     /**
      * Get the target property: Resource ID of the storage container.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -50,7 +54,7 @@ public final class BlobNfsTarget {
 
     /**
      * Set the target property: Resource ID of the storage container.
-     *
+     * 
      * @param target the target value to set.
      * @return the BlobNfsTarget object itself.
      */
@@ -61,7 +65,7 @@ public final class BlobNfsTarget {
 
     /**
      * Get the usageModel property: Identifies the StorageCache usage model to be used for this storage target.
-     *
+     * 
      * @return the usageModel value.
      */
     public String usageModel() {
@@ -70,7 +74,7 @@ public final class BlobNfsTarget {
 
     /**
      * Set the usageModel property: Identifies the StorageCache usage model to be used for this storage target.
-     *
+     * 
      * @param usageModel the usageModel value to set.
      * @return the BlobNfsTarget object itself.
      */
@@ -82,7 +86,7 @@ public final class BlobNfsTarget {
     /**
      * Get the verificationTimer property: Amount of time (in seconds) the cache waits before it checks the back-end
      * storage for file updates.
-     *
+     * 
      * @return the verificationTimer value.
      */
     public Integer verificationTimer() {
@@ -92,7 +96,7 @@ public final class BlobNfsTarget {
     /**
      * Set the verificationTimer property: Amount of time (in seconds) the cache waits before it checks the back-end
      * storage for file updates.
-     *
+     * 
      * @param verificationTimer the verificationTimer value to set.
      * @return the BlobNfsTarget object itself.
      */
@@ -102,9 +106,9 @@ public final class BlobNfsTarget {
     }
 
     /**
-     * Get the writeBackTimer property: Amount of time (in seconds) the cache waits after the last file change before it
-     * copies the changed file to back-end storage.
-     *
+     * Get the writeBackTimer property: Amount of time (in seconds) the cache waits after the last file change before
+     * it copies the changed file to back-end storage.
+     * 
      * @return the writeBackTimer value.
      */
     public Integer writeBackTimer() {
@@ -112,9 +116,9 @@ public final class BlobNfsTarget {
     }
 
     /**
-     * Set the writeBackTimer property: Amount of time (in seconds) the cache waits after the last file change before it
-     * copies the changed file to back-end storage.
-     *
+     * Set the writeBackTimer property: Amount of time (in seconds) the cache waits after the last file change before
+     * it copies the changed file to back-end storage.
+     * 
      * @param writeBackTimer the writeBackTimer value to set.
      * @return the BlobNfsTarget object itself.
      */
@@ -125,7 +129,7 @@ public final class BlobNfsTarget {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

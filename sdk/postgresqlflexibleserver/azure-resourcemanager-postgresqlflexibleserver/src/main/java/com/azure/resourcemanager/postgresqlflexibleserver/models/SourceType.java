@@ -8,26 +8,74 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Migration source server type : OnPremises, AWS, GCP, AzureVM or PostgreSQLSingleServer. */
+/**
+ * Migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2,
+ * GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
+ */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
-    /** Static value OnPremises for SourceType. */
+    /**
+     * Static value OnPremises for SourceType.
+     */
     public static final SourceType ON_PREMISES = fromString("OnPremises");
 
-    /** Static value AWS for SourceType. */
+    /**
+     * Static value AWS for SourceType.
+     */
     public static final SourceType AWS = fromString("AWS");
 
-    /** Static value GCP for SourceType. */
+    /**
+     * Static value GCP for SourceType.
+     */
     public static final SourceType GCP = fromString("GCP");
 
-    /** Static value AzureVM for SourceType. */
+    /**
+     * Static value AzureVM for SourceType.
+     */
     public static final SourceType AZURE_VM = fromString("AzureVM");
 
-    /** Static value PostgreSQLSingleServer for SourceType. */
+    /**
+     * Static value PostgreSQLSingleServer for SourceType.
+     */
     public static final SourceType POSTGRE_SQLSINGLE_SERVER = fromString("PostgreSQLSingleServer");
 
     /**
+     * Static value AWS_RDS for SourceType.
+     */
+    public static final SourceType AWS_RDS = fromString("AWS_RDS");
+
+    /**
+     * Static value AWS_AURORA for SourceType.
+     */
+    public static final SourceType AWS_AURORA = fromString("AWS_AURORA");
+
+    /**
+     * Static value AWS_EC2 for SourceType.
+     */
+    public static final SourceType AWS_EC2 = fromString("AWS_EC2");
+
+    /**
+     * Static value GCP_CloudSQL for SourceType.
+     */
+    public static final SourceType GCP_CLOUD_SQL = fromString("GCP_CloudSQL");
+
+    /**
+     * Static value GCP_AlloyDB for SourceType.
+     */
+    public static final SourceType GCP_ALLOY_DB = fromString("GCP_AlloyDB");
+
+    /**
+     * Static value GCP_Compute for SourceType.
+     */
+    public static final SourceType GCP_COMPUTE = fromString("GCP_Compute");
+
+    /**
+     * Static value EDB for SourceType.
+     */
+    public static final SourceType EDB = fromString("EDB");
+
+    /**
      * Creates a new instance of SourceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +84,7 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
 
     /**
      * Creates or finds a SourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SourceType.
      */
@@ -47,7 +95,7 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
 
     /**
      * Gets known SourceType values.
-     *
+     * 
      * @return known SourceType values.
      */
     public static Collection<SourceType> values() {

@@ -10,11 +10,8 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.http.LocalTestServer;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -25,7 +22,6 @@ import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
-import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -36,12 +32,14 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.LONG_BODY;
+import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.RETURN_HEADERS_AS_IS_PATH;
+import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.SHORT_BODY;
 import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,61 +48,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class OkHttpAsyncHttpClientTests {
-    static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
+    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS
+        = StepVerifierOptions.create().initialRequest(0);
 
-    private static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
-    private static final byte[] LONG_BODY = createLongBody();
-
-    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
-        .initialRequest(0);
-
-    private static LocalTestServer server;
-
-    @BeforeAll
-    public static void startTestServer() {
-        server = new LocalTestServer((req, resp, requestBody) -> {
-            String path = req.getServletPath();
-            boolean get = "GET".equalsIgnoreCase(req.getMethod());
-            boolean post = "POST".equalsIgnoreCase(req.getMethod());
-
-            if (get && "/short".equals(path)) {
-                resp.setContentType("application/octet-stream");
-                resp.setContentLength(SHORT_BODY.length);
-                resp.getOutputStream().write(SHORT_BODY);
-            } else if (get && "/long".equals(path)) {
-                resp.setContentType("application/octet-stream");
-                resp.setContentLength(LONG_BODY.length);
-                resp.getOutputStream().write(LONG_BODY);
-            } else if (get && "/error".equals(path)) {
-                resp.setStatus(500);
-                resp.setContentLength(5);
-                resp.getOutputStream().write("error".getBytes(StandardCharsets.UTF_8));
-            } else if (post && "/shortPost".equals(path)) {
-                resp.setContentType("application/octet-stream");
-                resp.setContentLength(SHORT_BODY.length);
-                resp.getOutputStream().write(SHORT_BODY);
-            } else if (get && RETURN_HEADERS_AS_IS_PATH.equals(path)) {
-                List<String> headerNames = Collections.list(req.getHeaderNames());
-                headerNames.forEach(headerName -> {
-                    List<String> headerValues = Collections.list(req.getHeaders(headerName));
-                    headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
-                });
-            } else if (get && "/connectionClose".equals(path)) {
-                resp.getHttpChannel().getConnection().close();
-            } else {
-                throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
-            }
-        }, 20);
-
-        server.start();
-    }
-
-    @AfterAll
-    public static void stopTestServer() {
-        if (server != null) {
-            server.stop();
-        }
-    }
+    private static final String SERVER_HTTP_URI = OkHttpClientLocalTestServer.getServer().getHttpUri();
 
     @Test
     public void testFlowableResponseShortBodyAsByteArrayAsync() {
@@ -138,14 +85,10 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
-        StepVerifier.create(getResponse("/error")
-                .flatMap(response -> {
-                    assertEquals(500, response.getStatusCode());
-                    return response.getBodyAsString();
-                }))
-            .expectNext("error")
-            .expectComplete()
-            .verify(Duration.ofSeconds(20));
+        StepVerifier.create(getResponse("/error").flatMap(response -> {
+            assertEquals(500, response.getStatusCode());
+            return response.getBodyAsString();
+        })).expectNext("error").expectComplete().verify(Duration.ofSeconds(20));
     }
 
     @Test
@@ -163,28 +106,26 @@ public class OkHttpAsyncHttpClientTests {
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
-        HttpClient client = new OkHttpAsyncHttpClientBuilder()
-            .dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
-            .build();
+        HttpClient client
+            = new OkHttpAsyncHttpClientBuilder().dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
+                .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
-            .setBody(Flux.error(new RuntimeException("boo")));
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, url("/shortPost")).setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
+                .setBody(Flux.error(new RuntimeException("boo")));
 
-        StepVerifier.create(client.send(request))
-            .expectErrorMatches(e -> e.getMessage().contains("boo"))
-            .verify();
+        StepVerifier.create(client.send(request)).expectErrorMatches(e -> e.getMessage().contains("boo")).verify();
     }
 
     @Test
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
-        HttpClient client = new OkHttpAsyncHttpClientBuilder()
-            .dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
-            .build();
+        HttpClient client
+            = new OkHttpAsyncHttpClientBuilder().dispatcher(createQuietDispatcher(RuntimeException.class, "boo"))
+                .build();
 
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url("/shortPost"))
             .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)))
             .setBody(Flux.just(contentChunk)
                 .repeat(repetitions)
@@ -204,7 +145,7 @@ public class OkHttpAsyncHttpClientTests {
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
         HttpClient client = new OkHttpAsyncClientProvider().createInstance();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url("/connectionClose"));
 
         StepVerifier.create(client.send(request).flatMap(HttpResponse::getBodyAsByteArray))
             .verifyError(IOException.class);
@@ -218,16 +159,13 @@ public class OkHttpAsyncHttpClientTests {
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
             .parallel()
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> doRequest(client, "/long")
-                .flatMap(HttpResponse::getBodyAsByteArray));
+            .flatMap(ignored -> doRequest(client, "/long"))
+            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
-        StepVerifier.create(responses)
-            .thenConsumeWhile(response -> {
-                com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, response);
-                return true;
-            })
-            .expectComplete()
-            .verify(Duration.ofSeconds(60));
+        StepVerifier.create(responses).thenConsumeWhile(response -> {
+            com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, response);
+            return true;
+        }).expectComplete().verify(Duration.ofSeconds(60));
     }
 
     @Test
@@ -236,20 +174,23 @@ public class OkHttpAsyncHttpClientTests {
         HttpClient client = new OkHttpAsyncClientProvider().createInstance();
 
         ForkJoinPool pool = new ForkJoinPool();
-        List<Callable<Void>> requests = new ArrayList<>(numRequests);
-        for (int i = 0; i < numRequests; i++) {
-            requests.add(() -> {
-                try (HttpResponse response = doRequestSync(client, "/long")) {
-                    byte[] body = response.getBodyAsBinaryData().toBytes();
-                    com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, body);
-                    return null;
-                }
-            });
-        }
+        try {
+            List<Callable<Void>> requests = new ArrayList<>(numRequests);
+            for (int i = 0; i < numRequests; i++) {
+                requests.add(() -> {
+                    try (HttpResponse response = doRequestSync(client, "/long")) {
+                        byte[] body = response.getBodyAsBinaryData().toBytes();
+                        com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, body);
+                        return null;
+                    }
+                });
+            }
 
-        pool.invokeAll(requests);
-        pool.shutdown();
-        assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
+            pool.invokeAll(requests);
+        } finally {
+            pool.shutdown();
+            assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
+        }
     }
 
     @Test
@@ -262,12 +203,11 @@ public class OkHttpAsyncHttpClientTests {
         HttpHeaderName multiValueHeaderName = HttpHeaderName.fromString("Multi-value");
         final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
 
-        HttpHeaders headers = new HttpHeaders()
-            .set(singleValueHeaderName, singleValueHeaderValue)
+        HttpHeaders headers = new HttpHeaders().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH),
-                headers, Flux.empty())))
+        StepVerifier
+            .create(client.send(new HttpRequest(HttpMethod.GET, url(RETURN_HEADERS_AS_IS_PATH), headers, Flux.empty())))
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
 
@@ -290,27 +230,16 @@ public class OkHttpAsyncHttpClientTests {
     }
 
     private static Mono<HttpResponse> getResponse(HttpClient client, String path) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(path));
         return client.send(request);
     }
 
-    static URL url(LocalTestServer server, String path) {
+    static URL url(String path) {
         try {
-            return new URI(server.getHttpUri() + path).toURL();
+            return new URI(SERVER_HTTP_URI + path).toURL();
         } catch (URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static byte[] createLongBody() {
-        byte[] duplicateBytes = "abcdefghijk".getBytes(StandardCharsets.UTF_8);
-        byte[] longBody = new byte[duplicateBytes.length * 100000];
-
-        for (int i = 0; i < 100000; i++) {
-            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
-        }
-
-        return longBody;
     }
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
@@ -321,12 +250,10 @@ public class OkHttpAsyncHttpClientTests {
     }
 
     private static Mono<HttpResponse> doRequest(HttpClient client, String path) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        return client.send(request);
+        return client.send(new HttpRequest(HttpMethod.GET, url(path)));
     }
 
     private static HttpResponse doRequestSync(HttpClient client, String path) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        return client.sendSync(request, Context.NONE);
+        return client.sendSync(new HttpRequest(HttpMethod.GET, url(path)), Context.NONE);
     }
 }

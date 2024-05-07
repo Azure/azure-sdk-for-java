@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure resource identifier. */
+/**
+ * Azure resource identifier.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureResource")
 @Immutable
@@ -20,13 +22,15 @@ public final class AzureResourceIdentifier extends ResourceIdentifier {
     @JsonProperty(value = "azureResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String azureResourceId;
 
-    /** Creates an instance of AzureResourceIdentifier class. */
+    /**
+     * Creates an instance of AzureResourceIdentifier class.
+     */
     public AzureResourceIdentifier() {
     }
 
     /**
      * Get the azureResourceId property: ARM resource identifier for the cloud resource being alerted on.
-     *
+     * 
      * @return the azureResourceId value.
      */
     public String azureResourceId() {
@@ -35,7 +39,7 @@ public final class AzureResourceIdentifier extends ResourceIdentifier {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -6,19 +6,87 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.DefenderCspmGcpOffering;
+import com.azure.resourcemanager.security.models.DefenderCspmGcpOfferingCiemDiscovery;
+import com.azure.resourcemanager.security.models.DefenderCspmGcpOfferingDataSensitivityDiscovery;
+import com.azure.resourcemanager.security.models.DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S;
+import com.azure.resourcemanager.security.models.DefenderCspmGcpOfferingMdcContainersImageAssessment;
+import com.azure.resourcemanager.security.models.DefenderCspmGcpOfferingVmScanners;
+import com.azure.resourcemanager.security.models.DefenderCspmGcpOfferingVmScannersConfiguration;
+import com.azure.resourcemanager.security.models.ScanningMode;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 
 public final class DefenderCspmGcpOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderCspmGcpOffering model =
-            BinaryData
-                .fromString("{\"offeringType\":\"DefenderCspmGcp\",\"description\":\"lyymffhmjpddny\"}")
-                .toObject(DefenderCspmGcpOffering.class);
+        DefenderCspmGcpOffering model = BinaryData.fromString(
+            "{\"offeringType\":\"DefenderCspmGcp\",\"ciemDiscovery\":{\"workloadIdentityProviderId\":\"dyzoutxfptofhg\",\"serviceAccountEmailAddress\":\"ywezy\",\"azureActiveDirectoryAppName\":\"adgaaqwvkgjpy\"},\"vmScanners\":{\"enabled\":false,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"lufbortb\":\"e\",\"k\":\"u\",\"bx\":\"axzs\",\"clflioe\":\"yjisskobq\"}}},\"dataSensitivityDiscovery\":{\"enabled\":false,\"workloadIdentityProviderId\":\"ssmvrkdps\",\"serviceAccountEmailAddress\":\"qfbdxmdses\"},\"mdcContainersImageAssessment\":{\"enabled\":false,\"workloadIdentityProviderId\":\"jppp\",\"serviceAccountEmailAddress\":\"lpdib\"},\"mdcContainersAgentlessDiscoveryK8s\":{\"enabled\":true,\"workloadIdentityProviderId\":\"eatnejrnminzq\",\"serviceAccountEmailAddress\":\"gtkihonikzsr\"},\"description\":\"ffjilzfbpnt\"}")
+            .toObject(DefenderCspmGcpOffering.class);
+        Assertions.assertEquals("dyzoutxfptofhg", model.ciemDiscovery().workloadIdentityProviderId());
+        Assertions.assertEquals("ywezy", model.ciemDiscovery().serviceAccountEmailAddress());
+        Assertions.assertEquals("adgaaqwvkgjpy", model.ciemDiscovery().azureActiveDirectoryAppName());
+        Assertions.assertEquals(false, model.vmScanners().enabled());
+        Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
+        Assertions.assertEquals("e", model.vmScanners().configuration().exclusionTags().get("lufbortb"));
+        Assertions.assertEquals(false, model.dataSensitivityDiscovery().enabled());
+        Assertions.assertEquals("ssmvrkdps", model.dataSensitivityDiscovery().workloadIdentityProviderId());
+        Assertions.assertEquals("qfbdxmdses", model.dataSensitivityDiscovery().serviceAccountEmailAddress());
+        Assertions.assertEquals(false, model.mdcContainersImageAssessment().enabled());
+        Assertions.assertEquals("jppp", model.mdcContainersImageAssessment().workloadIdentityProviderId());
+        Assertions.assertEquals("lpdib", model.mdcContainersImageAssessment().serviceAccountEmailAddress());
+        Assertions.assertEquals(true, model.mdcContainersAgentlessDiscoveryK8S().enabled());
+        Assertions.assertEquals("eatnejrnminzq",
+            model.mdcContainersAgentlessDiscoveryK8S().workloadIdentityProviderId());
+        Assertions.assertEquals("gtkihonikzsr",
+            model.mdcContainersAgentlessDiscoveryK8S().serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderCspmGcpOffering model = new DefenderCspmGcpOffering();
+        DefenderCspmGcpOffering model = new DefenderCspmGcpOffering()
+            .withCiemDiscovery(
+                new DefenderCspmGcpOfferingCiemDiscovery().withWorkloadIdentityProviderId("dyzoutxfptofhg")
+                    .withServiceAccountEmailAddress("ywezy").withAzureActiveDirectoryAppName("adgaaqwvkgjpy"))
+            .withVmScanners(new DefenderCspmGcpOfferingVmScanners().withEnabled(false).withConfiguration(
+                new DefenderCspmGcpOfferingVmScannersConfiguration().withScanningMode(ScanningMode.DEFAULT)
+                    .withExclusionTags(mapOf("lufbortb", "e", "k", "u", "bx", "axzs", "clflioe", "yjisskobq"))))
+            .withDataSensitivityDiscovery(new DefenderCspmGcpOfferingDataSensitivityDiscovery().withEnabled(false)
+                .withWorkloadIdentityProviderId("ssmvrkdps").withServiceAccountEmailAddress("qfbdxmdses"))
+            .withMdcContainersImageAssessment(new DefenderCspmGcpOfferingMdcContainersImageAssessment()
+                .withEnabled(false).withWorkloadIdentityProviderId("jppp").withServiceAccountEmailAddress("lpdib"))
+            .withMdcContainersAgentlessDiscoveryK8S(
+                new DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(true)
+                    .withWorkloadIdentityProviderId("eatnejrnminzq").withServiceAccountEmailAddress("gtkihonikzsr"));
         model = BinaryData.fromObject(model).toObject(DefenderCspmGcpOffering.class);
+        Assertions.assertEquals("dyzoutxfptofhg", model.ciemDiscovery().workloadIdentityProviderId());
+        Assertions.assertEquals("ywezy", model.ciemDiscovery().serviceAccountEmailAddress());
+        Assertions.assertEquals("adgaaqwvkgjpy", model.ciemDiscovery().azureActiveDirectoryAppName());
+        Assertions.assertEquals(false, model.vmScanners().enabled());
+        Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
+        Assertions.assertEquals("e", model.vmScanners().configuration().exclusionTags().get("lufbortb"));
+        Assertions.assertEquals(false, model.dataSensitivityDiscovery().enabled());
+        Assertions.assertEquals("ssmvrkdps", model.dataSensitivityDiscovery().workloadIdentityProviderId());
+        Assertions.assertEquals("qfbdxmdses", model.dataSensitivityDiscovery().serviceAccountEmailAddress());
+        Assertions.assertEquals(false, model.mdcContainersImageAssessment().enabled());
+        Assertions.assertEquals("jppp", model.mdcContainersImageAssessment().workloadIdentityProviderId());
+        Assertions.assertEquals("lpdib", model.mdcContainersImageAssessment().serviceAccountEmailAddress());
+        Assertions.assertEquals(true, model.mdcContainersAgentlessDiscoveryK8S().enabled());
+        Assertions.assertEquals("eatnejrnminzq",
+            model.mdcContainersAgentlessDiscoveryK8S().workloadIdentityProviderId());
+        Assertions.assertEquals("gtkihonikzsr",
+            model.mdcContainersAgentlessDiscoveryK8S().serviceAccountEmailAddress());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

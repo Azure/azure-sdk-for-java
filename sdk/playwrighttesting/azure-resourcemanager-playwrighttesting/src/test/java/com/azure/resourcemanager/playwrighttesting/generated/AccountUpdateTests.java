@@ -6,6 +6,7 @@ package com.azure.resourcemanager.playwrighttesting.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.playwrighttesting.models.AccountUpdate;
+import com.azure.resourcemanager.playwrighttesting.models.AccountUpdateProperties;
 import com.azure.resourcemanager.playwrighttesting.models.EnablementStatus;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,30 +15,26 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"wrwclxxwrljd\":\"ntnbybkzg\",\"kwt\":\"uskcqvkocrcj\",\"ssainqpjwnzll\":\"hxbnjbiksqrg\"},\"properties\":{\"regionalAffinity\":\"Disabled\",\"scalableExecution\":\"Disabled\",\"reporting\":\"Disabled\"}}")
-                .toObject(AccountUpdate.class);
+        AccountUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"wrwclxxwrljd\":\"ntnbybkzg\",\"kwt\":\"uskcqvkocrcj\",\"ssainqpjwnzll\":\"hxbnjbiksqrg\"},\"properties\":{\"regionalAffinity\":\"Disabled\",\"scalableExecution\":\"Disabled\",\"reporting\":\"Disabled\"}}")
+            .toObject(AccountUpdate.class);
         Assertions.assertEquals("ntnbybkzg", model.tags().get("wrwclxxwrljd"));
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.scalableExecution());
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.reporting());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().scalableExecution());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().reporting());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountUpdate model =
-            new AccountUpdate()
-                .withTags(mapOf("wrwclxxwrljd", "ntnbybkzg", "kwt", "uskcqvkocrcj", "ssainqpjwnzll", "hxbnjbiksqrg"))
-                .withRegionalAffinity(EnablementStatus.DISABLED)
-                .withScalableExecution(EnablementStatus.DISABLED)
-                .withReporting(EnablementStatus.DISABLED);
+        AccountUpdate model = new AccountUpdate()
+            .withTags(mapOf("wrwclxxwrljd", "ntnbybkzg", "kwt", "uskcqvkocrcj", "ssainqpjwnzll", "hxbnjbiksqrg"))
+            .withProperties(new AccountUpdateProperties().withRegionalAffinity(EnablementStatus.DISABLED)
+                .withScalableExecution(EnablementStatus.DISABLED).withReporting(EnablementStatus.DISABLED));
         model = BinaryData.fromObject(model).toObject(AccountUpdate.class);
         Assertions.assertEquals("ntnbybkzg", model.tags().get("wrwclxxwrljd"));
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.scalableExecution());
-        Assertions.assertEquals(EnablementStatus.DISABLED, model.reporting());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().scalableExecution());
+        Assertions.assertEquals(EnablementStatus.DISABLED, model.properties().reporting());
     }
 
     // Use "Map.of" if available

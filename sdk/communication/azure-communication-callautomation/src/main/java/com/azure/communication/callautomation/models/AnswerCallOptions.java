@@ -108,7 +108,7 @@ public final class AnswerCallOptions {
         this.operationContext = operationContext;
         return this;
     }
-
+    
     /**
      * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
      *

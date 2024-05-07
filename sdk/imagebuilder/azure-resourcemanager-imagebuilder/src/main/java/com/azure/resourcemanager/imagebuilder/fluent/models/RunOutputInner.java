@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents an output that was created by running an image template. */
+/**
+ * Represents an output that was created by running an image template.
+ */
 @Fluent
 public final class RunOutputInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class RunOutputInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of RunOutputInner class. */
+    /**
+     * Creates an instance of RunOutputInner class.
+     */
     public RunOutputInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the run output.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RunOutputProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class RunOutputInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,7 +53,7 @@ public final class RunOutputInner extends ProxyResource {
 
     /**
      * Get the artifactId property: The resource id of the artifact.
-     *
+     * 
      * @return the artifactId value.
      */
     public String artifactId() {
@@ -58,7 +62,7 @@ public final class RunOutputInner extends ProxyResource {
 
     /**
      * Set the artifactId property: The resource id of the artifact.
-     *
+     * 
      * @param artifactId the artifactId value to set.
      * @return the RunOutputInner object itself.
      */
@@ -72,7 +76,7 @@ public final class RunOutputInner extends ProxyResource {
 
     /**
      * Get the artifactUri property: The location URI of the artifact.
-     *
+     * 
      * @return the artifactUri value.
      */
     public String artifactUri() {
@@ -81,7 +85,7 @@ public final class RunOutputInner extends ProxyResource {
 
     /**
      * Set the artifactUri property: The location URI of the artifact.
-     *
+     * 
      * @param artifactUri the artifactUri value to set.
      * @return the RunOutputInner object itself.
      */
@@ -95,7 +99,7 @@ public final class RunOutputInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -104,7 +108,7 @@ public final class RunOutputInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

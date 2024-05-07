@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The recovery point type. */
+/**
+ * The recovery point type.
+ */
 public final class InMageRcmFailbackRecoveryPointType extends ExpandableStringEnum<InMageRcmFailbackRecoveryPointType> {
-    /** Static value ApplicationConsistent for InMageRcmFailbackRecoveryPointType. */
+    /**
+     * Static value ApplicationConsistent for InMageRcmFailbackRecoveryPointType.
+     */
     public static final InMageRcmFailbackRecoveryPointType APPLICATION_CONSISTENT = fromString("ApplicationConsistent");
 
-    /** Static value CrashConsistent for InMageRcmFailbackRecoveryPointType. */
+    /**
+     * Static value CrashConsistent for InMageRcmFailbackRecoveryPointType.
+     */
     public static final InMageRcmFailbackRecoveryPointType CRASH_CONSISTENT = fromString("CrashConsistent");
 
     /**
      * Creates a new instance of InMageRcmFailbackRecoveryPointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class InMageRcmFailbackRecoveryPointType extends ExpandableStringEn
 
     /**
      * Creates or finds a InMageRcmFailbackRecoveryPointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InMageRcmFailbackRecoveryPointType.
      */
@@ -38,7 +44,7 @@ public final class InMageRcmFailbackRecoveryPointType extends ExpandableStringEn
 
     /**
      * Gets known InMageRcmFailbackRecoveryPointType values.
-     *
+     * 
      * @return known InMageRcmFailbackRecoveryPointType values.
      */
     public static Collection<InMageRcmFailbackRecoveryPointType> values() {

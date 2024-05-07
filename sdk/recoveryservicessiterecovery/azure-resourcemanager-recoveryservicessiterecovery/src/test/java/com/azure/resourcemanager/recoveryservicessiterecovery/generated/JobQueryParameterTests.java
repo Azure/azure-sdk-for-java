@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class JobQueryParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobQueryParameter model =
-            BinaryData
-                .fromString(
-                    "{\"startTime\":\"amhsycxhxzgazt\",\"endTime\":\"boi\",\"fabricId\":\"mfqhppubowse\",\"affectedObjectTypes\":\"fgkmtdhern\",\"jobStatus\":\"tcjuahokqto\",\"jobOutputType\":\"Excel\",\"jobName\":\"xof\",\"timezoneOffset\":37.56433108394144}")
-                .toObject(JobQueryParameter.class);
+        JobQueryParameter model = BinaryData.fromString(
+            "{\"startTime\":\"amhsycxhxzgazt\",\"endTime\":\"boi\",\"fabricId\":\"mfqhppubowse\",\"affectedObjectTypes\":\"fgkmtdhern\",\"jobStatus\":\"tcjuahokqto\",\"jobOutputType\":\"Excel\",\"jobName\":\"xof\",\"timezoneOffset\":37.56433108394144}")
+            .toObject(JobQueryParameter.class);
         Assertions.assertEquals("amhsycxhxzgazt", model.startTime());
         Assertions.assertEquals("boi", model.endTime());
         Assertions.assertEquals("mfqhppubowse", model.fabricId());
@@ -29,16 +27,10 @@ public final class JobQueryParameterTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobQueryParameter model =
-            new JobQueryParameter()
-                .withStartTime("amhsycxhxzgazt")
-                .withEndTime("boi")
-                .withFabricId("mfqhppubowse")
-                .withAffectedObjectTypes("fgkmtdhern")
-                .withJobStatus("tcjuahokqto")
-                .withJobOutputType(ExportJobOutputSerializationType.EXCEL)
-                .withJobName("xof")
-                .withTimezoneOffset(37.56433108394144D);
+        JobQueryParameter model = new JobQueryParameter().withStartTime("amhsycxhxzgazt").withEndTime("boi")
+            .withFabricId("mfqhppubowse").withAffectedObjectTypes("fgkmtdhern").withJobStatus("tcjuahokqto")
+            .withJobOutputType(ExportJobOutputSerializationType.EXCEL).withJobName("xof")
+            .withTimezoneOffset(37.56433108394144D);
         model = BinaryData.fromObject(model).toObject(JobQueryParameter.class);
         Assertions.assertEquals("amhsycxhxzgazt", model.startTime());
         Assertions.assertEquals("boi", model.endTime());

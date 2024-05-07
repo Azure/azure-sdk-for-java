@@ -5,90 +5,81 @@
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Metric definition class specifies the metadata for a metric.
  */
 @Fluent
-public final class MetricDefinition {
+public final class MetricDefinition implements JsonSerializable<MetricDefinition> {
     /*
      * Flag to indicate whether the dimension is required.
      */
-    @JsonProperty(value = "isDimensionRequired")
     private Boolean isDimensionRequired;
 
     /*
-     * the resource identifier of the resource that emitted the metric.
+     * The resource identifier of the resource that emitted the metric.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
-     * the namespace the metric belongs to.
+     * The namespace the metric belongs to.
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
-     * the name and the display name of the metric, i.e. it is a localizable string.
+     * The name and the display name of the metric, i.e. it is a localizable string.
      */
-    @JsonProperty(value = "name")
     private LocalizableString name;
 
     /*
      * Detailed description of this metric.
      */
-    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * Custom category name for this metric.
      */
-    @JsonProperty(value = "category")
     private String category;
 
     /*
      * The class of the metric.
      */
-    @JsonProperty(value = "metricClass")
     private MetricClass metricClass;
 
     /*
      * The unit of the metric.
      */
-    @JsonProperty(value = "unit")
     private MetricUnit unit;
 
     /*
-     * the primary aggregation type value defining how to use the values for display.
+     * The primary aggregation type value defining how to use the values for display.
      */
-    @JsonProperty(value = "primaryAggregationType")
     private AggregationType primaryAggregationType;
 
     /*
-     * the collection of what aggregation types are supported.
+     * The collection of what aggregation types are supported.
      */
-    @JsonProperty(value = "supportedAggregationTypes")
     private List<AggregationType> supportedAggregationTypes;
 
     /*
-     * the collection of what aggregation intervals are available to be queried.
+     * The collection of what aggregation intervals are available to be queried.
      */
-    @JsonProperty(value = "metricAvailabilities")
     private List<MetricAvailability> metricAvailabilities;
 
     /*
-     * the resource identifier of the metric definition.
+     * The resource identifier of the metric definition.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
-     * the name and the display name of the dimension, i.e. it is a localizable string.
+     * The name and the display name of the dimension, i.e. it is a localizable string.
      */
-    @JsonProperty(value = "dimensions")
     private List<LocalizableString> dimensions;
 
     /**
@@ -118,7 +109,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Get the resourceId property: the resource identifier of the resource that emitted the metric.
+     * Get the resourceId property: The resource identifier of the resource that emitted the metric.
      * 
      * @return the resourceId value.
      */
@@ -127,7 +118,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Set the resourceId property: the resource identifier of the resource that emitted the metric.
+     * Set the resourceId property: The resource identifier of the resource that emitted the metric.
      * 
      * @param resourceId the resourceId value to set.
      * @return the MetricDefinition object itself.
@@ -138,7 +129,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Get the namespace property: the namespace the metric belongs to.
+     * Get the namespace property: The namespace the metric belongs to.
      * 
      * @return the namespace value.
      */
@@ -147,7 +138,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Set the namespace property: the namespace the metric belongs to.
+     * Set the namespace property: The namespace the metric belongs to.
      * 
      * @param namespace the namespace value to set.
      * @return the MetricDefinition object itself.
@@ -158,7 +149,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Get the name property: the name and the display name of the metric, i.e. it is a localizable string.
+     * Get the name property: The name and the display name of the metric, i.e. it is a localizable string.
      * 
      * @return the name value.
      */
@@ -167,7 +158,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Set the name property: the name and the display name of the metric, i.e. it is a localizable string.
+     * Set the name property: The name and the display name of the metric, i.e. it is a localizable string.
      * 
      * @param name the name value to set.
      * @return the MetricDefinition object itself.
@@ -258,7 +249,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Get the primaryAggregationType property: the primary aggregation type value defining how to use the values for
+     * Get the primaryAggregationType property: The primary aggregation type value defining how to use the values for
      * display.
      * 
      * @return the primaryAggregationType value.
@@ -268,7 +259,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Set the primaryAggregationType property: the primary aggregation type value defining how to use the values for
+     * Set the primaryAggregationType property: The primary aggregation type value defining how to use the values for
      * display.
      * 
      * @param primaryAggregationType the primaryAggregationType value to set.
@@ -280,7 +271,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Get the supportedAggregationTypes property: the collection of what aggregation types are supported.
+     * Get the supportedAggregationTypes property: The collection of what aggregation types are supported.
      * 
      * @return the supportedAggregationTypes value.
      */
@@ -289,7 +280,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Set the supportedAggregationTypes property: the collection of what aggregation types are supported.
+     * Set the supportedAggregationTypes property: The collection of what aggregation types are supported.
      * 
      * @param supportedAggregationTypes the supportedAggregationTypes value to set.
      * @return the MetricDefinition object itself.
@@ -300,7 +291,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Get the metricAvailabilities property: the collection of what aggregation intervals are available to be queried.
+     * Get the metricAvailabilities property: The collection of what aggregation intervals are available to be queried.
      * 
      * @return the metricAvailabilities value.
      */
@@ -309,7 +300,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Set the metricAvailabilities property: the collection of what aggregation intervals are available to be queried.
+     * Set the metricAvailabilities property: The collection of what aggregation intervals are available to be queried.
      * 
      * @param metricAvailabilities the metricAvailabilities value to set.
      * @return the MetricDefinition object itself.
@@ -320,7 +311,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Get the id property: the resource identifier of the metric definition.
+     * Get the id property: The resource identifier of the metric definition.
      * 
      * @return the id value.
      */
@@ -329,7 +320,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Set the id property: the resource identifier of the metric definition.
+     * Set the id property: The resource identifier of the metric definition.
      * 
      * @param id the id value to set.
      * @return the MetricDefinition object itself.
@@ -340,7 +331,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Get the dimensions property: the name and the display name of the dimension, i.e. it is a localizable string.
+     * Get the dimensions property: The name and the display name of the dimension, i.e. it is a localizable string.
      * 
      * @return the dimensions value.
      */
@@ -349,7 +340,7 @@ public final class MetricDefinition {
     }
 
     /**
-     * Set the dimensions property: the name and the display name of the dimension, i.e. it is a localizable string.
+     * Set the dimensions property: The name and the display name of the dimension, i.e. it is a localizable string.
      * 
      * @param dimensions the dimensions value to set.
      * @return the MetricDefinition object itself.
@@ -357,5 +348,84 @@ public final class MetricDefinition {
     public MetricDefinition setDimensions(List<LocalizableString> dimensions) {
         this.dimensions = dimensions;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isDimensionRequired", this.isDimensionRequired);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("displayDescription", this.displayDescription);
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("metricClass", this.metricClass == null ? null : this.metricClass.toString());
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeStringField("primaryAggregationType",
+            this.primaryAggregationType == null ? null : this.primaryAggregationType.toString());
+        jsonWriter.writeArrayField("supportedAggregationTypes", this.supportedAggregationTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("metricAvailabilities", this.metricAvailabilities,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeArrayField("dimensions", this.dimensions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricDefinition.
+     */
+    public static MetricDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricDefinition deserializedMetricDefinition = new MetricDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isDimensionRequired".equals(fieldName)) {
+                    deserializedMetricDefinition.isDimensionRequired = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedMetricDefinition.resourceId = reader.getString();
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedMetricDefinition.namespace = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMetricDefinition.name = LocalizableString.fromJson(reader);
+                } else if ("displayDescription".equals(fieldName)) {
+                    deserializedMetricDefinition.displayDescription = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedMetricDefinition.category = reader.getString();
+                } else if ("metricClass".equals(fieldName)) {
+                    deserializedMetricDefinition.metricClass = MetricClass.fromString(reader.getString());
+                } else if ("unit".equals(fieldName)) {
+                    deserializedMetricDefinition.unit = MetricUnit.fromString(reader.getString());
+                } else if ("primaryAggregationType".equals(fieldName)) {
+                    deserializedMetricDefinition.primaryAggregationType
+                        = AggregationType.fromString(reader.getString());
+                } else if ("supportedAggregationTypes".equals(fieldName)) {
+                    List<AggregationType> supportedAggregationTypes
+                        = reader.readArray(reader1 -> AggregationType.fromString(reader1.getString()));
+                    deserializedMetricDefinition.supportedAggregationTypes = supportedAggregationTypes;
+                } else if ("metricAvailabilities".equals(fieldName)) {
+                    List<MetricAvailability> metricAvailabilities
+                        = reader.readArray(reader1 -> MetricAvailability.fromJson(reader1));
+                    deserializedMetricDefinition.metricAvailabilities = metricAvailabilities;
+                } else if ("id".equals(fieldName)) {
+                    deserializedMetricDefinition.id = reader.getString();
+                } else if ("dimensions".equals(fieldName)) {
+                    List<LocalizableString> dimensions
+                        = reader.readArray(reader1 -> LocalizableString.fromJson(reader1));
+                    deserializedMetricDefinition.dimensions = dimensions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricDefinition;
+        });
     }
 }

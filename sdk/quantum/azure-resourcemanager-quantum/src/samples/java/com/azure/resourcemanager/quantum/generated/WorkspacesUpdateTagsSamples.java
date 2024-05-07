@@ -8,26 +8,26 @@ import com.azure.resourcemanager.quantum.models.QuantumWorkspace;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workspaces UpdateTags. */
+/**
+ * Samples for Workspaces UpdateTags.
+ */
 public final class WorkspacesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2022-01-10-preview/examples/quantumWorkspacesPatch.json
+     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/
+     * quantumWorkspacesPatch.json
      */
     /**
      * Sample code: QuantumWorkspacesPatchTags.
-     *
+     * 
      * @param manager Entry point to AzureQuantumManager.
      */
     public static void quantumWorkspacesPatchTags(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
-        QuantumWorkspace resource =
-            manager
-                .workspaces()
-                .getByResourceGroupWithResponse(
-                    "quantumResourcegroup", "quantumworkspace1", com.azure.core.util.Context.NONE)
-                .getValue();
+        QuantumWorkspace resource = manager.workspaces().getByResourceGroupWithResponse("quantumResourcegroup",
+            "quantumworkspace1", com.azure.core.util.Context.NONE).getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

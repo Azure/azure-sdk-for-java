@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Azure IaaS VM workload-specific additional information for job. */
+/**
+ * Azure IaaS VM workload-specific additional information for job.
+ */
 @Fluent
 public final class AzureIaaSvmJobExtendedInfo {
     /*
@@ -51,13 +53,15 @@ public final class AzureIaaSvmJobExtendedInfo {
     @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
 
-    /** Creates an instance of AzureIaaSvmJobExtendedInfo class. */
+    /**
+     * Creates an instance of AzureIaaSvmJobExtendedInfo class.
+     */
     public AzureIaaSvmJobExtendedInfo() {
     }
 
     /**
      * Get the tasksList property: List of tasks associated with this job.
-     *
+     * 
      * @return the tasksList value.
      */
     public List<AzureIaaSvmJobTaskDetails> tasksList() {
@@ -66,7 +70,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the tasksList property: List of tasks associated with this job.
-     *
+     * 
      * @param tasksList the tasksList value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -77,7 +81,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Get the propertyBag property: Job properties.
-     *
+     * 
      * @return the propertyBag value.
      */
     public Map<String, String> propertyBag() {
@@ -86,7 +90,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the propertyBag property: Job properties.
-     *
+     * 
      * @param propertyBag the propertyBag value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -97,7 +101,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Get the internalPropertyBag property: Job internal properties.
-     *
+     * 
      * @return the internalPropertyBag value.
      */
     public Map<String, String> internalPropertyBag() {
@@ -106,7 +110,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the internalPropertyBag property: Job internal properties.
-     *
+     * 
      * @param internalPropertyBag the internalPropertyBag value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -117,7 +121,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Get the progressPercentage property: Indicates progress of the job. Null if it has not started or completed.
-     *
+     * 
      * @return the progressPercentage value.
      */
     public Double progressPercentage() {
@@ -126,7 +130,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the progressPercentage property: Indicates progress of the job. Null if it has not started or completed.
-     *
+     * 
      * @param progressPercentage the progressPercentage value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -137,7 +141,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Get the estimatedRemainingDuration property: Time remaining for execution of this job.
-     *
+     * 
      * @return the estimatedRemainingDuration value.
      */
     public String estimatedRemainingDuration() {
@@ -146,7 +150,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the estimatedRemainingDuration property: Time remaining for execution of this job.
-     *
+     * 
      * @param estimatedRemainingDuration the estimatedRemainingDuration value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -157,7 +161,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Get the dynamicErrorMessage property: Non localized error message on job execution.
-     *
+     * 
      * @return the dynamicErrorMessage value.
      */
     public String dynamicErrorMessage() {
@@ -166,7 +170,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Set the dynamicErrorMessage property: Non localized error message on job execution.
-     *
+     * 
      * @param dynamicErrorMessage the dynamicErrorMessage value to set.
      * @return the AzureIaaSvmJobExtendedInfo object itself.
      */
@@ -177,7 +181,7 @@ public final class AzureIaaSvmJobExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

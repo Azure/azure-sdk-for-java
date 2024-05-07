@@ -40,27 +40,28 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Order(1)
     public void beginTestRun() {
         BinaryData body = BinaryData.fromObject(getTestRunBodyFromDict(existingTestId));
-        SyncPoller<BinaryData, BinaryData> poller = testRunBuilder.buildClient().beginTestRun(newTestRunId, body, null);
+        SyncPoller<BinaryData, BinaryData> poller = getLoadTestRunClient().beginTestRun(newTestRunId, body, null);
         poller = setPlaybackSyncPollerPollInterval(poller);
         PollResponse<BinaryData> response = poller.waitForCompletion();
         BinaryData testRunBinary = poller.getFinalResult();
         try {
             JsonNode testRunNode = OBJECT_MAPPER.readTree(testRunBinary.toString());
-            Assertions.assertTrue(testRunNode.get("testRunId").asText().equals(newTestRunId) && testRunNode.get("status").asText().equals("DONE"));
+            Assertions.assertTrue(testRunNode.get("testRunId").asText().equals(newTestRunId)
+                    && testRunNode.get("status").asText().equals("DONE"));
         } catch (Exception e) {
             Assertions.assertTrue(false);
         }
-        Assertions.assertNotNull(response.getValue().toString());
+        Assertions.assertNotNull(response.getValue());
     }
 
     @Test
     @Order(2)
     public void createOrUpdateAppComponents() {
         BinaryData body = BinaryData.fromObject(getAppComponentBodyFromDict());
-        Response<BinaryData> response = testRunBuilder.buildClient().createOrUpdateAppComponentsWithResponse(
-                                                newTestRunId,
-                                                body,
-                                                null);
+        Response<BinaryData> response = getLoadTestRunClient().createOrUpdateAppComponentsWithResponse(
+                newTestRunId,
+                body,
+                null);
         Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
 
@@ -68,10 +69,10 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Order(3)
     public void createOrUpdateServerMetricsConfig() {
         BinaryData body = BinaryData.fromObject(getServerMetricsBodyFromDict());
-        Response<BinaryData> response = testRunBuilder.buildClient().createOrUpdateServerMetricsConfigWithResponse(
-                                                newTestRunId,
-                                                body,
-                                                null);
+        Response<BinaryData> response = getLoadTestRunClient().createOrUpdateServerMetricsConfigWithResponse(
+                newTestRunId,
+                body,
+                null);
         Assertions.assertTrue(Arrays.asList(200, 201).contains(response.getStatusCode()));
     }
 
@@ -80,10 +81,12 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(4)
     public void getTestRunFile() {
-        Response<BinaryData> response = testRunBuilder.buildClient().getTestRunFileWithResponse(newTestRunId, uploadJmxFileName, null);
+        Response<BinaryData> response = getLoadTestRunClient().getTestRunFileWithResponse(newTestRunId,
+                uploadJmxFileName, null);
         try {
             JsonNode file = OBJECT_MAPPER.readTree(response.getValue().toString());
-            Assertions.assertTrue(file.get("fileName").asText().equals(uploadJmxFileName) && file.get("fileType").asText().equals("JMX_FILE"));
+            Assertions.assertTrue(file.get("fileName").asText().equals(uploadJmxFileName)
+                    && file.get("fileType").asText().equals("JMX_FILE"));
         } catch (Exception e) {
             Assertions.assertTrue(false);
         }
@@ -93,7 +96,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(5)
     public void getTestRun() {
-        Response<BinaryData> response = testRunBuilder.buildClient().getTestRunWithResponse(newTestRunId, null);
+        Response<BinaryData> response = getLoadTestRunClient().getTestRunWithResponse(newTestRunId, null);
         try {
             JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
             Assertions.assertTrue(test.get("testRunId").asText().equals(newTestRunId));
@@ -106,10 +109,12 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(6)
     public void getAppComponents() {
-        Response<BinaryData> response = testRunBuilder.buildClient().getAppComponentsWithResponse(newTestRunId, null);
+        Response<BinaryData> response = getLoadTestRunClient().getAppComponentsWithResponse(newTestRunId, null);
         try {
             JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
-            Assertions.assertTrue(test.get("components").has(defaultAppComponentResourceId) && test.get("components").get(defaultAppComponentResourceId).get("resourceId").asText().equalsIgnoreCase(defaultAppComponentResourceId));
+            Assertions.assertTrue(test.get("components").has(defaultAppComponentResourceId)
+                    && test.get("components").get(defaultAppComponentResourceId).get("resourceId").asText()
+                            .equalsIgnoreCase(defaultAppComponentResourceId));
         } catch (Exception e) {
             Assertions.assertTrue(false);
         }
@@ -119,10 +124,11 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(7)
     public void getServerMetricsConfig() {
-        Response<BinaryData> response = testRunBuilder.buildClient().getServerMetricsConfigWithResponse(newTestRunId, null);
+        Response<BinaryData> response = getLoadTestRunClient().getServerMetricsConfigWithResponse(newTestRunId, null);
         try {
             JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
-            Assertions.assertTrue(test.get("metrics").has(defaultServerMetricId) && test.get("metrics").get(defaultServerMetricId).get("id").asText().equalsIgnoreCase(defaultServerMetricId));
+            Assertions.assertTrue(test.get("metrics").has(defaultServerMetricId) && test.get("metrics")
+                    .get(defaultServerMetricId).get("id").asText().equalsIgnoreCase(defaultServerMetricId));
         } catch (Exception e) {
             e.printStackTrace();
             Assertions.assertTrue(false);
@@ -133,9 +139,10 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(8)
     public void listMetricNamespaces() {
-        Response<BinaryData> response = testRunBuilder.buildClient().getMetricNamespacesWithResponse(newTestRunId, null);
+        Response<BinaryData> response = getLoadTestRunClient().getMetricNamespacesWithResponse(newTestRunId, null);
         try {
-            Iterator<JsonNode> metricNamespacesIterator = OBJECT_MAPPER.readTree(response.getValue().toString()).get("value").iterator();
+            Iterator<JsonNode> metricNamespacesIterator = OBJECT_MAPPER.readTree(response.getValue().toString())
+                    .get("value").iterator();
             boolean found = false;
             while (metricNamespacesIterator.hasNext()) {
                 JsonNode namespace = metricNamespacesIterator.next();
@@ -153,13 +160,16 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Test
     @Order(9)
     public void listMetricDefinitions() {
-        Response<BinaryData> response = testRunBuilder.buildClient().getMetricDefinitionsWithResponse(newTestRunId, "LoadTestRunMetrics", null);
+        Response<BinaryData> response = getLoadTestRunClient().getMetricDefinitionsWithResponse(newTestRunId,
+                "LoadTestRunMetrics", null);
         try {
-            Iterator<JsonNode> metricDefinitionsIterator = OBJECT_MAPPER.readTree(response.getValue().toString()).get("value").iterator();
+            Iterator<JsonNode> metricDefinitionsIterator = OBJECT_MAPPER.readTree(response.getValue().toString())
+                    .get("value").iterator();
             boolean found = false;
             while (metricDefinitionsIterator.hasNext()) {
                 JsonNode definition = metricDefinitionsIterator.next();
-                if (definition.get("namespace").asText().equals("LoadTestRunMetrics") && definition.get("name").asText() != null && definition.has("dimensions")) {
+                if (definition.get("namespace").asText().equals("LoadTestRunMetrics")
+                        && definition.get("name").asText() != null && definition.has("dimensions")) {
                     found = true;
                     break;
                 }
@@ -174,7 +184,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Order(10)
     public void listMetrics() {
         String startDateTime = "", endDateTime = "";
-        Response<BinaryData> response = testRunBuilder.buildClient().getTestRunWithResponse(newTestRunId, null);
+        Response<BinaryData> response = getLoadTestRunClient().getTestRunWithResponse(newTestRunId, null);
         try {
             JsonNode test = OBJECT_MAPPER.readTree(response.getValue().toString());
 
@@ -184,7 +194,9 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
             Assertions.assertTrue(false);
         }
 
-        PagedIterable<BinaryData> metricsResponse = testRunBuilder.buildClient().listMetrics(newTestRunId, "VirtualUsers", "LoadTestRunMetrics", startDateTime + "/" + endDateTime, null);
+        String timespan = startDateTime + "/" + endDateTime;
+        PagedIterable<BinaryData> metricsResponse = getLoadTestRunClient().listMetrics(newTestRunId, "VirtualUsers",
+                "LoadTestRunMetrics", timespan, null);
         boolean valid = metricsResponse.stream().anyMatch((metricsBinary) -> {
             try {
                 JsonNode metric = OBJECT_MAPPER.readTree(metricsBinary.toString());
@@ -205,12 +217,13 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Order(11)
     public void listTestRuns() {
         RequestOptions reqOpts = new RequestOptions()
-                                    .addQueryParam("testId", existingTestId);
-        PagedIterable<BinaryData> response = testRunBuilder.buildClient().listTestRuns(reqOpts);
+                .addQueryParam("testId", existingTestId);
+        PagedIterable<BinaryData> response = getLoadTestRunClient().listTestRuns(reqOpts);
         boolean found = response.stream().anyMatch((testRunBinary) -> {
             try {
                 JsonNode testRun = OBJECT_MAPPER.readTree(testRunBinary.toString());
-                if (testRun.get("testRunId").asText().equals(newTestRunId) && testRun.get("testId").asText().equals(existingTestId)) {
+                if (testRun.get("testRunId").asText().equals(newTestRunId)
+                        && testRun.get("testId").asText().equals(existingTestId)) {
                     return true;
                 }
             } catch (Exception e) {
@@ -227,7 +240,7 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Order(12)
     public void deleteTestRun() {
         Assertions.assertDoesNotThrow(() -> {
-            testRunBuilder.buildClient().deleteTestRunWithResponse(newTestRunId, null);
+            getLoadTestRunClient().deleteTestRunWithResponse(newTestRunId, null);
         });
     }
 }

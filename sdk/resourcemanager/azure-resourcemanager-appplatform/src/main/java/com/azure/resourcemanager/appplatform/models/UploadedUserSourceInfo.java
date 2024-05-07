@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Source with uploaded location. */
+/**
+ * Source with uploaded location.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,9 +21,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("UploadedUserSourceInfo")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Jar", value = JarUploadedUserSourceInfo.class),
+    @JsonSubTypes.Type(name = "War", value = WarUploadedUserSourceInfo.class),
     @JsonSubTypes.Type(name = "Source", value = SourceUploadedUserSourceInfo.class),
-    @JsonSubTypes.Type(name = "NetCoreZip", value = NetCoreZipUploadedUserSourceInfo.class)
-})
+    @JsonSubTypes.Type(name = "NetCoreZip", value = NetCoreZipUploadedUserSourceInfo.class) })
 @Fluent
 public class UploadedUserSourceInfo extends UserSourceInfo {
     /*
@@ -31,8 +33,14 @@ public class UploadedUserSourceInfo extends UserSourceInfo {
     private String relativePath;
 
     /**
+     * Creates an instance of UploadedUserSourceInfo class.
+     */
+    public UploadedUserSourceInfo() {
+    }
+
+    /**
      * Get the relativePath property: Relative path of the storage which stores the source.
-     *
+     * 
      * @return the relativePath value.
      */
     public String relativePath() {
@@ -41,7 +49,7 @@ public class UploadedUserSourceInfo extends UserSourceInfo {
 
     /**
      * Set the relativePath property: Relative path of the storage which stores the source.
-     *
+     * 
      * @param relativePath the relativePath value to set.
      * @return the UploadedUserSourceInfo object itself.
      */
@@ -50,7 +58,9 @@ public class UploadedUserSourceInfo extends UserSourceInfo {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UploadedUserSourceInfo withVersion(String version) {
         super.withVersion(version);
@@ -59,7 +69,7 @@ public class UploadedUserSourceInfo extends UserSourceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -42,17 +42,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VolumesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VolumesClient.
+ */
 public final class VolumesClientImpl implements VolumesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VolumesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ElasticSanManagementImpl client;
 
     /**
      * Initializes an instance of VolumesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VolumesClientImpl(ElasticSanManagementImpl client) {
@@ -67,103 +73,75 @@ public final class VolumesClientImpl implements VolumesClient {
     @Host("{$host}")
     @ServiceInterface(name = "ElasticSanManagement")
     public interface VolumesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("elasticSanName") String elasticSanName,
-            @PathParam("volumeGroupName") String volumeGroupName,
-            @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VolumeInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("elasticSanName") String elasticSanName, @PathParam("volumeGroupName") String volumeGroupName,
+            @PathParam("volumeName") String volumeName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VolumeInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("elasticSanName") String elasticSanName,
-            @PathParam("volumeGroupName") String volumeGroupName,
-            @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VolumeUpdate parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("elasticSanName") String elasticSanName, @PathParam("volumeGroupName") String volumeGroupName,
+            @PathParam("volumeName") String volumeName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VolumeUpdate parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("elasticSanName") String elasticSanName,
-            @PathParam("volumeGroupName") String volumeGroupName,
-            @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("elasticSanName") String elasticSanName, @PathParam("volumeGroupName") String volumeGroupName,
+            @PathParam("volumeName") String volumeName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-delete-snapshots") XMsDeleteSnapshots xMsDeleteSnapshots,
-            @HeaderParam("x-ms-force-delete") XMsForceDelete xMsForceDelete,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("x-ms-force-delete") XMsForceDelete xMsForceDelete, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes/{volumeName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VolumeInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VolumeInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("elasticSanName") String elasticSanName,
-            @PathParam("volumeGroupName") String volumeGroupName,
-            @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("elasticSanName") String elasticSanName, @PathParam("volumeGroupName") String volumeGroupName,
+            @PathParam("volumeName") String volumeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ElasticSan/elasticSans/{elasticSanName}/volumegroups/{volumeGroupName}/volumes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VolumeList>> listByVolumeGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VolumeList>> listByVolumeGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("elasticSanName") String elasticSanName,
-            @PathParam("volumeGroupName") String volumeGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("elasticSanName") String elasticSanName, @PathParam("volumeGroupName") String volumeGroupName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VolumeList>> listByVolumeGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<VolumeList>> listByVolumeGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -175,23 +153,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -214,26 +184,15 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            elasticSanName,
-                            volumeGroupName,
-                            volumeName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, elasticSanName, volumeGroupName, volumeName, this.client.getApiVersion(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -246,24 +205,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -286,23 +236,13 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                elasticSanName,
-                volumeGroupName,
-                volumeName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            elasticSanName, volumeGroupName, volumeName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -314,23 +254,17 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link PollerFlux} for polling of response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginCreateAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters);
-        return this
-            .client
-            .<VolumeInner, VolumeInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VolumeInner.class, VolumeInner.class, this.client.getContext());
+    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginCreateAsync(String resourceGroupName,
+        String elasticSanName, String volumeGroupName, String volumeName, VolumeInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters);
+        return this.client.<VolumeInner, VolumeInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VolumeInner.class, VolumeInner.class, this.client.getContext());
     }
 
     /**
      * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -343,26 +277,18 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link PollerFlux} for polling of response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginCreateAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters,
-        Context context) {
+    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginCreateAsync(String resourceGroupName,
+        String elasticSanName, String volumeGroupName, String volumeName, VolumeInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context);
-        return this
-            .client
-            .<VolumeInner, VolumeInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VolumeInner.class, VolumeInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, elasticSanName,
+            volumeGroupName, volumeName, parameters, context);
+        return this.client.<VolumeInner, VolumeInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VolumeInner.class, VolumeInner.class, context);
     }
 
     /**
      * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -374,20 +300,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreate(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters) {
-        return this
-            .beginCreateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters)
+    public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreate(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeInner parameters) {
+        return this.beginCreateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -400,13 +321,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreate(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters,
-        Context context) {
+    public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreate(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeInner parameters, Context context) {
         return this
             .beginCreateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context)
             .getSyncPoller();
@@ -414,7 +330,7 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -426,20 +342,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeInner> createAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters) {
-        return beginCreateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters)
-            .last()
+    private Mono<VolumeInner> createAsync(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName, VolumeInner parameters) {
+        return beginCreateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -452,21 +363,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeInner> createAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters,
-        Context context) {
+    private Mono<VolumeInner> createAsync(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName, VolumeInner parameters, Context context) {
         return beginCreateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -478,18 +383,14 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeInner create(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters) {
+    public VolumeInner create(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName, VolumeInner parameters) {
         return createAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters).block();
     }
 
     /**
      * Create a Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -502,19 +403,14 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeInner create(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeInner parameters,
-        Context context) {
+    public VolumeInner create(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName, VolumeInner parameters, Context context) {
         return createAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context).block();
     }
 
     /**
      * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -526,23 +422,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -565,26 +453,15 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            elasticSanName,
-                            volumeGroupName,
-                            volumeName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, elasticSanName, volumeGroupName, volumeName, this.client.getApiVersion(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -597,24 +474,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -637,23 +505,13 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                elasticSanName,
-                volumeGroupName,
-                volumeName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            elasticSanName, volumeGroupName, volumeName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -665,23 +523,17 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link PollerFlux} for polling of response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginUpdateAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters);
-        return this
-            .client
-            .<VolumeInner, VolumeInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VolumeInner.class, VolumeInner.class, this.client.getContext());
+    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginUpdateAsync(String resourceGroupName,
+        String elasticSanName, String volumeGroupName, String volumeName, VolumeUpdate parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters);
+        return this.client.<VolumeInner, VolumeInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VolumeInner.class, VolumeInner.class, this.client.getContext());
     }
 
     /**
      * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -694,26 +546,18 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link PollerFlux} for polling of response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginUpdateAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters,
-        Context context) {
+    private PollerFlux<PollResult<VolumeInner>, VolumeInner> beginUpdateAsync(String resourceGroupName,
+        String elasticSanName, String volumeGroupName, String volumeName, VolumeUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context);
-        return this
-            .client
-            .<VolumeInner, VolumeInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VolumeInner.class, VolumeInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, elasticSanName,
+            volumeGroupName, volumeName, parameters, context);
+        return this.client.<VolumeInner, VolumeInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VolumeInner.class, VolumeInner.class, context);
     }
 
     /**
      * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -725,20 +569,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters) {
-        return this
-            .beginUpdateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters)
+    public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeUpdate parameters) {
+        return this.beginUpdateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -751,13 +590,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters,
-        Context context) {
+    public SyncPoller<PollResult<VolumeInner>, VolumeInner> beginUpdate(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, VolumeUpdate parameters, Context context) {
         return this
             .beginUpdateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context)
             .getSyncPoller();
@@ -765,7 +599,7 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -777,20 +611,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeInner> updateAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters)
-            .last()
+    private Mono<VolumeInner> updateAsync(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName, VolumeUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -803,21 +632,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeInner> updateAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters,
-        Context context) {
+    private Mono<VolumeInner> updateAsync(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName, VolumeUpdate parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -829,18 +652,14 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeInner update(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters) {
+    public VolumeInner update(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName, VolumeUpdate parameters) {
         return updateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters).block();
     }
 
     /**
      * Update an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -853,51 +672,38 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return response for Volume request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VolumeInner update(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        VolumeUpdate parameters,
-        Context context) {
+    public VolumeInner update(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName, VolumeUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, parameters, context).block();
     }
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
      * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
-     *     Default value is false.
+     * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
-     *     false. Default value is false.
+     * false. Default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots,
         XMsForceDelete xMsForceDelete) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -915,35 +721,23 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            elasticSanName,
-                            volumeGroupName,
-                            volumeName,
-                            this.client.getApiVersion(),
-                            xMsDeleteSnapshots,
-                            xMsForceDelete,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, elasticSanName, volumeGroupName, volumeName, this.client.getApiVersion(),
+                xMsDeleteSnapshots, xMsForceDelete, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
      * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
-     *     Default value is false.
+     * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
-     *     false. Default value is false.
+     * false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -951,25 +745,16 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -987,57 +772,40 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                elasticSanName,
-                volumeGroupName,
-                volumeName,
-                this.client.getApiVersion(),
-                xMsDeleteSnapshots,
-                xMsForceDelete,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            elasticSanName, volumeGroupName, volumeName, this.client.getApiVersion(), xMsDeleteSnapshots,
+            xMsForceDelete, accept, context);
     }
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
      * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
-     *     Default value is false.
+     * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
-     *     false. Default value is false.
+     * false. Default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots,
         XMsForceDelete xMsForceDelete) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, elasticSanName,
+            volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1048,30 +816,27 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName) {
         final XMsDeleteSnapshots xMsDeleteSnapshots = null;
         final XMsForceDelete xMsForceDelete = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, elasticSanName,
+            volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
      * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
-     *     Default value is false.
+     * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
-     *     false. Default value is false.
+     * false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1079,32 +844,19 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceGroupName,
-                elasticSanName,
-                volumeGroupName,
-                volumeName,
-                xMsDeleteSnapshots,
-                xMsForceDelete,
-                context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, elasticSanName,
+            volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1115,27 +867,25 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName) {
         final XMsDeleteSnapshots xMsDeleteSnapshots = null;
         final XMsForceDelete xMsForceDelete = null;
-        return this
-            .beginDeleteAsync(
-                resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete)
-            .getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
+            xMsForceDelete).getSyncPoller();
     }
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
      * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
-     *     Default value is false.
+     * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
-     *     false. Default value is false.
+     * false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1143,59 +893,39 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete,
         Context context) {
-        return this
-            .beginDeleteAsync(
-                resourceGroupName,
-                elasticSanName,
-                volumeGroupName,
-                volumeName,
-                xMsDeleteSnapshots,
-                xMsForceDelete,
-                context)
-            .getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
+            xMsForceDelete, context).getSyncPoller();
     }
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
      * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
-     *     Default value is false.
+     * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
-     *     false. Default value is false.
+     * false. Default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete) {
-        return beginDeleteAsync(
-                resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete) {
+        return beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
+            xMsForceDelete).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1206,27 +936,25 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName) {
         final XMsDeleteSnapshots xMsDeleteSnapshots = null;
         final XMsForceDelete xMsForceDelete = null;
-        return beginDeleteAsync(
-                resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
+            xMsForceDelete).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
      * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
-     *     Default value is false.
+     * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
-     *     false. Default value is false.
+     * false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1234,29 +962,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete,
-        Context context) {
-        return beginDeleteAsync(
-                resourceGroupName,
-                elasticSanName,
-                volumeGroupName,
-                volumeName,
-                xMsDeleteSnapshots,
-                xMsForceDelete,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName, XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete, Context context) {
+        return beginDeleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots,
+            xMsForceDelete, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1275,43 +989,30 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * Delete an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
      * @param volumeName The name of the Volume.
      * @param xMsDeleteSnapshots Optional, used to delete snapshots under volume. Allowed value are only true or false.
-     *     Default value is false.
+     * Default value is false.
      * @param xMsForceDelete Optional, used to delete volume if active sessions present. Allowed value are only true or
-     *     false. Default value is false.
+     * false. Default value is false.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String elasticSanName,
-        String volumeGroupName,
-        String volumeName,
-        XMsDeleteSnapshots xMsDeleteSnapshots,
-        XMsForceDelete xMsForceDelete,
-        Context context) {
-        deleteAsync(
-                resourceGroupName,
-                elasticSanName,
-                volumeGroupName,
-                volumeName,
-                xMsDeleteSnapshots,
-                xMsForceDelete,
-                context)
-            .block();
+    public void delete(String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName,
+        XMsDeleteSnapshots xMsDeleteSnapshots, XMsForceDelete xMsForceDelete, Context context) {
+        deleteAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, xMsDeleteSnapshots, xMsForceDelete,
+            context).block();
     }
 
     /**
      * Get an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1322,19 +1023,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return an Volume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VolumeInner>> getWithResponseAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
+    private Mono<Response<VolumeInner>> getWithResponseAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1353,24 +1050,14 @@ public final class VolumesClientImpl implements VolumesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            elasticSanName,
-                            volumeGroupName,
-                            volumeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    elasticSanName, volumeGroupName, volumeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1382,19 +1069,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return an Volume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VolumeInner>> getWithResponseAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context) {
+    private Mono<Response<VolumeInner>> getWithResponseAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1412,22 +1095,13 @@ public final class VolumesClientImpl implements VolumesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                elasticSanName,
-                volumeGroupName,
-                volumeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            elasticSanName, volumeGroupName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1438,15 +1112,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return an Volume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VolumeInner> getAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName) {
+    private Mono<VolumeInner> getAsync(String resourceGroupName, String elasticSanName, String volumeGroupName,
+        String volumeName) {
         return getWithResponseAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1458,14 +1132,14 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return an Volume along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VolumeInner> getWithResponse(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, String volumeName, Context context) {
+    public Response<VolumeInner> getWithResponse(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, String volumeName, Context context) {
         return getWithResponseAsync(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context).block();
     }
 
     /**
      * Get an Volume.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1482,7 +1156,7 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List Volumes in a VolumeGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1492,19 +1166,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return list of Volumes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VolumeInner>> listByVolumeGroupSinglePageAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName) {
+    private Mono<PagedResponse<VolumeInner>> listByVolumeGroupSinglePageAsync(String resourceGroupName,
+        String elasticSanName, String volumeGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1520,32 +1190,16 @@ public final class VolumesClientImpl implements VolumesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByVolumeGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            elasticSanName,
-                            volumeGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<VolumeInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByVolumeGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, elasticSanName, volumeGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<VolumeInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Volumes in a VolumeGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1556,19 +1210,15 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return list of Volumes along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VolumeInner>> listByVolumeGroupSinglePageAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, Context context) {
+    private Mono<PagedResponse<VolumeInner>> listByVolumeGroupSinglePageAsync(String resourceGroupName,
+        String elasticSanName, String volumeGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1584,29 +1234,15 @@ public final class VolumesClientImpl implements VolumesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByVolumeGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                elasticSanName,
-                volumeGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByVolumeGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                elasticSanName, volumeGroupName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List Volumes in a VolumeGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1616,8 +1252,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return list of Volumes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VolumeInner> listByVolumeGroupAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName) {
+    private PagedFlux<VolumeInner> listByVolumeGroupAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName) {
         return new PagedFlux<>(
             () -> listByVolumeGroupSinglePageAsync(resourceGroupName, elasticSanName, volumeGroupName),
             nextLink -> listByVolumeGroupNextSinglePageAsync(nextLink));
@@ -1625,7 +1261,7 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List Volumes in a VolumeGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1636,8 +1272,8 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return list of Volumes as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VolumeInner> listByVolumeGroupAsync(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, Context context) {
+    private PagedFlux<VolumeInner> listByVolumeGroupAsync(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByVolumeGroupSinglePageAsync(resourceGroupName, elasticSanName, volumeGroupName, context),
             nextLink -> listByVolumeGroupNextSinglePageAsync(nextLink, context));
@@ -1645,7 +1281,7 @@ public final class VolumesClientImpl implements VolumesClient {
 
     /**
      * List Volumes in a VolumeGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1655,14 +1291,14 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return list of Volumes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VolumeInner> listByVolumeGroup(
-        String resourceGroupName, String elasticSanName, String volumeGroupName) {
+    public PagedIterable<VolumeInner> listByVolumeGroup(String resourceGroupName, String elasticSanName,
+        String volumeGroupName) {
         return new PagedIterable<>(listByVolumeGroupAsync(resourceGroupName, elasticSanName, volumeGroupName));
     }
 
     /**
      * List Volumes in a VolumeGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
      * @param volumeGroupName The name of the VolumeGroup.
@@ -1673,16 +1309,17 @@ public final class VolumesClientImpl implements VolumesClient {
      * @return list of Volumes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VolumeInner> listByVolumeGroup(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, Context context) {
+    public PagedIterable<VolumeInner> listByVolumeGroup(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, Context context) {
         return new PagedIterable<>(listByVolumeGroupAsync(resourceGroupName, elasticSanName, volumeGroupName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1694,31 +1331,23 @@ public final class VolumesClientImpl implements VolumesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByVolumeGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VolumeInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<VolumeInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1731,23 +1360,13 @@ public final class VolumesClientImpl implements VolumesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByVolumeGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByVolumeGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

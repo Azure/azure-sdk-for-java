@@ -12,7 +12,9 @@ import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The details of a PlanData resource. */
+/**
+ * The details of a PlanData resource.
+ */
 @Fluent
 public final class PlanDataResourceInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class PlanDataResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of PlanDataResourceInner class. */
+    /**
+     * Creates an instance of PlanDataResourceInner class.
+     */
     public PlanDataResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PlanDataProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class PlanDataResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class PlanDataResourceInner extends ProxyResource {
 
     /**
      * Get the planData property: Plan details.
-     *
+     * 
      * @return the planData value.
      */
     public PlanData planData() {
@@ -60,7 +64,7 @@ public final class PlanDataResourceInner extends ProxyResource {
 
     /**
      * Set the planData property: Plan details.
-     *
+     * 
      * @param planData the planData value to set.
      * @return the PlanDataResourceInner object itself.
      */
@@ -74,7 +78,7 @@ public final class PlanDataResourceInner extends ProxyResource {
 
     /**
      * Get the orgCreationSource property: Source of org creation.
-     *
+     * 
      * @return the orgCreationSource value.
      */
     public OrgCreationSource orgCreationSource() {
@@ -83,7 +87,7 @@ public final class PlanDataResourceInner extends ProxyResource {
 
     /**
      * Set the orgCreationSource property: Source of org creation.
-     *
+     * 
      * @param orgCreationSource the orgCreationSource value to set.
      * @return the PlanDataResourceInner object itself.
      */
@@ -97,7 +101,7 @@ public final class PlanDataResourceInner extends ProxyResource {
 
     /**
      * Get the accountCreationSource property: Source of account creation.
-     *
+     * 
      * @return the accountCreationSource value.
      */
     public AccountCreationSource accountCreationSource() {
@@ -106,7 +110,7 @@ public final class PlanDataResourceInner extends ProxyResource {
 
     /**
      * Set the accountCreationSource property: Source of account creation.
-     *
+     * 
      * @param accountCreationSource the accountCreationSource value to set.
      * @return the PlanDataResourceInner object itself.
      */
@@ -120,7 +124,7 @@ public final class PlanDataResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

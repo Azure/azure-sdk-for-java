@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Source of Account creation. */
+/**
+ * Source of Account creation.
+ */
 public final class AccountCreationSource extends ExpandableStringEnum<AccountCreationSource> {
-    /** Static value LIFTR for AccountCreationSource. */
+    /**
+     * Static value LIFTR for AccountCreationSource.
+     */
     public static final AccountCreationSource LIFTR = fromString("LIFTR");
 
-    /** Static value NEWRELIC for AccountCreationSource. */
+    /**
+     * Static value NEWRELIC for AccountCreationSource.
+     */
     public static final AccountCreationSource NEWRELIC = fromString("NEWRELIC");
 
     /**
      * Creates a new instance of AccountCreationSource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AccountCreationSource extends ExpandableStringEnum<AccountCre
 
     /**
      * Creates or finds a AccountCreationSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AccountCreationSource.
      */
@@ -38,7 +44,7 @@ public final class AccountCreationSource extends ExpandableStringEnum<AccountCre
 
     /**
      * Gets known AccountCreationSource values.
-     *
+     * 
      * @return known AccountCreationSource values.
      */
     public static Collection<AccountCreationSource> values() {

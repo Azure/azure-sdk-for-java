@@ -7,18 +7,20 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of DaprSecretsCollection. */
+/**
+ * An immutable client-side representation of DaprSecretsCollection.
+ */
 public interface DaprSecretsCollection {
     /**
      * Gets the value property: Collection of secrets used by a Dapr component.
-     *
+     * 
      * @return the value value.
      */
     List<DaprSecret> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     DaprSecretsCollectionInner innerModel();

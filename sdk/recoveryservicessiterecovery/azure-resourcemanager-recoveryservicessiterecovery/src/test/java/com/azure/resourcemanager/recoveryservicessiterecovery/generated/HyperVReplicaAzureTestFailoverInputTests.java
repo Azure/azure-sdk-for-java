@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HyperVReplicaAzureTestFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVReplicaAzureTestFailoverInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"nsjulugdybnh\",\"secondaryKekCertificatePfx\":\"lelfjhkeizcpih\",\"recoveryPointId\":\"miw\",\"osUpgradeVersion\":\"kpty\"}")
-                .toObject(HyperVReplicaAzureTestFailoverInput.class);
+        HyperVReplicaAzureTestFailoverInput model = BinaryData.fromString(
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"primaryKekCertificatePfx\":\"nsjulugdybnh\",\"secondaryKekCertificatePfx\":\"lelfjhkeizcpih\",\"recoveryPointId\":\"miw\",\"osUpgradeVersion\":\"kpty\"}")
+            .toObject(HyperVReplicaAzureTestFailoverInput.class);
         Assertions.assertEquals("nsjulugdybnh", model.primaryKekCertificatePfx());
         Assertions.assertEquals("lelfjhkeizcpih", model.secondaryKekCertificatePfx());
         Assertions.assertEquals("miw", model.recoveryPointId());
@@ -24,12 +22,9 @@ public final class HyperVReplicaAzureTestFailoverInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzureTestFailoverInput model =
-            new HyperVReplicaAzureTestFailoverInput()
-                .withPrimaryKekCertificatePfx("nsjulugdybnh")
-                .withSecondaryKekCertificatePfx("lelfjhkeizcpih")
-                .withRecoveryPointId("miw")
-                .withOsUpgradeVersion("kpty");
+        HyperVReplicaAzureTestFailoverInput model = new HyperVReplicaAzureTestFailoverInput()
+            .withPrimaryKekCertificatePfx("nsjulugdybnh").withSecondaryKekCertificatePfx("lelfjhkeizcpih")
+            .withRecoveryPointId("miw").withOsUpgradeVersion("kpty");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureTestFailoverInput.class);
         Assertions.assertEquals("nsjulugdybnh", model.primaryKekCertificatePfx());
         Assertions.assertEquals("lelfjhkeizcpih", model.secondaryKekCertificatePfx());

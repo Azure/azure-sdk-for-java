@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for SecurityOperators Get. */
+/**
+ * Samples for SecurityOperators Get.
+ */
 public final class SecurityOperatorsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/GetSecurityOperatorByName_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/
+     * GetSecurityOperatorByName_example.json
      */
     /**
      * Sample code: Get a specific security operator by scope and securityOperatorName.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getASpecificSecurityOperatorByScopeAndSecurityOperatorName(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager
-            .securityOperators()
-            .getWithResponse("CloudPosture", "DefenderCSPMSecurityOperator", com.azure.core.util.Context.NONE);
+        manager.securityOperators().getWithResponse("CloudPosture", "DefenderCSPMSecurityOperator",
+            com.azure.core.util.Context.NONE);
     }
 }

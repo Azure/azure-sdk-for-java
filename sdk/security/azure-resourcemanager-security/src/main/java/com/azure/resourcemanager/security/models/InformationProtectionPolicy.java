@@ -9,84 +9,97 @@ import com.azure.resourcemanager.security.fluent.models.InformationProtectionPol
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** An immutable client-side representation of InformationProtectionPolicy. */
+/**
+ * An immutable client-side representation of InformationProtectionPolicy.
+ */
 public interface InformationProtectionPolicy {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the lastModifiedUtc property: Describes the last UTC time the policy was modified.
-     *
+     * 
      * @return the lastModifiedUtc value.
      */
     OffsetDateTime lastModifiedUtc();
 
     /**
      * Gets the version property: Describes the version of the policy.
-     *
+     * 
      * @return the version value.
      */
     String version();
 
     /**
      * Gets the labels property: Dictionary of sensitivity labels.
-     *
+     * 
      * @return the labels value.
      */
     Map<String, SensitivityLabel> labels();
 
     /**
      * Gets the informationTypes property: The sensitivity information types.
-     *
+     * 
      * @return the informationTypes value.
      */
     Map<String, InformationType> informationTypes();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.InformationProtectionPolicyInner object.
-     *
+     * 
      * @return the inner object.
      */
     InformationProtectionPolicyInner innerModel();
 
-    /** The entirety of the InformationProtectionPolicy definition. */
+    /**
+     * The entirety of the InformationProtectionPolicy definition.
+     */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
     }
-    /** The InformationProtectionPolicy definition stages. */
+
+    /**
+     * The InformationProtectionPolicy definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the InformationProtectionPolicy definition. */
+        /**
+         * The first stage of the InformationProtectionPolicy definition.
+         */
         interface Blank extends WithScope {
         }
-        /** The stage of the InformationProtectionPolicy definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the InformationProtectionPolicy definition allowing to specify parent resource.
+         */
         interface WithScope {
             /**
              * Specifies scope.
-             *
+             * 
              * @param scope Scope of the query, can be subscription
-             *     (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
-             *     (/providers/Microsoft.Management/managementGroups/mgName).
+             * (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+             * (/providers/Microsoft.Management/managementGroups/mgName).
              * @return the next definition stage.
              */
             WithCreate withExistingScope(String scope);
         }
+
         /**
          * The stage of the InformationProtectionPolicy definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -94,97 +107,115 @@ public interface InformationProtectionPolicy {
         interface WithCreate extends DefinitionStages.WithLabels, DefinitionStages.WithInformationTypes {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             InformationProtectionPolicy create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             InformationProtectionPolicy create(Context context);
         }
-        /** The stage of the InformationProtectionPolicy definition allowing to specify labels. */
+
+        /**
+         * The stage of the InformationProtectionPolicy definition allowing to specify labels.
+         */
         interface WithLabels {
             /**
              * Specifies the labels property: Dictionary of sensitivity labels..
-             *
+             * 
              * @param labels Dictionary of sensitivity labels.
              * @return the next definition stage.
              */
             WithCreate withLabels(Map<String, SensitivityLabel> labels);
         }
-        /** The stage of the InformationProtectionPolicy definition allowing to specify informationTypes. */
+
+        /**
+         * The stage of the InformationProtectionPolicy definition allowing to specify informationTypes.
+         */
         interface WithInformationTypes {
             /**
              * Specifies the informationTypes property: The sensitivity information types..
-             *
+             * 
              * @param informationTypes The sensitivity information types.
              * @return the next definition stage.
              */
             WithCreate withInformationTypes(Map<String, InformationType> informationTypes);
         }
     }
+
     /**
      * Begins update for the InformationProtectionPolicy resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     InformationProtectionPolicy.Update update();
 
-    /** The template for InformationProtectionPolicy update. */
+    /**
+     * The template for InformationProtectionPolicy update.
+     */
     interface Update extends UpdateStages.WithLabels, UpdateStages.WithInformationTypes {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         InformationProtectionPolicy apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         InformationProtectionPolicy apply(Context context);
     }
-    /** The InformationProtectionPolicy update stages. */
+
+    /**
+     * The InformationProtectionPolicy update stages.
+     */
     interface UpdateStages {
-        /** The stage of the InformationProtectionPolicy update allowing to specify labels. */
+        /**
+         * The stage of the InformationProtectionPolicy update allowing to specify labels.
+         */
         interface WithLabels {
             /**
              * Specifies the labels property: Dictionary of sensitivity labels..
-             *
+             * 
              * @param labels Dictionary of sensitivity labels.
              * @return the next definition stage.
              */
             Update withLabels(Map<String, SensitivityLabel> labels);
         }
-        /** The stage of the InformationProtectionPolicy update allowing to specify informationTypes. */
+
+        /**
+         * The stage of the InformationProtectionPolicy update allowing to specify informationTypes.
+         */
         interface WithInformationTypes {
             /**
              * Specifies the informationTypes property: The sensitivity information types..
-             *
+             * 
              * @param informationTypes The sensitivity information types.
              * @return the next definition stage.
              */
             Update withInformationTypes(Map<String, InformationType> informationTypes);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     InformationProtectionPolicy refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

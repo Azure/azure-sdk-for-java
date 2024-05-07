@@ -9,8 +9,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
 import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils;
 import com.azure.security.keyvault.keys.cryptography.implementation.LocalKeyCryptographyClient;
@@ -28,7 +30,6 @@ import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.implementation.SecretMinClientImpl;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
-import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
 
@@ -36,8 +37,8 @@ import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.checkKeyPermissions;
-import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.initializeCryptoClient;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.initializeLocalClient;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.isThrowableRetryable;
 
 /**
  * The {@link CryptographyAsyncClient} provides asynchronous methods to perform cryptographic operations using
@@ -142,13 +143,11 @@ public class CryptographyAsyncClient {
 
     private final HttpPipeline pipeline;
 
-    private volatile boolean localOperationNotSupported = false;
-    private LocalKeyCryptographyClient localKeyCryptographyClient;
+    private volatile boolean attemptedToInitializeLocalClient = false;
+    private volatile LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
     final String keyId;
-
-    volatile JsonWebKey key;
 
     /**
      * Creates a {@link CryptographyAsyncClient} that uses a given {@link HttpPipeline pipeline} to service requests.
@@ -161,7 +160,6 @@ public class CryptographyAsyncClient {
         this.keyId = keyId;
         this.pipeline = pipeline;
         this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
-        this.key = null;
     }
 
     /**
@@ -185,11 +183,17 @@ public class CryptographyAsyncClient {
             throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
         }
 
-        this.key = jsonWebKey;
+        this.implClient = null;
         this.keyId = jsonWebKey.getId();
         this.pipeline = null;
-        this.implClient = null;
-        this.localKeyCryptographyClient = initializeCryptoClient(key, null, LOGGER);
+
+        try {
+            this.localKeyCryptographyClient = initializeLocalClient(jsonWebKey, null);
+            this.attemptedToInitializeLocalClient = true;
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("Could not initialize local cryptography client.", e));
+        }
     }
 
     /**
@@ -249,6 +253,8 @@ public class CryptographyAsyncClient {
      * requested {@link KeyVaultKey key}.
      *
      * @throws ResourceNotFoundException When the configured key doesn't exist in the key vault.
+     * @throws UnsupportedOperationException When operating in local-only mode (using a client created using a
+     * JsonWebKey instance).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultKey>> getKeyWithResponse() {
@@ -259,16 +265,8 @@ public class CryptographyAsyncClient {
                 return monoError(LOGGER, e);
             }
         } else {
-            return FluxUtil.monoError(LOGGER,
-                new UnsupportedOperationException("Operation not supported when in operating local-only mode"));
-        }
-    }
-
-    Mono<JsonWebKey> getSecretKey() {
-        try {
-            return implClient.getSecretKeyAsync();
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+            return monoError(LOGGER,
+                new UnsupportedOperationException("Operation not supported when operating in local-only mode."));
         }
     }
 
@@ -298,8 +296,7 @@ public class CryptographyAsyncClient {
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte -->
      * <pre>
      * byte[] plaintext = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;plaintext&#41;;
@@ -310,14 +307,13 @@ public class CryptographyAsyncClient {
      *         System.out.printf&#40;&quot;Received encrypted content of length: %d, with algorithm: %s.%n&quot;,
      *             encryptResult.getCipherText&#40;&#41;.length, encryptResult.getAlgorithm&#40;&#41;.toString&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte
-     * -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte -->
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
      *
-     * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
-     * contains the encrypted content.
+     * @return A {@link Mono} containing a {@link EncryptResult} whose
+     * {@link EncryptResult#getCipherText() cipher text} contains the encrypted content.
      *
      * @throws NullPointerException If {@code algorithm} or {@code plaintext} are {@code null}.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
@@ -326,17 +322,12 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
         try {
-            return withContext(context -> isValidKeyLocallyAvailable().flatMap(available -> {
-                if (!available) {
+            return withContext(context -> isLocalClientAvailable().flatMap(available -> {
+                if (available) {
+                    return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, context);
+                } else {
                     return implClient.encryptAsync(algorithm, plaintext, context);
                 }
-
-                if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
-                    return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                        "Encrypt operation is missing permission/not supported for key with id: %s", key.getId()))));
-                }
-
-                return localKeyCryptographyClient.encryptAsync(algorithm, plaintext, key, context);
             }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -369,8 +360,7 @@ public class CryptographyAsyncClient {
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
      * a response has been received.</p>
      *
-     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters
-     * -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptParameters -->
      * <pre>
      * byte[] plaintextBytes = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;plaintextBytes&#41;;
@@ -391,8 +381,8 @@ public class CryptographyAsyncClient {
      *
      * @param encryptParameters The parameters to use in the encryption operation.
      *
-     * @return A {@link Mono} containing a {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text}
-     * contains the encrypted content.
+     * @return A {@link Mono} containing a {@link EncryptResult} whose
+     * {@link EncryptResult#getCipherText() cipher text} contains the encrypted content.
      *
      * @throws NullPointerException If {@code algorithm} or {@code plaintext} are {@code null}.
      * @throws ResourceNotFoundException If the key cannot be found for encryption.
@@ -401,17 +391,12 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EncryptResult> encrypt(EncryptParameters encryptParameters) {
         try {
-            return withContext(context -> isValidKeyLocallyAvailable().flatMap(available -> {
-                if (!available) {
+            return withContext(context -> isLocalClientAvailable().flatMap(available -> {
+                if (available) {
+                    return localKeyCryptographyClient.encryptAsync(encryptParameters, context);
+                } else {
                     return implClient.encryptAsync(encryptParameters, context);
                 }
-
-                if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
-                    return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                        "Encrypt operation is missing permission/not supported for key with id: %s", key.getId()))));
-                }
-
-                return localKeyCryptographyClient.encryptAsync(encryptParameters, key, context);
             }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -441,8 +426,7 @@ public class CryptographyAsyncClient {
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte -->
      * <pre>
      * byte[] ciphertext = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;ciphertext&#41;;
@@ -452,14 +436,13 @@ public class CryptographyAsyncClient {
      *     .subscribe&#40;decryptResult -&gt;
      *         System.out.printf&#40;&quot;Received decrypted content of length: %d%n&quot;, decryptResult.getPlainText&#40;&#41;.length&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte
-     * -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte -->
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
      * integrity of the ciphertext using an HMAC, for example.
-     * See <a href="https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode">Timing vulnerabilities
-     * with CBC-mode symmetric decryption using padding</a> for more information.
+     * See <a href="https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode">Timing
+     * vulnerabilities with CBC-mode symmetric decryption using padding</a> for more information.
      *
      * @return A {@link Mono} containing the decrypted blob.
      *
@@ -470,17 +453,12 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
         try {
-            return withContext(context -> isValidKeyLocallyAvailable().flatMap(available -> {
-                if (!available) {
+            return withContext(context -> isLocalClientAvailable().flatMap(available -> {
+                if (available) {
+                    return localKeyCryptographyClient.decryptAsync(algorithm, ciphertext, context);
+                } else {
                     return implClient.decryptAsync(algorithm, ciphertext, context);
                 }
-
-                if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
-                    return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                        "Decrypt operation is not allowed for key with id: %s", key.getId()))));
-                }
-
-                return localKeyCryptographyClient.decryptAsync(algorithm, ciphertext, key, context);
             }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -510,8 +488,7 @@ public class CryptographyAsyncClient {
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
      * details when a response has been received.</p>
      *
-     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters
-     * -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#DecryptParameters -->
      * <pre>
      * byte[] ciphertextBytes = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;ciphertextBytes&#41;;
@@ -543,17 +520,12 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DecryptResult> decrypt(DecryptParameters decryptParameters) {
         try {
-            return withContext(context -> isValidKeyLocallyAvailable().flatMap(available -> {
-                if (!available) {
+            return withContext(context -> isLocalClientAvailable().flatMap(available -> {
+                if (available) {
+                    return localKeyCryptographyClient.decryptAsync(decryptParameters, context);
+                } else {
                     return implClient.decryptAsync(decryptParameters, context);
                 }
-
-                if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
-                    return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                        "Decrypt operation is not allowed for key with id: %s", key.getId()))));
-                }
-
-                return localKeyCryptographyClient.decryptAsync(decryptParameters, key, context);
             }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -576,8 +548,7 @@ public class CryptographyAsyncClient {
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
      * has been received.</p>
      *
-     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.sign#SignatureAlgorithm-byte
-     * -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.sign#SignatureAlgorithm-byte -->
      * <pre>
      * byte[] data = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;data&#41;;
@@ -596,8 +567,8 @@ public class CryptographyAsyncClient {
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
      *
-     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature} contains
-     * the created signature.
+     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature}
+     * contains the created signature.
      *
      * @throws NullPointerException If {@code algorithm} or {@code digest} is {@code null}.
      * @throws ResourceNotFoundException If the key cannot be found for signing.
@@ -606,17 +577,12 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SignResult> sign(SignatureAlgorithm algorithm, byte[] digest) {
         try {
-            return withContext(context -> isValidKeyLocallyAvailable().flatMap(available -> {
-                if (!available) {
+            return withContext(context -> isLocalClientAvailable().flatMap(available -> {
+                if (available) {
+                    return localKeyCryptographyClient.signAsync(algorithm, digest, context);
+                } else {
                     return implClient.signAsync(algorithm, digest, context);
                 }
-
-                if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
-                    return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                        "Sign operation is not allowed for key with id: %s", key.getId()))));
-                }
-
-                return localKeyCryptographyClient.signAsync(algorithm, digest, key, context);
             }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -640,8 +606,7 @@ public class CryptographyAsyncClient {
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
      * verification details when a response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte -->
      * <pre>
      * byte[] myData = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;myData&#41;;
@@ -655,8 +620,7 @@ public class CryptographyAsyncClient {
      *     .subscribe&#40;verifyResult -&gt;
      *         System.out.printf&#40;&quot;Verification status: %s.%n&quot;, verifyResult.isValid&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end
-     * com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verify#SignatureAlgorithm-byte-byte -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature was created.
@@ -672,17 +636,12 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VerifyResult> verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
         try {
-            return withContext(context -> isValidKeyLocallyAvailable().flatMap(available -> {
-                if (!available) {
+            return withContext(context -> isLocalClientAvailable().flatMap(available -> {
+                if (available) {
+                    return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, context);
+                } else {
                     return implClient.verifyAsync(algorithm, digest, signature, context);
                 }
-
-                if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
-                    return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                        "Verify operation is not allowed for key with id: %s", key.getId()))));
-                }
-
-                return localKeyCryptographyClient.verifyAsync(algorithm, digest, signature, key, context);
             }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -706,8 +665,7 @@ public class CryptographyAsyncClient {
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
      * response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.wrapKey#KeyWrapAlgorithm-byte -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.wrapKey#KeyWrapAlgorithm-byte -->
      * <pre>
      * byte[] key = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;key&#41;;
@@ -733,18 +691,12 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
         try {
-            return withContext(context -> isValidKeyLocallyAvailable().flatMap(available -> {
-                if (!available) {
+            return withContext(context -> isLocalClientAvailable().flatMap(available -> {
+                if (available) {
+                    return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, context);
+                } else {
                     return implClient.wrapKeyAsync(algorithm, key, context);
-
                 }
-
-                if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
-                    return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                        "Wrap Key operation is not allowed for key with id: %s", this.key.getId()))));
-                }
-
-                return localKeyCryptographyClient.wrapKeyAsync(algorithm, key, this.key, context);
             }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -769,8 +721,7 @@ public class CryptographyAsyncClient {
      * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when
      * a response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte -->
      * <pre>
      * byte[] keyToWrap = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;key&#41;;
@@ -782,8 +733,7 @@ public class CryptographyAsyncClient {
      *             .subscribe&#40;keyUnwrapResult -&gt;
      *                 System.out.printf&#40;&quot;Received key of length: %d.%n&quot;, keyUnwrapResult.getKey&#40;&#41;.length&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte
-     * -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.unwrapKey#KeyWrapAlgorithm-byte -->
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
@@ -798,17 +748,12 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
         try {
-            return withContext(context -> isValidKeyLocallyAvailable().flatMap(available -> {
-                if (!available) {
+            return withContext(context -> isLocalClientAvailable().flatMap(available -> {
+                if (available) {
+                    return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, context);
+                } else {
                     return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
                 }
-
-                if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.UNWRAP_KEY)) {
-                    return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                        "Unwrap key operation is not allowed for key with id: %s", key.getId()))));
-                }
-
-                return localKeyCryptographyClient.unwrapKeyAsync(algorithm, encryptedKey, key, context);
             }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -831,8 +776,7 @@ public class CryptographyAsyncClient {
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
      * response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte -->
      * <pre>
      * byte[] data = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;data&#41;;
@@ -843,14 +787,13 @@ public class CryptographyAsyncClient {
      *         System.out.printf&#40;&quot;Received signature of length: %d, with algorithm: %s.%n&quot;,
      *             signResult.getSignature&#40;&#41;.length, signResult.getAlgorithm&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte
-     * -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.signData#SignatureAlgorithm-byte -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
      *
-     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature} contains
-     * the created signature.
+     * @return A {@link Mono} containing a {@link SignResult} whose {@link SignResult#getSignature() signature}
+     * contains the created signature.
      *
      * @throws NullPointerException If {@code algorithm} or {@code data} is {@code null}.
      * @throws ResourceNotFoundException If the key cannot be found for signing.
@@ -859,17 +802,12 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SignResult> signData(SignatureAlgorithm algorithm, byte[] data) {
         try {
-            return withContext(context -> isValidKeyLocallyAvailable().flatMap(available -> {
-                if (!available) {
+            return withContext(context -> isLocalClientAvailable().flatMap(available -> {
+                if (available) {
+                    return localKeyCryptographyClient.signDataAsync(algorithm, data, context);
+                } else {
                     return implClient.signDataAsync(algorithm, data, context);
                 }
-
-                if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
-                    return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
-                        "Sign operation is not allowed for key with id: %s", key.getId()))));
-                }
-
-                return localKeyCryptographyClient.signDataAsync(algorithm, data, key, context);
             }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -893,9 +831,7 @@ public class CryptographyAsyncClient {
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the
      * verification details when a response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte
-     * -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte -->
      * <pre>
      * byte[] myData = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;myData&#41;;
@@ -906,9 +842,7 @@ public class CryptographyAsyncClient {
      *     .subscribe&#40;verifyResult -&gt;
      *         System.out.printf&#40;&quot;Verification status: %s.%n&quot;, verifyResult.isValid&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end
-     * com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte
-     * -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.verifyData#SignatureAlgorithm-byte-byte -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The raw content against which signature is to be verified.
@@ -924,55 +858,65 @@ public class CryptographyAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VerifyResult> verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
         try {
-            return withContext(context -> isValidKeyLocallyAvailable().flatMap(available -> {
-                if (!available) {
+            return withContext(context -> isLocalClientAvailable().flatMap(available -> {
+                if (available) {
+                    return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, context);
+                } else {
                     return implClient.verifyDataAsync(algorithm, data, signature, context);
                 }
-
-                if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
-                    return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                        "Verify operation is not allowed for key with id: " + key.getId())));
-                }
-
-                return localKeyCryptographyClient.verifyDataAsync(algorithm, data, signature, key, context);
             }));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    private Mono<Boolean> isValidKeyLocallyAvailable() {
-        if (localOperationNotSupported) {
-            return Mono.just(false);
-        }
-
-        if (key == null && implClient.getKeyCollection() != null) {
-            Mono<JsonWebKey> jsonWebKeyMono = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
-                ? getSecretKey()
-                : getKey().map(KeyVaultKey::getKey);
-
-            return jsonWebKeyMono.map(jsonWebKey -> {
-                key = jsonWebKey;
-
-                if (jsonWebKey.isValid()) {
-                    if (localKeyCryptographyClient == null) {
-                        try {
-                            localKeyCryptographyClient = initializeCryptoClient(jsonWebKey, implClient, LOGGER);
-                        } catch (RuntimeException e) {
-                            localOperationNotSupported = true;
-                            LOGGER.warning("Defaulting to service use for cryptographic operations.", e);
-
-                            return false;
-                        }
-                    }
+    private Mono<Boolean> isLocalClientAvailable() {
+        if (!attemptedToInitializeLocalClient) {
+            return retrieveJwkAndInitializeLocalAsyncClient()
+                .map(localClient -> {
+                    localKeyCryptographyClient = localClient;
+                    attemptedToInitializeLocalClient = true;
 
                     return true;
+                })
+                .onErrorResume(t -> {
+                    if (isThrowableRetryable(t)) {
+                        LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography for this operation. "
+                            + "Defaulting to service-side cryptography.", t);
+                    } else {
+                        attemptedToInitializeLocalClient = true;
+
+                        LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography. Defaulting to"
+                            + "service-side cryptography for all operations.", t);
+                    }
+
+                    return Mono.just(false);
+                });
+        }
+
+        return Mono.just(localKeyCryptographyClient != null);
+    }
+
+    private Mono<LocalKeyCryptographyClient> retrieveJwkAndInitializeLocalAsyncClient() {
+        // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
+        if (!CoreUtils.isNullOrEmpty(implClient.getKeyCollection())) {
+            // Get the JWK from the service and validate it. Then attempt to create a local cryptography client or
+            // default to using service-side cryptography.
+            Mono<JsonWebKey> jsonWebKeyMono = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
+                ? implClient.getSecretKeyAsync()
+                : implClient.getKeyAsync().map(keyVaultKeyResponse -> keyVaultKeyResponse.getValue().getKey());
+
+            return jsonWebKeyMono.handle((jsonWebKey, sink) -> {
+                if (!jsonWebKey.isValid()) {
+                    sink.error(new IllegalStateException("The retrieved JSON Web Key is not valid."));
                 } else {
-                    return false;
+                    sink.next(initializeLocalClient(jsonWebKey, implClient));
                 }
             });
         } else {
-            return Mono.just(true);
+            // Couldn't/didn't create a local cryptography client.
+            return Mono.error(new IllegalStateException(
+                "Could not create a local cryptography client. Key collection is null or empty."));
         }
     }
 }

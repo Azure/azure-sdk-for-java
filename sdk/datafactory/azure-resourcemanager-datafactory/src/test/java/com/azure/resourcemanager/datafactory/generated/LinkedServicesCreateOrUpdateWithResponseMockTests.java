@@ -6,18 +6,15 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeReference;
 import com.azure.resourcemanager.datafactory.models.LinkedService;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceResource;
 import com.azure.resourcemanager.datafactory.models.ParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.ParameterType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -25,60 +22,40 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LinkedServicesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"idhkigs\",\"parameters\":{\"ztsgklu\":\"datakzl\",\"xbyedca\":\"dataaxcbfrnttlrumv\"}},\"description\":\"jpjnnh\",\"parameters\":{\"icp\":{\"type\":\"SecureString\",\"defaultValue\":\"datamqxbauzvxe\"},\"o\":{\"type\":\"Bool\",\"defaultValue\":\"datacvmuqx\"}},\"annotations\":[\"datajrtcifxledjpu\",\"dataai\",\"datacvsjcdmnvtpb\"],\"\":{\"fvplfywcbnmzshmq\":\"datacaaqvsda\",\"bvqsqwuwxtqdtv\":\"datan\"}},\"name\":\"ilqscjxpro\",\"type\":\"yddrs\",\"etag\":\"rxnweiytkeqjviaw\",\"id\":\"vbc\"}";
+            = "{\"properties\":{\"type\":\"pmjtfymvlvosbc\",\"connectVia\":{\"referenceName\":\"bbrkuss\",\"parameters\":{\"aspglc\":\"datasbucmth\"}},\"description\":\"raer\",\"parameters\":{\"yox\":{\"type\":\"Float\",\"defaultValue\":\"datayhwdogchdqtlbnkr\"},\"sr\":{\"type\":\"String\",\"defaultValue\":\"datae\"},\"g\":{\"type\":\"Bool\",\"defaultValue\":\"datazs\"}},\"annotations\":[\"datasbp\"],\"\":{\"tbn\":\"datamgwmmwjugaqy\",\"qfiigslbriawkn\":\"datayspbghnnxkouvsmm\",\"gerqtcxk\":\"datacdfcyeyulmxonobo\",\"z\":\"datai\"}},\"name\":\"crucz\",\"type\":\"juxijmawsamdfwex\",\"etag\":\"bdglsll\",\"id\":\"armlbqekvj\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        LinkedServiceResource response = manager.linkedServices()
+            .define("g")
+            .withExistingFactory("colf", "ftz")
+            .withProperties(new LinkedService()
+                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("ivt")
+                    .withParameters(mapOf("rqiijkvop", "datauzyyniv", "odmnytdborujflt", "dataamtxvnelw", "n",
+                        "dataxwfwlfqbgugvr", "khdxqaccdzb", "dataeiwk")))
+                .withDescription("ot")
+                .withParameters(mapOf("jzv",
+                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datasxgaojwulatq")))
+                .withAnnotations(Arrays.asList("dataslifcwj", "datayfdjzefkzcajav", "datamokaqnu"))
+                .withAdditionalProperties(mapOf("type", "fnl")))
+            .withIfMatch("pz")
+            .create();
 
-        LinkedServiceResource response
-            = manager.linkedServices().define("uqtjcyllpas").withExistingFactory("uwbnngcdtxxyz", "ybndiqpadhrij")
-                .withProperties(new LinkedService()
-                    .withConnectVia(new IntegrationRuntimeReference()
-                        .withReferenceName("qsfpctq").withParameters(mapOf("squ", "databjjde")))
-                    .withDescription("rnbdzvcabchdzxj")
-                    .withParameters(mapOf("lsak",
-                        new ParameterSpecification().withType(ParameterType.BOOL)
-                            .withDefaultValue("datawaadczwmnfavllbs"),
-                        "ppzbdvawbtgvqt",
-                        new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataxpofvhkceaxo"),
-                        "guhsjlroaedswh",
-                        new ParameterSpecification().withType(ParameterType.FLOAT)
-                            .withDefaultValue("datanaeclrjscdoqocdr"),
-                        "yjtollugzsvzi",
-                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datajuuboyrf")))
-                    .withAnnotations(Arrays.asList("datasbdaudsvdb", "datallmutwmarfbszlp", "datax"))
-                    .withAdditionalProperties(mapOf("type", "LinkedService")))
-                .withIfMatch("nbxgofiphlwyzd").create();
-
-        Assertions.assertEquals("vbc", response.id());
-        Assertions.assertEquals("idhkigs", response.properties().connectVia().referenceName());
-        Assertions.assertEquals("jpjnnh", response.properties().description());
-        Assertions.assertEquals(ParameterType.SECURE_STRING, response.properties().parameters().get("icp").type());
+        Assertions.assertEquals("armlbqekvj", response.id());
+        Assertions.assertEquals("bbrkuss", response.properties().connectVia().referenceName());
+        Assertions.assertEquals("raer", response.properties().description());
+        Assertions.assertEquals(ParameterType.FLOAT, response.properties().parameters().get("yox").type());
     }
 
     // Use "Map.of" if available

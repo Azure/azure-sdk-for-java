@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMageRcm provider specific input for test failover. */
+/**
+ * InMageRcm provider specific input for test failover.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Fluent
@@ -27,13 +29,15 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
     @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
-    /** Creates an instance of InMageRcmTestFailoverInput class. */
+    /**
+     * Creates an instance of InMageRcmTestFailoverInput class.
+     */
     public InMageRcmTestFailoverInput() {
     }
 
     /**
      * Get the networkId property: The test network Id.
-     *
+     * 
      * @return the networkId value.
      */
     public String networkId() {
@@ -42,7 +46,7 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
 
     /**
      * Set the networkId property: The test network Id.
-     *
+     * 
      * @param networkId the networkId value to set.
      * @return the InMageRcmTestFailoverInput object itself.
      */
@@ -54,7 +58,7 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
     /**
      * Get the recoveryPointId property: The recovery point id to be passed to test failover to a particular recovery
      * point. In case of latest recovery point, null should be passed.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -64,7 +68,7 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
     /**
      * Set the recoveryPointId property: The recovery point id to be passed to test failover to a particular recovery
      * point. In case of latest recovery point, null should be passed.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the InMageRcmTestFailoverInput object itself.
      */
@@ -75,7 +79,7 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

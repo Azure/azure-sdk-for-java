@@ -11,12 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.SupportedOperatingSystemsInner;
 
 /**
- * An instance of this class provides access to all the operations defined in SupportedOperatingSystemsOperationsClient.
+ * An instance of this class provides access to all the operations defined in
+ * SupportedOperatingSystemsOperationsClient.
  */
 public interface SupportedOperatingSystemsOperationsClient {
     /**
      * Gets the data of supported operating systems by SRS.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param instanceType The instance type.
@@ -27,12 +28,12 @@ public interface SupportedOperatingSystemsOperationsClient {
      * @return the data of supported operating systems by SRS along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SupportedOperatingSystemsInner> getWithResponse(
-        String resourceName, String resourceGroupName, String instanceType, Context context);
+    Response<SupportedOperatingSystemsInner> getWithResponse(String resourceName, String resourceGroupName,
+        String instanceType, Context context);
 
     /**
      * Gets the data of supported operating systems by SRS.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -48,7 +49,6 @@ import java.util.stream.Collectors;
  * This is meant to be internally used only by our sdk.
  */
 class DocumentProducer<T> {
-
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptionsAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
@@ -198,14 +198,8 @@ class DocumentProducer<T> {
                         top,
                         pageSize,
                         Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize),
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getOperationContext(cosmosQueryRequestOptions),
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions)
+                        qryOptionsAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
+                        qryOptionsAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions)
                 )
                 .map(rsp -> {
                     this.lastResponseContinuationToken = rsp.getContinuationToken();
@@ -274,7 +268,7 @@ class DocumentProducer<T> {
                                         + " last continuation token is [{}]. - Context: {}",
                                     feedRange,
                                     partitionKeyRangesValueHolder.v.stream()
-                                        .map(ModelBridgeInternal::toJsonFromJsonSerializable)
+                                        .map(JsonSerializable::toJson)
                                         .collect(Collectors.joining(", ")),
                                     lastResponseContinuationToken,
                                     this.operationContextTextProvider.get());

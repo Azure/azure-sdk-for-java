@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork.
+ * Properties of the virtual network resource.
  */
 @Fluent
 public final class VirtualNetworkProperties {
@@ -20,31 +20,25 @@ public final class VirtualNetworkProperties {
     private VirtualNetworkPropertiesInfraVnetProfile infraVnetProfile;
 
     /*
-     * Virtual IP Pool for Kubernetes
+     * Range of IP Addresses for Kubernetes API Server and services if using HA Proxy load balancer
      */
     @JsonProperty(value = "vipPool")
     private List<VirtualNetworkPropertiesVipPoolItem> vipPool;
 
     /*
-     * IP Pool for Virtual Machines
+     * Range of IP Addresses for Kubernetes node VMs
      */
     @JsonProperty(value = "vmipPool")
     private List<VirtualNetworkPropertiesVmipPoolItem> vmipPool;
 
     /*
-     * Address of the DHCP servers associated with the network
-     */
-    @JsonProperty(value = "dhcpServers")
-    private List<String> dhcpServers;
-
-    /*
-     * Address of the DNS servers associated with the network
+     * List of DNS server IP Addresses associated with the network
      */
     @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /*
-     * Address of the Gateway associated with the network
+     * IP Address of the Gateway associated with the network
      */
     @JsonProperty(value = "gateway")
     private String gateway;
@@ -68,7 +62,7 @@ public final class VirtualNetworkProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * HybridAKSNetworkStatus defines the observed state of HybridAKSNetwork
+     * Status of the virtual network resource
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkPropertiesStatus status;
@@ -100,7 +94,8 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Get the vipPool property: Virtual IP Pool for Kubernetes.
+     * Get the vipPool property: Range of IP Addresses for Kubernetes API Server and services if using HA Proxy load
+     * balancer.
      * 
      * @return the vipPool value.
      */
@@ -109,7 +104,8 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Set the vipPool property: Virtual IP Pool for Kubernetes.
+     * Set the vipPool property: Range of IP Addresses for Kubernetes API Server and services if using HA Proxy load
+     * balancer.
      * 
      * @param vipPool the vipPool value to set.
      * @return the VirtualNetworkProperties object itself.
@@ -120,7 +116,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Get the vmipPool property: IP Pool for Virtual Machines.
+     * Get the vmipPool property: Range of IP Addresses for Kubernetes node VMs.
      * 
      * @return the vmipPool value.
      */
@@ -129,7 +125,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Set the vmipPool property: IP Pool for Virtual Machines.
+     * Set the vmipPool property: Range of IP Addresses for Kubernetes node VMs.
      * 
      * @param vmipPool the vmipPool value to set.
      * @return the VirtualNetworkProperties object itself.
@@ -140,27 +136,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Get the dhcpServers property: Address of the DHCP servers associated with the network.
-     * 
-     * @return the dhcpServers value.
-     */
-    public List<String> dhcpServers() {
-        return this.dhcpServers;
-    }
-
-    /**
-     * Set the dhcpServers property: Address of the DHCP servers associated with the network.
-     * 
-     * @param dhcpServers the dhcpServers value to set.
-     * @return the VirtualNetworkProperties object itself.
-     */
-    public VirtualNetworkProperties withDhcpServers(List<String> dhcpServers) {
-        this.dhcpServers = dhcpServers;
-        return this;
-    }
-
-    /**
-     * Get the dnsServers property: Address of the DNS servers associated with the network.
+     * Get the dnsServers property: List of DNS server IP Addresses associated with the network.
      * 
      * @return the dnsServers value.
      */
@@ -169,7 +145,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Set the dnsServers property: Address of the DNS servers associated with the network.
+     * Set the dnsServers property: List of DNS server IP Addresses associated with the network.
      * 
      * @param dnsServers the dnsServers value to set.
      * @return the VirtualNetworkProperties object itself.
@@ -180,7 +156,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Get the gateway property: Address of the Gateway associated with the network.
+     * Get the gateway property: IP Address of the Gateway associated with the network.
      * 
      * @return the gateway value.
      */
@@ -189,7 +165,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Set the gateway property: Address of the Gateway associated with the network.
+     * Set the gateway property: IP Address of the Gateway associated with the network.
      * 
      * @param gateway the gateway value to set.
      * @return the VirtualNetworkProperties object itself.
@@ -249,7 +225,7 @@ public final class VirtualNetworkProperties {
     }
 
     /**
-     * Get the status property: HybridAKSNetworkStatus defines the observed state of HybridAKSNetwork.
+     * Get the status property: Status of the virtual network resource.
      * 
      * @return the status value.
      */

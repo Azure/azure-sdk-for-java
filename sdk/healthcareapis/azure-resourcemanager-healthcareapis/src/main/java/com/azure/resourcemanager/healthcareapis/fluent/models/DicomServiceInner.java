@@ -14,6 +14,7 @@ import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.healthcareapis.models.ServiceEventState;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityIdentity;
+import com.azure.resourcemanager.healthcareapis.models.StorageConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.TaggedResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -189,8 +190,8 @@ public final class DicomServiceInner extends TaggedResource {
     }
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
+     * private endpoint is enabled.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -199,8 +200,8 @@ public final class DicomServiceInner extends TaggedResource {
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
+     * private endpoint is enabled.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DicomServiceInner object itself.
@@ -242,6 +243,52 @@ public final class DicomServiceInner extends TaggedResource {
             this.innerProperties = new DicomServiceProperties();
         }
         this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the storageConfiguration property: The configuration of external storage account.
+     * 
+     * @return the storageConfiguration value.
+     */
+    public StorageConfiguration storageConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageConfiguration();
+    }
+
+    /**
+     * Set the storageConfiguration property: The configuration of external storage account.
+     * 
+     * @param storageConfiguration the storageConfiguration value to set.
+     * @return the DicomServiceInner object itself.
+     */
+    public DicomServiceInner withStorageConfiguration(StorageConfiguration storageConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DicomServiceProperties();
+        }
+        this.innerProperties().withStorageConfiguration(storageConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the enableDataPartitions property: If data partitions is enabled or not.
+     * 
+     * @return the enableDataPartitions value.
+     */
+    public Boolean enableDataPartitions() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableDataPartitions();
+    }
+
+    /**
+     * Set the enableDataPartitions property: If data partitions is enabled or not.
+     * 
+     * @param enableDataPartitions the enableDataPartitions value to set.
+     * @return the DicomServiceInner object itself.
+     */
+    public DicomServiceInner withEnableDataPartitions(Boolean enableDataPartitions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DicomServiceProperties();
+        }
+        this.innerProperties().withEnableDataPartitions(enableDataPartitions);
         return this;
     }
 

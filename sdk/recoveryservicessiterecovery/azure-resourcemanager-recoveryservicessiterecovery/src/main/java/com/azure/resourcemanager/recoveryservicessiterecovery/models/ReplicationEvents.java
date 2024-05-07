@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationEvents. */
+/**
+ * Resource collection API of ReplicationEvents.
+ */
 public interface ReplicationEvents {
     /**
      * Gets the list of Azure Site Recovery events.
-     *
-     * <p>Gets the list of Azure Site Recovery events for the vault.
-     *
+     * 
+     * Gets the list of Azure Site Recovery events for the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface ReplicationEvents {
 
     /**
      * Gets the list of Azure Site Recovery events.
-     *
-     * <p>Gets the list of Azure Site Recovery events for the vault.
-     *
+     * 
+     * Gets the list of Azure Site Recovery events for the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -42,9 +44,9 @@ public interface ReplicationEvents {
 
     /**
      * Get the details of an Azure Site recovery event.
-     *
-     * <p>The operation to get the details of an Azure Site recovery event.
-     *
+     * 
+     * The operation to get the details of an Azure Site recovery event.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param eventName The name of the Azure Site Recovery event.
@@ -58,9 +60,9 @@ public interface ReplicationEvents {
 
     /**
      * Get the details of an Azure Site recovery event.
-     *
-     * <p>The operation to get the details of an Azure Site recovery event.
-     *
+     * 
+     * The operation to get the details of an Azure Site recovery event.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param eventName The name of the Azure Site Recovery event.

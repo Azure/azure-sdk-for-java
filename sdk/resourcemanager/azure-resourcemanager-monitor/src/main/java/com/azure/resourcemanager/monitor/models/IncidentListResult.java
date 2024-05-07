@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.fluent.models.IncidentInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List incidents operation response. */
+/**
+ * The List incidents operation response.
+ */
 @Fluent
 public final class IncidentListResult {
     /*
@@ -18,13 +20,15 @@ public final class IncidentListResult {
     @JsonProperty(value = "value")
     private List<IncidentInner> value;
 
-    /** Creates an instance of IncidentListResult class. */
+    /**
+     * Creates an instance of IncidentListResult class.
+     */
     public IncidentListResult() {
     }
 
     /**
      * Get the value property: the incident collection.
-     *
+     * 
      * @return the value value.
      */
     public List<IncidentInner> value() {
@@ -33,7 +37,7 @@ public final class IncidentListResult {
 
     /**
      * Set the value property: the incident collection.
-     *
+     * 
      * @param value the value value to set.
      * @return the IncidentListResult object itself.
      */
@@ -44,7 +48,7 @@ public final class IncidentListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

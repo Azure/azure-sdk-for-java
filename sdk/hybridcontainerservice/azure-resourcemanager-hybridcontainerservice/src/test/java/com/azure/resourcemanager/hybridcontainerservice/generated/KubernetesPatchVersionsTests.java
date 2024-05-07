@@ -15,22 +15,19 @@ public final class KubernetesPatchVersionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesPatchVersions model = BinaryData.fromString(
-            "{\"readiness\":[{\"osType\":\"Linux\",\"osSku\":\"Windows2022\",\"ready\":true,\"errorMessage\":\"hvpesapskrdqm\"},{\"osType\":\"Linux\",\"osSku\":\"Windows2022\",\"ready\":true,\"errorMessage\":\"wky\"},{\"osType\":\"Windows\",\"osSku\":\"Windows2022\",\"ready\":true,\"errorMessage\":\"ws\"},{\"osType\":\"Linux\",\"osSku\":\"Windows2022\",\"ready\":true,\"errorMessage\":\"ogtwrupqsxvnmi\"}],\"upgrades\":[\"vce\",\"vei\",\"ovnotyfjfcnjbkcn\",\"dhbt\"]}")
+            "{\"readiness\":[{\"osType\":\"Windows\",\"osSku\":\"CBLMariner\",\"ready\":false,\"errorMessage\":\"yxczfclh\"}],\"upgrades\":[\"dbabp\",\"lwrq\",\"fkts\"]}")
             .toObject(KubernetesPatchVersions.class);
-        Assertions.assertEquals(Ossku.WINDOWS2022, model.readiness().get(0).osSku());
-        Assertions.assertEquals("vce", model.upgrades().get(0));
+        Assertions.assertEquals(Ossku.CBLMARINER, model.readiness().get(0).osSku());
+        Assertions.assertEquals("dbabp", model.upgrades().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         KubernetesPatchVersions model = new KubernetesPatchVersions()
-            .withReadiness(Arrays.asList(new KubernetesVersionReadiness().withOsSku(Ossku.WINDOWS2022),
-                new KubernetesVersionReadiness().withOsSku(Ossku.WINDOWS2022),
-                new KubernetesVersionReadiness().withOsSku(Ossku.WINDOWS2022),
-                new KubernetesVersionReadiness().withOsSku(Ossku.WINDOWS2022)))
-            .withUpgrades(Arrays.asList("vce", "vei", "ovnotyfjfcnjbkcn", "dhbt"));
+            .withReadiness(Arrays.asList(new KubernetesVersionReadiness().withOsSku(Ossku.CBLMARINER)))
+            .withUpgrades(Arrays.asList("dbabp", "lwrq", "fkts"));
         model = BinaryData.fromObject(model).toObject(KubernetesPatchVersions.class);
-        Assertions.assertEquals(Ossku.WINDOWS2022, model.readiness().get(0).osSku());
-        Assertions.assertEquals("vce", model.upgrades().get(0));
+        Assertions.assertEquals(Ossku.CBLMARINER, model.readiness().get(0).osSku());
+        Assertions.assertEquals("dbabp", model.upgrades().get(0));
     }
 }

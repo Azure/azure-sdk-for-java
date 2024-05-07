@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomationScopeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationScope model =
-            BinaryData
-                .fromString("{\"description\":\"tcypsxjvfoim\",\"scopePath\":\"slirciz\"}")
-                .toObject(AutomationScope.class);
-        Assertions.assertEquals("tcypsxjvfoim", model.description());
-        Assertions.assertEquals("slirciz", model.scopePath());
+        AutomationScope model = BinaryData.fromString("{\"description\":\"uhpigvp\",\"scopePath\":\"lgqg\"}")
+            .toObject(AutomationScope.class);
+        Assertions.assertEquals("uhpigvp", model.description());
+        Assertions.assertEquals("lgqg", model.scopePath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationScope model = new AutomationScope().withDescription("tcypsxjvfoim").withScopePath("slirciz");
+        AutomationScope model = new AutomationScope().withDescription("uhpigvp").withScopePath("lgqg");
         model = BinaryData.fromObject(model).toObject(AutomationScope.class);
-        Assertions.assertEquals("tcypsxjvfoim", model.description());
-        Assertions.assertEquals("slirciz", model.scopePath());
+        Assertions.assertEquals("uhpigvp", model.description());
+        Assertions.assertEquals("lgqg", model.scopePath());
     }
 }

@@ -4,26 +4,22 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-/** Samples for Runs GetLogSasUrl. */
+/**
+ * Samples for Runs GetLogSasUrl.
+ */
 public final class RunsGetLogSasUrlSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RunsGetLogSasUrl.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
+     * RunsGetLogSasUrl.json
      */
     /**
      * Sample code: Runs_GetLogSasUrl.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void runsGetLogSasUrl(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getRuns()
-            .getLogSasUrlWithResponse(
-                "myResourceGroup",
-                "myRegistry",
-                "0accec26-d6de-4757-8e74-d080f38eaaab",
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getRuns().getLogSasUrlWithResponse("myResourceGroup",
+            "myRegistry", "0accec26-d6de-4757-8e74-d080f38eaaab", com.azure.core.util.Context.NONE);
     }
 }

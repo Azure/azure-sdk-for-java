@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Custom container user source info. */
+/**
+ * Custom container user source info.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Container")
 @Fluent
@@ -21,8 +23,14 @@ public final class CustomContainerUserSourceInfo extends UserSourceInfo {
     private CustomContainer customContainer;
 
     /**
+     * Creates an instance of CustomContainerUserSourceInfo class.
+     */
+    public CustomContainerUserSourceInfo() {
+    }
+
+    /**
      * Get the customContainer property: Custom container payload.
-     *
+     * 
      * @return the customContainer value.
      */
     public CustomContainer customContainer() {
@@ -31,7 +39,7 @@ public final class CustomContainerUserSourceInfo extends UserSourceInfo {
 
     /**
      * Set the customContainer property: Custom container payload.
-     *
+     * 
      * @param customContainer the customContainer value to set.
      * @return the CustomContainerUserSourceInfo object itself.
      */
@@ -40,7 +48,9 @@ public final class CustomContainerUserSourceInfo extends UserSourceInfo {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomContainerUserSourceInfo withVersion(String version) {
         super.withVersion(version);
@@ -49,7 +59,7 @@ public final class CustomContainerUserSourceInfo extends UserSourceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

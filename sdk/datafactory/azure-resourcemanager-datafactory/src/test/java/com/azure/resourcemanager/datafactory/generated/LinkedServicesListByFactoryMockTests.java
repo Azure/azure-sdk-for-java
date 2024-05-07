@@ -6,58 +6,40 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceResource;
 import com.azure.resourcemanager.datafactory.models.ParameterType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LinkedServicesListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"sqbyubswzafqrmwd\",\"parameters\":{\"uxwvjcdjvlwczw\":\"datafspzwad\",\"fckrmrbaoidt\":\"datakkscooqnvht\",\"cbvkoughjsxp\":\"datam\"}},\"description\":\"svppfdnih\",\"parameters\":{\"z\":{\"type\":\"Bool\",\"defaultValue\":\"datatsbpvyvsc\"},\"ohfvbgjn\":{\"type\":\"SecureString\",\"defaultValue\":\"dataddaqqklvyib\"},\"j\":{\"type\":\"Bool\",\"defaultValue\":\"datalsanglwnkkz\"},\"ajyrhrywucpdzbnt\":{\"type\":\"Int\",\"defaultValue\":\"datarhjj\"}},\"annotations\":[\"datawnpuyhqayls\",\"dataehlzplzrrhab\",\"datadqnefofujzwqpkhg\",\"datadgyilo\"],\"\":{\"etrglp\":\"datakvufnphbzssa\"}},\"name\":\"cqxdvleo\",\"type\":\"vuhagoqxfxje\",\"etag\":\"oqua\",\"id\":\"dnmhrymeynbi\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"qeywmqhnl\",\"connectVia\":{\"referenceName\":\"fqglvflxltngmulp\",\"parameters\":{\"ymybryvlhvrgjpmz\":\"dataorkzwuppvgqvfz\",\"xqwy\":\"databgitkowflc\",\"y\":\"datavuaiqqgay\"}},\"description\":\"jdvtlygwxilbaz\",\"parameters\":{\"qzwqlh\":{\"type\":\"Object\",\"defaultValue\":\"dataslbrowbfsly\"},\"wlernchdxpsonkk\":{\"type\":\"SecureString\",\"defaultValue\":\"datajzrifgubpno\"}},\"annotations\":[\"datamojz\",\"datangmkeunpb\",\"datamssnacg\",\"datawmqgya\"],\"\":{\"qyc\":\"dataxwxnnjvodqne\",\"g\":\"datanrctrpu\"}},\"name\":\"o\",\"type\":\"yvwxcerhhzjh\",\"etag\":\"ynszadgv\",\"id\":\"oxmlb\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LinkedServiceResource> response
-            = manager.linkedServices().listByFactory("lcalyvcxvcpxdeq", "tblt", com.azure.core.util.Context.NONE);
+            = manager.linkedServices().listByFactory("h", "sbx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dnmhrymeynbi", response.iterator().next().id());
-        Assertions.assertEquals("sqbyubswzafqrmwd",
+        Assertions.assertEquals("oxmlb", response.iterator().next().id());
+        Assertions.assertEquals("fqglvflxltngmulp",
             response.iterator().next().properties().connectVia().referenceName());
-        Assertions.assertEquals("svppfdnih", response.iterator().next().properties().description());
-        Assertions.assertEquals(ParameterType.BOOL,
-            response.iterator().next().properties().parameters().get("z").type());
+        Assertions.assertEquals("jdvtlygwxilbaz", response.iterator().next().properties().description());
+        Assertions.assertEquals(ParameterType.OBJECT,
+            response.iterator().next().properties().parameters().get("qzwqlh").type());
     }
 }

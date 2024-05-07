@@ -28,6 +28,13 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
 
     private final ResponseBody responseBody;
 
+    /**
+     * Creates an OkHttpAsyncResponse.
+     *
+     * @param response The OkHttp response.
+     * @param request The request which generated the response.
+     * @param eagerlyConvertHeaders Whether to eagerly convert the response headers.
+     */
     public OkHttpAsyncResponse(Response response, HttpRequest request, boolean eagerlyConvertHeaders) {
         super(response, request, eagerlyConvertHeaders);
         // innerResponse.body() getter will not return null for server returned responses.
@@ -51,8 +58,8 @@ public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
 
         // Use Flux.using to close the stream after complete emission
         return Flux.using(this.responseBody::byteStream,
-            bodyStream -> FluxUtil.toFluxByteBuffer(bodyStream, BYTE_BUFFER_CHUNK_SIZE),
-            bodyStream -> this.close(), false);
+            bodyStream -> FluxUtil.toFluxByteBuffer(bodyStream, BYTE_BUFFER_CHUNK_SIZE), bodyStream -> this.close(),
+            false);
     }
 
     @Override

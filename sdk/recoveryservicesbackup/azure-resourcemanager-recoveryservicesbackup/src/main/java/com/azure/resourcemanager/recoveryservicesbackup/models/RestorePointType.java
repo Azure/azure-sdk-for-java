@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of restore point. */
+/**
+ * Type of restore point.
+ */
 public final class RestorePointType extends ExpandableStringEnum<RestorePointType> {
-    /** Static value Invalid for RestorePointType. */
+    /**
+     * Static value Invalid for RestorePointType.
+     */
     public static final RestorePointType INVALID = fromString("Invalid");
 
-    /** Static value Full for RestorePointType. */
+    /**
+     * Static value Full for RestorePointType.
+     */
     public static final RestorePointType FULL = fromString("Full");
 
-    /** Static value Log for RestorePointType. */
+    /**
+     * Static value Log for RestorePointType.
+     */
     public static final RestorePointType LOG = fromString("Log");
 
-    /** Static value Differential for RestorePointType. */
+    /**
+     * Static value Differential for RestorePointType.
+     */
     public static final RestorePointType DIFFERENTIAL = fromString("Differential");
 
-    /** Static value Incremental for RestorePointType. */
+    /**
+     * Static value Incremental for RestorePointType.
+     */
     public static final RestorePointType INCREMENTAL = fromString("Incremental");
 
-    /** Static value SnapshotFull for RestorePointType. */
+    /**
+     * Static value SnapshotFull for RestorePointType.
+     */
     public static final RestorePointType SNAPSHOT_FULL = fromString("SnapshotFull");
 
-    /** Static value SnapshotCopyOnlyFull for RestorePointType. */
+    /**
+     * Static value SnapshotCopyOnlyFull for RestorePointType.
+     */
     public static final RestorePointType SNAPSHOT_COPY_ONLY_FULL = fromString("SnapshotCopyOnlyFull");
 
     /**
      * Creates a new instance of RestorePointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class RestorePointType extends ExpandableStringEnum<RestorePointTyp
 
     /**
      * Creates or finds a RestorePointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RestorePointType.
      */
@@ -53,7 +69,7 @@ public final class RestorePointType extends ExpandableStringEnum<RestorePointTyp
 
     /**
      * Gets known RestorePointType values.
-     *
+     * 
      * @return known RestorePointType values.
      */
     public static Collection<RestorePointType> values() {

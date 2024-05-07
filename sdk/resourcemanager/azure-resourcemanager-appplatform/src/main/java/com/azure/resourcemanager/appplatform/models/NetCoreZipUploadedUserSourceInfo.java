@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Uploaded Jar binary for a deployment. */
+/**
+ * Uploaded Jar binary for a deployment.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("NetCoreZip")
 @Fluent
@@ -27,8 +29,14 @@ public final class NetCoreZipUploadedUserSourceInfo extends UploadedUserSourceIn
     private String runtimeVersion;
 
     /**
+     * Creates an instance of NetCoreZipUploadedUserSourceInfo class.
+     */
+    public NetCoreZipUploadedUserSourceInfo() {
+    }
+
+    /**
      * Get the netCoreMainEntryPath property: The path to the .NET executable relative to zip root.
-     *
+     * 
      * @return the netCoreMainEntryPath value.
      */
     public String netCoreMainEntryPath() {
@@ -37,7 +45,7 @@ public final class NetCoreZipUploadedUserSourceInfo extends UploadedUserSourceIn
 
     /**
      * Set the netCoreMainEntryPath property: The path to the .NET executable relative to zip root.
-     *
+     * 
      * @param netCoreMainEntryPath the netCoreMainEntryPath value to set.
      * @return the NetCoreZipUploadedUserSourceInfo object itself.
      */
@@ -48,7 +56,7 @@ public final class NetCoreZipUploadedUserSourceInfo extends UploadedUserSourceIn
 
     /**
      * Get the runtimeVersion property: Runtime version of the .Net file.
-     *
+     * 
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -57,7 +65,7 @@ public final class NetCoreZipUploadedUserSourceInfo extends UploadedUserSourceIn
 
     /**
      * Set the runtimeVersion property: Runtime version of the .Net file.
-     *
+     * 
      * @param runtimeVersion the runtimeVersion value to set.
      * @return the NetCoreZipUploadedUserSourceInfo object itself.
      */
@@ -66,14 +74,18 @@ public final class NetCoreZipUploadedUserSourceInfo extends UploadedUserSourceIn
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetCoreZipUploadedUserSourceInfo withRelativePath(String relativePath) {
         super.withRelativePath(relativePath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetCoreZipUploadedUserSourceInfo withVersion(String version) {
         super.withVersion(version);
@@ -82,7 +94,7 @@ public final class NetCoreZipUploadedUserSourceInfo extends UploadedUserSourceIn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

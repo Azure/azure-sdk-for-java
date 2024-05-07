@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A vulnerability assessment scan record properties. */
+/**
+ * A vulnerability assessment scan record properties.
+ */
 @Fluent
 public final class ScanProperties {
     /*
@@ -101,13 +103,15 @@ public final class ScanProperties {
     @JsonProperty(value = "lastScanTime")
     private OffsetDateTime lastScanTime;
 
-    /** Creates an instance of ScanProperties class. */
+    /**
+     * Creates an instance of ScanProperties class.
+     */
     public ScanProperties() {
     }
 
     /**
      * Get the triggerType property: The scan trigger type.
-     *
+     * 
      * @return the triggerType value.
      */
     public ScanTriggerType triggerType() {
@@ -116,7 +120,7 @@ public final class ScanProperties {
 
     /**
      * Set the triggerType property: The scan trigger type.
-     *
+     * 
      * @param triggerType the triggerType value to set.
      * @return the ScanProperties object itself.
      */
@@ -127,7 +131,7 @@ public final class ScanProperties {
 
     /**
      * Get the state property: The scan status.
-     *
+     * 
      * @return the state value.
      */
     public ScanState state() {
@@ -136,7 +140,7 @@ public final class ScanProperties {
 
     /**
      * Set the state property: The scan status.
-     *
+     * 
      * @param state the state value to set.
      * @return the ScanProperties object itself.
      */
@@ -147,7 +151,7 @@ public final class ScanProperties {
 
     /**
      * Get the server property: The server name.
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -156,7 +160,7 @@ public final class ScanProperties {
 
     /**
      * Set the server property: The server name.
-     *
+     * 
      * @param server the server value to set.
      * @return the ScanProperties object itself.
      */
@@ -167,7 +171,7 @@ public final class ScanProperties {
 
     /**
      * Get the database property: The database name.
-     *
+     * 
      * @return the database value.
      */
     public String database() {
@@ -176,7 +180,7 @@ public final class ScanProperties {
 
     /**
      * Set the database property: The database name.
-     *
+     * 
      * @param database the database value to set.
      * @return the ScanProperties object itself.
      */
@@ -187,7 +191,7 @@ public final class ScanProperties {
 
     /**
      * Get the sqlVersion property: The SQL version.
-     *
+     * 
      * @return the sqlVersion value.
      */
     public String sqlVersion() {
@@ -196,7 +200,7 @@ public final class ScanProperties {
 
     /**
      * Set the sqlVersion property: The SQL version.
-     *
+     * 
      * @param sqlVersion the sqlVersion value to set.
      * @return the ScanProperties object itself.
      */
@@ -207,7 +211,7 @@ public final class ScanProperties {
 
     /**
      * Get the startTime property: The scan start time (UTC).
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -216,7 +220,7 @@ public final class ScanProperties {
 
     /**
      * Set the startTime property: The scan start time (UTC).
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ScanProperties object itself.
      */
@@ -227,7 +231,7 @@ public final class ScanProperties {
 
     /**
      * Get the endTime property: Scan results are valid until end time (UTC).
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -236,7 +240,7 @@ public final class ScanProperties {
 
     /**
      * Set the endTime property: Scan results are valid until end time (UTC).
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the ScanProperties object itself.
      */
@@ -247,7 +251,7 @@ public final class ScanProperties {
 
     /**
      * Get the highSeverityFailedRulesCount property: The number of failed rules with high severity.
-     *
+     * 
      * @return the highSeverityFailedRulesCount value.
      */
     public Integer highSeverityFailedRulesCount() {
@@ -256,7 +260,7 @@ public final class ScanProperties {
 
     /**
      * Set the highSeverityFailedRulesCount property: The number of failed rules with high severity.
-     *
+     * 
      * @param highSeverityFailedRulesCount the highSeverityFailedRulesCount value to set.
      * @return the ScanProperties object itself.
      */
@@ -267,7 +271,7 @@ public final class ScanProperties {
 
     /**
      * Get the mediumSeverityFailedRulesCount property: The number of failed rules with medium severity.
-     *
+     * 
      * @return the mediumSeverityFailedRulesCount value.
      */
     public Integer mediumSeverityFailedRulesCount() {
@@ -276,7 +280,7 @@ public final class ScanProperties {
 
     /**
      * Set the mediumSeverityFailedRulesCount property: The number of failed rules with medium severity.
-     *
+     * 
      * @param mediumSeverityFailedRulesCount the mediumSeverityFailedRulesCount value to set.
      * @return the ScanProperties object itself.
      */
@@ -287,7 +291,7 @@ public final class ScanProperties {
 
     /**
      * Get the lowSeverityFailedRulesCount property: The number of failed rules with low severity.
-     *
+     * 
      * @return the lowSeverityFailedRulesCount value.
      */
     public Integer lowSeverityFailedRulesCount() {
@@ -296,7 +300,7 @@ public final class ScanProperties {
 
     /**
      * Set the lowSeverityFailedRulesCount property: The number of failed rules with low severity.
-     *
+     * 
      * @param lowSeverityFailedRulesCount the lowSeverityFailedRulesCount value to set.
      * @return the ScanProperties object itself.
      */
@@ -307,7 +311,7 @@ public final class ScanProperties {
 
     /**
      * Get the totalPassedRulesCount property: The number of total passed rules.
-     *
+     * 
      * @return the totalPassedRulesCount value.
      */
     public Integer totalPassedRulesCount() {
@@ -316,7 +320,7 @@ public final class ScanProperties {
 
     /**
      * Set the totalPassedRulesCount property: The number of total passed rules.
-     *
+     * 
      * @param totalPassedRulesCount the totalPassedRulesCount value to set.
      * @return the ScanProperties object itself.
      */
@@ -327,7 +331,7 @@ public final class ScanProperties {
 
     /**
      * Get the totalFailedRulesCount property: The number of total failed rules.
-     *
+     * 
      * @return the totalFailedRulesCount value.
      */
     public Integer totalFailedRulesCount() {
@@ -336,7 +340,7 @@ public final class ScanProperties {
 
     /**
      * Set the totalFailedRulesCount property: The number of total failed rules.
-     *
+     * 
      * @param totalFailedRulesCount the totalFailedRulesCount value to set.
      * @return the ScanProperties object itself.
      */
@@ -347,7 +351,7 @@ public final class ScanProperties {
 
     /**
      * Get the totalRulesCount property: The number of total rules assessed.
-     *
+     * 
      * @return the totalRulesCount value.
      */
     public Integer totalRulesCount() {
@@ -356,7 +360,7 @@ public final class ScanProperties {
 
     /**
      * Set the totalRulesCount property: The number of total rules assessed.
-     *
+     * 
      * @param totalRulesCount the totalRulesCount value to set.
      * @return the ScanProperties object itself.
      */
@@ -367,7 +371,7 @@ public final class ScanProperties {
 
     /**
      * Get the isBaselineApplied property: Baseline created for this database, and has one or more rules.
-     *
+     * 
      * @return the isBaselineApplied value.
      */
     public Boolean isBaselineApplied() {
@@ -376,7 +380,7 @@ public final class ScanProperties {
 
     /**
      * Set the isBaselineApplied property: Baseline created for this database, and has one or more rules.
-     *
+     * 
      * @param isBaselineApplied the isBaselineApplied value to set.
      * @return the ScanProperties object itself.
      */
@@ -387,7 +391,7 @@ public final class ScanProperties {
 
     /**
      * Get the lastScanTime property: Last scan time.
-     *
+     * 
      * @return the lastScanTime value.
      */
     public OffsetDateTime lastScanTime() {
@@ -396,7 +400,7 @@ public final class ScanProperties {
 
     /**
      * Set the lastScanTime property: Last scan time.
-     *
+     * 
      * @param lastScanTime the lastScanTime value to set.
      * @return the ScanProperties object itself.
      */
@@ -407,7 +411,7 @@ public final class ScanProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuInformationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuInformationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\",\"resourceType\":\"qjbpfzfsin\",\"locations\":[\"f\"],\"locationInfo\":[{\"location\":\"zoxxjtf\",\"zones\":[\"uwfzitonpe\",\"fpjkjlxofp\",\"vhpfxxypininmay\",\"uybbkpodep\"]},{\"location\":\"ginuvamih\",\"zones\":[\"narxzxtheotus\",\"vyevcciqi\",\"nhungbw\"]},{\"location\":\"rnfygxgispem\",\"zones\":[\"fkufublj\",\"fxqeof\",\"aeqjhqjbasvms\"]},{\"location\":\"qulngsntnbybkzgc\",\"zones\":[\"clxxwrljdo\",\"skcqvkocrcjd\"]}],\"capabilities\":[{\"name\":\"hxbnjbiksqrg\",\"value\":\"sainqpjwnzl\"},{\"name\":\"fmppe\",\"value\":\"vmgxsab\"}]}")
-                .toObject(SkuInformationInner.class);
+        SkuInformationInner model = BinaryData.fromString(
+            "{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\",\"resourceType\":\"qjbpfzfsin\",\"locations\":[\"f\"],\"locationInfo\":[{\"location\":\"zoxxjtf\",\"zones\":[\"uwfzitonpe\",\"fpjkjlxofp\",\"vhpfxxypininmay\",\"uybbkpodep\"]},{\"location\":\"ginuvamih\",\"zones\":[\"narxzxtheotus\",\"vyevcciqi\",\"nhungbw\"]},{\"location\":\"rnfygxgispem\",\"zones\":[\"fkufublj\",\"fxqeof\",\"aeqjhqjbasvms\"]},{\"location\":\"qulngsntnbybkzgc\",\"zones\":[\"clxxwrljdo\",\"skcqvkocrcjd\"]}],\"capabilities\":[{\"name\":\"hxbnjbiksqrg\",\"value\":\"sainqpjwnzl\"},{\"name\":\"fmppe\",\"value\":\"vmgxsab\"}]}")
+            .toObject(SkuInformationInner.class);
         Assertions.assertEquals(SkuName.PREMIUM_ZRS, model.name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.tier());
     }

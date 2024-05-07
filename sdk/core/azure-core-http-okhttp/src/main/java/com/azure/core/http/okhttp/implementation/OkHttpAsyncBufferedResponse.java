@@ -20,6 +20,14 @@ import java.nio.ByteBuffer;
 public final class OkHttpAsyncBufferedResponse extends OkHttpAsyncResponseBase {
     private final byte[] body;
 
+    /**
+     * Creates an OkHttpAsyncBufferedResponse.
+     *
+     * @param response The OkHttp response.
+     * @param request The request which generated the response.
+     * @param body The buffered response body.
+     * @param eagerlyConvertHeaders Whether to eagerly convert the response headers.
+     */
     public OkHttpAsyncBufferedResponse(Response response, HttpRequest request, byte[] body,
         boolean eagerlyConvertHeaders) {
         super(response, request, eagerlyConvertHeaders);

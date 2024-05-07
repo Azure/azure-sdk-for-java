@@ -1,14 +1,52 @@
 # Release History
 
-## 2.35.0-beta.1 (Unreleased)
+## 2.39.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Supported disabling public network access in `Disk` via `disablePublicNetworkAccess()`, for private link feature.
+- Supported disabling public network access in `Snapshot` via `disablePublicNetworkAccess()`, for private link feature.
 
-### Bugs Fixed
+## 2.38.0 (2024-04-16)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of ComputeRP to `2024-03-01`.
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.36.0 (2024-02-29)
+
+### Features Added
+
+- Supported `withNetworkInterfacesDeleteOptions(DeleteOptions)` and `withDataDisksDeleteOptions(DeleteOptions)` for `VirtualMachine`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of GalleryRP to `2023-07-03`.
+
+## 2.35.0 (2024-01-26)
+
+### Features Added
+
+- Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
+- Added `withEncryptionAtHost` in `VirtualMachine`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-10-02`.
 
 ## 2.34.0 (2023-12-22)
 

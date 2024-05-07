@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Validation message object. */
+/**
+ * Validation message object.
+ */
 @Fluent
 public final class ValidationMessage {
     /*
@@ -22,13 +24,15 @@ public final class ValidationMessage {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of ValidationMessage class. */
+    /**
+     * Creates an instance of ValidationMessage class.
+     */
     public ValidationMessage() {
     }
 
     /**
      * Get the state property: Severity of validation message.
-     *
+     * 
      * @return the state value.
      */
     public ValidationState state() {
@@ -37,7 +41,7 @@ public final class ValidationMessage {
 
     /**
      * Set the state property: Severity of validation message.
-     *
+     * 
      * @param state the state value to set.
      * @return the ValidationMessage object itself.
      */
@@ -48,7 +52,7 @@ public final class ValidationMessage {
 
     /**
      * Get the message property: Validation message string.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +61,7 @@ public final class ValidationMessage {
 
     /**
      * Set the message property: Validation message string.
-     *
+     * 
      * @param message the message value to set.
      * @return the ValidationMessage object itself.
      */
@@ -68,7 +72,7 @@ public final class ValidationMessage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

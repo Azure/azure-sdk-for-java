@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The information protection for AWS offering. */
+/**
+ * The information protection for AWS offering.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
 @JsonTypeName("InformationProtectionAws")
 @Fluent
@@ -20,13 +22,15 @@ public final class InformationProtectionAwsOffering extends CloudOffering {
     @JsonProperty(value = "informationProtection")
     private InformationProtectionAwsOfferingInformationProtection informationProtection;
 
-    /** Creates an instance of InformationProtectionAwsOffering class. */
+    /**
+     * Creates an instance of InformationProtectionAwsOffering class.
+     */
     public InformationProtectionAwsOffering() {
     }
 
     /**
      * Get the informationProtection property: The native cloud connection configuration.
-     *
+     * 
      * @return the informationProtection value.
      */
     public InformationProtectionAwsOfferingInformationProtection informationProtection() {
@@ -35,19 +39,19 @@ public final class InformationProtectionAwsOffering extends CloudOffering {
 
     /**
      * Set the informationProtection property: The native cloud connection configuration.
-     *
+     * 
      * @param informationProtection the informationProtection value to set.
      * @return the InformationProtectionAwsOffering object itself.
      */
-    public InformationProtectionAwsOffering withInformationProtection(
-        InformationProtectionAwsOfferingInformationProtection informationProtection) {
+    public InformationProtectionAwsOffering
+        withInformationProtection(InformationProtectionAwsOfferingInformationProtection informationProtection) {
         this.informationProtection = informationProtection;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

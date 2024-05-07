@@ -21,41 +21,38 @@ public final class SubAssessmentsImpl implements SubAssessments {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public SubAssessmentsImpl(
-        SubAssessmentsClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public SubAssessmentsImpl(SubAssessmentsClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<SecuritySubAssessment> listAll(String scope) {
         PagedIterable<SecuritySubAssessmentInner> inner = this.serviceClient().listAll(scope);
-        return Utils.mapPage(inner, inner1 -> new SecuritySubAssessmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecuritySubAssessmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SecuritySubAssessment> listAll(String scope, Context context) {
         PagedIterable<SecuritySubAssessmentInner> inner = this.serviceClient().listAll(scope, context);
-        return Utils.mapPage(inner, inner1 -> new SecuritySubAssessmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecuritySubAssessmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SecuritySubAssessment> list(String scope, String assessmentName) {
         PagedIterable<SecuritySubAssessmentInner> inner = this.serviceClient().list(scope, assessmentName);
-        return Utils.mapPage(inner, inner1 -> new SecuritySubAssessmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecuritySubAssessmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SecuritySubAssessment> list(String scope, String assessmentName, Context context) {
         PagedIterable<SecuritySubAssessmentInner> inner = this.serviceClient().list(scope, assessmentName, context);
-        return Utils.mapPage(inner, inner1 -> new SecuritySubAssessmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecuritySubAssessmentImpl(inner1, this.manager()));
     }
 
-    public Response<SecuritySubAssessment> getWithResponse(
-        String scope, String assessmentName, String subAssessmentName, Context context) {
-        Response<SecuritySubAssessmentInner> inner =
-            this.serviceClient().getWithResponse(scope, assessmentName, subAssessmentName, context);
+    public Response<SecuritySubAssessment> getWithResponse(String scope, String assessmentName,
+        String subAssessmentName, Context context) {
+        Response<SecuritySubAssessmentInner> inner
+            = this.serviceClient().getWithResponse(scope, assessmentName, subAssessmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SecuritySubAssessmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;

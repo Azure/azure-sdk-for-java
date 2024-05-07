@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.SecureScoreControlDefini
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of security controls definition. */
+/**
+ * List of security controls definition.
+ */
 @Immutable
 public final class SecureScoreControlDefinitionList {
     /*
@@ -24,13 +26,15 @@ public final class SecureScoreControlDefinitionList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SecureScoreControlDefinitionList class. */
+    /**
+     * Creates an instance of SecureScoreControlDefinitionList class.
+     */
     public SecureScoreControlDefinitionList() {
     }
 
     /**
      * Get the value property: Collection of security controls definition in this page.
-     *
+     * 
      * @return the value value.
      */
     public List<SecureScoreControlDefinitionItemInner> value() {
@@ -39,7 +43,7 @@ public final class SecureScoreControlDefinitionList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class SecureScoreControlDefinitionList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

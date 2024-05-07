@@ -11,6 +11,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.AsynchronousByteChannelWriteSubscriber;
 import com.azure.core.implementation.ByteBufferCollector;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.OutputStreamWriteSubscriber;
 import com.azure.core.implementation.RetriableDownloadFlux;
 import com.azure.core.implementation.TypeUtil;
@@ -235,11 +236,9 @@ public final class FluxUtil {
      * @return A {@link Flux} that downloads reliably.
      */
     public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
-        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, RetryOptions retryOptions,
-        long position) {
-        RetryOptions options = (retryOptions == null)
-            ? new RetryOptions(new ExponentialBackoffOptions())
-            : retryOptions;
+        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, RetryOptions retryOptions, long position) {
+        RetryOptions options
+            = (retryOptions == null) ? new RetryOptions(new ExponentialBackoffOptions()) : retryOptions;
         return new RetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, options, position);
     }
 
@@ -393,15 +392,15 @@ public final class FluxUtil {
     public static <T> Mono<T> withContext(Function<Context, Mono<T>> serviceCall,
         Map<String, String> contextAttributes) {
         return Mono.deferContextual(context -> {
-            final Context[] azureContext = new Context[]{Context.NONE};
+            final Context[] azureContext = new Context[] { Context.NONE };
 
             if (!CoreUtils.isNullOrEmpty(contextAttributes)) {
                 contextAttributes.forEach((key, value) -> azureContext[0] = azureContext[0].addData(key, value));
             }
 
             if (!context.isEmpty()) {
-                context.stream().forEach(entry ->
-                    azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+                context.stream()
+                    .forEach(entry -> azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
             }
 
             return serviceCall.apply(azureContext[0]);
@@ -500,11 +499,11 @@ public final class FluxUtil {
      * @return The azure context
      */
     private static Context toAzureContext(ContextView context) {
-        final Context[] azureContext = new Context[]{Context.NONE};
+        final Context[] azureContext = new Context[] { Context.NONE };
 
         if (!context.isEmpty()) {
-            context.stream().forEach(entry ->
-                azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
+            context.stream()
+                .forEach(entry -> azureContext[0] = azureContext[0].addData(entry.getKey(), entry.getValue()));
         }
 
         return azureContext[0];
@@ -641,8 +640,7 @@ public final class FluxUtil {
             return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
         }
 
-        return Mono.create(emitter -> content.subscribe(
-            new AsynchronousByteChannelWriteSubscriber(channel, emitter)));
+        return Mono.create(emitter -> content.subscribe(new AsynchronousByteChannelWriteSubscriber(channel, emitter)));
     }
 
     /**
@@ -669,17 +667,14 @@ public final class FluxUtil {
             return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
         }
 
-        return content.publishOn(Schedulers.boundedElastic())
-            .map(buffer -> {
-                while (buffer.hasRemaining()) {
-                    try {
-                        channel.write(buffer);
-                    } catch (IOException e) {
-                        throw Exceptions.propagate(e);
-                    }
-                }
-                return buffer;
-            }).then();
+        return content.publishOn(Schedulers.boundedElastic()).map(buffer -> {
+            try {
+                ImplUtils.fullyWriteBuffer(buffer, channel);
+            } catch (IOException e) {
+                throw Exceptions.propagate(e);
+            }
+            return buffer;
+        }).then();
     }
 
     /**
@@ -741,8 +736,8 @@ public final class FluxUtil {
 
         @Override
         public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-            FileReadSubscription subscription =
-                new FileReadSubscription(actual, fileChannel, chunkSize, offset, length);
+            FileReadSubscription subscription
+                = new FileReadSubscription(actual, fileChannel, chunkSize, offset, length);
             actual.onSubscribe(subscription);
         }
 
@@ -764,12 +759,12 @@ public final class FluxUtil {
             private volatile boolean cancelled;
             //
             volatile int wip;
-            static final AtomicIntegerFieldUpdater<FileReadSubscription> WIP =
-                AtomicIntegerFieldUpdater.newUpdater(FileReadSubscription.class, "wip");
+            static final AtomicIntegerFieldUpdater<FileReadSubscription> WIP
+                = AtomicIntegerFieldUpdater.newUpdater(FileReadSubscription.class, "wip");
 
             volatile long requested;
-            static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED =
-                AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
+            static final AtomicLongFieldUpdater<FileReadSubscription> REQUESTED
+                = AtomicLongFieldUpdater.newUpdater(FileReadSubscription.class, "requested");
             //
 
             FileReadSubscription(Subscriber<? super ByteBuffer> subscriber, AsynchronousFileChannel fileChannel,
@@ -784,7 +779,7 @@ public final class FluxUtil {
                 this.position = NOT_SET;
             }
 
-            //region Subscription implementation
+            // region Subscription implementation
 
             @Override
             public void request(long n) {
@@ -799,9 +794,9 @@ public final class FluxUtil {
                 this.cancelled = true;
             }
 
-            //endregion
+            // endregion
 
-            //region CompletionHandler implementation
+            // region CompletionHandler implementation
 
             @Override
             public void completed(Integer bytesRead, ByteBuffer buffer) {
@@ -813,7 +808,7 @@ public final class FluxUtil {
                         long pos = position;
                         int bytesWanted = Math.min(bytesRead, maxRequired(pos));
                         long position2 = pos + bytesWanted;
-                        //noinspection NonAtomicOperationOnVolatileField
+                        // noinspection NonAtomicOperationOnVolatileField
                         position = position2;
                         buffer.position(bytesWanted);
                         buffer.flip();
@@ -837,7 +832,7 @@ public final class FluxUtil {
                 }
             }
 
-            //endregion
+            // endregion
 
             private void drain() {
                 if (WIP.getAndIncrement(this) != 0) {
@@ -911,7 +906,6 @@ public final class FluxUtil {
             }
         }
     }
-
 
     // Private Ctr
     private FluxUtil() {

@@ -111,11 +111,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.longThat;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 @SuppressWarnings("deprecation")
 public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
@@ -1390,7 +1385,8 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
 
-        ProgressReceiver mockReceiver = mock(ProgressReceiver.class);
+        List<Long> progress = new ArrayList<>();
+        ProgressReceiver mockReceiver = progress::add;
         int numBlocks = fileSize / (4 * 1024 * 1024);
 
         ebc.downloadToFileWithResponse(outFile.toPath().toString(), null,
@@ -1403,14 +1399,14 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         if (numBlocks == 0) {
             numBlocks++;
         }
-        verify(mockReceiver, atLeast(numBlocks - 1)).handleProgress(longThat(it -> it != file.length()));
+        assertTrue(progress.stream().filter(it -> it != file.length()).count() >= numBlocks - 1);
 
         // Should receive at least one notification indicating completed progress, multiple notifications may be
         //received if there are empty buffers in the stream.
-        verify(mockReceiver, atLeast(1)).handleProgress(fileSize);
+        assertTrue(progress.stream().anyMatch(it -> it == fileSize));
 
         // There should be NO notification with a larger than expected size.
-        verify(mockReceiver, never()).handleProgress(longThat(it -> it > fileSize));
+        assertTrue(progress.stream().noneMatch(it -> it > fileSize));
 
         Files.deleteIfExists(file.toPath());
         Files.deleteIfExists(outFile.toPath());
@@ -1425,7 +1421,8 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         File outFile = new File(prefix);
         Files.deleteIfExists(outFile.toPath());
 
-        ProgressListener mockListener = mock(ProgressListener.class);
+        List<Long> progress = new ArrayList<>();
+        ProgressListener mockListener = progress::add;
         int numBlocks = fileSize / (4 * 1024 * 1024);
 
         ebc.downloadToFileWithResponse(outFile.toPath().toString(), null,
@@ -1438,14 +1435,15 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         if (numBlocks == 0) {
             numBlocks++;
         }
-        verify(mockListener, atLeast(numBlocks - 1)).handleProgress(longThat(it -> it != file.length()));
+
+        assertTrue(progress.stream().filter(it -> it != file.length()).count() >= numBlocks - 1);
 
         // Should receive at least one notification indicating completed progress, multiple notifications may be
         // received if there are empty buffers in the stream.
-        verify(mockListener, atLeast(1)).handleProgress(fileSize);
+        assertTrue(progress.stream().anyMatch(it -> it == fileSize));
 
         // There should be NO notification with a larger than expected size.
-        verify(mockListener, never()).handleProgress(longThat(it -> it > fileSize));
+        assertTrue(progress.stream().noneMatch(it -> it > fileSize));
 
         Files.deleteIfExists(file.toPath());
         Files.deleteIfExists(outFile.toPath());

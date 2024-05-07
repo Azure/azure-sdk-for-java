@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.FeatureSupportReq
 public final class FeatureSupportRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FeatureSupportRequest model =
-            BinaryData.fromString("{\"featureType\":\"FeatureSupportRequest\"}").toObject(FeatureSupportRequest.class);
+        FeatureSupportRequest model = BinaryData.fromString("{\"featureType\":\"FeatureSupportRequest\"}")
+            .toObject(FeatureSupportRequest.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specification of destinations that can be used in data flows. */
+/**
+ * Specification of destinations that can be used in data flows.
+ */
 @Fluent
 public class DestinationsSpec {
     /*
@@ -23,13 +25,15 @@ public class DestinationsSpec {
     @JsonProperty(value = "azureMonitorMetrics")
     private DestinationsSpecAzureMonitorMetrics azureMonitorMetrics;
 
-    /** Creates an instance of DestinationsSpec class. */
+    /**
+     * Creates an instance of DestinationsSpec class.
+     */
     public DestinationsSpec() {
     }
 
     /**
      * Get the logAnalytics property: List of Log Analytics destinations.
-     *
+     * 
      * @return the logAnalytics value.
      */
     public List<LogAnalyticsDestination> logAnalytics() {
@@ -38,7 +42,7 @@ public class DestinationsSpec {
 
     /**
      * Set the logAnalytics property: List of Log Analytics destinations.
-     *
+     * 
      * @param logAnalytics the logAnalytics value to set.
      * @return the DestinationsSpec object itself.
      */
@@ -49,7 +53,7 @@ public class DestinationsSpec {
 
     /**
      * Get the azureMonitorMetrics property: Azure Monitor Metrics destination.
-     *
+     * 
      * @return the azureMonitorMetrics value.
      */
     public DestinationsSpecAzureMonitorMetrics azureMonitorMetrics() {
@@ -58,7 +62,7 @@ public class DestinationsSpec {
 
     /**
      * Set the azureMonitorMetrics property: Azure Monitor Metrics destination.
-     *
+     * 
      * @param azureMonitorMetrics the azureMonitorMetrics value to set.
      * @return the DestinationsSpec object itself.
      */
@@ -69,7 +73,7 @@ public class DestinationsSpec {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

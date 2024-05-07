@@ -7,6 +7,7 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
 import com.azure.resourcemanager.appcontainers.models.JobConfiguration;
 import com.azure.resourcemanager.appcontainers.models.JobProvisioningState;
 import com.azure.resourcemanager.appcontainers.models.JobTemplate;
@@ -15,9 +16,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Container App Job. */
+/**
+ * Container App Job.
+ */
 @Fluent
 public final class JobInner extends Resource {
+    /*
+     * The complex type of the extended location.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
+
     /*
      * Managed identities needed by a container app job to interact with other Azure services to not maintain any
      * secrets or credentials in code.
@@ -37,14 +46,36 @@ public final class JobInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of JobInner class. */
+    /**
+     * Creates an instance of JobInner class.
+     */
     public JobInner() {
     }
 
     /**
-     * Get the identity property: Managed identities needed by a container app job to interact with other Azure services
-     * to not maintain any secrets or credentials in code.
-     *
+     * Get the extendedLocation property: The complex type of the extended location.
+     * 
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The complex type of the extended location.
+     * 
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the JobInner object itself.
+     */
+    public JobInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Managed identities needed by a container app job to interact with other Azure
+     * services to not maintain any secrets or credentials in code.
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -52,9 +83,9 @@ public final class JobInner extends Resource {
     }
 
     /**
-     * Set the identity property: Managed identities needed by a container app job to interact with other Azure services
-     * to not maintain any secrets or credentials in code.
-     *
+     * Set the identity property: Managed identities needed by a container app job to interact with other Azure
+     * services to not maintain any secrets or credentials in code.
+     * 
      * @param identity the identity value to set.
      * @return the JobInner object itself.
      */
@@ -65,7 +96,7 @@ public final class JobInner extends Resource {
 
     /**
      * Get the innerProperties property: Container Apps Job resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobProperties innerProperties() {
@@ -74,21 +105,25 @@ public final class JobInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -97,7 +132,7 @@ public final class JobInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Container Apps Job.
-     *
+     * 
      * @return the provisioningState value.
      */
     public JobProvisioningState provisioningState() {
@@ -106,7 +141,7 @@ public final class JobInner extends Resource {
 
     /**
      * Get the environmentId property: Resource ID of environment.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -115,7 +150,7 @@ public final class JobInner extends Resource {
 
     /**
      * Set the environmentId property: Resource ID of environment.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the JobInner object itself.
      */
@@ -129,7 +164,7 @@ public final class JobInner extends Resource {
 
     /**
      * Get the workloadProfileName property: Workload profile name to pin for container apps job execution.
-     *
+     * 
      * @return the workloadProfileName value.
      */
     public String workloadProfileName() {
@@ -138,7 +173,7 @@ public final class JobInner extends Resource {
 
     /**
      * Set the workloadProfileName property: Workload profile name to pin for container apps job execution.
-     *
+     * 
      * @param workloadProfileName the workloadProfileName value to set.
      * @return the JobInner object itself.
      */
@@ -152,7 +187,7 @@ public final class JobInner extends Resource {
 
     /**
      * Get the configuration property: Container Apps Job configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     public JobConfiguration configuration() {
@@ -161,7 +196,7 @@ public final class JobInner extends Resource {
 
     /**
      * Set the configuration property: Container Apps Job configuration properties.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the JobInner object itself.
      */
@@ -175,7 +210,7 @@ public final class JobInner extends Resource {
 
     /**
      * Get the template property: Container Apps job definition.
-     *
+     * 
      * @return the template value.
      */
     public JobTemplate template() {
@@ -184,7 +219,7 @@ public final class JobInner extends Resource {
 
     /**
      * Set the template property: Container Apps job definition.
-     *
+     * 
      * @param template the template value to set.
      * @return the JobInner object itself.
      */
@@ -198,7 +233,7 @@ public final class JobInner extends Resource {
 
     /**
      * Get the outboundIpAddresses property: Outbound IP Addresses of a container apps job.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     public List<String> outboundIpAddresses() {
@@ -207,7 +242,7 @@ public final class JobInner extends Resource {
 
     /**
      * Get the eventStreamEndpoint property: The endpoint of the eventstream of the container apps job.
-     *
+     * 
      * @return the eventStreamEndpoint value.
      */
     public String eventStreamEndpoint() {
@@ -216,10 +251,13 @@ public final class JobInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }

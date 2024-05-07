@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Additional information of DPM Protected item. */
+/**
+ * Additional information of DPM Protected item.
+ */
 @Fluent
 public final class DpmProtectedItemExtendedInfo {
     /*
@@ -98,13 +100,15 @@ public final class DpmProtectedItemExtendedInfo {
     @JsonProperty(value = "totalDiskStorageSizeInBytes")
     private String totalDiskStorageSizeInBytes;
 
-    /** Creates an instance of DpmProtectedItemExtendedInfo class. */
+    /**
+     * Creates an instance of DpmProtectedItemExtendedInfo class.
+     */
     public DpmProtectedItemExtendedInfo() {
     }
 
     /**
      * Get the protectableObjectLoadPath property: Attribute to provide information on various DBs.
-     *
+     * 
      * @return the protectableObjectLoadPath value.
      */
     public Map<String, String> protectableObjectLoadPath() {
@@ -113,7 +117,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the protectableObjectLoadPath property: Attribute to provide information on various DBs.
-     *
+     * 
      * @param protectableObjectLoadPath the protectableObjectLoadPath value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -124,7 +128,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the protectedProperty property: To check if backup item is disk protected.
-     *
+     * 
      * @return the protectedProperty value.
      */
     public Boolean protectedProperty() {
@@ -133,7 +137,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the protectedProperty property: To check if backup item is disk protected.
-     *
+     * 
      * @param protectedProperty the protectedProperty value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -144,7 +148,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the isPresentOnCloud property: To check if backup item is cloud protected.
-     *
+     * 
      * @return the isPresentOnCloud value.
      */
     public Boolean isPresentOnCloud() {
@@ -153,7 +157,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the isPresentOnCloud property: To check if backup item is cloud protected.
-     *
+     * 
      * @param isPresentOnCloud the isPresentOnCloud value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -164,7 +168,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the lastBackupStatus property: Last backup status information on backup item.
-     *
+     * 
      * @return the lastBackupStatus value.
      */
     public String lastBackupStatus() {
@@ -173,7 +177,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the lastBackupStatus property: Last backup status information on backup item.
-     *
+     * 
      * @param lastBackupStatus the lastBackupStatus value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -184,7 +188,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the lastRefreshedAt property: Last refresh time on backup item.
-     *
+     * 
      * @return the lastRefreshedAt value.
      */
     public OffsetDateTime lastRefreshedAt() {
@@ -193,7 +197,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the lastRefreshedAt property: Last refresh time on backup item.
-     *
+     * 
      * @param lastRefreshedAt the lastRefreshedAt value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -204,7 +208,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the oldestRecoveryPoint property: Oldest cloud recovery point time.
-     *
+     * 
      * @return the oldestRecoveryPoint value.
      */
     public OffsetDateTime oldestRecoveryPoint() {
@@ -213,7 +217,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the oldestRecoveryPoint property: Oldest cloud recovery point time.
-     *
+     * 
      * @param oldestRecoveryPoint the oldestRecoveryPoint value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -224,7 +228,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the recoveryPointCount property: cloud recovery point count.
-     *
+     * 
      * @return the recoveryPointCount value.
      */
     public Integer recoveryPointCount() {
@@ -233,7 +237,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the recoveryPointCount property: cloud recovery point count.
-     *
+     * 
      * @param recoveryPointCount the recoveryPointCount value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -244,7 +248,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the onPremiseOldestRecoveryPoint property: Oldest disk recovery point time.
-     *
+     * 
      * @return the onPremiseOldestRecoveryPoint value.
      */
     public OffsetDateTime onPremiseOldestRecoveryPoint() {
@@ -253,7 +257,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the onPremiseOldestRecoveryPoint property: Oldest disk recovery point time.
-     *
+     * 
      * @param onPremiseOldestRecoveryPoint the onPremiseOldestRecoveryPoint value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -264,7 +268,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the onPremiseLatestRecoveryPoint property: latest disk recovery point time.
-     *
+     * 
      * @return the onPremiseLatestRecoveryPoint value.
      */
     public OffsetDateTime onPremiseLatestRecoveryPoint() {
@@ -273,7 +277,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the onPremiseLatestRecoveryPoint property: latest disk recovery point time.
-     *
+     * 
      * @param onPremiseLatestRecoveryPoint the onPremiseLatestRecoveryPoint value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -284,7 +288,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the onPremiseRecoveryPointCount property: disk recovery point count.
-     *
+     * 
      * @return the onPremiseRecoveryPointCount value.
      */
     public Integer onPremiseRecoveryPointCount() {
@@ -293,7 +297,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the onPremiseRecoveryPointCount property: disk recovery point count.
-     *
+     * 
      * @param onPremiseRecoveryPointCount the onPremiseRecoveryPointCount value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -304,7 +308,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the isCollocated property: To check if backup item is collocated.
-     *
+     * 
      * @return the isCollocated value.
      */
     public Boolean isCollocated() {
@@ -313,7 +317,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the isCollocated property: To check if backup item is collocated.
-     *
+     * 
      * @param isCollocated the isCollocated value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -324,7 +328,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the protectionGroupName property: Protection group name of the backup item.
-     *
+     * 
      * @return the protectionGroupName value.
      */
     public String protectionGroupName() {
@@ -333,7 +337,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the protectionGroupName property: Protection group name of the backup item.
-     *
+     * 
      * @param protectionGroupName the protectionGroupName value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -344,7 +348,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the diskStorageUsedInBytes property: Used Disk storage in bytes.
-     *
+     * 
      * @return the diskStorageUsedInBytes value.
      */
     public String diskStorageUsedInBytes() {
@@ -353,7 +357,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the diskStorageUsedInBytes property: Used Disk storage in bytes.
-     *
+     * 
      * @param diskStorageUsedInBytes the diskStorageUsedInBytes value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -364,7 +368,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Get the totalDiskStorageSizeInBytes property: total Disk storage in bytes.
-     *
+     * 
      * @return the totalDiskStorageSizeInBytes value.
      */
     public String totalDiskStorageSizeInBytes() {
@@ -373,7 +377,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Set the totalDiskStorageSizeInBytes property: total Disk storage in bytes.
-     *
+     * 
      * @param totalDiskStorageSizeInBytes the totalDiskStorageSizeInBytes value to set.
      * @return the DpmProtectedItemExtendedInfo object itself.
      */
@@ -384,7 +388,7 @@ public final class DpmProtectedItemExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

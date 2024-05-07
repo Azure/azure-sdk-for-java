@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Migration status of an individual database. */
+/**
+ * Migration status of an individual database.
+ */
 @Fluent
 public final class DbMigrationStatus {
     /*
@@ -107,13 +109,15 @@ public final class DbMigrationStatus {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of DbMigrationStatus class. */
+    /**
+     * Creates an instance of DbMigrationStatus class.
+     */
     public DbMigrationStatus() {
     }
 
     /**
      * Get the databaseName property: Name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -122,7 +126,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the databaseName property: Name of the database.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -133,7 +137,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the migrationState property: Migration db state of an individual database.
-     *
+     * 
      * @return the migrationState value.
      */
     public MigrationDbState migrationState() {
@@ -142,7 +146,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the migrationState property: Migration db state of an individual database.
-     *
+     * 
      * @param migrationState the migrationState value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -153,7 +157,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the migrationOperation property: Migration operation of an individual database.
-     *
+     * 
      * @return the migrationOperation value.
      */
     public String migrationOperation() {
@@ -162,7 +166,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the migrationOperation property: Migration operation of an individual database.
-     *
+     * 
      * @param migrationOperation the migrationOperation value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -173,7 +177,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the startedOn property: Start date-time of a migration state.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -182,7 +186,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the startedOn property: Start date-time of a migration state.
-     *
+     * 
      * @param startedOn the startedOn value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -193,7 +197,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the endedOn property: End date-time of a migration state.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -202,7 +206,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the endedOn property: End date-time of a migration state.
-     *
+     * 
      * @param endedOn the endedOn value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -213,7 +217,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the fullLoadQueuedTables property: Number of tables queued for the migration of a DB.
-     *
+     * 
      * @return the fullLoadQueuedTables value.
      */
     public Integer fullLoadQueuedTables() {
@@ -222,7 +226,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the fullLoadQueuedTables property: Number of tables queued for the migration of a DB.
-     *
+     * 
      * @param fullLoadQueuedTables the fullLoadQueuedTables value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -233,7 +237,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the fullLoadErroredTables property: Number of tables errored out during the migration of a DB.
-     *
+     * 
      * @return the fullLoadErroredTables value.
      */
     public Integer fullLoadErroredTables() {
@@ -242,7 +246,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the fullLoadErroredTables property: Number of tables errored out during the migration of a DB.
-     *
+     * 
      * @param fullLoadErroredTables the fullLoadErroredTables value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -253,7 +257,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the fullLoadLoadingTables property: Number of tables loading during the migration of a DB.
-     *
+     * 
      * @return the fullLoadLoadingTables value.
      */
     public Integer fullLoadLoadingTables() {
@@ -262,7 +266,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the fullLoadLoadingTables property: Number of tables loading during the migration of a DB.
-     *
+     * 
      * @param fullLoadLoadingTables the fullLoadLoadingTables value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -273,7 +277,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the fullLoadCompletedTables property: Number of tables loaded during the migration of a DB.
-     *
+     * 
      * @return the fullLoadCompletedTables value.
      */
     public Integer fullLoadCompletedTables() {
@@ -282,7 +286,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the fullLoadCompletedTables property: Number of tables loaded during the migration of a DB.
-     *
+     * 
      * @param fullLoadCompletedTables the fullLoadCompletedTables value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -293,7 +297,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the cdcUpdateCounter property: CDC update counter.
-     *
+     * 
      * @return the cdcUpdateCounter value.
      */
     public Integer cdcUpdateCounter() {
@@ -302,7 +306,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the cdcUpdateCounter property: CDC update counter.
-     *
+     * 
      * @param cdcUpdateCounter the cdcUpdateCounter value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -313,7 +317,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the cdcDeleteCounter property: CDC delete counter.
-     *
+     * 
      * @return the cdcDeleteCounter value.
      */
     public Integer cdcDeleteCounter() {
@@ -322,7 +326,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the cdcDeleteCounter property: CDC delete counter.
-     *
+     * 
      * @param cdcDeleteCounter the cdcDeleteCounter value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -333,7 +337,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the cdcInsertCounter property: CDC insert counter.
-     *
+     * 
      * @return the cdcInsertCounter value.
      */
     public Integer cdcInsertCounter() {
@@ -342,7 +346,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the cdcInsertCounter property: CDC insert counter.
-     *
+     * 
      * @param cdcInsertCounter the cdcInsertCounter value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -353,7 +357,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the appliedChanges property: CDC applied changes counter.
-     *
+     * 
      * @return the appliedChanges value.
      */
     public Integer appliedChanges() {
@@ -362,7 +366,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the appliedChanges property: CDC applied changes counter.
-     *
+     * 
      * @param appliedChanges the appliedChanges value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -373,7 +377,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the incomingChanges property: CDC incoming changes counter.
-     *
+     * 
      * @return the incomingChanges value.
      */
     public Integer incomingChanges() {
@@ -382,7 +386,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the incomingChanges property: CDC incoming changes counter.
-     *
+     * 
      * @param incomingChanges the incomingChanges value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -393,7 +397,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the latency property: Lag in seconds between source and target during online phase.
-     *
+     * 
      * @return the latency value.
      */
     public Integer latency() {
@@ -402,7 +406,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the latency property: Lag in seconds between source and target during online phase.
-     *
+     * 
      * @param latency the latency value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -413,7 +417,7 @@ public final class DbMigrationStatus {
 
     /**
      * Get the message property: Error message, if any, for the migration state.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -422,7 +426,7 @@ public final class DbMigrationStatus {
 
     /**
      * Set the message property: Error message, if any, for the migration state.
-     *
+     * 
      * @param message the message value to set.
      * @return the DbMigrationStatus object itself.
      */
@@ -433,7 +437,7 @@ public final class DbMigrationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

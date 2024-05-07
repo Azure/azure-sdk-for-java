@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Snapshot Controller settings for the storage profile. */
+/**
+ * Snapshot Controller settings for the storage profile.
+ */
 @Fluent
 public final class ManagedClusterStorageProfileSnapshotController {
     /*
@@ -16,13 +18,15 @@ public final class ManagedClusterStorageProfileSnapshotController {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of ManagedClusterStorageProfileSnapshotController class. */
+    /**
+     * Creates an instance of ManagedClusterStorageProfileSnapshotController class.
+     */
     public ManagedClusterStorageProfileSnapshotController() {
     }
 
     /**
      * Get the enabled property: Whether to enable Snapshot Controller. The default value is true.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -31,7 +35,7 @@ public final class ManagedClusterStorageProfileSnapshotController {
 
     /**
      * Set the enabled property: Whether to enable Snapshot Controller. The default value is true.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterStorageProfileSnapshotController object itself.
      */
@@ -42,7 +46,7 @@ public final class ManagedClusterStorageProfileSnapshotController {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

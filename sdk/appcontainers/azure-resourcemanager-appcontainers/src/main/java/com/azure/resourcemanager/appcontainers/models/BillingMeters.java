@@ -7,18 +7,20 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BillingMeters. */
+/**
+ * Resource collection API of BillingMeters.
+ */
 public interface BillingMeters {
     /**
      * Get billing meters by location.
-     *
-     * <p>Get all billingMeters for a location.
-     *
+     * 
+     * Get all billingMeters for a location.
+     * 
      * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all billingMeters for a location along with {@link Response}.
      */
@@ -26,13 +28,13 @@ public interface BillingMeters {
 
     /**
      * Get billing meters by location.
-     *
-     * <p>Get all billingMeters for a location.
-     *
+     * 
+     * Get all billingMeters for a location.
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all billingMeters for a location.
      */

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Process server details. */
+/**
+ * Process server details.
+ */
 @Immutable
 public final class ProcessServerDetails {
     /*
@@ -186,13 +188,15 @@ public final class ProcessServerDetails {
     @JsonProperty(value = "historicHealth", access = JsonProperty.Access.WRITE_ONLY)
     private ProtectionHealth historicHealth;
 
-    /** Creates an instance of ProcessServerDetails class. */
+    /**
+     * Creates an instance of ProcessServerDetails class.
+     */
     public ProcessServerDetails() {
     }
 
     /**
      * Get the id property: The process server Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -201,7 +205,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the name property: The process server name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -210,7 +214,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the biosId property: The process server Bios Id.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -219,7 +223,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the fabricObjectId property: The fabric object Id.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -228,7 +232,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the fqdn property: The process server Fqdn.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -237,7 +241,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the ipAddresses property: The list of IP addresses for communicating with the RCM component.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -246,7 +250,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the version property: The version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -255,7 +259,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the lastHeartbeatUtc property: The last heartbeat received from the process server.
-     *
+     * 
      * @return the lastHeartbeatUtc value.
      */
     public OffsetDateTime lastHeartbeatUtc() {
@@ -264,7 +268,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the totalMemoryInBytes property: The total memory.
-     *
+     * 
      * @return the totalMemoryInBytes value.
      */
     public Long totalMemoryInBytes() {
@@ -273,7 +277,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the availableMemoryInBytes property: The available memory.
-     *
+     * 
      * @return the availableMemoryInBytes value.
      */
     public Long availableMemoryInBytes() {
@@ -282,7 +286,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the usedMemoryInBytes property: The used memory.
-     *
+     * 
      * @return the usedMemoryInBytes value.
      */
     public Long usedMemoryInBytes() {
@@ -291,7 +295,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the memoryUsagePercentage property: The memory usage percentage.
-     *
+     * 
      * @return the memoryUsagePercentage value.
      */
     public Double memoryUsagePercentage() {
@@ -300,7 +304,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the totalSpaceInBytes property: The total disk space.
-     *
+     * 
      * @return the totalSpaceInBytes value.
      */
     public Long totalSpaceInBytes() {
@@ -309,7 +313,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the availableSpaceInBytes property: The available disk space.
-     *
+     * 
      * @return the availableSpaceInBytes value.
      */
     public Long availableSpaceInBytes() {
@@ -318,7 +322,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the usedSpaceInBytes property: The used disk space.
-     *
+     * 
      * @return the usedSpaceInBytes value.
      */
     public Long usedSpaceInBytes() {
@@ -327,7 +331,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the freeSpacePercentage property: The free disk space percentage.
-     *
+     * 
      * @return the freeSpacePercentage value.
      */
     public Double freeSpacePercentage() {
@@ -336,7 +340,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the throughputUploadPendingDataInBytes property: The uploading pending data in bytes.
-     *
+     * 
      * @return the throughputUploadPendingDataInBytes value.
      */
     public Long throughputUploadPendingDataInBytes() {
@@ -345,7 +349,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the throughputInBytes property: The throughput in bytes.
-     *
+     * 
      * @return the throughputInBytes value.
      */
     public Long throughputInBytes() {
@@ -354,7 +358,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the processorUsagePercentage property: The processor usage percentage.
-     *
+     * 
      * @return the processorUsagePercentage value.
      */
     public Double processorUsagePercentage() {
@@ -363,7 +367,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the throughputStatus property: The throughput status.
-     *
+     * 
      * @return the throughputStatus value.
      */
     public RcmComponentStatus throughputStatus() {
@@ -372,7 +376,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the systemLoad property: The system load.
-     *
+     * 
      * @return the systemLoad value.
      */
     public Long systemLoad() {
@@ -381,7 +385,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the systemLoadStatus property: The system load status.
-     *
+     * 
      * @return the systemLoadStatus value.
      */
     public RcmComponentStatus systemLoadStatus() {
@@ -390,7 +394,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the diskUsageStatus property: The disk usage status.
-     *
+     * 
      * @return the diskUsageStatus value.
      */
     public RcmComponentStatus diskUsageStatus() {
@@ -399,7 +403,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the memoryUsageStatus property: The memory usage status.
-     *
+     * 
      * @return the memoryUsageStatus value.
      */
     public RcmComponentStatus memoryUsageStatus() {
@@ -408,7 +412,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the processorUsageStatus property: The processor usage status.
-     *
+     * 
      * @return the processorUsageStatus value.
      */
     public RcmComponentStatus processorUsageStatus() {
@@ -417,7 +421,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the health property: The health of the process server.
-     *
+     * 
      * @return the health value.
      */
     public ProtectionHealth health() {
@@ -426,7 +430,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the healthErrors property: The health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -435,7 +439,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the protectedItemCount property: The protected item count.
-     *
+     * 
      * @return the protectedItemCount value.
      */
     public Integer protectedItemCount() {
@@ -444,7 +448,7 @@ public final class ProcessServerDetails {
 
     /**
      * Get the historicHealth property: The historic health of the process server based on the health in last 24 hours.
-     *
+     * 
      * @return the historicHealth value.
      */
     public ProtectionHealth historicHealth() {
@@ -453,7 +457,7 @@ public final class ProcessServerDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

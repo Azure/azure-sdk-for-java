@@ -11,16 +11,18 @@ public final class RelationalSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RelationalSource model = BinaryData.fromString(
-            "{\"type\":\"RelationalSource\",\"query\":\"dataduldsolbz\",\"additionalColumns\":\"datarufkeylkpvaagrd\",\"sourceRetryCount\":\"datavglqdsphvo\",\"sourceRetryWait\":\"datacryhuohthzfot\",\"maxConcurrentConnections\":\"datafhrjkah\",\"disableMetricsCollection\":\"datafshgmqxwoppn\",\"\":{\"kznyaittbmobrxhw\":\"datamzvnr\"}}")
+            "{\"type\":\"drfqyqvhzkfyv\",\"query\":\"datanvdabaodiytxq\",\"additionalColumns\":\"datahehhtltwv\",\"sourceRetryCount\":\"dataenozlgxqfghlosh\",\"sourceRetryWait\":\"datamkpcmtsbande\",\"maxConcurrentConnections\":\"datalvuewrljmlod\",\"disableMetricsCollection\":\"datazvtfyqeogwbs\",\"\":{\"grgaosttbw\":\"datawxhcygfgqmdbaz\",\"ydsdmacydqacgyvw\":\"datapoyanir\"}}")
             .toObject(RelationalSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RelationalSource model
-            = new RelationalSource().withSourceRetryCount("datavglqdsphvo").withSourceRetryWait("datacryhuohthzfot")
-                .withMaxConcurrentConnections("datafhrjkah").withDisableMetricsCollection("datafshgmqxwoppn")
-                .withQuery("dataduldsolbz").withAdditionalColumns("datarufkeylkpvaagrd");
+        RelationalSource model = new RelationalSource().withSourceRetryCount("dataenozlgxqfghlosh")
+            .withSourceRetryWait("datamkpcmtsbande")
+            .withMaxConcurrentConnections("datalvuewrljmlod")
+            .withDisableMetricsCollection("datazvtfyqeogwbs")
+            .withQuery("datanvdabaodiytxq")
+            .withAdditionalColumns("datahehhtltwv");
         model = BinaryData.fromObject(model).toObject(RelationalSource.class);
     }
 }

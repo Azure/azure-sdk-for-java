@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** HTTPGetAction describes an action based on HTTP Get requests. */
+/**
+ * HTTPGetAction describes an action based on HTTP Get requests.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HTTPGetAction")
 @Fluent
@@ -22,7 +24,7 @@ public final class HttpGetAction extends ProbeAction {
 
     /*
      * Scheme to use for connecting to the host. Defaults to HTTP.
-     *
+     * 
      * Possible enum values:
      * - `"HTTP"` means that the scheme used will be http://
      * - `"HTTPS"` means that the scheme used will be https://
@@ -31,8 +33,14 @@ public final class HttpGetAction extends ProbeAction {
     private HttpSchemeType scheme;
 
     /**
+     * Creates an instance of HttpGetAction class.
+     */
+    public HttpGetAction() {
+    }
+
+    /**
      * Get the path property: Path to access on the HTTP server.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -41,7 +49,7 @@ public final class HttpGetAction extends ProbeAction {
 
     /**
      * Set the path property: Path to access on the HTTP server.
-     *
+     * 
      * @param path the path value to set.
      * @return the HttpGetAction object itself.
      */
@@ -52,10 +60,11 @@ public final class HttpGetAction extends ProbeAction {
 
     /**
      * Get the scheme property: Scheme to use for connecting to the host. Defaults to HTTP.
-     *
-     * <p>Possible enum values: - `"HTTP"` means that the scheme used will be http:// - `"HTTPS"` means that the scheme
-     * used will be https://.
-     *
+     * 
+     * Possible enum values:
+     * - `"HTTP"` means that the scheme used will be http://
+     * - `"HTTPS"` means that the scheme used will be https://.
+     * 
      * @return the scheme value.
      */
     public HttpSchemeType scheme() {
@@ -64,10 +73,11 @@ public final class HttpGetAction extends ProbeAction {
 
     /**
      * Set the scheme property: Scheme to use for connecting to the host. Defaults to HTTP.
-     *
-     * <p>Possible enum values: - `"HTTP"` means that the scheme used will be http:// - `"HTTPS"` means that the scheme
-     * used will be https://.
-     *
+     * 
+     * Possible enum values:
+     * - `"HTTP"` means that the scheme used will be http://
+     * - `"HTTPS"` means that the scheme used will be https://.
+     * 
      * @param scheme the scheme value to set.
      * @return the HttpGetAction object itself.
      */
@@ -78,7 +88,7 @@ public final class HttpGetAction extends ProbeAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

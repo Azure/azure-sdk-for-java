@@ -33,48 +33,30 @@ public final class ReplicationProtectionContainersCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"fabricFriendlyName\":\"ia\",\"friendlyName\":\"twskkfkuyikmxhh\",\"fabricType\":\"xjbjkewriglbqt\",\"protectedItemCount\":1590059701,\"pairingStatus\":\"clflxcjffzw\",\"role\":\"vdef\",\"fabricSpecificDetails\":{\"instanceType\":\"ztpcjptnntqrcjq\"}},\"location\":\"jvnpjrrh\",\"id\":\"gsjbi\",\"name\":\"agwviqehmdqvaoli\",\"type\":\"xdfsfvkjc\"}";
+        String responseStr
+            = "{\"properties\":{\"fabricFriendlyName\":\"ia\",\"friendlyName\":\"twskkfkuyikmxhh\",\"fabricType\":\"xjbjkewriglbqt\",\"protectedItemCount\":1590059701,\"pairingStatus\":\"clflxcjffzw\",\"role\":\"vdef\",\"fabricSpecificDetails\":{\"instanceType\":\"ztpcjptnntqrcjq\"}},\"location\":\"jvnpjrrh\",\"id\":\"gsjbi\",\"name\":\"agwviqehmdqvaoli\",\"type\":\"xdfsfvkjc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SiteRecoveryManager manager =
-            SiteRecoveryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ProtectionContainer response =
-            manager
-                .replicationProtectionContainers()
-                .define("ntjna")
-                .withExistingReplicationFabric("dvt", "urmd", "a")
-                .withProperties(
-                    new CreateProtectionContainerInputProperties()
-                        .withProviderSpecificInput(
-                            Arrays
-                                .asList(
-                                    new ReplicationProviderSpecificContainerCreationInput(),
-                                    new ReplicationProviderSpecificContainerCreationInput())))
-                .create();
+        ProtectionContainer response = manager.replicationProtectionContainers().define("ntjna")
+            .withExistingReplicationFabric("dvt", "urmd", "a")
+            .withProperties(new CreateProtectionContainerInputProperties()
+                .withProviderSpecificInput(Arrays.asList(new ReplicationProviderSpecificContainerCreationInput(),
+                    new ReplicationProviderSpecificContainerCreationInput())))
+            .create();
 
         Assertions.assertEquals("ia", response.properties().fabricFriendlyName());
         Assertions.assertEquals("twskkfkuyikmxhh", response.properties().friendlyName());

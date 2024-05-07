@@ -8,7 +8,19 @@ import com.azure.core.annotation.Fluent;
 import java.time.OffsetDateTime;
 
 /**
- * Specifies HTTP options for conditional requests based on modification time.
+ * <p>Specifies HTTP options for conditional requests based on modification time and ETag matching.</p>
+ *
+ * <p>This class extends {@link MatchConditions} and adds conditions based on the modification time of the resource.
+ * It encapsulates conditions such as If-Modified-Since and If-Unmodified-Since, in addition to If-Match and
+ * If-None-Match from {@link MatchConditions}.</p>
+ *
+ * <p>This class is useful when you want to create an HTTP request with conditional headers based on the modification
+ * time of the resource and ETag matching. For example, you can use it to create a GET request that only retrieves the
+ * resource if it has been modified since a specific time, or a PUT request that only updates the resource if it
+ * has not been modified by another client since a specific time.</p>
+ *
+ * @see MatchConditions
+ * @see OffsetDateTime
  */
 @Fluent
 public class RequestConditions extends MatchConditions {

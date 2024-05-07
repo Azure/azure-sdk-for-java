@@ -6,31 +6,27 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.streamanalytics.models.ClusterProvisioningState;
+import com.azure.resourcemanager.streamanalytics.models.ClusterProperties;
 import com.azure.resourcemanager.streamanalytics.models.ClusterSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** A Stream Analytics Cluster object. */
+/**
+ * A Stream Analytics Cluster object.
+ */
 @Fluent
 public final class ClusterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
-
     /*
-     * The SKU of the cluster. This determines the size/capacity of the
-     * cluster. Required on PUT (CreateOrUpdate) requests.
+     * The SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT (CreateOrUpdate)
+     * requests.
      */
     @JsonProperty(value = "sku")
     private ClusterSku sku;
 
     /*
-     * The current entity tag for the cluster. This is an opaque string. You
-     * can use it to detect whether the resource has changed between requests.
-     * You can also use it in the If-Match or If-None-Match headers for write
-     * operations for optimistic concurrency.
+     * The current entity tag for the cluster. This is an opaque string. You can use it to detect whether the resource
+     * has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations
+     * for optimistic concurrency.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -39,12 +35,18 @@ public final class ClusterInner extends Resource {
      * The properties associated with a Stream Analytics cluster.
      */
     @JsonProperty(value = "properties")
-    private ClusterProperties innerProperties;
+    private ClusterProperties properties;
+
+    /**
+     * Creates an instance of ClusterInner class.
+     */
+    public ClusterInner() {
+    }
 
     /**
      * Get the sku property: The SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT
      * (CreateOrUpdate) requests.
-     *
+     * 
      * @return the sku value.
      */
     public ClusterSku sku() {
@@ -54,7 +56,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the sku property: The SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT
      * (CreateOrUpdate) requests.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ClusterInner object itself.
      */
@@ -64,10 +66,10 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the etag property: The current entity tag for the cluster. This is an opaque string. You can use it to detect
-     * whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers
-     * for write operations for optimistic concurrency.
-     *
+     * Get the etag property: The current entity tag for the cluster. This is an opaque string. You can use it to
+     * detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match
+     * headers for write operations for optimistic concurrency.
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -75,22 +77,37 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: The properties associated with a Stream Analytics cluster.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The properties associated with a Stream Analytics cluster.
+     * 
+     * @return the properties value.
      */
-    private ClusterProperties innerProperties() {
-        return this.innerProperties;
+    public ClusterProperties properties() {
+        return this.properties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Set the properties property: The properties associated with a Stream Analytics cluster.
+     * 
+     * @param properties the properties value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withProperties(ClusterProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -98,63 +115,16 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the createdDate property: The date this cluster was created.
-     *
-     * @return the createdDate value.
-     */
-    public OffsetDateTime createdDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
-    }
-
-    /**
-     * Get the clusterId property: Unique identifier for the cluster.
-     *
-     * @return the clusterId value.
-     */
-    public String clusterId() {
-        return this.innerProperties() == null ? null : this.innerProperties().clusterId();
-    }
-
-    /**
-     * Get the provisioningState property: The status of the cluster provisioning. The three terminal states are:
-     * Succeeded, Failed and Canceled.
-     *
-     * @return the provisioningState value.
-     */
-    public ClusterProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the capacityAllocated property: Represents the number of streaming units currently being used on the cluster.
-     *
-     * @return the capacityAllocated value.
-     */
-    public Integer capacityAllocated() {
-        return this.innerProperties() == null ? null : this.innerProperties().capacityAllocated();
-    }
-
-    /**
-     * Get the capacityAssigned property: Represents the sum of the SUs of all streaming jobs associated with the
-     * cluster. If all of the jobs were running, this would be the capacity allocated.
-     *
-     * @return the capacityAssigned value.
-     */
-    public Integer capacityAssigned() {
-        return this.innerProperties() == null ? null : this.innerProperties().capacityAssigned();
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
         }
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

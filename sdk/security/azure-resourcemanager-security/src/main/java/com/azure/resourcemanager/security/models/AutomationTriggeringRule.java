@@ -37,13 +37,15 @@ public final class AutomationTriggeringRule {
     @JsonProperty(value = "operator")
     private Operator operator;
 
-    /** Creates an instance of AutomationTriggeringRule class. */
+    /**
+     * Creates an instance of AutomationTriggeringRule class.
+     */
     public AutomationTriggeringRule() {
     }
 
     /**
      * Get the propertyJPath property: The JPath of the entity model property that should be checked.
-     *
+     * 
      * @return the propertyJPath value.
      */
     public String propertyJPath() {
@@ -52,7 +54,7 @@ public final class AutomationTriggeringRule {
 
     /**
      * Set the propertyJPath property: The JPath of the entity model property that should be checked.
-     *
+     * 
      * @param propertyJPath the propertyJPath value to set.
      * @return the AutomationTriggeringRule object itself.
      */
@@ -64,7 +66,7 @@ public final class AutomationTriggeringRule {
     /**
      * Get the propertyType property: The data type of the compared operands (string, integer, floating point number or
      * a boolean [true/false]].
-     *
+     * 
      * @return the propertyType value.
      */
     public PropertyType propertyType() {
@@ -74,7 +76,7 @@ public final class AutomationTriggeringRule {
     /**
      * Set the propertyType property: The data type of the compared operands (string, integer, floating point number or
      * a boolean [true/false]].
-     *
+     * 
      * @param propertyType the propertyType value to set.
      * @return the AutomationTriggeringRule object itself.
      */
@@ -85,7 +87,7 @@ public final class AutomationTriggeringRule {
 
     /**
      * Get the expectedValue property: The expected value.
-     *
+     * 
      * @return the expectedValue value.
      */
     public String expectedValue() {
@@ -94,7 +96,7 @@ public final class AutomationTriggeringRule {
 
     /**
      * Set the expectedValue property: The expected value.
-     *
+     * 
      * @param expectedValue the expectedValue value to set.
      * @return the AutomationTriggeringRule object itself.
      */
@@ -106,7 +108,7 @@ public final class AutomationTriggeringRule {
     /**
      * Get the operator property: A valid comparer operator to use. A case-insensitive comparison will be applied for
      * String PropertyType.
-     *
+     * 
      * @return the operator value.
      */
     public Operator operator() {
@@ -116,7 +118,7 @@ public final class AutomationTriggeringRule {
     /**
      * Set the operator property: A valid comparer operator to use. A case-insensitive comparison will be applied for
      * String PropertyType.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the AutomationTriggeringRule object itself.
      */
@@ -127,7 +129,7 @@ public final class AutomationTriggeringRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

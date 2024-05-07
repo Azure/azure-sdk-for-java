@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The SmartDetectionConditionPatch model.
@@ -102,7 +101,8 @@ public final class SmartDetectionConditionPatch implements JsonSerializable<Smar
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("sensitivity", this.sensitivity);
-        jsonWriter.writeStringField("anomalyDetectorDirection", Objects.toString(this.anomalyDetectorDirection, null));
+        jsonWriter.writeStringField("anomalyDetectorDirection",
+            this.anomalyDetectorDirection == null ? null : this.anomalyDetectorDirection.toString());
         jsonWriter.writeJsonField("suppressCondition", this.suppressCondition);
         return jsonWriter.writeEndObject();
     }

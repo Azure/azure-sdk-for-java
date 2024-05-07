@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.OperationResultIn
 public final class OperationResultInfoBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationResultInfoBase model =
-            BinaryData
-                .fromString("{\"objectType\":\"OperationResultInfoBase\"}")
-                .toObject(OperationResultInfoBase.class);
+        OperationResultInfoBase model = BinaryData.fromString("{\"objectType\":\"OperationResultInfoBase\"}")
+            .toObject(OperationResultInfoBase.class);
     }
 
     @org.junit.jupiter.api.Test

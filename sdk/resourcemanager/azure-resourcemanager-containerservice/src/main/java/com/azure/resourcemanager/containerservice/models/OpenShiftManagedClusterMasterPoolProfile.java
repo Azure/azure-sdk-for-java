@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** OpenShiftManagedClusterMaterPoolProfile contains configuration for OpenShift master VMs. */
+/**
+ * OpenShiftManagedClusterMaterPoolProfile contains configuration for OpenShift master VMs.
+ */
 @Fluent
 public final class OpenShiftManagedClusterMasterPoolProfile {
     /*
@@ -41,14 +43,16 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     @JsonProperty(value = "osType")
     private OSType osType;
 
-    /** Creates an instance of OpenShiftManagedClusterMasterPoolProfile class. */
+    /**
+     * Creates an instance of OpenShiftManagedClusterMasterPoolProfile class.
+     */
     public OpenShiftManagedClusterMasterPoolProfile() {
     }
 
     /**
      * Get the name property: Unique name of the master pool profile in the context of the subscription and resource
      * group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +62,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     /**
      * Set the name property: Unique name of the master pool profile in the context of the subscription and resource
      * group.
-     *
+     * 
      * @param name the name value to set.
      * @return the OpenShiftManagedClusterMasterPoolProfile object itself.
      */
@@ -69,7 +73,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Get the count property: Number of masters (VMs) to host docker containers. The default value is 3.
-     *
+     * 
      * @return the count value.
      */
     public int count() {
@@ -78,7 +82,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Set the count property: Number of masters (VMs) to host docker containers. The default value is 3.
-     *
+     * 
      * @param count the count value to set.
      * @return the OpenShiftManagedClusterMasterPoolProfile object itself.
      */
@@ -89,7 +93,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Get the vmSize property: Size of agent VMs.
-     *
+     * 
      * @return the vmSize value.
      */
     public OpenShiftContainerServiceVMSize vmSize() {
@@ -98,7 +102,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Set the vmSize property: Size of agent VMs.
-     *
+     * 
      * @param vmSize the vmSize value to set.
      * @return the OpenShiftManagedClusterMasterPoolProfile object itself.
      */
@@ -109,7 +113,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Get the subnetCidr property: Subnet CIDR for the peering.
-     *
+     * 
      * @return the subnetCidr value.
      */
     public String subnetCidr() {
@@ -118,7 +122,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Set the subnetCidr property: Subnet CIDR for the peering.
-     *
+     * 
      * @param subnetCidr the subnetCidr value to set.
      * @return the OpenShiftManagedClusterMasterPoolProfile object itself.
      */
@@ -129,7 +133,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * 
      * @return the osType value.
      */
     public OSType osType() {
@@ -138,7 +142,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the OpenShiftManagedClusterMasterPoolProfile object itself.
      */
@@ -149,15 +153,13 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vmSize() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmSize in model OpenShiftManagedClusterMasterPoolProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property vmSize in model OpenShiftManagedClusterMasterPoolProfile"));
         }
     }
 

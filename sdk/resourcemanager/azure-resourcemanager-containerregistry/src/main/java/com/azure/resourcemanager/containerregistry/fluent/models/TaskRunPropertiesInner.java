@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.RunRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of task run. */
+/**
+ * The properties of task run.
+ */
 @Fluent
 public final class TaskRunPropertiesInner {
     /*
@@ -36,13 +38,15 @@ public final class TaskRunPropertiesInner {
     @JsonProperty(value = "forceUpdateTag")
     private String forceUpdateTag;
 
-    /** Creates an instance of TaskRunPropertiesInner class. */
+    /**
+     * Creates an instance of TaskRunPropertiesInner class.
+     */
     public TaskRunPropertiesInner() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of this task run.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -51,7 +55,7 @@ public final class TaskRunPropertiesInner {
 
     /**
      * Get the runRequest property: The request (parameters) for the run.
-     *
+     * 
      * @return the runRequest value.
      */
     public RunRequest runRequest() {
@@ -60,7 +64,7 @@ public final class TaskRunPropertiesInner {
 
     /**
      * Set the runRequest property: The request (parameters) for the run.
-     *
+     * 
      * @param runRequest the runRequest value to set.
      * @return the TaskRunPropertiesInner object itself.
      */
@@ -71,7 +75,7 @@ public final class TaskRunPropertiesInner {
 
     /**
      * Get the runResult property: The result of this task run.
-     *
+     * 
      * @return the runResult value.
      */
     public RunInner runResult() {
@@ -81,7 +85,7 @@ public final class TaskRunPropertiesInner {
     /**
      * Get the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -91,7 +95,7 @@ public final class TaskRunPropertiesInner {
     /**
      * Set the forceUpdateTag property: How the run should be forced to rerun even if the run request configuration has
      * not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the TaskRunPropertiesInner object itself.
      */
@@ -102,7 +106,7 @@ public final class TaskRunPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

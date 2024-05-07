@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Raw failure information if DNS verification fails. */
+/**
+ * Raw failure information if DNS verification fails.
+ */
 @Fluent
 public final class CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo {
     /*
@@ -35,13 +37,15 @@ public final class CustomHostnameAnalysisResultCustomDomainVerificationFailureIn
     @JsonProperty(value = "details")
     private List<CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem> details;
 
-    /** Creates an instance of CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo class. */
+    /**
+     * Creates an instance of CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo class.
+     */
     public CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo() {
     }
 
     /**
      * Get the code property: Standardized string to programmatically identify the error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -50,7 +54,7 @@ public final class CustomHostnameAnalysisResultCustomDomainVerificationFailureIn
 
     /**
      * Get the message property: Detailed error description and debugging information.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -59,7 +63,7 @@ public final class CustomHostnameAnalysisResultCustomDomainVerificationFailureIn
 
     /**
      * Get the target property: Detailed error description and debugging information.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -68,7 +72,7 @@ public final class CustomHostnameAnalysisResultCustomDomainVerificationFailureIn
 
     /**
      * Get the details property: Details or the error.
-     *
+     * 
      * @return the details value.
      */
     public List<CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem> details() {
@@ -77,19 +81,19 @@ public final class CustomHostnameAnalysisResultCustomDomainVerificationFailureIn
 
     /**
      * Set the details property: Details or the error.
-     *
+     * 
      * @param details the details value to set.
      * @return the CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo object itself.
      */
-    public CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo withDetails(
-        List<CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem> details) {
+    public CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo
+        withDetails(List<CustomHostnameAnalysisResultCustomDomainVerificationFailureInfoDetailsItem> details) {
         this.details = details;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

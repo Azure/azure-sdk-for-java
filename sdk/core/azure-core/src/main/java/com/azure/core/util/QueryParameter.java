@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Represents a single parameter to be added to a query string.
- *<p>
+ * <p>
  * If multiple values are added to a query string with the same name (case-insensitive), then the values will be
  * appended at the end of the same {@link QueryParameter} with commas separating them.
  */
@@ -98,7 +98,7 @@ class QueryParameter {
      */
     public String[] getValues() {
         if (value != null) {
-            return new String[] {value};
+            return new String[] { value };
         } else if (!CoreUtils.isNullOrEmpty(values)) {
             return values.toArray(new String[0]);
         } else {

@@ -7,18 +7,28 @@ package com.azure.resourcemanager.security.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Possible states of the rule. */
+/**
+ * Possible states of the rule.
+ */
 public enum RuleState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled"),
 
-    /** Enum value Expired. */
+    /**
+     * Enum value Expired.
+     */
     EXPIRED("Expired");
 
-    /** The actual serialized value for a RuleState instance. */
+    /**
+     * The actual serialized value for a RuleState instance.
+     */
     private final String value;
 
     RuleState(String value) {
@@ -27,7 +37,7 @@ public enum RuleState {
 
     /**
      * Parses a serialized value to a RuleState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed RuleState object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum RuleState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class TestFailoverCleanupInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestFailoverCleanupInput model =
-            BinaryData.fromString("{\"properties\":{\"comments\":\"icc\"}}").toObject(TestFailoverCleanupInput.class);
+        TestFailoverCleanupInput model
+            = BinaryData.fromString("{\"properties\":{\"comments\":\"icc\"}}").toObject(TestFailoverCleanupInput.class);
         Assertions.assertEquals("icc", model.properties().comments());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestFailoverCleanupInput model =
-            new TestFailoverCleanupInput().withProperties(new TestFailoverCleanupInputProperties().withComments("icc"));
+        TestFailoverCleanupInput model = new TestFailoverCleanupInput()
+            .withProperties(new TestFailoverCleanupInputProperties().withComments("icc"));
         model = BinaryData.fromObject(model).toObject(TestFailoverCleanupInput.class);
         Assertions.assertEquals("icc", model.properties().comments());
     }

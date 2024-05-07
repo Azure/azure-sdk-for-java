@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** VMware Cbt policy creation input. */
+/**
+ * VMware Cbt policy creation input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
 @Fluent
@@ -32,14 +34,16 @@ public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificIn
     @JsonProperty(value = "appConsistentFrequencyInMinutes")
     private Integer appConsistentFrequencyInMinutes;
 
-    /** Creates an instance of VMwareCbtPolicyCreationInput class. */
+    /**
+     * Creates an instance of VMwareCbtPolicyCreationInput class.
+     */
     public VMwareCbtPolicyCreationInput() {
     }
 
     /**
      * Get the recoveryPointHistoryInMinutes property: The duration in minutes until which the recovery points need to
      * be stored.
-     *
+     * 
      * @return the recoveryPointHistoryInMinutes value.
      */
     public Integer recoveryPointHistoryInMinutes() {
@@ -49,7 +53,7 @@ public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificIn
     /**
      * Set the recoveryPointHistoryInMinutes property: The duration in minutes until which the recovery points need to
      * be stored.
-     *
+     * 
      * @param recoveryPointHistoryInMinutes the recoveryPointHistoryInMinutes value to set.
      * @return the VMwareCbtPolicyCreationInput object itself.
      */
@@ -60,7 +64,7 @@ public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificIn
 
     /**
      * Get the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the crashConsistentFrequencyInMinutes value.
      */
     public Integer crashConsistentFrequencyInMinutes() {
@@ -69,19 +73,19 @@ public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificIn
 
     /**
      * Set the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the VMwareCbtPolicyCreationInput object itself.
      */
-    public VMwareCbtPolicyCreationInput withCrashConsistentFrequencyInMinutes(
-        Integer crashConsistentFrequencyInMinutes) {
+    public VMwareCbtPolicyCreationInput
+        withCrashConsistentFrequencyInMinutes(Integer crashConsistentFrequencyInMinutes) {
         this.crashConsistentFrequencyInMinutes = crashConsistentFrequencyInMinutes;
         return this;
     }
 
     /**
      * Get the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public Integer appConsistentFrequencyInMinutes() {
@@ -90,7 +94,7 @@ public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificIn
 
     /**
      * Set the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the VMwareCbtPolicyCreationInput object itself.
      */
@@ -101,7 +105,7 @@ public final class VMwareCbtPolicyCreationInput extends PolicyProviderSpecificIn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -21,22 +21,18 @@ public final class FrontDoorNameAvailabilitiesImpl implements FrontDoorNameAvail
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
 
-    public FrontDoorNameAvailabilitiesImpl(
-        FrontDoorNameAvailabilitiesClient innerClient,
+    public FrontDoorNameAvailabilitiesImpl(FrontDoorNameAvailabilitiesClient innerClient,
         com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityOutput> checkWithResponse(
-        CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput, Context context) {
-        Response<CheckNameAvailabilityOutputInner> inner =
-            this.serviceClient().checkWithResponse(checkFrontDoorNameAvailabilityInput, context);
+    public Response<CheckNameAvailabilityOutput>
+        checkWithResponse(CheckNameAvailabilityInput checkFrontDoorNameAvailabilityInput, Context context) {
+        Response<CheckNameAvailabilityOutputInner> inner
+            = this.serviceClient().checkWithResponse(checkFrontDoorNameAvailabilityInput, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityOutputImpl(inner.getValue(), this.manager()));
         } else {
             return null;

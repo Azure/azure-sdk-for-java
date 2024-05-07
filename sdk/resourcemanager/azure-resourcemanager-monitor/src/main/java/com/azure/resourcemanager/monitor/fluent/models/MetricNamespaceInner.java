@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.models.MetricNamespaceName;
 import com.azure.resourcemanager.monitor.models.NamespaceClassification;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Metric namespace class specifies the metadata for a metric namespace. */
+/**
+ * Metric namespace class specifies the metadata for a metric namespace.
+ */
 @Fluent
 public final class MetricNamespaceInner {
     /*
@@ -42,13 +44,15 @@ public final class MetricNamespaceInner {
     @JsonProperty(value = "properties")
     private MetricNamespaceName properties;
 
-    /** Creates an instance of MetricNamespaceInner class. */
+    /**
+     * Creates an instance of MetricNamespaceInner class.
+     */
     public MetricNamespaceInner() {
     }
 
     /**
      * Get the id property: The ID of the metric namespace.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -57,7 +61,7 @@ public final class MetricNamespaceInner {
 
     /**
      * Set the id property: The ID of the metric namespace.
-     *
+     * 
      * @param id the id value to set.
      * @return the MetricNamespaceInner object itself.
      */
@@ -68,7 +72,7 @@ public final class MetricNamespaceInner {
 
     /**
      * Get the type property: The type of the namespace.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -77,7 +81,7 @@ public final class MetricNamespaceInner {
 
     /**
      * Set the type property: The type of the namespace.
-     *
+     * 
      * @param type the type value to set.
      * @return the MetricNamespaceInner object itself.
      */
@@ -88,7 +92,7 @@ public final class MetricNamespaceInner {
 
     /**
      * Get the name property: The escaped name of the namespace.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -97,7 +101,7 @@ public final class MetricNamespaceInner {
 
     /**
      * Set the name property: The escaped name of the namespace.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricNamespaceInner object itself.
      */
@@ -108,7 +112,7 @@ public final class MetricNamespaceInner {
 
     /**
      * Get the classification property: Kind of namespace.
-     *
+     * 
      * @return the classification value.
      */
     public NamespaceClassification classification() {
@@ -117,7 +121,7 @@ public final class MetricNamespaceInner {
 
     /**
      * Set the classification property: Kind of namespace.
-     *
+     * 
      * @param classification the classification value to set.
      * @return the MetricNamespaceInner object itself.
      */
@@ -128,7 +132,7 @@ public final class MetricNamespaceInner {
 
     /**
      * Get the properties property: Properties which include the fully qualified namespace name.
-     *
+     * 
      * @return the properties value.
      */
     public MetricNamespaceName properties() {
@@ -137,7 +141,7 @@ public final class MetricNamespaceInner {
 
     /**
      * Set the properties property: Properties which include the fully qualified namespace name.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MetricNamespaceInner object itself.
      */
@@ -148,7 +152,7 @@ public final class MetricNamespaceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class UserRecommendationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserRecommendation model =
-            BinaryData
-                .fromString("{\"username\":\"iv\",\"recommendationAction\":\"Remove\"}")
+        UserRecommendation model
+            = BinaryData.fromString("{\"username\":\"lbciphmsexro\",\"recommendationAction\":\"Remove\"}")
                 .toObject(UserRecommendation.class);
-        Assertions.assertEquals("iv", model.username());
+        Assertions.assertEquals("lbciphmsexro", model.username());
         Assertions.assertEquals(RecommendationAction.REMOVE, model.recommendationAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserRecommendation model =
-            new UserRecommendation().withUsername("iv").withRecommendationAction(RecommendationAction.REMOVE);
+        UserRecommendation model = new UserRecommendation().withUsername("lbciphmsexro")
+            .withRecommendationAction(RecommendationAction.REMOVE);
         model = BinaryData.fromObject(model).toObject(UserRecommendation.class);
-        Assertions.assertEquals("iv", model.username());
+        Assertions.assertEquals("lbciphmsexro", model.username());
         Assertions.assertEquals(RecommendationAction.REMOVE, model.recommendationAction());
     }
 }

@@ -17,32 +17,33 @@ public final class TumblingWindowTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TumblingWindowTriggerTypeProperties model = BinaryData.fromString(
-            "{\"frequency\":\"Month\",\"interval\":2031433893,\"startTime\":\"2021-07-13T04:21:03Z\",\"endTime\":\"2021-06-28T17:38:49Z\",\"delay\":\"datarko\",\"maxConcurrency\":1137580538,\"retryPolicy\":{\"count\":\"databwdvuvqgupl\",\"intervalInSeconds\":1886264335},\"dependsOn\":[{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"}]}")
+            "{\"frequency\":\"Minute\",\"interval\":1052042151,\"startTime\":\"2021-03-29T22:51Z\",\"endTime\":\"2021-04-11T13:06:29Z\",\"delay\":\"dataqmbuv\",\"maxConcurrency\":838737054,\"retryPolicy\":{\"count\":\"datamcymwr\",\"intervalInSeconds\":1972140841},\"dependsOn\":[{\"type\":\"uldgtkedvxh\"}]}")
             .toObject(TumblingWindowTriggerTypeProperties.class);
-        Assertions.assertEquals(TumblingWindowFrequency.MONTH, model.frequency());
-        Assertions.assertEquals(2031433893, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T04:21:03Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T17:38:49Z"), model.endTime());
-        Assertions.assertEquals(1137580538, model.maxConcurrency());
-        Assertions.assertEquals(1886264335, model.retryPolicy().intervalInSeconds());
+        Assertions.assertEquals(TumblingWindowFrequency.MINUTE, model.frequency());
+        Assertions.assertEquals(1052042151, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-29T22:51Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-11T13:06:29Z"), model.endTime());
+        Assertions.assertEquals(838737054, model.maxConcurrency());
+        Assertions.assertEquals(1972140841, model.retryPolicy().intervalInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TumblingWindowTriggerTypeProperties model
-            = new TumblingWindowTriggerTypeProperties().withFrequency(TumblingWindowFrequency.MONTH)
-                .withInterval(2031433893).withStartTime(OffsetDateTime.parse("2021-07-13T04:21:03Z"))
-                .withEndTime(OffsetDateTime.parse("2021-06-28T17:38:49Z")).withDelay("datarko")
-                .withMaxConcurrency(1137580538)
-                .withRetryPolicy(new RetryPolicy().withCount("databwdvuvqgupl").withIntervalInSeconds(1886264335))
-                .withDependsOn(Arrays.asList(new DependencyReference(), new DependencyReference(),
-                    new DependencyReference(), new DependencyReference()));
+            = new TumblingWindowTriggerTypeProperties().withFrequency(TumblingWindowFrequency.MINUTE)
+                .withInterval(1052042151)
+                .withStartTime(OffsetDateTime.parse("2021-03-29T22:51Z"))
+                .withEndTime(OffsetDateTime.parse("2021-04-11T13:06:29Z"))
+                .withDelay("dataqmbuv")
+                .withMaxConcurrency(838737054)
+                .withRetryPolicy(new RetryPolicy().withCount("datamcymwr").withIntervalInSeconds(1972140841))
+                .withDependsOn(Arrays.asList(new DependencyReference()));
         model = BinaryData.fromObject(model).toObject(TumblingWindowTriggerTypeProperties.class);
-        Assertions.assertEquals(TumblingWindowFrequency.MONTH, model.frequency());
-        Assertions.assertEquals(2031433893, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-13T04:21:03Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T17:38:49Z"), model.endTime());
-        Assertions.assertEquals(1137580538, model.maxConcurrency());
-        Assertions.assertEquals(1886264335, model.retryPolicy().intervalInSeconds());
+        Assertions.assertEquals(TumblingWindowFrequency.MINUTE, model.frequency());
+        Assertions.assertEquals(1052042151, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-29T22:51Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-11T13:06:29Z"), model.endTime());
+        Assertions.assertEquals(838737054, model.maxConcurrency());
+        Assertions.assertEquals(1972140841, model.retryPolicy().intervalInSeconds());
     }
 }

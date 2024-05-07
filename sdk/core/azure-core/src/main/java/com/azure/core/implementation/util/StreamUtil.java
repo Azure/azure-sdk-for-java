@@ -4,6 +4,8 @@
 package com.azure.core.implementation.util;
 
 import com.azure.core.util.logging.ClientLogger;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,24 +43,23 @@ public final class StreamUtil {
      * @param lengthHint Optional hint of the length of stream.
      * @param initialBufferSize The initial buffer size. Used if {@code length} is null.
      * @param maxBufferSize The maximum buffer size.
-     * @return List of byte buffers.
+     * @return A tuple where the long value is the number of bytes read from the stream and the list of byte buffers
+     * generated.
      * @throws IOException If IO operation fails.
      */
-    public static List<ByteBuffer> readStreamToListOfByteBuffers(
-        InputStream inputStream, Long lengthHint,
+    public static Tuple2<Long, List<ByteBuffer>> readStreamToListOfByteBuffers(InputStream inputStream, Long lengthHint,
         int initialBufferSize, int maxBufferSize) throws IOException {
         Objects.requireNonNull(inputStream, "'inputStream' must not be null");
         if (initialBufferSize <= 0) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'initialBufferSize' must be positive integer"));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'initialBufferSize' must be positive integer"));
         }
         if (maxBufferSize < initialBufferSize) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'maxBufferSize' must not be smaller than 'maxBufferSize'"));
         }
         if (lengthHint != null && lengthHint < 0) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'length' must not be negative"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'length' must not be negative"));
         }
 
         // Start small.
@@ -72,7 +73,6 @@ public final class StreamUtil {
         long totalRead = 0;
         long actualLength = lengthHint != null ? lengthHint : Long.MAX_VALUE; // assume infinity for unknown length.
 
-
         ReadableByteChannel channel = Channels.newChannel(inputStream);
         List<ByteBuffer> buffers = new LinkedList<>();
         ByteBuffer chunk = ByteBuffer.allocate(chunkSize);
@@ -85,8 +85,7 @@ public final class StreamUtil {
                     // Keep doubling the chunk until we hit max or known length.
                     // This is to not over allocate for small streams eagerly.
                     int nextChunkSizeCandidate = 2 * chunkSize;
-                    if (nextChunkSizeCandidate <= actualLength - totalRead
-                        && nextChunkSizeCandidate <= maxBufferSize) {
+                    if (nextChunkSizeCandidate <= actualLength - totalRead && nextChunkSizeCandidate <= maxBufferSize) {
                         chunkSize = nextChunkSizeCandidate;
                     }
 
@@ -117,6 +116,6 @@ public final class StreamUtil {
             }
         } while (read >= 0);
 
-        return Collections.unmodifiableList(buffers);
+        return Tuples.of(totalRead, Collections.unmodifiableList(buffers));
     }
 }

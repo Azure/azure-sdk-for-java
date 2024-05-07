@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.MeshUpgradeProfi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Holds an array of MeshUpgradeProfiles. */
+/**
+ * Holds an array of MeshUpgradeProfiles.
+ */
 @Fluent
 public final class MeshUpgradeProfileList {
     /*
@@ -24,13 +26,15 @@ public final class MeshUpgradeProfileList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of MeshUpgradeProfileList class. */
+    /**
+     * Creates an instance of MeshUpgradeProfileList class.
+     */
     public MeshUpgradeProfileList() {
     }
 
     /**
      * Get the value property: Array of supported service mesh add-on upgrade profiles.
-     *
+     * 
      * @return the value value.
      */
     public List<MeshUpgradeProfileInner> value() {
@@ -39,7 +43,7 @@ public final class MeshUpgradeProfileList {
 
     /**
      * Set the value property: Array of supported service mesh add-on upgrade profiles.
-     *
+     * 
      * @param value the value value to set.
      * @return the MeshUpgradeProfileList object itself.
      */
@@ -50,7 +54,7 @@ public final class MeshUpgradeProfileList {
 
     /**
      * Get the nextLink property: The URL to get the next set of mesh upgrade profile.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class MeshUpgradeProfileList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

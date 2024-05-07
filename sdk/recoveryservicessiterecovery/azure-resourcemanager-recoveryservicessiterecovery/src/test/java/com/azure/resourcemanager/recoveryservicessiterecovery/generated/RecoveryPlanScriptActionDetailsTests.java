@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanScriptActionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanScriptActionDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"ScriptActionDetails\",\"path\":\"kyvscbgngcrus\",\"timeout\":\"ircpgcvsvkk\",\"fabricLocation\":\"Recovery\"}")
-                .toObject(RecoveryPlanScriptActionDetails.class);
+        RecoveryPlanScriptActionDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"ScriptActionDetails\",\"path\":\"kyvscbgngcrus\",\"timeout\":\"ircpgcvsvkk\",\"fabricLocation\":\"Recovery\"}")
+            .toObject(RecoveryPlanScriptActionDetails.class);
         Assertions.assertEquals("kyvscbgngcrus", model.path());
         Assertions.assertEquals("ircpgcvsvkk", model.timeout());
         Assertions.assertEquals(RecoveryPlanActionLocation.RECOVERY, model.fabricLocation());
@@ -24,11 +22,8 @@ public final class RecoveryPlanScriptActionDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanScriptActionDetails model =
-            new RecoveryPlanScriptActionDetails()
-                .withPath("kyvscbgngcrus")
-                .withTimeout("ircpgcvsvkk")
-                .withFabricLocation(RecoveryPlanActionLocation.RECOVERY);
+        RecoveryPlanScriptActionDetails model = new RecoveryPlanScriptActionDetails().withPath("kyvscbgngcrus")
+            .withTimeout("ircpgcvsvkk").withFabricLocation(RecoveryPlanActionLocation.RECOVERY);
         model = BinaryData.fromObject(model).toObject(RecoveryPlanScriptActionDetails.class);
         Assertions.assertEquals("kyvscbgngcrus", model.path());
         Assertions.assertEquals("ircpgcvsvkk", model.timeout());

@@ -6,26 +6,32 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Dynamics source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DynamicsSource.class, visible = true)
 @JsonTypeName("DynamicsSource")
 @Fluent
 public final class DynamicsSource extends CopySource {
     /*
-     * FetchXML is a proprietary query language that is used in Microsoft Dynamics (online & on-premises). Type: string
-     * (or Expression with resultType string).
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DynamicsSource";
+
+    /*
+     * FetchXML is a proprietary query language that is used in Microsoft Dynamics (online & on-premises). Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
-     * Expression with resultType array of objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
@@ -37,8 +43,18 @@ public final class DynamicsSource extends CopySource {
     }
 
     /**
-     * Get the query property: FetchXML is a proprietary query language that is used in Microsoft Dynamics (online
-     * &amp; on-premises). Type: string (or Expression with resultType string).
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the query property: FetchXML is a proprietary query language that is used in Microsoft Dynamics (online &amp;
+     * on-premises). Type: string (or Expression with resultType string).
      * 
      * @return the query value.
      */
@@ -47,8 +63,8 @@ public final class DynamicsSource extends CopySource {
     }
 
     /**
-     * Set the query property: FetchXML is a proprietary query language that is used in Microsoft Dynamics (online
-     * &amp; on-premises). Type: string (or Expression with resultType string).
+     * Set the query property: FetchXML is a proprietary query language that is used in Microsoft Dynamics (online &amp;
+     * on-premises). Type: string (or Expression with resultType string).
      * 
      * @param query the query value to set.
      * @return the DynamicsSource object itself.

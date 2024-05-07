@@ -21,7 +21,7 @@ import java.util.Objects;
  *
  * @param <T> the type of the response type from a polling call, or BinaryData if raw response body should be kept
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
- *           kept
+ * kept
  */
 public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(ChainedPollingStrategy.class);
@@ -48,8 +48,7 @@ public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U>
         // Find the first strategy that can poll in series so that
         // pollableStrategy is only set once
         return Flux.fromIterable(pollingStrategies)
-            .concatMap(strategy -> strategy.canPoll(initialResponse)
-                .map(canPoll -> Tuples.of(strategy, canPoll)))
+            .concatMap(strategy -> strategy.canPoll(initialResponse).map(canPoll -> Tuples.of(strategy, canPoll)))
             .takeUntil(Tuple2::getT2)
             .last()
             .map(tuple2 -> {
@@ -76,7 +75,7 @@ public final class ChainedPollingStrategy<T, U> implements PollingStrategy<T, U>
      */
     @Override
     public Mono<PollResponse<T>> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
-                                                              TypeReference<T> pollResponseType) {
+        TypeReference<T> pollResponseType) {
         return pollableStrategy.onInitialResponse(response, pollingContext, pollResponseType);
     }
 

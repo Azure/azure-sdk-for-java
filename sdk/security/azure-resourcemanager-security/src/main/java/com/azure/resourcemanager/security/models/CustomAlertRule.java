@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A custom alert rule. */
+/**
+ * A custom alert rule.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("CustomAlertRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ThresholdCustomAlertRule", value = ThresholdCustomAlertRule.class),
-    @JsonSubTypes.Type(name = "ListCustomAlertRule", value = ListCustomAlertRule.class)
-})
+    @JsonSubTypes.Type(name = "ListCustomAlertRule", value = ListCustomAlertRule.class) })
 @Fluent
 public class CustomAlertRule {
     /*
@@ -41,13 +42,15 @@ public class CustomAlertRule {
     @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
-    /** Creates an instance of CustomAlertRule class. */
+    /**
+     * Creates an instance of CustomAlertRule class.
+     */
     public CustomAlertRule() {
     }
 
     /**
      * Get the displayName property: The display name of the custom alert.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -56,7 +59,7 @@ public class CustomAlertRule {
 
     /**
      * Get the description property: The description of the custom alert.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -65,7 +68,7 @@ public class CustomAlertRule {
 
     /**
      * Get the isEnabled property: Status of the custom alert.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -74,7 +77,7 @@ public class CustomAlertRule {
 
     /**
      * Set the isEnabled property: Status of the custom alert.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the CustomAlertRule object itself.
      */
@@ -85,7 +88,7 @@ public class CustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

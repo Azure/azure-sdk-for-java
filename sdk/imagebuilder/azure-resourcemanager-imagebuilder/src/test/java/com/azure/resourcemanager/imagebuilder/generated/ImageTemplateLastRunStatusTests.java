@@ -14,32 +14,27 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateLastRunStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateLastRunStatus model =
-            BinaryData
-                .fromString(
-                    "{\"startTime\":\"2021-11-26T09:10:23Z\",\"endTime\":\"2021-07-04T09:54:35Z\",\"runState\":\"Succeeded\",\"runSubState\":\"Optimizing\",\"message\":\"ivyevcciqihnhun\"}")
-                .toObject(ImageTemplateLastRunStatus.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-26T09:10:23Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T09:54:35Z"), model.endTime());
-        Assertions.assertEquals(RunState.SUCCEEDED, model.runState());
+        ImageTemplateLastRunStatus model = BinaryData.fromString(
+            "{\"startTime\":\"2021-11-20T09:27:06Z\",\"endTime\":\"2021-12-05T12:00:33Z\",\"runState\":\"PartiallySucceeded\",\"runSubState\":\"Optimizing\",\"message\":\"gc\"}")
+            .toObject(ImageTemplateLastRunStatus.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-20T09:27:06Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T12:00:33Z"), model.endTime());
+        Assertions.assertEquals(RunState.PARTIALLY_SUCCEEDED, model.runState());
         Assertions.assertEquals(RunSubState.OPTIMIZING, model.runSubState());
-        Assertions.assertEquals("ivyevcciqihnhun", model.message());
+        Assertions.assertEquals("gc", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateLastRunStatus model =
-            new ImageTemplateLastRunStatus()
-                .withStartTime(OffsetDateTime.parse("2021-11-26T09:10:23Z"))
-                .withEndTime(OffsetDateTime.parse("2021-07-04T09:54:35Z"))
-                .withRunState(RunState.SUCCEEDED)
-                .withRunSubState(RunSubState.OPTIMIZING)
-                .withMessage("ivyevcciqihnhun");
+        ImageTemplateLastRunStatus model
+            = new ImageTemplateLastRunStatus().withStartTime(OffsetDateTime.parse("2021-11-20T09:27:06Z"))
+                .withEndTime(OffsetDateTime.parse("2021-12-05T12:00:33Z")).withRunState(RunState.PARTIALLY_SUCCEEDED)
+                .withRunSubState(RunSubState.OPTIMIZING).withMessage("gc");
         model = BinaryData.fromObject(model).toObject(ImageTemplateLastRunStatus.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-26T09:10:23Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-04T09:54:35Z"), model.endTime());
-        Assertions.assertEquals(RunState.SUCCEEDED, model.runState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-20T09:27:06Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T12:00:33Z"), model.endTime());
+        Assertions.assertEquals(RunState.PARTIALLY_SUCCEEDED, model.runState());
         Assertions.assertEquals(RunSubState.OPTIMIZING, model.runSubState());
-        Assertions.assertEquals("ivyevcciqihnhun", model.message());
+        Assertions.assertEquals("gc", model.message());
     }
 }

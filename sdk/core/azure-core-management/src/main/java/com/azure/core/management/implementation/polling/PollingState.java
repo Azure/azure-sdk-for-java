@@ -7,11 +7,17 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,7 +30,7 @@ import java.util.Objects;
  * A type representing state of Azure Resource Manager (ARM) long-running-operation (LRO)
  * and it's polling.
  */
-public final class PollingState {
+public final class PollingState implements JsonSerializable<PollingState> {
     @JsonIgnore
     private static final ClientLogger LOGGER = new ClientLogger(PollingState.class);
     @JsonIgnore
@@ -67,35 +73,33 @@ public final class PollingState {
      * @param lroResponseHeaders the response headers of LRO init api call
      * @param lroResponseBody the response body of LRO init api call
      * @return the PollingState
+     * @throws IllegalArgumentException if the http method is not PUT, PATCH, POST or DELETE
      */
-    public static PollingState create(SerializerAdapter serializerAdapter,
-                                      HttpRequest lroHttpRequest,
-                                      int lroResponseStatusCode,
-                                      HttpHeaders lroResponseHeaders,
-                                      String lroResponseBody) {
+    public static PollingState create(SerializerAdapter serializerAdapter, HttpRequest lroHttpRequest,
+        int lroResponseStatusCode, HttpHeaders lroResponseHeaders, String lroResponseBody) {
         final HttpMethod httpMethod = lroHttpRequest.getHttpMethod();
         if (httpMethod != HttpMethod.PUT
             && httpMethod != HttpMethod.PATCH
             && httpMethod != HttpMethod.POST
             && httpMethod != HttpMethod.DELETE) {
-            throw new IllegalArgumentException("Long-running-operation supported only"
-                + " for PUT, PATCH, POST or DELETE verb.");
+            throw new IllegalArgumentException(
+                "Long-running-operation supported only" + " for PUT, PATCH, POST or DELETE verb.");
         }
-        PollingState pollingState = new PollingState(serializerAdapter,
-            lroHttpRequest.getHttpMethod(),
-            lroHttpRequest.getUrl(),
-            lroResponseStatusCode,
-            getRetryAfter(lroResponseHeaders),
-            lroResponseBody);
+        PollingState pollingState = new PollingState(serializerAdapter, lroHttpRequest.getHttpMethod(),
+            lroHttpRequest.getUrl(), lroResponseStatusCode, getRetryAfter(lroResponseHeaders), lroResponseBody);
         switch (pollingState.lroResponseStatusCode) {
             case 200:
                 return pollingState.initializeDataFor200StatusCode(lroResponseHeaders, lroResponseBody);
+
             case 201:
                 return pollingState.initializeDataFor201StatusCode(lroResponseHeaders, lroResponseBody);
+
             case 202:
                 return pollingState.initializeDataFor202StatusCode(lroResponseHeaders, lroResponseBody);
+
             case 204:
                 return pollingState.initializeDataFor204StatusCode();
+
             default:
                 return pollingState.initializeDataForUnknownStatusCode(lroResponseHeaders, lroResponseBody);
         }
@@ -106,7 +110,7 @@ public final class PollingState {
      *
      * @param serializerAdapter the serializer for any encoding and decoding
      * @param context the context to look for the PollingState
-     * @param <T>
+     * @param <T> the type of the poll response.
      * @return the PollingState from the context
      * @throws IllegalArgumentException if the context does not contain a PollingState
      * @throws RuntimeException if there is an error while retrieving the PollingState from the context
@@ -114,18 +118,16 @@ public final class PollingState {
     public static <T> PollingState from(SerializerAdapter serializerAdapter, PollingContext<T> context) {
         Objects.requireNonNull(serializerAdapter, "'serializerAdapter' cannot be null.");
         String value = context.getData(KEY);
-        if (value == null || "".equalsIgnoreCase(value)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The provided context does not contain"
-                + " serialized PollingState."));
+        if (CoreUtils.isNullOrEmpty(value)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("The provided context does not contain" + " serialized PollingState."));
         }
-        try {
-            PollingState pollingState = serializerAdapter.deserialize(value,
-                PollingState.class,
-                SerializerEncoding.JSON);
+        try (JsonReader jsonReader = JsonProviders.createReader(value)) {
+            PollingState pollingState = PollingState.fromJson(jsonReader);
             return pollingState.setSerializer(serializerAdapter);
         } catch (IOException ioe) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize '" + value
-                + "' to PollingState.", ioe));
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("Failed to deserialize '" + value + "' to PollingState.", ioe));
         }
     }
 
@@ -140,16 +142,15 @@ public final class PollingState {
      */
     public static PollingState from(SerializerAdapter serializerAdapter, String value) {
         Objects.requireNonNull(serializerAdapter, "'serializerAdapter' cannot be null.");
-        if (value == null || "".equalsIgnoreCase(value)) {
+        if (CoreUtils.isNullOrEmpty(value)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'value' is required"));
         }
-        try {
-            PollingState pollingState = serializerAdapter.deserialize(value,
-                PollingState.class,
-                SerializerEncoding.JSON);
+
+        try (JsonReader jsonReader = JsonProviders.createReader(value)) {
+            PollingState pollingState = PollingState.fromJson(jsonReader);
             return pollingState.setSerializer(serializerAdapter);
         } catch (IOException ioe) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize '" + value));
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize '" + value, ioe));
         }
     }
 
@@ -175,14 +176,19 @@ public final class PollingState {
         switch (this.pollingType) {
             case AZURE_ASYNC_OPERATION_POLL:
                 return toLongRunningOperationStatus(this.azureAsyncOperationData.getProvisioningState());
+
             case LOCATION_POLL:
                 return toLongRunningOperationStatus(this.locationData.getProvisioningState());
+
             case PROVISIONING_STATE_POLL:
                 return toLongRunningOperationStatus(this.provisioningStateData.getProvisioningState());
+
             case SYNCHRONOUSLY_SUCCEEDED_LRO_NO_POLL:
                 return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+
             case SYNCHRONOUSLY_FAILED_LRO_NO_POLL:
                 return LongRunningOperationStatus.FAILED;
+
             default:
                 throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown pollingType:" + this.pollingType));
         }
@@ -195,13 +201,16 @@ public final class PollingState {
         switch (this.pollingType) {
             case AZURE_ASYNC_OPERATION_POLL:
                 return this.azureAsyncOperationData.getPollUrl();
+
             case LOCATION_POLL:
                 return this.locationData.getPollUrl();
+
             case PROVISIONING_STATE_POLL:
                 return this.provisioningStateData.getPollUrl();
+
             default:
-                throw LOGGER.logExceptionAsError(new IllegalStateException("PollUrl not available for the pollingType:"
-                    + this.pollingType));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("PollUrl not available for the pollingType:" + this.pollingType));
         }
     }
 
@@ -228,14 +237,16 @@ public final class PollingState {
         switch (this.pollingType) {
             case AZURE_ASYNC_OPERATION_POLL:
                 return this.azureAsyncOperationData.getPollError();
+
             case LOCATION_POLL:
                 return this.locationData.getPollError();
+
             case PROVISIONING_STATE_POLL:
                 return this.provisioningStateData.getPollError();
+
             default:
-                throw LOGGER
-                    .logExceptionAsError(new IllegalStateException("PollError not available for the pollingType:"
-                        + this.pollingType));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("PollError not available for the pollingType:" + this.pollingType));
         }
     }
 
@@ -247,16 +258,19 @@ public final class PollingState {
         switch (this.pollingType) {
             case AZURE_ASYNC_OPERATION_POLL:
                 return this.azureAsyncOperationData.getFinalResult();
+
             case LOCATION_POLL:
                 return this.locationData.getFinalResult();
+
             case PROVISIONING_STATE_POLL:
                 return this.provisioningStateData.getFinalResult();
+
             case SYNCHRONOUSLY_SUCCEEDED_LRO_NO_POLL:
                 return this.synchronouslySucceededLroData.getFinalResult();
+
             default:
-                throw
-                LOGGER.logExceptionAsError(new IllegalStateException("FinalResult not available for the pollingType:"
-                    + this.pollingType));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("FinalResult not available for the pollingType:" + this.pollingType));
         }
     }
 
@@ -278,25 +292,20 @@ public final class PollingState {
     PollingState update(int pollResponseStatusCode, HttpHeaders pollResponseHeaders, String pollResponseBody) {
         switch (this.pollingType) {
             case AZURE_ASYNC_OPERATION_POLL:
-                this.azureAsyncOperationData.update(pollResponseStatusCode,
-                    pollResponseHeaders,
-                    pollResponseBody,
-                    this.serializerAdapter);
+                this.azureAsyncOperationData.update(pollResponseStatusCode, pollResponseHeaders, pollResponseBody);
                 break;
+
             case LOCATION_POLL:
-                this.locationData.update(pollResponseStatusCode,
-                    pollResponseHeaders,
-                    pollResponseBody);
+                this.locationData.update(pollResponseStatusCode, pollResponseHeaders, pollResponseBody);
                 break;
+
             case PROVISIONING_STATE_POLL:
-                this.provisioningStateData.update(pollResponseStatusCode,
-                    pollResponseHeaders,
-                    pollResponseBody,
-                    this.serializerAdapter);
+                this.provisioningStateData.update(pollResponseStatusCode, pollResponseHeaders, pollResponseBody);
                 break;
+
             default:
-                throw LOGGER.logExceptionAsError(new IllegalStateException("update not available for the pollingType:"
-                    + this.pollingType));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("update not available for the pollingType:" + this.pollingType));
         }
         this.pollDelay = getRetryAfter(pollResponseHeaders);
         this.lastResponseBody = pollResponseBody;
@@ -416,19 +425,17 @@ public final class PollingState {
      * @param lroResponseBody the LRO response body
      * @return updated PollingState
      */
-    private PollingState initializeDataFor200StatusCode(HttpHeaders lroResponseHeaders,
-                                                        String lroResponseBody) {
+    private PollingState initializeDataFor200StatusCode(HttpHeaders lroResponseHeaders, String lroResponseBody) {
         assertStatusCode(200);
         if (this.isPutOrPatchLro()) {
-            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
+            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody);
             if (value != null && !ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
                 final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER, true);
                 if (azAsyncOpUrl == null) {
                     return this.setData(new ProvisioningStateData(this.lroOperationUri, value));
                 } else {
-                    return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
-                        this.lroOperationUri,
-                        azAsyncOpUrl, null));
+                    return this.setData(
+                        new AzureAsyncOperationData(this.lroRequestMethod, this.lroOperationUri, azAsyncOpUrl, null));
                 }
             } else {
                 return this.setData(new SynchronouslySucceededLroData(lroResponseBody));
@@ -445,24 +452,21 @@ public final class PollingState {
      * @param lroResponseBody the LRO response body
      * @return updated PollingState
      */
-    private PollingState initializeDataFor201StatusCode(HttpHeaders lroResponseHeaders,
-                                                        String lroResponseBody) {
+    private PollingState initializeDataFor201StatusCode(HttpHeaders lroResponseHeaders, String lroResponseBody) {
         assertStatusCode(201);
         final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER, true);
         final URL locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER, true);
         if (azAsyncOpUrl != null) {
             if (this.isPostOrDeleteLro()) {
-                LOGGER.info("The LRO {}:{}, received StatusCode:201, AzureAsyncOperation:{}. {}",
-                    this.lroRequestMethod, this.lroOperationUri, azAsyncOpUrl,
+                LOGGER.info("The LRO {}:{}, received StatusCode:201, AzureAsyncOperation:{}. {}", this.lroRequestMethod,
+                    this.lroOperationUri, azAsyncOpUrl,
                     "<POST|DELETE, 201, AzureAsyncOperation> combination violate ARM guideline, "
                         + "defaulting to async operation based polling.");
             }
-            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
+            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody);
             if (!ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
-                return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
-                    this.lroOperationUri,
-                    azAsyncOpUrl,
-                    locationUrl));
+                return this.setData(new AzureAsyncOperationData(this.lroRequestMethod, this.lroOperationUri,
+                    azAsyncOpUrl, locationUrl));
             } else {
                 return this.setData(new SynchronouslySucceededLroData(lroResponseBody));
             }
@@ -473,7 +477,7 @@ public final class PollingState {
                 "Location will be ignored on <201, Location, No AzureAsyncOperation> combination.");
         }
         if (this.isPutOrPatchLro()) {
-            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
+            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody);
             if (value != null && !ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
                 return this.setData(new ProvisioningStateData(this.lroOperationUri, value));
             } else {
@@ -491,22 +495,20 @@ public final class PollingState {
      * @param lroResponseBody the LRO response body
      * @return updated PollingState
      */
-    private PollingState initializeDataFor202StatusCode(HttpHeaders lroResponseHeaders,
-                                                        String lroResponseBody) {
+    private PollingState initializeDataFor202StatusCode(HttpHeaders lroResponseHeaders, String lroResponseBody) {
         assertStatusCode(202);
         final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER, true);
         final URL locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER, true);
         if (azAsyncOpUrl != null) {
-            return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
-                this.lroOperationUri,
-                azAsyncOpUrl,
-                locationUrl));
+            return this.setData(
+                new AzureAsyncOperationData(this.lroRequestMethod, this.lroOperationUri, azAsyncOpUrl, locationUrl));
         }
         if (locationUrl != null) {
             return this.setData(new LocationData(locationUrl));
         }
-        return this.setData(new SynchronouslyFailedLroData("Response with status code 202 does not contain "
-            + "an Azure-AsyncOperation or Location header", 202, lroResponseHeaders.toMap(), lroResponseBody));
+        return this.setData(new SynchronouslyFailedLroData(
+            "Response with status code 202 does not contain " + "an Azure-AsyncOperation or Location header", 202,
+            lroResponseHeaders.toMap(), lroResponseBody));
     }
 
     /**
@@ -516,7 +518,7 @@ public final class PollingState {
      */
     private PollingState initializeDataFor204StatusCode() {
         assertStatusCode(204);
-        return this.setData(new SynchronouslySucceededLroData(null /*NoContent*/));
+        return this.setData(new SynchronouslySucceededLroData(null /* NoContent */));
     }
 
     /**
@@ -526,9 +528,7 @@ public final class PollingState {
      */
     private PollingState initializeDataForUnknownStatusCode(HttpHeaders lroResponseHeaders, String lroResponseBody) {
         return this.setData(new SynchronouslyFailedLroData("Response StatusCode: " + this.lroResponseStatusCode,
-            this.lroResponseStatusCode,
-            lroResponseHeaders.toMap(),
-            lroResponseBody));
+            this.lroResponseStatusCode, lroResponseHeaders.toMap(), lroResponseBody));
     }
 
     /**
@@ -538,8 +538,8 @@ public final class PollingState {
      */
     private void assertStatusCode(int statusCode) {
         if (this.lroResponseStatusCode != statusCode) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Expected statusCode" + statusCode
-                + "found" + this.lroResponseStatusCode));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Expected statusCode" + statusCode + "found" + this.lroResponseStatusCode));
         }
     }
 
@@ -576,18 +576,79 @@ public final class PollingState {
      * @param pollDelay the initial delay from the service in response to LRO initialization operation
      * @param lroResponseBody the LRO initialization operation response body
      */
-    private PollingState(SerializerAdapter serializerAdapter,
-                         HttpMethod lroRequestMethod,
-                         URL lroOperationUri,
-                         int lroResponseStatusCode,
-                         Duration pollDelay,
-                         String lroResponseBody) {
-        this.serializerAdapter = Objects.requireNonNull(serializerAdapter,
-            "'serializerAdapter' cannot be null");
+    private PollingState(SerializerAdapter serializerAdapter, HttpMethod lroRequestMethod, URL lroOperationUri,
+        int lroResponseStatusCode, Duration pollDelay, String lroResponseBody) {
+        this.serializerAdapter = Objects.requireNonNull(serializerAdapter, "'serializerAdapter' cannot be null");
         this.lroRequestMethod = Objects.requireNonNull(lroRequestMethod, "'lroRequestMethod' cannot be null");
         this.lroOperationUri = Objects.requireNonNull(lroOperationUri, "'lroOperationUri' cannot be null");
         this.lroResponseStatusCode = lroResponseStatusCode;
         this.pollDelay = pollDelay;
         this.lastResponseBody = lroResponseBody;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("pollingType", Objects.toString(pollingType, null))
+            .writeIntField("lroResponseStatusCode", lroResponseStatusCode)
+            .writeStringField("lroRequestMethod", Objects.toString(lroRequestMethod, null))
+            .writeStringField("lroOperationUri", Objects.toString(lroOperationUri, null))
+            .writeStringField("pollDelay", Objects.toString(pollDelay, null))
+            .writeJsonField("asyncOperationData", azureAsyncOperationData)
+            .writeJsonField("locationData", locationData)
+            .writeJsonField("provisioningData", provisioningStateData)
+            .writeJsonField("synchronouslySucceededLroData", synchronouslySucceededLroData)
+            .writeJsonField("synchronouslyFailedLroData", (JsonSerializable<?>) synchronouslyFailedLroData)
+            .writeStringField("lastResponseBody", lastResponseBody)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link PollingState}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link PollingState} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link PollingState} fails to be read from the {@code jsonReader}.
+     */
+    @SuppressWarnings("deprecation")
+    public static PollingState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PollingState pollingState = new PollingState();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pollingType".equals(fieldName)) {
+                    pollingState.pollingType = PollingType.valueOf(reader.getString());
+                } else if ("lroResponseStatusCode".equals(fieldName)) {
+                    pollingState.lroResponseStatusCode = reader.getInt();
+                } else if ("lroRequestMethod".equals(fieldName)) {
+                    pollingState.lroRequestMethod = HttpMethod.valueOf(reader.getString());
+                } else if ("lroOperationUri".equals(fieldName)) {
+                    pollingState.lroOperationUri
+                        = reader.getNullable(nonNullReader -> new URL(nonNullReader.getString()));
+                } else if ("pollDelay".equals(fieldName)) {
+                    pollingState.pollDelay
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("asyncOperationData".equals(fieldName)) {
+                    pollingState.azureAsyncOperationData = AzureAsyncOperationData.fromJson(reader);
+                } else if ("locationData".equals(fieldName)) {
+                    pollingState.locationData = LocationData.fromJson(reader);
+                } else if ("provisioningData".equals(fieldName)) {
+                    pollingState.provisioningStateData = ProvisioningStateData.fromJson(reader);
+                } else if ("synchronouslySucceededLroData".equals(fieldName)) {
+                    pollingState.synchronouslySucceededLroData = SynchronouslySucceededLroData.fromJson(reader);
+                } else if ("synchronouslyFailedLroData".equals(fieldName)) {
+                    pollingState.synchronouslyFailedLroData = SynchronouslyFailedLroData.fromJson(reader);
+                } else if ("lastResponseBody".equals(fieldName)) {
+                    pollingState.lastResponseBody = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return pollingState;
+        });
     }
 }

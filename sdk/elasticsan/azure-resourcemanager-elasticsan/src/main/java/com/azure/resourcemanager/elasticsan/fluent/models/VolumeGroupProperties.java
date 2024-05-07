@@ -13,7 +13,9 @@ import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VolumeGroup response properties. */
+/**
+ * VolumeGroup response properties.
+ */
 @Fluent
 public final class VolumeGroupProperties {
     /*
@@ -52,13 +54,15 @@ public final class VolumeGroupProperties {
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
-    /** Creates an instance of VolumeGroupProperties class. */
+    /**
+     * Creates an instance of VolumeGroupProperties class.
+     */
     public VolumeGroupProperties() {
     }
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -67,7 +71,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Get the protocolType property: Type of storage target.
-     *
+     * 
      * @return the protocolType value.
      */
     public StorageTargetType protocolType() {
@@ -76,7 +80,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Set the protocolType property: Type of storage target.
-     *
+     * 
      * @param protocolType the protocolType value to set.
      * @return the VolumeGroupProperties object itself.
      */
@@ -87,7 +91,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Get the encryption property: Type of encryption.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionType encryption() {
@@ -96,7 +100,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Set the encryption property: Type of encryption.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the VolumeGroupProperties object itself.
      */
@@ -107,7 +111,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Get the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
-     *
+     * 
      * @return the encryptionProperties value.
      */
     public EncryptionProperties encryptionProperties() {
@@ -116,7 +120,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Set the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
-     *
+     * 
      * @param encryptionProperties the encryptionProperties value to set.
      * @return the VolumeGroupProperties object itself.
      */
@@ -127,7 +131,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Get the networkAcls property: A collection of rules governing the accessibility from specific network locations.
-     *
+     * 
      * @return the networkAcls value.
      */
     public NetworkRuleSet networkAcls() {
@@ -136,7 +140,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Set the networkAcls property: A collection of rules governing the accessibility from specific network locations.
-     *
+     * 
      * @param networkAcls the networkAcls value to set.
      * @return the VolumeGroupProperties object itself.
      */
@@ -147,7 +151,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Get the privateEndpointConnections property: The list of Private Endpoint Connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -156,7 +160,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

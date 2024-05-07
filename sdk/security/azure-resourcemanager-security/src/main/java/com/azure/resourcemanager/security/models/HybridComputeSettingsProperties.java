@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for hybrid compute management. */
+/**
+ * Settings for hybrid compute management.
+ */
 @Fluent
 public final class HybridComputeSettingsProperties {
     /*
@@ -48,13 +50,15 @@ public final class HybridComputeSettingsProperties {
     @JsonProperty(value = "servicePrincipal")
     private ServicePrincipalProperties servicePrincipal;
 
-    /** Creates an instance of HybridComputeSettingsProperties class. */
+    /**
+     * Creates an instance of HybridComputeSettingsProperties class.
+     */
     public HybridComputeSettingsProperties() {
     }
 
     /**
      * Get the hybridComputeProvisioningState property: State of the service principal and its secret.
-     *
+     * 
      * @return the hybridComputeProvisioningState value.
      */
     public HybridComputeProvisioningState hybridComputeProvisioningState() {
@@ -64,7 +68,7 @@ public final class HybridComputeSettingsProperties {
     /**
      * Get the autoProvision property: Whether or not to automatically install Azure Arc (hybrid compute) agents on
      * machines.
-     *
+     * 
      * @return the autoProvision value.
      */
     public AutoProvision autoProvision() {
@@ -74,7 +78,7 @@ public final class HybridComputeSettingsProperties {
     /**
      * Set the autoProvision property: Whether or not to automatically install Azure Arc (hybrid compute) agents on
      * machines.
-     *
+     * 
      * @param autoProvision the autoProvision value to set.
      * @return the HybridComputeSettingsProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class HybridComputeSettingsProperties {
     /**
      * Get the resourceGroupName property: The name of the resource group where Arc (Hybrid Compute) connectors are
      * connected.
-     *
+     * 
      * @return the resourceGroupName value.
      */
     public String resourceGroupName() {
@@ -96,7 +100,7 @@ public final class HybridComputeSettingsProperties {
     /**
      * Set the resourceGroupName property: The name of the resource group where Arc (Hybrid Compute) connectors are
      * connected.
-     *
+     * 
      * @param resourceGroupName the resourceGroupName value to set.
      * @return the HybridComputeSettingsProperties object itself.
      */
@@ -107,7 +111,7 @@ public final class HybridComputeSettingsProperties {
 
     /**
      * Get the region property: The location where the metadata of machines will be stored.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -116,7 +120,7 @@ public final class HybridComputeSettingsProperties {
 
     /**
      * Set the region property: The location where the metadata of machines will be stored.
-     *
+     * 
      * @param region the region value to set.
      * @return the HybridComputeSettingsProperties object itself.
      */
@@ -128,7 +132,7 @@ public final class HybridComputeSettingsProperties {
     /**
      * Get the proxyServer property: For a non-Azure machine that is not connected directly to the internet, specify a
      * proxy server that the non-Azure machine can use.
-     *
+     * 
      * @return the proxyServer value.
      */
     public ProxyServerProperties proxyServer() {
@@ -138,7 +142,7 @@ public final class HybridComputeSettingsProperties {
     /**
      * Set the proxyServer property: For a non-Azure machine that is not connected directly to the internet, specify a
      * proxy server that the non-Azure machine can use.
-     *
+     * 
      * @param proxyServer the proxyServer value to set.
      * @return the HybridComputeSettingsProperties object itself.
      */
@@ -149,7 +153,7 @@ public final class HybridComputeSettingsProperties {
 
     /**
      * Get the servicePrincipal property: An object to access resources that are secured by an Azure AD tenant.
-     *
+     * 
      * @return the servicePrincipal value.
      */
     public ServicePrincipalProperties servicePrincipal() {
@@ -158,7 +162,7 @@ public final class HybridComputeSettingsProperties {
 
     /**
      * Set the servicePrincipal property: An object to access resources that are secured by an Azure AD tenant.
-     *
+     * 
      * @param servicePrincipal the servicePrincipal value to set.
      * @return the HybridComputeSettingsProperties object itself.
      */
@@ -169,15 +173,13 @@ public final class HybridComputeSettingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (autoProvision() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property autoProvision in model HybridComputeSettingsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property autoProvision in model HybridComputeSettingsProperties"));
         }
         if (proxyServer() != null) {
             proxyServer().validate();

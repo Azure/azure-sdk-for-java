@@ -12,7 +12,9 @@ import com.azure.resourcemanager.security.models.RemediationEta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Governance assignment over a given scope. */
+/**
+ * Governance assignment over a given scope.
+ */
 @Fluent
 public final class GovernanceAssignmentInner extends ProxyResource {
     /*
@@ -21,13 +23,15 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private GovernanceAssignmentProperties innerProperties;
 
-    /** Creates an instance of GovernanceAssignmentInner class. */
+    /**
+     * Creates an instance of GovernanceAssignmentInner class.
+     */
     public GovernanceAssignmentInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a governance assignment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GovernanceAssignmentProperties innerProperties() {
@@ -36,7 +40,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
 
     /**
      * Get the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see example.
-     *
+     * 
      * @return the owner value.
      */
     public String owner() {
@@ -45,7 +49,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
 
     /**
      * Set the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see example.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the GovernanceAssignmentInner object itself.
      */
@@ -58,9 +62,9 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected (in
-     * case of active grace-period).
-     *
+     * Get the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected
+     * (in case of active grace-period).
+     * 
      * @return the remediationDueDate value.
      */
     public OffsetDateTime remediationDueDate() {
@@ -68,9 +72,9 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Set the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected (in
-     * case of active grace-period).
-     *
+     * Set the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected
+     * (in case of active grace-period).
+     * 
      * @param remediationDueDate the remediationDueDate value to set.
      * @return the GovernanceAssignmentInner object itself.
      */
@@ -84,7 +88,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
 
     /**
      * Get the remediationEta property: The ETA (estimated time of arrival) for remediation (optional), see example.
-     *
+     * 
      * @return the remediationEta value.
      */
     public RemediationEta remediationEta() {
@@ -93,7 +97,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
 
     /**
      * Set the remediationEta property: The ETA (estimated time of arrival) for remediation (optional), see example.
-     *
+     * 
      * @param remediationEta the remediationEta value to set.
      * @return the GovernanceAssignmentInner object itself.
      */
@@ -107,7 +111,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
 
     /**
      * Get the isGracePeriod property: Defines whether there is a grace period on the governance assignment.
-     *
+     * 
      * @return the isGracePeriod value.
      */
     public Boolean isGracePeriod() {
@@ -116,7 +120,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
 
     /**
      * Set the isGracePeriod property: Defines whether there is a grace period on the governance assignment.
-     *
+     * 
      * @param isGracePeriod the isGracePeriod value to set.
      * @return the GovernanceAssignmentInner object itself.
      */
@@ -131,7 +135,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     /**
      * Get the governanceEmailNotification property: The email notifications settings for the governance rule, states
      * whether to disable notifications for mangers and owners.
-     *
+     * 
      * @return the governanceEmailNotification value.
      */
     public GovernanceEmailNotification governanceEmailNotification() {
@@ -141,12 +145,12 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     /**
      * Set the governanceEmailNotification property: The email notifications settings for the governance rule, states
      * whether to disable notifications for mangers and owners.
-     *
+     * 
      * @param governanceEmailNotification the governanceEmailNotification value to set.
      * @return the GovernanceAssignmentInner object itself.
      */
-    public GovernanceAssignmentInner withGovernanceEmailNotification(
-        GovernanceEmailNotification governanceEmailNotification) {
+    public GovernanceAssignmentInner
+        withGovernanceEmailNotification(GovernanceEmailNotification governanceEmailNotification) {
         if (this.innerProperties() == null) {
             this.innerProperties = new GovernanceAssignmentProperties();
         }
@@ -157,7 +161,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     /**
      * Get the additionalData property: The additional data for the governance assignment - e.g. links to ticket
      * (optional), see example.
-     *
+     * 
      * @return the additionalData value.
      */
     public GovernanceAssignmentAdditionalData additionalData() {
@@ -167,7 +171,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
     /**
      * Set the additionalData property: The additional data for the governance assignment - e.g. links to ticket
      * (optional), see example.
-     *
+     * 
      * @param additionalData the additionalData value to set.
      * @return the GovernanceAssignmentInner object itself.
      */
@@ -181,7 +185,7 @@ public final class GovernanceAssignmentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

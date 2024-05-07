@@ -7,11 +7,13 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentStoragesCollectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of ManagedEnvironmentStoragesCollection. */
+/**
+ * An immutable client-side representation of ManagedEnvironmentStoragesCollection.
+ */
 public interface ManagedEnvironmentStoragesCollection {
     /**
      * Gets the value property: Collection of storage resources.
-     *
+     * 
      * @return the value value.
      */
     List<ManagedEnvironmentStorage> value();
@@ -19,7 +21,7 @@ public interface ManagedEnvironmentStoragesCollection {
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentStoragesCollectionInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ManagedEnvironmentStoragesCollectionInner innerModel();

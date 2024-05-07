@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequest;
 public final class RestoreRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestoreRequest model =
-            BinaryData.fromString("{\"objectType\":\"RestoreRequest\"}").toObject(RestoreRequest.class);
+        RestoreRequest model
+            = BinaryData.fromString("{\"objectType\":\"RestoreRequest\"}").toObject(RestoreRequest.class);
     }
 
     @org.junit.jupiter.api.Test

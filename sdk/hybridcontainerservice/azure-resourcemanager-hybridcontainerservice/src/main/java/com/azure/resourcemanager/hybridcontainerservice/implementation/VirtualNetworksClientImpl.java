@@ -149,16 +149,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Gets the virtual network
-     * 
-     * Gets the Hybrid AKS virtual network.
+     * Gets the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS virtual network along with {@link Response} on successful completion of {@link Mono}.
+     * @return the specified virtual network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -188,9 +187,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Gets the virtual network
-     * 
-     * Gets the Hybrid AKS virtual network.
+     * Gets the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -198,7 +195,8 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS virtual network along with {@link Response} on successful completion of {@link Mono}.
+     * @return the specified virtual network resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -226,16 +224,14 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Gets the virtual network
-     * 
-     * Gets the Hybrid AKS virtual network.
+     * Gets the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS virtual network on successful completion of {@link Mono}.
+     * @return the specified virtual network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualNetworkInner> getByResourceGroupAsync(String resourceGroupName, String virtualNetworkName) {
@@ -244,9 +240,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Gets the virtual network
-     * 
-     * Gets the Hybrid AKS virtual network.
+     * Gets the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -254,7 +248,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS virtual network along with {@link Response}.
+     * @return the specified virtual network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VirtualNetworkInner> getByResourceGroupWithResponse(String resourceGroupName,
@@ -263,16 +257,14 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Gets the virtual network
-     * 
-     * Gets the Hybrid AKS virtual network.
+     * Gets the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS virtual network.
+     * @return the specified virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner getByResourceGroup(String resourceGroupName, String virtualNetworkName) {
@@ -280,17 +272,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition along with {@link Response} on successful completion of
+     * @return the Virtual Network resource definition along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -326,18 +316,16 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition along with {@link Response} on successful completion of
+     * @return the Virtual Network resource definition along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -372,17 +360,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the virtualNetworks resource definition.
+     * @return the {@link PollerFlux} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdateAsync(
@@ -394,18 +380,16 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the virtualNetworks resource definition.
+     * @return the {@link PollerFlux} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdateAsync(
@@ -418,17 +402,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtualNetworks resource definition.
+     * @return the {@link SyncPoller} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner>
@@ -437,18 +419,16 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtualNetworks resource definition.
+     * @return the {@link SyncPoller} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(
@@ -458,17 +438,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition on successful completion of {@link Mono}.
+     * @return the Virtual Network resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualNetworkInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName,
@@ -478,18 +456,16 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition on successful completion of {@link Mono}.
+     * @return the Virtual Network resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualNetworkInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName,
@@ -499,17 +475,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition.
+     * @return the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
@@ -518,18 +492,16 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Puts the virtual network
-     * 
-     * Puts the Hybrid AKS virtual network.
+     * Creates or updates the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource definition.
+     * @param virtualNetworks Virtual Network resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition.
+     * @return the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
@@ -538,9 +510,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -576,9 +546,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -614,9 +582,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -633,9 +599,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -655,9 +619,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -672,9 +634,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -691,9 +651,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -709,9 +667,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -728,9 +684,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -744,9 +698,7 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -761,17 +713,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition along with {@link Response} on successful completion of
+     * @return the Virtual Network resource definition along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -807,18 +757,16 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition along with {@link Response} on successful completion of
+     * @return the Virtual Network resource definition along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -853,17 +801,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the virtualNetworks resource definition.
+     * @return the {@link PollerFlux} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginUpdateAsync(String resourceGroupName,
@@ -875,18 +821,16 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the virtualNetworks resource definition.
+     * @return the {@link PollerFlux} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginUpdateAsync(String resourceGroupName,
@@ -899,17 +843,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtualNetworks resource definition.
+     * @return the {@link SyncPoller} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginUpdate(String resourceGroupName,
@@ -918,18 +860,16 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the virtualNetworks resource definition.
+     * @return the {@link SyncPoller} for polling of the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginUpdate(String resourceGroupName,
@@ -938,17 +878,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition on successful completion of {@link Mono}.
+     * @return the Virtual Network resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualNetworkInner> updateAsync(String resourceGroupName, String virtualNetworkName,
@@ -958,18 +896,16 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition on successful completion of {@link Mono}.
+     * @return the Virtual Network resource definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualNetworkInner> updateAsync(String resourceGroupName, String virtualNetworkName,
@@ -979,17 +915,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition.
+     * @return the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner update(String resourceGroupName, String virtualNetworkName,
@@ -998,18 +932,16 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * Patches the virtual network
-     * 
-     * Patches the Hybrid AKS virtual network.
+     * Patches the virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
-     * @param virtualNetworks The virtualNetworks resource patch definition.
+     * @param virtualNetworks Virtual Network resource patch definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the virtualNetworks resource definition.
+     * @return the Virtual Network resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualNetworkInner update(String resourceGroupName, String virtualNetworkName,
@@ -1018,15 +950,14 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by resource group
-     * 
-     * Lists the Hybrid AKS virtual networks by resource group.
+     * Lists the virtual networks in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of virtual network resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1052,16 +983,15 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by resource group
-     * 
-     * Lists the Hybrid AKS virtual networks by resource group.
+     * Lists the virtual networks in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of virtual network resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -1088,15 +1018,13 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by resource group
-     * 
-     * Lists the Hybrid AKS virtual networks by resource group.
+     * Lists the virtual networks in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return a list of virtual network resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualNetworkInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1105,16 +1033,14 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by resource group
-     * 
-     * Lists the Hybrid AKS virtual networks by resource group.
+     * Lists the virtual networks in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return a list of virtual network resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualNetworkInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1123,15 +1049,13 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by resource group
-     * 
-     * Lists the Hybrid AKS virtual networks by resource group.
+     * Lists the virtual networks in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> listByResourceGroup(String resourceGroupName) {
@@ -1139,16 +1063,14 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by resource group
-     * 
-     * Lists the Hybrid AKS virtual networks by resource group.
+     * Lists the virtual networks in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1156,13 +1078,12 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by subscription
-     * 
-     * Lists the Hybrid AKS virtual networks by subscription.
+     * Lists the virtual networks in the specified subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of virtual network resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listSinglePageAsync() {
@@ -1184,15 +1105,14 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by subscription
-     * 
-     * Lists the Hybrid AKS virtual networks by subscription.
+     * Lists the virtual networks in the specified subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of virtual network resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listSinglePageAsync(Context context) {
@@ -1214,13 +1134,11 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by subscription
-     * 
-     * Lists the Hybrid AKS virtual networks by subscription.
+     * Lists the virtual networks in the specified subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return a list of virtual network resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualNetworkInner> listAsync() {
@@ -1229,15 +1147,13 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by subscription
-     * 
-     * Lists the Hybrid AKS virtual networks by subscription.
+     * Lists the virtual networks in the specified subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return a list of virtual network resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualNetworkInner> listAsync(Context context) {
@@ -1246,13 +1162,11 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by subscription
-     * 
-     * Lists the Hybrid AKS virtual networks by subscription.
+     * Lists the virtual networks in the specified subscription.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> list() {
@@ -1260,15 +1174,13 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
     }
 
     /**
-     * List virtual networks by subscription
-     * 
-     * Lists the Hybrid AKS virtual networks by subscription.
+     * Lists the virtual networks in the specified subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualNetworkInner> list(Context context) {
@@ -1284,7 +1196,8 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of virtual network resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1314,7 +1227,8 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of virtual network resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
@@ -1342,7 +1256,8 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of virtual network resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1372,7 +1287,8 @@ public final class VirtualNetworksClientImpl implements VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of virtual network resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink,

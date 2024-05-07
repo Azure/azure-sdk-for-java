@@ -16,50 +16,39 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPointResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPointResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"mzsb\",\"location\":\"zoggigrxwburvjxx\",\"tags\":{\"nkoukn\":\"pydptko\"},\"id\":\"udwtiukbl\",\"name\":\"ngkpocipazy\",\"type\":\"o\"},{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"kgjn\",\"location\":\"iucgygevqzn\",\"tags\":{\"dpydn\":\"mrbpizcdrqj\"},\"id\":\"yhxdeoejzicwi\",\"name\":\"sjttgzfbish\",\"type\":\"bkh\"},{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"eyeam\",\"location\":\"p\",\"tags\":{\"wkgshwa\":\"alpbuxwgipwhon\"},\"id\":\"kix\",\"name\":\"bin\",\"type\":\"eputtmrywnuzoqf\"},{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"qzrnkcqvyxlwhz\",\"location\":\"sicohoqqnwvlry\",\"tags\":{\"konocu\":\"hheunmmqhgyx\"},\"id\":\"oklyaxuconuq\",\"name\":\"zf\",\"type\":\"beypewrmjmw\"}],\"nextLink\":\"jektcxsenh\"}")
-                .toObject(RecoveryPointResourceList.class);
-        Assertions.assertEquals("jektcxsenh", model.nextLink());
-        Assertions.assertEquals("zoggigrxwburvjxx", model.value().get(0).location());
-        Assertions.assertEquals("pydptko", model.value().get(0).tags().get("nkoukn"));
-        Assertions.assertEquals("mzsb", model.value().get(0).etag());
+        RecoveryPointResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"hslkevleggzf\",\"location\":\"u\",\"tags\":{\"vmezy\":\"vfaxkffeiith\",\"burvjxxjnspy\":\"shxmzsbbzoggigrx\",\"udwtiukbl\":\"ptkoenkoukn\",\"o\":\"ngkpocipazy\"},\"id\":\"gukgjnpiucgygevq\",\"name\":\"ntypmrbpizcdrqj\",\"type\":\"dpydn\"},{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"xdeoejzic\",\"location\":\"ifsjttgzfbishcb\",\"tags\":{\"alpbuxwgipwhon\":\"jdeyeamdpha\",\"kix\":\"wkgshwa\",\"eputtmrywnuzoqf\":\"bin\",\"qvyxlwhzlsicoho\":\"iyqzrnk\"},\"id\":\"qnwvlrya\",\"name\":\"w\",\"type\":\"heun\"},{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"hgyxzkonoc\",\"location\":\"koklya\",\"tags\":{\"zf\":\"onuq\",\"vjektcxsenh\":\"beypewrmjmw\",\"rzpwvlqdqgbiq\":\"lrsf\",\"vf\":\"lihkaetcktvfc\"},\"id\":\"nkymuctqhjfbebrj\",\"name\":\"xerf\",\"type\":\"wutttxfvjrbi\"}],\"nextLink\":\"hxepcyvahfnlj\"}")
+            .toObject(RecoveryPointResourceList.class);
+        Assertions.assertEquals("hxepcyvahfnlj", model.nextLink());
+        Assertions.assertEquals("u", model.value().get(0).location());
+        Assertions.assertEquals("vfaxkffeiith", model.value().get(0).tags().get("vmezy"));
+        Assertions.assertEquals("hslkevleggzf", model.value().get(0).etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointResourceList model =
-            new RecoveryPointResourceList()
-                .withNextLink("jektcxsenh")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new RecoveryPointResourceInner()
-                                .withLocation("zoggigrxwburvjxx")
-                                .withTags(mapOf("nkoukn", "pydptko"))
-                                .withProperties(new RecoveryPoint())
-                                .withEtag("mzsb"),
-                            new RecoveryPointResourceInner()
-                                .withLocation("iucgygevqzn")
-                                .withTags(mapOf("dpydn", "mrbpizcdrqj"))
-                                .withProperties(new RecoveryPoint())
-                                .withEtag("kgjn"),
-                            new RecoveryPointResourceInner()
-                                .withLocation("p")
-                                .withTags(mapOf("wkgshwa", "alpbuxwgipwhon"))
-                                .withProperties(new RecoveryPoint())
-                                .withEtag("eyeam"),
-                            new RecoveryPointResourceInner()
-                                .withLocation("sicohoqqnwvlry")
-                                .withTags(mapOf("konocu", "hheunmmqhgyx"))
-                                .withProperties(new RecoveryPoint())
-                                .withEtag("qzrnkcqvyxlwhz")));
+        RecoveryPointResourceList model
+            = new RecoveryPointResourceList()
+                .withNextLink(
+                    "hxepcyvahfnlj")
+                .withValue(Arrays.asList(
+                    new RecoveryPointResourceInner().withLocation("u")
+                        .withTags(mapOf("vmezy", "vfaxkffeiith", "burvjxxjnspy", "shxmzsbbzoggigrx", "udwtiukbl",
+                            "ptkoenkoukn", "o", "ngkpocipazy"))
+                        .withProperties(new RecoveryPoint()).withEtag("hslkevleggzf"),
+                    new RecoveryPointResourceInner().withLocation("ifsjttgzfbishcb")
+                        .withTags(mapOf("alpbuxwgipwhon", "jdeyeamdpha", "kix", "wkgshwa", "eputtmrywnuzoqf", "bin",
+                            "qvyxlwhzlsicoho", "iyqzrnk"))
+                        .withProperties(new RecoveryPoint()).withEtag("xdeoejzic"),
+                    new RecoveryPointResourceInner()
+                        .withLocation("koklya").withTags(mapOf("zf", "onuq", "vjektcxsenh", "beypewrmjmw",
+                            "rzpwvlqdqgbiq", "lrsf", "vf", "lihkaetcktvfc"))
+                        .withProperties(new RecoveryPoint()).withEtag("hgyxzkonoc")));
         model = BinaryData.fromObject(model).toObject(RecoveryPointResourceList.class);
-        Assertions.assertEquals("jektcxsenh", model.nextLink());
-        Assertions.assertEquals("zoggigrxwburvjxx", model.value().get(0).location());
-        Assertions.assertEquals("pydptko", model.value().get(0).tags().get("nkoukn"));
-        Assertions.assertEquals("mzsb", model.value().get(0).etag());
+        Assertions.assertEquals("hxepcyvahfnlj", model.nextLink());
+        Assertions.assertEquals("u", model.value().get(0).location());
+        Assertions.assertEquals("vfaxkffeiith", model.value().get(0).tags().get("vmezy"));
+        Assertions.assertEquals("hslkevleggzf", model.value().get(0).etag());
     }
 
     // Use "Map.of" if available

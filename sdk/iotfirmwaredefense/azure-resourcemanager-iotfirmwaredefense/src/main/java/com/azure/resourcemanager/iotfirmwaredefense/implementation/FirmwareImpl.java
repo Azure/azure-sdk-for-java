@@ -4,26 +4,15 @@
 
 package com.azure.resourcemanager.iotfirmwaredefense.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.FirmwareInner;
-import com.azure.resourcemanager.iotfirmwaredefense.models.BinaryHardening;
-import com.azure.resourcemanager.iotfirmwaredefense.models.BinaryHardeningSummary;
-import com.azure.resourcemanager.iotfirmwaredefense.models.Component;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CryptoCertificate;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CryptoCertificateSummary;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CryptoKey;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CryptoKeySummary;
-import com.azure.resourcemanager.iotfirmwaredefense.models.Cve;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CveSummary;
 import com.azure.resourcemanager.iotfirmwaredefense.models.Firmware;
-import com.azure.resourcemanager.iotfirmwaredefense.models.FirmwareSummary;
 import com.azure.resourcemanager.iotfirmwaredefense.models.FirmwareUpdateDefinition;
-import com.azure.resourcemanager.iotfirmwaredefense.models.PasswordHash;
 import com.azure.resourcemanager.iotfirmwaredefense.models.ProvisioningState;
 import com.azure.resourcemanager.iotfirmwaredefense.models.Status;
+import com.azure.resourcemanager.iotfirmwaredefense.models.StatusMessage;
 import com.azure.resourcemanager.iotfirmwaredefense.models.UrlToken;
 import java.util.Collections;
 import java.util.List;
@@ -77,8 +66,8 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
         return this.innerModel().status();
     }
 
-    public List<Object> statusMessages() {
-        List<Object> inner = this.innerModel().statusMessages();
+    public List<StatusMessage> statusMessages() {
+        List<StatusMessage> inner = this.innerModel().statusMessages();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
@@ -117,22 +106,15 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
     }
 
     public Firmware create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirmwares()
-                .createWithResponse(resourceGroupName, workspaceName, firmwareId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFirmwares()
+            .createWithResponse(resourceGroupName, workspaceName, firmwareId, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Firmware create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirmwares()
-                .createWithResponse(resourceGroupName, workspaceName, firmwareId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFirmwares()
+            .createWithResponse(resourceGroupName, workspaceName, firmwareId, this.innerModel(), context).getValue();
         return this;
     }
 
@@ -148,59 +130,41 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
     }
 
     public Firmware apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirmwares()
-                .updateWithResponse(resourceGroupName, workspaceName, firmwareId, updateFirmware, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFirmwares()
+            .updateWithResponse(resourceGroupName, workspaceName, firmwareId, updateFirmware, Context.NONE).getValue();
         return this;
     }
 
     public Firmware apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirmwares()
-                .updateWithResponse(resourceGroupName, workspaceName, firmwareId, updateFirmware, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFirmwares()
+            .updateWithResponse(resourceGroupName, workspaceName, firmwareId, updateFirmware, context).getValue();
         return this;
     }
 
-    FirmwareImpl(
-        FirmwareInner innerObject,
+    FirmwareImpl(FirmwareInner innerObject,
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.firmwareId = Utils.getValueFromIdByName(innerObject.id(), "firmwares");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.firmwareId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "firmwares");
     }
 
     public Firmware refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirmwares()
-                .getWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFirmwares()
+            .getWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE).getValue();
         return this;
     }
 
     public Firmware refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirmwares()
-                .getWithResponse(resourceGroupName, workspaceName, firmwareId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFirmwares()
+            .getWithResponse(resourceGroupName, workspaceName, firmwareId, context).getValue();
         return this;
     }
 
     public Response<UrlToken> generateDownloadUrlWithResponse(Context context) {
-        return serviceManager
-            .firmwares()
-            .generateDownloadUrlWithResponse(resourceGroupName, workspaceName, firmwareId, context);
+        return serviceManager.firmwares().generateDownloadUrlWithResponse(resourceGroupName, workspaceName, firmwareId,
+            context);
     }
 
     public UrlToken generateDownloadUrl() {
@@ -208,145 +172,12 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
     }
 
     public Response<UrlToken> generateFilesystemDownloadUrlWithResponse(Context context) {
-        return serviceManager
-            .firmwares()
-            .generateFilesystemDownloadUrlWithResponse(resourceGroupName, workspaceName, firmwareId, context);
+        return serviceManager.firmwares().generateFilesystemDownloadUrlWithResponse(resourceGroupName, workspaceName,
+            firmwareId, context);
     }
 
     public UrlToken generateFilesystemDownloadUrl() {
         return serviceManager.firmwares().generateFilesystemDownloadUrl(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public Response<FirmwareSummary> generateSummaryWithResponse(Context context) {
-        return serviceManager
-            .firmwares()
-            .generateSummaryWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public FirmwareSummary generateSummary() {
-        return serviceManager.firmwares().generateSummary(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public PagedIterable<Component> listGenerateComponentList() {
-        return serviceManager.firmwares().listGenerateComponentList(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public PagedIterable<Component> listGenerateComponentList(Context context) {
-        return serviceManager
-            .firmwares()
-            .listGenerateComponentList(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public Response<Component> generateComponentDetailsWithResponse(Context context) {
-        return serviceManager
-            .firmwares()
-            .generateComponentDetailsWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public Component generateComponentDetails() {
-        return serviceManager.firmwares().generateComponentDetails(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public PagedIterable<BinaryHardening> listGenerateBinaryHardeningList() {
-        return serviceManager.firmwares().listGenerateBinaryHardeningList(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public PagedIterable<BinaryHardening> listGenerateBinaryHardeningList(Context context) {
-        return serviceManager
-            .firmwares()
-            .listGenerateBinaryHardeningList(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public Response<BinaryHardeningSummary> generateBinaryHardeningSummaryWithResponse(Context context) {
-        return serviceManager
-            .firmwares()
-            .generateBinaryHardeningSummaryWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public BinaryHardeningSummary generateBinaryHardeningSummary() {
-        return serviceManager.firmwares().generateBinaryHardeningSummary(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public Response<BinaryHardening> generateBinaryHardeningDetailsWithResponse(Context context) {
-        return serviceManager
-            .firmwares()
-            .generateBinaryHardeningDetailsWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public BinaryHardening generateBinaryHardeningDetails() {
-        return serviceManager.firmwares().generateBinaryHardeningDetails(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public PagedIterable<PasswordHash> listGeneratePasswordHashList() {
-        return serviceManager.firmwares().listGeneratePasswordHashList(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public PagedIterable<PasswordHash> listGeneratePasswordHashList(Context context) {
-        return serviceManager
-            .firmwares()
-            .listGeneratePasswordHashList(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public PagedIterable<Cve> listGenerateCveList() {
-        return serviceManager.firmwares().listGenerateCveList(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public PagedIterable<Cve> listGenerateCveList(Context context) {
-        return serviceManager.firmwares().listGenerateCveList(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public Response<CveSummary> generateCveSummaryWithResponse(Context context) {
-        return serviceManager
-            .firmwares()
-            .generateCveSummaryWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public CveSummary generateCveSummary() {
-        return serviceManager.firmwares().generateCveSummary(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public Response<CryptoCertificateSummary> generateCryptoCertificateSummaryWithResponse(Context context) {
-        return serviceManager
-            .firmwares()
-            .generateCryptoCertificateSummaryWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public CryptoCertificateSummary generateCryptoCertificateSummary() {
-        return serviceManager
-            .firmwares()
-            .generateCryptoCertificateSummary(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public Response<CryptoKeySummary> generateCryptoKeySummaryWithResponse(Context context) {
-        return serviceManager
-            .firmwares()
-            .generateCryptoKeySummaryWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public CryptoKeySummary generateCryptoKeySummary() {
-        return serviceManager.firmwares().generateCryptoKeySummary(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public PagedIterable<CryptoCertificate> listGenerateCryptoCertificateList() {
-        return serviceManager
-            .firmwares()
-            .listGenerateCryptoCertificateList(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public PagedIterable<CryptoCertificate> listGenerateCryptoCertificateList(Context context) {
-        return serviceManager
-            .firmwares()
-            .listGenerateCryptoCertificateList(resourceGroupName, workspaceName, firmwareId, context);
-    }
-
-    public PagedIterable<CryptoKey> listGenerateCryptoKeyList() {
-        return serviceManager.firmwares().listGenerateCryptoKeyList(resourceGroupName, workspaceName, firmwareId);
-    }
-
-    public PagedIterable<CryptoKey> listGenerateCryptoKeyList(Context context) {
-        return serviceManager
-            .firmwares()
-            .listGenerateCryptoKeyList(resourceGroupName, workspaceName, firmwareId, context);
     }
 
     public FirmwareImpl withFileName(String fileName) {
@@ -419,7 +250,7 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
         }
     }
 
-    public FirmwareImpl withStatusMessages(List<Object> statusMessages) {
+    public FirmwareImpl withStatusMessages(List<StatusMessage> statusMessages) {
         if (isInCreateMode()) {
             this.innerModel().withStatusMessages(statusMessages);
             return this;

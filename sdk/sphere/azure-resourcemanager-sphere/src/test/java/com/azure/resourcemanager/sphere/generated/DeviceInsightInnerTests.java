@@ -12,41 +12,33 @@ import org.junit.jupiter.api.Assertions;
 public final class DeviceInsightInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceInsightInner model =
-            BinaryData
-                .fromString(
-                    "{\"deviceId\":\"eggzfb\",\"description\":\"hfmvfaxkffe\",\"startTimestampUtc\":\"2021-04-21T05:15:54Z\",\"endTimestampUtc\":\"2021-05-15T04:16:32Z\",\"eventCategory\":\"hl\",\"eventClass\":\"m\",\"eventType\":\"zy\",\"eventCount\":2122365511}")
-                .toObject(DeviceInsightInner.class);
-        Assertions.assertEquals("eggzfb", model.deviceId());
-        Assertions.assertEquals("hfmvfaxkffe", model.description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-21T05:15:54Z"), model.startTimestampUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T04:16:32Z"), model.endTimestampUtc());
-        Assertions.assertEquals("hl", model.eventCategory());
-        Assertions.assertEquals("m", model.eventClass());
-        Assertions.assertEquals("zy", model.eventType());
-        Assertions.assertEquals(2122365511, model.eventCount());
+        DeviceInsightInner model = BinaryData.fromString(
+            "{\"deviceId\":\"ntypmrbpizcdrqj\",\"description\":\"dpydn\",\"startTimestampUtc\":\"2021-02-06T09:08:09Z\",\"endTimestampUtc\":\"2021-07-10T19:26:28Z\",\"eventCategory\":\"xdeoejzic\",\"eventClass\":\"ifsjttgzfbishcb\",\"eventType\":\"hajdeyeamdpha\",\"eventCount\":1536073800}")
+            .toObject(DeviceInsightInner.class);
+        Assertions.assertEquals("ntypmrbpizcdrqj", model.deviceId());
+        Assertions.assertEquals("dpydn", model.description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T09:08:09Z"), model.startTimestampUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-10T19:26:28Z"), model.endTimestampUtc());
+        Assertions.assertEquals("xdeoejzic", model.eventCategory());
+        Assertions.assertEquals("ifsjttgzfbishcb", model.eventClass());
+        Assertions.assertEquals("hajdeyeamdpha", model.eventType());
+        Assertions.assertEquals(1536073800, model.eventCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeviceInsightInner model =
-            new DeviceInsightInner()
-                .withDeviceId("eggzfb")
-                .withDescription("hfmvfaxkffe")
-                .withStartTimestampUtc(OffsetDateTime.parse("2021-04-21T05:15:54Z"))
-                .withEndTimestampUtc(OffsetDateTime.parse("2021-05-15T04:16:32Z"))
-                .withEventCategory("hl")
-                .withEventClass("m")
-                .withEventType("zy")
-                .withEventCount(2122365511);
+        DeviceInsightInner model = new DeviceInsightInner().withDeviceId("ntypmrbpizcdrqj").withDescription("dpydn")
+            .withStartTimestampUtc(OffsetDateTime.parse("2021-02-06T09:08:09Z"))
+            .withEndTimestampUtc(OffsetDateTime.parse("2021-07-10T19:26:28Z")).withEventCategory("xdeoejzic")
+            .withEventClass("ifsjttgzfbishcb").withEventType("hajdeyeamdpha").withEventCount(1536073800);
         model = BinaryData.fromObject(model).toObject(DeviceInsightInner.class);
-        Assertions.assertEquals("eggzfb", model.deviceId());
-        Assertions.assertEquals("hfmvfaxkffe", model.description());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-21T05:15:54Z"), model.startTimestampUtc());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T04:16:32Z"), model.endTimestampUtc());
-        Assertions.assertEquals("hl", model.eventCategory());
-        Assertions.assertEquals("m", model.eventClass());
-        Assertions.assertEquals("zy", model.eventType());
-        Assertions.assertEquals(2122365511, model.eventCount());
+        Assertions.assertEquals("ntypmrbpizcdrqj", model.deviceId());
+        Assertions.assertEquals("dpydn", model.description());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T09:08:09Z"), model.startTimestampUtc());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-10T19:26:28Z"), model.endTimestampUtc());
+        Assertions.assertEquals("xdeoejzic", model.eventCategory());
+        Assertions.assertEquals("ifsjttgzfbishcb", model.eventClass());
+        Assertions.assertEquals("hajdeyeamdpha", model.eventType());
+        Assertions.assertEquals(1536073800, model.eventCount());
     }
 }

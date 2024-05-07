@@ -14,7 +14,9 @@ import com.azure.resourcemanager.security.models.GovernanceRuleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes properties of an governance rule. */
+/**
+ * Describes properties of an governance rule.
+ */
 @Fluent
 public final class GovernanceRuleProperties {
     /*
@@ -110,13 +112,15 @@ public final class GovernanceRuleProperties {
     @JsonProperty(value = "metadata")
     private GovernanceRuleMetadata metadata;
 
-    /** Creates an instance of GovernanceRuleProperties class. */
+    /**
+     * Creates an instance of GovernanceRuleProperties class.
+     */
     public GovernanceRuleProperties() {
     }
 
     /**
      * Get the tenantId property: The tenantId (GUID).
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -125,7 +129,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Get the displayName property: Display name of the governance rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -134,7 +138,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Set the displayName property: Display name of the governance rule.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -145,7 +149,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Get the description property: Description of the governance rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -154,7 +158,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Set the description property: Description of the governance rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -166,7 +170,7 @@ public final class GovernanceRuleProperties {
     /**
      * Get the remediationTimeframe property: Governance rule remediation timeframe - this is the time that will affect
      * on the grace-period duration e.g. 7.00:00:00 - means 7 days.
-     *
+     * 
      * @return the remediationTimeframe value.
      */
     public String remediationTimeframe() {
@@ -176,7 +180,7 @@ public final class GovernanceRuleProperties {
     /**
      * Set the remediationTimeframe property: Governance rule remediation timeframe - this is the time that will affect
      * on the grace-period duration e.g. 7.00:00:00 - means 7 days.
-     *
+     * 
      * @param remediationTimeframe the remediationTimeframe value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -187,7 +191,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Get the isGracePeriod property: Defines whether there is a grace period on the governance rule.
-     *
+     * 
      * @return the isGracePeriod value.
      */
     public Boolean isGracePeriod() {
@@ -196,7 +200,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Set the isGracePeriod property: Defines whether there is a grace period on the governance rule.
-     *
+     * 
      * @param isGracePeriod the isGracePeriod value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -208,7 +212,7 @@ public final class GovernanceRuleProperties {
     /**
      * Get the rulePriority property: The governance rule priority, priority to the lower number. Rules with the same
      * priority on the same scope will not be allowed.
-     *
+     * 
      * @return the rulePriority value.
      */
     public int rulePriority() {
@@ -218,7 +222,7 @@ public final class GovernanceRuleProperties {
     /**
      * Set the rulePriority property: The governance rule priority, priority to the lower number. Rules with the same
      * priority on the same scope will not be allowed.
-     *
+     * 
      * @param rulePriority the rulePriority value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -229,7 +233,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Get the isDisabled property: Defines whether the rule is active/inactive.
-     *
+     * 
      * @return the isDisabled value.
      */
     public Boolean isDisabled() {
@@ -238,7 +242,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Set the isDisabled property: Defines whether the rule is active/inactive.
-     *
+     * 
      * @param isDisabled the isDisabled value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -249,7 +253,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Get the ruleType property: The rule type of the governance rule, defines the source of the rule e.g. Integrated.
-     *
+     * 
      * @return the ruleType value.
      */
     public GovernanceRuleType ruleType() {
@@ -258,7 +262,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Set the ruleType property: The rule type of the governance rule, defines the source of the rule e.g. Integrated.
-     *
+     * 
      * @param ruleType the ruleType value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -269,7 +273,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Get the sourceResourceType property: The governance rule source, what the rule affects, e.g. Assessments.
-     *
+     * 
      * @return the sourceResourceType value.
      */
     public GovernanceRuleSourceResourceType sourceResourceType() {
@@ -278,7 +282,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Set the sourceResourceType property: The governance rule source, what the rule affects, e.g. Assessments.
-     *
+     * 
      * @param sourceResourceType the sourceResourceType value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -288,8 +292,9 @@ public final class GovernanceRuleProperties {
     }
 
     /**
-     * Get the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management scopes).
-     *
+     * Get the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management
+     * scopes).
+     * 
      * @return the excludedScopes value.
      */
     public List<String> excludedScopes() {
@@ -297,8 +302,9 @@ public final class GovernanceRuleProperties {
     }
 
     /**
-     * Set the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management scopes).
-     *
+     * Set the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management
+     * scopes).
+     * 
      * @param excludedScopes the excludedScopes value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -309,7 +315,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Get the conditionSets property: The governance rule conditionSets - see examples.
-     *
+     * 
      * @return the conditionSets value.
      */
     public List<Object> conditionSets() {
@@ -318,7 +324,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Set the conditionSets property: The governance rule conditionSets - see examples.
-     *
+     * 
      * @param conditionSets the conditionSets value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -330,7 +336,7 @@ public final class GovernanceRuleProperties {
     /**
      * Get the includeMemberScopes property: Defines whether the rule is management scope rule (master connector as a
      * single scope or management scope).
-     *
+     * 
      * @return the includeMemberScopes value.
      */
     public Boolean includeMemberScopes() {
@@ -340,7 +346,7 @@ public final class GovernanceRuleProperties {
     /**
      * Set the includeMemberScopes property: Defines whether the rule is management scope rule (master connector as a
      * single scope or management scope).
-     *
+     * 
      * @param includeMemberScopes the includeMemberScopes value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -352,7 +358,7 @@ public final class GovernanceRuleProperties {
     /**
      * Get the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
      * example.
-     *
+     * 
      * @return the ownerSource value.
      */
     public GovernanceRuleOwnerSource ownerSource() {
@@ -362,7 +368,7 @@ public final class GovernanceRuleProperties {
     /**
      * Set the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
      * example.
-     *
+     * 
      * @param ownerSource the ownerSource value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -374,7 +380,7 @@ public final class GovernanceRuleProperties {
     /**
      * Get the governanceEmailNotification property: The email notifications settings for the governance rule, states
      * whether to disable notifications for mangers and owners.
-     *
+     * 
      * @return the governanceEmailNotification value.
      */
     public GovernanceRuleEmailNotification governanceEmailNotification() {
@@ -384,19 +390,19 @@ public final class GovernanceRuleProperties {
     /**
      * Set the governanceEmailNotification property: The email notifications settings for the governance rule, states
      * whether to disable notifications for mangers and owners.
-     *
+     * 
      * @param governanceEmailNotification the governanceEmailNotification value to set.
      * @return the GovernanceRuleProperties object itself.
      */
-    public GovernanceRuleProperties withGovernanceEmailNotification(
-        GovernanceRuleEmailNotification governanceEmailNotification) {
+    public GovernanceRuleProperties
+        withGovernanceEmailNotification(GovernanceRuleEmailNotification governanceEmailNotification) {
         this.governanceEmailNotification = governanceEmailNotification;
         return this;
     }
 
     /**
      * Get the metadata property: The governance rule metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public GovernanceRuleMetadata metadata() {
@@ -405,7 +411,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Set the metadata property: The governance rule metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the GovernanceRuleProperties object itself.
      */
@@ -416,39 +422,29 @@ public final class GovernanceRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model GovernanceRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model GovernanceRuleProperties"));
         }
         if (ruleType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleType in model GovernanceRuleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ruleType in model GovernanceRuleProperties"));
         }
         if (sourceResourceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceResourceType in model GovernanceRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceResourceType in model GovernanceRuleProperties"));
         }
         if (conditionSets() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property conditionSets in model GovernanceRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property conditionSets in model GovernanceRuleProperties"));
         }
         if (ownerSource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ownerSource in model GovernanceRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ownerSource in model GovernanceRuleProperties"));
         } else {
             ownerSource().validate();
         }

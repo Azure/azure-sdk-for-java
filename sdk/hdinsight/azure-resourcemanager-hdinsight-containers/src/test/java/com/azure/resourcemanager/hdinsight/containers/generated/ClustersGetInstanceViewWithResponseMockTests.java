@@ -30,47 +30,34 @@ public final class ClustersGetInstanceViewWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"name\":\"negvmnvuqe\",\"properties\":{\"status\":{\"ready\":\"vldspa\",\"reason\":\"jbkkdmflvestmjl\",\"message\":\"ril\"},\"serviceStatuses\":[{\"kind\":\"apeewchpxlkt\",\"ready\":\"kuziycsle\",\"message\":\"f\"},{\"kind\":\"ztcktyh\",\"ready\":\"tqedcgzulwm\",\"message\":\"qzz\"},{\"kind\":\"rjvpglydzgkrvqee\",\"ready\":\"toepryu\",\"message\":\"wytpzdmovz\"}]}}";
+        String responseStr
+            = "{\"name\":\"ypoh\",\"properties\":{\"status\":{\"ready\":\"uemsly\",\"reason\":\"qyrp\",\"message\":\"obrltt\"},\"serviceStatuses\":[{\"kind\":\"sjnygqdnfwqzdzgt\",\"ready\":\"la\",\"message\":\"nfhqlyvijouwivk\"},{\"kind\":\"oyzunbixxr\",\"ready\":\"ikvcpwp\",\"message\":\"lrcivtsoxfrke\"},{\"kind\":\"xpmyyefrpmpdnq\",\"ready\":\"skawaoqvmmb\",\"message\":\"qfr\"}]}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        HDInsightContainersManager manager =
-            HDInsightContainersManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HDInsightContainersManager manager = HDInsightContainersManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ClusterInstanceViewResult response =
-            manager
-                .clusters()
-                .getInstanceViewWithResponse("kjpvdwxf", "wiivwzjbhyzsx", "rkambt", com.azure.core.util.Context.NONE)
-                .getValue();
+        ClusterInstanceViewResult response = manager.clusters()
+            .getInstanceViewWithResponse("pmuneqsx", "mhfbuzjy", "hsasbhu", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("negvmnvuqe", response.name());
-        Assertions.assertEquals("vldspa", response.status().ready());
-        Assertions.assertEquals("jbkkdmflvestmjl", response.status().reason());
-        Assertions.assertEquals("ril", response.status().message());
-        Assertions.assertEquals("apeewchpxlkt", response.serviceStatuses().get(0).kind());
-        Assertions.assertEquals("kuziycsle", response.serviceStatuses().get(0).ready());
-        Assertions.assertEquals("f", response.serviceStatuses().get(0).message());
+        Assertions.assertEquals("ypoh", response.name());
+        Assertions.assertEquals("uemsly", response.properties().status().ready());
+        Assertions.assertEquals("qyrp", response.properties().status().reason());
+        Assertions.assertEquals("obrltt", response.properties().status().message());
+        Assertions.assertEquals("sjnygqdnfwqzdzgt", response.properties().serviceStatuses().get(0).kind());
+        Assertions.assertEquals("la", response.properties().serviceStatuses().get(0).ready());
+        Assertions.assertEquals("nfhqlyvijouwivk", response.properties().serviceStatuses().get(0).message());
     }
 }

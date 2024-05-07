@@ -42,11 +42,6 @@ public final class LoggingKeys {
     public static final String URL_KEY = "url";
 
     /**
-     * Key representing request body content length.
-     */
-    public static final String CONTENT_LENGTH_KEY = "contentLength";
-
-    /**
      * Key representing request body. The value should be populated conditionally
      * if populated at all.
      */
@@ -56,4 +51,14 @@ public final class LoggingKeys {
      * Key representing response status code. The value should be a number.
      */
     public static final String STATUS_CODE_KEY = "statusCode";
+
+    /**
+     * Key representing cancelled operation result.
+     */
+    public static final String CANCELLED_ERROR_TYPE = "cancelled";
+
+    /**
+     * Key representing a placeholder for redacted fields.
+     */
+    public static final String REDACTED_PLACEHOLDER = "REDACTED";
 }

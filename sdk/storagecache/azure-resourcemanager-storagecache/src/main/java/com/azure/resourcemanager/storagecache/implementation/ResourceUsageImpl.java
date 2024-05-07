@@ -13,8 +13,8 @@ public final class ResourceUsageImpl implements ResourceUsage {
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    ResourceUsageImpl(
-        ResourceUsageInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
+    ResourceUsageImpl(ResourceUsageInner innerObject,
+        com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

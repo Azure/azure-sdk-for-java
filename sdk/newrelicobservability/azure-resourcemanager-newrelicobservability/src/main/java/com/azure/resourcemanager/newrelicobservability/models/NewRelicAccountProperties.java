@@ -7,7 +7,9 @@ package com.azure.resourcemanager.newrelicobservability.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the NewRelic account. */
+/**
+ * Properties of the NewRelic account.
+ */
 @Fluent
 public final class NewRelicAccountProperties {
     /*
@@ -34,13 +36,15 @@ public final class NewRelicAccountProperties {
     @JsonProperty(value = "singleSignOnProperties")
     private NewRelicSingleSignOnProperties singleSignOnProperties;
 
-    /** Creates an instance of NewRelicAccountProperties class. */
+    /**
+     * Creates an instance of NewRelicAccountProperties class.
+     */
     public NewRelicAccountProperties() {
     }
 
     /**
      * Get the userId property: User id.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -49,7 +53,7 @@ public final class NewRelicAccountProperties {
 
     /**
      * Set the userId property: User id.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the NewRelicAccountProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class NewRelicAccountProperties {
 
     /**
      * Get the accountInfo property: NewRelic Account Information.
-     *
+     * 
      * @return the accountInfo value.
      */
     public AccountInfo accountInfo() {
@@ -69,7 +73,7 @@ public final class NewRelicAccountProperties {
 
     /**
      * Set the accountInfo property: NewRelic Account Information.
-     *
+     * 
      * @param accountInfo the accountInfo value to set.
      * @return the NewRelicAccountProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class NewRelicAccountProperties {
 
     /**
      * Get the organizationInfo property: NewRelic Organization Information.
-     *
+     * 
      * @return the organizationInfo value.
      */
     public OrganizationInfo organizationInfo() {
@@ -89,7 +93,7 @@ public final class NewRelicAccountProperties {
 
     /**
      * Set the organizationInfo property: NewRelic Organization Information.
-     *
+     * 
      * @param organizationInfo the organizationInfo value to set.
      * @return the NewRelicAccountProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class NewRelicAccountProperties {
 
     /**
      * Get the singleSignOnProperties property: date when plan was applied.
-     *
+     * 
      * @return the singleSignOnProperties value.
      */
     public NewRelicSingleSignOnProperties singleSignOnProperties() {
@@ -109,7 +113,7 @@ public final class NewRelicAccountProperties {
 
     /**
      * Set the singleSignOnProperties property: date when plan was applied.
-     *
+     * 
      * @param singleSignOnProperties the singleSignOnProperties value to set.
      * @return the NewRelicAccountProperties object itself.
      */
@@ -120,7 +124,7 @@ public final class NewRelicAccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

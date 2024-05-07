@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.SnapshotInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the List Snapshots operation. */
+/**
+ * The response from the List Snapshots operation.
+ */
 @Fluent
 public final class SnapshotListResult {
     /*
@@ -24,13 +26,15 @@ public final class SnapshotListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SnapshotListResult class. */
+    /**
+     * Creates an instance of SnapshotListResult class.
+     */
     public SnapshotListResult() {
     }
 
     /**
      * Get the value property: The list of snapshots.
-     *
+     * 
      * @return the value value.
      */
     public List<SnapshotInner> value() {
@@ -39,7 +43,7 @@ public final class SnapshotListResult {
 
     /**
      * Set the value property: The list of snapshots.
-     *
+     * 
      * @param value the value value to set.
      * @return the SnapshotListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class SnapshotListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of snapshot results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SnapshotListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

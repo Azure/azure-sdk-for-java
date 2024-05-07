@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.containerservice.models.MeshRevisionProfileProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Mesh revision profile for a mesh. */
+/**
+ * Mesh revision profile for a mesh.
+ */
 @Fluent
 public final class MeshRevisionProfileInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class MeshRevisionProfileInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of MeshRevisionProfileInner class. */
+    /**
+     * Creates an instance of MeshRevisionProfileInner class.
+     */
     public MeshRevisionProfileInner() {
     }
 
     /**
      * Get the properties property: Mesh revision profile properties for a mesh.
-     *
+     * 
      * @return the properties value.
      */
     public MeshRevisionProfileProperties properties() {
@@ -40,7 +44,7 @@ public final class MeshRevisionProfileInner extends ProxyResource {
 
     /**
      * Set the properties property: Mesh revision profile properties for a mesh.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MeshRevisionProfileInner object itself.
      */
@@ -51,7 +55,7 @@ public final class MeshRevisionProfileInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -60,7 +64,7 @@ public final class MeshRevisionProfileInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

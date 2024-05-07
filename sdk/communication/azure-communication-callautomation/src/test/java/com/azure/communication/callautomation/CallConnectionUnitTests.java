@@ -112,7 +112,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     public void getParticipant() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false), 200)
+                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false, false), 200)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
@@ -126,7 +126,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     public void getParticipantWithResponse() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false), 200)
+                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false, false), 200)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
@@ -261,7 +261,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     public void muteParticipant() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new MuteParticipantsResultInternal()), 202)
+                new SimpleEntry<>(serializeObject(new MuteParticipantsResultInternal()), 200)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
@@ -276,7 +276,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(serializeObject(new MuteParticipantsResultInternal()
-                    .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
+                    .setOperationContext(CALL_OPERATION_CONTEXT)), 200)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
@@ -287,7 +287,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             callConnection.muteParticipantWithResponse(muteParticipantOptions, Context.NONE);
 
         assertNotNull(muteParticipantResultResponse);
-        assertEquals(202, muteParticipantResultResponse.getStatusCode());
+        assertEquals(200, muteParticipantResultResponse.getStatusCode());
         assertNotNull(muteParticipantResultResponse.getValue());
     }
 

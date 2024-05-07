@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LogicalNetworkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogicalNetworkProperties model =
-            BinaryData
-                .fromString(
-                    "{\"friendlyName\":\"mqc\",\"networkVirtualizationStatus\":\"q\",\"logicalNetworkUsage\":\"khixuigdtopbo\",\"logicalNetworkDefinitionsStatus\":\"og\"}")
-                .toObject(LogicalNetworkProperties.class);
+        LogicalNetworkProperties model = BinaryData.fromString(
+            "{\"friendlyName\":\"mqc\",\"networkVirtualizationStatus\":\"q\",\"logicalNetworkUsage\":\"khixuigdtopbo\",\"logicalNetworkDefinitionsStatus\":\"og\"}")
+            .toObject(LogicalNetworkProperties.class);
         Assertions.assertEquals("mqc", model.friendlyName());
         Assertions.assertEquals("q", model.networkVirtualizationStatus());
         Assertions.assertEquals("khixuigdtopbo", model.logicalNetworkUsage());
@@ -24,12 +22,9 @@ public final class LogicalNetworkPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogicalNetworkProperties model =
-            new LogicalNetworkProperties()
-                .withFriendlyName("mqc")
-                .withNetworkVirtualizationStatus("q")
-                .withLogicalNetworkUsage("khixuigdtopbo")
-                .withLogicalNetworkDefinitionsStatus("og");
+        LogicalNetworkProperties model
+            = new LogicalNetworkProperties().withFriendlyName("mqc").withNetworkVirtualizationStatus("q")
+                .withLogicalNetworkUsage("khixuigdtopbo").withLogicalNetworkDefinitionsStatus("og");
         model = BinaryData.fromObject(model).toObject(LogicalNetworkProperties.class);
         Assertions.assertEquals("mqc", model.friendlyName());
         Assertions.assertEquals("q", model.networkVirtualizationStatus());

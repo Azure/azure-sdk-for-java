@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureStackEdgeDeviceResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureStackEdgeDeviceResourceId model =
-            BinaryData.fromString("{\"id\":\"hsmtxpsiebtfhvp\"}").toObject(AzureStackEdgeDeviceResourceId.class);
-        Assertions.assertEquals("hsmtxpsiebtfhvp", model.id());
+        AzureStackEdgeDeviceResourceId model
+            = BinaryData.fromString("{\"id\":\"dhmdua\"}").toObject(AzureStackEdgeDeviceResourceId.class);
+        Assertions.assertEquals("dhmdua", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStackEdgeDeviceResourceId model = new AzureStackEdgeDeviceResourceId().withId("hsmtxpsiebtfhvp");
+        AzureStackEdgeDeviceResourceId model = new AzureStackEdgeDeviceResourceId().withId("dhmdua");
         model = BinaryData.fromObject(model).toObject(AzureStackEdgeDeviceResourceId.class);
-        Assertions.assertEquals("hsmtxpsiebtfhvp", model.id());
+        Assertions.assertEquals("dhmdua", model.id());
     }
 }

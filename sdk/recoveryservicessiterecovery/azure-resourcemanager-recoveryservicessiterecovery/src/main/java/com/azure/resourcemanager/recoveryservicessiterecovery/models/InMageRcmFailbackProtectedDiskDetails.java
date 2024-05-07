@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** InMageRcmFailback protected disk details. */
+/**
+ * InMageRcmFailback protected disk details.
+ */
 @Fluent
 public final class InMageRcmFailbackProtectedDiskDetails {
     /*
@@ -77,13 +79,15 @@ public final class InMageRcmFailbackProtectedDiskDetails {
     @JsonProperty(value = "lastSyncTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSyncTime;
 
-    /** Creates an instance of InMageRcmFailbackProtectedDiskDetails class. */
+    /**
+     * Creates an instance of InMageRcmFailbackProtectedDiskDetails class.
+     */
     public InMageRcmFailbackProtectedDiskDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id (reported by source agent).
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -92,7 +96,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Get the diskName property: The disk name.
-     *
+     * 
      * @return the diskName value.
      */
     public String diskName() {
@@ -101,7 +105,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Get the isOSDisk property: A value indicating whether the disk is the OS disk.
-     *
+     * 
      * @return the isOSDisk value.
      */
     public String isOSDisk() {
@@ -110,7 +114,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Get the capacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @return the capacityInBytes value.
      */
     public Long capacityInBytes() {
@@ -119,7 +123,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Get the diskUuid property: The disk Uuid (reported by vCenter).
-     *
+     * 
      * @return the diskUuid value.
      */
     public String diskUuid() {
@@ -128,7 +132,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Get the dataPendingInLogDataStoreInMB property: The data pending in log data store in MB.
-     *
+     * 
      * @return the dataPendingInLogDataStoreInMB value.
      */
     public Double dataPendingInLogDataStoreInMB() {
@@ -137,7 +141,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Get the dataPendingAtSourceAgentInMB property: The data pending at source agent in MB.
-     *
+     * 
      * @return the dataPendingAtSourceAgentInMB value.
      */
     public Double dataPendingAtSourceAgentInMB() {
@@ -145,8 +149,9 @@ public final class InMageRcmFailbackProtectedDiskDetails {
     }
 
     /**
-     * Get the isInitialReplicationComplete property: A value indicating whether initial replication is complete or not.
-     *
+     * Get the isInitialReplicationComplete property: A value indicating whether initial replication is complete or
+     * not.
+     * 
      * @return the isInitialReplicationComplete value.
      */
     public String isInitialReplicationComplete() {
@@ -155,7 +160,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Get the irDetails property: The initial replication details.
-     *
+     * 
      * @return the irDetails value.
      */
     public InMageRcmFailbackSyncDetails irDetails() {
@@ -164,7 +169,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Set the irDetails property: The initial replication details.
-     *
+     * 
      * @param irDetails the irDetails value to set.
      * @return the InMageRcmFailbackProtectedDiskDetails object itself.
      */
@@ -175,7 +180,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Get the resyncDetails property: The resync details.
-     *
+     * 
      * @return the resyncDetails value.
      */
     public InMageRcmFailbackSyncDetails resyncDetails() {
@@ -184,7 +189,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Set the resyncDetails property: The resync details.
-     *
+     * 
      * @param resyncDetails the resyncDetails value to set.
      * @return the InMageRcmFailbackProtectedDiskDetails object itself.
      */
@@ -195,7 +200,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Get the lastSyncTime property: The last sync time.
-     *
+     * 
      * @return the lastSyncTime value.
      */
     public OffsetDateTime lastSyncTime() {
@@ -204,7 +209,7 @@ public final class InMageRcmFailbackProtectedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -21,29 +21,26 @@ public final class CompliancesImpl implements Compliances {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public CompliancesImpl(
-        CompliancesClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public CompliancesImpl(CompliancesClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Compliance> list(String scope) {
         PagedIterable<ComplianceInner> inner = this.serviceClient().list(scope);
-        return Utils.mapPage(inner, inner1 -> new ComplianceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ComplianceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Compliance> list(String scope, Context context) {
         PagedIterable<ComplianceInner> inner = this.serviceClient().list(scope, context);
-        return Utils.mapPage(inner, inner1 -> new ComplianceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ComplianceImpl(inner1, this.manager()));
     }
 
     public Response<Compliance> getWithResponse(String scope, String complianceName, Context context) {
         Response<ComplianceInner> inner = this.serviceClient().getWithResponse(scope, complianceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ComplianceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

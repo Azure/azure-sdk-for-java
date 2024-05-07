@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanAutomationRunbookActionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanAutomationRunbookActionDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"AutomationRunbookActionDetails\",\"runbookId\":\"xljzvdovbrbl\",\"timeout\":\"lprdaqccddcbnygd\",\"fabricLocation\":\"Primary\"}")
-                .toObject(RecoveryPlanAutomationRunbookActionDetails.class);
+        RecoveryPlanAutomationRunbookActionDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"AutomationRunbookActionDetails\",\"runbookId\":\"xljzvdovbrbl\",\"timeout\":\"lprdaqccddcbnygd\",\"fabricLocation\":\"Primary\"}")
+            .toObject(RecoveryPlanAutomationRunbookActionDetails.class);
         Assertions.assertEquals("xljzvdovbrbl", model.runbookId());
         Assertions.assertEquals("lprdaqccddcbnygd", model.timeout());
         Assertions.assertEquals(RecoveryPlanActionLocation.PRIMARY, model.fabricLocation());
@@ -24,11 +22,9 @@ public final class RecoveryPlanAutomationRunbookActionDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanAutomationRunbookActionDetails model =
-            new RecoveryPlanAutomationRunbookActionDetails()
-                .withRunbookId("xljzvdovbrbl")
-                .withTimeout("lprdaqccddcbnygd")
-                .withFabricLocation(RecoveryPlanActionLocation.PRIMARY);
+        RecoveryPlanAutomationRunbookActionDetails model
+            = new RecoveryPlanAutomationRunbookActionDetails().withRunbookId("xljzvdovbrbl")
+                .withTimeout("lprdaqccddcbnygd").withFabricLocation(RecoveryPlanActionLocation.PRIMARY);
         model = BinaryData.fromObject(model).toObject(RecoveryPlanAutomationRunbookActionDetails.class);
         Assertions.assertEquals("xljzvdovbrbl", model.runbookId());
         Assertions.assertEquals("lprdaqccddcbnygd", model.timeout());

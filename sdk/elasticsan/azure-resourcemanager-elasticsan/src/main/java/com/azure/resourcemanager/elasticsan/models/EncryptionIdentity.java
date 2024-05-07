@@ -7,7 +7,9 @@ package com.azure.resourcemanager.elasticsan.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Encryption identity for the volume group. */
+/**
+ * Encryption identity for the volume group.
+ */
 @Fluent
 public final class EncryptionIdentity {
     /*
@@ -17,14 +19,16 @@ public final class EncryptionIdentity {
     @JsonProperty(value = "userAssignedIdentity")
     private String encryptionUserAssignedIdentity;
 
-    /** Creates an instance of EncryptionIdentity class. */
+    /**
+     * Creates an instance of EncryptionIdentity class.
+     */
     public EncryptionIdentity() {
     }
 
     /**
      * Get the encryptionUserAssignedIdentity property: Resource identifier of the UserAssigned identity to be
      * associated with server-side encryption on the volume group.
-     *
+     * 
      * @return the encryptionUserAssignedIdentity value.
      */
     public String encryptionUserAssignedIdentity() {
@@ -34,7 +38,7 @@ public final class EncryptionIdentity {
     /**
      * Set the encryptionUserAssignedIdentity property: Resource identifier of the UserAssigned identity to be
      * associated with server-side encryption on the volume group.
-     *
+     * 
      * @param encryptionUserAssignedIdentity the encryptionUserAssignedIdentity value to set.
      * @return the EncryptionIdentity object itself.
      */
@@ -45,7 +49,7 @@ public final class EncryptionIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

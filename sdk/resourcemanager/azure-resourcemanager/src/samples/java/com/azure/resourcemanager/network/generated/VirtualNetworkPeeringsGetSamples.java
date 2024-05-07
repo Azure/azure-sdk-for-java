@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualNetworkPeeringsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualNetworkPeeringGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringGet.json
      */
     /**
      * Sample code: Get peering.
@@ -23,7 +23,7 @@ public final class VirtualNetworkPeeringsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
      */
     /**

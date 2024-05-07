@@ -4,12 +4,13 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.models.AzureDataLakeStoreOutputDataSource;
+import com.azure.resourcemanager.streamanalytics.models.AzureFunctionOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.AzureSqlDatabaseOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.AzureTableOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.BlobOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.CsvSerialization;
+import com.azure.resourcemanager.streamanalytics.models.DeltaSerialization;
 import com.azure.resourcemanager.streamanalytics.models.DocumentDbOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
 import com.azure.resourcemanager.streamanalytics.models.EventHubOutputDataSource;
@@ -19,173 +20,229 @@ import com.azure.resourcemanager.streamanalytics.models.Output;
 import com.azure.resourcemanager.streamanalytics.models.PowerBIOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.ServiceBusQueueOutputDataSource;
 import com.azure.resourcemanager.streamanalytics.models.ServiceBusTopicOutputDataSource;
+import java.util.Arrays;
 
-/** Samples for Outputs Update. */
+/**
+ * Samples for Outputs Update.
+ */
 public final class OutputsUpdateSamples {
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_ServiceBusQueue.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_ServiceBusQueue.json
      */
     /**
      * Sample code: Update a Service Bus Queue output with Avro serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void updateAServiceBusQueueOutputWithAvroSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Output resource =
-            manager.outputs().getWithResponse("sjrg3410", "sj5095", "output3456", Context.NONE).getValue();
-        resource
-            .update()
-            .withDatasource(new ServiceBusQueueOutputDataSource().withQueueName("differentQueueName"))
-            .withSerialization(
-                new JsonSerialization()
-                    .withEncoding(Encoding.UTF8)
-                    .withFormat(JsonOutputSerializationFormat.LINE_SEPARATED))
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg3410", "sj5095", "output3456", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDatasource(new ServiceBusQueueOutputDataSource().withQueueName("differentQueueName"))
+            .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8)
+                .withFormat(JsonOutputSerializationFormat.LINE_SEPARATED))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_ServiceBusTopic.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_DataWarehouse.json
+     */
+    /**
+     * Sample code: Update an Azure Data Warehouse output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void
+        updateAnAzureDataWarehouseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg", "sjName", "dwOutput", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDatasource(new AzureSqlDatabaseOutputDataSource().withTable("differentTable")).apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_ServiceBusTopic.json
      */
     /**
      * Sample code: Update a Service Bus Topic output with CSV serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void updateAServiceBusTopicOutputWithCSVSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Output resource =
-            manager.outputs().getWithResponse("sjrg6450", "sj7094", "output7886", Context.NONE).getValue();
-        resource
-            .update()
-            .withDatasource(new ServiceBusTopicOutputDataSource().withTopicName("differentTopicName"))
-            .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
-            .apply();
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg6450", "sj7094", "output7886", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDatasource(new ServiceBusTopicOutputDataSource().withTopicName("differentTopicName"))
+            .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8)).apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_AzureDataLakeStore.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_AzureDataLakeStore.json
      */
     /**
      * Sample code: Update an Azure Data Lake Store output with JSON serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void updateAnAzureDataLakeStoreOutputWithJSONSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Output resource =
-            manager.outputs().getWithResponse("sjrg6912", "sj3310", "output5195", Context.NONE).getValue();
-        resource
-            .update()
-            .withDatasource(new AzureDataLakeStoreOutputDataSource().withAccountName("differentaccount"))
-            .withSerialization(
-                new JsonSerialization()
-                    .withEncoding(Encoding.UTF8)
-                    .withFormat(JsonOutputSerializationFormat.LINE_SEPARATED))
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg6912", "sj3310", "output5195", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDatasource(new AzureDataLakeStoreOutputDataSource().withAccountName("differentaccount"))
+            .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8)
+                .withFormat(JsonOutputSerializationFormat.LINE_SEPARATED))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_AzureTable.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_AzureFunction.json
+     */
+    /**
+     * Sample code: Update an Azure Function output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void
+        updateAnAzureFunctionOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg", "sjName", "azureFunction1", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDatasource(new AzureFunctionOutputDataSource().withFunctionName("differentFunctionName"))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_DeltaLake.json
+     */
+    /**
+     * Sample code: Update a Delta Lake output.
+     * 
+     * @param manager Entry point to StreamAnalyticsManager.
+     */
+    public static void
+        updateADeltaLakeOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg", "sjName", "output1221", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDatasource(new BlobOutputDataSource().withContainer("deltaoutput2"))
+            .withSerialization(new DeltaSerialization().withDeltaTablePath("/folder1/table2")
+                .withPartitionColumns(Arrays.asList("column2")))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_AzureTable.json
      */
     /**
      * Sample code: Update an Azure Table output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void updateAnAzureTableOutput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Output resource = manager.outputs().getWithResponse("sjrg5176", "sj2790", "output958", Context.NONE).getValue();
-        resource
-            .update()
-            .withDatasource(new AzureTableOutputDataSource().withPartitionKey("differentPartitionKey"))
+    public static void
+        updateAnAzureTableOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg5176", "sj2790", "output958", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDatasource(new AzureTableOutputDataSource().withPartitionKey("fakeTokenPlaceholder"))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_PowerBI.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_PowerBI.json
      */
     /**
      * Sample code: Update a Power BI output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void updateAPowerBIOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Output resource =
-            manager.outputs().getWithResponse("sjrg7983", "sj2331", "output3022", Context.NONE).getValue();
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg7983", "sj2331", "output3022", com.azure.core.util.Context.NONE).getValue();
         resource.update().withDatasource(new PowerBIOutputDataSource().withDataset("differentDataset")).apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_Blob.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_Blob.json
      */
     /**
      * Sample code: Update a blob output with CSV serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void updateABlobOutputWithCSVSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Output resource = manager.outputs().getWithResponse("sjrg5023", "sj900", "output1623", Context.NONE).getValue();
-        resource
-            .update()
-            .withDatasource(new BlobOutputDataSource().withContainer("differentContainer"))
-            .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8))
-            .apply();
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg5023", "sj900", "output1623", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDatasource(new BlobOutputDataSource().withContainer("differentContainer"))
+            .withSerialization(new CsvSerialization().withFieldDelimiter("|").withEncoding(Encoding.UTF8)).apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_AzureSQL.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_AzureSQL.json
      */
     /**
      * Sample code: Update an Azure SQL database output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void updateAnAzureSQLDatabaseOutput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Output resource =
-            manager.outputs().getWithResponse("sjrg2157", "sj6458", "output1755", Context.NONE).getValue();
-        resource.update().withDatasource(new AzureSqlDatabaseOutputDataSource()).apply();
+    public static void
+        updateAnAzureSQLDatabaseOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg2157", "sj6458", "output1755", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDatasource(new AzureSqlDatabaseOutputDataSource().withTable("differentTable")).apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_EventHub.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_EventHub.json
      */
     /**
      * Sample code: Update an Event Hub output with JSON serialization.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void updateAnEventHubOutputWithJSONSerialization(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Output resource =
-            manager.outputs().getWithResponse("sjrg6912", "sj3310", "output5195", Context.NONE).getValue();
-        resource
-            .update()
-            .withDatasource(new EventHubOutputDataSource().withPartitionKey("differentPartitionKey"))
-            .withSerialization(
-                new JsonSerialization()
-                    .withEncoding(Encoding.UTF8)
-                    .withFormat(JsonOutputSerializationFormat.LINE_SEPARATED))
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg6912", "sj3310", "output5195", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDatasource(new EventHubOutputDataSource().withPartitionKey("fakeTokenPlaceholder"))
+            .withSerialization(new JsonSerialization().withEncoding(Encoding.UTF8)
+                .withFormat(JsonOutputSerializationFormat.LINE_SEPARATED))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Output_Update_DocumentDB.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Output_Update_DocumentDB.json
      */
     /**
      * Sample code: Update a DocumentDB output.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void updateADocumentDBOutput(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Output resource =
-            manager.outputs().getWithResponse("sjrg7983", "sj2331", "output3022", Context.NONE).getValue();
-        resource
-            .update()
-            .withDatasource(new DocumentDbOutputDataSource().withPartitionKey("differentPartitionKey"))
+    public static void
+        updateADocumentDBOutput(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Output resource = manager.outputs()
+            .getWithResponse("sjrg7983", "sj2331", "output3022", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withDatasource(new DocumentDbOutputDataSource().withPartitionKey("fakeTokenPlaceholder"))
             .apply();
     }
 }

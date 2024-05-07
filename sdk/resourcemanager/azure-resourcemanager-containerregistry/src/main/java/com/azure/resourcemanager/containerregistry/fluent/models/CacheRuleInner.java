@@ -11,7 +11,9 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** An object that represents a cache rule for a container registry. */
+/**
+ * An object that represents a cache rule for a container registry.
+ */
 @Fluent
 public final class CacheRuleInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class CacheRuleInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of CacheRuleInner class. */
+    /**
+     * Creates an instance of CacheRuleInner class.
+     */
     public CacheRuleInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the cache rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CacheRuleProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class CacheRuleInner extends ProxyResource {
     /**
      * Get the credentialSetResourceId property: The ARM resource ID of the credential store which is associated with
      * the cache rule.
-     *
+     * 
      * @return the credentialSetResourceId value.
      */
     public String credentialSetResourceId() {
@@ -61,7 +65,7 @@ public final class CacheRuleInner extends ProxyResource {
     /**
      * Set the credentialSetResourceId property: The ARM resource ID of the credential store which is associated with
      * the cache rule.
-     *
+     * 
      * @param credentialSetResourceId the credentialSetResourceId value to set.
      * @return the CacheRuleInner object itself.
      */
@@ -75,7 +79,7 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Get the sourceRepository property: Source repository pulled from upstream.
-     *
+     * 
      * @return the sourceRepository value.
      */
     public String sourceRepository() {
@@ -84,7 +88,7 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Set the sourceRepository property: Source repository pulled from upstream.
-     *
+     * 
      * @param sourceRepository the sourceRepository value to set.
      * @return the CacheRuleInner object itself.
      */
@@ -97,9 +101,9 @@ public final class CacheRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the targetRepository property: Target repository specified in docker pull command. Eg: docker pull
-     * myregistry.azurecr.io/{targetRepository}:{tag}.
-     *
+     * Get the targetRepository property: Target repository specified in docker pull command.
+     * Eg: docker pull myregistry.azurecr.io/{targetRepository}:{tag}.
+     * 
      * @return the targetRepository value.
      */
     public String targetRepository() {
@@ -107,9 +111,9 @@ public final class CacheRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the targetRepository property: Target repository specified in docker pull command. Eg: docker pull
-     * myregistry.azurecr.io/{targetRepository}:{tag}.
-     *
+     * Set the targetRepository property: Target repository specified in docker pull command.
+     * Eg: docker pull myregistry.azurecr.io/{targetRepository}:{tag}.
+     * 
      * @param targetRepository the targetRepository value to set.
      * @return the CacheRuleInner object itself.
      */
@@ -123,7 +127,7 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The creation date of the cache rule.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -132,7 +136,7 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -141,7 +145,7 @@ public final class CacheRuleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

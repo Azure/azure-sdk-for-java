@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VMwareCbtPolicyCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareCbtPolicyCreationInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"VMwareCbt\",\"recoveryPointHistoryInMinutes\":743891586,\"crashConsistentFrequencyInMinutes\":1861127701,\"appConsistentFrequencyInMinutes\":746704454}")
-                .toObject(VMwareCbtPolicyCreationInput.class);
+        VMwareCbtPolicyCreationInput model = BinaryData.fromString(
+            "{\"instanceType\":\"VMwareCbt\",\"recoveryPointHistoryInMinutes\":743891586,\"crashConsistentFrequencyInMinutes\":1861127701,\"appConsistentFrequencyInMinutes\":746704454}")
+            .toObject(VMwareCbtPolicyCreationInput.class);
         Assertions.assertEquals(743891586, model.recoveryPointHistoryInMinutes());
         Assertions.assertEquals(1861127701, model.crashConsistentFrequencyInMinutes());
         Assertions.assertEquals(746704454, model.appConsistentFrequencyInMinutes());
@@ -23,11 +21,9 @@ public final class VMwareCbtPolicyCreationInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtPolicyCreationInput model =
-            new VMwareCbtPolicyCreationInput()
-                .withRecoveryPointHistoryInMinutes(743891586)
-                .withCrashConsistentFrequencyInMinutes(1861127701)
-                .withAppConsistentFrequencyInMinutes(746704454);
+        VMwareCbtPolicyCreationInput model
+            = new VMwareCbtPolicyCreationInput().withRecoveryPointHistoryInMinutes(743891586)
+                .withCrashConsistentFrequencyInMinutes(1861127701).withAppConsistentFrequencyInMinutes(746704454);
         model = BinaryData.fromObject(model).toObject(VMwareCbtPolicyCreationInput.class);
         Assertions.assertEquals(743891586, model.recoveryPointHistoryInMinutes());
         Assertions.assertEquals(1861127701, model.crashConsistentFrequencyInMinutes());

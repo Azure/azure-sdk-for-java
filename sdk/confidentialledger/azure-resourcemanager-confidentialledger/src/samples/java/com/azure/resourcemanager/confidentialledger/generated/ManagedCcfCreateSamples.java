@@ -15,51 +15,40 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ManagedCcf Create. */
+/**
+ * Samples for ManagedCcf Create.
+ */
 public final class ManagedCcfCreateSamples {
     /*
-     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ManagedCCF_Create.json
+     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/examples/ManagedCCF_Create.json
      */
     /**
      * Sample code: ManagedCCFCreate.
-     *
+     * 
      * @param manager Entry point to ConfidentialLedgerManager.
      */
     public static void managedCCFCreate(com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager manager)
         throws IOException {
-        manager
-            .managedCcfs()
+        manager.managedCcfs()
             .define("DummyMccfAppName")
             .withRegion("EastUS")
             .withExistingResourceGroup("DummyResourceGroupName")
             .withTags(mapOf("additionalProps1", "additional properties"))
-            .withProperties(
-                new ManagedCcfProperties()
-                    .withMemberIdentityCertificates(
-                        Arrays
-                            .asList(
-                                new MemberIdentityCertificate()
-                                    .withCertificate(
-                                        "-----BEGIN"
-                                            + " CERTIFICATE-----MIIBsjCCATigAwIBAgIUZWIbyG79TniQLd2UxJuU74tqrKcwCgYIKoZIzj0EAwMwEDEOMAwGA1UEAwwFdXNlcjAwHhcNMjEwMzE2MTgwNjExWhcNMjIwMzE2MTgwNjExWjAQMQ4wDAYDVQQDDAV1c2VyMDB2MBAGByqGSM49AgEGBSuBBAAiA2IABBiWSo/j8EFit7aUMm5lF+lUmCu+IgfnpFD+7QMgLKtxRJ3aGSqgS/GpqcYVGddnODtSarNE/HyGKUFUolLPQ5ybHcouUk0kyfA7XMeSoUA4lBz63Wha8wmXo+NdBRo39qNTMFEwHQYDVR0OBBYEFPtuhrwgGjDFHeUUT4nGsXaZn69KMB8GA1UdIwQYMBaAFPtuhrwgGjDFHeUUT4nGsXaZn69KMA8GA1UdEwEB/wQFMAMBAf8wCgYIKoZIzj0EAwMDaAAwZQIxAOnozm2CyqRwSSQLls5r+mUHRGRyXHXwYtM4Dcst/VEZdmS9fqvHRCHbjUlO/+HNfgIwMWZ4FmsjD3wnPxONOm9YdVn/PRD7SsPRPbOjwBiE4EBGaHDsLjYAGDSGi7NJnSkA-----END"
-                                            + " CERTIFICATE-----")
-                                    .withEncryptionkey("fakeTokenPlaceholder")
-                                    .withTags(
-                                        SerializerFactory
-                                            .createDefaultManagementSerializerAdapter()
-                                            .deserialize(
-                                                "{\"additionalProps1\":\"additional properties\"}",
-                                                Object.class,
-                                                SerializerEncoding.JSON))))
-                    .withDeploymentType(
-                        new DeploymentType()
-                            .withLanguageRuntime(LanguageRuntime.CPP)
-                            .withAppSourceUri(
-                                "https://myaccount.blob.core.windows.net/storage/mccfsource?sv=2022-02-11%st=2022-03-11"))
-                    .withNodeCount(5))
+            .withProperties(new ManagedCcfProperties()
+                .withMemberIdentityCertificates(Arrays.asList(new MemberIdentityCertificate().withCertificate(
+                    "-----BEGIN CERTIFICATE-----MIIBsjCCATigAwIBAgIUZWIbyG79TniQLd2UxJuU74tqrKcwCgYIKoZIzj0EAwMwEDEOMAwGA1UEAwwFdXNlcjAwHhcNMjEwMzE2MTgwNjExWhcNMjIwMzE2MTgwNjExWjAQMQ4wDAYDVQQDDAV1c2VyMDB2MBAGByqGSM49AgEGBSuBBAAiA2IABBiWSo/j8EFit7aUMm5lF+lUmCu+IgfnpFD+7QMgLKtxRJ3aGSqgS/GpqcYVGddnODtSarNE/HyGKUFUolLPQ5ybHcouUk0kyfA7XMeSoUA4lBz63Wha8wmXo+NdBRo39qNTMFEwHQYDVR0OBBYEFPtuhrwgGjDFHeUUT4nGsXaZn69KMB8GA1UdIwQYMBaAFPtuhrwgGjDFHeUUT4nGsXaZn69KMA8GA1UdEwEB/wQFMAMBAf8wCgYIKoZIzj0EAwMDaAAwZQIxAOnozm2CyqRwSSQLls5r+mUHRGRyXHXwYtM4Dcst/VEZdmS9fqvHRCHbjUlO/+HNfgIwMWZ4FmsjD3wnPxONOm9YdVn/PRD7SsPRPbOjwBiE4EBGaHDsLjYAGDSGi7NJnSkA-----END CERTIFICATE-----")
+                    .withEncryptionkey("fakeTokenPlaceholder")
+                    .withTags(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"additionalProps1\":\"additional properties\"}", Object.class,
+                            SerializerEncoding.JSON))))
+                .withDeploymentType(new DeploymentType().withLanguageRuntime(LanguageRuntime.CPP)
+                    .withAppSourceUri(
+                        "https://myaccount.blob.core.windows.net/storage/mccfsource?sv=2022-02-11%st=2022-03-11"))
+                .withNodeCount(5))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

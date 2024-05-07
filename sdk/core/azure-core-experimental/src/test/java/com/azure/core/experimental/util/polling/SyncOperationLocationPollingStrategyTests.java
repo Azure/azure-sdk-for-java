@@ -47,13 +47,13 @@ public class SyncOperationLocationPollingStrategyTests {
 
         String putUrl = "http://localhost/resource";
         String pollUrl = "http://localhost/operation";
-        int[] pollCount = new int[] {0};
+        int[] pollCount = new int[] { 0 };
 
         String resourceName = "resource1";
         String operationId = "operation1";
 
-        Supplier<Response<TestResource>> activationOperation =
-            () -> new SimpleResponse<>(new HttpRequest(HttpMethod.PUT, putUrl), 200,
+        Supplier<Response<TestResource>> activationOperation
+            = () -> new SimpleResponse<>(new HttpRequest(HttpMethod.PUT, putUrl), 200,
                 new HttpHeaders().set(HttpHeaderName.fromString("operation-location"), pollUrl),
                 new TestResource(resourceName));
 
@@ -65,18 +65,17 @@ public class SyncOperationLocationPollingStrategyTests {
                 Map<String, String> pollResponse = new HashMap<>();
                 pollResponse.put("id", operationId);
                 pollResponse.put("status", succeeded ? "Succeeded" : "InProgress");
-                return Mono.just(new MockHttpResponse(pollRequest, 200,
-                    BinaryData.fromObject(pollResponse).toBytes(), SerializerEncoding.JSON));
+                return Mono.just(new MockHttpResponse(pollRequest, 200, BinaryData.fromObject(pollResponse).toBytes(),
+                    SerializerEncoding.JSON));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
-        SyncPoller<PollResult, TestResource> syncPoller = SyncPoller.createPoller(Duration.ofMillis(1),
-            activationOperation::get,
-            new SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(createPipeline(httpClient))),
-            RESOURCE_POLL_RESULT_TYPE_REFERENCE, RESOURCE_TYPE_REFERENCE);
+        SyncPoller<PollResult, TestResource> syncPoller
+            = SyncPoller.createPoller(Duration.ofMillis(1), activationOperation::get,
+                new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(createPipeline(httpClient))),
+                RESOURCE_POLL_RESULT_TYPE_REFERENCE, RESOURCE_TYPE_REFERENCE);
 
         // verify poll result
         PollResponse<PollResult> pollResponse = syncPoller.poll();
@@ -97,7 +96,7 @@ public class SyncOperationLocationPollingStrategyTests {
 
         String putUrl = "http://localhost/resource";
         String pollUrl = "http://localhost/operation";
-        int[] pollCount = new int[] {0};
+        int[] pollCount = new int[] { 0 };
 
         String actionResultName = "result1";
         String operationId = "operation1";
@@ -122,18 +121,17 @@ public class SyncOperationLocationPollingStrategyTests {
                 if (succeeded) {
                     pollResponse.put("result", new TestActionResult(actionResultName));
                 }
-                return Mono.just(new MockHttpResponse(pollRequest, 200,
-                    BinaryData.fromObject(pollResponse).toBytes(), SerializerEncoding.JSON));
+                return Mono.just(new MockHttpResponse(pollRequest, 200, BinaryData.fromObject(pollResponse).toBytes(),
+                    SerializerEncoding.JSON));
             } else {
                 return Mono.error(new IllegalArgumentException("Unknown request URL " + request.getUrl()));
             }
         };
 
-        SyncPoller<PollResult, TestActionResult> syncPoller = SyncPoller.createPoller(Duration.ofMillis(1),
-            activationOperation::get,
-            new SyncOperationLocationPollingStrategy<>(
-                new PollingStrategyOptions(createPipeline(httpClient))),
-            RESOURCE_POLL_RESULT_TYPE_REFERENCE, ACTION_RESULT_TYPE_REFERENCE);
+        SyncPoller<PollResult, TestActionResult> syncPoller
+            = SyncPoller.createPoller(Duration.ofMillis(1), activationOperation::get,
+                new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(createPipeline(httpClient))),
+                RESOURCE_POLL_RESULT_TYPE_REFERENCE, ACTION_RESULT_TYPE_REFERENCE);
 
         // verify poll result
         PollResponse<PollResult> pollResponse = syncPoller.poll();

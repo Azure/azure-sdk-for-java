@@ -13,21 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class TagsResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagsResource model =
-            BinaryData
-                .fromString("{\"tags\":{\"yoxgvcltbgsnc\":\"dokgjl\",\"htxfvgxbfsmxnehm\":\"hkjeszzhbi\"}}")
+        TagsResource model
+            = BinaryData.fromString("{\"tags\":{\"jroumzzn\":\"hafratqxm\",\"jrhuzgf\":\"al\",\"tpusllywp\":\"on\"}}")
                 .toObject(TagsResource.class);
-        Assertions.assertEquals("dokgjl", model.tags().get("yoxgvcltbgsnc"));
+        Assertions.assertEquals("hafratqxm", model.tags().get("jroumzzn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagsResource model =
-            new TagsResource().withTags(mapOf("yoxgvcltbgsnc", "dokgjl", "htxfvgxbfsmxnehm", "hkjeszzhbi"));
+        TagsResource model
+            = new TagsResource().withTags(mapOf("jroumzzn", "hafratqxm", "jrhuzgf", "al", "tpusllywp", "on"));
         model = BinaryData.fromObject(model).toObject(TagsResource.class);
-        Assertions.assertEquals("dokgjl", model.tags().get("yoxgvcltbgsnc"));
+        Assertions.assertEquals("hafratqxm", model.tags().get("jroumzzn"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

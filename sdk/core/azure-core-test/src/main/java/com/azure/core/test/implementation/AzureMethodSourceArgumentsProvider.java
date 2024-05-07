@@ -42,13 +42,13 @@ public final class AzureMethodSourceArgumentsProvider
     private static final Map<Class<? extends ServiceVersion>, ServiceVersion> CLASS_TO_LATEST_SERVICE_VERSION
         = new ConcurrentHashMap<>();
 
-    private static final Map<Class<? extends ServiceVersion>, Map<String, ServiceVersion>>
-        CLASS_TO_MAP_STRING_SERVICE_VERSION = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends ServiceVersion>, Map<String, ServiceVersion>> CLASS_TO_MAP_STRING_SERVICE_VERSION
+        = new ConcurrentHashMap<>();
 
     private static final String MUST_BE_STATIC = "Source supplier method is required to be static. Method: %s.";
 
-    private static final String MUST_BE_STREAM_ARGUMENTS =
-        "Source supplier method is required to return Stream<Arguments>. Return type: %s.";
+    private static final String MUST_BE_STREAM_ARGUMENTS
+        = "Source supplier method is required to return Stream<Arguments>. Return type: %s.";
 
     private final ClientLogger logger = new ClientLogger(AzureMethodSourceArgumentsProvider.class);
 
@@ -65,8 +65,8 @@ public final class AzureMethodSourceArgumentsProvider
         this.serviceVersionType = annotation.serviceVersionType();
 
         if (!Enum.class.isAssignableFrom(serviceVersionType)) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("'serviceVersionType' isn't an instance of Enum."));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("'serviceVersionType' isn't an instance of Enum."));
         }
 
         this.sourceSupplier = annotation.sourceSupplier();
@@ -81,8 +81,8 @@ public final class AzureMethodSourceArgumentsProvider
             httpClientsToUse = TestBase.getHttpClients().collect(Collectors.toList());
         }
 
-        boolean testAllServiceVersions = Configuration.getGlobalConfiguration()
-            .get("AZURE_TEST_ALL_SERVICE_VERSIONS", false);
+        boolean testAllServiceVersions
+            = Configuration.getGlobalConfiguration().get("AZURE_TEST_ALL_SERVICE_VERSIONS", false);
         List<? extends ServiceVersion> serviceVersionsToUse = getServiceVersions(minimumServiceVersion,
             maximumServiceVersion, serviceVersionType, TEST_MODE, testAllServiceVersions);
 
@@ -97,19 +97,19 @@ public final class AzureMethodSourceArgumentsProvider
          * Create a stream of arguments for the test using the following logic.
          *
          * 1) HTTP clients are being ignored and there is no source supplier.
-         *    - Use only service versions as the test permutation.
+         * - Use only service versions as the test permutation.
          *
          * 2) HTTP clients are being ignored.
-         *    - Use a permutation of service versions X parameterized testing values.
+         * - Use a permutation of service versions X parameterized testing values.
          *
          * 3) There is no source supplier.
-         *    - Use a permutation of HTTP client X service versions.
+         * - Use a permutation of HTTP client X service versions.
          *
          * 4) There are no HTTP clients.
-         *    - Use a permutation of null HTTP client X service versions X parameterized testing values.
+         * - Use a permutation of null HTTP client X service versions X parameterized testing values.
          *
          * 5) HTTP clients exist.
-         *    - Use a permutation of HTTP client X service versions X parameterized testing values.
+         * - Use a permutation of HTTP client X service versions X parameterized testing values.
          */
         if (!useHttpClientPermutation && testValues == null) {
             return serviceVersionsToUse.stream().map(Arguments::arguments);
@@ -147,11 +147,10 @@ public final class AzureMethodSourceArgumentsProvider
             int minimumOrdinal = getServiceVersionRangeBound(minimumServiceVersion, serviceVersionType, false);
             int maximumOrdinal = getServiceVersionRangeBound(maximumServiceVersion, serviceVersionType, true);
 
-            return CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).values().stream()
-                .filter(sv -> {
-                    int ordinal = ((Enum<?>) sv).ordinal();
-                    return ordinal >= minimumOrdinal && ordinal <= maximumOrdinal;
-                }).collect(Collectors.toList());
+            return CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).values().stream().filter(sv -> {
+                int ordinal = ((Enum<?>) sv).ordinal();
+                return ordinal >= minimumOrdinal && ordinal <= maximumOrdinal;
+            }).collect(Collectors.toList());
         } else {
             // Otherwise, use either the latest service version or the maximum service version, whichever is lesser.
             Enum<?> maximumServiceVersionEnum = getEnumOrNull(maximumServiceVersion, serviceVersionType);
@@ -165,8 +164,8 @@ public final class AzureMethodSourceArgumentsProvider
                 if (maximumServiceVersionEnum.ordinal() >= ((Enum<?>) latestServiceVersion).ordinal()) {
                     return Collections.singletonList(latestServiceVersion);
                 } else {
-                    return Collections.singletonList(CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType)
-                        .get(maximumServiceVersion));
+                    return Collections.singletonList(
+                        CLASS_TO_MAP_STRING_SERVICE_VERSION.get(serviceVersionType).get(maximumServiceVersion));
                 }
             }
         }
@@ -197,8 +196,8 @@ public final class AzureMethodSourceArgumentsProvider
     private static void loadServiceVersion(Class<? extends ServiceVersion> serviceVersionType) {
         CLASS_TO_MAP_STRING_SERVICE_VERSION.computeIfAbsent(serviceVersionType, type -> {
             try {
-                ServiceVersion[] serviceVersions = (ServiceVersion[]) serviceVersionType.getMethod("values")
-                    .invoke(serviceVersionType);
+                ServiceVersion[] serviceVersions
+                    = (ServiceVersion[]) serviceVersionType.getMethod("values").invoke(serviceVersionType);
 
                 Map<String, ServiceVersion> stringServiceVersionMap = new TreeMap<>();
                 for (ServiceVersion serviceVersion : serviceVersions) {
@@ -237,8 +236,8 @@ public final class AzureMethodSourceArgumentsProvider
         }
 
         if (!sourceSupplierMethod.isPresent()) {
-            throw new IllegalArgumentException(String.format("Unable to find 'sourceSupplier' method %s.",
-                sourceSupplierMethod));
+            throw new IllegalArgumentException(
+                String.format("Unable to find 'sourceSupplier' method %s.", sourceSupplierMethod));
         }
 
         validateSourceSupplier(sourceSupplierMethod.get());

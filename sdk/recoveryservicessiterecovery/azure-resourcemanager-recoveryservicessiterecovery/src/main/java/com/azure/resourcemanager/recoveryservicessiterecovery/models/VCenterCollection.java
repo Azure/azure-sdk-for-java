@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.VCen
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of vCenter details. */
+/**
+ * Collection of vCenter details.
+ */
 @Fluent
 public final class VCenterCollection {
     /*
@@ -24,13 +26,15 @@ public final class VCenterCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VCenterCollection class. */
+    /**
+     * Creates an instance of VCenterCollection class.
+     */
     public VCenterCollection() {
     }
 
     /**
      * Get the value property: The vCenter details.
-     *
+     * 
      * @return the value value.
      */
     public List<VCenterInner> value() {
@@ -39,7 +43,7 @@ public final class VCenterCollection {
 
     /**
      * Set the value property: The vCenter details.
-     *
+     * 
      * @param value the value value to set.
      * @return the VCenterCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class VCenterCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class VCenterCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VCenterCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class VCenterCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

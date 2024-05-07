@@ -15,8 +15,7 @@ public final class LtrServerBackupOperationImpl implements LtrServerBackupOperat
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    LtrServerBackupOperationImpl(
-        LtrServerBackupOperationInner innerObject,
+    LtrServerBackupOperationImpl(LtrServerBackupOperationInner innerObject,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

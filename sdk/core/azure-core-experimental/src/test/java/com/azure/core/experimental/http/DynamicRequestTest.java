@@ -35,9 +35,7 @@ public class DynamicRequestTest {
         });
         DynamicRequest dynamicRequest = new DynamicRequest(JsonSerializerProviders.createInstance(true),
             new HttpPipelineBuilder().httpClient(httpClient).build());
-        dynamicRequest.setUrl("https://example.com/testGetRequest")
-            .setHttpMethod(HttpMethod.GET)
-            .send();
+        dynamicRequest.setUrl("https://example.com/testGetRequest").setHttpMethod(HttpMethod.GET).send();
     }
 
     @Test

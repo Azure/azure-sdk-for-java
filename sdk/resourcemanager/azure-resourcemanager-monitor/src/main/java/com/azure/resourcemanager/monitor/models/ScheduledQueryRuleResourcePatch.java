@@ -12,7 +12,9 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
-/** The scheduled query rule resource for patch operations. */
+/**
+ * The scheduled query rule resource for patch operations.
+ */
 @Fluent
 public final class ScheduledQueryRuleResourcePatch {
     /*
@@ -28,13 +30,15 @@ public final class ScheduledQueryRuleResourcePatch {
     @JsonProperty(value = "properties")
     private ScheduledQueryRuleProperties innerProperties;
 
-    /** Creates an instance of ScheduledQueryRuleResourcePatch class. */
+    /**
+     * Creates an instance of ScheduledQueryRuleResourcePatch class.
+     */
     public ScheduledQueryRuleResourcePatch() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -43,7 +47,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -54,7 +58,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Get the innerProperties property: The scheduled query rule properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScheduledQueryRuleProperties innerProperties() {
@@ -63,7 +67,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Get the createdWithApiVersion property: The api-version used when creating this alert rule.
-     *
+     * 
      * @return the createdWithApiVersion value.
      */
     public String createdWithApiVersion() {
@@ -72,7 +76,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Get the isLegacyLogAnalyticsRule property: True if alert rule is legacy Log Analytic rule.
-     *
+     * 
      * @return the isLegacyLogAnalyticsRule value.
      */
     public Boolean isLegacyLogAnalyticsRule() {
@@ -81,7 +85,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Get the description property: The description of the scheduled query rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -90,7 +94,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Set the description property: The description of the scheduled query rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -104,7 +108,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Get the displayName property: The display name of the alert rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -113,7 +117,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Set the displayName property: The display name of the alert rule.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -128,7 +132,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Get the severity property: Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest.
      * Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -138,7 +142,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Set the severity property: Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest.
      * Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -153,7 +157,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Get the enabled property: The flag which indicates whether this scheduled query rule is enabled. Value should be
      * true or false.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -163,7 +167,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Set the enabled property: The flag which indicates whether this scheduled query rule is enabled. Value should be
      * true or false.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -177,7 +181,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Get the scopes property: The list of resource id's that this scheduled query rule is scoped to.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -186,7 +190,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Set the scopes property: The list of resource id's that this scheduled query rule is scoped to.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -201,7 +205,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Get the evaluationFrequency property: How often the scheduled query rule is evaluated represented in ISO 8601
      * duration format. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the evaluationFrequency value.
      */
     public Duration evaluationFrequency() {
@@ -211,7 +215,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Set the evaluationFrequency property: How often the scheduled query rule is evaluated represented in ISO 8601
      * duration format. Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param evaluationFrequency the evaluationFrequency value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -226,7 +230,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Get the windowSize property: The period of time (in ISO 8601 duration format) on which the Alert query will be
      * executed (bin size). Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @return the windowSize value.
      */
     public Duration windowSize() {
@@ -236,7 +240,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Set the windowSize property: The period of time (in ISO 8601 duration format) on which the Alert query will be
      * executed (bin size). Relevant and required only for rules of the kind LogAlert.
-     *
+     * 
      * @param windowSize the windowSize value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -251,7 +255,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Get the overrideQueryTimeRange property: If specified then overrides the query time range (default is
      * WindowSize*NumberOfEvaluationPeriods). Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the overrideQueryTimeRange value.
      */
     public Duration overrideQueryTimeRange() {
@@ -261,7 +265,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Set the overrideQueryTimeRange property: If specified then overrides the query time range (default is
      * WindowSize*NumberOfEvaluationPeriods). Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param overrideQueryTimeRange the overrideQueryTimeRange value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -278,7 +282,7 @@ public final class ScheduledQueryRuleResourcePatch {
      * created/updated. For example if the scope is a resource group and targetResourceTypes is
      * Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource
      * group which meet the alert criteria. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the targetResourceTypes value.
      */
     public List<String> targetResourceTypes() {
@@ -290,7 +294,7 @@ public final class ScheduledQueryRuleResourcePatch {
      * created/updated. For example if the scope is a resource group and targetResourceTypes is
      * Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource
      * group which meet the alert criteria. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param targetResourceTypes the targetResourceTypes value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -304,7 +308,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Get the criteria property: The rule criteria that defines the conditions of the scheduled query rule.
-     *
+     * 
      * @return the criteria value.
      */
     public ScheduledQueryRuleCriteria criteria() {
@@ -313,7 +317,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Set the criteria property: The rule criteria that defines the conditions of the scheduled query rule.
-     *
+     * 
      * @param criteria the criteria value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -328,7 +332,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Get the muteActionsDuration property: Mute actions for the chosen period of time (in ISO 8601 duration format)
      * after the alert is fired. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the muteActionsDuration value.
      */
     public Duration muteActionsDuration() {
@@ -338,7 +342,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Set the muteActionsDuration property: Mute actions for the chosen period of time (in ISO 8601 duration format)
      * after the alert is fired. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param muteActionsDuration the muteActionsDuration value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -352,7 +356,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Get the actions property: Actions to invoke when the alert fires.
-     *
+     * 
      * @return the actions value.
      */
     public Actions actions() {
@@ -361,7 +365,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Set the actions property: Actions to invoke when the alert fires.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -376,7 +380,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Get the isWorkspaceAlertsStorageConfigured property: The flag which indicates whether this scheduled query rule
      * has been configured to be stored in the customer's storage. The default is false.
-     *
+     * 
      * @return the isWorkspaceAlertsStorageConfigured value.
      */
     public Boolean isWorkspaceAlertsStorageConfigured() {
@@ -387,7 +391,7 @@ public final class ScheduledQueryRuleResourcePatch {
      * Get the checkWorkspaceAlertsStorageConfigured property: The flag which indicates whether this scheduled query
      * rule should be stored in the customer's storage. The default is false. Relevant only for rules of the kind
      * LogAlert.
-     *
+     * 
      * @return the checkWorkspaceAlertsStorageConfigured value.
      */
     public Boolean checkWorkspaceAlertsStorageConfigured() {
@@ -398,12 +402,12 @@ public final class ScheduledQueryRuleResourcePatch {
      * Set the checkWorkspaceAlertsStorageConfigured property: The flag which indicates whether this scheduled query
      * rule should be stored in the customer's storage. The default is false. Relevant only for rules of the kind
      * LogAlert.
-     *
+     * 
      * @param checkWorkspaceAlertsStorageConfigured the checkWorkspaceAlertsStorageConfigured value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
-    public ScheduledQueryRuleResourcePatch withCheckWorkspaceAlertsStorageConfigured(
-        Boolean checkWorkspaceAlertsStorageConfigured) {
+    public ScheduledQueryRuleResourcePatch
+        withCheckWorkspaceAlertsStorageConfigured(Boolean checkWorkspaceAlertsStorageConfigured) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScheduledQueryRuleProperties();
         }
@@ -414,7 +418,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Get the skipQueryValidation property: The flag which indicates whether the provided query should be validated or
      * not. The default is false. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @return the skipQueryValidation value.
      */
     public Boolean skipQueryValidation() {
@@ -424,7 +428,7 @@ public final class ScheduledQueryRuleResourcePatch {
     /**
      * Set the skipQueryValidation property: The flag which indicates whether the provided query should be validated or
      * not. The default is false. Relevant only for rules of the kind LogAlert.
-     *
+     * 
      * @param skipQueryValidation the skipQueryValidation value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -437,9 +441,9 @@ public final class ScheduledQueryRuleResourcePatch {
     }
 
     /**
-     * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
-     * The default is true. Relevant only for rules of the kind LogAlert.
-     *
+     * Get the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or
+     * not. The default is true. Relevant only for rules of the kind LogAlert.
+     * 
      * @return the autoMitigate value.
      */
     public Boolean autoMitigate() {
@@ -447,9 +451,9 @@ public final class ScheduledQueryRuleResourcePatch {
     }
 
     /**
-     * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or not.
-     * The default is true. Relevant only for rules of the kind LogAlert.
-     *
+     * Set the autoMitigate property: The flag that indicates whether the alert should be automatically resolved or
+     * not. The default is true. Relevant only for rules of the kind LogAlert.
+     * 
      * @param autoMitigate the autoMitigate value to set.
      * @return the ScheduledQueryRuleResourcePatch object itself.
      */
@@ -463,7 +467,7 @@ public final class ScheduledQueryRuleResourcePatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

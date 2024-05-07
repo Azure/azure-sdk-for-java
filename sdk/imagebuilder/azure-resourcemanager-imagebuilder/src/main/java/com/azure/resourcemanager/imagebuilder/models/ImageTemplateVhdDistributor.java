@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** Distribute via VHD in a storage account. */
+/**
+ * Distribute via VHD in a storage account.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("VHD")
 @Fluent
@@ -22,14 +24,16 @@ public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor 
     @JsonProperty(value = "uri")
     private String uri;
 
-    /** Creates an instance of ImageTemplateVhdDistributor class. */
+    /**
+     * Creates an instance of ImageTemplateVhdDistributor class.
+     */
     public ImageTemplateVhdDistributor() {
     }
 
     /**
      * Get the uri property: Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty
      * string) in which case VHD would be published to the storage account in the staging resource group.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -39,7 +43,7 @@ public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor 
     /**
      * Set the uri property: Optional Azure Storage URI for the distributed VHD blob. Omit to use the default (empty
      * string) in which case VHD would be published to the storage account in the staging resource group.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ImageTemplateVhdDistributor object itself.
      */
@@ -48,14 +52,18 @@ public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateVhdDistributor withRunOutputName(String runOutputName) {
         super.withRunOutputName(runOutputName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateVhdDistributor withArtifactTags(Map<String, String> artifactTags) {
         super.withArtifactTags(artifactTags);
@@ -64,7 +72,7 @@ public final class ImageTemplateVhdDistributor extends ImageTemplateDistributor 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

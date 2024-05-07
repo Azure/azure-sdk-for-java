@@ -29,13 +29,15 @@ public final class NetworkMappingInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of NetworkMappingInner class. */
+    /**
+     * Creates an instance of NetworkMappingInner class.
+     */
     public NetworkMappingInner() {
     }
 
     /**
      * Get the properties property: The Network Mapping Properties.
-     *
+     * 
      * @return the properties value.
      */
     public NetworkMappingProperties properties() {
@@ -44,7 +46,7 @@ public final class NetworkMappingInner extends ProxyResource {
 
     /**
      * Set the properties property: The Network Mapping Properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the NetworkMappingInner object itself.
      */
@@ -55,7 +57,7 @@ public final class NetworkMappingInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -64,7 +66,7 @@ public final class NetworkMappingInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the NetworkMappingInner object itself.
      */
@@ -75,7 +77,7 @@ public final class NetworkMappingInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Buildpack Binding Launch Properties. */
+/**
+ * Buildpack Binding Launch Properties.
+ */
 @Fluent
 public final class BuildpackBindingLaunchProperties {
     /*
@@ -27,8 +29,14 @@ public final class BuildpackBindingLaunchProperties {
     private Map<String, String> secrets;
 
     /**
+     * Creates an instance of BuildpackBindingLaunchProperties class.
+     */
+    public BuildpackBindingLaunchProperties() {
+    }
+
+    /**
      * Get the properties property: Non-sensitive properties for launchProperties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -37,7 +45,7 @@ public final class BuildpackBindingLaunchProperties {
 
     /**
      * Set the properties property: Non-sensitive properties for launchProperties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BuildpackBindingLaunchProperties object itself.
      */
@@ -48,7 +56,7 @@ public final class BuildpackBindingLaunchProperties {
 
     /**
      * Get the secrets property: Sensitive properties for launchProperties.
-     *
+     * 
      * @return the secrets value.
      */
     public Map<String, String> secrets() {
@@ -57,7 +65,7 @@ public final class BuildpackBindingLaunchProperties {
 
     /**
      * Set the secrets property: Sensitive properties for launchProperties.
-     *
+     * 
      * @param secrets the secrets value to set.
      * @return the BuildpackBindingLaunchProperties object itself.
      */
@@ -68,7 +76,7 @@ public final class BuildpackBindingLaunchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -17,15 +17,14 @@ public final class JobsImpl implements Jobs {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public JobsImpl(
-        JobsClient innerClient,
+    public JobsImpl(JobsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> exportWithResponse(
-        String vaultName, String resourceGroupName, String filter, Context context) {
+    public Response<Void> exportWithResponse(String vaultName, String resourceGroupName, String filter,
+        Context context) {
         return this.serviceClient().exportWithResponse(vaultName, resourceGroupName, filter, context);
     }
 

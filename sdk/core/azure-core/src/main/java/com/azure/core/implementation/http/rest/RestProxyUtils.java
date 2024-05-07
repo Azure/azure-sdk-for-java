@@ -71,13 +71,13 @@ public final class RestProxyUtils {
                 Long bodyLength = body.getLength();
                 if (bodyLength != null) {
                     if (bodyLength < expectedLength) {
-                        throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                            bodyLength, expectedLength), bodyLength, expectedLength);
+                        throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL, bodyLength, expectedLength),
+                            bodyLength, expectedLength);
                     } else if (bodyLength > expectedLength) {
-                        throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                            bodyLength, expectedLength), bodyLength, expectedLength);
+                        throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE, bodyLength, expectedLength),
+                            bodyLength, expectedLength);
                     }
-                } else  {
+                } else {
                     request.setBody(validateFluxLength(body.toFluxByteBuffer(), expectedLength));
                 }
             }
@@ -100,8 +100,9 @@ public final class RestProxyUtils {
 
                 if (buffer == VALIDATION_BUFFER) {
                     if (expectedLength != currentTotalLength[0]) {
-                        sink.error(new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                            currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
+                        sink.error(new UnexpectedLengthException(
+                            String.format(BODY_TOO_SMALL, currentTotalLength[0], expectedLength), currentTotalLength[0],
+                            expectedLength));
                     } else {
                         sink.complete();
                     }
@@ -110,8 +111,9 @@ public final class RestProxyUtils {
 
                 currentTotalLength[0] += buffer.remaining();
                 if (currentTotalLength[0] > expectedLength) {
-                    sink.error(new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                        currentTotalLength[0], expectedLength), currentTotalLength[0], expectedLength));
+                    sink.error(new UnexpectedLengthException(
+                        String.format(BODY_TOO_LARGE, currentTotalLength[0], expectedLength), currentTotalLength[0],
+                        expectedLength));
                     return;
                 }
 
@@ -140,8 +142,8 @@ public final class RestProxyUtils {
         } else if (bdc instanceof InputStreamContent) {
             InputStreamContent inputStreamContent = ((InputStreamContent) bdc);
             InputStream inputStream = inputStreamContent.toStream();
-            LengthValidatingInputStream lengthValidatingInputStream =
-                new LengthValidatingInputStream(inputStream, expectedLength);
+            LengthValidatingInputStream lengthValidatingInputStream
+                = new LengthValidatingInputStream(inputStream, expectedLength);
             return BinaryData.fromStream(lengthValidatingInputStream, expectedLength);
         } else {
             if (length == null) {
@@ -158,13 +160,13 @@ public final class RestProxyUtils {
 
     private static void validateLength(long length, long expectedLength) {
         if (length > expectedLength) {
-            throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE,
-                length, expectedLength), length, expectedLength);
+            throw new UnexpectedLengthException(String.format(BODY_TOO_LARGE, length, expectedLength), length,
+                expectedLength);
         }
 
         if (length < expectedLength) {
-            throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL,
-                length, expectedLength), length, expectedLength);
+            throw new UnexpectedLengthException(String.format(BODY_TOO_SMALL, length, expectedLength), length,
+                expectedLength);
         }
     }
 
@@ -222,8 +224,6 @@ public final class RestProxyUtils {
         policies.add(new RetryPolicy());
         policies.add(new CookiePolicy());
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .build();
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).build();
     }
 }

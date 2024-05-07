@@ -14,11 +14,13 @@ import com.azure.resourcemanager.monitor.fluent.models.LogProfileResourceInner;
 import com.azure.resourcemanager.monitor.models.LogProfileResourcePatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LogProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LogProfilesClient.
+ */
 public interface LogProfilesClient {
     /**
      * Deletes the log profile.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -30,7 +32,7 @@ public interface LogProfilesClient {
 
     /**
      * Deletes the log profile.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,7 +44,7 @@ public interface LogProfilesClient {
 
     /**
      * Deletes the log profile.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +57,7 @@ public interface LogProfilesClient {
 
     /**
      * Deletes the log profile.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,7 +68,7 @@ public interface LogProfilesClient {
 
     /**
      * Gets the log profile.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,7 +80,7 @@ public interface LogProfilesClient {
 
     /**
      * Gets the log profile.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,7 +92,7 @@ public interface LogProfilesClient {
 
     /**
      * Gets the log profile.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,7 +105,7 @@ public interface LogProfilesClient {
 
     /**
      * Gets the log profile.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,7 +117,7 @@ public interface LogProfilesClient {
 
     /**
      * Create or update a log profile in Azure Monitoring REST API.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,12 +126,12 @@ public interface LogProfilesClient {
      * @return the log profile resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LogProfileResourceInner>> createOrUpdateWithResponseAsync(
-        String logProfileName, LogProfileResourceInner parameters);
+    Mono<Response<LogProfileResourceInner>> createOrUpdateWithResponseAsync(String logProfileName,
+        LogProfileResourceInner parameters);
 
     /**
      * Create or update a log profile in Azure Monitoring REST API.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +144,7 @@ public interface LogProfilesClient {
 
     /**
      * Create or update a log profile in Azure Monitoring REST API.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -152,12 +154,12 @@ public interface LogProfilesClient {
      * @return the log profile resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogProfileResourceInner> createOrUpdateWithResponse(
-        String logProfileName, LogProfileResourceInner parameters, Context context);
+    Response<LogProfileResourceInner> createOrUpdateWithResponse(String logProfileName,
+        LogProfileResourceInner parameters, Context context);
 
     /**
      * Create or update a log profile in Azure Monitoring REST API.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +172,7 @@ public interface LogProfilesClient {
 
     /**
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @param logProfilesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,12 +181,12 @@ public interface LogProfilesClient {
      * @return the log profile resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LogProfileResourceInner>> updateWithResponseAsync(
-        String logProfileName, LogProfileResourcePatch logProfilesResource);
+    Mono<Response<LogProfileResourceInner>> updateWithResponseAsync(String logProfileName,
+        LogProfileResourcePatch logProfilesResource);
 
     /**
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @param logProfilesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -197,7 +199,7 @@ public interface LogProfilesClient {
 
     /**
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @param logProfilesResource Parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -207,12 +209,12 @@ public interface LogProfilesClient {
      * @return the log profile resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogProfileResourceInner> updateWithResponse(
-        String logProfileName, LogProfileResourcePatch logProfilesResource, Context context);
+    Response<LogProfileResourceInner> updateWithResponse(String logProfileName,
+        LogProfileResourcePatch logProfilesResource, Context context);
 
     /**
      * Updates an existing LogProfilesResource. To update other fields use the CreateOrUpdate method.
-     *
+     * 
      * @param logProfileName The name of the log profile.
      * @param logProfilesResource Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -225,7 +227,7 @@ public interface LogProfilesClient {
 
     /**
      * List the log profiles.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of log profiles as paginated response with {@link PagedFlux}.
@@ -235,7 +237,7 @@ public interface LogProfilesClient {
 
     /**
      * List the log profiles.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a collection of log profiles as paginated response with {@link PagedIterable}.
@@ -245,7 +247,7 @@ public interface LogProfilesClient {
 
     /**
      * List the log profiles.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

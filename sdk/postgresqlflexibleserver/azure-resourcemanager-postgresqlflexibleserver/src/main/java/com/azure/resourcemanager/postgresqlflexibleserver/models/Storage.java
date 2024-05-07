@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Storage properties of a server. */
+/**
+ * Storage properties of a server.
+ */
 @Fluent
 public final class Storage {
     /*
@@ -41,19 +43,20 @@ public final class Storage {
     private Integer throughput;
 
     /*
-     * Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default is Premium_LRS if not
-     * specified
+     * Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default is Premium_LRS if not specified
      */
     @JsonProperty(value = "type")
     private StorageType type;
 
-    /** Creates an instance of Storage class. */
+    /**
+     * Creates an instance of Storage class.
+     */
     public Storage() {
     }
 
     /**
      * Get the storageSizeGB property: Max storage allowed for a server.
-     *
+     * 
      * @return the storageSizeGB value.
      */
     public Integer storageSizeGB() {
@@ -62,7 +65,7 @@ public final class Storage {
 
     /**
      * Set the storageSizeGB property: Max storage allowed for a server.
-     *
+     * 
      * @param storageSizeGB the storageSizeGB value to set.
      * @return the Storage object itself.
      */
@@ -73,7 +76,7 @@ public final class Storage {
 
     /**
      * Get the autoGrow property: Flag to enable / disable Storage Auto grow for flexible server.
-     *
+     * 
      * @return the autoGrow value.
      */
     public StorageAutoGrow autoGrow() {
@@ -82,7 +85,7 @@ public final class Storage {
 
     /**
      * Set the autoGrow property: Flag to enable / disable Storage Auto grow for flexible server.
-     *
+     * 
      * @param autoGrow the autoGrow value to set.
      * @return the Storage object itself.
      */
@@ -93,7 +96,7 @@ public final class Storage {
 
     /**
      * Get the tier property: Name of storage tier for IOPS.
-     *
+     * 
      * @return the tier value.
      */
     public AzureManagedDiskPerformanceTiers tier() {
@@ -102,7 +105,7 @@ public final class Storage {
 
     /**
      * Set the tier property: Name of storage tier for IOPS.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Storage object itself.
      */
@@ -114,7 +117,7 @@ public final class Storage {
     /**
      * Get the iops property: Storage tier IOPS quantity. This property is required to be set for storage Type
      * PremiumV2_LRS.
-     *
+     * 
      * @return the iops value.
      */
     public Integer iops() {
@@ -124,7 +127,7 @@ public final class Storage {
     /**
      * Set the iops property: Storage tier IOPS quantity. This property is required to be set for storage Type
      * PremiumV2_LRS.
-     *
+     * 
      * @param iops the iops value to set.
      * @return the Storage object itself.
      */
@@ -136,7 +139,7 @@ public final class Storage {
     /**
      * Get the throughput property: Storage throughput for the server. This is required to be set for storage Type
      * PremiumV2_LRS.
-     *
+     * 
      * @return the throughput value.
      */
     public Integer throughput() {
@@ -146,7 +149,7 @@ public final class Storage {
     /**
      * Set the throughput property: Storage throughput for the server. This is required to be set for storage Type
      * PremiumV2_LRS.
-     *
+     * 
      * @param throughput the throughput value to set.
      * @return the Storage object itself.
      */
@@ -158,7 +161,7 @@ public final class Storage {
     /**
      * Get the type property: Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default
      * is Premium_LRS if not specified.
-     *
+     * 
      * @return the type value.
      */
     public StorageType type() {
@@ -168,7 +171,7 @@ public final class Storage {
     /**
      * Set the type property: Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default
      * is Premium_LRS if not specified.
-     *
+     * 
      * @param type the type value to set.
      * @return the Storage object itself.
      */
@@ -179,7 +182,7 @@ public final class Storage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

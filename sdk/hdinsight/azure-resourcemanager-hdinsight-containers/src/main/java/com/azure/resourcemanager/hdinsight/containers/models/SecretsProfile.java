@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The cluster secret profile. */
+/**
+ * The cluster secret profile.
+ */
 @Fluent
 public final class SecretsProfile {
     /*
@@ -24,14 +26,16 @@ public final class SecretsProfile {
     @JsonProperty(value = "secrets")
     private List<SecretReference> secrets;
 
-    /** Creates an instance of SecretsProfile class. */
+    /**
+     * Creates an instance of SecretsProfile class.
+     */
     public SecretsProfile() {
     }
 
     /**
      * Get the keyVaultResourceId property: Name of the user Key Vault where all the cluster specific user secrets are
      * stored.
-     *
+     * 
      * @return the keyVaultResourceId value.
      */
     public String keyVaultResourceId() {
@@ -41,7 +45,7 @@ public final class SecretsProfile {
     /**
      * Set the keyVaultResourceId property: Name of the user Key Vault where all the cluster specific user secrets are
      * stored.
-     *
+     * 
      * @param keyVaultResourceId the keyVaultResourceId value to set.
      * @return the SecretsProfile object itself.
      */
@@ -52,7 +56,7 @@ public final class SecretsProfile {
 
     /**
      * Get the secrets property: Properties of Key Vault secret.
-     *
+     * 
      * @return the secrets value.
      */
     public List<SecretReference> secrets() {
@@ -61,7 +65,7 @@ public final class SecretsProfile {
 
     /**
      * Set the secrets property: Properties of Key Vault secret.
-     *
+     * 
      * @param secrets the secrets value to set.
      * @return the SecretsProfile object itself.
      */
@@ -72,15 +76,13 @@ public final class SecretsProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyVaultResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultResourceId in model SecretsProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyVaultResourceId in model SecretsProfile"));
         }
         if (secrets() != null) {
             secrets().forEach(e -> e.validate());

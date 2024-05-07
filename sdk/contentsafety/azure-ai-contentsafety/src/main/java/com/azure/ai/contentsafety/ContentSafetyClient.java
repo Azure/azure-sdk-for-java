@@ -45,9 +45,8 @@ public final class ContentSafetyClient {
      *
      * A synchronous API for the analysis of potentially harmful text content. Currently, it supports four categories:
      * Hate, SelfHarm, Sexual, and Violence.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -61,9 +60,9 @@ public final class ContentSafetyClient {
      *     outputType: String(FourSeverityLevels/EightSeverityLevels) (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     blocklistsMatch (Optional): [
@@ -101,9 +100,8 @@ public final class ContentSafetyClient {
      *
      * A synchronous API for the analysis of potentially harmful image content. Currently, it supports four categories:
      * Hate, SelfHarm, Sexual, and Violence.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     image (Required): {
@@ -116,9 +114,9 @@ public final class ContentSafetyClient {
      *     outputType: String(FourSeverityLevels) (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     categoriesAnalysis (Required): [

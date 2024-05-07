@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describe the owner source of governance rule. */
+/**
+ * Describe the owner source of governance rule.
+ */
 @Fluent
 public final class GovernanceRuleOwnerSource {
     /*
@@ -22,13 +24,15 @@ public final class GovernanceRuleOwnerSource {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of GovernanceRuleOwnerSource class. */
+    /**
+     * Creates an instance of GovernanceRuleOwnerSource class.
+     */
     public GovernanceRuleOwnerSource() {
     }
 
     /**
      * Get the type property: The owner type for the governance rule owner source.
-     *
+     * 
      * @return the type value.
      */
     public GovernanceRuleOwnerSourceType type() {
@@ -37,7 +41,7 @@ public final class GovernanceRuleOwnerSource {
 
     /**
      * Set the type property: The owner type for the governance rule owner source.
-     *
+     * 
      * @param type the type value to set.
      * @return the GovernanceRuleOwnerSource object itself.
      */
@@ -48,7 +52,7 @@ public final class GovernanceRuleOwnerSource {
 
     /**
      * Get the value property: The source value e.g. tag key like owner name or email address.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class GovernanceRuleOwnerSource {
 
     /**
      * Set the value property: The source value e.g. tag key like owner name or email address.
-     *
+     * 
      * @param value the value value to set.
      * @return the GovernanceRuleOwnerSource object itself.
      */
@@ -68,7 +72,7 @@ public final class GovernanceRuleOwnerSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

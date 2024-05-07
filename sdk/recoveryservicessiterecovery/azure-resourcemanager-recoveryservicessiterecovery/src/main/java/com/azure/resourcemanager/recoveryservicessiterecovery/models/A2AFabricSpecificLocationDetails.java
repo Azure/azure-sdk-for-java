@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExtendedLocation details data. */
+/**
+ * ExtendedLocation details data.
+ */
 @Fluent
 public final class A2AFabricSpecificLocationDetails {
     /*
@@ -82,13 +84,15 @@ public final class A2AFabricSpecificLocationDetails {
     @JsonProperty(value = "recoveryFabricLocation")
     private String recoveryFabricLocation;
 
-    /** Creates an instance of A2AFabricSpecificLocationDetails class. */
+    /**
+     * Creates an instance of A2AFabricSpecificLocationDetails class.
+     */
     public A2AFabricSpecificLocationDetails() {
     }
 
     /**
      * Get the initialPrimaryZone property: The initial source zone info.
-     *
+     * 
      * @return the initialPrimaryZone value.
      */
     public String initialPrimaryZone() {
@@ -97,7 +101,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the initialPrimaryZone property: The initial source zone info.
-     *
+     * 
      * @param initialPrimaryZone the initialPrimaryZone value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
@@ -108,7 +112,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Get the initialRecoveryZone property: The initial target zone info.
-     *
+     * 
      * @return the initialRecoveryZone value.
      */
     public String initialRecoveryZone() {
@@ -117,7 +121,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the initialRecoveryZone property: The initial target zone info.
-     *
+     * 
      * @param initialRecoveryZone the initialRecoveryZone value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
@@ -128,7 +132,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Get the initialPrimaryExtendedLocation property: The initial primary ExtendedLocation.
-     *
+     * 
      * @return the initialPrimaryExtendedLocation value.
      */
     public ExtendedLocation initialPrimaryExtendedLocation() {
@@ -137,19 +141,19 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the initialPrimaryExtendedLocation property: The initial primary ExtendedLocation.
-     *
+     * 
      * @param initialPrimaryExtendedLocation the initialPrimaryExtendedLocation value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
-    public A2AFabricSpecificLocationDetails withInitialPrimaryExtendedLocation(
-        ExtendedLocation initialPrimaryExtendedLocation) {
+    public A2AFabricSpecificLocationDetails
+        withInitialPrimaryExtendedLocation(ExtendedLocation initialPrimaryExtendedLocation) {
         this.initialPrimaryExtendedLocation = initialPrimaryExtendedLocation;
         return this;
     }
 
     /**
      * Get the initialRecoveryExtendedLocation property: The initial recovery ExtendedLocation.
-     *
+     * 
      * @return the initialRecoveryExtendedLocation value.
      */
     public ExtendedLocation initialRecoveryExtendedLocation() {
@@ -158,19 +162,19 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the initialRecoveryExtendedLocation property: The initial recovery ExtendedLocation.
-     *
+     * 
      * @param initialRecoveryExtendedLocation the initialRecoveryExtendedLocation value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
-    public A2AFabricSpecificLocationDetails withInitialRecoveryExtendedLocation(
-        ExtendedLocation initialRecoveryExtendedLocation) {
+    public A2AFabricSpecificLocationDetails
+        withInitialRecoveryExtendedLocation(ExtendedLocation initialRecoveryExtendedLocation) {
         this.initialRecoveryExtendedLocation = initialRecoveryExtendedLocation;
         return this;
     }
 
     /**
      * Get the initialPrimaryFabricLocation property: Initial primary fabric location info.
-     *
+     * 
      * @return the initialPrimaryFabricLocation value.
      */
     public String initialPrimaryFabricLocation() {
@@ -179,7 +183,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the initialPrimaryFabricLocation property: Initial primary fabric location info.
-     *
+     * 
      * @param initialPrimaryFabricLocation the initialPrimaryFabricLocation value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
@@ -190,7 +194,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Get the initialRecoveryFabricLocation property: The initial recovery fabric location info.
-     *
+     * 
      * @return the initialRecoveryFabricLocation value.
      */
     public String initialRecoveryFabricLocation() {
@@ -199,7 +203,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the initialRecoveryFabricLocation property: The initial recovery fabric location info.
-     *
+     * 
      * @param initialRecoveryFabricLocation the initialRecoveryFabricLocation value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
@@ -210,7 +214,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Get the primaryZone property: Source zone info.
-     *
+     * 
      * @return the primaryZone value.
      */
     public String primaryZone() {
@@ -219,7 +223,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the primaryZone property: Source zone info.
-     *
+     * 
      * @param primaryZone the primaryZone value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
@@ -230,7 +234,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Get the recoveryZone property: The target zone info.
-     *
+     * 
      * @return the recoveryZone value.
      */
     public String recoveryZone() {
@@ -239,7 +243,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the recoveryZone property: The target zone info.
-     *
+     * 
      * @param recoveryZone the recoveryZone value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
@@ -250,7 +254,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Get the primaryExtendedLocation property: The primary ExtendedLocation.
-     *
+     * 
      * @return the primaryExtendedLocation value.
      */
     public ExtendedLocation primaryExtendedLocation() {
@@ -259,7 +263,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the primaryExtendedLocation property: The primary ExtendedLocation.
-     *
+     * 
      * @param primaryExtendedLocation the primaryExtendedLocation value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
@@ -270,7 +274,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Get the recoveryExtendedLocation property: The recovery ExtendedLocation.
-     *
+     * 
      * @return the recoveryExtendedLocation value.
      */
     public ExtendedLocation recoveryExtendedLocation() {
@@ -279,7 +283,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the recoveryExtendedLocation property: The recovery ExtendedLocation.
-     *
+     * 
      * @param recoveryExtendedLocation the recoveryExtendedLocation value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
@@ -290,7 +294,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Get the primaryFabricLocation property: Primary fabric location info.
-     *
+     * 
      * @return the primaryFabricLocation value.
      */
     public String primaryFabricLocation() {
@@ -299,7 +303,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the primaryFabricLocation property: Primary fabric location info.
-     *
+     * 
      * @param primaryFabricLocation the primaryFabricLocation value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
@@ -310,7 +314,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Get the recoveryFabricLocation property: The recovery fabric location info.
-     *
+     * 
      * @return the recoveryFabricLocation value.
      */
     public String recoveryFabricLocation() {
@@ -319,7 +323,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Set the recoveryFabricLocation property: The recovery fabric location info.
-     *
+     * 
      * @param recoveryFabricLocation the recoveryFabricLocation value to set.
      * @return the A2AFabricSpecificLocationDetails object itself.
      */
@@ -330,7 +334,7 @@ public final class A2AFabricSpecificLocationDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

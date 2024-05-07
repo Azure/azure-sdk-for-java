@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Storage workload-specific additional information for job. */
+/**
+ * Azure Storage workload-specific additional information for job.
+ */
 @Fluent
 public final class AzureStorageJobExtendedInfo {
     /*
@@ -32,13 +34,15 @@ public final class AzureStorageJobExtendedInfo {
     @JsonProperty(value = "dynamicErrorMessage")
     private String dynamicErrorMessage;
 
-    /** Creates an instance of AzureStorageJobExtendedInfo class. */
+    /**
+     * Creates an instance of AzureStorageJobExtendedInfo class.
+     */
     public AzureStorageJobExtendedInfo() {
     }
 
     /**
      * Get the tasksList property: List of tasks for this job.
-     *
+     * 
      * @return the tasksList value.
      */
     public List<AzureStorageJobTaskDetails> tasksList() {
@@ -47,7 +51,7 @@ public final class AzureStorageJobExtendedInfo {
 
     /**
      * Set the tasksList property: List of tasks for this job.
-     *
+     * 
      * @param tasksList the tasksList value to set.
      * @return the AzureStorageJobExtendedInfo object itself.
      */
@@ -58,7 +62,7 @@ public final class AzureStorageJobExtendedInfo {
 
     /**
      * Get the propertyBag property: Job properties.
-     *
+     * 
      * @return the propertyBag value.
      */
     public Map<String, String> propertyBag() {
@@ -67,7 +71,7 @@ public final class AzureStorageJobExtendedInfo {
 
     /**
      * Set the propertyBag property: Job properties.
-     *
+     * 
      * @param propertyBag the propertyBag value to set.
      * @return the AzureStorageJobExtendedInfo object itself.
      */
@@ -78,7 +82,7 @@ public final class AzureStorageJobExtendedInfo {
 
     /**
      * Get the dynamicErrorMessage property: Non localized error message on job execution.
-     *
+     * 
      * @return the dynamicErrorMessage value.
      */
     public String dynamicErrorMessage() {
@@ -87,7 +91,7 @@ public final class AzureStorageJobExtendedInfo {
 
     /**
      * Set the dynamicErrorMessage property: Non localized error message on job execution.
-     *
+     * 
      * @param dynamicErrorMessage the dynamicErrorMessage value to set.
      * @return the AzureStorageJobExtendedInfo object itself.
      */
@@ -98,7 +102,7 @@ public final class AzureStorageJobExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

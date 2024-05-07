@@ -22,74 +22,42 @@ public final class AdaptiveNetworkHardeningsImpl implements AdaptiveNetworkHarde
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public AdaptiveNetworkHardeningsImpl(
-        AdaptiveNetworkHardeningsClient innerClient,
+    public AdaptiveNetworkHardeningsImpl(AdaptiveNetworkHardeningsClient innerClient,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<AdaptiveNetworkHardening> listByExtendedResource(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
-        PagedIterable<AdaptiveNetworkHardeningInner> inner =
-            this
-                .serviceClient()
-                .listByExtendedResource(resourceGroupName, resourceNamespace, resourceType, resourceName);
-        return Utils.mapPage(inner, inner1 -> new AdaptiveNetworkHardeningImpl(inner1, this.manager()));
+    public PagedIterable<AdaptiveNetworkHardening> listByExtendedResource(String resourceGroupName,
+        String resourceNamespace, String resourceType, String resourceName) {
+        PagedIterable<AdaptiveNetworkHardeningInner> inner = this.serviceClient()
+            .listByExtendedResource(resourceGroupName, resourceNamespace, resourceType, resourceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AdaptiveNetworkHardeningImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AdaptiveNetworkHardening> listByExtendedResource(
-        String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, Context context) {
-        PagedIterable<AdaptiveNetworkHardeningInner> inner =
-            this
-                .serviceClient()
-                .listByExtendedResource(resourceGroupName, resourceNamespace, resourceType, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new AdaptiveNetworkHardeningImpl(inner1, this.manager()));
+    public PagedIterable<AdaptiveNetworkHardening> listByExtendedResource(String resourceGroupName,
+        String resourceNamespace, String resourceType, String resourceName, Context context) {
+        PagedIterable<AdaptiveNetworkHardeningInner> inner = this.serviceClient()
+            .listByExtendedResource(resourceGroupName, resourceNamespace, resourceType, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AdaptiveNetworkHardeningImpl(inner1, this.manager()));
     }
 
-    public Response<AdaptiveNetworkHardening> getWithResponse(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName,
-        Context context) {
-        Response<AdaptiveNetworkHardeningInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName,
-                    resourceNamespace,
-                    resourceType,
-                    resourceName,
-                    adaptiveNetworkHardeningResourceName,
-                    context);
+    public Response<AdaptiveNetworkHardening> getWithResponse(String resourceGroupName, String resourceNamespace,
+        String resourceType, String resourceName, String adaptiveNetworkHardeningResourceName, Context context) {
+        Response<AdaptiveNetworkHardeningInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
+            resourceNamespace, resourceType, resourceName, adaptiveNetworkHardeningResourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AdaptiveNetworkHardeningImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AdaptiveNetworkHardening get(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName) {
-        AdaptiveNetworkHardeningInner inner =
-            this
-                .serviceClient()
-                .get(
-                    resourceGroupName,
-                    resourceNamespace,
-                    resourceType,
-                    resourceName,
-                    adaptiveNetworkHardeningResourceName);
+    public AdaptiveNetworkHardening get(String resourceGroupName, String resourceNamespace, String resourceType,
+        String resourceName, String adaptiveNetworkHardeningResourceName) {
+        AdaptiveNetworkHardeningInner inner = this.serviceClient().get(resourceGroupName, resourceNamespace,
+            resourceType, resourceName, adaptiveNetworkHardeningResourceName);
         if (inner != null) {
             return new AdaptiveNetworkHardeningImpl(inner, this.manager());
         } else {
@@ -97,42 +65,16 @@ public final class AdaptiveNetworkHardeningsImpl implements AdaptiveNetworkHarde
         }
     }
 
-    public void enforce(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName,
-        AdaptiveNetworkHardeningEnforceRequest body) {
-        this
-            .serviceClient()
-            .enforce(
-                resourceGroupName,
-                resourceNamespace,
-                resourceType,
-                resourceName,
-                adaptiveNetworkHardeningResourceName,
-                body);
+    public void enforce(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName,
+        String adaptiveNetworkHardeningResourceName, AdaptiveNetworkHardeningEnforceRequest body) {
+        this.serviceClient().enforce(resourceGroupName, resourceNamespace, resourceType, resourceName,
+            adaptiveNetworkHardeningResourceName, body);
     }
 
-    public void enforce(
-        String resourceGroupName,
-        String resourceNamespace,
-        String resourceType,
-        String resourceName,
-        String adaptiveNetworkHardeningResourceName,
-        AdaptiveNetworkHardeningEnforceRequest body,
-        Context context) {
-        this
-            .serviceClient()
-            .enforce(
-                resourceGroupName,
-                resourceNamespace,
-                resourceType,
-                resourceName,
-                adaptiveNetworkHardeningResourceName,
-                body,
-                context);
+    public void enforce(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName,
+        String adaptiveNetworkHardeningResourceName, AdaptiveNetworkHardeningEnforceRequest body, Context context) {
+        this.serviceClient().enforce(resourceGroupName, resourceNamespace, resourceType, resourceName,
+            adaptiveNetworkHardeningResourceName, body, context);
     }
 
     private AdaptiveNetworkHardeningsClient serviceClient() {

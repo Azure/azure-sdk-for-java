@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains information about SSH certificate public key data. */
+/**
+ * Contains information about SSH certificate public key data.
+ */
 @Fluent
 public final class ContainerServiceSshPublicKey {
     /*
@@ -18,14 +20,16 @@ public final class ContainerServiceSshPublicKey {
     @JsonProperty(value = "keyData", required = true)
     private String keyData;
 
-    /** Creates an instance of ContainerServiceSshPublicKey class. */
+    /**
+     * Creates an instance of ContainerServiceSshPublicKey class.
+     */
     public ContainerServiceSshPublicKey() {
     }
 
     /**
      * Get the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
      * be in PEM format with or without headers.
-     *
+     * 
      * @return the keyData value.
      */
     public String keyData() {
@@ -35,7 +39,7 @@ public final class ContainerServiceSshPublicKey {
     /**
      * Set the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
      * be in PEM format with or without headers.
-     *
+     * 
      * @param keyData the keyData value to set.
      * @return the ContainerServiceSshPublicKey object itself.
      */
@@ -46,15 +50,13 @@ public final class ContainerServiceSshPublicKey {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyData() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyData in model ContainerServiceSshPublicKey"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyData in model ContainerServiceSshPublicKey"));
         }
     }
 

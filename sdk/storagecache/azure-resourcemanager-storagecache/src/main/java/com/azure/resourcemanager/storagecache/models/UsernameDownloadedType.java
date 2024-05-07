@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether or not the HPC Cache has performed the username download successfully. */
+/**
+ * Indicates whether or not the HPC Cache has performed the username download successfully.
+ */
 public final class UsernameDownloadedType extends ExpandableStringEnum<UsernameDownloadedType> {
-    /** Static value Yes for UsernameDownloadedType. */
+    /**
+     * Static value Yes for UsernameDownloadedType.
+     */
     public static final UsernameDownloadedType YES = fromString("Yes");
 
-    /** Static value No for UsernameDownloadedType. */
+    /**
+     * Static value No for UsernameDownloadedType.
+     */
     public static final UsernameDownloadedType NO = fromString("No");
 
-    /** Static value Error for UsernameDownloadedType. */
+    /**
+     * Static value Error for UsernameDownloadedType.
+     */
     public static final UsernameDownloadedType ERROR = fromString("Error");
 
     /**
      * Creates a new instance of UsernameDownloadedType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class UsernameDownloadedType extends ExpandableStringEnum<UsernameD
 
     /**
      * Creates or finds a UsernameDownloadedType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UsernameDownloadedType.
      */
@@ -41,7 +49,7 @@ public final class UsernameDownloadedType extends ExpandableStringEnum<UsernameD
 
     /**
      * Gets known UsernameDownloadedType values.
-     *
+     * 
      * @return known UsernameDownloadedType values.
      */
     public static Collection<UsernameDownloadedType> values() {

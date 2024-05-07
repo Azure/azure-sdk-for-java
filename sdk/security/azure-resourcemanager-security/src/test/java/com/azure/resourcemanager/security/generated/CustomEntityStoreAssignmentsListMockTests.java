@@ -31,39 +31,28 @@ public final class CustomEntityStoreAssignmentsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"principal\":\"fljfiimreoagsqt\",\"entityStoreDatabaseLink\":\"dusr\"},\"id\":\"xxfavsqwudohzilf\",\"name\":\"nl\",\"type\":\"kpsimsfeypofqp\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"principal\":\"vad\",\"entityStoreDatabaseLink\":\"mjxmwqpdk\"},\"id\":\"sjqb\",\"name\":\"kqmxvpor\",\"type\":\"wbwggijts\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CustomEntityStoreAssignment> response =
-            manager.customEntityStoreAssignments().list(com.azure.core.util.Context.NONE);
+        PagedIterable<CustomEntityStoreAssignment> response
+            = manager.customEntityStoreAssignments().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fljfiimreoagsqt", response.iterator().next().principal());
-        Assertions.assertEquals("dusr", response.iterator().next().entityStoreDatabaseLink());
+        Assertions.assertEquals("vad", response.iterator().next().principal());
+        Assertions.assertEquals("mjxmwqpdk", response.iterator().next().entityStoreDatabaseLink());
     }
 }

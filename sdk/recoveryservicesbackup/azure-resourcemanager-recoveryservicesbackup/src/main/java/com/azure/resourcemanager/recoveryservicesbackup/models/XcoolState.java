@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Vault x-cool state. */
+/**
+ * Vault x-cool state.
+ */
 public final class XcoolState extends ExpandableStringEnum<XcoolState> {
-    /** Static value Invalid for XcoolState. */
+    /**
+     * Static value Invalid for XcoolState.
+     */
     public static final XcoolState INVALID = fromString("Invalid");
 
-    /** Static value Enabled for XcoolState. */
+    /**
+     * Static value Enabled for XcoolState.
+     */
     public static final XcoolState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for XcoolState. */
+    /**
+     * Static value Disabled for XcoolState.
+     */
     public static final XcoolState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of XcoolState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class XcoolState extends ExpandableStringEnum<XcoolState> {
 
     /**
      * Creates or finds a XcoolState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding XcoolState.
      */
@@ -41,7 +49,7 @@ public final class XcoolState extends ExpandableStringEnum<XcoolState> {
 
     /**
      * Gets known XcoolState values.
-     *
+     * 
      * @return known XcoolState values.
      */
     public static Collection<XcoolState> values() {

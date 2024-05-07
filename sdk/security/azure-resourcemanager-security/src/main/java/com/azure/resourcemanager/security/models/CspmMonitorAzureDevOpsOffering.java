@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The CSPM monitoring for AzureDevOps offering. */
+/**
+ * The CSPM monitoring for AzureDevOps offering.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
 @JsonTypeName("CspmMonitorAzureDevOps")
 @Immutable
 public final class CspmMonitorAzureDevOpsOffering extends CloudOffering {
-    /** Creates an instance of CspmMonitorAzureDevOpsOffering class. */
+    /**
+     * Creates an instance of CspmMonitorAzureDevOpsOffering class.
+     */
     public CspmMonitorAzureDevOpsOffering() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

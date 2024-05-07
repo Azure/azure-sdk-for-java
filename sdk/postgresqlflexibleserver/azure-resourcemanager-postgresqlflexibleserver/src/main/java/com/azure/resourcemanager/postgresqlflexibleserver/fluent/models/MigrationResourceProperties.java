@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CancelEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.DbServerMetadata;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceDbEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrateRolesEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationSecretParameters;
@@ -21,7 +22,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Migration resource properties. */
+/**
+ * Migration resource properties.
+ */
 @Fluent
 public final class MigrationResourceProperties {
     /*
@@ -37,6 +40,12 @@ public final class MigrationResourceProperties {
     private MigrationStatus currentStatus;
 
     /*
+     * ResourceId of the private endpoint migration instance
+     */
+    @JsonProperty(value = "migrationInstanceResourceId")
+    private String migrationInstanceResourceId;
+
+    /*
      * There are two types of migration modes Online and Offline
      */
     @JsonProperty(value = "migrationMode")
@@ -49,14 +58,13 @@ public final class MigrationResourceProperties {
     private MigrationOption migrationOption;
 
     /*
-     * migration source server type : OnPremises, AWS, GCP, AzureVM or PostgreSQLSingleServer
+     * migration source server type : OnPremises, AWS, GCP, AzureVM, PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB
      */
     @JsonProperty(value = "sourceType")
     private SourceType sourceType;
 
     /*
-     * SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and Prefer for other source
-     * types
+     * SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and Prefer for other source types
      */
     @JsonProperty(value = "sslMode")
     private SslMode sslMode;
@@ -74,15 +82,13 @@ public final class MigrationResourceProperties {
     private DbServerMetadata targetDbServerMetadata;
 
     /*
-     * ResourceId of the source database server in case the sourceType is PostgreSQLSingleServer. For other source
-     * types this should be ipaddress:port@username or hostname:port@username
+     * ResourceId of the source database server in case the sourceType is PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username
      */
     @JsonProperty(value = "sourceDbServerResourceId")
     private String sourceDbServerResourceId;
 
     /*
-     * Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always
-     * use it for connection
+     * Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it for connection
      */
     @JsonProperty(value = "sourceDbServerFullyQualifiedDomainName")
     private String sourceDbServerFullyQualifiedDomainName;
@@ -94,8 +100,7 @@ public final class MigrationResourceProperties {
     private String targetDbServerResourceId;
 
     /*
-     * Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always
-     * use it for connection
+     * Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it for connection
      */
     @JsonProperty(value = "targetDbServerFullyQualifiedDomainName")
     private String targetDbServerFullyQualifiedDomainName;
@@ -119,8 +124,7 @@ public final class MigrationResourceProperties {
     private LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded;
 
     /*
-     * Indicates whether the databases on the target server can be overwritten, if already present. If set to False,
-     * the migration workflow will wait for a confirmation, if it detects that the database already exists.
+     * Indicates whether the databases on the target server can be overwritten, if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the database already exists.
      */
     @JsonProperty(value = "overwriteDbsInTarget")
     private OverwriteDbsInTargetEnum overwriteDbsInTarget;
@@ -138,6 +142,12 @@ public final class MigrationResourceProperties {
     private OffsetDateTime migrationWindowEndTimeInUtc;
 
     /*
+     * To migrate roles and permissions we need to send this flag as True
+     */
+    @JsonProperty(value = "migrateRoles")
+    private MigrateRolesEnum migrateRoles;
+
+    /*
      * Indicates whether the data migration should start right away
      */
     @JsonProperty(value = "startDataMigration")
@@ -150,8 +160,7 @@ public final class MigrationResourceProperties {
     private TriggerCutoverEnum triggerCutover;
 
     /*
-     * When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in
-     * this array
+     * When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in this array
      */
     @JsonProperty(value = "dbsToTriggerCutoverOn")
     private List<String> dbsToTriggerCutoverOn;
@@ -168,13 +177,15 @@ public final class MigrationResourceProperties {
     @JsonProperty(value = "dbsToCancelMigrationOn")
     private List<String> dbsToCancelMigrationOn;
 
-    /** Creates an instance of MigrationResourceProperties class. */
+    /**
+     * Creates an instance of MigrationResourceProperties class.
+     */
     public MigrationResourceProperties() {
     }
 
     /**
      * Get the migrationId property: ID for migration, a GUID.
-     *
+     * 
      * @return the migrationId value.
      */
     public String migrationId() {
@@ -183,7 +194,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Get the currentStatus property: Current status of migration.
-     *
+     * 
      * @return the currentStatus value.
      */
     public MigrationStatus currentStatus() {
@@ -191,8 +202,28 @@ public final class MigrationResourceProperties {
     }
 
     /**
+     * Get the migrationInstanceResourceId property: ResourceId of the private endpoint migration instance.
+     * 
+     * @return the migrationInstanceResourceId value.
+     */
+    public String migrationInstanceResourceId() {
+        return this.migrationInstanceResourceId;
+    }
+
+    /**
+     * Set the migrationInstanceResourceId property: ResourceId of the private endpoint migration instance.
+     * 
+     * @param migrationInstanceResourceId the migrationInstanceResourceId value to set.
+     * @return the MigrationResourceProperties object itself.
+     */
+    public MigrationResourceProperties withMigrationInstanceResourceId(String migrationInstanceResourceId) {
+        this.migrationInstanceResourceId = migrationInstanceResourceId;
+        return this;
+    }
+
+    /**
      * Get the migrationMode property: There are two types of migration modes Online and Offline.
-     *
+     * 
      * @return the migrationMode value.
      */
     public MigrationMode migrationMode() {
@@ -201,7 +232,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Set the migrationMode property: There are two types of migration modes Online and Offline.
-     *
+     * 
      * @param migrationMode the migrationMode value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -212,7 +243,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Get the migrationOption property: This indicates the supported Migration option for the migration.
-     *
+     * 
      * @return the migrationOption value.
      */
     public MigrationOption migrationOption() {
@@ -221,7 +252,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Set the migrationOption property: This indicates the supported Migration option for the migration.
-     *
+     * 
      * @param migrationOption the migrationOption value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -231,9 +262,9 @@ public final class MigrationResourceProperties {
     }
 
     /**
-     * Get the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
-     * PostgreSQLSingleServer.
-     *
+     * Get the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM,
+     * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
+     * 
      * @return the sourceType value.
      */
     public SourceType sourceType() {
@@ -241,9 +272,9 @@ public final class MigrationResourceProperties {
     }
 
     /**
-     * Set the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM or
-     * PostgreSQLSingleServer.
-     *
+     * Set the sourceType property: migration source server type : OnPremises, AWS, GCP, AzureVM,
+     * PostgreSQLSingleServer, AWS_RDS, AWS_AURORA, AWS_EC2, GCP_CloudSQL, GCP_AlloyDB, GCP_Compute, or EDB.
+     * 
      * @param sourceType the sourceType value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -255,7 +286,7 @@ public final class MigrationResourceProperties {
     /**
      * Get the sslMode property: SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and
      * Prefer for other source types.
-     *
+     * 
      * @return the sslMode value.
      */
     public SslMode sslMode() {
@@ -265,7 +296,7 @@ public final class MigrationResourceProperties {
     /**
      * Set the sslMode property: SSL modes for migration. Default SSL mode for PostgreSQLSingleServer is VerifyFull and
      * Prefer for other source types.
-     *
+     * 
      * @param sslMode the sslMode value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -276,7 +307,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Get the sourceDbServerMetadata property: Metadata of the source database server.
-     *
+     * 
      * @return the sourceDbServerMetadata value.
      */
     public DbServerMetadata sourceDbServerMetadata() {
@@ -285,7 +316,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Get the targetDbServerMetadata property: Metadata of the target database server.
-     *
+     * 
      * @return the targetDbServerMetadata value.
      */
     public DbServerMetadata targetDbServerMetadata() {
@@ -294,8 +325,9 @@ public final class MigrationResourceProperties {
 
     /**
      * Get the sourceDbServerResourceId property: ResourceId of the source database server in case the sourceType is
-     * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username.
-     *
+     * PostgreSQLSingleServer. For other source types this should be ipaddress:port&#064;username or
+     * hostname:port&#064;username.
+     * 
      * @return the sourceDbServerResourceId value.
      */
     public String sourceDbServerResourceId() {
@@ -304,8 +336,9 @@ public final class MigrationResourceProperties {
 
     /**
      * Set the sourceDbServerResourceId property: ResourceId of the source database server in case the sourceType is
-     * PostgreSQLSingleServer. For other source types this should be ipaddress:port@username or hostname:port@username.
-     *
+     * PostgreSQLSingleServer. For other source types this should be ipaddress:port&#064;username or
+     * hostname:port&#064;username.
+     * 
      * @param sourceDbServerResourceId the sourceDbServerResourceId value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -317,7 +350,7 @@ public final class MigrationResourceProperties {
     /**
      * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
      * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * 
      * @return the sourceDbServerFullyQualifiedDomainName value.
      */
     public String sourceDbServerFullyQualifiedDomainName() {
@@ -327,19 +360,19 @@ public final class MigrationResourceProperties {
     /**
      * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
      * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * 
      * @param sourceDbServerFullyQualifiedDomainName the sourceDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceProperties object itself.
      */
-    public MigrationResourceProperties withSourceDbServerFullyQualifiedDomainName(
-        String sourceDbServerFullyQualifiedDomainName) {
+    public MigrationResourceProperties
+        withSourceDbServerFullyQualifiedDomainName(String sourceDbServerFullyQualifiedDomainName) {
         this.sourceDbServerFullyQualifiedDomainName = sourceDbServerFullyQualifiedDomainName;
         return this;
     }
 
     /**
      * Get the targetDbServerResourceId property: ResourceId of the source database server.
-     *
+     * 
      * @return the targetDbServerResourceId value.
      */
     public String targetDbServerResourceId() {
@@ -349,7 +382,7 @@ public final class MigrationResourceProperties {
     /**
      * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
      * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * 
      * @return the targetDbServerFullyQualifiedDomainName value.
      */
     public String targetDbServerFullyQualifiedDomainName() {
@@ -359,19 +392,19 @@ public final class MigrationResourceProperties {
     /**
      * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
      * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * 
      * @param targetDbServerFullyQualifiedDomainName the targetDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceProperties object itself.
      */
-    public MigrationResourceProperties withTargetDbServerFullyQualifiedDomainName(
-        String targetDbServerFullyQualifiedDomainName) {
+    public MigrationResourceProperties
+        withTargetDbServerFullyQualifiedDomainName(String targetDbServerFullyQualifiedDomainName) {
         this.targetDbServerFullyQualifiedDomainName = targetDbServerFullyQualifiedDomainName;
         return this;
     }
 
     /**
      * Get the secretParameters property: Migration secret parameters.
-     *
+     * 
      * @return the secretParameters value.
      */
     public MigrationSecretParameters secretParameters() {
@@ -380,7 +413,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Set the secretParameters property: Migration secret parameters.
-     *
+     * 
      * @param secretParameters the secretParameters value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -391,7 +424,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Get the dbsToMigrate property: Number of databases to migrate.
-     *
+     * 
      * @return the dbsToMigrate value.
      */
     public List<String> dbsToMigrate() {
@@ -400,7 +433,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Set the dbsToMigrate property: Number of databases to migrate.
-     *
+     * 
      * @param dbsToMigrate the dbsToMigrate value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -412,7 +445,7 @@ public final class MigrationResourceProperties {
     /**
      * Get the setupLogicalReplicationOnSourceDbIfNeeded property: Indicates whether to setup
      * LogicalReplicationOnSourceDb, if needed.
-     *
+     * 
      * @return the setupLogicalReplicationOnSourceDbIfNeeded value.
      */
     public LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded() {
@@ -422,7 +455,7 @@ public final class MigrationResourceProperties {
     /**
      * Set the setupLogicalReplicationOnSourceDbIfNeeded property: Indicates whether to setup
      * LogicalReplicationOnSourceDb, if needed.
-     *
+     * 
      * @param setupLogicalReplicationOnSourceDbIfNeeded the setupLogicalReplicationOnSourceDbIfNeeded value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -436,7 +469,7 @@ public final class MigrationResourceProperties {
      * Get the overwriteDbsInTarget property: Indicates whether the databases on the target server can be overwritten,
      * if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the
      * database already exists.
-     *
+     * 
      * @return the overwriteDbsInTarget value.
      */
     public OverwriteDbsInTargetEnum overwriteDbsInTarget() {
@@ -447,7 +480,7 @@ public final class MigrationResourceProperties {
      * Set the overwriteDbsInTarget property: Indicates whether the databases on the target server can be overwritten,
      * if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the
      * database already exists.
-     *
+     * 
      * @param overwriteDbsInTarget the overwriteDbsInTarget value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -458,7 +491,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Get the migrationWindowStartTimeInUtc property: Start time in UTC for migration window.
-     *
+     * 
      * @return the migrationWindowStartTimeInUtc value.
      */
     public OffsetDateTime migrationWindowStartTimeInUtc() {
@@ -467,7 +500,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Set the migrationWindowStartTimeInUtc property: Start time in UTC for migration window.
-     *
+     * 
      * @param migrationWindowStartTimeInUtc the migrationWindowStartTimeInUtc value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -478,7 +511,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Get the migrationWindowEndTimeInUtc property: End time in UTC for migration window.
-     *
+     * 
      * @return the migrationWindowEndTimeInUtc value.
      */
     public OffsetDateTime migrationWindowEndTimeInUtc() {
@@ -487,7 +520,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Set the migrationWindowEndTimeInUtc property: End time in UTC for migration window.
-     *
+     * 
      * @param migrationWindowEndTimeInUtc the migrationWindowEndTimeInUtc value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -497,8 +530,28 @@ public final class MigrationResourceProperties {
     }
 
     /**
+     * Get the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @return the migrateRoles value.
+     */
+    public MigrateRolesEnum migrateRoles() {
+        return this.migrateRoles;
+    }
+
+    /**
+     * Set the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @param migrateRoles the migrateRoles value to set.
+     * @return the MigrationResourceProperties object itself.
+     */
+    public MigrationResourceProperties withMigrateRoles(MigrateRolesEnum migrateRoles) {
+        this.migrateRoles = migrateRoles;
+        return this;
+    }
+
+    /**
      * Get the startDataMigration property: Indicates whether the data migration should start right away.
-     *
+     * 
      * @return the startDataMigration value.
      */
     public StartDataMigrationEnum startDataMigration() {
@@ -507,7 +560,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Set the startDataMigration property: Indicates whether the data migration should start right away.
-     *
+     * 
      * @param startDataMigration the startDataMigration value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -518,7 +571,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Get the triggerCutover property: To trigger cutover for entire migration we need to send this flag as True.
-     *
+     * 
      * @return the triggerCutover value.
      */
     public TriggerCutoverEnum triggerCutover() {
@@ -527,7 +580,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Set the triggerCutover property: To trigger cutover for entire migration we need to send this flag as True.
-     *
+     * 
      * @param triggerCutover the triggerCutover value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -539,7 +592,7 @@ public final class MigrationResourceProperties {
     /**
      * Get the dbsToTriggerCutoverOn property: When you want to trigger cutover for specific databases send
      * triggerCutover flag as True and database names in this array.
-     *
+     * 
      * @return the dbsToTriggerCutoverOn value.
      */
     public List<String> dbsToTriggerCutoverOn() {
@@ -549,7 +602,7 @@ public final class MigrationResourceProperties {
     /**
      * Set the dbsToTriggerCutoverOn property: When you want to trigger cutover for specific databases send
      * triggerCutover flag as True and database names in this array.
-     *
+     * 
      * @param dbsToTriggerCutoverOn the dbsToTriggerCutoverOn value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -560,7 +613,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Get the cancel property: To trigger cancel for entire migration we need to send this flag as True.
-     *
+     * 
      * @return the cancel value.
      */
     public CancelEnum cancel() {
@@ -569,7 +622,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Set the cancel property: To trigger cancel for entire migration we need to send this flag as True.
-     *
+     * 
      * @param cancel the cancel value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -581,7 +634,7 @@ public final class MigrationResourceProperties {
     /**
      * Get the dbsToCancelMigrationOn property: When you want to trigger cancel for specific databases send cancel flag
      * as True and database names in this array.
-     *
+     * 
      * @return the dbsToCancelMigrationOn value.
      */
     public List<String> dbsToCancelMigrationOn() {
@@ -591,7 +644,7 @@ public final class MigrationResourceProperties {
     /**
      * Set the dbsToCancelMigrationOn property: When you want to trigger cancel for specific databases send cancel flag
      * as True and database names in this array.
-     *
+     * 
      * @param dbsToCancelMigrationOn the dbsToCancelMigrationOn value to set.
      * @return the MigrationResourceProperties object itself.
      */
@@ -602,7 +655,7 @@ public final class MigrationResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

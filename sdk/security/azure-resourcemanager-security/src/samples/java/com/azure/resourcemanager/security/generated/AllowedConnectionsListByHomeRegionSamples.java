@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for AllowedConnections ListByHomeRegion. */
+/**
+ * Samples for AllowedConnections ListByHomeRegion.
+ */
 public final class AllowedConnectionsListByHomeRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AllowedConnections/GetAllowedConnectionsSubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AllowedConnections/
+     * GetAllowedConnectionsSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get allowed connections on a subscription from security data location.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getAllowedConnectionsOnASubscriptionFromSecurityDataLocation(

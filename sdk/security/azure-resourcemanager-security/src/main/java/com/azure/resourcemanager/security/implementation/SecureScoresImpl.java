@@ -21,29 +21,26 @@ public final class SecureScoresImpl implements SecureScores {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public SecureScoresImpl(
-        SecureScoresClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public SecureScoresImpl(SecureScoresClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<SecureScoreItem> list() {
         PagedIterable<SecureScoreItemInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SecureScoreItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecureScoreItemImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SecureScoreItem> list(Context context) {
         PagedIterable<SecureScoreItemInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SecureScoreItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SecureScoreItemImpl(inner1, this.manager()));
     }
 
     public Response<SecureScoreItem> getWithResponse(String secureScoreName, Context context) {
         Response<SecureScoreItemInner> inner = this.serviceClient().getWithResponse(secureScoreName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SecureScoreItemImpl(inner.getValue(), this.manager()));
         } else {
             return null;

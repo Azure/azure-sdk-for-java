@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.ReplicationEligibilityResultsCollectionInner;
 import java.util.List;
 
-/** An immutable client-side representation of ReplicationEligibilityResultsCollection. */
+/**
+ * An immutable client-side representation of ReplicationEligibilityResultsCollection.
+ */
 public interface ReplicationEligibilityResultsCollection {
     /**
      * Gets the value property: The replication eligibility results details.
-     *
+     * 
      * @return the value value.
      */
     List<ReplicationEligibilityResults> value();
@@ -20,7 +22,7 @@ public interface ReplicationEligibilityResultsCollection {
      * Gets the inner
      * com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.ReplicationEligibilityResultsCollectionInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ReplicationEligibilityResultsCollectionInner innerModel();

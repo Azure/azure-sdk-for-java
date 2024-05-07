@@ -25,9 +25,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
-import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -66,7 +66,7 @@ public final class SynonymMapsImpl {
     public interface SynonymMapsService {
         @Put("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SynonymMap>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @PathParam("synonymMapName") String synonymMapName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
@@ -76,7 +76,7 @@ public final class SynonymMapsImpl {
 
         @Put("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SynonymMap> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @PathParam("synonymMapName") String synonymMapName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
@@ -86,7 +86,7 @@ public final class SynonymMapsImpl {
 
         @Delete("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 204, 404 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @PathParam("synonymMapName") String synonymMapName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
@@ -95,7 +95,7 @@ public final class SynonymMapsImpl {
 
         @Delete("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 204, 404 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint,
             @PathParam("synonymMapName") String synonymMapName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
@@ -104,7 +104,7 @@ public final class SynonymMapsImpl {
 
         @Get("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SynonymMap>> get(@HostParam("endpoint") String endpoint,
             @PathParam("synonymMapName") String synonymMapName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -112,7 +112,7 @@ public final class SynonymMapsImpl {
 
         @Get("/synonymmaps('{synonymMapName}')")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SynonymMap> getSync(@HostParam("endpoint") String endpoint,
             @PathParam("synonymMapName") String synonymMapName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -120,21 +120,21 @@ public final class SynonymMapsImpl {
 
         @Get("/synonymmaps")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ListSynonymMapsResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("$select") String select, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/synonymmaps")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<ListSynonymMapsResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("$select") String select, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/synonymmaps")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SynonymMap>> create(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -142,7 +142,7 @@ public final class SynonymMapsImpl {
 
         @Post("/synonymmaps")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SynonymMap> createSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -160,7 +160,7 @@ public final class SynonymMapsImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -191,7 +191,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -220,7 +220,7 @@ public final class SynonymMapsImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition on successful completion of {@link Mono}.
      */
@@ -243,7 +243,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition on successful completion of {@link Mono}.
      */
@@ -266,7 +266,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition along with {@link Response}.
      */
@@ -295,7 +295,7 @@ public final class SynonymMapsImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition.
      */
@@ -316,7 +316,7 @@ public final class SynonymMapsImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -344,7 +344,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -371,7 +371,7 @@ public final class SynonymMapsImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -393,7 +393,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -415,7 +415,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -442,7 +442,7 @@ public final class SynonymMapsImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -456,7 +456,7 @@ public final class SynonymMapsImpl {
      * @param synonymMapName The name of the synonym map to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -479,7 +479,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -502,7 +502,7 @@ public final class SynonymMapsImpl {
      * @param synonymMapName The name of the synonym map to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition on successful completion of {@link Mono}.
      */
@@ -518,7 +518,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition on successful completion of {@link Mono}.
      */
@@ -535,7 +535,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition along with {@link Response}.
      */
@@ -557,7 +557,7 @@ public final class SynonymMapsImpl {
      * @param synonymMapName The name of the synonym map to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition.
      */
@@ -573,7 +573,7 @@ public final class SynonymMapsImpl {
      * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List SynonymMaps request along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -598,7 +598,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List SynonymMaps request along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -623,7 +623,7 @@ public final class SynonymMapsImpl {
      * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List SynonymMaps request on successful completion of {@link Mono}.
      */
@@ -640,7 +640,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List SynonymMaps request on successful completion of {@link Mono}.
      */
@@ -657,7 +657,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List SynonymMaps request along with {@link Response}.
      */
@@ -681,7 +681,7 @@ public final class SynonymMapsImpl {
      * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List SynonymMaps request.
      */
@@ -696,7 +696,7 @@ public final class SynonymMapsImpl {
      * @param synonymMap The definition of the synonym map to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -719,7 +719,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -742,7 +742,7 @@ public final class SynonymMapsImpl {
      * @param synonymMap The definition of the synonym map to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition on successful completion of {@link Mono}.
      */
@@ -758,7 +758,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition on successful completion of {@link Mono}.
      */
@@ -775,7 +775,7 @@ public final class SynonymMapsImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition along with {@link Response}.
      */
@@ -798,7 +798,7 @@ public final class SynonymMapsImpl {
      * @param synonymMap The definition of the synonym map to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a synonym map definition.
      */

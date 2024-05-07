@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Specifies the metric alert criteria for multiple resource that has multiple metric criteria. */
+/**
+ * Specifies the metric alert criteria for multiple resource that has multiple metric criteria.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria")
 @Fluent
@@ -21,13 +23,15 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
     @JsonProperty(value = "allOf")
     private List<MultiMetricCriteria> allOf;
 
-    /** Creates an instance of MetricAlertMultipleResourceMultipleMetricCriteria class. */
+    /**
+     * Creates an instance of MetricAlertMultipleResourceMultipleMetricCriteria class.
+     */
     public MetricAlertMultipleResourceMultipleMetricCriteria() {
     }
 
     /**
      * Get the allOf property: the list of multiple metric criteria for this 'all of' operation.
-     *
+     * 
      * @return the allOf value.
      */
     public List<MultiMetricCriteria> allOf() {
@@ -36,7 +40,7 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
 
     /**
      * Set the allOf property: the list of multiple metric criteria for this 'all of' operation.
-     *
+     * 
      * @param allOf the allOf value to set.
      * @return the MetricAlertMultipleResourceMultipleMetricCriteria object itself.
      */
@@ -47,7 +51,7 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

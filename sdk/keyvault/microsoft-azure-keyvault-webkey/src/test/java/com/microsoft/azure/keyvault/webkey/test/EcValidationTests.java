@@ -3,6 +3,13 @@
 
 package com.microsoft.azure.keyvault.webkey.test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.MessageDigest;
@@ -15,18 +22,13 @@ import java.security.SignatureException;
 import java.util.Map;
 import java.util.Random;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableMap;
-import com.microsoft.azure.keyvault.webkey.JsonWebKey;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
+import static org.junit.Assume.assumeFalse;
 
 public class EcValidationTests {
 
     @Test
     public void ecPublicKeyValidation() throws Exception {
+        assumeFalse(getJavaVersion() >= 16); // Key curve secp256k1 is not supported on Java 16+.
 
         for (String keyStr : keys.values()) {
             ObjectMapper mapper = new ObjectMapper();
@@ -48,6 +50,8 @@ public class EcValidationTests {
 
     @Test
     public void ecPrivateKeyValidation() throws Exception {
+        assumeFalse(getJavaVersion() >= 16); // Key curve secp256k1 is not supported on Java 16+.
+
         for (String keyStr : keys.values()) {
             ObjectMapper mapper = new ObjectMapper();
             JsonWebKey key = mapper.readValue(keyStr, JsonWebKey.class);
@@ -114,4 +118,20 @@ public class EcValidationTests {
             .put(JsonWebKeyCurveName.P_521, "SHA512withECDSA")
             .put(JsonWebKeyCurveName.P_256K, "NONEwithECDSA")
             .build();
+
+    private static int getJavaVersion() {
+        String version = System.getProperty("java.version");
+
+        if (version.startsWith("1.")) {
+            version = version.substring(2, 3);
+        } else {
+            int dot = version.indexOf(".");
+
+            if (dot != -1) {
+                version = version.substring(0, dot);
+            }
+        }
+
+        return Integer.parseInt(version);
+    }
 }

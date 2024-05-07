@@ -7,14 +7,17 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BackupOperationResults. */
+/**
+ * Resource collection API of BackupOperationResults.
+ */
 public interface BackupOperationResults {
     /**
      * Provides the status of the delete operations such as deleting backed up item. Once the operation has started, the
      * status code in the response would be Accepted. It will continue to be in this state till it reaches completion.
-     * On successful completion, the status code will be OK. This method expects OperationID as an argument. OperationID
-     * is part of the Location header of the operation response.
-     *
+     * On
+     * successful completion, the status code will be OK. This method expects OperationID as an argument. OperationID is
+     * part of the Location header of the operation response.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation.
@@ -29,9 +32,10 @@ public interface BackupOperationResults {
     /**
      * Provides the status of the delete operations such as deleting backed up item. Once the operation has started, the
      * status code in the response would be Accepted. It will continue to be in this state till it reaches completion.
-     * On successful completion, the status code will be OK. This method expects OperationID as an argument. OperationID
-     * is part of the Location header of the operation response.
-     *
+     * On
+     * successful completion, the status code will be OK. This method expects OperationID as an argument. OperationID is
+     * part of the Location header of the operation response.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation.

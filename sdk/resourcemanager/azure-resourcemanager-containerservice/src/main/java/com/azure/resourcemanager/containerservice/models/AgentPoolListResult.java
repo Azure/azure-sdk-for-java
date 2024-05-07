@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the List Agent Pools operation. */
+/**
+ * The response from the List Agent Pools operation.
+ */
 @Fluent
 public final class AgentPoolListResult {
     /*
@@ -24,13 +26,15 @@ public final class AgentPoolListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AgentPoolListResult class. */
+    /**
+     * Creates an instance of AgentPoolListResult class.
+     */
     public AgentPoolListResult() {
     }
 
     /**
      * Get the value property: The list of agent pools.
-     *
+     * 
      * @return the value value.
      */
     public List<AgentPoolInner> value() {
@@ -39,7 +43,7 @@ public final class AgentPoolListResult {
 
     /**
      * Set the value property: The list of agent pools.
-     *
+     * 
      * @param value the value value to set.
      * @return the AgentPoolListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class AgentPoolListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of agent pool results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class AgentPoolListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

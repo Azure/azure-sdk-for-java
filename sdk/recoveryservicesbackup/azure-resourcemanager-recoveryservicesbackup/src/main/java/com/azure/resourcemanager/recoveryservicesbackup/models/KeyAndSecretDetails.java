@@ -8,9 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * BEK is bitlocker key. KEK is encryption key for BEK If the VM was encrypted then we will store following details : 1.
- * Secret(BEK) - Url + Backup Data + vaultId. 2. Key(KEK) - Url + Backup Data + vaultId. 3. EncryptionMechanism BEK and
- * KEK can potentially have different vault ids.
+ * BEK is bitlocker key.
+ * KEK is encryption key for BEK
+ * If the VM was encrypted then we will store following details :
+ * 1. Secret(BEK) - Url + Backup Data + vaultId.
+ * 2. Key(KEK) - Url + Backup Data + vaultId.
+ * 3. EncryptionMechanism
+ * BEK and KEK can potentially have different vault ids.
  */
 @Fluent
 public final class KeyAndSecretDetails {
@@ -32,13 +36,15 @@ public final class KeyAndSecretDetails {
     @JsonProperty(value = "encryptionMechanism")
     private String encryptionMechanism;
 
-    /** Creates an instance of KeyAndSecretDetails class. */
+    /**
+     * Creates an instance of KeyAndSecretDetails class.
+     */
     public KeyAndSecretDetails() {
     }
 
     /**
      * Get the kekDetails property: KEK is encryption key for BEK.
-     *
+     * 
      * @return the kekDetails value.
      */
     public KekDetails kekDetails() {
@@ -47,7 +53,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Set the kekDetails property: KEK is encryption key for BEK.
-     *
+     * 
      * @param kekDetails the kekDetails value to set.
      * @return the KeyAndSecretDetails object itself.
      */
@@ -58,7 +64,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Get the bekDetails property: BEK is bitlocker encryption key.
-     *
+     * 
      * @return the bekDetails value.
      */
     public BekDetails bekDetails() {
@@ -67,7 +73,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Set the bekDetails property: BEK is bitlocker encryption key.
-     *
+     * 
      * @param bekDetails the bekDetails value to set.
      * @return the KeyAndSecretDetails object itself.
      */
@@ -78,7 +84,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Get the encryptionMechanism property: Encryption mechanism: None/ SinglePass/ DoublePass.
-     *
+     * 
      * @return the encryptionMechanism value.
      */
     public String encryptionMechanism() {
@@ -87,7 +93,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Set the encryptionMechanism property: Encryption mechanism: None/ SinglePass/ DoublePass.
-     *
+     * 
      * @param encryptionMechanism the encryptionMechanism value to set.
      * @return the KeyAndSecretDetails object itself.
      */
@@ -98,7 +104,7 @@ public final class KeyAndSecretDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

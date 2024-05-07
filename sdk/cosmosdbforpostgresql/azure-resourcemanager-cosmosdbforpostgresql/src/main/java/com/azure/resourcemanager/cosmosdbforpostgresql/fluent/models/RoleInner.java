@@ -8,10 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.PrincipalType;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.RoleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a cluster role. */
+/**
+ * Represents a cluster role.
+ */
 @Fluent
 public final class RoleInner extends ProxyResource {
     /*
@@ -26,13 +30,15 @@ public final class RoleInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of RoleInner class. */
+    /**
+     * Creates an instance of RoleInner class.
+     */
     public RoleInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a role.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoleProperties innerProperties() {
@@ -41,7 +47,7 @@ public final class RoleInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,8 +55,32 @@ public final class RoleInner extends ProxyResource {
     }
 
     /**
-     * Get the password property: The password of the cluster role.
-     *
+     * Get the roleType property: The roleType property.
+     * 
+     * @return the roleType value.
+     */
+    public RoleType roleType() {
+        return this.innerProperties() == null ? null : this.innerProperties().roleType();
+    }
+
+    /**
+     * Set the roleType property: The roleType property.
+     * 
+     * @param roleType the roleType value to set.
+     * @return the RoleInner object itself.
+     */
+    public RoleInner withRoleType(RoleType roleType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleProperties();
+        }
+        this.innerProperties().withRoleType(roleType);
+        return this;
+    }
+
+    /**
+     * Get the password property: The password of the cluster role. If an identity is used, password will not be
+     * required.
+     * 
      * @return the password value.
      */
     public String password() {
@@ -58,8 +88,9 @@ public final class RoleInner extends ProxyResource {
     }
 
     /**
-     * Set the password property: The password of the cluster role.
-     *
+     * Set the password property: The password of the cluster role. If an identity is used, password will not be
+     * required.
+     * 
      * @param password the password value to set.
      * @return the RoleInner object itself.
      */
@@ -73,7 +104,7 @@ public final class RoleInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the role.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -81,15 +112,83 @@ public final class RoleInner extends ProxyResource {
     }
 
     /**
+     * Get the objectId property: The objectId property.
+     * 
+     * @return the objectId value.
+     */
+    public String objectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().objectId();
+    }
+
+    /**
+     * Set the objectId property: The objectId property.
+     * 
+     * @param objectId the objectId value to set.
+     * @return the RoleInner object itself.
+     */
+    public RoleInner withObjectId(String objectId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleProperties();
+        }
+        this.innerProperties().withObjectId(objectId);
+        return this;
+    }
+
+    /**
+     * Get the principalType property: The principalType property.
+     * 
+     * @return the principalType value.
+     */
+    public PrincipalType principalType() {
+        return this.innerProperties() == null ? null : this.innerProperties().principalType();
+    }
+
+    /**
+     * Set the principalType property: The principalType property.
+     * 
+     * @param principalType the principalType value to set.
+     * @return the RoleInner object itself.
+     */
+    public RoleInner withPrincipalType(PrincipalType principalType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleProperties();
+        }
+        this.innerProperties().withPrincipalType(principalType);
+        return this;
+    }
+
+    /**
+     * Get the tenantId property: The tenantId property.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
+    }
+
+    /**
+     * Set the tenantId property: The tenantId property.
+     * 
+     * @param tenantId the tenantId value to set.
+     * @return the RoleInner object itself.
+     */
+    public RoleInner withTenantId(String tenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RoleProperties();
+        }
+        this.innerProperties().withTenantId(tenantId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model RoleInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model RoleInner"));
         } else {
             innerProperties().validate();
         }

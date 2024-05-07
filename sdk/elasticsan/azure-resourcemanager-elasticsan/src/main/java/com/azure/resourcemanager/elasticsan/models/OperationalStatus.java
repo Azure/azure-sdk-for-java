@@ -8,35 +8,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Operational status of the resource. */
+/**
+ * Operational status of the resource.
+ */
 public final class OperationalStatus extends ExpandableStringEnum<OperationalStatus> {
-    /** Static value Invalid for OperationalStatus. */
+    /**
+     * Static value Invalid for OperationalStatus.
+     */
     public static final OperationalStatus INVALID = fromString("Invalid");
 
-    /** Static value Unknown for OperationalStatus. */
+    /**
+     * Static value Unknown for OperationalStatus.
+     */
     public static final OperationalStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value Healthy for OperationalStatus. */
+    /**
+     * Static value Healthy for OperationalStatus.
+     */
     public static final OperationalStatus HEALTHY = fromString("Healthy");
 
-    /** Static value Unhealthy for OperationalStatus. */
+    /**
+     * Static value Unhealthy for OperationalStatus.
+     */
     public static final OperationalStatus UNHEALTHY = fromString("Unhealthy");
 
-    /** Static value Updating for OperationalStatus. */
+    /**
+     * Static value Updating for OperationalStatus.
+     */
     public static final OperationalStatus UPDATING = fromString("Updating");
 
-    /** Static value Running for OperationalStatus. */
+    /**
+     * Static value Running for OperationalStatus.
+     */
     public static final OperationalStatus RUNNING = fromString("Running");
 
-    /** Static value Stopped for OperationalStatus. */
+    /**
+     * Static value Stopped for OperationalStatus.
+     */
     public static final OperationalStatus STOPPED = fromString("Stopped");
 
-    /** Static value Stopped (deallocated) for OperationalStatus. */
+    /**
+     * Static value Stopped (deallocated) for OperationalStatus.
+     */
     public static final OperationalStatus STOPPED_DEALLOCATED = fromString("Stopped (deallocated)");
 
     /**
      * Creates a new instance of OperationalStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +63,7 @@ public final class OperationalStatus extends ExpandableStringEnum<OperationalSta
 
     /**
      * Creates or finds a OperationalStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperationalStatus.
      */
@@ -56,7 +74,7 @@ public final class OperationalStatus extends ExpandableStringEnum<OperationalSta
 
     /**
      * Gets known OperationalStatus values.
-     *
+     * 
      * @return known OperationalStatus values.
      */
     public static Collection<OperationalStatus> values() {

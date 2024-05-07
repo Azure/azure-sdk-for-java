@@ -7,7 +7,9 @@ package com.azure.resourcemanager.imagebuilder.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** User assigned identity properties. */
+/**
+ * User assigned identity properties.
+ */
 @Immutable
 public final class UserAssignedIdentity {
     /*
@@ -22,13 +24,15 @@ public final class UserAssignedIdentity {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
-    /** Creates an instance of UserAssignedIdentity class. */
+    /**
+     * Creates an instance of UserAssignedIdentity class.
+     */
     public UserAssignedIdentity() {
     }
 
     /**
      * Get the principalId property: The principal ID of the assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -37,7 +41,7 @@ public final class UserAssignedIdentity {
 
     /**
      * Get the clientId property: The client ID of the assigned identity.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -46,7 +50,7 @@ public final class UserAssignedIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

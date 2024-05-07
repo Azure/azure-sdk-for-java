@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input definition for planned failover input properties. */
+/**
+ * Input definition for planned failover input properties.
+ */
 @Fluent
 public final class PlannedFailoverInputProperties {
     /*
@@ -22,13 +24,15 @@ public final class PlannedFailoverInputProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private PlannedFailoverProviderSpecificFailoverInput providerSpecificDetails;
 
-    /** Creates an instance of PlannedFailoverInputProperties class. */
+    /**
+     * Creates an instance of PlannedFailoverInputProperties class.
+     */
     public PlannedFailoverInputProperties() {
     }
 
     /**
      * Get the failoverDirection property: Failover direction.
-     *
+     * 
      * @return the failoverDirection value.
      */
     public String failoverDirection() {
@@ -37,7 +41,7 @@ public final class PlannedFailoverInputProperties {
 
     /**
      * Set the failoverDirection property: Failover direction.
-     *
+     * 
      * @param failoverDirection the failoverDirection value to set.
      * @return the PlannedFailoverInputProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class PlannedFailoverInputProperties {
 
     /**
      * Get the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public PlannedFailoverProviderSpecificFailoverInput providerSpecificDetails() {
@@ -57,19 +61,19 @@ public final class PlannedFailoverInputProperties {
 
     /**
      * Set the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the PlannedFailoverInputProperties object itself.
      */
-    public PlannedFailoverInputProperties withProviderSpecificDetails(
-        PlannedFailoverProviderSpecificFailoverInput providerSpecificDetails) {
+    public PlannedFailoverInputProperties
+        withProviderSpecificDetails(PlannedFailoverProviderSpecificFailoverInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

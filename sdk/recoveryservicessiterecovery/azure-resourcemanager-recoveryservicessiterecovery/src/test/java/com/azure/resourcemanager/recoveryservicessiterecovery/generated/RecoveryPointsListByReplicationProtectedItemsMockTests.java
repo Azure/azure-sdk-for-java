@@ -31,45 +31,29 @@ public final class RecoveryPointsListByReplicationProtectedItemsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"recoveryPointTime\":\"2021-08-10T18:08:27Z\",\"recoveryPointType\":\"utyjukkedputocr\",\"providerSpecificDetails\":{\"instanceType\":\"ProviderSpecificRecoveryPointDetails\"}},\"location\":\"qicmdrgcuzjmvk\",\"id\":\"wrjcqhgcmljzk\",\"name\":\"qimybqjvfio\",\"type\":\"hcaqpv\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"recoveryPointTime\":\"2021-08-10T18:08:27Z\",\"recoveryPointType\":\"utyjukkedputocr\",\"providerSpecificDetails\":{\"instanceType\":\"ProviderSpecificRecoveryPointDetails\"}},\"location\":\"qicmdrgcuzjmvk\",\"id\":\"wrjcqhgcmljzk\",\"name\":\"qimybqjvfio\",\"type\":\"hcaqpv\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SiteRecoveryManager manager =
-            SiteRecoveryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<RecoveryPoint> response =
-            manager
-                .recoveryPoints()
-                .listByReplicationProtectedItems(
-                    "ehdhjofywwna", "oxlorxgsl", "c", "u", "hvpaglyyhrgma", com.azure.core.util.Context.NONE);
+        PagedIterable<RecoveryPoint> response = manager.recoveryPoints().listByReplicationProtectedItems("ehdhjofywwna",
+            "oxlorxgsl", "c", "u", "hvpaglyyhrgma", com.azure.core.util.Context.NONE);
 
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-08-10T18:08:27Z"),
-                response.iterator().next().properties().recoveryPointTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-10T18:08:27Z"),
+            response.iterator().next().properties().recoveryPointTime());
         Assertions.assertEquals("utyjukkedputocr", response.iterator().next().properties().recoveryPointType());
         Assertions.assertEquals("qicmdrgcuzjmvk", response.iterator().next().location());
     }

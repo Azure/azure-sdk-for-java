@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** describes properties of an information protection policy. */
+/**
+ * describes properties of an information protection policy.
+ */
 @Fluent
 public final class InformationProtectionPolicyProperties {
     /*
@@ -41,13 +43,15 @@ public final class InformationProtectionPolicyProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, InformationType> informationTypes;
 
-    /** Creates an instance of InformationProtectionPolicyProperties class. */
+    /**
+     * Creates an instance of InformationProtectionPolicyProperties class.
+     */
     public InformationProtectionPolicyProperties() {
     }
 
     /**
      * Get the lastModifiedUtc property: Describes the last UTC time the policy was modified.
-     *
+     * 
      * @return the lastModifiedUtc value.
      */
     public OffsetDateTime lastModifiedUtc() {
@@ -56,7 +60,7 @@ public final class InformationProtectionPolicyProperties {
 
     /**
      * Get the version property: Describes the version of the policy.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -65,7 +69,7 @@ public final class InformationProtectionPolicyProperties {
 
     /**
      * Get the labels property: Dictionary of sensitivity labels.
-     *
+     * 
      * @return the labels value.
      */
     public Map<String, SensitivityLabel> labels() {
@@ -74,7 +78,7 @@ public final class InformationProtectionPolicyProperties {
 
     /**
      * Set the labels property: Dictionary of sensitivity labels.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the InformationProtectionPolicyProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class InformationProtectionPolicyProperties {
 
     /**
      * Get the informationTypes property: The sensitivity information types.
-     *
+     * 
      * @return the informationTypes value.
      */
     public Map<String, InformationType> informationTypes() {
@@ -94,7 +98,7 @@ public final class InformationProtectionPolicyProperties {
 
     /**
      * Set the informationTypes property: The sensitivity information types.
-     *
+     * 
      * @param informationTypes the informationTypes value to set.
      * @return the InformationProtectionPolicyProperties object itself.
      */
@@ -105,29 +109,23 @@ public final class InformationProtectionPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (labels() != null) {
-            labels()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            labels().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (informationTypes() != null) {
-            informationTypes()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            informationTypes().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

@@ -9,7 +9,9 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FlexibleServersTriggerLtrPreBackupHeaders model. */
+/**
+ * The FlexibleServersTriggerLtrPreBackupHeaders model.
+ */
 @Fluent
 public final class FlexibleServersTriggerLtrPreBackupHeaders {
     /*
@@ -18,21 +20,19 @@ public final class FlexibleServersTriggerLtrPreBackupHeaders {
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FlexibleServersTriggerLtrPreBackupHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FlexibleServersTriggerLtrPreBackupHeaders(HttpHeaders rawHeaders) {
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
     }
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String xMsRequestId() {
@@ -41,7 +41,7 @@ public final class FlexibleServersTriggerLtrPreBackupHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FlexibleServersTriggerLtrPreBackupHeaders object itself.
      */
@@ -52,7 +52,7 @@ public final class FlexibleServersTriggerLtrPreBackupHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.DevBoxDefinitionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Results of the Dev Box definition list operation. */
+/**
+ * Results of the Dev Box definition list operation.
+ */
 @Immutable
 public final class DevBoxDefinitionListResult {
     /*
@@ -24,13 +26,15 @@ public final class DevBoxDefinitionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DevBoxDefinitionListResult class. */
+    /**
+     * Creates an instance of DevBoxDefinitionListResult class.
+     */
     public DevBoxDefinitionListResult() {
     }
 
     /**
      * Get the value property: Current page of results.
-     *
+     * 
      * @return the value value.
      */
     public List<DevBoxDefinitionInner> value() {
@@ -39,7 +43,7 @@ public final class DevBoxDefinitionListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class DevBoxDefinitionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

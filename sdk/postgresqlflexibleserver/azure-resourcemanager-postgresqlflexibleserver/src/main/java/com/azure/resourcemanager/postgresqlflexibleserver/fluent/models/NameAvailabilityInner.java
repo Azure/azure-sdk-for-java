@@ -9,7 +9,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvaila
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CheckNameAvailabilityResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a resource name availability. */
+/**
+ * Represents a resource name availability.
+ */
 @Fluent
 public final class NameAvailabilityInner extends CheckNameAvailabilityResponse {
     /*
@@ -24,13 +26,15 @@ public final class NameAvailabilityInner extends CheckNameAvailabilityResponse {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of NameAvailabilityInner class. */
+    /**
+     * Creates an instance of NameAvailabilityInner class.
+     */
     public NameAvailabilityInner() {
     }
 
     /**
      * Get the name property: name of the PostgreSQL server.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,28 +43,34 @@ public final class NameAvailabilityInner extends CheckNameAvailabilityResponse {
 
     /**
      * Get the type property: type of the server.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NameAvailabilityInner withNameAvailable(Boolean nameAvailable) {
         super.withNameAvailable(nameAvailable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NameAvailabilityInner withReason(CheckNameAvailabilityReason reason) {
         super.withReason(reason);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NameAvailabilityInner withMessage(String message) {
         super.withMessage(message);
@@ -69,7 +79,7 @@ public final class NameAvailabilityInner extends CheckNameAvailabilityResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

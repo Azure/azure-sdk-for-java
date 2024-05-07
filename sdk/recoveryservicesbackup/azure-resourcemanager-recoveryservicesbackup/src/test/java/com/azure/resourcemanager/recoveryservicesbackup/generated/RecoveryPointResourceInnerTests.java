@@ -14,28 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPointResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPointResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"s\",\"location\":\"frzpwvlqdqgb\",\"tags\":{\"vf\":\"lihkaetcktvfc\",\"xerf\":\"nkymuctqhjfbebrj\",\"phxepcyvahf\":\"wutttxfvjrbi\"},\"id\":\"ljkyqxjvuuj\",\"name\":\"gidokgjljyoxgvcl\",\"type\":\"bgsncghkjeszzhb\"}")
-                .toObject(RecoveryPointResourceInner.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.location());
-        Assertions.assertEquals("lihkaetcktvfc", model.tags().get("vf"));
-        Assertions.assertEquals("s", model.etag());
+        RecoveryPointResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"xjvuujqgidokg\",\"location\":\"ljyoxgvcltb\",\"tags\":{\"hkjeszzhbi\":\"c\",\"vecxgodebfqkk\":\"htxfvgxbfsmxnehm\"},\"id\":\"bmpukgriwflz\",\"name\":\"fbxzpuzycisp\",\"type\":\"qzahmgkbrp\"}")
+            .toObject(RecoveryPointResourceInner.class);
+        Assertions.assertEquals("ljyoxgvcltb", model.location());
+        Assertions.assertEquals("c", model.tags().get("hkjeszzhbi"));
+        Assertions.assertEquals("xjvuujqgidokg", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointResourceInner model =
-            new RecoveryPointResourceInner()
-                .withLocation("frzpwvlqdqgb")
-                .withTags(mapOf("vf", "lihkaetcktvfc", "xerf", "nkymuctqhjfbebrj", "phxepcyvahf", "wutttxfvjrbi"))
-                .withProperties(new RecoveryPoint())
-                .withEtag("s");
+        RecoveryPointResourceInner model = new RecoveryPointResourceInner().withLocation("ljyoxgvcltb")
+            .withTags(mapOf("hkjeszzhbi", "c", "vecxgodebfqkk", "htxfvgxbfsmxnehm")).withProperties(new RecoveryPoint())
+            .withEtag("xjvuujqgidokg");
         model = BinaryData.fromObject(model).toObject(RecoveryPointResourceInner.class);
-        Assertions.assertEquals("frzpwvlqdqgb", model.location());
-        Assertions.assertEquals("lihkaetcktvfc", model.tags().get("vf"));
-        Assertions.assertEquals("s", model.etag());
+        Assertions.assertEquals("ljyoxgvcltb", model.location());
+        Assertions.assertEquals("c", model.tags().get("hkjeszzhbi"));
+        Assertions.assertEquals("xjvuujqgidokg", model.etag());
     }
 
     // Use "Map.of" if available

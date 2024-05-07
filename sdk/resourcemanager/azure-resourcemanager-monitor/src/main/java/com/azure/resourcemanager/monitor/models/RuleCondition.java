@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The condition that results in the alert rule being activated. */
+/**
+ * The condition that results in the alert rule being activated.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -26,8 +28,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = LocationThresholdRuleCondition.class),
     @JsonSubTypes.Type(
         name = "Microsoft.Azure.Management.Insights.Models.ManagementEventRuleCondition",
-        value = ManagementEventRuleCondition.class)
-})
+        value = ManagementEventRuleCondition.class) })
 @Fluent
 public class RuleCondition {
     /*
@@ -37,14 +38,16 @@ public class RuleCondition {
     @JsonProperty(value = "dataSource")
     private RuleDataSource dataSource;
 
-    /** Creates an instance of RuleCondition class. */
+    /**
+     * Creates an instance of RuleCondition class.
+     */
     public RuleCondition() {
     }
 
     /**
      * Get the dataSource property: the resource from which the rule collects its data. For this type dataSource will
      * always be of type RuleMetricDataSource.
-     *
+     * 
      * @return the dataSource value.
      */
     public RuleDataSource dataSource() {
@@ -54,7 +57,7 @@ public class RuleCondition {
     /**
      * Set the dataSource property: the resource from which the rule collects its data. For this type dataSource will
      * always be of type RuleMetricDataSource.
-     *
+     * 
      * @param dataSource the dataSource value to set.
      * @return the RuleCondition object itself.
      */
@@ -65,7 +68,7 @@ public class RuleCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

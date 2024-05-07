@@ -14,38 +14,26 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForServersAwsOfferingVmScannersConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForServersAwsOfferingVmScannersConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"cloudRoleArn\":\"vjcteoedlrslsk\",\"scanningMode\":\"Default\",\"exclusionTags\":{\"xzfsnggytexvzilm\":\"jnzdpvocojhpcna\",\"kwwwnckn\":\"iv\",\"weucyrth\":\"zdajlskzptjxu\",\"hokamvfej\":\"qlehmcgcjeinu\"}}")
-                .toObject(DefenderForServersAwsOfferingVmScannersConfiguration.class);
-        Assertions.assertEquals("vjcteoedlrslsk", model.cloudRoleArn());
+        DefenderForServersAwsOfferingVmScannersConfiguration model = BinaryData.fromString(
+            "{\"cloudRoleArn\":\"tnsewou\",\"scanningMode\":\"Default\",\"exclusionTags\":{\"qqylmpctwjwds\":\"vvyljurkepose\"}}")
+            .toObject(DefenderForServersAwsOfferingVmScannersConfiguration.class);
+        Assertions.assertEquals("tnsewou", model.cloudRoleArn());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.scanningMode());
-        Assertions.assertEquals("jnzdpvocojhpcna", model.exclusionTags().get("xzfsnggytexvzilm"));
+        Assertions.assertEquals("vvyljurkepose", model.exclusionTags().get("qqylmpctwjwds"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersAwsOfferingVmScannersConfiguration model =
-            new DefenderForServersAwsOfferingVmScannersConfiguration()
-                .withCloudRoleArn("vjcteoedlrslsk")
-                .withScanningMode(ScanningMode.DEFAULT)
-                .withExclusionTags(
-                    mapOf(
-                        "xzfsnggytexvzilm",
-                        "jnzdpvocojhpcna",
-                        "kwwwnckn",
-                        "iv",
-                        "weucyrth",
-                        "zdajlskzptjxu",
-                        "hokamvfej",
-                        "qlehmcgcjeinu"));
+        DefenderForServersAwsOfferingVmScannersConfiguration model
+            = new DefenderForServersAwsOfferingVmScannersConfiguration().withCloudRoleArn("tnsewou")
+                .withScanningMode(ScanningMode.DEFAULT).withExclusionTags(mapOf("qqylmpctwjwds", "vvyljurkepose"));
         model = BinaryData.fromObject(model).toObject(DefenderForServersAwsOfferingVmScannersConfiguration.class);
-        Assertions.assertEquals("vjcteoedlrslsk", model.cloudRoleArn());
+        Assertions.assertEquals("tnsewou", model.cloudRoleArn());
         Assertions.assertEquals(ScanningMode.DEFAULT, model.scanningMode());
-        Assertions.assertEquals("jnzdpvocojhpcna", model.exclusionTags().get("xzfsnggytexvzilm"));
+        Assertions.assertEquals("vvyljurkepose", model.exclusionTags().get("qqylmpctwjwds"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -12,22 +12,24 @@ public final class SsisEnvironmentReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SsisEnvironmentReference model = BinaryData.fromString(
-            "{\"id\":9047968330355553043,\"environmentFolderName\":\"t\",\"environmentName\":\"g\",\"referenceType\":\"etsn\"}")
+            "{\"id\":4444581189400066307,\"environmentFolderName\":\"gxgl\",\"environmentName\":\"deoubv\",\"referenceType\":\"iswemncjhmvvze\"}")
             .toObject(SsisEnvironmentReference.class);
-        Assertions.assertEquals(9047968330355553043L, model.id());
-        Assertions.assertEquals("t", model.environmentFolderName());
-        Assertions.assertEquals("g", model.environmentName());
-        Assertions.assertEquals("etsn", model.referenceType());
+        Assertions.assertEquals(4444581189400066307L, model.id());
+        Assertions.assertEquals("gxgl", model.environmentFolderName());
+        Assertions.assertEquals("deoubv", model.environmentName());
+        Assertions.assertEquals("iswemncjhmvvze", model.referenceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisEnvironmentReference model = new SsisEnvironmentReference().withId(9047968330355553043L)
-            .withEnvironmentFolderName("t").withEnvironmentName("g").withReferenceType("etsn");
+        SsisEnvironmentReference model = new SsisEnvironmentReference().withId(4444581189400066307L)
+            .withEnvironmentFolderName("gxgl")
+            .withEnvironmentName("deoubv")
+            .withReferenceType("iswemncjhmvvze");
         model = BinaryData.fromObject(model).toObject(SsisEnvironmentReference.class);
-        Assertions.assertEquals(9047968330355553043L, model.id());
-        Assertions.assertEquals("t", model.environmentFolderName());
-        Assertions.assertEquals("g", model.environmentName());
-        Assertions.assertEquals("etsn", model.referenceType());
+        Assertions.assertEquals(4444581189400066307L, model.id());
+        Assertions.assertEquals("gxgl", model.environmentFolderName());
+        Assertions.assertEquals("deoubv", model.environmentName());
+        Assertions.assertEquals("iswemncjhmvvze", model.referenceType());
     }
 }

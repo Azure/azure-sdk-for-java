@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Monthly retention schedule. */
+/**
+ * Monthly retention schedule.
+ */
 @Fluent
 public final class MonthlyRetentionSchedule {
     /*
@@ -42,13 +44,15 @@ public final class MonthlyRetentionSchedule {
     @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
-    /** Creates an instance of MonthlyRetentionSchedule class. */
+    /**
+     * Creates an instance of MonthlyRetentionSchedule class.
+     */
     public MonthlyRetentionSchedule() {
     }
 
     /**
      * Get the retentionScheduleFormatType property: Retention schedule format type for monthly retention policy.
-     *
+     * 
      * @return the retentionScheduleFormatType value.
      */
     public RetentionScheduleFormat retentionScheduleFormatType() {
@@ -57,19 +61,19 @@ public final class MonthlyRetentionSchedule {
 
     /**
      * Set the retentionScheduleFormatType property: Retention schedule format type for monthly retention policy.
-     *
+     * 
      * @param retentionScheduleFormatType the retentionScheduleFormatType value to set.
      * @return the MonthlyRetentionSchedule object itself.
      */
-    public MonthlyRetentionSchedule withRetentionScheduleFormatType(
-        RetentionScheduleFormat retentionScheduleFormatType) {
+    public MonthlyRetentionSchedule
+        withRetentionScheduleFormatType(RetentionScheduleFormat retentionScheduleFormatType) {
         this.retentionScheduleFormatType = retentionScheduleFormatType;
         return this;
     }
 
     /**
      * Get the retentionScheduleDaily property: Daily retention format for monthly retention policy.
-     *
+     * 
      * @return the retentionScheduleDaily value.
      */
     public DailyRetentionFormat retentionScheduleDaily() {
@@ -78,7 +82,7 @@ public final class MonthlyRetentionSchedule {
 
     /**
      * Set the retentionScheduleDaily property: Daily retention format for monthly retention policy.
-     *
+     * 
      * @param retentionScheduleDaily the retentionScheduleDaily value to set.
      * @return the MonthlyRetentionSchedule object itself.
      */
@@ -89,7 +93,7 @@ public final class MonthlyRetentionSchedule {
 
     /**
      * Get the retentionScheduleWeekly property: Weekly retention format for monthly retention policy.
-     *
+     * 
      * @return the retentionScheduleWeekly value.
      */
     public WeeklyRetentionFormat retentionScheduleWeekly() {
@@ -98,7 +102,7 @@ public final class MonthlyRetentionSchedule {
 
     /**
      * Set the retentionScheduleWeekly property: Weekly retention format for monthly retention policy.
-     *
+     * 
      * @param retentionScheduleWeekly the retentionScheduleWeekly value to set.
      * @return the MonthlyRetentionSchedule object itself.
      */
@@ -109,7 +113,7 @@ public final class MonthlyRetentionSchedule {
 
     /**
      * Get the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @return the retentionTimes value.
      */
     public List<OffsetDateTime> retentionTimes() {
@@ -118,7 +122,7 @@ public final class MonthlyRetentionSchedule {
 
     /**
      * Set the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @param retentionTimes the retentionTimes value to set.
      * @return the MonthlyRetentionSchedule object itself.
      */
@@ -129,7 +133,7 @@ public final class MonthlyRetentionSchedule {
 
     /**
      * Get the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @return the retentionDuration value.
      */
     public RetentionDuration retentionDuration() {
@@ -138,7 +142,7 @@ public final class MonthlyRetentionSchedule {
 
     /**
      * Set the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @param retentionDuration the retentionDuration value to set.
      * @return the MonthlyRetentionSchedule object itself.
      */
@@ -149,7 +153,7 @@ public final class MonthlyRetentionSchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

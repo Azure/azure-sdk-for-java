@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** MAB workload-specific error information. */
+/**
+ * MAB workload-specific error information.
+ */
 @Immutable
 public final class MabErrorInfo {
     /*
@@ -23,13 +25,15 @@ public final class MabErrorInfo {
     @JsonProperty(value = "recommendations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> recommendations;
 
-    /** Creates an instance of MabErrorInfo class. */
+    /**
+     * Creates an instance of MabErrorInfo class.
+     */
     public MabErrorInfo() {
     }
 
     /**
      * Get the errorString property: Localized error string.
-     *
+     * 
      * @return the errorString value.
      */
     public String errorString() {
@@ -38,7 +42,7 @@ public final class MabErrorInfo {
 
     /**
      * Get the recommendations property: List of localized recommendations.
-     *
+     * 
      * @return the recommendations value.
      */
     public List<String> recommendations() {
@@ -47,7 +51,7 @@ public final class MabErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

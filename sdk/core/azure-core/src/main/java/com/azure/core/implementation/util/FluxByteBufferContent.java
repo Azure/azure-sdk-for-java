@@ -11,13 +11,19 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A {@link BinaryDataContent} implementation which is backed by a {@link Flux} of {@link ByteBuffer}.
@@ -109,6 +115,25 @@ public final class FluxByteBufferContent extends BinaryDataContent {
     }
 
     @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        FluxUtil.writeToOutputStream(content, outputStream).block();
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        FluxUtil.writeToWritableByteChannel(content, channel).block();
+    }
+
+    @Override
+    public Mono<Void> writeTo(AsynchronousByteChannel channel) {
+        if (channel == null) {
+            return monoError(LOGGER, new NullPointerException("'channel' cannot be null."));
+        }
+
+        return FluxUtil.writeToAsynchronousByteChannel(content, channel);
+    }
+
+    @Override
     public boolean isReplayable() {
         return isReplayable;
     }
@@ -125,8 +150,8 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         }
 
         return bufferContent().map(bufferedData -> {
-            FluxByteBufferContent bufferedContent = new FluxByteBufferContent(Flux.fromIterable(bufferedData)
-                .map(ByteBuffer::duplicate), length, true);
+            FluxByteBufferContent bufferedContent
+                = new FluxByteBufferContent(Flux.fromIterable(bufferedData).map(ByteBuffer::duplicate), length, true);
             cachedReplayableContent.set(bufferedContent);
 
             return bufferedContent;
@@ -164,7 +189,6 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         }).collect(LinkedList::new, LinkedList::add);
     }
 
-
     @Override
     public BinaryDataContentType getContentType() {
         return BinaryDataContentType.BINARY;
@@ -176,9 +200,9 @@ public final class FluxByteBufferContent extends BinaryDataContent {
         }
 
         return FluxUtil.collectBytesInByteBufferStream(content)
-                // this doesn't seem to be working (newBoundedElastic() didn't work either)
-                // .publishOn(Schedulers.boundedElastic())
-                .share()
-                .block();
+            // this doesn't seem to be working (newBoundedElastic() didn't work either)
+            // .publishOn(Schedulers.boundedElastic())
+            .share()
+            .block();
     }
 }

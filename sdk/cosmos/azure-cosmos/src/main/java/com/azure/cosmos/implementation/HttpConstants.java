@@ -435,6 +435,17 @@ public class HttpConstants {
         // version, because they are only applicable in Java
         public static final int NEGATIVE_TIMEOUT_PROVIDED = 20901; // .Net has different cancellation concept
 
+        // SubStatusCodes for Client generated 500
+        public static final int MISSING_PARTITION_KEY_RANGE_ID_IN_CONTEXT = 20902;
+        public static final int INVALID_REGIONS_IN_SESSION_TOKEN = 20903;
+        public static final int NON_PARTITIONED_RESOURCES = 20904;
+        public static final int PARTITION_KEY_IS_NULL = 20905;
+        public static final int UNKNOWN_AUTHORIZATION_TOKEN_KIND= 20906;
+        public static final int RECREATE_REQUEST_ON_HTTP_CLIENT = 20907;
+        public static final int INVALID_BACKEND_RESPONSE = 20908;
+        public static final int UNKNOWN_QUORUM_RESULT = 20909;
+        public static final int INVALID_RESULT = 20910;
+
         //SDK Codes (Server)
         // IMPORTANT - whenever possible use consistency substatus codes that .Net SDK also uses
         public static final int NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT = 21001;
@@ -447,7 +458,6 @@ public class HttpConstants {
         public static final int SERVER_GENERATED_503 = 21008;
         public static final int NO_VALID_STORE_RESPONSE = 21009;
         public static final int SERVER_GENERATED_408 = 21010;
-
     }
 
     public static class HeaderValues {

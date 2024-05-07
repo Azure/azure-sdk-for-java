@@ -7,7 +7,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.ImplUtils;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,10 +16,7 @@ import java.net.MalformedURLException;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -40,56 +37,48 @@ class PollingUtil {
         long startTime = System.currentTimeMillis();
         PollResponse<T> intermediatePollResponse = pollingContext.getLatestResponse();
 
-        Runnable pollOpRunnable = () -> {
-            PollResponse<T> pollResponse1 = pollOperation.apply(pollingContext);
-            pollingContext.setLatestResponse(pollResponse1);
-        };
-
         boolean firstPoll = true;
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        try {
-            while (!intermediatePollResponse.getStatus().isComplete()) {
-                long elapsedTime = System.currentTimeMillis() - startTime;
-                if (timeBound && elapsedTime >= timeoutInMillis) {
-                    if (intermediatePollResponse.getStatus().equals(statusToWaitFor) || isWaitForStatus) {
-                        return intermediatePollResponse;
-                    } else {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(
-                            new TimeoutException("Polling didn't complete before the timeout period.")));
-                    }
-                }
-
-                if (intermediatePollResponse.getStatus().equals(statusToWaitFor)) {
+        while (!intermediatePollResponse.getStatus().isComplete()) {
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            if (timeBound && elapsedTime >= timeoutInMillis) {
+                if (intermediatePollResponse.getStatus().equals(statusToWaitFor) || isWaitForStatus) {
                     return intermediatePollResponse;
-                }
-
-                final Future<?> pollOp;
-                if (firstPoll) {
-                    firstPoll = false;
-                    pollOp = scheduler.submit(pollOpRunnable);
                 } else {
-                    pollOp = scheduler.schedule(pollOpRunnable,
-                        getDelay(intermediatePollResponse, pollInterval).toMillis(), TimeUnit.MILLISECONDS);
+                    throw LOGGER.logExceptionAsError(new RuntimeException(
+                        new TimeoutException("Polling didn't complete before the timeout period.")));
                 }
-
-                try {
-                    Duration pollTimeout = timeBound ? Duration.ofMillis(timeoutInMillis - elapsedTime) : null;
-                    CoreUtils.getResultWithTimeout(pollOp, pollTimeout);
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    // waitUntil should not throw when timeout is reached.
-                    if (isWaitForStatus) {
-                        return intermediatePollResponse;
-                    }
-                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
-                }
-
-                intermediatePollResponse = pollingContext.getLatestResponse();
             }
 
-            return intermediatePollResponse;
-        } finally {
-            scheduler.shutdown();
+            if (intermediatePollResponse.getStatus().equals(statusToWaitFor)) {
+                return intermediatePollResponse;
+            }
+
+            final Future<PollResponse<T>> pollOp;
+            if (firstPoll) {
+                firstPoll = false;
+                pollOp = SharedExecutorService.getInstance().submit(() -> pollOperation.apply(pollingContext));
+            } else {
+                final PollResponse<T> finalIntermediatePollResponse = intermediatePollResponse;
+                pollOp = SharedExecutorService.getInstance().submit(() -> {
+                    Thread.sleep(getDelay(finalIntermediatePollResponse, pollInterval).toMillis());
+                    return pollOperation.apply(pollingContext);
+                });
+            }
+
+            try {
+                long pollTimeout = timeBound ? timeoutInMillis - elapsedTime : -1;
+                intermediatePollResponse = ImplUtils.getResultWithTimeout(pollOp, pollTimeout);
+                pollingContext.setLatestResponse(intermediatePollResponse);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                // waitUntil should not throw when timeout is reached.
+                if (isWaitForStatus) {
+                    return intermediatePollResponse;
+                }
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         }
+
+        return intermediatePollResponse;
     }
 
     static <T, U> Flux<AsyncPollResponse<T, U>> pollingLoopAsync(PollingContext<T> pollingContext,
@@ -104,11 +93,14 @@ class PollingUtil {
             cxt -> Mono.defer(() -> pollOperation.apply(cxt))
                 .delaySubscription(getDelay(cxt.getLatestResponse(), pollInterval))
                 .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
-                .repeat().takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
+                .repeat()
+                .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                 .concatMap(currentPollResponse -> {
                     cxt.setLatestResponse(currentPollResponse);
                     return Mono.just(new AsyncPollResponse<>(cxt, cancelOperation, fetchResultOperation));
-                }), cxt -> { });
+                }),
+            cxt -> {
+            });
     }
 
     /**

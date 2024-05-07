@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** InMageRcmFailback mobility agent details. */
+/**
+ * InMageRcmFailback mobility agent details.
+ */
 @Immutable
 public final class InMageRcmFailbackMobilityAgentDetails {
     /*
@@ -66,13 +68,15 @@ public final class InMageRcmFailbackMobilityAgentDetails {
     @JsonProperty(value = "isUpgradeable", access = JsonProperty.Access.WRITE_ONLY)
     private String isUpgradeable;
 
-    /** Creates an instance of InMageRcmFailbackMobilityAgentDetails class. */
+    /**
+     * Creates an instance of InMageRcmFailbackMobilityAgentDetails class.
+     */
     public InMageRcmFailbackMobilityAgentDetails() {
     }
 
     /**
      * Get the version property: The agent version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -81,7 +85,7 @@ public final class InMageRcmFailbackMobilityAgentDetails {
 
     /**
      * Get the latestVersion property: The latest agent version available.
-     *
+     * 
      * @return the latestVersion value.
      */
     public String latestVersion() {
@@ -90,7 +94,7 @@ public final class InMageRcmFailbackMobilityAgentDetails {
 
     /**
      * Get the driverVersion property: The driver version.
-     *
+     * 
      * @return the driverVersion value.
      */
     public String driverVersion() {
@@ -99,7 +103,7 @@ public final class InMageRcmFailbackMobilityAgentDetails {
 
     /**
      * Get the latestUpgradableVersionWithoutReboot property: The latest upgradeable version available without reboot.
-     *
+     * 
      * @return the latestUpgradableVersionWithoutReboot value.
      */
     public String latestUpgradableVersionWithoutReboot() {
@@ -108,7 +112,7 @@ public final class InMageRcmFailbackMobilityAgentDetails {
 
     /**
      * Get the agentVersionExpiryDate property: The agent version expiry date.
-     *
+     * 
      * @return the agentVersionExpiryDate value.
      */
     public OffsetDateTime agentVersionExpiryDate() {
@@ -117,7 +121,7 @@ public final class InMageRcmFailbackMobilityAgentDetails {
 
     /**
      * Get the driverVersionExpiryDate property: The driver version expiry date.
-     *
+     * 
      * @return the driverVersionExpiryDate value.
      */
     public OffsetDateTime driverVersionExpiryDate() {
@@ -126,7 +130,7 @@ public final class InMageRcmFailbackMobilityAgentDetails {
 
     /**
      * Get the lastHeartbeatUtc property: The time of the last heartbeat received from the agent.
-     *
+     * 
      * @return the lastHeartbeatUtc value.
      */
     public OffsetDateTime lastHeartbeatUtc() {
@@ -135,7 +139,7 @@ public final class InMageRcmFailbackMobilityAgentDetails {
 
     /**
      * Get the reasonsBlockingUpgrade property: The whether update is possible or not.
-     *
+     * 
      * @return the reasonsBlockingUpgrade value.
      */
     public List<AgentUpgradeBlockedReason> reasonsBlockingUpgrade() {
@@ -144,7 +148,7 @@ public final class InMageRcmFailbackMobilityAgentDetails {
 
     /**
      * Get the isUpgradeable property: A value indicating whether agent is upgradeable or not.
-     *
+     * 
      * @return the isUpgradeable value.
      */
     public String isUpgradeable() {
@@ -153,7 +157,7 @@ public final class InMageRcmFailbackMobilityAgentDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

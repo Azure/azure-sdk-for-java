@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The name of the credential. */
+/**
+ * The name of the credential.
+ */
 public final class CredentialName extends ExpandableStringEnum<CredentialName> {
-    /** Static value Credential1 for CredentialName. */
+    /**
+     * Static value Credential1 for CredentialName.
+     */
     public static final CredentialName CREDENTIAL1 = fromString("Credential1");
 
     /**
      * Creates a new instance of CredentialName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class CredentialName extends ExpandableStringEnum<CredentialName> {
 
     /**
      * Creates or finds a CredentialName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CredentialName.
      */
@@ -35,7 +39,7 @@ public final class CredentialName extends ExpandableStringEnum<CredentialName> {
 
     /**
      * Gets known CredentialName values.
-     *
+     * 
      * @return known CredentialName values.
      */
     public static Collection<CredentialName> values() {

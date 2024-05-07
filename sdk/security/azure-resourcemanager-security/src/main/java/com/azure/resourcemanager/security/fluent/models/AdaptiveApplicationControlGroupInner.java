@@ -18,7 +18,9 @@ import com.azure.resourcemanager.security.models.VmRecommendation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AdaptiveApplicationControlGroup model. */
+/**
+ * The AdaptiveApplicationControlGroup model.
+ */
 @Fluent
 public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
     /*
@@ -33,14 +35,16 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of AdaptiveApplicationControlGroupInner class. */
+    /**
+     * Creates an instance of AdaptiveApplicationControlGroupInner class.
+     */
     public AdaptiveApplicationControlGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Represents a machines group and set of rules to be allowed running on a
      * machine.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AdaptiveApplicationControlGroupData innerProperties() {
@@ -49,7 +53,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
     /**
      * Get the enforcementMode property: The application control policy enforcement/protection mode of the machine
      * group.
-     *
+     * 
      * @return the enforcementMode value.
      */
     public EnforcementMode enforcementMode() {
@@ -69,7 +73,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
     /**
      * Set the enforcementMode property: The application control policy enforcement/protection mode of the machine
      * group.
-     *
+     * 
      * @param enforcementMode the enforcementMode value to set.
      * @return the AdaptiveApplicationControlGroupInner object itself.
      */
@@ -84,7 +88,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
     /**
      * Get the protectionMode property: The protection mode of the collection/file types. Exe/Msi/Script are used for
      * Windows, Executable is used for Linux.
-     *
+     * 
      * @return the protectionMode value.
      */
     public ProtectionMode protectionMode() {
@@ -94,7 +98,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
     /**
      * Set the protectionMode property: The protection mode of the collection/file types. Exe/Msi/Script are used for
      * Windows, Executable is used for Linux.
-     *
+     * 
      * @param protectionMode the protectionMode value to set.
      * @return the AdaptiveApplicationControlGroupInner object itself.
      */
@@ -108,7 +112,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
 
     /**
      * Get the configurationStatus property: The configuration status of the machines group or machine or rule.
-     *
+     * 
      * @return the configurationStatus value.
      */
     public ConfigurationStatus configurationStatus() {
@@ -117,7 +121,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
 
     /**
      * Get the recommendationStatus property: The initial recommendation status of the machine group or machine.
-     *
+     * 
      * @return the recommendationStatus value.
      */
     public RecommendationStatus recommendationStatus() {
@@ -126,7 +130,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
 
     /**
      * Get the issues property: The issues property.
-     *
+     * 
      * @return the issues value.
      */
     public List<AdaptiveApplicationControlIssueSummary> issues() {
@@ -135,7 +139,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
 
     /**
      * Get the sourceSystem property: The source type of the machine group.
-     *
+     * 
      * @return the sourceSystem value.
      */
     public SourceSystem sourceSystem() {
@@ -144,7 +148,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
 
     /**
      * Get the vmRecommendations property: The vmRecommendations property.
-     *
+     * 
      * @return the vmRecommendations value.
      */
     public List<VmRecommendation> vmRecommendations() {
@@ -153,7 +157,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
 
     /**
      * Set the vmRecommendations property: The vmRecommendations property.
-     *
+     * 
      * @param vmRecommendations the vmRecommendations value to set.
      * @return the AdaptiveApplicationControlGroupInner object itself.
      */
@@ -167,7 +171,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
 
     /**
      * Get the pathRecommendations property: The pathRecommendations property.
-     *
+     * 
      * @return the pathRecommendations value.
      */
     public List<PathRecommendation> pathRecommendations() {
@@ -176,7 +180,7 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
 
     /**
      * Set the pathRecommendations property: The pathRecommendations property.
-     *
+     * 
      * @param pathRecommendations the pathRecommendations value to set.
      * @return the AdaptiveApplicationControlGroupInner object itself.
      */
@@ -190,15 +194,13 @@ public final class AdaptiveApplicationControlGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AdaptiveApplicationControlGroupInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model AdaptiveApplicationControlGroupInner"));
         } else {
             innerProperties().validate();
         }

@@ -40,17 +40,97 @@ public class ReceiverDeliveryHandlerTest {
     private static final String RECEIVER_LINK_NAME = "orders-link";
     private static final UUID DELIVERY_TAG_UUID = UUID.fromString("b5dc4a70-ac5d-43b3-b132-ec8fcdac3a9d");
     private static final byte[] DELIVERY_TAG_BYTES = {
-        (byte) 112, (byte) 74, (byte) 220, (byte) 181, (byte) 93,
-        (byte) 172, (byte) 179, (byte) 67, (byte) 177, 50, (byte) 236,
-        (byte) 143, (byte) 205, (byte) 172, (byte) 58, (byte) 157
-    };
+        (byte) 112,
+        (byte) 74,
+        (byte) 220,
+        (byte) 181,
+        (byte) 93,
+        (byte) 172,
+        (byte) 179,
+        (byte) 67,
+        (byte) 177,
+        50,
+        (byte) 236,
+        (byte) 143,
+        (byte) 205,
+        (byte) 172,
+        (byte) 58,
+        (byte) 157 };
     private static final byte[] DELIVERY_CONTENT_BYTES = {
-        0, 83, 115, -64, 15, 13, 64, 64, 64, 64, 64, 83, 1, 64, 64, 64,
-        64, 64, 64, 64, 0, 83, 116, -63, 49, 4, -95, 11, 115, 116, 97, 116,
-        117, 115, 45, 99, 111, 100, 101, 113, 0, 0, 0, -54, -95, 18, 115,
-        116, 97, 116, 117, 115, 45, 100, 101, 115, 99, 114, 105, 112, 116,
-        105, 111, 110, -95, 8, 65, 99, 99, 101, 112, 116, 101, 100
-    };
+        0,
+        83,
+        115,
+        -64,
+        15,
+        13,
+        64,
+        64,
+        64,
+        64,
+        64,
+        83,
+        1,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        64,
+        0,
+        83,
+        116,
+        -63,
+        49,
+        4,
+        -95,
+        11,
+        115,
+        116,
+        97,
+        116,
+        117,
+        115,
+        45,
+        99,
+        111,
+        100,
+        101,
+        113,
+        0,
+        0,
+        0,
+        -54,
+        -95,
+        18,
+        115,
+        116,
+        97,
+        116,
+        117,
+        115,
+        45,
+        100,
+        101,
+        115,
+        99,
+        114,
+        105,
+        112,
+        116,
+        105,
+        111,
+        110,
+        -95,
+        8,
+        65,
+        99,
+        99,
+        101,
+        112,
+        116,
+        101,
+        100 };
 
     private final ClientLogger logger = new ClientLogger(ReceiverUnsettledDeliveriesTest.class);
     private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
@@ -251,19 +331,17 @@ public class ReceiverDeliveryHandlerTest {
         }
     }
 
-
     @Test
     public void shouldReadDecodeDeliveryContent() {
         final int contentLength = DELIVERY_CONTENT_BYTES.length;
 
         when(delivery.pending()).thenReturn(contentLength);
         when(delivery.getLink()).thenReturn(receiver);
-        when(receiver.recv(any(), eq(0), eq(contentLength)))
-            .thenAnswer(invocation -> {
-                final byte[] buffer = invocation.getArgument(0);
-                System.arraycopy(DELIVERY_CONTENT_BYTES, 0, buffer, 0, contentLength);
-                return contentLength;
-            });
+        when(receiver.recv(any(), eq(0), eq(contentLength))).thenAnswer(invocation -> {
+            final byte[] buffer = invocation.getArgument(0);
+            System.arraycopy(DELIVERY_CONTENT_BYTES, 0, buffer, 0, contentLength);
+            return contentLength;
+        });
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
@@ -297,10 +375,9 @@ public class ReceiverDeliveryHandlerTest {
     public void shouldEmitErrorIfDeliveryContentReadFailsOnTerminalEndpointState() {
         when(delivery.pending()).thenReturn(0);
         when(delivery.getLink()).thenReturn(receiver);
-        when(receiver.recv(any(), eq(0), eq(0)))
-            .thenAnswer(invocation -> {
-                throw new IllegalStateException("no current delivery");
-            });
+        when(receiver.recv(any(), eq(0), eq(0))).thenAnswer(invocation -> {
+            throw new IllegalStateException("no current delivery");
+        });
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
@@ -321,10 +398,9 @@ public class ReceiverDeliveryHandlerTest {
     public void shouldEmitErrorIfDeliveryContentReadFailsOnClose() {
         when(delivery.pending()).thenReturn(0);
         when(delivery.getLink()).thenReturn(receiver);
-        when(receiver.recv(any(), eq(0), eq(0)))
-            .thenAnswer(invocation -> {
-                throw new IllegalStateException("no current delivery");
-            });
+        when(receiver.recv(any(), eq(0), eq(0))).thenAnswer(invocation -> {
+            throw new IllegalStateException("no current delivery");
+        });
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
@@ -345,10 +421,9 @@ public class ReceiverDeliveryHandlerTest {
     public void shouldEmitAndThrowErrorIfDeliveryContentReadFails() {
         when(delivery.pending()).thenReturn(0);
         when(delivery.getLink()).thenReturn(receiver);
-        when(receiver.recv(any(), eq(0), eq(0)))
-            .thenAnswer(invocation -> {
-                throw new UnsupportedOperationException();
-            });
+        when(receiver.recv(any(), eq(0), eq(0))).thenAnswer(invocation -> {
+            throw new UnsupportedOperationException();
+        });
 
         final ReceiverDeliveryHandler handler = createReceiverDeliveryHandler();
         try {
@@ -356,9 +431,7 @@ public class ReceiverDeliveryHandlerTest {
             // receiver closure" must be rethrown, so that it gets bubbled to the ProtonJ Reactor
             // thread to recover / log to investigate what really happened.
             Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-                StepVerifier.create(handler.getMessages())
-                    .then(() -> handler.onDelivery(delivery))
-                    .verifyComplete();
+                StepVerifier.create(handler.getMessages()).then(() -> handler.onDelivery(delivery)).verifyComplete();
             });
         } finally {
             handler.close("");
@@ -380,34 +453,28 @@ public class ReceiverDeliveryHandlerTest {
     }
 
     private ReceiverDeliveryHandler createReceiverDeliveryHandler() {
-        return new ReceiverDeliveryHandler(ENTITY_PATH, RECEIVER_LINK_NAME,
-            SETTLE_ON_DELIVERY, mock(ReceiverUnsettledDeliveries.class),
-            false, logger);
+        return new ReceiverDeliveryHandler(ENTITY_PATH, RECEIVER_LINK_NAME, SETTLE_ON_DELIVERY,
+            mock(ReceiverUnsettledDeliveries.class), false, logger);
     }
 
     private ReceiverDeliveryHandler createReceiverDeliveryHandler(boolean includeDeliveryTag) {
-        return new ReceiverDeliveryHandler(ENTITY_PATH, RECEIVER_LINK_NAME,
-            SETTLE_ON_DELIVERY, mock(ReceiverUnsettledDeliveries.class),
-            includeDeliveryTag, logger);
+        return new ReceiverDeliveryHandler(ENTITY_PATH, RECEIVER_LINK_NAME, SETTLE_ON_DELIVERY,
+            mock(ReceiverUnsettledDeliveries.class), includeDeliveryTag, logger);
     }
 
     private ReceiverDeliveryHandler createReceiverDeliveryHandler(DeliverySettleMode settleMode) {
-        Assertions.assertTrue(settleMode == SETTLE_ON_DELIVERY
-            || settleMode == ACCEPT_AND_SETTLE_ON_DELIVERY);
-        return new ReceiverDeliveryHandler(ENTITY_PATH, RECEIVER_LINK_NAME,
-            settleMode, mock(ReceiverUnsettledDeliveries.class),
-            false, logger);
+        Assertions.assertTrue(settleMode == SETTLE_ON_DELIVERY || settleMode == ACCEPT_AND_SETTLE_ON_DELIVERY);
+        return new ReceiverDeliveryHandler(ENTITY_PATH, RECEIVER_LINK_NAME, settleMode,
+            mock(ReceiverUnsettledDeliveries.class), false, logger);
     }
 
     private ReceiverDeliveryHandler createReceiverDeliveryHandler(ReceiverUnsettledDeliveries unsettledDeliveries) {
-        return new ReceiverDeliveryHandler(ENTITY_PATH, RECEIVER_LINK_NAME,
-            SETTLE_VIA_DISPOSITION, unsettledDeliveries,
+        return new ReceiverDeliveryHandler(ENTITY_PATH, RECEIVER_LINK_NAME, SETTLE_VIA_DISPOSITION, unsettledDeliveries,
             true, logger);
     }
 
     private ReceiverUnsettledDeliveries createUnsettledDeliveries() {
-        return new ReceiverUnsettledDeliveries(HOSTNAME, ENTITY_PATH,
-            RECEIVER_LINK_NAME, reactorDispatcher,
+        return new ReceiverUnsettledDeliveries(HOSTNAME, ENTITY_PATH, RECEIVER_LINK_NAME, reactorDispatcher,
             retryOptions, logger);
     }
 }

@@ -34,37 +34,26 @@ public final class ElasticSansListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"cjefuzmu\"],\"provisioningState\":\"Creating\",\"baseSizeTiB\":8888405266290011350,\"extendedCapacitySizeTiB\":563560195773726535,\"totalVolumeSizeGiB\":5174292787113662344,\"volumeGroupCount\":326136482261339310,\"totalIops\":4224292222834276227,\"totalMBps\":6608095080188562531,\"totalSizeTiB\":6728883083486841207,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"ohdneuel\",\"phsdyhto\",\"fikdowwqu\",\"v\"]},\"id\":\"xclvit\",\"name\":\"hqzonosggbhcoh\",\"type\":\"wdsjnkalju\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"cffgdkzzewk\",\"vhqcrail\",\"pnppfuf\",\"rwdmhdlxyjrxsa\"]},\"id\":\"fcnihgwq\",\"name\":\"pnedgf\",\"type\":\"cvkcvqvpkeqdcv\"}],\"publicNetworkAccess\":\"Disabled\"},\"location\":\"ood\",\"tags\":{\"d\":\"bobzdopcjwvnhd\",\"twuoegrpkhjwni\":\"mgxcxrslpm\"},\"id\":\"qsluicp\",\"name\":\"ggkzzlvmbmpa\",\"type\":\"modfvuefywsbpfvm\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"cjefuzmu\"],\"provisioningState\":\"Creating\",\"baseSizeTiB\":8888405266290011350,\"extendedCapacitySizeTiB\":563560195773726535,\"totalVolumeSizeGiB\":5174292787113662344,\"volumeGroupCount\":326136482261339310,\"totalIops\":4224292222834276227,\"totalMBps\":6608095080188562531,\"totalSizeTiB\":6728883083486841207,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"ohdneuel\",\"phsdyhto\",\"fikdowwqu\",\"v\"]},\"id\":\"xclvit\",\"name\":\"hqzonosggbhcoh\",\"type\":\"wdsjnkalju\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"cffgdkzzewk\",\"vhqcrail\",\"pnppfuf\",\"rwdmhdlxyjrxsa\"]},\"id\":\"fcnihgwq\",\"name\":\"pnedgf\",\"type\":\"cvkcvqvpkeqdcv\"}],\"publicNetworkAccess\":\"Disabled\"},\"location\":\"ood\",\"tags\":{\"d\":\"bobzdopcjwvnhd\",\"twuoegrpkhjwni\":\"mgxcxrslpm\"},\"id\":\"qsluicp\",\"name\":\"ggkzzlvmbmpa\",\"type\":\"modfvuefywsbpfvm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ElasticSanManager manager =
-            ElasticSanManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ElasticSanManager manager = ElasticSanManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ElasticSan> response =
-            manager.elasticSans().listByResourceGroup("tmuwlauwzi", com.azure.core.util.Context.NONE);
+        PagedIterable<ElasticSan> response
+            = manager.elasticSans().listByResourceGroup("tmuwlauwzi", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ood", response.iterator().next().location());
         Assertions.assertEquals("bobzdopcjwvnhd", response.iterator().next().tags().get("d"));

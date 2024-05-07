@@ -18,20 +18,47 @@ param(
   [string]$Directory
 )
 
+function Reset-Repository {
+  # Clean up generated code, so that next step will not be affected.
+  git reset --hard
+  git clean -fd $sdkPath
+}
+
 Write-Host "
 
 ===========================================
-Invoking TypeSpec Project Sync and Generate
+Installing typespec-client-generator-cli
 ===========================================
 
 "
 
+npm install -g @azure-tools/typespec-client-generator-cli
 
+Write-Host "
+
+===========================================
+Invoking tsp-client update
+===========================================
+
+"
+
+$failedSdk = $null
 foreach ($tspLocationPath in (Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse)) {
   $sdkPath = (get-item $tspLocationPath).Directory.FullName
   Write-Host "Generate SDK for $sdkPath"
-  ./eng/common/scripts/TypeSpec-Project-Sync.ps1 $sdkPath
-  ./eng/common/scripts/TypeSpec-Project-Generate.ps1 $sdkPath
+  Push-Location
+  Set-Location -Path $sdkPath
+  tsp-client update
+  if ($LastExitCode -ne 0) {
+    $failedSdk += $sdkPath
+  }
+  Pop-Location
+}
+
+if ($failedSdk.Length -gt 0) {
+  Write-Host "Code generation failed for following modules: $failedSdk"
+  Reset-Repository
+  exit 1
 }
 
 Write-Host "
@@ -51,14 +78,13 @@ if ($LastExitCode -ne 0) {
 The following files are out of date:
 $status
 "
+  Reset-Repository
   exit 1
 }
 
 # Delete out TypeSpec temporary folders if they still exist.
 Get-ChildItem -Path $Directory -Filter TempTypeSpecFiles -Recurse -Directory | ForEach-Object {
-    Remove-Item -Path $_.FullName -Recurse -Force
+  Remove-Item -Path $_.FullName -Recurse -Force
 }
 
-# Clean up generated code, so that next step will not be affected.
-git checkout $sdkPath
-git clean -fd $sdkPath
+Reset-Repository

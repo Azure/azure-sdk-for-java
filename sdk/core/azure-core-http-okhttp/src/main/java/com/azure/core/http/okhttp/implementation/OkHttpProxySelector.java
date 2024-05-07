@@ -22,13 +22,19 @@ public final class OkHttpProxySelector extends ProxySelector {
     private final Supplier<InetSocketAddress> proxyAddressSupplier;
     private final Pattern nonProxyHostsPattern;
 
+    /**
+     * Creates an OkHttpProxySelector.
+     *
+     * @param proxyType The type of proxy to use.
+     * @param proxyAddressSupplier The supplier for the proxy address.
+     * @param nonProxyHosts The non-proxy hosts.
+     */
     public OkHttpProxySelector(Proxy.Type proxyType, Supplier<InetSocketAddress> proxyAddressSupplier,
         String nonProxyHosts) {
         this.proxyType = proxyType;
         this.proxyAddressSupplier = proxyAddressSupplier;
-        this.nonProxyHostsPattern = (nonProxyHosts == null)
-            ? null
-            : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
+        this.nonProxyHostsPattern
+            = (nonProxyHosts == null) ? null : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
     }
 
     @Override

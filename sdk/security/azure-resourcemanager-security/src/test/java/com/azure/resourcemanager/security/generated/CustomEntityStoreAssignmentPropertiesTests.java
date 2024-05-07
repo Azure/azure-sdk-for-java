@@ -11,22 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomEntityStoreAssignmentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomEntityStoreAssignmentProperties model =
-            BinaryData
-                .fromString("{\"principal\":\"mfdatscmdvpj\",\"entityStoreDatabaseLink\":\"lsuuvmkjozkrwfnd\"}")
+        CustomEntityStoreAssignmentProperties model
+            = BinaryData.fromString("{\"principal\":\"maequiahxicslfa\",\"entityStoreDatabaseLink\":\"z\"}")
                 .toObject(CustomEntityStoreAssignmentProperties.class);
-        Assertions.assertEquals("mfdatscmdvpj", model.principal());
-        Assertions.assertEquals("lsuuvmkjozkrwfnd", model.entityStoreDatabaseLink());
+        Assertions.assertEquals("maequiahxicslfa", model.principal());
+        Assertions.assertEquals("z", model.entityStoreDatabaseLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomEntityStoreAssignmentProperties model =
-            new CustomEntityStoreAssignmentProperties()
-                .withPrincipal("mfdatscmdvpj")
-                .withEntityStoreDatabaseLink("lsuuvmkjozkrwfnd");
+        CustomEntityStoreAssignmentProperties model = new CustomEntityStoreAssignmentProperties()
+            .withPrincipal("maequiahxicslfa").withEntityStoreDatabaseLink("z");
         model = BinaryData.fromObject(model).toObject(CustomEntityStoreAssignmentProperties.class);
-        Assertions.assertEquals("mfdatscmdvpj", model.principal());
-        Assertions.assertEquals("lsuuvmkjozkrwfnd", model.entityStoreDatabaseLink());
+        Assertions.assertEquals("maequiahxicslfa", model.principal());
+        Assertions.assertEquals("z", model.entityStoreDatabaseLink());
     }
 }

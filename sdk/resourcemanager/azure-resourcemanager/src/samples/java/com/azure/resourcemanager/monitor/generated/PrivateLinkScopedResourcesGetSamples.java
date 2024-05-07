@@ -4,24 +4,22 @@
 
 package com.azure.resourcemanager.monitor.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PrivateLinkScopedResources Get. */
+/**
+ * Samples for PrivateLinkScopedResources Get.
+ */
 public final class PrivateLinkScopedResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/PrivateLinkScopedResourceGet.json
+     * x-ms-original-file:
+     * specification/monitor/resource-manager/Microsoft.Insights/preview/2021-07-01-preview/examples/
+     * PrivateLinkScopedResourceGet.json
      */
     /**
      * Sample code: Gets private link scoped resource.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsPrivateLinkScopedResource(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .diagnosticSettings()
-            .manager()
-            .serviceClient()
-            .getPrivateLinkScopedResources()
-            .getWithResponse("MyResourceGroup", "MyPrivateLinkScope", "scoped-resource-name", Context.NONE);
+        azure.diagnosticSettings().manager().serviceClient().getPrivateLinkScopedResources().getWithResponse(
+            "MyResourceGroup", "MyPrivateLinkScope", "scoped-resource-name", com.azure.core.util.Context.NONE);
     }
 }

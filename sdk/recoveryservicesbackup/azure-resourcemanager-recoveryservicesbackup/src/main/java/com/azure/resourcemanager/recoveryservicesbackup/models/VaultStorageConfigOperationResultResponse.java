@@ -6,13 +6,15 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStorageConfigOperationResultResponseInner;
 
-/** An immutable client-side representation of VaultStorageConfigOperationResultResponse. */
+/**
+ * An immutable client-side representation of VaultStorageConfigOperationResultResponse.
+ */
 public interface VaultStorageConfigOperationResultResponse {
     /**
      * Gets the inner
      * com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStorageConfigOperationResultResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     VaultStorageConfigOperationResultResponseInner innerModel();

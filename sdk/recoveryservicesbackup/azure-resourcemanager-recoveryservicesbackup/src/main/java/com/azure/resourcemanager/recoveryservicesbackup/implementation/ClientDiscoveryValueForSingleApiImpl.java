@@ -14,8 +14,7 @@ public final class ClientDiscoveryValueForSingleApiImpl implements ClientDiscove
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    ClientDiscoveryValueForSingleApiImpl(
-        ClientDiscoveryValueForSingleApiInner innerObject,
+    ClientDiscoveryValueForSingleApiImpl(ClientDiscoveryValueForSingleApiInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

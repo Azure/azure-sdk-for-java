@@ -48,6 +48,10 @@ public final class TransformationImpl implements Transformation, Transformation.
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public TransformationInner innerModel() {
         return this.innerObject;
     }
@@ -75,36 +79,17 @@ public final class TransformationImpl implements Transformation, Transformation.
     }
 
     public Transformation create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransformations()
-                .createOrReplaceWithResponse(
-                    resourceGroupName,
-                    jobName,
-                    transformationName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTransformations()
+            .createOrReplaceWithResponse(resourceGroupName, jobName, transformationName, this.innerModel(),
+                createIfMatch, createIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Transformation create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransformations()
-                .createOrReplaceWithResponse(
-                    resourceGroupName,
-                    jobName,
-                    transformationName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    context)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getTransformations().createOrReplaceWithResponse(resourceGroupName,
+                jobName, transformationName, this.innerModel(), createIfMatch, createIfNoneMatch, context).getValue();
         return this;
     }
 
@@ -122,54 +107,35 @@ public final class TransformationImpl implements Transformation, Transformation.
     }
 
     public Transformation apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransformations()
-                .updateWithResponse(
-                    resourceGroupName, jobName, transformationName, this.innerModel(), updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTransformations().updateWithResponse(resourceGroupName,
+            jobName, transformationName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
         return this;
     }
 
     public Transformation apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransformations()
-                .updateWithResponse(
-                    resourceGroupName, jobName, transformationName, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTransformations().updateWithResponse(resourceGroupName,
+            jobName, transformationName, this.innerModel(), updateIfMatch, context).getValue();
         return this;
     }
 
-    TransformationImpl(
-        TransformationInner innerObject,
+    TransformationImpl(TransformationInner innerObject,
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.jobName = Utils.getValueFromIdByName(innerObject.id(), "streamingjobs");
-        this.transformationName = Utils.getValueFromIdByName(innerObject.id(), "transformations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.jobName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "streamingjobs");
+        this.transformationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "transformations");
     }
 
     public Transformation refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransformations()
-                .getWithResponse(resourceGroupName, jobName, transformationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTransformations()
+            .getWithResponse(resourceGroupName, jobName, transformationName, Context.NONE).getValue();
         return this;
     }
 
     public Transformation refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTransformations()
-                .getWithResponse(resourceGroupName, jobName, transformationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTransformations()
+            .getWithResponse(resourceGroupName, jobName, transformationName, context).getValue();
         return this;
     }
 

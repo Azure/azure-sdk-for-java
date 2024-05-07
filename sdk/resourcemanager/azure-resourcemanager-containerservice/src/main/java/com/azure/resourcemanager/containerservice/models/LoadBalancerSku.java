@@ -10,20 +10,24 @@ import java.util.Collection;
 
 /**
  * The load balancer sku for the managed cluster.
- *
- * <p>The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for
+ * 
+ * The default is 'standard'. See [Azure Load Balancer SKUs](https://docs.microsoft.com/azure/load-balancer/skus) for
  * more information about the differences between load balancer SKUs.
  */
 public final class LoadBalancerSku extends ExpandableStringEnum<LoadBalancerSku> {
-    /** Static value standard for LoadBalancerSku. */
+    /**
+     * Static value standard for LoadBalancerSku.
+     */
     public static final LoadBalancerSku STANDARD = fromString("standard");
 
-    /** Static value basic for LoadBalancerSku. */
+    /**
+     * Static value basic for LoadBalancerSku.
+     */
     public static final LoadBalancerSku BASIC = fromString("basic");
 
     /**
      * Creates a new instance of LoadBalancerSku value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +36,7 @@ public final class LoadBalancerSku extends ExpandableStringEnum<LoadBalancerSku>
 
     /**
      * Creates or finds a LoadBalancerSku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LoadBalancerSku.
      */
@@ -43,7 +47,7 @@ public final class LoadBalancerSku extends ExpandableStringEnum<LoadBalancerSku>
 
     /**
      * Gets known LoadBalancerSku values.
-     *
+     * 
      * @return known LoadBalancerSku values.
      */
     public static Collection<LoadBalancerSku> values() {

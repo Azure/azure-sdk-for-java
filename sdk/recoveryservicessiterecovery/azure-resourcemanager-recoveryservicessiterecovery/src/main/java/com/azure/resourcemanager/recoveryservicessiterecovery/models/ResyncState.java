@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The resync state. */
+/**
+ * The resync state.
+ */
 public final class ResyncState extends ExpandableStringEnum<ResyncState> {
-    /** Static value None for ResyncState. */
+    /**
+     * Static value None for ResyncState.
+     */
     public static final ResyncState NONE = fromString("None");
 
-    /** Static value PreparedForResynchronization for ResyncState. */
+    /**
+     * Static value PreparedForResynchronization for ResyncState.
+     */
     public static final ResyncState PREPARED_FOR_RESYNCHRONIZATION = fromString("PreparedForResynchronization");
 
-    /** Static value StartedResynchronization for ResyncState. */
+    /**
+     * Static value StartedResynchronization for ResyncState.
+     */
     public static final ResyncState STARTED_RESYNCHRONIZATION = fromString("StartedResynchronization");
 
     /**
      * Creates a new instance of ResyncState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ResyncState extends ExpandableStringEnum<ResyncState> {
 
     /**
      * Creates or finds a ResyncState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResyncState.
      */
@@ -41,7 +49,7 @@ public final class ResyncState extends ExpandableStringEnum<ResyncState> {
 
     /**
      * Gets known ResyncState values.
-     *
+     * 
      * @return known ResyncState values.
      */
     public static Collection<ResyncState> values() {

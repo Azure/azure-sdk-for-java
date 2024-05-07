@@ -11,14 +11,14 @@ public final class SapHanaTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapHanaTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"schema\":\"dataxehujcqgzwv\",\"table\":\"dataiuaoibmjklqrljd\"}")
+            = BinaryData.fromString("{\"schema\":\"dataxnavpyxqb\",\"table\":\"datadtb\"}")
                 .toObject(SapHanaTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SapHanaTableDatasetTypeProperties model
-            = new SapHanaTableDatasetTypeProperties().withSchema("dataxehujcqgzwv").withTable("dataiuaoibmjklqrljd");
+            = new SapHanaTableDatasetTypeProperties().withSchema("dataxnavpyxqb").withTable("datadtb");
         model = BinaryData.fromObject(model).toObject(SapHanaTableDatasetTypeProperties.class);
     }
 }

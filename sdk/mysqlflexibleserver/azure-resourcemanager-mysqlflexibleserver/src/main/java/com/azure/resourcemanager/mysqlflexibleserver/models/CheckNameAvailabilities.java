@@ -7,11 +7,13 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of CheckNameAvailabilities. */
+/**
+ * Resource collection API of CheckNameAvailabilities.
+ */
 public interface CheckNameAvailabilities {
     /**
      * Check the availability of name for server.
-     *
+     * 
      * @param locationName The name of the location.
      * @param nameAvailabilityRequest The required parameters for checking if server name is available.
      * @param context The context to associate with this operation.
@@ -20,12 +22,12 @@ public interface CheckNameAvailabilities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a resource name availability along with {@link Response}.
      */
-    Response<NameAvailability> executeWithResponse(
-        String locationName, NameAvailabilityRequest nameAvailabilityRequest, Context context);
+    Response<NameAvailability> executeWithResponse(String locationName, NameAvailabilityRequest nameAvailabilityRequest,
+        Context context);
 
     /**
      * Check the availability of name for server.
-     *
+     * 
      * @param locationName The name of the location.
      * @param nameAvailabilityRequest The required parameters for checking if server name is available.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

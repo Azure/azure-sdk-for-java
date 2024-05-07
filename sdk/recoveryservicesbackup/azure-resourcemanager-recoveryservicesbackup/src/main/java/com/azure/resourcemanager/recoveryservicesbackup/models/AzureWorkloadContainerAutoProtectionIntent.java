@@ -8,45 +8,59 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure workload specific protection intent item. */
+/**
+ * Azure workload specific protection intent item.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectionIntentItemType")
 @JsonTypeName("AzureWorkloadContainerAutoProtectionIntent")
 @Fluent
 public final class AzureWorkloadContainerAutoProtectionIntent extends ProtectionIntent {
-    /** Creates an instance of AzureWorkloadContainerAutoProtectionIntent class. */
+    /**
+     * Creates an instance of AzureWorkloadContainerAutoProtectionIntent class.
+     */
     public AzureWorkloadContainerAutoProtectionIntent() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadContainerAutoProtectionIntent withBackupManagementType(
-        BackupManagementType backupManagementType) {
+    public AzureWorkloadContainerAutoProtectionIntent
+        withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadContainerAutoProtectionIntent withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadContainerAutoProtectionIntent withItemId(String itemId) {
         super.withItemId(itemId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadContainerAutoProtectionIntent withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadContainerAutoProtectionIntent withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -55,7 +69,7 @@ public final class AzureWorkloadContainerAutoProtectionIntent extends Protection
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes an input data source that contains reference data. */
+/**
+ * Describes an input data source that contains reference data.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,16 +19,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = ReferenceInputDataSource.class)
 @JsonTypeName("ReferenceInputDataSource")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "File", value = FileReferenceInputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.Storage/Blob", value = BlobReferenceInputDataSource.class),
-    @JsonSubTypes.Type(name = "Microsoft.Sql/Server/Database", value = AzureSqlReferenceInputDataSource.class)
-})
+    @JsonSubTypes.Type(name = "Raw", value = RawReferenceInputDataSource.class),
+    @JsonSubTypes.Type(name = "Microsoft.Sql/Server/Database", value = AzureSqlReferenceInputDataSource.class) })
 @Immutable
 public class ReferenceInputDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReferenceInputDataSource.class);
+    /**
+     * Creates an instance of ReferenceInputDataSource class.
+     */
+    public ReferenceInputDataSource() {
+    }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

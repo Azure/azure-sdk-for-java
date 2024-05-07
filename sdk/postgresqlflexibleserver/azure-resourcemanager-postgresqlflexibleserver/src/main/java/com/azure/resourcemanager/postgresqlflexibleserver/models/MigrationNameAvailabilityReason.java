@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Migration name availability reason. */
+/**
+ * Migration name availability reason.
+ */
 public final class MigrationNameAvailabilityReason extends ExpandableStringEnum<MigrationNameAvailabilityReason> {
-    /** Static value Invalid for MigrationNameAvailabilityReason. */
+    /**
+     * Static value Invalid for MigrationNameAvailabilityReason.
+     */
     public static final MigrationNameAvailabilityReason INVALID = fromString("Invalid");
 
-    /** Static value AlreadyExists for MigrationNameAvailabilityReason. */
+    /**
+     * Static value AlreadyExists for MigrationNameAvailabilityReason.
+     */
     public static final MigrationNameAvailabilityReason ALREADY_EXISTS = fromString("AlreadyExists");
 
     /**
      * Creates a new instance of MigrationNameAvailabilityReason value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class MigrationNameAvailabilityReason extends ExpandableStringEnum<
 
     /**
      * Creates or finds a MigrationNameAvailabilityReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationNameAvailabilityReason.
      */
@@ -38,7 +44,7 @@ public final class MigrationNameAvailabilityReason extends ExpandableStringEnum<
 
     /**
      * Gets known MigrationNameAvailabilityReason values.
-     *
+     * 
      * @return known MigrationNameAvailabilityReason values.
      */
     public static Collection<MigrationNameAvailabilityReason> values() {

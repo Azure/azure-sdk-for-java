@@ -30,80 +30,71 @@ import com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceAsse
 import com.azure.resourcemanager.security.models.RegulatoryComplianceAssessmentList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RegulatoryComplianceAssessmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RegulatoryComplianceAssessmentsClient.
+ */
 public final class RegulatoryComplianceAssessmentsClientImpl implements RegulatoryComplianceAssessmentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RegulatoryComplianceAssessmentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of RegulatoryComplianceAssessmentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RegulatoryComplianceAssessmentsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    RegulatoryComplianceAssessmentsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(RegulatoryComplianceAssessmentsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for SecurityCenterRegulatoryComplianceAssessments to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for SecurityCenterRegulatoryComplianceAssessments to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterRegula")
     public interface RegulatoryComplianceAssessmentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}/regulatoryComplianceAssessments")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}/regulatoryComplianceAssessments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegulatoryComplianceAssessmentList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<RegulatoryComplianceAssessmentList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("regulatoryComplianceStandardName") String regulatoryComplianceStandardName,
             @PathParam("regulatoryComplianceControlName") String regulatoryComplianceControlName,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}/regulatoryComplianceAssessments/{regulatoryComplianceAssessmentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}/regulatoryComplianceAssessments/{regulatoryComplianceAssessmentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RegulatoryComplianceAssessmentInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<RegulatoryComplianceAssessmentInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("regulatoryComplianceStandardName") String regulatoryComplianceStandardName,
             @PathParam("regulatoryComplianceControlName") String regulatoryComplianceControlName,
             @PathParam("regulatoryComplianceAssessmentName") String regulatoryComplianceAssessmentName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RegulatoryComplianceAssessmentList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Details and state of assessments mapped to selected regulatory compliance control.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param filter OData filter. Optional.
@@ -111,65 +102,40 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of regulatory compliance assessment response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RegulatoryComplianceAssessmentInner>> listSinglePageAsync(
         String regulatoryComplianceStandardName, String regulatoryComplianceControlName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regulatoryComplianceStandardName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regulatoryComplianceStandardName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter regulatoryComplianceStandardName is required and cannot be null."));
         }
         if (regulatoryComplianceControlName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regulatoryComplianceControlName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter regulatoryComplianceControlName is required and cannot be null."));
         }
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            regulatoryComplianceStandardName,
-                            regulatoryComplianceControlName,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<RegulatoryComplianceAssessmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                regulatoryComplianceStandardName, regulatoryComplianceControlName, filter, accept, context))
+            .<PagedResponse<RegulatoryComplianceAssessmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Details and state of assessments mapped to selected regulatory compliance control.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param filter OData filter. Optional.
@@ -178,65 +144,41 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of regulatory compliance assessment response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RegulatoryComplianceAssessmentInner>> listSinglePageAsync(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String filter,
+        String regulatoryComplianceStandardName, String regulatoryComplianceControlName, String filter,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regulatoryComplianceStandardName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regulatoryComplianceStandardName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter regulatoryComplianceStandardName is required and cannot be null."));
         }
         if (regulatoryComplianceControlName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regulatoryComplianceControlName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter regulatoryComplianceControlName is required and cannot be null."));
         }
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                regulatoryComplianceStandardName,
-                regulatoryComplianceControlName,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                regulatoryComplianceStandardName, regulatoryComplianceControlName, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Details and state of assessments mapped to selected regulatory compliance control.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param filter OData filter. Optional.
@@ -246,8 +188,8 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @return list of regulatory compliance assessment response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RegulatoryComplianceAssessmentInner> listAsync(
-        String regulatoryComplianceStandardName, String regulatoryComplianceControlName, String filter) {
+    private PagedFlux<RegulatoryComplianceAssessmentInner> listAsync(String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName, String filter) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(regulatoryComplianceStandardName, regulatoryComplianceControlName, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -255,7 +197,7 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
 
     /**
      * Details and state of assessments mapped to selected regulatory compliance control.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,8 +206,8 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @return list of regulatory compliance assessment response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RegulatoryComplianceAssessmentInner> listAsync(
-        String regulatoryComplianceStandardName, String regulatoryComplianceControlName) {
+    private PagedFlux<RegulatoryComplianceAssessmentInner> listAsync(String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName) {
         final String filter = null;
         return new PagedFlux<>(
             () -> listSinglePageAsync(regulatoryComplianceStandardName, regulatoryComplianceControlName, filter),
@@ -274,7 +216,7 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
 
     /**
      * Details and state of assessments mapped to selected regulatory compliance control.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param filter OData filter. Optional.
@@ -285,20 +227,15 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @return list of regulatory compliance assessment response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RegulatoryComplianceAssessmentInner> listAsync(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String filter,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(regulatoryComplianceStandardName, regulatoryComplianceControlName, filter, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<RegulatoryComplianceAssessmentInner> listAsync(String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName, String filter, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(regulatoryComplianceStandardName,
+            regulatoryComplianceControlName, filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Details and state of assessments mapped to selected regulatory compliance control.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,8 +244,8 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @return list of regulatory compliance assessment response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RegulatoryComplianceAssessmentInner> list(
-        String regulatoryComplianceStandardName, String regulatoryComplianceControlName) {
+    public PagedIterable<RegulatoryComplianceAssessmentInner> list(String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName) {
         final String filter = null;
         return new PagedIterable<>(
             listAsync(regulatoryComplianceStandardName, regulatoryComplianceControlName, filter));
@@ -316,7 +253,7 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
 
     /**
      * Details and state of assessments mapped to selected regulatory compliance control.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param filter OData filter. Optional.
@@ -327,18 +264,15 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @return list of regulatory compliance assessment response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RegulatoryComplianceAssessmentInner> list(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String filter,
-        Context context) {
+    public PagedIterable<RegulatoryComplianceAssessmentInner> list(String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName, String filter, Context context) {
         return new PagedIterable<>(
             listAsync(regulatoryComplianceStandardName, regulatoryComplianceControlName, filter, context));
     }
 
     /**
      * Supported regulatory compliance details and state for selected assessment.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
@@ -346,64 +280,44 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return regulatory compliance assessment details and state along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegulatoryComplianceAssessmentInner>> getWithResponseAsync(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
+        String regulatoryComplianceStandardName, String regulatoryComplianceControlName,
         String regulatoryComplianceAssessmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regulatoryComplianceStandardName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regulatoryComplianceStandardName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter regulatoryComplianceStandardName is required and cannot be null."));
         }
         if (regulatoryComplianceControlName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regulatoryComplianceControlName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter regulatoryComplianceControlName is required and cannot be null."));
         }
         if (regulatoryComplianceAssessmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regulatoryComplianceAssessmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter regulatoryComplianceAssessmentName is required and cannot be null."));
         }
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            regulatoryComplianceStandardName,
-                            regulatoryComplianceControlName,
-                            regulatoryComplianceAssessmentName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                regulatoryComplianceStandardName, regulatoryComplianceControlName, regulatoryComplianceAssessmentName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Supported regulatory compliance details and state for selected assessment.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
@@ -412,62 +326,43 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return regulatory compliance assessment details and state along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegulatoryComplianceAssessmentInner>> getWithResponseAsync(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String regulatoryComplianceAssessmentName,
-        Context context) {
+        String regulatoryComplianceStandardName, String regulatoryComplianceControlName,
+        String regulatoryComplianceAssessmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regulatoryComplianceStandardName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regulatoryComplianceStandardName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter regulatoryComplianceStandardName is required and cannot be null."));
         }
         if (regulatoryComplianceControlName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regulatoryComplianceControlName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter regulatoryComplianceControlName is required and cannot be null."));
         }
         if (regulatoryComplianceAssessmentName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter regulatoryComplianceAssessmentName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter regulatoryComplianceAssessmentName is required and cannot be null."));
         }
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                regulatoryComplianceStandardName,
-                regulatoryComplianceControlName,
-                regulatoryComplianceAssessmentName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            regulatoryComplianceStandardName, regulatoryComplianceControlName, regulatoryComplianceAssessmentName,
+            accept, context);
     }
 
     /**
      * Supported regulatory compliance details and state for selected assessment.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
@@ -477,18 +372,15 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @return regulatory compliance assessment details and state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RegulatoryComplianceAssessmentInner> getAsync(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String regulatoryComplianceAssessmentName) {
-        return getWithResponseAsync(
-                regulatoryComplianceStandardName, regulatoryComplianceControlName, regulatoryComplianceAssessmentName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<RegulatoryComplianceAssessmentInner> getAsync(String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName, String regulatoryComplianceAssessmentName) {
+        return getWithResponseAsync(regulatoryComplianceStandardName, regulatoryComplianceControlName,
+            regulatoryComplianceAssessmentName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Supported regulatory compliance details and state for selected assessment.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
@@ -499,22 +391,15 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @return regulatory compliance assessment details and state along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RegulatoryComplianceAssessmentInner> getWithResponse(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String regulatoryComplianceAssessmentName,
-        Context context) {
-        return getWithResponseAsync(
-                regulatoryComplianceStandardName,
-                regulatoryComplianceControlName,
-                regulatoryComplianceAssessmentName,
-                context)
-            .block();
+    public Response<RegulatoryComplianceAssessmentInner> getWithResponse(String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName, String regulatoryComplianceAssessmentName, Context context) {
+        return getWithResponseAsync(regulatoryComplianceStandardName, regulatoryComplianceControlName,
+            regulatoryComplianceAssessmentName, context).block();
     }
 
     /**
      * Supported regulatory compliance details and state for selected assessment.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
@@ -524,28 +409,23 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
      * @return regulatory compliance assessment details and state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RegulatoryComplianceAssessmentInner get(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String regulatoryComplianceAssessmentName) {
-        return getWithResponse(
-                regulatoryComplianceStandardName,
-                regulatoryComplianceControlName,
-                regulatoryComplianceAssessmentName,
-                Context.NONE)
-            .getValue();
+    public RegulatoryComplianceAssessmentInner get(String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName, String regulatoryComplianceAssessmentName) {
+        return getWithResponse(regulatoryComplianceStandardName, regulatoryComplianceControlName,
+            regulatoryComplianceAssessmentName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of regulatory compliance assessment response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RegulatoryComplianceAssessmentInner>> listNextSinglePageAsync(String nextLink) {
@@ -553,62 +433,43 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RegulatoryComplianceAssessmentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RegulatoryComplianceAssessmentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of regulatory compliance assessment response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RegulatoryComplianceAssessmentInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<RegulatoryComplianceAssessmentInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

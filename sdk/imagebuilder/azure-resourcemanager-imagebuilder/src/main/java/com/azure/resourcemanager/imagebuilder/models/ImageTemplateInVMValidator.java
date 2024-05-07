@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a unit of in-VM validation of image. */
+/**
+ * Describes a unit of in-VM validation of image.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,8 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Shell", value = ImageTemplateShellValidator.class),
     @JsonSubTypes.Type(name = "PowerShell", value = ImageTemplatePowerShellValidator.class),
-    @JsonSubTypes.Type(name = "File", value = ImageTemplateFileValidator.class)
-})
+    @JsonSubTypes.Type(name = "File", value = ImageTemplateFileValidator.class) })
 @Fluent
 public class ImageTemplateInVMValidator {
     /*
@@ -30,13 +31,15 @@ public class ImageTemplateInVMValidator {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of ImageTemplateInVMValidator class. */
+    /**
+     * Creates an instance of ImageTemplateInVMValidator class.
+     */
     public ImageTemplateInVMValidator() {
     }
 
     /**
      * Get the name property: Friendly Name to provide context on what this validation step does.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -45,7 +48,7 @@ public class ImageTemplateInVMValidator {
 
     /**
      * Set the name property: Friendly Name to provide context on what this validation step does.
-     *
+     * 
      * @param name the name value to set.
      * @return the ImageTemplateInVMValidator object itself.
      */
@@ -56,7 +59,7 @@ public class ImageTemplateInVMValidator {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

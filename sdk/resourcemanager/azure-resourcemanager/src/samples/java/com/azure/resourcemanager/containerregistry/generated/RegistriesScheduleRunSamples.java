@@ -25,304 +25,192 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Registries ScheduleRun. */
+/**
+ * Samples for Registries ScheduleRun.
+ */
 public final class RegistriesScheduleRunSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_FileTaskRun.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
+     * RegistriesScheduleRun_FileTaskRun.json
      */
     /**
      * Sample code: Registries_ScheduleRun_FileTaskRun.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registriesScheduleRunFileTaskRun(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getRegistries()
-            .scheduleRun(
-                "myResourceGroup",
-                "myRegistry",
-                new FileTaskRunRequest()
-                    .withTaskFilePath("acb.yaml")
-                    .withValuesFilePath("prod-values.yaml")
-                    .withValues(
-                        Arrays
-                            .asList(
-                                new SetValue().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
-                                new SetValue()
-                                    .withName("mysecrettestargument")
-                                    .withValue("mysecrettestvalue")
-                                    .withIsSecret(true)))
-                    .withPlatform(new PlatformProperties().withOs(OS.LINUX))
-                    .withAgentConfiguration(new AgentProperties().withCpu(2))
-                    .withSourceLocation(
-                        "https://myaccount.blob.core.windows.net/sascontainer/source.zip?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getRegistries().scheduleRun("myResourceGroup",
+            "myRegistry",
+            new FileTaskRunRequest().withTaskFilePath("acb.yaml").withValuesFilePath("prod-values.yaml")
+                .withValues(Arrays.asList(
+                    new SetValue().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
+                    new SetValue().withName("mysecrettestargument").withValue("mysecrettestvalue").withIsSecret(true)))
+                .withPlatform(new PlatformProperties().withOs(OS.LINUX))
+                .withAgentConfiguration(new AgentProperties().withCpu(2)).withSourceLocation(
+                    "https://myaccount.blob.core.windows.net/sascontainer/source.zip?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
+     * RegistriesScheduleRun.json
      */
     /**
      * Sample code: Registries_ScheduleRun.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registriesScheduleRun(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getRegistries()
-            .scheduleRun(
-                "myResourceGroup",
-                "myRegistry",
-                new DockerBuildRequest()
-                    .withIsArchiveEnabled(true)
-                    .withImageNames(Arrays.asList("azurerest:testtag"))
-                    .withIsPushEnabled(true)
-                    .withNoCache(true)
-                    .withDockerFilePath("DockerFile")
-                    .withArguments(
-                        Arrays
-                            .asList(
-                                new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
-                                new Argument()
-                                    .withName("mysecrettestargument")
-                                    .withValue("mysecrettestvalue")
-                                    .withIsSecret(true)))
-                    .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
-                    .withAgentConfiguration(new AgentProperties().withCpu(2))
-                    .withSourceLocation(
-                        "https://myaccount.blob.core.windows.net/sascontainer/source.zip?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getRegistries().scheduleRun("myResourceGroup",
+            "myRegistry",
+            new DockerBuildRequest().withIsArchiveEnabled(true).withImageNames(Arrays.asList("azurerest:testtag"))
+                .withIsPushEnabled(true).withNoCache(true).withDockerFilePath("DockerFile")
+                .withArguments(Arrays.asList(
+                    new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
+                    new Argument().withName("mysecrettestargument").withValue("mysecrettestvalue").withIsSecret(true)))
+                .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
+                .withAgentConfiguration(new AgentProperties().withCpu(2)).withSourceLocation(
+                    "https://myaccount.blob.core.windows.net/sascontainer/source.zip?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_EncodedTaskRun.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
+     * RegistriesScheduleRun_EncodedTaskRun.json
      */
     /**
      * Sample code: Registries_ScheduleRun_EncodedTaskRun.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registriesScheduleRunEncodedTaskRun(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getRegistries()
-            .scheduleRun(
-                "myResourceGroup",
-                "myRegistry",
-                new EncodedTaskRunRequest()
-                    .withEncodedTaskContent("fakeTokenPlaceholder")
-                    .withEncodedValuesContent("fakeTokenPlaceholder")
-                    .withValues(
-                        Arrays
-                            .asList(
-                                new SetValue().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
-                                new SetValue()
-                                    .withName("mysecrettestargument")
-                                    .withValue("mysecrettestvalue")
-                                    .withIsSecret(true)))
-                    .withPlatform(new PlatformProperties().withOs(OS.LINUX))
-                    .withAgentConfiguration(new AgentProperties().withCpu(2)),
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getRegistries()
+            .scheduleRun("myResourceGroup", "myRegistry", new EncodedTaskRunRequest()
+                .withEncodedTaskContent("fakeTokenPlaceholder").withEncodedValuesContent("fakeTokenPlaceholder")
+                .withValues(Arrays.asList(
+                    new SetValue().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
+                    new SetValue().withName("mysecrettestargument").withValue("mysecrettestvalue").withIsSecret(true)))
+                .withPlatform(new PlatformProperties().withOs(OS.LINUX))
+                .withAgentConfiguration(new AgentProperties().withCpu(2)), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_WithCustomCredentials.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
+     * RegistriesScheduleRun_WithCustomCredentials.json
      */
     /**
      * Sample code: Registries_ScheduleRun_WithCustomCredentials.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void registriesScheduleRunWithCustomCredentials(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getRegistries()
-            .scheduleRun(
-                "myResourceGroup",
-                "myRegistry",
-                new DockerBuildRequest()
-                    .withIsArchiveEnabled(true)
-                    .withImageNames(Arrays.asList("azurerest:testtag"))
-                    .withIsPushEnabled(true)
-                    .withNoCache(true)
-                    .withDockerFilePath("DockerFile")
-                    .withTarget("stage1")
-                    .withArguments(
-                        Arrays
-                            .asList(
-                                new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
-                                new Argument()
-                                    .withName("mysecrettestargument")
-                                    .withValue("mysecrettestvalue")
-                                    .withIsSecret(true)))
-                    .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
-                    .withAgentConfiguration(new AgentProperties().withCpu(2))
-                    .withSourceLocation(
-                        "https://myaccount.blob.core.windows.net/sascontainer/source.zip?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D")
-                    .withCredentials(
-                        new Credentials()
-                            .withSourceRegistry(
-                                new SourceRegistryCredentials().withLoginMode(SourceRegistryLoginMode.DEFAULT))
-                            .withCustomRegistries(
-                                mapOf(
-                                    "myregistry.azurecr.io",
-                                    new CustomRegistryCredentials()
-                                        .withUsername(
-                                            new SecretObject().withValue("reg1").withType(SecretObjectType.OPAQUE))
-                                        .withPassword(
-                                            new SecretObject().withValue("***").withType(SecretObjectType.OPAQUE)),
-                                    "myregistry2.azurecr.io",
-                                    new CustomRegistryCredentials()
-                                        .withUsername(
-                                            new SecretObject().withValue("reg2").withType(SecretObjectType.OPAQUE))
-                                        .withPassword(
-                                            new SecretObject().withValue("***").withType(SecretObjectType.OPAQUE))))),
-                com.azure.core.util.Context.NONE);
+    public static void
+        registriesScheduleRunWithCustomCredentials(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries().manager().serviceClient().getRegistries().scheduleRun("myResourceGroup",
+            "myRegistry",
+            new DockerBuildRequest().withIsArchiveEnabled(true).withImageNames(Arrays.asList("azurerest:testtag"))
+                .withIsPushEnabled(true).withNoCache(true).withDockerFilePath("DockerFile").withTarget("stage1")
+                .withArguments(Arrays.asList(
+                    new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
+                    new Argument().withName("mysecrettestargument").withValue("mysecrettestvalue").withIsSecret(true)))
+                .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
+                .withAgentConfiguration(new AgentProperties().withCpu(2))
+                .withSourceLocation(
+                    "https://myaccount.blob.core.windows.net/sascontainer/source.zip?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D")
+                .withCredentials(new Credentials()
+                    .withSourceRegistry(new SourceRegistryCredentials().withLoginMode(SourceRegistryLoginMode.DEFAULT))
+                    .withCustomRegistries(mapOf("myregistry.azurecr.io",
+                        new CustomRegistryCredentials()
+                            .withUsername(new SecretObject().withValue("reg1").withType(SecretObjectType.OPAQUE))
+                            .withPassword(new SecretObject().withValue("***").withType(SecretObjectType.OPAQUE)),
+                        "myregistry2.azurecr.io",
+                        new CustomRegistryCredentials()
+                            .withUsername(new SecretObject().withValue("reg2").withType(SecretObjectType.OPAQUE))
+                            .withPassword(new SecretObject().withValue("***").withType(SecretObjectType.OPAQUE))))),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_WithLogTemplate.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
+     * RegistriesScheduleRun_WithLogTemplate.json
      */
     /**
      * Sample code: Registries_ScheduleRun_WithLogTemplate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registriesScheduleRunWithLogTemplate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getRegistries()
-            .scheduleRun(
-                "myResourceGroup",
-                "myRegistry",
-                new DockerBuildRequest()
-                    .withIsArchiveEnabled(true)
-                    .withLogTemplate("acr/tasks:{{.Run.OS}}")
-                    .withImageNames(Arrays.asList("azurerest:testtag"))
-                    .withIsPushEnabled(true)
-                    .withNoCache(true)
-                    .withDockerFilePath("DockerFile")
-                    .withArguments(
-                        Arrays
-                            .asList(
-                                new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
-                                new Argument()
-                                    .withName("mysecrettestargument")
-                                    .withValue("mysecrettestvalue")
-                                    .withIsSecret(true)))
-                    .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
-                    .withAgentConfiguration(new AgentProperties().withCpu(2))
-                    .withSourceLocation(
-                        "https://myaccount.blob.core.windows.net/sascontainer/source.zip?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
+        azure.containerRegistries().manager().serviceClient().getRegistries()
+            .scheduleRun("myResourceGroup", "myRegistry", new DockerBuildRequest().withIsArchiveEnabled(true)
+                .withLogTemplate("acr/tasks:{{.Run.OS}}").withImageNames(Arrays.asList("azurerest:testtag"))
+                .withIsPushEnabled(true).withNoCache(true).withDockerFilePath("DockerFile")
+                .withArguments(Arrays.asList(
+                    new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
+                    new Argument().withName("mysecrettestargument").withValue("mysecrettestvalue").withIsSecret(true)))
+                .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
+                .withAgentConfiguration(new AgentProperties().withCpu(2)).withSourceLocation(
+                    "https://myaccount.blob.core.windows.net/sascontainer/source.zip?sv=2015-04-05&st=2015-04-29T22%3A18%3A26Z&se=2015-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=Z%2FRHIX5Xcg0Mq2rqI3OlWTjEg2tYkboXr1P9ZUXDtkk%3D"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_Task.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
+     * RegistriesScheduleRun_Task.json
      */
     /**
      * Sample code: Registries_ScheduleRun_Task.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registriesScheduleRunTask(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getRegistries()
-            .scheduleRun(
-                "myResourceGroup",
-                "myRegistry",
-                new TaskRunRequest()
-                    .withTaskId("myTask")
-                    .withOverrideTaskStepProperties(
-                        new OverrideTaskStepProperties()
-                            .withFile("overriddenDockerfile")
-                            .withArguments(
-                                Arrays
-                                    .asList(
-                                        new Argument()
-                                            .withName("mytestargument")
-                                            .withValue("mytestvalue")
-                                            .withIsSecret(false),
-                                        new Argument()
-                                            .withName("mysecrettestargument")
-                                            .withValue("mysecrettestvalue")
-                                            .withIsSecret(true)))
-                            .withTarget("build")
-                            .withValues(
-                                Arrays
-                                    .asList(
-                                        new SetValue()
-                                            .withName("mytestname")
-                                            .withValue("mytestvalue")
-                                            .withIsSecret(false),
-                                        new SetValue()
-                                            .withName("mysecrettestname")
-                                            .withValue("mysecrettestvalue")
-                                            .withIsSecret(true)))
-                            .withUpdateTriggerToken("fakeTokenPlaceholder")),
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getRegistries().scheduleRun("myResourceGroup",
+            "myRegistry",
+            new TaskRunRequest().withTaskId("myTask").withOverrideTaskStepProperties(new OverrideTaskStepProperties()
+                .withFile("overriddenDockerfile")
+                .withArguments(Arrays.asList(
+                    new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
+                    new Argument().withName("mysecrettestargument").withValue("mysecrettestvalue").withIsSecret(true)))
+                .withTarget("build")
+                .withValues(
+                    Arrays.asList(new SetValue().withName("mytestname").withValue("mytestvalue").withIsSecret(false),
+                        new SetValue().withName("mysecrettestname").withValue("mysecrettestvalue").withIsSecret(true)))
+                .withUpdateTriggerToken("fakeTokenPlaceholder")),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/RegistriesScheduleRun_FileTask_WithCustomCredentials.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
+     * RegistriesScheduleRun_FileTask_WithCustomCredentials.json
      */
     /**
      * Sample code: Registries_ScheduleRun_Task_WithCustomCredentials.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void registriesScheduleRunTaskWithCustomCredentials(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getRegistries()
-            .scheduleRun(
-                "myResourceGroup",
-                "myRegistry",
-                new FileTaskRunRequest()
-                    .withTaskFilePath("acb.yaml")
-                    .withValues(
-                        Arrays
-                            .asList(
-                                new SetValue().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
-                                new SetValue()
-                                    .withName("mysecrettestargument")
-                                    .withValue("mysecrettestvalue")
-                                    .withIsSecret(true)))
-                    .withPlatform(new PlatformProperties().withOs(OS.LINUX))
-                    .withCredentials(
-                        new Credentials()
-                            .withSourceRegistry(
-                                new SourceRegistryCredentials().withLoginMode(SourceRegistryLoginMode.DEFAULT))
-                            .withCustomRegistries(
-                                mapOf(
-                                    "myregistry.azurecr.io",
-                                    new CustomRegistryCredentials()
-                                        .withUsername(
-                                            new SecretObject().withValue("reg1").withType(SecretObjectType.OPAQUE))
-                                        .withPassword(
-                                            new SecretObject().withValue("***").withType(SecretObjectType.OPAQUE))))),
+    public static void
+        registriesScheduleRunTaskWithCustomCredentials(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerRegistries().manager().serviceClient().getRegistries()
+            .scheduleRun("myResourceGroup", "myRegistry", new FileTaskRunRequest().withTaskFilePath("acb.yaml")
+                .withValues(Arrays.asList(
+                    new SetValue().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
+                    new SetValue().withName("mysecrettestargument").withValue("mysecrettestvalue").withIsSecret(true)))
+                .withPlatform(new PlatformProperties().withOs(OS.LINUX))
+                .withCredentials(new Credentials()
+                    .withSourceRegistry(new SourceRegistryCredentials().withLoginMode(SourceRegistryLoginMode.DEFAULT))
+                    .withCustomRegistries(mapOf("myregistry.azurecr.io",
+                        new CustomRegistryCredentials()
+                            .withUsername(new SecretObject().withValue("reg1").withType(SecretObjectType.OPAQUE))
+                            .withPassword(new SecretObject().withValue("***").withType(SecretObjectType.OPAQUE))))),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -11,16 +11,19 @@ public final class AzureMySqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMySqlSource model = BinaryData.fromString(
-            "{\"type\":\"AzureMySqlSource\",\"query\":\"dataqyoyjptkyfrk\",\"queryTimeout\":\"datatxwyqkkdumxd\",\"additionalColumns\":\"dataimsioffyboo\",\"sourceRetryCount\":\"dataovfundk\",\"sourceRetryWait\":\"datamyxmsbtq\",\"maxConcurrentConnections\":\"datagn\",\"disableMetricsCollection\":\"datacbjxgjudgbwr\",\"\":{\"mgsm\":\"datauzlfqhzihlzljqc\",\"ybdz\":\"dataujunqwkjfmt\"}}")
+            "{\"type\":\"jnnoot\",\"query\":\"datapvnvdzssssn\",\"queryTimeout\":\"dataotx\",\"additionalColumns\":\"databxzhad\",\"sourceRetryCount\":\"datayupaqdoodhnzkmj\",\"sourceRetryWait\":\"databyogwjr\",\"maxConcurrentConnections\":\"datanrykkh\",\"disableMetricsCollection\":\"datawohsj\",\"\":{\"vrixcveser\":\"dataphnlwey\"}}")
             .toObject(AzureMySqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMySqlSource model = new AzureMySqlSource().withSourceRetryCount("dataovfundk")
-            .withSourceRetryWait("datamyxmsbtq").withMaxConcurrentConnections("datagn")
-            .withDisableMetricsCollection("datacbjxgjudgbwr").withQueryTimeout("datatxwyqkkdumxd")
-            .withAdditionalColumns("dataimsioffyboo").withQuery("dataqyoyjptkyfrk");
+        AzureMySqlSource model = new AzureMySqlSource().withSourceRetryCount("datayupaqdoodhnzkmj")
+            .withSourceRetryWait("databyogwjr")
+            .withMaxConcurrentConnections("datanrykkh")
+            .withDisableMetricsCollection("datawohsj")
+            .withQueryTimeout("dataotx")
+            .withAdditionalColumns("databxzhad")
+            .withQuery("datapvnvdzssssn");
         model = BinaryData.fromObject(model).toObject(AzureMySqlSource.class);
     }
 }

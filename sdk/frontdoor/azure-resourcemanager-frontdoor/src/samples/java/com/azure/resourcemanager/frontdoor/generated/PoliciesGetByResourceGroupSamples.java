@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.frontdoor.generated;
 
-/** Samples for Policies GetByResourceGroup. */
+/**
+ * Samples for Policies GetByResourceGroup.
+ */
 public final class PoliciesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafPolicyGet.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyGet.json
      */
     /**
      * Sample code: Get Policy.
-     *
+     * 
      * @param manager Entry point to FrontDoorManager.
      */
     public static void getPolicy(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {

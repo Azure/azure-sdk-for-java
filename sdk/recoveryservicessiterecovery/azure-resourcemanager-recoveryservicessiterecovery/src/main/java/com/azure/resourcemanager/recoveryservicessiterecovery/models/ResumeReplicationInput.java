@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resume replication input. */
+/**
+ * Resume replication input.
+ */
 @Fluent
 public final class ResumeReplicationInput {
     /*
@@ -17,13 +19,15 @@ public final class ResumeReplicationInput {
     @JsonProperty(value = "properties", required = true)
     private ResumeReplicationInputProperties properties;
 
-    /** Creates an instance of ResumeReplicationInput class. */
+    /**
+     * Creates an instance of ResumeReplicationInput class.
+     */
     public ResumeReplicationInput() {
     }
 
     /**
      * Get the properties property: Resume replication input properties.
-     *
+     * 
      * @return the properties value.
      */
     public ResumeReplicationInputProperties properties() {
@@ -32,7 +36,7 @@ public final class ResumeReplicationInput {
 
     /**
      * Set the properties property: Resume replication input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResumeReplicationInput object itself.
      */
@@ -43,15 +47,13 @@ public final class ResumeReplicationInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model ResumeReplicationInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model ResumeReplicationInput"));
         } else {
             properties().validate();
         }

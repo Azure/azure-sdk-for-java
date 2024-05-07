@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerConfigurationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"value\":\"umkdosvqwhbmd\",\"source\":\"bjf\",\"description\":\"gmbmbexppbh\",\"defaultValue\":\"qrolfpf\",\"dataType\":\"Enumeration\",\"allowedValues\":\"gbquxigj\",\"requiresRestart\":true,\"provisioningState\":\"InProgress\"},\"id\":\"o\",\"name\":\"fhrtxilnerkujysv\",\"type\":\"eju\"}")
-                .toObject(ServerConfigurationInner.class);
-        Assertions.assertEquals("umkdosvqwhbmd", model.value());
+        ServerConfigurationInner model = BinaryData.fromString(
+            "{\"properties\":{\"value\":\"zafb\",\"source\":\"j\",\"description\":\"btoqcjmkljavbqid\",\"defaultValue\":\"ajzyul\",\"dataType\":\"Boolean\",\"allowedValues\":\"jkrlkhbzhfepg\",\"requiresRestart\":false,\"provisioningState\":\"InProgress\"},\"id\":\"locx\",\"name\":\"c\",\"type\":\"aierhhb\"}")
+            .toObject(ServerConfigurationInner.class);
+        Assertions.assertEquals("zafb", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerConfigurationInner model = new ServerConfigurationInner().withValue("umkdosvqwhbmd");
+        ServerConfigurationInner model = new ServerConfigurationInner().withValue("zafb");
         model = BinaryData.fromObject(model).toObject(ServerConfigurationInner.class);
-        Assertions.assertEquals("umkdosvqwhbmd", model.value());
+        Assertions.assertEquals("zafb", model.value());
     }
 }

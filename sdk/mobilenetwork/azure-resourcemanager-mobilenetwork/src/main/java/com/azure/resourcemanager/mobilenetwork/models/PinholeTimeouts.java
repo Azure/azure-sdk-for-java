@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least 1 second. */
+/**
+ * Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least 1 second.
+ */
 @Fluent
 public final class PinholeTimeouts {
     /*
@@ -28,13 +30,15 @@ public final class PinholeTimeouts {
     @JsonProperty(value = "icmp")
     private Integer icmp;
 
-    /** Creates an instance of PinholeTimeouts class. */
+    /**
+     * Creates an instance of PinholeTimeouts class.
+     */
     public PinholeTimeouts() {
     }
 
     /**
      * Get the tcp property: Pinhole timeout for TCP pinholes in seconds. Default for TCP is 3 minutes.
-     *
+     * 
      * @return the tcp value.
      */
     public Integer tcp() {
@@ -43,7 +47,7 @@ public final class PinholeTimeouts {
 
     /**
      * Set the tcp property: Pinhole timeout for TCP pinholes in seconds. Default for TCP is 3 minutes.
-     *
+     * 
      * @param tcp the tcp value to set.
      * @return the PinholeTimeouts object itself.
      */
@@ -54,7 +58,7 @@ public final class PinholeTimeouts {
 
     /**
      * Get the udp property: Pinhole timeout for UDP pinholes in seconds. Default for UDP is 30 seconds.
-     *
+     * 
      * @return the udp value.
      */
     public Integer udp() {
@@ -63,7 +67,7 @@ public final class PinholeTimeouts {
 
     /**
      * Set the udp property: Pinhole timeout for UDP pinholes in seconds. Default for UDP is 30 seconds.
-     *
+     * 
      * @param udp the udp value to set.
      * @return the PinholeTimeouts object itself.
      */
@@ -74,7 +78,7 @@ public final class PinholeTimeouts {
 
     /**
      * Get the icmp property: Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is 30 seconds.
-     *
+     * 
      * @return the icmp value.
      */
     public Integer icmp() {
@@ -83,7 +87,7 @@ public final class PinholeTimeouts {
 
     /**
      * Set the icmp property: Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is 30 seconds.
-     *
+     * 
      * @param icmp the icmp value to set.
      * @return the PinholeTimeouts object itself.
      */
@@ -94,7 +98,7 @@ public final class PinholeTimeouts {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.models.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Regulatory compliance control data. */
+/**
+ * Regulatory compliance control data.
+ */
 @Fluent
 public final class RegulatoryComplianceControlProperties {
     /*
@@ -41,13 +43,15 @@ public final class RegulatoryComplianceControlProperties {
     @JsonProperty(value = "skippedAssessments", access = JsonProperty.Access.WRITE_ONLY)
     private Integer skippedAssessments;
 
-    /** Creates an instance of RegulatoryComplianceControlProperties class. */
+    /**
+     * Creates an instance of RegulatoryComplianceControlProperties class.
+     */
     public RegulatoryComplianceControlProperties() {
     }
 
     /**
      * Get the description property: The description of the regulatory compliance control.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -56,7 +60,7 @@ public final class RegulatoryComplianceControlProperties {
 
     /**
      * Get the state property: Aggregative state based on the control's supported assessments states.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -65,7 +69,7 @@ public final class RegulatoryComplianceControlProperties {
 
     /**
      * Set the state property: Aggregative state based on the control's supported assessments states.
-     *
+     * 
      * @param state the state value to set.
      * @return the RegulatoryComplianceControlProperties object itself.
      */
@@ -77,7 +81,7 @@ public final class RegulatoryComplianceControlProperties {
     /**
      * Get the passedAssessments property: The number of supported regulatory compliance assessments of the given
      * control with a passed state.
-     *
+     * 
      * @return the passedAssessments value.
      */
     public Integer passedAssessments() {
@@ -87,7 +91,7 @@ public final class RegulatoryComplianceControlProperties {
     /**
      * Get the failedAssessments property: The number of supported regulatory compliance assessments of the given
      * control with a failed state.
-     *
+     * 
      * @return the failedAssessments value.
      */
     public Integer failedAssessments() {
@@ -97,7 +101,7 @@ public final class RegulatoryComplianceControlProperties {
     /**
      * Get the skippedAssessments property: The number of supported regulatory compliance assessments of the given
      * control with a skipped state.
-     *
+     * 
      * @return the skippedAssessments value.
      */
     public Integer skippedAssessments() {
@@ -106,7 +110,7 @@ public final class RegulatoryComplianceControlProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

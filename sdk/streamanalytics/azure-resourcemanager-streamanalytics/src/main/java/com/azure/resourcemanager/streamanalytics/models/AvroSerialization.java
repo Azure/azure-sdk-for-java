@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,19 +16,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Avro")
 @Fluent
 public final class AvroSerialization extends Serialization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvroSerialization.class);
-
     /*
-     * The properties that are associated with the Avro serialization type.
-     * Required on PUT (CreateOrReplace) requests.
+     * The properties that are associated with the Avro serialization type. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "properties")
     private Object properties;
 
     /**
-     * Get the properties property: The properties that are associated with the Avro serialization type. Required on PUT
-     * (CreateOrReplace) requests.
-     *
+     * Creates an instance of AvroSerialization class.
+     */
+    public AvroSerialization() {
+    }
+
+    /**
+     * Get the properties property: The properties that are associated with the Avro serialization type. Required on
+     * PUT (CreateOrReplace) requests.
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -38,9 +39,9 @@ public final class AvroSerialization extends Serialization {
     }
 
     /**
-     * Set the properties property: The properties that are associated with the Avro serialization type. Required on PUT
-     * (CreateOrReplace) requests.
-     *
+     * Set the properties property: The properties that are associated with the Avro serialization type. Required on
+     * PUT (CreateOrReplace) requests.
+     * 
      * @param properties the properties value to set.
      * @return the AvroSerialization object itself.
      */
@@ -51,7 +52,7 @@ public final class AvroSerialization extends Serialization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

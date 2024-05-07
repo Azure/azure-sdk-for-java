@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TransportProtocol. */
+/**
+ * Defines values for TransportProtocol.
+ */
 public final class TransportProtocol extends ExpandableStringEnum<TransportProtocol> {
-    /** Static value TCP for TransportProtocol. */
+    /**
+     * Static value TCP for TransportProtocol.
+     */
     public static final TransportProtocol TCP = fromString("TCP");
 
-    /** Static value UDP for TransportProtocol. */
+    /**
+     * Static value UDP for TransportProtocol.
+     */
     public static final TransportProtocol UDP = fromString("UDP");
 
     /**
      * Creates a new instance of TransportProtocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class TransportProtocol extends ExpandableStringEnum<TransportProto
 
     /**
      * Creates or finds a TransportProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TransportProtocol.
      */
@@ -38,7 +44,7 @@ public final class TransportProtocol extends ExpandableStringEnum<TransportProto
 
     /**
      * Gets known TransportProtocol values.
-     *
+     * 
      * @return known TransportProtocol values.
      */
     public static Collection<TransportProtocol> values() {

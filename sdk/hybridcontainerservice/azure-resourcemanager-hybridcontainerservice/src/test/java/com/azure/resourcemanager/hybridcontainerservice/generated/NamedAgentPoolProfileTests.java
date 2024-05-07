@@ -9,35 +9,59 @@ import com.azure.resourcemanager.hybridcontainerservice.models.NamedAgentPoolPro
 import com.azure.resourcemanager.hybridcontainerservice.models.OsType;
 import com.azure.resourcemanager.hybridcontainerservice.models.Ossku;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class NamedAgentPoolProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamedAgentPoolProfile model = BinaryData.fromString(
-            "{\"count\":1439902652,\"vmSize\":\"qijgkd\",\"name\":\"pazlobcufpdz\",\"availabilityZones\":[\"t\",\"qqjnqgl\"],\"osType\":\"Windows\",\"osSKU\":\"Windows2019\",\"nodeImageVersion\":\"ooojywifsqe\"}")
+            "{\"count\":1770977837,\"vmSize\":\"jnqglhqgnu\",\"kubernetesVersion\":\"oo\",\"name\":\"wifsq\",\"osType\":\"Windows\",\"osSKU\":\"CBLMariner\",\"nodeLabels\":{\"rifkwm\":\"mglzlhj\"},\"nodeTaints\":[\"tsizntocipaoua\",\"psqucmpoyf\",\"kfo\",\"knygjofjddeq\"],\"maxCount\":752788462,\"minCount\":1305479900,\"enableAutoScaling\":true,\"maxPods\":727938504}")
             .toObject(NamedAgentPoolProfile.class);
-        Assertions.assertEquals("t", model.availabilityZones().get(0));
         Assertions.assertEquals(OsType.WINDOWS, model.osType());
-        Assertions.assertEquals(Ossku.WINDOWS2019, model.osSku());
-        Assertions.assertEquals("ooojywifsqe", model.nodeImageVersion());
-        Assertions.assertEquals(1439902652, model.count());
-        Assertions.assertEquals("qijgkd", model.vmSize());
-        Assertions.assertEquals("pazlobcufpdz", model.name());
+        Assertions.assertEquals(Ossku.CBLMARINER, model.osSku());
+        Assertions.assertEquals("mglzlhj", model.nodeLabels().get("rifkwm"));
+        Assertions.assertEquals("tsizntocipaoua", model.nodeTaints().get(0));
+        Assertions.assertEquals(752788462, model.maxCount());
+        Assertions.assertEquals(1305479900, model.minCount());
+        Assertions.assertEquals(true, model.enableAutoScaling());
+        Assertions.assertEquals(727938504, model.maxPods());
+        Assertions.assertEquals(1770977837, model.count());
+        Assertions.assertEquals("jnqglhqgnu", model.vmSize());
+        Assertions.assertEquals("wifsq", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamedAgentPoolProfile model = new NamedAgentPoolProfile().withAvailabilityZones(Arrays.asList("t", "qqjnqgl"))
-            .withOsType(OsType.WINDOWS).withOsSku(Ossku.WINDOWS2019).withNodeImageVersion("ooojywifsqe")
-            .withCount(1439902652).withVmSize("qijgkd").withName("pazlobcufpdz");
+        NamedAgentPoolProfile model = new NamedAgentPoolProfile().withOsType(OsType.WINDOWS).withOsSku(Ossku.CBLMARINER)
+            .withNodeLabels(mapOf("rifkwm", "mglzlhj"))
+            .withNodeTaints(Arrays.asList("tsizntocipaoua", "psqucmpoyf", "kfo", "knygjofjddeq"))
+            .withMaxCount(752788462).withMinCount(1305479900).withEnableAutoScaling(true).withMaxPods(727938504)
+            .withCount(1770977837).withVmSize("jnqglhqgnu").withName("wifsq");
         model = BinaryData.fromObject(model).toObject(NamedAgentPoolProfile.class);
-        Assertions.assertEquals("t", model.availabilityZones().get(0));
         Assertions.assertEquals(OsType.WINDOWS, model.osType());
-        Assertions.assertEquals(Ossku.WINDOWS2019, model.osSku());
-        Assertions.assertEquals("ooojywifsqe", model.nodeImageVersion());
-        Assertions.assertEquals(1439902652, model.count());
-        Assertions.assertEquals("qijgkd", model.vmSize());
-        Assertions.assertEquals("pazlobcufpdz", model.name());
+        Assertions.assertEquals(Ossku.CBLMARINER, model.osSku());
+        Assertions.assertEquals("mglzlhj", model.nodeLabels().get("rifkwm"));
+        Assertions.assertEquals("tsizntocipaoua", model.nodeTaints().get(0));
+        Assertions.assertEquals(752788462, model.maxCount());
+        Assertions.assertEquals(1305479900, model.minCount());
+        Assertions.assertEquals(true, model.enableAutoScaling());
+        Assertions.assertEquals(727938504, model.maxPods());
+        Assertions.assertEquals(1770977837, model.count());
+        Assertions.assertEquals("jnqglhqgnu", model.vmSize());
+        Assertions.assertEquals("wifsq", model.name());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

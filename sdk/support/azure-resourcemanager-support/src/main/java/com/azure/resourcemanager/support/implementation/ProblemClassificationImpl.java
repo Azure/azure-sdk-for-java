@@ -15,8 +15,8 @@ public final class ProblemClassificationImpl implements ProblemClassification {
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    ProblemClassificationImpl(
-        ProblemClassificationInner innerObject, com.azure.resourcemanager.support.SupportManager serviceManager) {
+    ProblemClassificationImpl(ProblemClassificationInner innerObject,
+        com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

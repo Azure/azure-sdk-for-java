@@ -75,7 +75,7 @@ public final class StreamingDataParser {
             //region Transcription
             if (stringJson.contains("TranscriptionData")) {
                 TranscriptionDataConverter transcriptionInternal = mapper.convertValue(jsonData.get("transcriptionData"), TranscriptionDataConverter.class);
-                return new TranscriptionData(transcriptionInternal.getText(), transcriptionInternal.getFormat(), transcriptionInternal.getConfidence(), transcriptionInternal.getOffset(), transcriptionInternal.getWords(), transcriptionInternal.getParticipantRawID(), transcriptionInternal.getResultStatus());
+                return new TranscriptionData(transcriptionInternal.getText(), transcriptionInternal.getFormat(), transcriptionInternal.getConfidence(), transcriptionInternal.getOffset(), transcriptionInternal.getDuration(), transcriptionInternal.getWords(), transcriptionInternal.getParticipantRawID(), transcriptionInternal.getResultStatus());
             }
             if (stringJson.contains("TranscriptionMetadata")) {
                 TranscriptionMetadataConverter transcriptionMetadataInternal = mapper.convertValue(jsonData.get("transcriptionMetadata"), TranscriptionMetadataConverter.class);

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan action custom details. */
+/**
+ * Recovery plan action custom details.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,17 +23,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         name = "AutomationRunbookActionDetails",
         value = RecoveryPlanAutomationRunbookActionDetails.class),
     @JsonSubTypes.Type(name = "ManualActionDetails", value = RecoveryPlanManualActionDetails.class),
-    @JsonSubTypes.Type(name = "ScriptActionDetails", value = RecoveryPlanScriptActionDetails.class)
-})
+    @JsonSubTypes.Type(name = "ScriptActionDetails", value = RecoveryPlanScriptActionDetails.class) })
 @Immutable
 public class RecoveryPlanActionDetails {
-    /** Creates an instance of RecoveryPlanActionDetails class. */
+    /**
+     * Creates an instance of RecoveryPlanActionDetails class.
+     */
     public RecoveryPlanActionDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

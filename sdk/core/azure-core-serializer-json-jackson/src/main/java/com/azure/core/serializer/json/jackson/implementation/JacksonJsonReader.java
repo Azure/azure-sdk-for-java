@@ -26,7 +26,6 @@ public final class JacksonJsonReader extends JsonReader {
 
     private JsonToken currentToken;
 
-
     /**
      * Creates an instance of {@link JacksonJsonReader}.
      *
@@ -149,8 +148,7 @@ public final class JacksonJsonReader extends JsonReader {
      * azure-json doesn't support the EMBEDDED_OBJECT or NOT_AVAILABLE Jackson Core JsonTokens, but those should only
      * be returned by specialty implementations that aren't used.
      */
-    private static JsonToken mapToken(com.fasterxml.jackson.core.JsonToken nextToken,
-        JsonToken currentToken) {
+    private static JsonToken mapToken(com.fasterxml.jackson.core.JsonToken nextToken, JsonToken currentToken) {
         // Special case for when currentToken is called after instantiating the JsonReader.
         if (nextToken == null && currentToken == null) {
             return null;
@@ -161,16 +159,19 @@ public final class JacksonJsonReader extends JsonReader {
         switch (nextToken) {
             case START_OBJECT:
                 return JsonToken.START_OBJECT;
+
             case END_OBJECT:
                 return JsonToken.END_OBJECT;
 
             case START_ARRAY:
                 return JsonToken.START_ARRAY;
+
             case END_ARRAY:
                 return JsonToken.END_ARRAY;
 
             case FIELD_NAME:
                 return JsonToken.FIELD_NAME;
+
             case VALUE_STRING:
                 return JsonToken.STRING;
 
@@ -186,8 +187,8 @@ public final class JacksonJsonReader extends JsonReader {
                 return JsonToken.NULL;
 
             default:
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "Unsupported token type: '" + nextToken + "'."));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalStateException("Unsupported token type: '" + nextToken + "'."));
         }
     }
 }

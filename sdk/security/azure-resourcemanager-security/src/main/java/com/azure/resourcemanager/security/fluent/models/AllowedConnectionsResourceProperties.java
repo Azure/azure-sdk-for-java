@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Describes the allowed traffic between Azure resources. */
+/**
+ * Describes the allowed traffic between Azure resources.
+ */
 @Immutable
 public final class AllowedConnectionsResourceProperties {
     /*
@@ -25,13 +27,15 @@ public final class AllowedConnectionsResourceProperties {
     @JsonProperty(value = "connectableResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectableResource> connectableResources;
 
-    /** Creates an instance of AllowedConnectionsResourceProperties class. */
+    /**
+     * Creates an instance of AllowedConnectionsResourceProperties class.
+     */
     public AllowedConnectionsResourceProperties() {
     }
 
     /**
      * Get the calculatedDateTime property: The UTC time on which the allowed connections resource was calculated.
-     *
+     * 
      * @return the calculatedDateTime value.
      */
     public OffsetDateTime calculatedDateTime() {
@@ -40,7 +44,7 @@ public final class AllowedConnectionsResourceProperties {
 
     /**
      * Get the connectableResources property: List of connectable resources.
-     *
+     * 
      * @return the connectableResources value.
      */
     public List<ConnectableResource> connectableResources() {
@@ -49,7 +53,7 @@ public final class AllowedConnectionsResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

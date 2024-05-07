@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.Dedicated
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the request to list Dedicated HSM Provider operations. It contains a list of operations. */
+/**
+ * Result of the request to list Dedicated HSM Provider operations. It contains a list of operations.
+ */
 @Fluent
 public final class DedicatedHsmOperationListResult {
     /*
@@ -19,8 +21,14 @@ public final class DedicatedHsmOperationListResult {
     private List<DedicatedHsmOperationInner> value;
 
     /**
+     * Creates an instance of DedicatedHsmOperationListResult class.
+     */
+    public DedicatedHsmOperationListResult() {
+    }
+
+    /**
      * Get the value property: List of Dedicated HSM Resource Provider operations.
-     *
+     * 
      * @return the value value.
      */
     public List<DedicatedHsmOperationInner> value() {
@@ -29,7 +37,7 @@ public final class DedicatedHsmOperationListResult {
 
     /**
      * Set the value property: List of Dedicated HSM Resource Provider operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the DedicatedHsmOperationListResult object itself.
      */
@@ -40,7 +48,7 @@ public final class DedicatedHsmOperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input of CheckNameAvailability API. */
+/**
+ * Input of CheckNameAvailability API.
+ */
 @Fluent
 public final class CheckNameAvailabilityInput {
     /*
@@ -23,13 +25,15 @@ public final class CheckNameAvailabilityInput {
     @JsonProperty(value = "type", required = true)
     private Type type;
 
-    /** Creates an instance of CheckNameAvailabilityInput class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityInput class.
+     */
     public CheckNameAvailabilityInput() {
     }
 
     /**
      * Get the name property: The resource name to validate.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Set the name property: The resource name to validate.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckNameAvailabilityInput object itself.
      */
@@ -49,7 +53,7 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Get the type property: The type of resource.
-     *
+     * 
      * @return the type value.
      */
     public Type type() {
@@ -58,7 +62,7 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Set the type property: The type of resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckNameAvailabilityInput object itself.
      */
@@ -69,18 +73,18 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property name in model CheckNameAvailabilityInput"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property type in model CheckNameAvailabilityInput"));
         }
     }

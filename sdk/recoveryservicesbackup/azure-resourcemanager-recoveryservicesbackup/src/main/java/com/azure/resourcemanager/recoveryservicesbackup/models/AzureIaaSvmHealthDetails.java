@@ -6,16 +6,20 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
 
-/** Azure IaaS VM workload-specific Health Details. */
+/**
+ * Azure IaaS VM workload-specific Health Details.
+ */
 @Immutable
 public final class AzureIaaSvmHealthDetails extends ResourceHealthDetails {
-    /** Creates an instance of AzureIaaSvmHealthDetails class. */
+    /**
+     * Creates an instance of AzureIaaSvmHealthDetails class.
+     */
     public AzureIaaSvmHealthDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

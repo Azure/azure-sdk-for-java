@@ -4,13 +4,10 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.ServiceVersion;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
@@ -24,10 +21,9 @@ import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestEnvironment;
-import okhttp3.ConnectionPool;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -36,27 +32,15 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Random;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
-import java.util.zip.CRC32;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class BlobChunkedDownloaderTests extends TestProxyTestBase {
     protected static final TestEnvironment ENV = TestEnvironment.getInstance();
-    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
-    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
-        .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
-        .build();
 
     private DownloadWithResponseTrackingClient bc;
     private BlobChunkedDownloaderFactory factory;
@@ -121,11 +105,7 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
     }
 
     byte[] getRandomByteArray(int size) {
-        long seed = UUID.fromString(testResourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE;
-        Random rand = new Random(seed);
-        byte[] data = new byte[size];
-        rand.nextBytes(data);
-        return data;
+        return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
     }
 
     private static byte[] downloadHelper(BlobChunkedDownloader downloader) {
@@ -214,68 +194,25 @@ public class BlobChunkedDownloaderTests extends TestProxyTestBase {
     }
 
     private static String getCrc32(String input) {
-        CRC32 crc32 = new CRC32();
-        crc32.update(input.getBytes(StandardCharsets.UTF_8));
-        return String.format(Locale.US, "%08X", crc32.getValue()).toLowerCase();
+        return StorageCommonTestUtils.getCrc32(input);
     }
 
-    @SuppressWarnings("unchecked")
     protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
-        builder.httpClient(getHttpClient());
-        if (getTestMode() == TestMode.RECORD) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-
-        if (ENV.getServiceVersion() != null) {
-            try {
-                Method serviceVersionMethod = Arrays.stream(builder.getClass().getDeclaredMethods())
-                    .filter(method -> "serviceVersion".equals(method.getName())
-                                      && method.getParameterCount() == 1
-                                      && ServiceVersion.class.isAssignableFrom(method.getParameterTypes()[0]))
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Unable to find serviceVersion method for builder: "
-                                                            + builder.getClass()));
-                Class<E> serviceVersionClass = (Class<E>) serviceVersionMethod.getParameterTypes()[0];
-                ServiceVersion serviceVersion = (ServiceVersion) Enum.valueOf(serviceVersionClass,
-                    ENV.getServiceVersion());
-                serviceVersionMethod.invoke(builder, serviceVersion);
-                builder.addPolicy(new ServiceVersionValidationPolicy(serviceVersion.getVersion()));
-            } catch (ReflectiveOperationException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-
-        builder.httpLogOptions(BlobServiceClientBuilder.getDefaultHttpLogOptions());
-
-        return builder;
+        return StorageCommonTestUtils.instrument(builder, BlobServiceClientBuilder.getDefaultHttpLogOptions(),
+            interceptorManager);
     }
 
     protected HttpClient getHttpClient() {
-        if (getTestMode() != TestMode.PLAYBACK) {
-            switch (ENV.getHttpClientType()) {
-                case NETTY:
-                    return NETTY_HTTP_CLIENT;
-                case OK_HTTP:
-                    return OK_HTTP_CLIENT;
-                default:
-                    throw new IllegalArgumentException("Unknown http client type: " + ENV.getHttpClientType());
-            }
-        } else {
-            return interceptorManager.getPlaybackClient();
-        }
+        return StorageCommonTestUtils.getHttpClient(interceptorManager);
     }
 
     private static final class DownloadWithResponseTrackingClient extends BlobAsyncClient {
-        private final BlobAsyncClient wrapped;
         private int downloadCalls;
 
         private DownloadWithResponseTrackingClient(BlobAsyncClient wrapped) {
             super(wrapped.getHttpPipeline(), wrapped.getBlobUrl(), wrapped.getServiceVersion(),
                 wrapped.getAccountName(), wrapped.getContainerName(), wrapped.getBlobName(), wrapped.getSnapshotId(),
                 wrapped.getCustomerProvidedKey(), null, wrapped.getVersionId());
-
-            this.wrapped = wrapped;
         }
 
         @Override

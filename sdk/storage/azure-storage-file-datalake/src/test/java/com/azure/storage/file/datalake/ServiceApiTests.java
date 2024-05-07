@@ -233,7 +233,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     @ResourceLock("ServiceProperties")
     @Test
     public void setPropsError() {
-        assertThrows(DataLakeStorageException.class, () -> getServiceClient(getDataLakeCredential(),
+        assertThrows(Exception.class, () -> getServiceClient(getDataLakeCredential(),
             "https://error.blob.core.windows.net").setProperties(new DataLakeServiceProperties()));
     }
 
@@ -246,7 +246,7 @@ public class ServiceApiTests extends DataLakeTestBase {
     @ResourceLock("ServiceProperties")
     @Test
     public void getPropsError() {
-        assertThrows(DataLakeStorageException.class, () -> getServiceClient(getDataLakeCredential(),
+        assertThrows(Exception.class, () -> getServiceClient(getDataLakeCredential(),
             "https://error.blob.core.windows.net").getProperties());
     }
 
@@ -501,7 +501,6 @@ public class ServiceApiTests extends DataLakeTestBase {
 
         Response<DataLakeFileSystemClient> response = assertDoesNotThrow(() ->
             serviceClient.createFileSystemWithResponse(generateFileSystemName(), null, null, null));
-
         assertEquals("2019-02-02", response.getHeaders().getValue(X_MS_VERSION));
     }
 

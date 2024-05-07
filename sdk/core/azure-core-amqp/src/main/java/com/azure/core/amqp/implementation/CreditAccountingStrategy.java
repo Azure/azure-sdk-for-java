@@ -32,7 +32,8 @@ abstract class CreditAccountingStrategy {
      * @param prefetch the prefetch configured.
      * @param logger the logger.
      */
-    protected CreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
+    protected CreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch,
+        ClientLogger logger) {
         this.receiver = receiver;
         this.subscription = subscription;
         this.prefetch = prefetch;
@@ -42,7 +43,7 @@ abstract class CreditAccountingStrategy {
     /**
      * Update the credit accounting based on the latest view of the downstream request and messages emitted by
      * the emitter-loop in the last drain-loop iteration.
-     * <br/>
+     * <br>
      * CONTRACT: Never invoke from the outside of serialized drain-loop in message-flux; the method relies on
      * the thread-safety and memory visibility the drain-loop provides.
      *

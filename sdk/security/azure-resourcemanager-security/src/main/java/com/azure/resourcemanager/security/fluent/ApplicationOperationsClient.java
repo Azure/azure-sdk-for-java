@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.ApplicationInner;
 
-/** An instance of this class provides access to all the operations defined in ApplicationOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationOperationsClient.
+ */
 public interface ApplicationOperationsClient {
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface ApplicationOperationsClient {
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +41,7 @@ public interface ApplicationOperationsClient {
 
     /**
      * Creates or update a security application on the given subscription.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
      * @param context The context to associate with this operation.
@@ -49,12 +51,12 @@ public interface ApplicationOperationsClient {
      * @return security Application over a given scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInner> createOrUpdateWithResponse(
-        String applicationId, ApplicationInner application, Context context);
+    Response<ApplicationInner> createOrUpdateWithResponse(String applicationId, ApplicationInner application,
+        Context context);
 
     /**
      * Creates or update a security application on the given subscription.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,7 +69,7 @@ public interface ApplicationOperationsClient {
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -80,7 +82,7 @@ public interface ApplicationOperationsClient {
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

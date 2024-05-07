@@ -13,32 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem model =
-            BinaryData
-                .fromString(
-                    "{\"date\":\"2021-08-28T04:10:12Z\",\"devicesMetrics\":{\"high\":6531016586304771464,\"medium\":6112562014909407139,\"low\":4716171323603349027}}")
-                .toObject(IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T04:10:12Z"), model.date());
-        Assertions.assertEquals(6531016586304771464L, model.devicesMetrics().high());
-        Assertions.assertEquals(6112562014909407139L, model.devicesMetrics().medium());
-        Assertions.assertEquals(4716171323603349027L, model.devicesMetrics().low());
+        IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem model = BinaryData.fromString(
+            "{\"date\":\"2021-09-16T10:12:54Z\",\"devicesMetrics\":{\"high\":6918581032381059143,\"medium\":3869613232424550297,\"low\":8094522399997471725}}")
+            .toObject(IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T10:12:54Z"), model.date());
+        Assertions.assertEquals(6918581032381059143L, model.devicesMetrics().high());
+        Assertions.assertEquals(3869613232424550297L, model.devicesMetrics().medium());
+        Assertions.assertEquals(8094522399997471725L, model.devicesMetrics().low());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem model =
-            new IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem()
-                .withDate(OffsetDateTime.parse("2021-08-28T04:10:12Z"))
-                .withDevicesMetrics(
-                    new IoTSeverityMetrics()
-                        .withHigh(6531016586304771464L)
-                        .withMedium(6112562014909407139L)
-                        .withLow(4716171323603349027L));
-        model =
-            BinaryData.fromObject(model).toObject(IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T04:10:12Z"), model.date());
-        Assertions.assertEquals(6531016586304771464L, model.devicesMetrics().high());
-        Assertions.assertEquals(6112562014909407139L, model.devicesMetrics().medium());
-        Assertions.assertEquals(4716171323603349027L, model.devicesMetrics().low());
+        IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem model
+            = new IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem()
+                .withDate(OffsetDateTime.parse("2021-09-16T10:12:54Z")).withDevicesMetrics(new IoTSeverityMetrics()
+                    .withHigh(6918581032381059143L).withMedium(3869613232424550297L).withLow(8094522399997471725L));
+        model = BinaryData.fromObject(model)
+            .toObject(IoTSecuritySolutionAnalyticsModelPropertiesDevicesMetricsItem.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-16T10:12:54Z"), model.date());
+        Assertions.assertEquals(6918581032381059143L, model.devicesMetrics().high());
+        Assertions.assertEquals(3869613232424550297L, model.devicesMetrics().medium());
+        Assertions.assertEquals(8094522399997471725L, model.devicesMetrics().low());
     }
 }

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.models.SecureScoreControlDefinitionSou
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Security Control Definition Properties. */
+/**
+ * Security Control Definition Properties.
+ */
 @Immutable
 public final class SecureScoreControlDefinitionItemProperties {
     /*
@@ -43,13 +45,15 @@ public final class SecureScoreControlDefinitionItemProperties {
     @JsonProperty(value = "assessmentDefinitions", access = JsonProperty.Access.WRITE_ONLY)
     private List<AzureResourceLink> assessmentDefinitions;
 
-    /** Creates an instance of SecureScoreControlDefinitionItemProperties class. */
+    /**
+     * Creates an instance of SecureScoreControlDefinitionItemProperties class.
+     */
     public SecureScoreControlDefinitionItemProperties() {
     }
 
     /**
      * Get the displayName property: User friendly display name of the control.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -58,7 +62,7 @@ public final class SecureScoreControlDefinitionItemProperties {
 
     /**
      * Get the description property: User friendly description of the control.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -67,7 +71,7 @@ public final class SecureScoreControlDefinitionItemProperties {
 
     /**
      * Get the maxScore property: Maximum control score (0..10).
-     *
+     * 
      * @return the maxScore value.
      */
     public Integer maxScore() {
@@ -76,7 +80,7 @@ public final class SecureScoreControlDefinitionItemProperties {
 
     /**
      * Get the source property: Source object from which the control was created.
-     *
+     * 
      * @return the source value.
      */
     public SecureScoreControlDefinitionSource source() {
@@ -86,7 +90,7 @@ public final class SecureScoreControlDefinitionItemProperties {
     /**
      * Get the assessmentDefinitions property: Array of assessments metadata IDs that are included in this security
      * control.
-     *
+     * 
      * @return the assessmentDefinitions value.
      */
     public List<AzureResourceLink> assessmentDefinitions() {
@@ -95,7 +99,7 @@ public final class SecureScoreControlDefinitionItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

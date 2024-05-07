@@ -9,12 +9,13 @@ import com.azure.resourcemanager.hardwaresecuritymodules.models.EndpointDependen
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Egress endpoints which dedicated hsm service connects to for common purpose. */
+/**
+ * Egress endpoints which dedicated hsm service connects to for common purpose.
+ */
 @Fluent
 public final class OutboundEnvironmentEndpointInner {
     /*
-     * The category of endpoints accessed by the dedicated hsm service, e.g.
-     * azure-resource-management, apiserver, etc.
+     * The category of endpoints accessed by the dedicated hsm service, e.g. azure-resource-management, apiserver, etc.
      */
     @JsonProperty(value = "category")
     private String category;
@@ -26,9 +27,15 @@ public final class OutboundEnvironmentEndpointInner {
     private List<EndpointDependency> endpoints;
 
     /**
+     * Creates an instance of OutboundEnvironmentEndpointInner class.
+     */
+    public OutboundEnvironmentEndpointInner() {
+    }
+
+    /**
      * Get the category property: The category of endpoints accessed by the dedicated hsm service, e.g.
      * azure-resource-management, apiserver, etc.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -38,7 +45,7 @@ public final class OutboundEnvironmentEndpointInner {
     /**
      * Set the category property: The category of endpoints accessed by the dedicated hsm service, e.g.
      * azure-resource-management, apiserver, etc.
-     *
+     * 
      * @param category the category value to set.
      * @return the OutboundEnvironmentEndpointInner object itself.
      */
@@ -49,7 +56,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Get the endpoints property: The endpoints that dedicated hsm service connects to.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<EndpointDependency> endpoints() {
@@ -58,7 +65,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Set the endpoints property: The endpoints that dedicated hsm service connects to.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the OutboundEnvironmentEndpointInner object itself.
      */
@@ -69,7 +76,7 @@ public final class OutboundEnvironmentEndpointInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

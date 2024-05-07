@@ -114,16 +114,20 @@ public final class ChangeDataCaptureResourceImpl
     }
 
     public ChangeDataCaptureResource create() {
-        this.innerObject
-            = serviceManager.serviceClient().getChangeDataCaptures().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, changeDataCaptureName, this.innerModel(), createIfMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getChangeDataCaptures()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, changeDataCaptureName, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ChangeDataCaptureResource create(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getChangeDataCaptures().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, changeDataCaptureName, this.innerModel(), createIfMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getChangeDataCaptures()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, changeDataCaptureName, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -141,16 +145,20 @@ public final class ChangeDataCaptureResourceImpl
     }
 
     public ChangeDataCaptureResource apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getChangeDataCaptures().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, changeDataCaptureName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getChangeDataCaptures()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, changeDataCaptureName, this.innerModel(),
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ChangeDataCaptureResource apply(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getChangeDataCaptures().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, changeDataCaptureName, this.innerModel(), updateIfMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getChangeDataCaptures()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, changeDataCaptureName, this.innerModel(),
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -158,14 +166,15 @@ public final class ChangeDataCaptureResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.changeDataCaptureName = Utils.getValueFromIdByName(innerObject.id(), "adfcdcs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.changeDataCaptureName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "adfcdcs");
     }
 
     public ChangeDataCaptureResource refresh() {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getChangeDataCaptures()
+        this.innerObject = serviceManager.serviceClient()
+            .getChangeDataCaptures()
             .getWithResponse(resourceGroupName, factoryName, changeDataCaptureName, localIfNoneMatch, Context.NONE)
             .getValue();
         return this;
@@ -173,15 +182,16 @@ public final class ChangeDataCaptureResourceImpl
 
     public ChangeDataCaptureResource refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getChangeDataCaptures()
+        this.innerObject = serviceManager.serviceClient()
+            .getChangeDataCaptures()
             .getWithResponse(resourceGroupName, factoryName, changeDataCaptureName, localIfNoneMatch, context)
             .getValue();
         return this;
     }
 
     public Response<Void> startWithResponse(Context context) {
-        return serviceManager.changeDataCaptures().startWithResponse(resourceGroupName, factoryName,
-            changeDataCaptureName, context);
+        return serviceManager.changeDataCaptures()
+            .startWithResponse(resourceGroupName, factoryName, changeDataCaptureName, context);
     }
 
     public void start() {
@@ -189,8 +199,8 @@ public final class ChangeDataCaptureResourceImpl
     }
 
     public Response<Void> stopWithResponse(Context context) {
-        return serviceManager.changeDataCaptures().stopWithResponse(resourceGroupName, factoryName,
-            changeDataCaptureName, context);
+        return serviceManager.changeDataCaptures()
+            .stopWithResponse(resourceGroupName, factoryName, changeDataCaptureName, context);
     }
 
     public void stop() {

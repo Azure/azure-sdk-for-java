@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMageRcm provider specific recovery point details. */
+/**
+ * InMageRcm provider specific recovery point details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Immutable
@@ -20,13 +22,15 @@ public final class InMageRcmRecoveryPointDetails extends ProviderSpecificRecover
     @JsonProperty(value = "isMultiVmSyncPoint", access = JsonProperty.Access.WRITE_ONLY)
     private String isMultiVmSyncPoint;
 
-    /** Creates an instance of InMageRcmRecoveryPointDetails class. */
+    /**
+     * Creates an instance of InMageRcmRecoveryPointDetails class.
+     */
     public InMageRcmRecoveryPointDetails() {
     }
 
     /**
      * Get the isMultiVmSyncPoint property: A value indicating whether the recovery point is multi VM consistent.
-     *
+     * 
      * @return the isMultiVmSyncPoint value.
      */
     public String isMultiVmSyncPoint() {
@@ -35,7 +39,7 @@ public final class InMageRcmRecoveryPointDetails extends ProviderSpecificRecover
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
+## 1.0.0-beta.14 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,44 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.13 (2024-05-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+
+## 1.0.0-beta.12 (2024-04-05)
+
+### Features Added
+
+- Added support for write, response, and read timeout in `JdkHttpClientBuilder`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+
+## 1.0.0-beta.11 (2024-03-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to `1.47.0`.
+
+## 1.0.0-beta.10 (2024-02-02)
+
+### Other Changes
+
+- Optimized performance of handling HTTP headers. ([#38285](https://github.com/Azure/azure-sdk-for-java/pull/38285))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
 
 ## 1.0.0-beta.9 (2023-11-03)
 

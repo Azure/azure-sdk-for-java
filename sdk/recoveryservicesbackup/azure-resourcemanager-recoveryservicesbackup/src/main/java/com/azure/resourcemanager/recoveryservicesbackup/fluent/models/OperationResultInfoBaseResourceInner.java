@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Base class for operation result info. */
+/**
+ * Base class for operation result info.
+ */
 @Fluent
 public final class OperationResultInfoBaseResourceInner extends OperationWorkerResponse {
     /*
@@ -21,13 +23,15 @@ public final class OperationResultInfoBaseResourceInner extends OperationWorkerR
     @JsonProperty(value = "operation")
     private OperationResultInfoBase operation;
 
-    /** Creates an instance of OperationResultInfoBaseResourceInner class. */
+    /**
+     * Creates an instance of OperationResultInfoBaseResourceInner class.
+     */
     public OperationResultInfoBaseResourceInner() {
     }
 
     /**
      * Get the operation property: OperationResultInfoBaseResource operation.
-     *
+     * 
      * @return the operation value.
      */
     public OperationResultInfoBase operation() {
@@ -36,7 +40,7 @@ public final class OperationResultInfoBaseResourceInner extends OperationWorkerR
 
     /**
      * Set the operation property: OperationResultInfoBaseResource operation.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the OperationResultInfoBaseResourceInner object itself.
      */
@@ -45,14 +49,18 @@ public final class OperationResultInfoBaseResourceInner extends OperationWorkerR
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResultInfoBaseResourceInner withStatusCode(HttpStatusCode statusCode) {
         super.withStatusCode(statusCode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OperationResultInfoBaseResourceInner withHeaders(Map<String, List<String>> headers) {
         super.withHeaders(headers);
@@ -61,7 +69,7 @@ public final class OperationResultInfoBaseResourceInner extends OperationWorkerR
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

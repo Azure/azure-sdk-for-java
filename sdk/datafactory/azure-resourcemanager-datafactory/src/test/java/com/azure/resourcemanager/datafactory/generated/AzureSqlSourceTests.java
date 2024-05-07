@@ -12,20 +12,27 @@ public final class AzureSqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSqlSource model = BinaryData.fromString(
-            "{\"type\":\"AzureSqlSource\",\"sqlReaderQuery\":\"datasspe\",\"sqlReaderStoredProcedureName\":\"datajhwpn\",\"storedProcedureParameters\":\"dataoucjzbovuvmdzdqt\",\"isolationLevel\":\"dataguajsrdecbowkh\",\"produceAdditionalTypes\":\"dataffllpdnnsujxoueq\",\"partitionOption\":\"dataz\",\"partitionSettings\":{\"partitionColumnName\":\"datacae\",\"partitionUpperBound\":\"dataueatztnprnshl\",\"partitionLowerBound\":\"dataahvlzgsqwiubgb\"},\"queryTimeout\":\"datajyisjscuwy\",\"additionalColumns\":\"dataktzcuxuxaihhegu\",\"sourceRetryCount\":\"dataziryxrpj\",\"sourceRetryWait\":\"datatmxq\",\"maxConcurrentConnections\":\"dataepoftsapfwusf\",\"disableMetricsCollection\":\"datanjvzlynvje\",\"\":{\"wzntbi\":\"dataubs\"}}")
+            "{\"type\":\"hcyno\",\"sqlReaderQuery\":\"dataf\",\"sqlReaderStoredProcedureName\":\"dataks\",\"storedProcedureParameters\":\"dataehrajbatgmxkolt\",\"isolationLevel\":\"dataqjcmkpxbc\",\"produceAdditionalTypes\":\"datarfkwc\",\"partitionOption\":\"datamyowddhtwaxob\",\"partitionSettings\":{\"partitionColumnName\":\"datatqoc\",\"partitionUpperBound\":\"datadjp\",\"partitionLowerBound\":\"datac\"},\"queryTimeout\":\"datahocyvymvnla\",\"additionalColumns\":\"dataitxoibfo\",\"sourceRetryCount\":\"datahbvbqxtk\",\"sourceRetryWait\":\"dataeuapomoofbnbhp\",\"maxConcurrentConnections\":\"dataaljcqp\",\"disableMetricsCollection\":\"datamathiydmkyvsxc\",\"\":{\"mfmkpjoe\":\"dataghajpddgfoz\",\"drrruy\":\"dataozcuhunmfzbmwp\",\"bivgmckxhmxz\":\"datanoiumuxn\",\"biojncgjo\":\"datampoiutaatv\"}}")
             .toObject(AzureSqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSqlSource model = new AzureSqlSource().withSourceRetryCount("dataziryxrpj").withSourceRetryWait("datatmxq")
-            .withMaxConcurrentConnections("dataepoftsapfwusf").withDisableMetricsCollection("datanjvzlynvje")
-            .withQueryTimeout("datajyisjscuwy").withAdditionalColumns("dataktzcuxuxaihhegu")
-            .withSqlReaderQuery("datasspe").withSqlReaderStoredProcedureName("datajhwpn")
-            .withStoredProcedureParameters("dataoucjzbovuvmdzdqt").withIsolationLevel("dataguajsrdecbowkh")
-            .withProduceAdditionalTypes("dataffllpdnnsujxoueq").withPartitionOption("dataz")
-            .withPartitionSettings(new SqlPartitionSettings().withPartitionColumnName("datacae")
-                .withPartitionUpperBound("dataueatztnprnshl").withPartitionLowerBound("dataahvlzgsqwiubgb"));
+        AzureSqlSource model = new AzureSqlSource().withSourceRetryCount("datahbvbqxtk")
+            .withSourceRetryWait("dataeuapomoofbnbhp")
+            .withMaxConcurrentConnections("dataaljcqp")
+            .withDisableMetricsCollection("datamathiydmkyvsxc")
+            .withQueryTimeout("datahocyvymvnla")
+            .withAdditionalColumns("dataitxoibfo")
+            .withSqlReaderQuery("dataf")
+            .withSqlReaderStoredProcedureName("dataks")
+            .withStoredProcedureParameters("dataehrajbatgmxkolt")
+            .withIsolationLevel("dataqjcmkpxbc")
+            .withProduceAdditionalTypes("datarfkwc")
+            .withPartitionOption("datamyowddhtwaxob")
+            .withPartitionSettings(new SqlPartitionSettings().withPartitionColumnName("datatqoc")
+                .withPartitionUpperBound("datadjp")
+                .withPartitionLowerBound("datac"));
         model = BinaryData.fromObject(model).toObject(AzureSqlSource.class);
     }
 }

@@ -11,22 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class CspmMonitorGcpOfferingNativeCloudConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CspmMonitorGcpOfferingNativeCloudConnection model =
-            BinaryData
-                .fromString("{\"workloadIdentityProviderId\":\"wjrkb\",\"serviceAccountEmailAddress\":\"jhbtqq\"}")
-                .toObject(CspmMonitorGcpOfferingNativeCloudConnection.class);
-        Assertions.assertEquals("wjrkb", model.workloadIdentityProviderId());
-        Assertions.assertEquals("jhbtqq", model.serviceAccountEmailAddress());
+        CspmMonitorGcpOfferingNativeCloudConnection model = BinaryData
+            .fromString("{\"workloadIdentityProviderId\":\"jiqegmxdbs\",\"serviceAccountEmailAddress\":\"cwhpy\"}")
+            .toObject(CspmMonitorGcpOfferingNativeCloudConnection.class);
+        Assertions.assertEquals("jiqegmxdbs", model.workloadIdentityProviderId());
+        Assertions.assertEquals("cwhpy", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CspmMonitorGcpOfferingNativeCloudConnection model =
-            new CspmMonitorGcpOfferingNativeCloudConnection()
-                .withWorkloadIdentityProviderId("wjrkb")
-                .withServiceAccountEmailAddress("jhbtqq");
+        CspmMonitorGcpOfferingNativeCloudConnection model = new CspmMonitorGcpOfferingNativeCloudConnection()
+            .withWorkloadIdentityProviderId("jiqegmxdbs").withServiceAccountEmailAddress("cwhpy");
         model = BinaryData.fromObject(model).toObject(CspmMonitorGcpOfferingNativeCloudConnection.class);
-        Assertions.assertEquals("wjrkb", model.workloadIdentityProviderId());
-        Assertions.assertEquals("jhbtqq", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("jiqegmxdbs", model.workloadIdentityProviderId());
+        Assertions.assertEquals("cwhpy", model.serviceAccountEmailAddress());
     }
 }

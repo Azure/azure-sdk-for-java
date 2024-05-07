@@ -11,11 +11,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.fluent.models.TrustedAccessRoleInner;
 
-/** An instance of this class provides access to all the operations defined in TrustedAccessRolesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TrustedAccessRolesClient.
+ */
 public interface TrustedAccessRolesClient {
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,7 +29,7 @@ public interface TrustedAccessRolesClient {
 
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +41,7 @@ public interface TrustedAccessRolesClient {
 
     /**
      * List supported trusted access roles.
-     *
+     * 
      * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

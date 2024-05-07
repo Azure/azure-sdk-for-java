@@ -9,7 +9,9 @@ import com.azure.resourcemanager.newrelicobservability.models.SendingLogsStatus;
 import com.azure.resourcemanager.newrelicobservability.models.SendingMetricsStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of resource being monitored by NewRelic monitor resource. */
+/**
+ * Details of resource being monitored by NewRelic monitor resource.
+ */
 @Fluent
 public final class MonitoredResourceInner {
     /*
@@ -42,13 +44,15 @@ public final class MonitoredResourceInner {
     @JsonProperty(value = "reasonForLogsStatus")
     private String reasonForLogsStatus;
 
-    /** Creates an instance of MonitoredResourceInner class. */
+    /**
+     * Creates an instance of MonitoredResourceInner class.
+     */
     public MonitoredResourceInner() {
     }
 
     /**
      * Get the id property: The ARM id of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -57,7 +61,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Set the id property: The ARM id of the resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -68,7 +72,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Get the sendingMetrics property: Flag indicating if resource is sending metrics to NewRelic.
-     *
+     * 
      * @return the sendingMetrics value.
      */
     public SendingMetricsStatus sendingMetrics() {
@@ -77,7 +81,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Set the sendingMetrics property: Flag indicating if resource is sending metrics to NewRelic.
-     *
+     * 
      * @param sendingMetrics the sendingMetrics value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -89,7 +93,7 @@ public final class MonitoredResourceInner {
     /**
      * Get the reasonForMetricsStatus property: Reason for why the resource is sending metrics (or why it is not
      * sending).
-     *
+     * 
      * @return the reasonForMetricsStatus value.
      */
     public String reasonForMetricsStatus() {
@@ -99,7 +103,7 @@ public final class MonitoredResourceInner {
     /**
      * Set the reasonForMetricsStatus property: Reason for why the resource is sending metrics (or why it is not
      * sending).
-     *
+     * 
      * @param reasonForMetricsStatus the reasonForMetricsStatus value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -110,7 +114,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Get the sendingLogs property: Flag indicating if resource is sending logs to NewRelic.
-     *
+     * 
      * @return the sendingLogs value.
      */
     public SendingLogsStatus sendingLogs() {
@@ -119,7 +123,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Set the sendingLogs property: Flag indicating if resource is sending logs to NewRelic.
-     *
+     * 
      * @param sendingLogs the sendingLogs value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -130,7 +134,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Get the reasonForLogsStatus property: Reason for why the resource is sending logs (or why it is not sending).
-     *
+     * 
      * @return the reasonForLogsStatus value.
      */
     public String reasonForLogsStatus() {
@@ -139,7 +143,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Set the reasonForLogsStatus property: Reason for why the resource is sending logs (or why it is not sending).
-     *
+     * 
      * @param reasonForLogsStatus the reasonForLogsStatus value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -150,7 +154,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

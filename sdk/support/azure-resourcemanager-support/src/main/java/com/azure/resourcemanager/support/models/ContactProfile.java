@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Contact information associated with the support ticket. */
+/**
+ * Contact information associated with the support ticket.
+ */
 @Fluent
 public final class ContactProfile {
     /*
@@ -49,8 +51,7 @@ public final class ContactProfile {
     private String phoneNumber;
 
     /*
-     * Time zone of the user. This is the name of the time zone from [Microsoft Time Zone Index
-     * Values](https://support.microsoft.com/help/973627/microsoft-time-zone-index-values).
+     * Time zone of the user. This is the name of the time zone from [Microsoft Time Zone Index Values](https://support.microsoft.com/help/973627/microsoft-time-zone-index-values).
      */
     @JsonProperty(value = "preferredTimeZone", required = true)
     private String preferredTimeZone;
@@ -62,23 +63,20 @@ public final class ContactProfile {
     private String country;
 
     /*
-     * Preferred language of support from Azure. Support languages vary based on the severity you choose for your
-     * support ticket. Learn more at [Azure Severity and
-     * responsiveness](https://azure.microsoft.com/support/plans/response). Use the standard language-country code.
-     * Valid values are 'en-us' for English, 'zh-hans' for Chinese, 'es-es' for Spanish, 'fr-fr' for French, 'ja-jp'
-     * for Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br' for Portuguese, 'it-it' for Italian, 'zh-tw' for
-     * Chinese and 'de-de' for German.
+     * Preferred language of support from Azure. Support languages vary based on the severity you choose for your support ticket. Learn more at [Azure Severity and responsiveness](https://azure.microsoft.com/support/plans/response). Use the standard language-country code. Valid values are 'en-us' for English, 'zh-hans' for Chinese, 'es-es' for Spanish, 'fr-fr' for French, 'ja-jp' for Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br' for Portuguese, 'it-it' for Italian, 'zh-tw' for Chinese and 'de-de' for German.
      */
     @JsonProperty(value = "preferredSupportLanguage", required = true)
     private String preferredSupportLanguage;
 
-    /** Creates an instance of ContactProfile class. */
+    /**
+     * Creates an instance of ContactProfile class.
+     */
     public ContactProfile() {
     }
 
     /**
      * Get the firstName property: First name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -87,7 +85,7 @@ public final class ContactProfile {
 
     /**
      * Set the firstName property: First name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the ContactProfile object itself.
      */
@@ -98,7 +96,7 @@ public final class ContactProfile {
 
     /**
      * Get the lastName property: Last name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -107,7 +105,7 @@ public final class ContactProfile {
 
     /**
      * Set the lastName property: Last name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the ContactProfile object itself.
      */
@@ -118,7 +116,7 @@ public final class ContactProfile {
 
     /**
      * Get the preferredContactMethod property: Preferred contact method.
-     *
+     * 
      * @return the preferredContactMethod value.
      */
     public PreferredContactMethod preferredContactMethod() {
@@ -127,7 +125,7 @@ public final class ContactProfile {
 
     /**
      * Set the preferredContactMethod property: Preferred contact method.
-     *
+     * 
      * @param preferredContactMethod the preferredContactMethod value to set.
      * @return the ContactProfile object itself.
      */
@@ -138,7 +136,7 @@ public final class ContactProfile {
 
     /**
      * Get the primaryEmailAddress property: Primary email address.
-     *
+     * 
      * @return the primaryEmailAddress value.
      */
     public String primaryEmailAddress() {
@@ -147,7 +145,7 @@ public final class ContactProfile {
 
     /**
      * Set the primaryEmailAddress property: Primary email address.
-     *
+     * 
      * @param primaryEmailAddress the primaryEmailAddress value to set.
      * @return the ContactProfile object itself.
      */
@@ -159,7 +157,7 @@ public final class ContactProfile {
     /**
      * Get the additionalEmailAddresses property: Additional email addresses listed will be copied on any correspondence
      * about the support ticket.
-     *
+     * 
      * @return the additionalEmailAddresses value.
      */
     public List<String> additionalEmailAddresses() {
@@ -169,7 +167,7 @@ public final class ContactProfile {
     /**
      * Set the additionalEmailAddresses property: Additional email addresses listed will be copied on any correspondence
      * about the support ticket.
-     *
+     * 
      * @param additionalEmailAddresses the additionalEmailAddresses value to set.
      * @return the ContactProfile object itself.
      */
@@ -180,7 +178,7 @@ public final class ContactProfile {
 
     /**
      * Get the phoneNumber property: Phone number. This is required if preferred contact method is phone.
-     *
+     * 
      * @return the phoneNumber value.
      */
     public String phoneNumber() {
@@ -189,7 +187,7 @@ public final class ContactProfile {
 
     /**
      * Set the phoneNumber property: Phone number. This is required if preferred contact method is phone.
-     *
+     * 
      * @param phoneNumber the phoneNumber value to set.
      * @return the ContactProfile object itself.
      */
@@ -201,7 +199,7 @@ public final class ContactProfile {
     /**
      * Get the preferredTimeZone property: Time zone of the user. This is the name of the time zone from [Microsoft Time
      * Zone Index Values](https://support.microsoft.com/help/973627/microsoft-time-zone-index-values).
-     *
+     * 
      * @return the preferredTimeZone value.
      */
     public String preferredTimeZone() {
@@ -211,7 +209,7 @@ public final class ContactProfile {
     /**
      * Set the preferredTimeZone property: Time zone of the user. This is the name of the time zone from [Microsoft Time
      * Zone Index Values](https://support.microsoft.com/help/973627/microsoft-time-zone-index-values).
-     *
+     * 
      * @param preferredTimeZone the preferredTimeZone value to set.
      * @return the ContactProfile object itself.
      */
@@ -222,7 +220,7 @@ public final class ContactProfile {
 
     /**
      * Get the country property: Country of the user. This is the ISO 3166-1 alpha-3 code.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -231,7 +229,7 @@ public final class ContactProfile {
 
     /**
      * Set the country property: Country of the user. This is the ISO 3166-1 alpha-3 code.
-     *
+     * 
      * @param country the country value to set.
      * @return the ContactProfile object itself.
      */
@@ -247,7 +245,7 @@ public final class ContactProfile {
      * Valid values are 'en-us' for English, 'zh-hans' for Chinese, 'es-es' for Spanish, 'fr-fr' for French, 'ja-jp' for
      * Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br' for Portuguese, 'it-it' for Italian, 'zh-tw' for
      * Chinese and 'de-de' for German.
-     *
+     * 
      * @return the preferredSupportLanguage value.
      */
     public String preferredSupportLanguage() {
@@ -261,7 +259,7 @@ public final class ContactProfile {
      * Valid values are 'en-us' for English, 'zh-hans' for Chinese, 'es-es' for Spanish, 'fr-fr' for French, 'ja-jp' for
      * Japanese, 'ko-kr' for Korean, 'ru-ru' for Russian, 'pt-br' for Portuguese, 'it-it' for Italian, 'zh-tw' for
      * Chinese and 'de-de' for German.
-     *
+     * 
      * @param preferredSupportLanguage the preferredSupportLanguage value to set.
      * @return the ContactProfile object itself.
      */
@@ -272,48 +270,41 @@ public final class ContactProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (firstName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property firstName in model ContactProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property firstName in model ContactProfile"));
         }
         if (lastName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property lastName in model ContactProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property lastName in model ContactProfile"));
         }
         if (preferredContactMethod() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property preferredContactMethod in model ContactProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property preferredContactMethod in model ContactProfile"));
         }
         if (primaryEmailAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property primaryEmailAddress in model ContactProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property primaryEmailAddress in model ContactProfile"));
         }
         if (preferredTimeZone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property preferredTimeZone in model ContactProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property preferredTimeZone in model ContactProfile"));
         }
         if (country() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property country in model ContactProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property country in model ContactProfile"));
         }
         if (preferredSupportLanguage() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property preferredSupportLanguage in model ContactProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property preferredSupportLanguage in model ContactProfile"));
         }
     }
 

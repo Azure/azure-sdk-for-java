@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GatewayRouteConfigProtocol. */
+/**
+ * Protocol of routed Azure Spring Apps applications.
+ */
 public final class GatewayRouteConfigProtocol extends ExpandableStringEnum<GatewayRouteConfigProtocol> {
-    /** Static value HTTP for GatewayRouteConfigProtocol. */
+    /**
+     * Static value HTTP for GatewayRouteConfigProtocol.
+     */
     public static final GatewayRouteConfigProtocol HTTP = fromString("HTTP");
 
-    /** Static value HTTPS for GatewayRouteConfigProtocol. */
+    /**
+     * Static value HTTPS for GatewayRouteConfigProtocol.
+     */
     public static final GatewayRouteConfigProtocol HTTPS = fromString("HTTPS");
 
     /**
+     * Creates a new instance of GatewayRouteConfigProtocol value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GatewayRouteConfigProtocol() {
+    }
+
+    /**
      * Creates or finds a GatewayRouteConfigProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GatewayRouteConfigProtocol.
      */
@@ -29,7 +44,7 @@ public final class GatewayRouteConfigProtocol extends ExpandableStringEnum<Gatew
 
     /**
      * Gets known GatewayRouteConfigProtocol values.
-     *
+     * 
      * @return known GatewayRouteConfigProtocol values.
      */
     public static Collection<GatewayRouteConfigProtocol> values() {

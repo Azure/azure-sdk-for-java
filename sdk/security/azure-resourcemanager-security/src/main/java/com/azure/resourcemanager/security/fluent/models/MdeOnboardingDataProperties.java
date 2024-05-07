@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the MDE configuration or data parameter needed to onboard the machine to MDE. */
+/**
+ * Properties of the MDE configuration or data parameter needed to onboard the machine to MDE.
+ */
 @Fluent
 public final class MdeOnboardingDataProperties {
     /*
@@ -25,14 +27,16 @@ public final class MdeOnboardingDataProperties {
     @JsonProperty(value = "onboardingPackageLinux")
     private byte[] onboardingPackageLinux;
 
-    /** Creates an instance of MdeOnboardingDataProperties class. */
+    /**
+     * Creates an instance of MdeOnboardingDataProperties class.
+     */
     public MdeOnboardingDataProperties() {
     }
 
     /**
      * Get the onboardingPackageWindows property: The onboarding package used to onboard Windows machines to MDE, coded
      * in base64. This can also be used for onboarding using the dedicated VM Extension.
-     *
+     * 
      * @return the onboardingPackageWindows value.
      */
     public byte[] onboardingPackageWindows() {
@@ -42,7 +46,7 @@ public final class MdeOnboardingDataProperties {
     /**
      * Set the onboardingPackageWindows property: The onboarding package used to onboard Windows machines to MDE, coded
      * in base64. This can also be used for onboarding using the dedicated VM Extension.
-     *
+     * 
      * @param onboardingPackageWindows the onboardingPackageWindows value to set.
      * @return the MdeOnboardingDataProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class MdeOnboardingDataProperties {
     /**
      * Get the onboardingPackageLinux property: The onboarding package used to onboard Linux machines to MDE, coded in
      * base64. This can also be used for onboarding using the dedicated VM Extension.
-     *
+     * 
      * @return the onboardingPackageLinux value.
      */
     public byte[] onboardingPackageLinux() {
@@ -64,7 +68,7 @@ public final class MdeOnboardingDataProperties {
     /**
      * Set the onboardingPackageLinux property: The onboarding package used to onboard Linux machines to MDE, coded in
      * base64. This can also be used for onboarding using the dedicated VM Extension.
-     *
+     * 
      * @param onboardingPackageLinux the onboardingPackageLinux value to set.
      * @return the MdeOnboardingDataProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class MdeOnboardingDataProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

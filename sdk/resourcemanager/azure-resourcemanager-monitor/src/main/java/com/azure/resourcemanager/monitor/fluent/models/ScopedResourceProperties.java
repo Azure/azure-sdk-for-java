@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a private link scoped resource. */
+/**
+ * Properties of a private link scoped resource.
+ */
 @Fluent
 public final class ScopedResourceProperties {
     /*
@@ -22,13 +24,15 @@ public final class ScopedResourceProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /** Creates an instance of ScopedResourceProperties class. */
+    /**
+     * Creates an instance of ScopedResourceProperties class.
+     */
     public ScopedResourceProperties() {
     }
 
     /**
      * Get the linkedResourceId property: The resource id of the scoped Azure monitor resource.
-     *
+     * 
      * @return the linkedResourceId value.
      */
     public String linkedResourceId() {
@@ -37,7 +41,7 @@ public final class ScopedResourceProperties {
 
     /**
      * Set the linkedResourceId property: The resource id of the scoped Azure monitor resource.
-     *
+     * 
      * @param linkedResourceId the linkedResourceId value to set.
      * @return the ScopedResourceProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class ScopedResourceProperties {
 
     /**
      * Get the provisioningState property: State of the private endpoint connection.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -57,7 +61,7 @@ public final class ScopedResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

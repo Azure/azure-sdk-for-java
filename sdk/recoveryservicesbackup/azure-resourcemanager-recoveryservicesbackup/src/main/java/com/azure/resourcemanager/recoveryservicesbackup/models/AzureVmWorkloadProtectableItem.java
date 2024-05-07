@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure VM workload-specific protectable item. */
+/**
+ * Azure VM workload-specific protectable item.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -27,8 +29,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         name = "SQLAvailabilityGroupContainer",
         value = AzureVmWorkloadSqlAvailabilityGroupProtectableItem.class),
     @JsonSubTypes.Type(name = "SQLDataBase", value = AzureVmWorkloadSqlDatabaseProtectableItem.class),
-    @JsonSubTypes.Type(name = "SQLInstance", value = AzureVmWorkloadSqlInstanceProtectableItem.class)
-})
+    @JsonSubTypes.Type(name = "SQLInstance", value = AzureVmWorkloadSqlInstanceProtectableItem.class) })
 @Fluent
 public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
     /*
@@ -86,13 +87,15 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
     @JsonProperty(value = "isProtectable")
     private Boolean isProtectable;
 
-    /** Creates an instance of AzureVmWorkloadProtectableItem class. */
+    /**
+     * Creates an instance of AzureVmWorkloadProtectableItem class.
+     */
     public AzureVmWorkloadProtectableItem() {
     }
 
     /**
      * Get the parentName property: Name for instance or AG.
-     *
+     * 
      * @return the parentName value.
      */
     public String parentName() {
@@ -101,7 +104,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Set the parentName property: Name for instance or AG.
-     *
+     * 
      * @param parentName the parentName value to set.
      * @return the AzureVmWorkloadProtectableItem object itself.
      */
@@ -112,8 +115,9 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Get the parentUniqueName property: Parent Unique Name is added to provide the service formatted URI Name of the
-     * Parent Only Applicable for data bases where the parent would be either Instance or a SQL AG.
-     *
+     * Parent
+     * Only Applicable for data bases where the parent would be either Instance or a SQL AG.
+     * 
      * @return the parentUniqueName value.
      */
     public String parentUniqueName() {
@@ -122,8 +126,9 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Set the parentUniqueName property: Parent Unique Name is added to provide the service formatted URI Name of the
-     * Parent Only Applicable for data bases where the parent would be either Instance or a SQL AG.
-     *
+     * Parent
+     * Only Applicable for data bases where the parent would be either Instance or a SQL AG.
+     * 
      * @param parentUniqueName the parentUniqueName value to set.
      * @return the AzureVmWorkloadProtectableItem object itself.
      */
@@ -134,7 +139,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Get the serverName property: Host/Cluster Name for instance or AG.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -143,7 +148,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Set the serverName property: Host/Cluster Name for instance or AG.
-     *
+     * 
      * @param serverName the serverName value to set.
      * @return the AzureVmWorkloadProtectableItem object itself.
      */
@@ -154,7 +159,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Get the isAutoProtectable property: Indicates if protectable item is auto-protectable.
-     *
+     * 
      * @return the isAutoProtectable value.
      */
     public Boolean isAutoProtectable() {
@@ -163,7 +168,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Set the isAutoProtectable property: Indicates if protectable item is auto-protectable.
-     *
+     * 
      * @param isAutoProtectable the isAutoProtectable value to set.
      * @return the AzureVmWorkloadProtectableItem object itself.
      */
@@ -174,7 +179,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Get the isAutoProtected property: Indicates if protectable item is auto-protected.
-     *
+     * 
      * @return the isAutoProtected value.
      */
     public Boolean isAutoProtected() {
@@ -183,7 +188,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Set the isAutoProtected property: Indicates if protectable item is auto-protected.
-     *
+     * 
      * @param isAutoProtected the isAutoProtected value to set.
      * @return the AzureVmWorkloadProtectableItem object itself.
      */
@@ -194,7 +199,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Get the subinquireditemcount property: For instance or AG, indicates number of DB's present.
-     *
+     * 
      * @return the subinquireditemcount value.
      */
     public Integer subinquireditemcount() {
@@ -203,7 +208,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Set the subinquireditemcount property: For instance or AG, indicates number of DB's present.
-     *
+     * 
      * @param subinquireditemcount the subinquireditemcount value to set.
      * @return the AzureVmWorkloadProtectableItem object itself.
      */
@@ -214,7 +219,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Get the subprotectableitemcount property: For instance or AG, indicates number of DB's to be protected.
-     *
+     * 
      * @return the subprotectableitemcount value.
      */
     public Integer subprotectableitemcount() {
@@ -223,7 +228,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Set the subprotectableitemcount property: For instance or AG, indicates number of DB's to be protected.
-     *
+     * 
      * @param subprotectableitemcount the subprotectableitemcount value to set.
      * @return the AzureVmWorkloadProtectableItem object itself.
      */
@@ -234,7 +239,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Get the prebackupvalidation property: Pre-backup validation for protectable objects.
-     *
+     * 
      * @return the prebackupvalidation value.
      */
     public PreBackupValidation prebackupvalidation() {
@@ -243,7 +248,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Set the prebackupvalidation property: Pre-backup validation for protectable objects.
-     *
+     * 
      * @param prebackupvalidation the prebackupvalidation value to set.
      * @return the AzureVmWorkloadProtectableItem object itself.
      */
@@ -254,7 +259,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Get the isProtectable property: Indicates if item is protectable.
-     *
+     * 
      * @return the isProtectable value.
      */
     public Boolean isProtectable() {
@@ -263,7 +268,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Set the isProtectable property: Indicates if item is protectable.
-     *
+     * 
      * @param isProtectable the isProtectable value to set.
      * @return the AzureVmWorkloadProtectableItem object itself.
      */
@@ -272,28 +277,36 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadProtectableItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadProtectableItem withWorkloadType(String workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadProtectableItem withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadProtectableItem withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -302,7 +315,7 @@ public class AzureVmWorkloadProtectableItem extends WorkloadProtectableItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

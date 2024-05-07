@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Update network mappings input properties/behavior specific to vmm to vmm. */
+/**
+ * Update network mappings input properties/behavior specific to vmm to vmm.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VmmToVmm")
 @Immutable
 public final class VmmToVmmUpdateNetworkMappingInput extends FabricSpecificUpdateNetworkMappingInput {
-    /** Creates an instance of VmmToVmmUpdateNetworkMappingInput class. */
+    /**
+     * Creates an instance of VmmToVmmUpdateNetworkMappingInput class.
+     */
     public VmmToVmmUpdateNetworkMappingInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

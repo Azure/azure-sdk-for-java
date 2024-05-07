@@ -41,23 +41,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ConfigurationServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConfigurationServicesClient.
+ */
 public final class ConfigurationServicesClientImpl implements ConfigurationServicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ConfigurationServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppPlatformManagementClientImpl client;
 
     /**
      * Initializes an instance of ConfigurationServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ConfigurationServicesClientImpl(AppPlatformManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ConfigurationServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ConfigurationServicesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,126 +72,101 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface ConfigurationServicesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configurationServices/{configurationServiceName}")
-        @ExpectedResponses({200})
+    public interface ConfigurationServicesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices/{configurationServiceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationServiceResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
+        Mono<Response<ConfigurationServiceResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @PathParam("configurationServiceName") String configurationServiceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configurationServices/{configurationServiceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices/{configurationServiceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @PathParam("configurationServiceName") String configurationServiceName,
             @BodyParam("application/json") ConfigurationServiceResourceInner configurationServiceResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configurationServices/{configurationServiceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices/{configurationServiceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @PathParam("configurationServiceName") String configurationServiceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configurationServices")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationServiceResourceCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConfigurationServiceResourceCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/configurationServices/{configurationServiceName}/validate")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices/{configurationServiceName}/validate")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> validate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
+        Mono<Response<Flux<ByteBuffer>>> validate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @PathParam("configurationServiceName") String configurationServiceName,
-            @BodyParam("application/json") ConfigurationServiceSettings settings,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConfigurationServiceSettings settings, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/configurationServices/{configurationServiceName}/validateResource")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> validateResource(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("configurationServiceName") String configurationServiceName,
+            @BodyParam("application/json") ConfigurationServiceResourceInner configurationServiceResource,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationServiceResourceCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the Application Configuration Service and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Application Configuration Service and its properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConfigurationServiceResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String configurationServiceName) {
+    public Mono<Response<ConfigurationServiceResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String configurationServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -196,32 +176,20 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (configurationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            configurationServiceName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serviceName, configurationServiceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the Application Configuration Service and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param context The context to associate with this operation.
@@ -229,22 +197,18 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Application Configuration Service and its properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationServiceResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String configurationServiceName, Context context) {
+    private Mono<Response<ConfigurationServiceResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String configurationServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -254,29 +218,20 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (configurationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                configurationServiceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, configurationServiceName, accept, context);
     }
 
     /**
      * Get the Application Configuration Service and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,35 +240,17 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return the Application Configuration Service and its properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationServiceResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String configurationServiceName) {
+    public Mono<ConfigurationServiceResourceInner> getAsync(String resourceGroupName, String serviceName,
+        String configurationServiceName) {
         return getWithResponseAsync(resourceGroupName, serviceName, configurationServiceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the Application Configuration Service and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param configurationServiceName The name of Application Configuration Service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Application Configuration Service and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationServiceResourceInner get(
-        String resourceGroupName, String serviceName, String configurationServiceName) {
-        return getAsync(resourceGroupName, serviceName, configurationServiceName).block();
-    }
-
-    /**
-     * Get the Application Configuration Service and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param context The context to associate with this operation.
@@ -323,42 +260,54 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return the Application Configuration Service and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationServiceResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String configurationServiceName, Context context) {
+    public Response<ConfigurationServiceResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String configurationServiceName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, configurationServiceName, context).block();
     }
 
     /**
-     * Create the default Application Configuration Service or update the existing Application Configuration Service.
-     *
+     * Get the Application Configuration Service and its properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Application Configuration Service and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationServiceResourceInner get(String resourceGroupName, String serviceName,
+        String configurationServiceName) {
+        return getWithResponse(resourceGroupName, serviceName, configurationServiceName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create the default Application Configuration Service or update the existing Application Configuration Service.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param configurationServiceResource Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application Configuration Service resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return application Configuration Service resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String configurationServiceName,
         ConfigurationServiceResourceInner configurationServiceResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -368,41 +317,28 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (configurationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
         }
         if (configurationServiceResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter configurationServiceResource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceResource is required and cannot be null."));
         } else {
             configurationServiceResource.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            configurationServiceName,
-                            configurationServiceResource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, configurationServiceName,
+                configurationServiceResource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create the default Application Configuration Service or update the existing Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param configurationServiceResource Parameters for the update operation.
@@ -410,27 +346,20 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return application Configuration Service resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return application Configuration Service resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
-        ConfigurationServiceResourceInner configurationServiceResource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String configurationServiceName,
+        ConfigurationServiceResourceInner configurationServiceResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -440,38 +369,27 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (configurationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
         }
         if (configurationServiceResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter configurationServiceResource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceResource is required and cannot be null."));
         } else {
             configurationServiceResource.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                configurationServiceName,
-                configurationServiceResource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource, accept, context);
     }
 
     /**
      * Create the default Application Configuration Service or update the existing Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param configurationServiceResource Parameters for the update operation.
@@ -482,29 +400,20 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<ConfigurationServiceResourceInner>, ConfigurationServiceResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serviceName,
-            String configurationServiceName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String configurationServiceName,
             ConfigurationServiceResourceInner configurationServiceResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, configurationServiceName, configurationServiceResource);
-        return this
-            .client
-            .<ConfigurationServiceResourceInner, ConfigurationServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfigurationServiceResourceInner.class,
-                ConfigurationServiceResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serviceName,
+            configurationServiceName, configurationServiceResource);
+        return this.client.<ConfigurationServiceResourceInner, ConfigurationServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConfigurationServiceResourceInner.class,
+            ConfigurationServiceResourceInner.class, this.client.getContext());
     }
 
     /**
      * Create the default Application Configuration Service or update the existing Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param configurationServiceResource Parameters for the update operation.
@@ -516,31 +425,21 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConfigurationServiceResourceInner>, ConfigurationServiceResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serviceName,
-            String configurationServiceName,
-            ConfigurationServiceResourceInner configurationServiceResource,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String configurationServiceName,
+            ConfigurationServiceResourceInner configurationServiceResource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, configurationServiceName, configurationServiceResource, context);
-        return this
-            .client
-            .<ConfigurationServiceResourceInner, ConfigurationServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfigurationServiceResourceInner.class,
-                ConfigurationServiceResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serviceName,
+            configurationServiceName, configurationServiceResource, context);
+        return this.client.<ConfigurationServiceResourceInner, ConfigurationServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConfigurationServiceResourceInner.class,
+            ConfigurationServiceResourceInner.class, context);
     }
 
     /**
      * Create the default Application Configuration Service or update the existing Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param configurationServiceResource Parameters for the update operation.
@@ -551,21 +450,17 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationServiceResourceInner>, ConfigurationServiceResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serviceName,
-            String configurationServiceName,
+        beginCreateOrUpdate(String resourceGroupName, String serviceName, String configurationServiceName,
             ConfigurationServiceResourceInner configurationServiceResource) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, configurationServiceName, configurationServiceResource)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource).getSyncPoller();
     }
 
     /**
      * Create the default Application Configuration Service or update the existing Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param configurationServiceResource Parameters for the update operation.
@@ -577,22 +472,17 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationServiceResourceInner>, ConfigurationServiceResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serviceName,
-            String configurationServiceName,
-            ConfigurationServiceResourceInner configurationServiceResource,
-            Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, configurationServiceName, configurationServiceResource, context)
-            .getSyncPoller();
+        beginCreateOrUpdate(String resourceGroupName, String serviceName, String configurationServiceName,
+            ConfigurationServiceResourceInner configurationServiceResource, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource, context).getSyncPoller();
     }
 
     /**
      * Create the default Application Configuration Service or update the existing Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param configurationServiceResource Parameters for the update operation.
@@ -602,22 +492,17 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return application Configuration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationServiceResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
-        ConfigurationServiceResourceInner configurationServiceResource) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, configurationServiceName, configurationServiceResource)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public Mono<ConfigurationServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String configurationServiceName, ConfigurationServiceResourceInner configurationServiceResource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create the default Application Configuration Service or update the existing Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param configurationServiceResource Parameters for the update operation.
@@ -628,23 +513,18 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return application Configuration Service resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationServiceResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
-        ConfigurationServiceResourceInner configurationServiceResource,
+    private Mono<ConfigurationServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String configurationServiceName, ConfigurationServiceResourceInner configurationServiceResource,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, configurationServiceName, configurationServiceResource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create the default Application Configuration Service or update the existing Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param configurationServiceResource Parameters for the update operation.
@@ -654,21 +534,17 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return application Configuration Service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationServiceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
-        ConfigurationServiceResourceInner configurationServiceResource) {
-        return createOrUpdateAsync(
-                resourceGroupName, serviceName, configurationServiceName, configurationServiceResource)
-            .block();
+    public ConfigurationServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String configurationServiceName, ConfigurationServiceResourceInner configurationServiceResource) {
+        return createOrUpdateAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource).block();
     }
 
     /**
      * Create the default Application Configuration Service or update the existing Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param configurationServiceResource Parameters for the update operation.
@@ -679,22 +555,18 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return application Configuration Service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationServiceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
-        ConfigurationServiceResourceInner configurationServiceResource,
+    public ConfigurationServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String configurationServiceName, ConfigurationServiceResourceInner configurationServiceResource,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, serviceName, configurationServiceName, configurationServiceResource, context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource, context).block();
     }
 
     /**
      * Disable the default Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -703,19 +575,15 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String configurationServiceName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String configurationServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -725,32 +593,20 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (configurationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            configurationServiceName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serviceName, configurationServiceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Disable the default Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param context The context to associate with this operation.
@@ -760,19 +616,15 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String configurationServiceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String configurationServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -782,29 +634,20 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (configurationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                configurationServiceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, configurationServiceName, accept, context);
     }
 
     /**
      * Disable the default Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -813,21 +656,19 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String configurationServiceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serviceName, configurationServiceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String configurationServiceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serviceName, configurationServiceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Disable the default Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param context The context to associate with this operation.
@@ -837,21 +678,20 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String configurationServiceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String configurationServiceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serviceName, configurationServiceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serviceName, configurationServiceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Disable the default Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -860,16 +700,16 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String configurationServiceName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String configurationServiceName) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName).getSyncPoller();
     }
 
     /**
      * Disable the default Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param context The context to associate with this operation.
@@ -879,16 +719,16 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String configurationServiceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String configurationServiceName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName, context).getSyncPoller();
     }
 
     /**
      * Disable the default Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -898,16 +738,15 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String configurationServiceName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Disable the default Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param context The context to associate with this operation.
@@ -917,18 +756,17 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String configurationServiceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String configurationServiceName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, serviceName, configurationServiceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Disable the default Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -942,9 +780,9 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
 
     /**
      * Disable the default Application Configuration Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param context The context to associate with this operation.
@@ -959,30 +797,26 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of configuration service resources and a possible link for next set along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigurationServiceResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName) {
+    private Mono<PagedResponse<ConfigurationServiceResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -993,56 +827,36 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            accept,
-                            context))
-            .<PagedResponse<ConfigurationServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, accept, context))
+            .<PagedResponse<ConfigurationServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of configuration service resources and a possible link for next set along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigurationServiceResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, Context context) {
+    private Mono<PagedResponse<ConfigurationServiceResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1054,75 +868,61 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of configuration service resources and a possible link for next set as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ConfigurationServiceResourceInner> listAsync(String resourceGroupName, String serviceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of configuration service resources and a possible link for next set as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConfigurationServiceResourceInner> listAsync(
-        String resourceGroupName, String serviceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, context),
+    private PagedFlux<ConfigurationServiceResourceInner> listAsync(String resourceGroupName, String serviceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of configuration service resources and a possible link for next set as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationServiceResourceInner> list(String resourceGroupName, String serviceName) {
@@ -1131,28 +931,28 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of configuration service resources and a possible link for next set as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationServiceResourceInner> list(
-        String resourceGroupName, String serviceName, Context context) {
+    public PagedIterable<ConfigurationServiceResourceInner> list(String resourceGroupName, String serviceName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, context));
     }
 
     /**
      * Check if the Application Configuration Service settings are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param settings Application Configuration Service settings to be validated.
@@ -1160,25 +960,18 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return validation result for configuration service settings along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> validateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
-        ConfigurationServiceSettings settings) {
+    public Mono<Response<Flux<ByteBuffer>>> validateWithResponseAsync(String resourceGroupName, String serviceName,
+        String configurationServiceName, ConfigurationServiceSettings settings) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1188,9 +981,8 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (configurationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
         }
         if (settings == null) {
             return Mono.error(new IllegalArgumentException("Parameter settings is required and cannot be null."));
@@ -1199,27 +991,17 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            configurationServiceName,
-                            settings,
-                            accept,
-                            context))
+            .withContext(context -> service.validate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, configurationServiceName, settings,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check if the Application Configuration Service settings are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param settings Application Configuration Service settings to be validated.
@@ -1228,26 +1010,18 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return validation result for configuration service settings along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
-        ConfigurationServiceSettings settings,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> validateWithResponseAsync(String resourceGroupName, String serviceName,
+        String configurationServiceName, ConfigurationServiceSettings settings, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1257,9 +1031,8 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (configurationServiceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
         }
         if (settings == null) {
             return Mono.error(new IllegalArgumentException("Parameter settings is required and cannot be null."));
@@ -1268,24 +1041,15 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                configurationServiceName,
-                settings,
-                accept,
-                context);
+        return service.validate(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, configurationServiceName, settings, accept, context);
     }
 
     /**
      * Check if the Application Configuration Service settings are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param settings Application Configuration Service settings to be validated.
@@ -1295,32 +1059,23 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return the {@link PollerFlux} for polling of validation result for configuration service settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<
-            PollResult<ConfigurationServiceSettingsValidateResultInner>,
-            ConfigurationServiceSettingsValidateResultInner>
-        beginValidateAsync(
-            String resourceGroupName,
-            String serviceName,
-            String configurationServiceName,
+    public
+        PollerFlux<PollResult<ConfigurationServiceSettingsValidateResultInner>, ConfigurationServiceSettingsValidateResultInner>
+        beginValidateAsync(String resourceGroupName, String serviceName, String configurationServiceName,
             ConfigurationServiceSettings settings) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateWithResponseAsync(resourceGroupName, serviceName, configurationServiceName, settings);
-        return this
-            .client
-            .<ConfigurationServiceSettingsValidateResultInner, ConfigurationServiceSettingsValidateResultInner>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    ConfigurationServiceSettingsValidateResultInner.class,
-                    ConfigurationServiceSettingsValidateResultInner.class,
-                    this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateWithResponseAsync(resourceGroupName, serviceName, configurationServiceName, settings);
+        return this.client
+            .<ConfigurationServiceSettingsValidateResultInner, ConfigurationServiceSettingsValidateResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ConfigurationServiceSettingsValidateResultInner.class,
+                ConfigurationServiceSettingsValidateResultInner.class, this.client.getContext());
     }
 
     /**
      * Check if the Application Configuration Service settings are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param settings Application Configuration Service settings to be validated.
@@ -1331,34 +1086,24 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return the {@link PollerFlux} for polling of validation result for configuration service settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<ConfigurationServiceSettingsValidateResultInner>,
-            ConfigurationServiceSettingsValidateResultInner>
-        beginValidateAsync(
-            String resourceGroupName,
-            String serviceName,
-            String configurationServiceName,
-            ConfigurationServiceSettings settings,
-            Context context) {
+    private
+        PollerFlux<PollResult<ConfigurationServiceSettingsValidateResultInner>, ConfigurationServiceSettingsValidateResultInner>
+        beginValidateAsync(String resourceGroupName, String serviceName, String configurationServiceName,
+            ConfigurationServiceSettings settings, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            validateWithResponseAsync(resourceGroupName, serviceName, configurationServiceName, settings, context);
-        return this
-            .client
-            .<ConfigurationServiceSettingsValidateResultInner, ConfigurationServiceSettingsValidateResultInner>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    ConfigurationServiceSettingsValidateResultInner.class,
-                    ConfigurationServiceSettingsValidateResultInner.class,
-                    context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = validateWithResponseAsync(resourceGroupName, serviceName, configurationServiceName, settings, context);
+        return this.client
+            .<ConfigurationServiceSettingsValidateResultInner, ConfigurationServiceSettingsValidateResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ConfigurationServiceSettingsValidateResultInner.class,
+                ConfigurationServiceSettingsValidateResultInner.class, context);
     }
 
     /**
      * Check if the Application Configuration Service settings are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param settings Application Configuration Service settings to be validated.
@@ -1368,50 +1113,42 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return the {@link SyncPoller} for polling of validation result for configuration service settings.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<ConfigurationServiceSettingsValidateResultInner>,
-            ConfigurationServiceSettingsValidateResultInner>
-        beginValidate(
-            String resourceGroupName,
-            String serviceName,
-            String configurationServiceName,
+    public
+        SyncPoller<PollResult<ConfigurationServiceSettingsValidateResultInner>, ConfigurationServiceSettingsValidateResultInner>
+        beginValidate(String resourceGroupName, String serviceName, String configurationServiceName,
             ConfigurationServiceSettings settings) {
-        return beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings).getSyncPoller();
-    }
-
-    /**
-     * Check if the Application Configuration Service settings are valid.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param configurationServiceName The name of Application Configuration Service.
-     * @param settings Application Configuration Service settings to be validated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of validation result for configuration service settings.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<ConfigurationServiceSettingsValidateResultInner>,
-            ConfigurationServiceSettingsValidateResultInner>
-        beginValidate(
-            String resourceGroupName,
-            String serviceName,
-            String configurationServiceName,
-            ConfigurationServiceSettings settings,
-            Context context) {
-        return beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings, context)
+        return this.beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings)
             .getSyncPoller();
     }
 
     /**
      * Check if the Application Configuration Service settings are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @param settings Application Configuration Service settings to be validated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of validation result for configuration service settings.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<ConfigurationServiceSettingsValidateResultInner>, ConfigurationServiceSettingsValidateResultInner>
+        beginValidate(String resourceGroupName, String serviceName, String configurationServiceName,
+            ConfigurationServiceSettings settings, Context context) {
+        return this.beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Check if the Application Configuration Service settings are valid.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param settings Application Configuration Service settings to be validated.
@@ -1421,21 +1158,17 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return validation result for configuration service settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConfigurationServiceSettingsValidateResultInner> validateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
-        ConfigurationServiceSettings settings) {
-        return beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings)
-            .last()
+    public Mono<ConfigurationServiceSettingsValidateResultInner> validateAsync(String resourceGroupName,
+        String serviceName, String configurationServiceName, ConfigurationServiceSettings settings) {
+        return beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Check if the Application Configuration Service settings are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param settings Application Configuration Service settings to be validated.
@@ -1446,22 +1179,17 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return validation result for configuration service settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationServiceSettingsValidateResultInner> validateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
-        ConfigurationServiceSettings settings,
-        Context context) {
-        return beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings, context)
-            .last()
+    private Mono<ConfigurationServiceSettingsValidateResultInner> validateAsync(String resourceGroupName,
+        String serviceName, String configurationServiceName, ConfigurationServiceSettings settings, Context context) {
+        return beginValidateAsync(resourceGroupName, serviceName, configurationServiceName, settings, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Check if the Application Configuration Service settings are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param settings Application Configuration Service settings to be validated.
@@ -1471,19 +1199,16 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return validation result for configuration service settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationServiceSettingsValidateResultInner validate(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
-        ConfigurationServiceSettings settings) {
+    public ConfigurationServiceSettingsValidateResultInner validate(String resourceGroupName, String serviceName,
+        String configurationServiceName, ConfigurationServiceSettings settings) {
         return validateAsync(resourceGroupName, serviceName, configurationServiceName, settings).block();
     }
 
     /**
      * Check if the Application Configuration Service settings are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param configurationServiceName The name of Application Configuration Service.
      * @param settings Application Configuration Service settings to be validated.
@@ -1494,24 +1219,309 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
      * @return validation result for configuration service settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationServiceSettingsValidateResultInner validate(
-        String resourceGroupName,
-        String serviceName,
-        String configurationServiceName,
-        ConfigurationServiceSettings settings,
-        Context context) {
+    public ConfigurationServiceSettingsValidateResultInner validate(String resourceGroupName, String serviceName,
+        String configurationServiceName, ConfigurationServiceSettings settings, Context context) {
         return validateAsync(resourceGroupName, serviceName, configurationServiceName, settings, context).block();
     }
 
     /**
+     * Check if the Application Configuration Service resource is valid.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @param configurationServiceResource Application Configuration Service resource to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for configuration service settings along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> validateResourceWithResponseAsync(String resourceGroupName,
+        String serviceName, String configurationServiceName,
+        ConfigurationServiceResourceInner configurationServiceResource) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (configurationServiceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
+        }
+        if (configurationServiceResource == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceResource is required and cannot be null."));
+        } else {
+            configurationServiceResource.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.validateResource(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, configurationServiceName,
+                configurationServiceResource, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Check if the Application Configuration Service resource is valid.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @param configurationServiceResource Application Configuration Service resource to be validated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for configuration service settings along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateResourceWithResponseAsync(String resourceGroupName,
+        String serviceName, String configurationServiceName,
+        ConfigurationServiceResourceInner configurationServiceResource, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (configurationServiceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceName is required and cannot be null."));
+        }
+        if (configurationServiceResource == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter configurationServiceResource is required and cannot be null."));
+        } else {
+            configurationServiceResource.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.validateResource(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource, accept, context);
+    }
+
+    /**
+     * Check if the Application Configuration Service resource is valid.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @param configurationServiceResource Application Configuration Service resource to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of validation result for configuration service settings.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        PollerFlux<PollResult<ConfigurationServiceSettingsValidateResultInner>, ConfigurationServiceSettingsValidateResultInner>
+        beginValidateResourceAsync(String resourceGroupName, String serviceName, String configurationServiceName,
+            ConfigurationServiceResourceInner configurationServiceResource) {
+        Mono<Response<Flux<ByteBuffer>>> mono = validateResourceWithResponseAsync(resourceGroupName, serviceName,
+            configurationServiceName, configurationServiceResource);
+        return this.client
+            .<ConfigurationServiceSettingsValidateResultInner, ConfigurationServiceSettingsValidateResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ConfigurationServiceSettingsValidateResultInner.class,
+                ConfigurationServiceSettingsValidateResultInner.class, this.client.getContext());
+    }
+
+    /**
+     * Check if the Application Configuration Service resource is valid.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @param configurationServiceResource Application Configuration Service resource to be validated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of validation result for configuration service settings.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private
+        PollerFlux<PollResult<ConfigurationServiceSettingsValidateResultInner>, ConfigurationServiceSettingsValidateResultInner>
+        beginValidateResourceAsync(String resourceGroupName, String serviceName, String configurationServiceName,
+            ConfigurationServiceResourceInner configurationServiceResource, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = validateResourceWithResponseAsync(resourceGroupName, serviceName,
+            configurationServiceName, configurationServiceResource, context);
+        return this.client
+            .<ConfigurationServiceSettingsValidateResultInner, ConfigurationServiceSettingsValidateResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ConfigurationServiceSettingsValidateResultInner.class,
+                ConfigurationServiceSettingsValidateResultInner.class, context);
+    }
+
+    /**
+     * Check if the Application Configuration Service resource is valid.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @param configurationServiceResource Application Configuration Service resource to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of validation result for configuration service settings.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<ConfigurationServiceSettingsValidateResultInner>, ConfigurationServiceSettingsValidateResultInner>
+        beginValidateResource(String resourceGroupName, String serviceName, String configurationServiceName,
+            ConfigurationServiceResourceInner configurationServiceResource) {
+        return this.beginValidateResourceAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource).getSyncPoller();
+    }
+
+    /**
+     * Check if the Application Configuration Service resource is valid.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @param configurationServiceResource Application Configuration Service resource to be validated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of validation result for configuration service settings.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public
+        SyncPoller<PollResult<ConfigurationServiceSettingsValidateResultInner>, ConfigurationServiceSettingsValidateResultInner>
+        beginValidateResource(String resourceGroupName, String serviceName, String configurationServiceName,
+            ConfigurationServiceResourceInner configurationServiceResource, Context context) {
+        return this.beginValidateResourceAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource, context).getSyncPoller();
+    }
+
+    /**
+     * Check if the Application Configuration Service resource is valid.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @param configurationServiceResource Application Configuration Service resource to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for configuration service settings on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConfigurationServiceSettingsValidateResultInner> validateResourceAsync(String resourceGroupName,
+        String serviceName, String configurationServiceName,
+        ConfigurationServiceResourceInner configurationServiceResource) {
+        return beginValidateResourceAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Check if the Application Configuration Service resource is valid.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @param configurationServiceResource Application Configuration Service resource to be validated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for configuration service settings on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ConfigurationServiceSettingsValidateResultInner> validateResourceAsync(String resourceGroupName,
+        String serviceName, String configurationServiceName,
+        ConfigurationServiceResourceInner configurationServiceResource, Context context) {
+        return beginValidateResourceAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Check if the Application Configuration Service resource is valid.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @param configurationServiceResource Application Configuration Service resource to be validated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for configuration service settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationServiceSettingsValidateResultInner validateResource(String resourceGroupName,
+        String serviceName, String configurationServiceName,
+        ConfigurationServiceResourceInner configurationServiceResource) {
+        return validateResourceAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource).block();
+    }
+
+    /**
+     * Check if the Application Configuration Service resource is valid.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param configurationServiceName The name of Application Configuration Service.
+     * @param configurationServiceResource Application Configuration Service resource to be validated.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return validation result for configuration service settings.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationServiceSettingsValidateResultInner validateResource(String resourceGroupName,
+        String serviceName, String configurationServiceName,
+        ConfigurationServiceResourceInner configurationServiceResource, Context context) {
+        return validateResourceAsync(resourceGroupName, serviceName, configurationServiceName,
+            configurationServiceResource, context).block();
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of configuration service resources and a possible link for next set along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationServiceResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1519,61 +1529,43 @@ public final class ConfigurationServicesClientImpl implements ConfigurationServi
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ConfigurationServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ConfigurationServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of configuration service resources and a possible link for next set along
-     *     with {@link PagedResponse} on successful completion of {@link Mono}.
+     * with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigurationServiceResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ConfigurationServiceResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.CancelEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.LogicalReplicationOnSourceDbEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrateRolesEnum;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationMode;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationSecretParameters;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.OverwriteDbsInTargetEnum;
@@ -16,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Migration resource properties for patch. */
+/**
+ * Migration resource properties for patch.
+ */
 @Fluent
 public final class MigrationResourcePropertiesForPatch {
     /*
@@ -26,15 +29,13 @@ public final class MigrationResourcePropertiesForPatch {
     private String sourceDbServerResourceId;
 
     /*
-     * Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always
-     * use it for connection
+     * Source server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it for connection
      */
     @JsonProperty(value = "sourceDbServerFullyQualifiedDomainName")
     private String sourceDbServerFullyQualifiedDomainName;
 
     /*
-     * Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always
-     * use it for connection
+     * Target server fully qualified domain name or ip. It is a optional value, if customer provide it, dms will always use it for connection
      */
     @JsonProperty(value = "targetDbServerFullyQualifiedDomainName")
     private String targetDbServerFullyQualifiedDomainName;
@@ -58,8 +59,7 @@ public final class MigrationResourcePropertiesForPatch {
     private LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded;
 
     /*
-     * Indicates whether the databases on the target server can be overwritten, if already present. If set to False,
-     * the migration workflow will wait for a confirmation, if it detects that the database already exists.
+     * Indicates whether the databases on the target server can be overwritten, if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the database already exists.
      */
     @JsonProperty(value = "overwriteDbsInTarget")
     private OverwriteDbsInTargetEnum overwriteDbsInTarget;
@@ -69,6 +69,12 @@ public final class MigrationResourcePropertiesForPatch {
      */
     @JsonProperty(value = "migrationWindowStartTimeInUtc")
     private OffsetDateTime migrationWindowStartTimeInUtc;
+
+    /*
+     * To migrate roles and permissions we need to send this flag as True
+     */
+    @JsonProperty(value = "migrateRoles")
+    private MigrateRolesEnum migrateRoles;
 
     /*
      * Indicates whether the data migration should start right away
@@ -83,8 +89,7 @@ public final class MigrationResourcePropertiesForPatch {
     private TriggerCutoverEnum triggerCutover;
 
     /*
-     * When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in
-     * this array
+     * When you want to trigger cutover for specific databases send triggerCutover flag as True and database names in this array
      */
     @JsonProperty(value = "dbsToTriggerCutoverOn")
     private List<String> dbsToTriggerCutoverOn;
@@ -107,13 +112,15 @@ public final class MigrationResourcePropertiesForPatch {
     @JsonProperty(value = "migrationMode")
     private MigrationMode migrationMode;
 
-    /** Creates an instance of MigrationResourcePropertiesForPatch class. */
+    /**
+     * Creates an instance of MigrationResourcePropertiesForPatch class.
+     */
     public MigrationResourcePropertiesForPatch() {
     }
 
     /**
      * Get the sourceDbServerResourceId property: ResourceId of the source database server.
-     *
+     * 
      * @return the sourceDbServerResourceId value.
      */
     public String sourceDbServerResourceId() {
@@ -122,7 +129,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Set the sourceDbServerResourceId property: ResourceId of the source database server.
-     *
+     * 
      * @param sourceDbServerResourceId the sourceDbServerResourceId value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
@@ -134,7 +141,7 @@ public final class MigrationResourcePropertiesForPatch {
     /**
      * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
      * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * 
      * @return the sourceDbServerFullyQualifiedDomainName value.
      */
     public String sourceDbServerFullyQualifiedDomainName() {
@@ -144,12 +151,12 @@ public final class MigrationResourcePropertiesForPatch {
     /**
      * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
      * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * 
      * @param sourceDbServerFullyQualifiedDomainName the sourceDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
-    public MigrationResourcePropertiesForPatch withSourceDbServerFullyQualifiedDomainName(
-        String sourceDbServerFullyQualifiedDomainName) {
+    public MigrationResourcePropertiesForPatch
+        withSourceDbServerFullyQualifiedDomainName(String sourceDbServerFullyQualifiedDomainName) {
         this.sourceDbServerFullyQualifiedDomainName = sourceDbServerFullyQualifiedDomainName;
         return this;
     }
@@ -157,7 +164,7 @@ public final class MigrationResourcePropertiesForPatch {
     /**
      * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
      * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * 
      * @return the targetDbServerFullyQualifiedDomainName value.
      */
     public String targetDbServerFullyQualifiedDomainName() {
@@ -167,19 +174,19 @@ public final class MigrationResourcePropertiesForPatch {
     /**
      * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
      * optional value, if customer provide it, dms will always use it for connection.
-     *
+     * 
      * @param targetDbServerFullyQualifiedDomainName the targetDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
-    public MigrationResourcePropertiesForPatch withTargetDbServerFullyQualifiedDomainName(
-        String targetDbServerFullyQualifiedDomainName) {
+    public MigrationResourcePropertiesForPatch
+        withTargetDbServerFullyQualifiedDomainName(String targetDbServerFullyQualifiedDomainName) {
         this.targetDbServerFullyQualifiedDomainName = targetDbServerFullyQualifiedDomainName;
         return this;
     }
 
     /**
      * Get the secretParameters property: Migration secret parameters.
-     *
+     * 
      * @return the secretParameters value.
      */
     public MigrationSecretParameters secretParameters() {
@@ -188,7 +195,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Set the secretParameters property: Migration secret parameters.
-     *
+     * 
      * @param secretParameters the secretParameters value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
@@ -199,7 +206,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Get the dbsToMigrate property: Number of databases to migrate.
-     *
+     * 
      * @return the dbsToMigrate value.
      */
     public List<String> dbsToMigrate() {
@@ -208,7 +215,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Set the dbsToMigrate property: Number of databases to migrate.
-     *
+     * 
      * @param dbsToMigrate the dbsToMigrate value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
@@ -220,7 +227,7 @@ public final class MigrationResourcePropertiesForPatch {
     /**
      * Get the setupLogicalReplicationOnSourceDbIfNeeded property: Indicates whether to setup
      * LogicalReplicationOnSourceDb, if needed.
-     *
+     * 
      * @return the setupLogicalReplicationOnSourceDbIfNeeded value.
      */
     public LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded() {
@@ -230,7 +237,7 @@ public final class MigrationResourcePropertiesForPatch {
     /**
      * Set the setupLogicalReplicationOnSourceDbIfNeeded property: Indicates whether to setup
      * LogicalReplicationOnSourceDb, if needed.
-     *
+     * 
      * @param setupLogicalReplicationOnSourceDbIfNeeded the setupLogicalReplicationOnSourceDbIfNeeded value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
@@ -244,7 +251,7 @@ public final class MigrationResourcePropertiesForPatch {
      * Get the overwriteDbsInTarget property: Indicates whether the databases on the target server can be overwritten,
      * if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the
      * database already exists.
-     *
+     * 
      * @return the overwriteDbsInTarget value.
      */
     public OverwriteDbsInTargetEnum overwriteDbsInTarget() {
@@ -255,7 +262,7 @@ public final class MigrationResourcePropertiesForPatch {
      * Set the overwriteDbsInTarget property: Indicates whether the databases on the target server can be overwritten,
      * if already present. If set to False, the migration workflow will wait for a confirmation, if it detects that the
      * database already exists.
-     *
+     * 
      * @param overwriteDbsInTarget the overwriteDbsInTarget value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
@@ -266,7 +273,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Get the migrationWindowStartTimeInUtc property: Start time in UTC for migration window.
-     *
+     * 
      * @return the migrationWindowStartTimeInUtc value.
      */
     public OffsetDateTime migrationWindowStartTimeInUtc() {
@@ -275,19 +282,39 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Set the migrationWindowStartTimeInUtc property: Start time in UTC for migration window.
-     *
+     * 
      * @param migrationWindowStartTimeInUtc the migrationWindowStartTimeInUtc value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
-    public MigrationResourcePropertiesForPatch withMigrationWindowStartTimeInUtc(
-        OffsetDateTime migrationWindowStartTimeInUtc) {
+    public MigrationResourcePropertiesForPatch
+        withMigrationWindowStartTimeInUtc(OffsetDateTime migrationWindowStartTimeInUtc) {
         this.migrationWindowStartTimeInUtc = migrationWindowStartTimeInUtc;
         return this;
     }
 
     /**
+     * Get the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @return the migrateRoles value.
+     */
+    public MigrateRolesEnum migrateRoles() {
+        return this.migrateRoles;
+    }
+
+    /**
+     * Set the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @param migrateRoles the migrateRoles value to set.
+     * @return the MigrationResourcePropertiesForPatch object itself.
+     */
+    public MigrationResourcePropertiesForPatch withMigrateRoles(MigrateRolesEnum migrateRoles) {
+        this.migrateRoles = migrateRoles;
+        return this;
+    }
+
+    /**
      * Get the startDataMigration property: Indicates whether the data migration should start right away.
-     *
+     * 
      * @return the startDataMigration value.
      */
     public StartDataMigrationEnum startDataMigration() {
@@ -296,7 +323,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Set the startDataMigration property: Indicates whether the data migration should start right away.
-     *
+     * 
      * @param startDataMigration the startDataMigration value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
@@ -307,7 +334,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Get the triggerCutover property: To trigger cutover for entire migration we need to send this flag as True.
-     *
+     * 
      * @return the triggerCutover value.
      */
     public TriggerCutoverEnum triggerCutover() {
@@ -316,7 +343,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Set the triggerCutover property: To trigger cutover for entire migration we need to send this flag as True.
-     *
+     * 
      * @param triggerCutover the triggerCutover value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
@@ -328,7 +355,7 @@ public final class MigrationResourcePropertiesForPatch {
     /**
      * Get the dbsToTriggerCutoverOn property: When you want to trigger cutover for specific databases send
      * triggerCutover flag as True and database names in this array.
-     *
+     * 
      * @return the dbsToTriggerCutoverOn value.
      */
     public List<String> dbsToTriggerCutoverOn() {
@@ -338,7 +365,7 @@ public final class MigrationResourcePropertiesForPatch {
     /**
      * Set the dbsToTriggerCutoverOn property: When you want to trigger cutover for specific databases send
      * triggerCutover flag as True and database names in this array.
-     *
+     * 
      * @param dbsToTriggerCutoverOn the dbsToTriggerCutoverOn value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
@@ -349,7 +376,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Get the cancel property: To trigger cancel for entire migration we need to send this flag as True.
-     *
+     * 
      * @return the cancel value.
      */
     public CancelEnum cancel() {
@@ -358,7 +385,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Set the cancel property: To trigger cancel for entire migration we need to send this flag as True.
-     *
+     * 
      * @param cancel the cancel value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
@@ -370,7 +397,7 @@ public final class MigrationResourcePropertiesForPatch {
     /**
      * Get the dbsToCancelMigrationOn property: When you want to trigger cancel for specific databases send cancel flag
      * as True and database names in this array.
-     *
+     * 
      * @return the dbsToCancelMigrationOn value.
      */
     public List<String> dbsToCancelMigrationOn() {
@@ -380,7 +407,7 @@ public final class MigrationResourcePropertiesForPatch {
     /**
      * Set the dbsToCancelMigrationOn property: When you want to trigger cancel for specific databases send cancel flag
      * as True and database names in this array.
-     *
+     * 
      * @param dbsToCancelMigrationOn the dbsToCancelMigrationOn value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
@@ -391,7 +418,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Get the migrationMode property: There are two types of migration modes Online and Offline.
-     *
+     * 
      * @return the migrationMode value.
      */
     public MigrationMode migrationMode() {
@@ -400,7 +427,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Set the migrationMode property: There are two types of migration modes Online and Offline.
-     *
+     * 
      * @param migrationMode the migrationMode value to set.
      * @return the MigrationResourcePropertiesForPatch object itself.
      */
@@ -411,7 +438,7 @@ public final class MigrationResourcePropertiesForPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

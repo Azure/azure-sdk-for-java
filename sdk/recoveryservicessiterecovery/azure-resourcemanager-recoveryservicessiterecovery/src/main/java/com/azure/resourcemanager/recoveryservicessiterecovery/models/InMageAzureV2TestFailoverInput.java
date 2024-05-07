@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMageAzureV2 provider specific input for test failover. */
+/**
+ * InMageAzureV2 provider specific input for test failover.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageAzureV2")
 @Fluent
@@ -27,14 +29,16 @@ public final class InMageAzureV2TestFailoverInput extends TestFailoverProviderSp
     @JsonProperty(value = "osUpgradeVersion")
     private String osUpgradeVersion;
 
-    /** Creates an instance of InMageAzureV2TestFailoverInput class. */
+    /**
+     * Creates an instance of InMageAzureV2TestFailoverInput class.
+     */
     public InMageAzureV2TestFailoverInput() {
     }
 
     /**
      * Get the recoveryPointId property: The recovery point id to be passed to test failover to a particular recovery
      * point. In case of latest recovery point, null should be passed.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -44,7 +48,7 @@ public final class InMageAzureV2TestFailoverInput extends TestFailoverProviderSp
     /**
      * Set the recoveryPointId property: The recovery point id to be passed to test failover to a particular recovery
      * point. In case of latest recovery point, null should be passed.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the InMageAzureV2TestFailoverInput object itself.
      */
@@ -55,7 +59,7 @@ public final class InMageAzureV2TestFailoverInput extends TestFailoverProviderSp
 
     /**
      * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
-     *
+     * 
      * @return the osUpgradeVersion value.
      */
     public String osUpgradeVersion() {
@@ -64,7 +68,7 @@ public final class InMageAzureV2TestFailoverInput extends TestFailoverProviderSp
 
     /**
      * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
-     *
+     * 
      * @param osUpgradeVersion the osUpgradeVersion value to set.
      * @return the InMageAzureV2TestFailoverInput object itself.
      */
@@ -75,7 +79,7 @@ public final class InMageAzureV2TestFailoverInput extends TestFailoverProviderSp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

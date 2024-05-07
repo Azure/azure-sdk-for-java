@@ -15,8 +15,7 @@ public final class ProtectableContainerResourceImpl implements ProtectableContai
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    ProtectableContainerResourceImpl(
-        ProtectableContainerResourceInner innerObject,
+    ProtectableContainerResourceImpl(ProtectableContainerResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

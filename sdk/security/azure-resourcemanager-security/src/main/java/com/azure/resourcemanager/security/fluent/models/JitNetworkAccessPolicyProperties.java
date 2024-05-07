@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.models.JitNetworkAccessPolicyVirtualMa
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JitNetworkAccessPolicyProperties model. */
+/**
+ * The JitNetworkAccessPolicyProperties model.
+ */
 @Fluent
 public final class JitNetworkAccessPolicyProperties {
     /*
@@ -31,13 +33,15 @@ public final class JitNetworkAccessPolicyProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
-    /** Creates an instance of JitNetworkAccessPolicyProperties class. */
+    /**
+     * Creates an instance of JitNetworkAccessPolicyProperties class.
+     */
     public JitNetworkAccessPolicyProperties() {
     }
 
     /**
      * Get the virtualMachines property: Configurations for Microsoft.Compute/virtualMachines resource type.
-     *
+     * 
      * @return the virtualMachines value.
      */
     public List<JitNetworkAccessPolicyVirtualMachine> virtualMachines() {
@@ -46,19 +50,19 @@ public final class JitNetworkAccessPolicyProperties {
 
     /**
      * Set the virtualMachines property: Configurations for Microsoft.Compute/virtualMachines resource type.
-     *
+     * 
      * @param virtualMachines the virtualMachines value to set.
      * @return the JitNetworkAccessPolicyProperties object itself.
      */
-    public JitNetworkAccessPolicyProperties withVirtualMachines(
-        List<JitNetworkAccessPolicyVirtualMachine> virtualMachines) {
+    public JitNetworkAccessPolicyProperties
+        withVirtualMachines(List<JitNetworkAccessPolicyVirtualMachine> virtualMachines) {
         this.virtualMachines = virtualMachines;
         return this;
     }
 
     /**
      * Get the requests property: The requests property.
-     *
+     * 
      * @return the requests value.
      */
     public List<JitNetworkAccessRequestInner> requests() {
@@ -67,7 +71,7 @@ public final class JitNetworkAccessPolicyProperties {
 
     /**
      * Set the requests property: The requests property.
-     *
+     * 
      * @param requests the requests value to set.
      * @return the JitNetworkAccessPolicyProperties object itself.
      */
@@ -78,7 +82,7 @@ public final class JitNetworkAccessPolicyProperties {
 
     /**
      * Get the provisioningState property: Gets the provisioning state of the Just-in-Time policy.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -87,15 +91,13 @@ public final class JitNetworkAccessPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (virtualMachines() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualMachines in model JitNetworkAccessPolicyProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property virtualMachines in model JitNetworkAccessPolicyProperties"));
         } else {
             virtualMachines().forEach(e -> e.validate());
         }

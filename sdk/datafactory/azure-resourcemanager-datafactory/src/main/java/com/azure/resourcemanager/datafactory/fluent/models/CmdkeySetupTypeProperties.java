@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CmdkeySetupTypeProperties {
     /*
-     * The server name of data source access.
+     * The server name of data source access. Type: string.
      */
     @JsonProperty(value = "targetName", required = true)
     private Object targetName;
 
     /*
-     * The user name of data source access.
+     * The user name of data source access. Type: string.
      */
     @JsonProperty(value = "userName", required = true)
     private Object username;
@@ -39,7 +39,7 @@ public final class CmdkeySetupTypeProperties {
     }
 
     /**
-     * Get the targetName property: The server name of data source access.
+     * Get the targetName property: The server name of data source access. Type: string.
      * 
      * @return the targetName value.
      */
@@ -48,7 +48,7 @@ public final class CmdkeySetupTypeProperties {
     }
 
     /**
-     * Set the targetName property: The server name of data source access.
+     * Set the targetName property: The server name of data source access. Type: string.
      * 
      * @param targetName the targetName value to set.
      * @return the CmdkeySetupTypeProperties object itself.
@@ -59,7 +59,7 @@ public final class CmdkeySetupTypeProperties {
     }
 
     /**
-     * Get the username property: The user name of data source access.
+     * Get the username property: The user name of data source access. Type: string.
      * 
      * @return the username value.
      */
@@ -68,7 +68,7 @@ public final class CmdkeySetupTypeProperties {
     }
 
     /**
-     * Set the username property: The user name of data source access.
+     * Set the username property: The user name of data source access. Type: string.
      * 
      * @param username the username value to set.
      * @return the CmdkeySetupTypeProperties object itself.
@@ -105,16 +105,19 @@ public final class CmdkeySetupTypeProperties {
      */
     public void validate() {
         if (targetName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetName in model CmdkeySetupTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetName in model CmdkeySetupTypeProperties"));
         }
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property username in model CmdkeySetupTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model CmdkeySetupTypeProperties"));
         }
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property password in model CmdkeySetupTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model CmdkeySetupTypeProperties"));
         } else {
             password().validate();
         }

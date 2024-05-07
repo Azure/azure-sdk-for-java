@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of the appliance resource. */
+/**
+ * Details of the appliance resource.
+ */
 @Immutable
 public final class DataStoreUtilizationDetails {
     /*
@@ -28,13 +30,15 @@ public final class DataStoreUtilizationDetails {
     @JsonProperty(value = "dataStoreName", access = JsonProperty.Access.WRITE_ONLY)
     private String dataStoreName;
 
-    /** Creates an instance of DataStoreUtilizationDetails class. */
+    /**
+     * Creates an instance of DataStoreUtilizationDetails class.
+     */
     public DataStoreUtilizationDetails() {
     }
 
     /**
      * Get the totalSnapshotsSupported property: The total count of snapshots supported by the datastore.
-     *
+     * 
      * @return the totalSnapshotsSupported value.
      */
     public Long totalSnapshotsSupported() {
@@ -43,7 +47,7 @@ public final class DataStoreUtilizationDetails {
 
     /**
      * Get the totalSnapshotsCreated property: The total snapshots created for server migration in the datastore.
-     *
+     * 
      * @return the totalSnapshotsCreated value.
      */
     public Long totalSnapshotsCreated() {
@@ -52,7 +56,7 @@ public final class DataStoreUtilizationDetails {
 
     /**
      * Get the dataStoreName property: The datastore name.
-     *
+     * 
      * @return the dataStoreName value.
      */
     public String dataStoreName() {
@@ -61,7 +65,7 @@ public final class DataStoreUtilizationDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,15 +11,16 @@ public final class SapTablePartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapTablePartitionSettings model = BinaryData.fromString(
-            "{\"partitionColumnName\":\"datawmfwr\",\"partitionUpperBound\":\"dataizggvmuotc\",\"partitionLowerBound\":\"dataabfyjampvwx\",\"maxPartitionsNumber\":\"datahpr\"}")
+            "{\"partitionColumnName\":\"datafnipywgjgf\",\"partitionUpperBound\":\"datafsvay\",\"partitionLowerBound\":\"datajypo\",\"maxPartitionsNumber\":\"dataiptnwpws\"}")
             .toObject(SapTablePartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapTablePartitionSettings model = new SapTablePartitionSettings().withPartitionColumnName("datawmfwr")
-            .withPartitionUpperBound("dataizggvmuotc").withPartitionLowerBound("dataabfyjampvwx")
-            .withMaxPartitionsNumber("datahpr");
+        SapTablePartitionSettings model = new SapTablePartitionSettings().withPartitionColumnName("datafnipywgjgf")
+            .withPartitionUpperBound("datafsvay")
+            .withPartitionLowerBound("datajypo")
+            .withMaxPartitionsNumber("dataiptnwpws");
         model = BinaryData.fromObject(model).toObject(SapTablePartitionSettings.class);
     }
 }

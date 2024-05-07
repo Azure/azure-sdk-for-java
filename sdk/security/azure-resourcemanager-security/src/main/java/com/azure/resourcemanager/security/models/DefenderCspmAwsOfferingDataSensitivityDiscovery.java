@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Microsoft Defender Data Sensitivity discovery configuration. */
+/**
+ * The Microsoft Defender Data Sensitivity discovery configuration.
+ */
 @Fluent
 public final class DefenderCspmAwsOfferingDataSensitivityDiscovery {
     /*
@@ -22,13 +24,15 @@ public final class DefenderCspmAwsOfferingDataSensitivityDiscovery {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
-    /** Creates an instance of DefenderCspmAwsOfferingDataSensitivityDiscovery class. */
+    /**
+     * Creates an instance of DefenderCspmAwsOfferingDataSensitivityDiscovery class.
+     */
     public DefenderCspmAwsOfferingDataSensitivityDiscovery() {
     }
 
     /**
      * Get the enabled property: Is Microsoft Defender Data Sensitivity discovery enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -37,7 +41,7 @@ public final class DefenderCspmAwsOfferingDataSensitivityDiscovery {
 
     /**
      * Set the enabled property: Is Microsoft Defender Data Sensitivity discovery enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the DefenderCspmAwsOfferingDataSensitivityDiscovery object itself.
      */
@@ -48,7 +52,7 @@ public final class DefenderCspmAwsOfferingDataSensitivityDiscovery {
 
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @return the cloudRoleArn value.
      */
     public String cloudRoleArn() {
@@ -57,7 +61,7 @@ public final class DefenderCspmAwsOfferingDataSensitivityDiscovery {
 
     /**
      * Set the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the DefenderCspmAwsOfferingDataSensitivityDiscovery object itself.
      */
@@ -68,7 +72,7 @@ public final class DefenderCspmAwsOfferingDataSensitivityDiscovery {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

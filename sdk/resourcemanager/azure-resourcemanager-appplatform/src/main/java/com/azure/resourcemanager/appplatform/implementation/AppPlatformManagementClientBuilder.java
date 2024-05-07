@@ -14,20 +14,21 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AppPlatformManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {AppPlatformManagementClientImpl.class})
+/**
+ * A builder for creating a new instance of the AppPlatformManagementClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { AppPlatformManagementClientImpl.class })
 public final class AppPlatformManagementClientBuilder {
     /*
-     * Gets subscription ID which uniquely identify the Microsoft Azure
-     * subscription. The subscription ID forms part of the URI for every
-     * service call.
+     * Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms part of
+     * the URI for every service call.
      */
     private String subscriptionId;
 
     /**
      * Sets Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -43,7 +44,7 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -59,7 +60,7 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -75,7 +76,7 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -91,7 +92,7 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -107,7 +108,7 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AppPlatformManagementClientBuilder.
      */
@@ -118,28 +119,20 @@ public final class AppPlatformManagementClientBuilder {
 
     /**
      * Builds an instance of AppPlatformManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AppPlatformManagementClientImpl.
      */
     public AppPlatformManagementClientImpl buildClient() {
-        if (endpoint == null) {
-            this.endpoint = "https://management.azure.com";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
-        AppPlatformManagementClientImpl client =
-            new AppPlatformManagementClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null) ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        AppPlatformManagementClientImpl client = new AppPlatformManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

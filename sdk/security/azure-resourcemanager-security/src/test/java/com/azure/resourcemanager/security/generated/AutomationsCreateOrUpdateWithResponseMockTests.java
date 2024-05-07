@@ -13,6 +13,11 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.Automation;
+import com.azure.resourcemanager.security.models.AutomationAction;
+import com.azure.resourcemanager.security.models.AutomationRuleSet;
+import com.azure.resourcemanager.security.models.AutomationScope;
+import com.azure.resourcemanager.security.models.AutomationSource;
+import com.azure.resourcemanager.security.models.EventSource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -33,55 +38,55 @@ public final class AutomationsCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"tnp\",\"isEnabled\":true,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"rqxw\",\"tags\":{\"tfdoadtx\":\"tdrh\",\"ctkbbxuha\":\"pgehpadkmdzgsszx\"},\"id\":\"lsi\",\"name\":\"ncclabvoyngsuxxc\",\"type\":\"bmyqjog\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"eum\",\"isEnabled\":true,\"scopes\":[{\"description\":\"hl\",\"scopePath\":\"kh\"},{\"description\":\"kjunzxezriwgoew\",\"scopePath\":\"cqksaaapxjh\"},{\"description\":\"tibenwsd\",\"scopePath\":\"vdaahlfrcqklpmvz\"}],\"sources\":[{\"eventSource\":\"Alerts\",\"ruleSets\":[{}]},{\"eventSource\":\"Assessments\",\"ruleSets\":[{},{}]},{\"eventSource\":\"AttackPathsSnapshot\",\"ruleSets\":[{},{},{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"}]},\"location\":\"geokfekcjj\",\"tags\":{\"fmcihpinowr\":\"yeahhhutpulnrfcq\",\"wyqqidq\":\"rjpxptch\",\"lhmpm\":\"mlgbbfjmdgjv\"},\"id\":\"eftyaphqeofytl\",\"name\":\"nlowmcmcqixuanc\",\"type\":\"qvjfdgfqpmquxpjh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Automation response =
-            manager
-                .automations()
-                .define("e")
-                .withRegion("xsm")
-                .withExistingResourceGroup("hquhczygxvhajp")
-                .withTags(mapOf("ud", "pwirfljfewxqouo", "nqi", "mckaprh", "ihkkyowl", "jgencdgmoque"))
-                .withDescription("nwh")
-                .withIsEnabled(true)
-                .withScopes(Arrays.asList())
-                .withSources(Arrays.asList())
-                .withActions(Arrays.asList())
-                .create();
+        Automation response
+            = manager.automations().define("ma").withRegion("olgzubakdlkv").withExistingResourceGroup("vldzmxojzs")
+                .withTags(
+                    mapOf("lscgsmepnq", "mfnsffetpkmixwew", "vudeep", "xgvohdbthhxmoe", "hxvzgayb", "hgannvwxqhpjhub"))
+                .withDescription("q").withIsEnabled(false)
+                .withScopes(Arrays.asList(new AutomationScope().withDescription("th").withScopePath("ecbpergwl"),
+                    new AutomationScope().withDescription("ihba").withScopePath("qsokknpug"),
+                    new AutomationScope().withDescription("wdizc").withScopePath("ixiujz"),
+                    new AutomationScope().withDescription("sexgkrswksykkbxk").withScopePath("b")))
+                .withSources(Arrays.asList(
+                    new AutomationSource().withEventSource(EventSource.ATTACK_PATHS_SNAPSHOT)
+                        .withRuleSets(Arrays.asList(new AutomationRuleSet())),
+                    new AutomationSource().withEventSource(EventSource.ASSESSMENTS_SNAPSHOT)
+                        .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet())),
+                    new AutomationSource().withEventSource(EventSource.SECURE_SCORE_CONTROLS)
+                        .withRuleSets(Arrays.asList(new AutomationRuleSet())),
+                    new AutomationSource().withEventSource(EventSource.ATTACK_PATHS)
+                        .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
+                            new AutomationRuleSet(), new AutomationRuleSet()))))
+                .withActions(Arrays.asList(new AutomationAction())).create();
 
-        Assertions.assertEquals("rqxw", response.location());
-        Assertions.assertEquals("tdrh", response.tags().get("tfdoadtx"));
-        Assertions.assertEquals("tnp", response.description());
+        Assertions.assertEquals("geokfekcjj", response.location());
+        Assertions.assertEquals("yeahhhutpulnrfcq", response.tags().get("fmcihpinowr"));
+        Assertions.assertEquals("eum", response.description());
         Assertions.assertEquals(true, response.isEnabled());
+        Assertions.assertEquals("hl", response.scopes().get(0).description());
+        Assertions.assertEquals("kh", response.scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.ALERTS, response.sources().get(0).eventSource());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

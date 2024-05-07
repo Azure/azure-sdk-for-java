@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupMana
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Backup management usage for vault. */
+/**
+ * Backup management usage for vault.
+ */
 @Fluent
 public final class BackupManagementUsageList {
     /*
@@ -18,13 +20,15 @@ public final class BackupManagementUsageList {
     @JsonProperty(value = "value")
     private List<BackupManagementUsageInner> value;
 
-    /** Creates an instance of BackupManagementUsageList class. */
+    /**
+     * Creates an instance of BackupManagementUsageList class.
+     */
     public BackupManagementUsageList() {
     }
 
     /**
      * Get the value property: The list of backup management usages for the given vault.
-     *
+     * 
      * @return the value value.
      */
     public List<BackupManagementUsageInner> value() {
@@ -33,7 +37,7 @@ public final class BackupManagementUsageList {
 
     /**
      * Set the value property: The list of backup management usages for the given vault.
-     *
+     * 
      * @param value the value value to set.
      * @return the BackupManagementUsageList object itself.
      */
@@ -44,7 +48,7 @@ public final class BackupManagementUsageList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

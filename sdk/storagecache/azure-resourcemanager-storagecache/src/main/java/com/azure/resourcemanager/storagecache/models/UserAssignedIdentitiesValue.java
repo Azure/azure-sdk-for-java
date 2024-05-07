@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UserAssignedIdentitiesValue model. */
+/**
+ * The UserAssignedIdentitiesValue model.
+ */
 @Immutable
 public final class UserAssignedIdentitiesValue {
     /*
@@ -22,13 +24,15 @@ public final class UserAssignedIdentitiesValue {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
-    /** Creates an instance of UserAssignedIdentitiesValue class. */
+    /**
+     * Creates an instance of UserAssignedIdentitiesValue class.
+     */
     public UserAssignedIdentitiesValue() {
     }
 
     /**
      * Get the principalId property: The principal ID of the user-assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -37,7 +41,7 @@ public final class UserAssignedIdentitiesValue {
 
     /**
      * Get the clientId property: The client ID of the user-assigned identity.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -46,7 +50,7 @@ public final class UserAssignedIdentitiesValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

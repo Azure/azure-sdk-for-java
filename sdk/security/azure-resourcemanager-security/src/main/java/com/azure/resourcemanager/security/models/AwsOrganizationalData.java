@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The AWS organization data. */
+/**
+ * The AWS organization data.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -18,17 +20,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AwsOrganizationalData")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Organization", value = AwsOrganizationalDataMaster.class),
-    @JsonSubTypes.Type(name = "Member", value = AwsOrganizationalDataMember.class)
-})
+    @JsonSubTypes.Type(name = "Member", value = AwsOrganizationalDataMember.class) })
 @Immutable
 public class AwsOrganizationalData {
-    /** Creates an instance of AwsOrganizationalData class. */
+    /**
+     * Creates an instance of AwsOrganizationalData class.
+     */
     public AwsOrganizationalData() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

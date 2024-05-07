@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration for servers Arc auto provisioning. */
+/**
+ * Configuration for servers Arc auto provisioning.
+ */
 @Fluent
 public final class DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration {
     /*
@@ -22,13 +24,15 @@ public final class DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguratio
     @JsonProperty(value = "privateLinkScope")
     private String privateLinkScope;
 
-    /** Creates an instance of DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration class. */
+    /**
+     * Creates an instance of DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration class.
+     */
     public DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration() {
     }
 
     /**
      * Get the proxy property: Optional http proxy endpoint to use for the Arc agent.
-     *
+     * 
      * @return the proxy value.
      */
     public String proxy() {
@@ -37,7 +41,7 @@ public final class DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguratio
 
     /**
      * Set the proxy property: Optional http proxy endpoint to use for the Arc agent.
-     *
+     * 
      * @param proxy the proxy value to set.
      * @return the DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration object itself.
      */
@@ -48,7 +52,7 @@ public final class DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguratio
 
     /**
      * Get the privateLinkScope property: Optional Arc private link scope resource id to link the Arc agent.
-     *
+     * 
      * @return the privateLinkScope value.
      */
     public String privateLinkScope() {
@@ -57,19 +61,19 @@ public final class DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguratio
 
     /**
      * Set the privateLinkScope property: Optional Arc private link scope resource id to link the Arc agent.
-     *
+     * 
      * @param privateLinkScope the privateLinkScope value to set.
      * @return the DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration object itself.
      */
-    public DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration withPrivateLinkScope(
-        String privateLinkScope) {
+    public DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration
+        withPrivateLinkScope(String privateLinkScope) {
         this.privateLinkScope = privateLinkScope;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

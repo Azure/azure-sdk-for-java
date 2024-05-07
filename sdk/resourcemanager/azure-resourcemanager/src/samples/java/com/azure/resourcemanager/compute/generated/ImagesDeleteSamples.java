@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class ImagesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/imageExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/imageExamples/
      * Images_Delete_MinimumSet_Gen.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ImagesDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/imageExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/imageExamples/
      * Images_Delete_MaximumSet_Gen.json
      */
     /**

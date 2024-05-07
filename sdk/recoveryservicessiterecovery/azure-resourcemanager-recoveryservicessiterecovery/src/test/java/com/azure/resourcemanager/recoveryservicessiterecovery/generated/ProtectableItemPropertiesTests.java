@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProtectableItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectableItemProperties model =
-            BinaryData
-                .fromString(
-                    "{\"friendlyName\":\"qdxbxwa\",\"protectionStatus\":\"ogqxndlkzgxhuri\",\"replicationProtectedItemId\":\"bpodxunkbebxm\",\"recoveryServicesProviderId\":\"yyntwl\",\"protectionReadinessErrors\":[\"tkoievseotgq\",\"l\"],\"supportedReplicationProviders\":[\"u\",\"lauwzizxbmpgcjef\",\"zmuvpbttdumorppx\",\"bmnzbtbhjpgl\"],\"customDetails\":{\"instanceType\":\"ConfigurationSettings\"}}")
-                .toObject(ProtectableItemProperties.class);
+        ProtectableItemProperties model = BinaryData.fromString(
+            "{\"friendlyName\":\"qdxbxwa\",\"protectionStatus\":\"ogqxndlkzgxhuri\",\"replicationProtectedItemId\":\"bpodxunkbebxm\",\"recoveryServicesProviderId\":\"yyntwl\",\"protectionReadinessErrors\":[\"tkoievseotgq\",\"l\"],\"supportedReplicationProviders\":[\"u\",\"lauwzizxbmpgcjef\",\"zmuvpbttdumorppx\",\"bmnzbtbhjpgl\"],\"customDetails\":{\"instanceType\":\"ConfigurationSettings\"}}")
+            .toObject(ProtectableItemProperties.class);
         Assertions.assertEquals("qdxbxwa", model.friendlyName());
         Assertions.assertEquals("ogqxndlkzgxhuri", model.protectionStatus());
         Assertions.assertEquals("bpodxunkbebxm", model.replicationProtectedItemId());
@@ -28,16 +26,12 @@ public final class ProtectableItemPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectableItemProperties model =
-            new ProtectableItemProperties()
-                .withFriendlyName("qdxbxwa")
-                .withProtectionStatus("ogqxndlkzgxhuri")
-                .withReplicationProtectedItemId("bpodxunkbebxm")
-                .withRecoveryServicesProviderId("yyntwl")
-                .withProtectionReadinessErrors(Arrays.asList("tkoievseotgq", "l"))
-                .withSupportedReplicationProviders(
-                    Arrays.asList("u", "lauwzizxbmpgcjef", "zmuvpbttdumorppx", "bmnzbtbhjpgl"))
-                .withCustomDetails(new ConfigurationSettings());
+        ProtectableItemProperties model = new ProtectableItemProperties().withFriendlyName("qdxbxwa")
+            .withProtectionStatus("ogqxndlkzgxhuri").withReplicationProtectedItemId("bpodxunkbebxm")
+            .withRecoveryServicesProviderId("yyntwl").withProtectionReadinessErrors(Arrays.asList("tkoievseotgq", "l"))
+            .withSupportedReplicationProviders(
+                Arrays.asList("u", "lauwzizxbmpgcjef", "zmuvpbttdumorppx", "bmnzbtbhjpgl"))
+            .withCustomDetails(new ConfigurationSettings());
         model = BinaryData.fromObject(model).toObject(ProtectableItemProperties.class);
         Assertions.assertEquals("qdxbxwa", model.friendlyName());
         Assertions.assertEquals("ogqxndlkzgxhuri", model.protectionStatus());

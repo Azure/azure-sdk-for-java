@@ -1,25 +1,25 @@
 trigger: none
 
-stages:
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: textanalytics
-      Location: eastus
-      SupportedClouds: 'Public,UsGov,China'
-      Artifacts:
-        - name: azure-ai-textanalytics
-          groupId: com.azure
-          safeName: azureaitextanalytics
-      # temporary env vars for custom text features
-      EnvVars:
-        AZURE_TENANT_ID: $(TEXTANALYTICS_TENANT_ID)
-        AZURE_CLIENT_SECRET: $(TEXTANALYTICS_CLIENT_SECRET)
-        AZURE_CLIENT_ID: $(TEXTANALYTICS_CLIENT_ID)
-        AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY: $(java-textanalytics-test-api-key)
-        AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT: $(java-textanalytics-test-ppe-endpoint-string)
-        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME: $(java-single-category-classify-project-name)
-        AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME: $(java-single-category-classify-deployment-name)
-        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME: $(java-multi-category-classify-project-name)
-        AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME: $(java-multi-category-classify-deployment-name)
-        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME: $(java-recognize-custom-entities-project-name)
-        AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME: $(java-recognize-custom-entities-deployment-name)
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: textanalytics
+    Location: eastus
+    SupportedClouds: 'Public,UsGov,China'
+    Artifacts:
+      - name: azure-ai-textanalytics
+        groupId: com.azure
+        safeName: azureaitextanalytics
+    # temporary env vars for custom text features
+    EnvVars:
+      AZURE_TENANT_ID: $(TEXTANALYTICS_TENANT_ID)
+      AZURE_CLIENT_SECRET: $(TEXTANALYTICS_CLIENT_SECRET)
+      AZURE_CLIENT_ID: $(TEXTANALYTICS_CLIENT_ID)
+      AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_API_KEY: $(java-textanalytics-test-api-key)
+      AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT: $(java-textanalytics-test-ppe-endpoint-string)
+      AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_PROJECT_NAME: $(java-single-category-classify-project-name)
+      AZURE_TEXT_ANALYTICS_CUSTOM_SINGLE_CLASSIFICATION_DEPLOYMENT_NAME: $(java-single-category-classify-deployment-name)
+      AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_PROJECT_NAME: $(java-multi-category-classify-project-name)
+      AZURE_TEXT_ANALYTICS_CUSTOM_MULTI_CLASSIFICATION_DEPLOYMENT_NAME: $(java-multi-category-classify-deployment-name)
+      AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_PROJECT_NAME: $(java-recognize-custom-entities-project-name)
+      AZURE_TEXT_ANALYTICS_CUSTOM_ENTITIES_DEPLOYMENT_NAME: $(java-recognize-custom-entities-deployment-name)

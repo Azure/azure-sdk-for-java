@@ -8,56 +8,86 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AgentUpgradeBlockedReason. */
+/**
+ * Defines values for AgentUpgradeBlockedReason.
+ */
 public final class AgentUpgradeBlockedReason extends ExpandableStringEnum<AgentUpgradeBlockedReason> {
-    /** Static value AlreadyOnLatestVersion for AgentUpgradeBlockedReason. */
+    /**
+     * Static value AlreadyOnLatestVersion for AgentUpgradeBlockedReason.
+     */
     public static final AgentUpgradeBlockedReason ALREADY_ON_LATEST_VERSION = fromString("AlreadyOnLatestVersion");
 
-    /** Static value RebootRequired for AgentUpgradeBlockedReason. */
+    /**
+     * Static value RebootRequired for AgentUpgradeBlockedReason.
+     */
     public static final AgentUpgradeBlockedReason REBOOT_REQUIRED = fromString("RebootRequired");
 
-    /** Static value AgentNoHeartbeat for AgentUpgradeBlockedReason. */
+    /**
+     * Static value AgentNoHeartbeat for AgentUpgradeBlockedReason.
+     */
     public static final AgentUpgradeBlockedReason AGENT_NO_HEARTBEAT = fromString("AgentNoHeartbeat");
 
-    /** Static value RcmProxyNoHeartbeat for AgentUpgradeBlockedReason. */
+    /**
+     * Static value RcmProxyNoHeartbeat for AgentUpgradeBlockedReason.
+     */
     public static final AgentUpgradeBlockedReason RCM_PROXY_NO_HEARTBEAT = fromString("RcmProxyNoHeartbeat");
 
-    /** Static value ProcessServerNoHeartbeat for AgentUpgradeBlockedReason. */
+    /**
+     * Static value ProcessServerNoHeartbeat for AgentUpgradeBlockedReason.
+     */
     public static final AgentUpgradeBlockedReason PROCESS_SERVER_NO_HEARTBEAT = fromString("ProcessServerNoHeartbeat");
 
-    /** Static value IncompatibleApplianceVersion for AgentUpgradeBlockedReason. */
-    public static final AgentUpgradeBlockedReason INCOMPATIBLE_APPLIANCE_VERSION =
-        fromString("IncompatibleApplianceVersion");
+    /**
+     * Static value IncompatibleApplianceVersion for AgentUpgradeBlockedReason.
+     */
+    public static final AgentUpgradeBlockedReason INCOMPATIBLE_APPLIANCE_VERSION
+        = fromString("IncompatibleApplianceVersion");
 
-    /** Static value NotProtected for AgentUpgradeBlockedReason. */
+    /**
+     * Static value NotProtected for AgentUpgradeBlockedReason.
+     */
     public static final AgentUpgradeBlockedReason NOT_PROTECTED = fromString("NotProtected");
 
-    /** Static value UnsupportedProtectionScenario for AgentUpgradeBlockedReason. */
-    public static final AgentUpgradeBlockedReason UNSUPPORTED_PROTECTION_SCENARIO =
-        fromString("UnsupportedProtectionScenario");
+    /**
+     * Static value UnsupportedProtectionScenario for AgentUpgradeBlockedReason.
+     */
+    public static final AgentUpgradeBlockedReason UNSUPPORTED_PROTECTION_SCENARIO
+        = fromString("UnsupportedProtectionScenario");
 
-    /** Static value DistroIsNotReported for AgentUpgradeBlockedReason. */
+    /**
+     * Static value DistroIsNotReported for AgentUpgradeBlockedReason.
+     */
     public static final AgentUpgradeBlockedReason DISTRO_IS_NOT_REPORTED = fromString("DistroIsNotReported");
 
-    /** Static value DistroNotSupportedForUpgrade for AgentUpgradeBlockedReason. */
-    public static final AgentUpgradeBlockedReason DISTRO_NOT_SUPPORTED_FOR_UPGRADE =
-        fromString("DistroNotSupportedForUpgrade");
+    /**
+     * Static value DistroNotSupportedForUpgrade for AgentUpgradeBlockedReason.
+     */
+    public static final AgentUpgradeBlockedReason DISTRO_NOT_SUPPORTED_FOR_UPGRADE
+        = fromString("DistroNotSupportedForUpgrade");
 
-    /** Static value MissingUpgradePath for AgentUpgradeBlockedReason. */
+    /**
+     * Static value MissingUpgradePath for AgentUpgradeBlockedReason.
+     */
     public static final AgentUpgradeBlockedReason MISSING_UPGRADE_PATH = fromString("MissingUpgradePath");
 
-    /** Static value InvalidAgentVersion for AgentUpgradeBlockedReason. */
+    /**
+     * Static value InvalidAgentVersion for AgentUpgradeBlockedReason.
+     */
     public static final AgentUpgradeBlockedReason INVALID_AGENT_VERSION = fromString("InvalidAgentVersion");
 
-    /** Static value InvalidDriverVersion for AgentUpgradeBlockedReason. */
+    /**
+     * Static value InvalidDriverVersion for AgentUpgradeBlockedReason.
+     */
     public static final AgentUpgradeBlockedReason INVALID_DRIVER_VERSION = fromString("InvalidDriverVersion");
 
-    /** Static value Unknown for AgentUpgradeBlockedReason. */
+    /**
+     * Static value Unknown for AgentUpgradeBlockedReason.
+     */
     public static final AgentUpgradeBlockedReason UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of AgentUpgradeBlockedReason value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -66,7 +96,7 @@ public final class AgentUpgradeBlockedReason extends ExpandableStringEnum<AgentU
 
     /**
      * Creates or finds a AgentUpgradeBlockedReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgentUpgradeBlockedReason.
      */
@@ -77,7 +107,7 @@ public final class AgentUpgradeBlockedReason extends ExpandableStringEnum<AgentU
 
     /**
      * Gets known AgentUpgradeBlockedReason values.
-     *
+     * 
      * @return known AgentUpgradeBlockedReason values.
      */
     public static Collection<AgentUpgradeBlockedReason> values() {

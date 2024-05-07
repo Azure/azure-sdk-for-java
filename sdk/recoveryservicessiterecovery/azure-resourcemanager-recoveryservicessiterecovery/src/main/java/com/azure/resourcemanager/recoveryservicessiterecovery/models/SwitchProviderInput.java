@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input definition for switch provider. */
+/**
+ * Input definition for switch provider.
+ */
 @Fluent
 public final class SwitchProviderInput {
     /*
@@ -16,13 +18,15 @@ public final class SwitchProviderInput {
     @JsonProperty(value = "properties")
     private SwitchProviderInputProperties properties;
 
-    /** Creates an instance of SwitchProviderInput class. */
+    /**
+     * Creates an instance of SwitchProviderInput class.
+     */
     public SwitchProviderInput() {
     }
 
     /**
      * Get the properties property: Switch provider input properties.
-     *
+     * 
      * @return the properties value.
      */
     public SwitchProviderInputProperties properties() {
@@ -31,7 +35,7 @@ public final class SwitchProviderInput {
 
     /**
      * Set the properties property: Switch provider input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SwitchProviderInput object itself.
      */
@@ -42,7 +46,7 @@ public final class SwitchProviderInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

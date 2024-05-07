@@ -15,10 +15,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.UnlockDeleteRespo
 import java.util.Collections;
 import java.util.Map;
 
-public final class ResourceGuardProxyBaseResourceImpl
-    implements ResourceGuardProxyBaseResource,
-        ResourceGuardProxyBaseResource.Definition,
-        ResourceGuardProxyBaseResource.Update {
+public final class ResourceGuardProxyBaseResourceImpl implements ResourceGuardProxyBaseResource,
+    ResourceGuardProxyBaseResource.Definition, ResourceGuardProxyBaseResource.Update {
     private ResourceGuardProxyBaseResourceInner innerObject;
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
@@ -89,27 +87,21 @@ public final class ResourceGuardProxyBaseResourceImpl
     }
 
     public ResourceGuardProxyBaseResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuardProxyOperations()
-                .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
+            .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResourceGuardProxyBaseResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuardProxyOperations()
-                .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
+            .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ResourceGuardProxyBaseResourceImpl(
-        String name, com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
+    ResourceGuardProxyBaseResourceImpl(String name,
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = new ResourceGuardProxyBaseResourceInner();
         this.serviceManager = serviceManager;
         this.resourceGuardProxyName = name;
@@ -120,65 +112,49 @@ public final class ResourceGuardProxyBaseResourceImpl
     }
 
     public ResourceGuardProxyBaseResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuardProxyOperations()
-                .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
+            .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResourceGuardProxyBaseResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuardProxyOperations()
-                .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
+            .putWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ResourceGuardProxyBaseResourceImpl(
-        ResourceGuardProxyBaseResourceInner innerObject,
+    ResourceGuardProxyBaseResourceImpl(ResourceGuardProxyBaseResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceGuardProxyName = Utils.getValueFromIdByName(innerObject.id(), "backupResourceGuardProxies");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceGuardProxyName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupResourceGuardProxies");
     }
 
     public ResourceGuardProxyBaseResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuardProxyOperations()
-                .getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
+            .getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, Context.NONE).getValue();
         return this;
     }
 
     public ResourceGuardProxyBaseResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceGuardProxyOperations()
-                .getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getResourceGuardProxyOperations()
+            .getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, context).getValue();
         return this;
     }
 
     public Response<UnlockDeleteResponse> unlockDeleteWithResponse(UnlockDeleteRequest parameters, Context context) {
-        return serviceManager
-            .resourceGuardProxyOperations()
-            .unlockDeleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, parameters, context);
+        return serviceManager.resourceGuardProxyOperations().unlockDeleteWithResponse(vaultName, resourceGroupName,
+            resourceGuardProxyName, parameters, context);
     }
 
     public UnlockDeleteResponse unlockDelete(UnlockDeleteRequest parameters) {
-        return serviceManager
-            .resourceGuardProxyOperations()
-            .unlockDelete(vaultName, resourceGroupName, resourceGuardProxyName, parameters);
+        return serviceManager.resourceGuardProxyOperations().unlockDelete(vaultName, resourceGroupName,
+            resourceGuardProxyName, parameters);
     }
 
     public ResourceGuardProxyBaseResourceImpl withRegion(Region location) {

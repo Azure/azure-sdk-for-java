@@ -9,37 +9,49 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
-/** Number of active connections is not in allowed range. */
+/**
+ * Number of active connections is not in allowed range.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
 @JsonTypeName("ActiveConnectionsNotInAllowedRange")
 @Fluent
 public final class ActiveConnectionsNotInAllowedRange extends TimeWindowCustomAlertRule {
-    /** Creates an instance of ActiveConnectionsNotInAllowedRange class. */
+    /**
+     * Creates an instance of ActiveConnectionsNotInAllowedRange class.
+     */
     public ActiveConnectionsNotInAllowedRange() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectionsNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {
         super.withTimeWindowSize(timeWindowSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectionsNotInAllowedRange withMinThreshold(int minThreshold) {
         super.withMinThreshold(minThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectionsNotInAllowedRange withMaxThreshold(int maxThreshold) {
         super.withMaxThreshold(maxThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActiveConnectionsNotInAllowedRange withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -48,7 +60,7 @@ public final class ActiveConnectionsNotInAllowedRange extends TimeWindowCustomAl
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

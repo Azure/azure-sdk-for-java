@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Source information for a deployment. */
+/**
+ * Source information for a deployment.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,8 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "UploadedUserSourceInfo", value = UploadedUserSourceInfo.class),
     @JsonSubTypes.Type(name = "BuildResult", value = BuildResultUserSourceInfo.class),
-    @JsonSubTypes.Type(name = "Container", value = CustomContainerUserSourceInfo.class)
-})
+    @JsonSubTypes.Type(name = "Container", value = CustomContainerUserSourceInfo.class) })
 @Fluent
 public class UserSourceInfo {
     /*
@@ -31,8 +32,14 @@ public class UserSourceInfo {
     private String version;
 
     /**
+     * Creates an instance of UserSourceInfo class.
+     */
+    public UserSourceInfo() {
+    }
+
+    /**
      * Get the version property: Version of the source.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -41,7 +48,7 @@ public class UserSourceInfo {
 
     /**
      * Set the version property: Version of the source.
-     *
+     * 
      * @param version the version value to set.
      * @return the UserSourceInfo object itself.
      */
@@ -52,7 +59,7 @@ public class UserSourceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

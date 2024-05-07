@@ -11,8 +11,8 @@ import java.time.OffsetDateTime;
 /**
  * Implements InnerHealthError class. HealthError object has a list of InnerHealthErrors as child errors.
  * InnerHealthError is used because this will prevent an infinite loop of structures when Hydra tries to auto-generate
- * the contract. We are exposing the related health errors as inner health errors and all API consumers can utilize this
- * in the same fashion as Exception -&amp;gt; InnerException.
+ * the contract. We are exposing the related health errors as inner health errors and all API consumers can utilize
+ * this in the same fashion as Exception -&amp;gt; InnerException.
  */
 @Fluent
 public final class InnerHealthError {
@@ -100,13 +100,15 @@ public final class InnerHealthError {
     @JsonProperty(value = "customerResolvability")
     private HealthErrorCustomerResolvability customerResolvability;
 
-    /** Creates an instance of InnerHealthError class. */
+    /**
+     * Creates an instance of InnerHealthError class.
+     */
     public InnerHealthError() {
     }
 
     /**
      * Get the errorSource property: Source of error.
-     *
+     * 
      * @return the errorSource value.
      */
     public String errorSource() {
@@ -115,7 +117,7 @@ public final class InnerHealthError {
 
     /**
      * Set the errorSource property: Source of error.
-     *
+     * 
      * @param errorSource the errorSource value to set.
      * @return the InnerHealthError object itself.
      */
@@ -126,7 +128,7 @@ public final class InnerHealthError {
 
     /**
      * Get the errorType property: Type of error.
-     *
+     * 
      * @return the errorType value.
      */
     public String errorType() {
@@ -135,7 +137,7 @@ public final class InnerHealthError {
 
     /**
      * Set the errorType property: Type of error.
-     *
+     * 
      * @param errorType the errorType value to set.
      * @return the InnerHealthError object itself.
      */
@@ -146,7 +148,7 @@ public final class InnerHealthError {
 
     /**
      * Get the errorLevel property: Level of error.
-     *
+     * 
      * @return the errorLevel value.
      */
     public String errorLevel() {
@@ -155,7 +157,7 @@ public final class InnerHealthError {
 
     /**
      * Set the errorLevel property: Level of error.
-     *
+     * 
      * @param errorLevel the errorLevel value to set.
      * @return the InnerHealthError object itself.
      */
@@ -166,7 +168,7 @@ public final class InnerHealthError {
 
     /**
      * Get the errorCategory property: Category of error.
-     *
+     * 
      * @return the errorCategory value.
      */
     public String errorCategory() {
@@ -175,7 +177,7 @@ public final class InnerHealthError {
 
     /**
      * Set the errorCategory property: Category of error.
-     *
+     * 
      * @param errorCategory the errorCategory value to set.
      * @return the InnerHealthError object itself.
      */
@@ -186,7 +188,7 @@ public final class InnerHealthError {
 
     /**
      * Get the errorCode property: Error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -195,7 +197,7 @@ public final class InnerHealthError {
 
     /**
      * Set the errorCode property: Error code.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the InnerHealthError object itself.
      */
@@ -206,7 +208,7 @@ public final class InnerHealthError {
 
     /**
      * Get the summaryMessage property: Summary message of the entity.
-     *
+     * 
      * @return the summaryMessage value.
      */
     public String summaryMessage() {
@@ -215,7 +217,7 @@ public final class InnerHealthError {
 
     /**
      * Set the summaryMessage property: Summary message of the entity.
-     *
+     * 
      * @param summaryMessage the summaryMessage value to set.
      * @return the InnerHealthError object itself.
      */
@@ -226,7 +228,7 @@ public final class InnerHealthError {
 
     /**
      * Get the errorMessage property: Error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -235,7 +237,7 @@ public final class InnerHealthError {
 
     /**
      * Set the errorMessage property: Error message.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the InnerHealthError object itself.
      */
@@ -246,7 +248,7 @@ public final class InnerHealthError {
 
     /**
      * Get the possibleCauses property: Possible causes of error.
-     *
+     * 
      * @return the possibleCauses value.
      */
     public String possibleCauses() {
@@ -255,7 +257,7 @@ public final class InnerHealthError {
 
     /**
      * Set the possibleCauses property: Possible causes of error.
-     *
+     * 
      * @param possibleCauses the possibleCauses value to set.
      * @return the InnerHealthError object itself.
      */
@@ -266,7 +268,7 @@ public final class InnerHealthError {
 
     /**
      * Get the recommendedAction property: Recommended action to resolve error.
-     *
+     * 
      * @return the recommendedAction value.
      */
     public String recommendedAction() {
@@ -275,7 +277,7 @@ public final class InnerHealthError {
 
     /**
      * Set the recommendedAction property: Recommended action to resolve error.
-     *
+     * 
      * @param recommendedAction the recommendedAction value to set.
      * @return the InnerHealthError object itself.
      */
@@ -286,7 +288,7 @@ public final class InnerHealthError {
 
     /**
      * Get the creationTimeUtc property: Error creation time (UTC).
-     *
+     * 
      * @return the creationTimeUtc value.
      */
     public OffsetDateTime creationTimeUtc() {
@@ -295,7 +297,7 @@ public final class InnerHealthError {
 
     /**
      * Set the creationTimeUtc property: Error creation time (UTC).
-     *
+     * 
      * @param creationTimeUtc the creationTimeUtc value to set.
      * @return the InnerHealthError object itself.
      */
@@ -306,7 +308,7 @@ public final class InnerHealthError {
 
     /**
      * Get the recoveryProviderErrorMessage property: DRA error message.
-     *
+     * 
      * @return the recoveryProviderErrorMessage value.
      */
     public String recoveryProviderErrorMessage() {
@@ -315,7 +317,7 @@ public final class InnerHealthError {
 
     /**
      * Set the recoveryProviderErrorMessage property: DRA error message.
-     *
+     * 
      * @param recoveryProviderErrorMessage the recoveryProviderErrorMessage value to set.
      * @return the InnerHealthError object itself.
      */
@@ -326,7 +328,7 @@ public final class InnerHealthError {
 
     /**
      * Get the entityId property: ID of the entity.
-     *
+     * 
      * @return the entityId value.
      */
     public String entityId() {
@@ -335,7 +337,7 @@ public final class InnerHealthError {
 
     /**
      * Set the entityId property: ID of the entity.
-     *
+     * 
      * @param entityId the entityId value to set.
      * @return the InnerHealthError object itself.
      */
@@ -346,7 +348,7 @@ public final class InnerHealthError {
 
     /**
      * Get the errorId property: The health error unique id.
-     *
+     * 
      * @return the errorId value.
      */
     public String errorId() {
@@ -355,7 +357,7 @@ public final class InnerHealthError {
 
     /**
      * Set the errorId property: The health error unique id.
-     *
+     * 
      * @param errorId the errorId value to set.
      * @return the InnerHealthError object itself.
      */
@@ -366,7 +368,7 @@ public final class InnerHealthError {
 
     /**
      * Get the customerResolvability property: Value indicating whether the health error is customer resolvable.
-     *
+     * 
      * @return the customerResolvability value.
      */
     public HealthErrorCustomerResolvability customerResolvability() {
@@ -375,7 +377,7 @@ public final class InnerHealthError {
 
     /**
      * Set the customerResolvability property: Value indicating whether the health error is customer resolvable.
-     *
+     * 
      * @param customerResolvability the customerResolvability value to set.
      * @return the InnerHealthError object itself.
      */
@@ -386,7 +388,7 @@ public final class InnerHealthError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.SecurityFamily;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DiscoveredSecuritySolution model. */
+/**
+ * The DiscoveredSecuritySolution model.
+ */
 @Fluent
 public final class DiscoveredSecuritySolutionInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class DiscoveredSecuritySolutionInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of DiscoveredSecuritySolutionInner class. */
+    /**
+     * Creates an instance of DiscoveredSecuritySolutionInner class.
+     */
     public DiscoveredSecuritySolutionInner() {
     }
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiscoveredSecuritySolutionProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class DiscoveredSecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -49,7 +53,7 @@ public final class DiscoveredSecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the securityFamily property: The security family of the discovered solution.
-     *
+     * 
      * @return the securityFamily value.
      */
     public SecurityFamily securityFamily() {
@@ -58,7 +62,7 @@ public final class DiscoveredSecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the securityFamily property: The security family of the discovered solution.
-     *
+     * 
      * @param securityFamily the securityFamily value to set.
      * @return the DiscoveredSecuritySolutionInner object itself.
      */
@@ -72,7 +76,7 @@ public final class DiscoveredSecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the offer property: The security solutions' image offer.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -81,7 +85,7 @@ public final class DiscoveredSecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the offer property: The security solutions' image offer.
-     *
+     * 
      * @param offer the offer value to set.
      * @return the DiscoveredSecuritySolutionInner object itself.
      */
@@ -95,7 +99,7 @@ public final class DiscoveredSecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the publisher property: The security solutions' image publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -104,7 +108,7 @@ public final class DiscoveredSecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the publisher property: The security solutions' image publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the DiscoveredSecuritySolutionInner object itself.
      */
@@ -118,7 +122,7 @@ public final class DiscoveredSecuritySolutionInner extends ProxyResource {
 
     /**
      * Get the sku property: The security solutions' image sku.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -127,7 +131,7 @@ public final class DiscoveredSecuritySolutionInner extends ProxyResource {
 
     /**
      * Set the sku property: The security solutions' image sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DiscoveredSecuritySolutionInner object itself.
      */
@@ -141,15 +145,13 @@ public final class DiscoveredSecuritySolutionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model DiscoveredSecuritySolutionInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model DiscoveredSecuritySolutionInner"));
         } else {
             innerProperties().validate();
         }

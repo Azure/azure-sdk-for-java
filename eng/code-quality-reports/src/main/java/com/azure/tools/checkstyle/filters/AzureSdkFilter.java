@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
  * The following violations are ignored:
  *
  * <ul>
+ *     <li>ExternalDependencyExposed checks in implementation code</li>
  *     <li>Missing Javadoc comments in sample and test code</li>
  *     <li>Star imports in test code</li>
  *     <li>Nested blocks in test code</li>
@@ -30,16 +31,29 @@ public class AzureSdkFilter implements Filter {
     private static final Pattern SAMPLE_OR_TEST_FILE_PATTERN
         = Pattern.compile(".*src[/\\\\](samples|test|test-shared)[/\\\\]java[/\\\\].*\\.java$");
 
+    // Pattern that matches implementation files.
+    private static final Pattern IMPLEMENTATION_FILE_PATTERN
+        = Pattern.compile(".*src[/\\\\].*[/\\\\]implementation[/\\\\].*\\.java$");
+
     // The package name prefix for Azure SDK Checkstyle checks
     private static final String AZURE_SDK_CHECK_START = "com.azure.tools.checkstyle.checks.";
 
+    // The ExternalDependencyExposed Azure SDK Checkstyle check
+    private static final String EXTERNAL_DEPENDENCY_EXPOSED = AZURE_SDK_CHECK_START + "ExternalDependencyExposed";
+
     @Override
     public boolean accept(AuditEvent event) {
+        boolean shouldSkip = isIgnoredImplementation(event) || isIgnoredSampleOrTest(event);
+
+        return !shouldSkip;
+    }
+
+    private static boolean isIgnoredSampleOrTest(AuditEvent event) {
         Matcher matcher = SAMPLE_OR_TEST_FILE_PATTERN.matcher(event.getFileName());
 
         if (!matcher.matches()) {
             // Not a test or sample file, so don't filter
-            return true;
+            return false;
         }
 
         boolean isTestFile = matcher.group(1).startsWith("test");
@@ -48,24 +62,37 @@ public class AzureSdkFilter implements Filter {
 
         if (violation.contains("Javadoc")) {
             // Ignore missing Javadoc comments in test code
-            return false;
+            return true;
         } else if  (isTestFile && violation.contains("AvoidStarImport")) {
             // Ignore star imports in test code
-            return false;
+            return true;
         } else if (isTestFile && violation.contains("AvoidNestedBlocks")) {
             // Ignore nested blocks in test code
-            return false;
+            return true;
         } else if (violation.startsWith(AZURE_SDK_CHECK_START)) {
             // Ignore Azure SDK Checkstyle checks in sample and test code
-            return false;
+            return true;
         } else if (violation.contains("LineLength")) {
             // Ignore line length in sample and test code
-            return false;
+            return true;
         } else if (!isTestFile && violation.contains("EqualsAvoidNull")) {
             // Ignore equals avoid null in sample code
-            return false;
-        } else {
             return true;
         }
+
+        return false;
+    }
+
+    private static boolean isIgnoredImplementation(AuditEvent event) {
+        Matcher matcher = IMPLEMENTATION_FILE_PATTERN.matcher(event.getFileName());
+
+        if (!matcher.matches()) {
+            // Not an implementation file, so don't filter
+            return false;
+        }
+
+        String violation = event.getViolation().getSourceName();
+
+        return violation.startsWith(EXTERNAL_DEPENDENCY_EXPOSED);
     }
 }

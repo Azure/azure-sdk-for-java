@@ -7,23 +7,28 @@ package com.azure.resourcemanager.notificationhubs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.fluent.models.MpnsCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a NotificationHub MpnsCredential. */
+/**
+ * Description of a NotificationHub MpnsCredential.
+ */
 @Fluent
 public final class MpnsCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MpnsCredential.class);
-
     /*
-     * Properties of NotificationHub MpnsCredential.
+     * Description of a NotificationHub MpnsCredential.
      */
-    @JsonProperty(value = "properties")
-    private MpnsCredentialProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private MpnsCredentialProperties innerProperties = new MpnsCredentialProperties();
 
     /**
-     * Get the innerProperties property: Properties of NotificationHub MpnsCredential.
-     *
+     * Creates an instance of MpnsCredential class.
+     */
+    public MpnsCredential() {
+    }
+
+    /**
+     * Get the innerProperties property: Description of a NotificationHub MpnsCredential.
+     * 
      * @return the innerProperties value.
      */
     private MpnsCredentialProperties innerProperties() {
@@ -31,8 +36,8 @@ public final class MpnsCredential {
     }
 
     /**
-     * Get the mpnsCertificate property: The MPNS certificate.
-     *
+     * Get the mpnsCertificate property: Gets or sets the MPNS certificate.
+     * 
      * @return the mpnsCertificate value.
      */
     public String mpnsCertificate() {
@@ -40,8 +45,8 @@ public final class MpnsCredential {
     }
 
     /**
-     * Set the mpnsCertificate property: The MPNS certificate.
-     *
+     * Set the mpnsCertificate property: Gets or sets the MPNS certificate.
+     * 
      * @param mpnsCertificate the mpnsCertificate value to set.
      * @return the MpnsCredential object itself.
      */
@@ -54,8 +59,8 @@ public final class MpnsCredential {
     }
 
     /**
-     * Get the certificateKey property: The certificate key for this credential.
-     *
+     * Get the certificateKey property: Gets or sets the certificate key for this credential.
+     * 
      * @return the certificateKey value.
      */
     public String certificateKey() {
@@ -63,8 +68,8 @@ public final class MpnsCredential {
     }
 
     /**
-     * Set the certificateKey property: The certificate key for this credential.
-     *
+     * Set the certificateKey property: Gets or sets the certificate key for this credential.
+     * 
      * @param certificateKey the certificateKey value to set.
      * @return the MpnsCredential object itself.
      */
@@ -77,8 +82,8 @@ public final class MpnsCredential {
     }
 
     /**
-     * Get the thumbprint property: The MPNS certificate Thumbprint.
-     *
+     * Get the thumbprint property: Gets or sets the MPNS certificate Thumbprint.
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -86,8 +91,8 @@ public final class MpnsCredential {
     }
 
     /**
-     * Set the thumbprint property: The MPNS certificate Thumbprint.
-     *
+     * Set the thumbprint property: Gets or sets the MPNS certificate Thumbprint.
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the MpnsCredential object itself.
      */
@@ -101,12 +106,17 @@ public final class MpnsCredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model MpnsCredential"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MpnsCredential.class);
 }

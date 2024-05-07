@@ -21,7 +21,9 @@ import com.azure.resourcemanager.newrelicobservability.models.UserInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A Monitor Resource by NewRelic. */
+/**
+ * A Monitor Resource by NewRelic.
+ */
 @Fluent
 public final class NewRelicMonitorResourceInner extends Resource {
     /*
@@ -42,13 +44,15 @@ public final class NewRelicMonitorResourceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NewRelicMonitorResourceInner class. */
+    /**
+     * Creates an instance of NewRelicMonitorResourceInner class.
+     */
     public NewRelicMonitorResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MonitorProperties innerProperties() {
@@ -57,7 +61,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -66,7 +70,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Set the identity property: The managed service identities assigned to this resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the NewRelicMonitorResourceInner object itself.
      */
@@ -77,21 +81,25 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NewRelicMonitorResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NewRelicMonitorResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -100,7 +108,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning State of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -109,7 +117,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the monitoringStatus property: MonitoringStatus of the resource.
-     *
+     * 
      * @return the monitoringStatus value.
      */
     public MonitoringStatus monitoringStatus() {
@@ -118,7 +126,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the marketplaceSubscriptionStatus property: NewRelic Organization properties of the resource.
-     *
+     * 
      * @return the marketplaceSubscriptionStatus value.
      */
     public MarketplaceSubscriptionStatus marketplaceSubscriptionStatus() {
@@ -127,7 +135,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the marketplaceSubscriptionId property: Marketplace Subscription Id.
-     *
+     * 
      * @return the marketplaceSubscriptionId value.
      */
     public String marketplaceSubscriptionId() {
@@ -136,7 +144,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the newRelicAccountProperties property: MarketplaceSubscriptionStatus of the resource.
-     *
+     * 
      * @return the newRelicAccountProperties value.
      */
     public NewRelicAccountProperties newRelicAccountProperties() {
@@ -145,12 +153,12 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Set the newRelicAccountProperties property: MarketplaceSubscriptionStatus of the resource.
-     *
+     * 
      * @param newRelicAccountProperties the newRelicAccountProperties value to set.
      * @return the NewRelicMonitorResourceInner object itself.
      */
-    public NewRelicMonitorResourceInner withNewRelicAccountProperties(
-        NewRelicAccountProperties newRelicAccountProperties) {
+    public NewRelicMonitorResourceInner
+        withNewRelicAccountProperties(NewRelicAccountProperties newRelicAccountProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MonitorProperties();
         }
@@ -160,7 +168,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the userInfo property: User Info.
-     *
+     * 
      * @return the userInfo value.
      */
     public UserInfo userInfo() {
@@ -169,7 +177,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Set the userInfo property: User Info.
-     *
+     * 
      * @param userInfo the userInfo value to set.
      * @return the NewRelicMonitorResourceInner object itself.
      */
@@ -183,7 +191,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the planData property: Plan details.
-     *
+     * 
      * @return the planData value.
      */
     public PlanData planData() {
@@ -192,7 +200,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Set the planData property: Plan details.
-     *
+     * 
      * @param planData the planData value to set.
      * @return the NewRelicMonitorResourceInner object itself.
      */
@@ -206,7 +214,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the liftrResourceCategory property: Liftr resource category.
-     *
+     * 
      * @return the liftrResourceCategory value.
      */
     public LiftrResourceCategories liftrResourceCategory() {
@@ -215,7 +223,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the liftrResourcePreference property: Liftr resource preference. The priority of the resource.
-     *
+     * 
      * @return the liftrResourcePreference value.
      */
     public Integer liftrResourcePreference() {
@@ -224,7 +232,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the orgCreationSource property: Source of org creation.
-     *
+     * 
      * @return the orgCreationSource value.
      */
     public OrgCreationSource orgCreationSource() {
@@ -233,7 +241,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Set the orgCreationSource property: Source of org creation.
-     *
+     * 
      * @param orgCreationSource the orgCreationSource value to set.
      * @return the NewRelicMonitorResourceInner object itself.
      */
@@ -247,7 +255,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Get the accountCreationSource property: Source of account creation.
-     *
+     * 
      * @return the accountCreationSource value.
      */
     public AccountCreationSource accountCreationSource() {
@@ -256,7 +264,7 @@ public final class NewRelicMonitorResourceInner extends Resource {
 
     /**
      * Set the accountCreationSource property: Source of account creation.
-     *
+     * 
      * @param accountCreationSource the accountCreationSource value to set.
      * @return the NewRelicMonitorResourceInner object itself.
      */
@@ -269,16 +277,60 @@ public final class NewRelicMonitorResourceInner extends Resource {
     }
 
     /**
+     * Get the subscriptionState property: State of the Azure Subscription containing the monitor resource.
+     * 
+     * @return the subscriptionState value.
+     */
+    public String subscriptionState() {
+        return this.innerProperties() == null ? null : this.innerProperties().subscriptionState();
+    }
+
+    /**
+     * Set the subscriptionState property: State of the Azure Subscription containing the monitor resource.
+     * 
+     * @param subscriptionState the subscriptionState value to set.
+     * @return the NewRelicMonitorResourceInner object itself.
+     */
+    public NewRelicMonitorResourceInner withSubscriptionState(String subscriptionState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MonitorProperties();
+        }
+        this.innerProperties().withSubscriptionState(subscriptionState);
+        return this;
+    }
+
+    /**
+     * Get the saaSAzureSubscriptionStatus property: Status of Azure Subscription where Marketplace SaaS is located.
+     * 
+     * @return the saaSAzureSubscriptionStatus value.
+     */
+    public String saaSAzureSubscriptionStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().saaSAzureSubscriptionStatus();
+    }
+
+    /**
+     * Set the saaSAzureSubscriptionStatus property: Status of Azure Subscription where Marketplace SaaS is located.
+     * 
+     * @param saaSAzureSubscriptionStatus the saaSAzureSubscriptionStatus value to set.
+     * @return the NewRelicMonitorResourceInner object itself.
+     */
+    public NewRelicMonitorResourceInner withSaaSAzureSubscriptionStatus(String saaSAzureSubscriptionStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MonitorProperties();
+        }
+        this.innerProperties().withSaaSAzureSubscriptionStatus(saaSAzureSubscriptionStatus);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NewRelicMonitorResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model NewRelicMonitorResourceInner"));
         } else {
             innerProperties().validate();
         }

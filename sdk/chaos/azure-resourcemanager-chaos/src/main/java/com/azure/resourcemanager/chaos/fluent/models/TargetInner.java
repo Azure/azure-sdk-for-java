@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Model that represents a Target resource. */
+/**
+ * Model that represents a Target resource.
+ */
 @Fluent
 public final class TargetInner extends ProxyResource {
     /*
@@ -34,13 +36,15 @@ public final class TargetInner extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> properties;
 
-    /** Creates an instance of TargetInner class. */
+    /**
+     * Creates an instance of TargetInner class.
+     */
     public TargetInner() {
     }
 
     /**
      * Get the systemData property: The system metadata of the target resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,7 +53,7 @@ public final class TargetInner extends ProxyResource {
 
     /**
      * Get the location property: Location of the target resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -58,7 +62,7 @@ public final class TargetInner extends ProxyResource {
 
     /**
      * Set the location property: Location of the target resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the TargetInner object itself.
      */
@@ -69,7 +73,7 @@ public final class TargetInner extends ProxyResource {
 
     /**
      * Get the properties property: The properties of the target resource.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, Object> properties() {
@@ -78,7 +82,7 @@ public final class TargetInner extends ProxyResource {
 
     /**
      * Set the properties property: The properties of the target resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the TargetInner object itself.
      */
@@ -89,14 +93,13 @@ public final class TargetInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model TargetInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model TargetInner"));
         }
     }
 

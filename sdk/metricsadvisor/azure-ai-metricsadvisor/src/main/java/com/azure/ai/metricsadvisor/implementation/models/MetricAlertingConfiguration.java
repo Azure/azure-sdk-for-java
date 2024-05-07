@@ -229,7 +229,8 @@ public final class MetricAlertingConfiguration implements JsonSerializable<Metri
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("anomalyDetectionConfigurationId",
             Objects.toString(this.anomalyDetectionConfigurationId, null));
-        jsonWriter.writeStringField("anomalyScopeType", Objects.toString(this.anomalyScopeType, null));
+        jsonWriter.writeStringField("anomalyScopeType",
+            this.anomalyScopeType == null ? null : this.anomalyScopeType.toString());
         jsonWriter.writeBooleanField("negationOperation", this.negationOperation);
         jsonWriter.writeJsonField("dimensionAnomalyScope", this.dimensionAnomalyScope);
         jsonWriter.writeJsonField("topNAnomalyScope", this.topNAnomalyScope);

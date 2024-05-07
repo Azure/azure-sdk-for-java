@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data used when creating a target resource from a source resource. */
+/**
+ * Data used when creating a target resource from a source resource.
+ */
 @Fluent
 public final class CreationData {
     /*
@@ -16,14 +18,16 @@ public final class CreationData {
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
-    /** Creates an instance of CreationData class. */
+    /**
+     * Creates an instance of CreationData class.
+     */
     public CreationData() {
     }
 
     /**
      * Get the sourceResourceId property: This is the ARM ID of the source object to be used to create the target
      * object.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -33,7 +37,7 @@ public final class CreationData {
     /**
      * Set the sourceResourceId property: This is the ARM ID of the source object to be used to create the target
      * object.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the CreationData object itself.
      */
@@ -44,7 +48,7 @@ public final class CreationData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

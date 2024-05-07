@@ -1,6 +1,6 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
+## 1.15.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,50 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.14.0 (2024-05-01)
+
+### Features Added
+
+- Added `managedHsmDnsSuffix` getter and `storageEndpointSuffix` to `AzureEnvironment`. ([#39647](https://github.com/Azure/azure-sdk-for-java/pull/39647))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+
+## 1.13.0 (2024-04-05)
+
+### Features Added
+
+- Added support for `azure-json` by having serializable models implement `JsonSerializable`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+
+## 1.12.0 (2024-03-01)
+
+### Features Added
+
+- Added new Azure region `Region.ITALY_NORTH`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to `1.47.0`.
+
+## 1.11.10 (2024-02-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
 
 ## 1.11.8 (2023-11-03)
 

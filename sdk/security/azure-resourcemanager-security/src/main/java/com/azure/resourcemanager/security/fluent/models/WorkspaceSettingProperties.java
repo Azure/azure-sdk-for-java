@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workspace setting data. */
+/**
+ * Workspace setting data.
+ */
 @Fluent
 public final class WorkspaceSettingProperties {
     /*
@@ -24,13 +26,15 @@ public final class WorkspaceSettingProperties {
     @JsonProperty(value = "scope", required = true)
     private String scope;
 
-    /** Creates an instance of WorkspaceSettingProperties class. */
+    /**
+     * Creates an instance of WorkspaceSettingProperties class.
+     */
     public WorkspaceSettingProperties() {
     }
 
     /**
      * Get the workspaceId property: The full Azure ID of the workspace to save the data in.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -39,7 +43,7 @@ public final class WorkspaceSettingProperties {
 
     /**
      * Set the workspaceId property: The full Azure ID of the workspace to save the data in.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the WorkspaceSettingProperties object itself.
      */
@@ -49,9 +53,9 @@ public final class WorkspaceSettingProperties {
     }
 
     /**
-     * Get the scope property: All the VMs in this scope will send their security data to the mentioned workspace unless
-     * overridden by a setting with more specific scope.
-     *
+     * Get the scope property: All the VMs in this scope will send their security data to the mentioned workspace
+     * unless overridden by a setting with more specific scope.
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -59,9 +63,9 @@ public final class WorkspaceSettingProperties {
     }
 
     /**
-     * Set the scope property: All the VMs in this scope will send their security data to the mentioned workspace unless
-     * overridden by a setting with more specific scope.
-     *
+     * Set the scope property: All the VMs in this scope will send their security data to the mentioned workspace
+     * unless overridden by a setting with more specific scope.
+     * 
      * @param scope the scope value to set.
      * @return the WorkspaceSettingProperties object itself.
      */
@@ -72,21 +76,17 @@ public final class WorkspaceSettingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (workspaceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property workspaceId in model WorkspaceSettingProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property workspaceId in model WorkspaceSettingProperties"));
         }
         if (scope() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scope in model WorkspaceSettingProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property scope in model WorkspaceSettingProperties"));
         }
     }
 

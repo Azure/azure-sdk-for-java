@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The parameters for updating an agent pool. */
+/**
+ * The parameters for updating an agent pool.
+ */
 @Fluent
 public final class AgentPoolUpdateParameters {
     /*
@@ -26,13 +28,15 @@ public final class AgentPoolUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of AgentPoolUpdateParameters class. */
+    /**
+     * Creates an instance of AgentPoolUpdateParameters class.
+     */
     public AgentPoolUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The properties associated with the agent pool.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AgentPoolPropertiesUpdateParameters innerProperties() {
@@ -41,7 +45,7 @@ public final class AgentPoolUpdateParameters {
 
     /**
      * Get the tags property: The ARM resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -50,7 +54,7 @@ public final class AgentPoolUpdateParameters {
 
     /**
      * Set the tags property: The ARM resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AgentPoolUpdateParameters object itself.
      */
@@ -61,7 +65,7 @@ public final class AgentPoolUpdateParameters {
 
     /**
      * Get the count property: The count of agent machine.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -70,7 +74,7 @@ public final class AgentPoolUpdateParameters {
 
     /**
      * Set the count property: The count of agent machine.
-     *
+     * 
      * @param count the count value to set.
      * @return the AgentPoolUpdateParameters object itself.
      */
@@ -84,7 +88,7 @@ public final class AgentPoolUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

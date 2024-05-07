@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Azure Fabric Specific Details. */
+/**
+ * Azure Fabric Specific Details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("Azure")
 @Fluent
@@ -45,13 +47,15 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
     @JsonProperty(value = "locationDetails")
     private List<A2AFabricSpecificLocationDetails> locationDetails;
 
-    /** Creates an instance of AzureFabricSpecificDetails class. */
+    /**
+     * Creates an instance of AzureFabricSpecificDetails class.
+     */
     public AzureFabricSpecificDetails() {
     }
 
     /**
      * Get the location property: The Location for the Azure fabric.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -60,7 +64,7 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
 
     /**
      * Set the location property: The Location for the Azure fabric.
-     *
+     * 
      * @param location the location value to set.
      * @return the AzureFabricSpecificDetails object itself.
      */
@@ -71,7 +75,7 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
 
     /**
      * Get the containerIds property: The container Ids for the Azure fabric.
-     *
+     * 
      * @return the containerIds value.
      */
     public List<String> containerIds() {
@@ -80,7 +84,7 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
 
     /**
      * Set the containerIds property: The container Ids for the Azure fabric.
-     *
+     * 
      * @param containerIds the containerIds value to set.
      * @return the AzureFabricSpecificDetails object itself.
      */
@@ -91,7 +95,7 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
 
     /**
      * Get the zones property: The zones.
-     *
+     * 
      * @return the zones value.
      */
     public List<A2AZoneDetails> zones() {
@@ -100,7 +104,7 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
 
     /**
      * Set the zones property: The zones.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the AzureFabricSpecificDetails object itself.
      */
@@ -111,7 +115,7 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
 
     /**
      * Get the extendedLocations property: The ExtendedLocations.
-     *
+     * 
      * @return the extendedLocations value.
      */
     public List<A2AExtendedLocationDetails> extendedLocations() {
@@ -120,7 +124,7 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
 
     /**
      * Set the extendedLocations property: The ExtendedLocations.
-     *
+     * 
      * @param extendedLocations the extendedLocations value to set.
      * @return the AzureFabricSpecificDetails object itself.
      */
@@ -131,7 +135,7 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
 
     /**
      * Get the locationDetails property: The location details.
-     *
+     * 
      * @return the locationDetails value.
      */
     public List<A2AFabricSpecificLocationDetails> locationDetails() {
@@ -140,7 +144,7 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
 
     /**
      * Set the locationDetails property: The location details.
-     *
+     * 
      * @param locationDetails the locationDetails value to set.
      * @return the AzureFabricSpecificDetails object itself.
      */
@@ -151,7 +155,7 @@ public final class AzureFabricSpecificDetails extends FabricSpecificDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

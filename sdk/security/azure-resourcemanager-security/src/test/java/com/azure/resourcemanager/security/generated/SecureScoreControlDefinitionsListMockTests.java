@@ -30,36 +30,26 @@ public final class SecureScoreControlDefinitionsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"faofd\",\"description\":\"htncwmhjobzrfp\",\"maxScore\":694063597,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[]},\"id\":\"f\",\"name\":\"cvbzwgwhgkgsoa\",\"type\":\"oorssatfy\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"displayName\":\"vsxfrwvlypztu\",\"description\":\"pncdocloepjz\",\"maxScore\":707924289,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"burskuffud\"},{\"id\":\"vunngjoasnzl\"},{\"id\":\"owqsnix\"}]},\"id\":\"wdqzurvukszkm\",\"name\":\"bhhpvvaeghtmqonx\",\"type\":\"nmcy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SecureScoreControlDefinitionItem> response =
-            manager.secureScoreControlDefinitions().list(com.azure.core.util.Context.NONE);
+        PagedIterable<SecureScoreControlDefinitionItem> response
+            = manager.secureScoreControlDefinitions().list(com.azure.core.util.Context.NONE);
+
     }
 }

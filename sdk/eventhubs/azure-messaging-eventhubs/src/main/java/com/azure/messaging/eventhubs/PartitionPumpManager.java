@@ -207,9 +207,11 @@ class PartitionPumpManager {
             } else {
                 partitionEventFlux = receiver.window(options.getMaxBatchSize());
             }
+
+            int prefetchWindows = Math.max(prefetch / options.getMaxBatchSize(), 1);
             partitionEventFlux
-                .concatMap(Flux::collectList)
-                .publishOn(scheduler, false, prefetch)
+                .concatMap(Flux::collectList, 0)
+                .publishOn(scheduler, false, prefetchWindows)
                 .subscribe(partitionEventBatch -> {
                     processEvents(partitionContext, partitionProcessor, partitionPump,
                         partitionEventBatch);

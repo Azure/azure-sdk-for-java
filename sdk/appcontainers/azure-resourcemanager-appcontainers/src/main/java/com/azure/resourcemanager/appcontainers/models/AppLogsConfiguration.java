@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration of application logs. */
+/**
+ * Configuration of application logs.
+ */
 @Fluent
 public final class AppLogsConfiguration {
     /*
@@ -22,13 +24,15 @@ public final class AppLogsConfiguration {
     @JsonProperty(value = "logAnalyticsConfiguration")
     private LogAnalyticsConfiguration logAnalyticsConfiguration;
 
-    /** Creates an instance of AppLogsConfiguration class. */
+    /**
+     * Creates an instance of AppLogsConfiguration class.
+     */
     public AppLogsConfiguration() {
     }
 
     /**
      * Get the destination property: Logs destination, can be 'log-analytics', 'azure-monitor' or 'none'.
-     *
+     * 
      * @return the destination value.
      */
     public String destination() {
@@ -37,7 +41,7 @@ public final class AppLogsConfiguration {
 
     /**
      * Set the destination property: Logs destination, can be 'log-analytics', 'azure-monitor' or 'none'.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the AppLogsConfiguration object itself.
      */
@@ -49,7 +53,7 @@ public final class AppLogsConfiguration {
     /**
      * Get the logAnalyticsConfiguration property: Log Analytics configuration, must only be provided when destination
      * is configured as 'log-analytics'.
-     *
+     * 
      * @return the logAnalyticsConfiguration value.
      */
     public LogAnalyticsConfiguration logAnalyticsConfiguration() {
@@ -59,7 +63,7 @@ public final class AppLogsConfiguration {
     /**
      * Set the logAnalyticsConfiguration property: Log Analytics configuration, must only be provided when destination
      * is configured as 'log-analytics'.
-     *
+     * 
      * @param logAnalyticsConfiguration the logAnalyticsConfiguration value to set.
      * @return the AppLogsConfiguration object itself.
      */
@@ -70,7 +74,7 @@ public final class AppLogsConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

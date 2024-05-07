@@ -4,40 +4,53 @@
 
 package com.azure.resourcemanager.streamanalytics.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.streamanalytics.fluent.models.FunctionConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
-/** The properties that are associated with a function. */
+/**
+ * The properties that are associated with a function.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
     defaultImpl = FunctionProperties.class)
 @JsonTypeName("FunctionProperties")
-@JsonSubTypes({@JsonSubTypes.Type(name = "Scalar", value = ScalarFunctionProperties.class)})
-@Immutable
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "Scalar", value = ScalarFunctionProperties.class),
+    @JsonSubTypes.Type(name = "Aggregate", value = AggregateFunctionProperties.class) })
+@Fluent
 public class FunctionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionProperties.class);
-
     /*
-     * The current entity tag for the function. This is an opaque string. You
-     * can use it to detect whether the resource has changed between requests.
-     * You can also use it in the If-Match or If-None-Match headers for write
-     * operations for optimistic concurrency.
+     * The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource
+     * has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations
+     * for optimistic concurrency.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * The properties property.
+     */
+    @JsonProperty(value = "properties")
+    private FunctionConfiguration innerProperties;
+
+    /**
+     * Creates an instance of FunctionProperties class.
+     */
+    public FunctionProperties() {
+    }
 
     /**
      * Get the etag property: The current entity tag for the function. This is an opaque string. You can use it to
      * detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match
      * headers for write operations for optimistic concurrency.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -45,10 +58,93 @@ public class FunctionProperties {
     }
 
     /**
+     * Get the innerProperties property: The properties property.
+     * 
+     * @return the innerProperties value.
+     */
+    private FunctionConfiguration innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the inputs property: The inputs property.
+     * 
+     * @return the inputs value.
+     */
+    public List<FunctionInput> inputs() {
+        return this.innerProperties() == null ? null : this.innerProperties().inputs();
+    }
+
+    /**
+     * Set the inputs property: The inputs property.
+     * 
+     * @param inputs the inputs value to set.
+     * @return the FunctionProperties object itself.
+     */
+    public FunctionProperties withInputs(List<FunctionInput> inputs) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionConfiguration();
+        }
+        this.innerProperties().withInputs(inputs);
+        return this;
+    }
+
+    /**
+     * Get the output property: Describes the output of a function.
+     * 
+     * @return the output value.
+     */
+    public FunctionOutput output() {
+        return this.innerProperties() == null ? null : this.innerProperties().output();
+    }
+
+    /**
+     * Set the output property: Describes the output of a function.
+     * 
+     * @param output the output value to set.
+     * @return the FunctionProperties object itself.
+     */
+    public FunctionProperties withOutput(FunctionOutput output) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionConfiguration();
+        }
+        this.innerProperties().withOutput(output);
+        return this;
+    }
+
+    /**
+     * Get the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
+     * service’s case, this describes the endpoint.
+     * 
+     * @return the binding value.
+     */
+    public FunctionBinding binding() {
+        return this.innerProperties() == null ? null : this.innerProperties().binding();
+    }
+
+    /**
+     * Set the binding property: The physical binding of the function. For example, in the Azure Machine Learning web
+     * service’s case, this describes the endpoint.
+     * 
+     * @param binding the binding value to set.
+     * @return the FunctionProperties object itself.
+     */
+    public FunctionProperties withBinding(FunctionBinding binding) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FunctionConfiguration();
+        }
+        this.innerProperties().withBinding(binding);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPoint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Base class for backup copies. Workload-specific backup copies are derived from this class. */
+/**
+ * Base class for backup copies. Workload-specific backup copies are derived from this class.
+ */
 @Fluent
 public final class RecoveryPointResourceInner extends Resource {
     /*
@@ -25,13 +27,15 @@ public final class RecoveryPointResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
-    /** Creates an instance of RecoveryPointResourceInner class. */
+    /**
+     * Creates an instance of RecoveryPointResourceInner class.
+     */
     public RecoveryPointResourceInner() {
     }
 
     /**
      * Get the properties property: RecoveryPointResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public RecoveryPoint properties() {
@@ -40,7 +44,7 @@ public final class RecoveryPointResourceInner extends Resource {
 
     /**
      * Set the properties property: RecoveryPointResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RecoveryPointResourceInner object itself.
      */
@@ -51,7 +55,7 @@ public final class RecoveryPointResourceInner extends Resource {
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -60,7 +64,7 @@ public final class RecoveryPointResourceInner extends Resource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the RecoveryPointResourceInner object itself.
      */
@@ -69,14 +73,18 @@ public final class RecoveryPointResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPointResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPointResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,7 +93,7 @@ public final class RecoveryPointResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

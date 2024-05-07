@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationRecoveryServicesProviders. */
+/**
+ * Resource collection API of ReplicationRecoveryServicesProviders.
+ */
 public interface ReplicationRecoveryServicesProviders {
     /**
      * Gets the list of registered recovery services providers for the fabric.
-     *
-     * <p>Lists the registered recovery services providers for the specified fabric.
-     *
+     * 
+     * Lists the registered recovery services providers for the specified fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -23,14 +25,14 @@ public interface ReplicationRecoveryServicesProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of providers as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RecoveryServicesProvider> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName);
+    PagedIterable<RecoveryServicesProvider> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName);
 
     /**
      * Gets the list of registered recovery services providers for the fabric.
-     *
-     * <p>Lists the registered recovery services providers for the specified fabric.
-     *
+     * 
+     * Lists the registered recovery services providers for the specified fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -40,14 +42,14 @@ public interface ReplicationRecoveryServicesProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of providers as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RecoveryServicesProvider> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName, Context context);
+    PagedIterable<RecoveryServicesProvider> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName, Context context);
 
     /**
      * Gets the details of a recovery services provider.
-     *
-     * <p>Gets the details of registered recovery services provider.
-     *
+     * 
+     * Gets the details of registered recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -58,14 +60,14 @@ public interface ReplicationRecoveryServicesProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of registered recovery services provider along with {@link Response}.
      */
-    Response<RecoveryServicesProvider> getWithResponse(
-        String resourceName, String resourceGroupName, String fabricName, String providerName, Context context);
+    Response<RecoveryServicesProvider> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+        String providerName, Context context);
 
     /**
      * Gets the details of a recovery services provider.
-     *
-     * <p>Gets the details of registered recovery services provider.
-     *
+     * 
+     * Gets the details of registered recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -79,9 +81,9 @@ public interface ReplicationRecoveryServicesProviders {
 
     /**
      * Purges recovery service provider from fabric.
-     *
-     * <p>The operation to purge(force delete) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -94,9 +96,9 @@ public interface ReplicationRecoveryServicesProviders {
 
     /**
      * Purges recovery service provider from fabric.
-     *
-     * <p>The operation to purge(force delete) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -110,9 +112,9 @@ public interface ReplicationRecoveryServicesProviders {
 
     /**
      * Refresh details from the recovery services provider.
-     *
-     * <p>The operation to refresh the information from the recovery services provider.
-     *
+     * 
+     * The operation to refresh the information from the recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -122,14 +124,14 @@ public interface ReplicationRecoveryServicesProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provider details.
      */
-    RecoveryServicesProvider refreshProvider(
-        String resourceName, String resourceGroupName, String fabricName, String providerName);
+    RecoveryServicesProvider refreshProvider(String resourceName, String resourceGroupName, String fabricName,
+        String providerName);
 
     /**
      * Refresh details from the recovery services provider.
-     *
-     * <p>The operation to refresh the information from the recovery services provider.
-     *
+     * 
+     * The operation to refresh the information from the recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -140,16 +142,16 @@ public interface ReplicationRecoveryServicesProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provider details.
      */
-    RecoveryServicesProvider refreshProvider(
-        String resourceName, String resourceGroupName, String fabricName, String providerName, Context context);
+    RecoveryServicesProvider refreshProvider(String resourceName, String resourceGroupName, String fabricName,
+        String providerName, Context context);
 
     /**
      * Deletes provider from fabric. Note: Deleting provider for any fabric other than SingleHost is unsupported. To
      * maintain backward compatibility for released clients the object "deleteRspInput" is used (if the object is empty
      * we assume that it is old client and continue the old behavior).
-     *
-     * <p>The operation to removes/delete(unregister) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to removes/delete(unregister) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -164,9 +166,9 @@ public interface ReplicationRecoveryServicesProviders {
      * Deletes provider from fabric. Note: Deleting provider for any fabric other than SingleHost is unsupported. To
      * maintain backward compatibility for released clients the object "deleteRspInput" is used (if the object is empty
      * we assume that it is old client and continue the old behavior).
-     *
-     * <p>The operation to removes/delete(unregister) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to removes/delete(unregister) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -180,9 +182,9 @@ public interface ReplicationRecoveryServicesProviders {
 
     /**
      * Gets the list of registered recovery services providers in the vault. This is a view only api.
-     *
-     * <p>Lists the registered recovery services providers in the vault.
-     *
+     * 
+     * Lists the registered recovery services providers in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,9 +196,9 @@ public interface ReplicationRecoveryServicesProviders {
 
     /**
      * Gets the list of registered recovery services providers in the vault. This is a view only api.
-     *
-     * <p>Lists the registered recovery services providers in the vault.
-     *
+     * 
+     * Lists the registered recovery services providers in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -209,9 +211,9 @@ public interface ReplicationRecoveryServicesProviders {
 
     /**
      * Gets the details of a recovery services provider.
-     *
-     * <p>Gets the details of registered recovery services provider.
-     *
+     * 
+     * Gets the details of registered recovery services provider.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -222,9 +224,9 @@ public interface ReplicationRecoveryServicesProviders {
 
     /**
      * Gets the details of a recovery services provider.
-     *
-     * <p>Gets the details of registered recovery services provider.
-     *
+     * 
+     * Gets the details of registered recovery services provider.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +238,7 @@ public interface ReplicationRecoveryServicesProviders {
 
     /**
      * Begins definition for a new RecoveryServicesProvider resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new RecoveryServicesProvider definition.
      */

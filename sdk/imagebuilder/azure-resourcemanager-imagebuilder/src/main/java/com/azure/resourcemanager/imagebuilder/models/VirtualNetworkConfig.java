@@ -7,7 +7,9 @@ package com.azure.resourcemanager.imagebuilder.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Network configuration. */
+/**
+ * Virtual Network configuration.
+ */
 @Fluent
 public final class VirtualNetworkConfig {
     /*
@@ -23,13 +25,15 @@ public final class VirtualNetworkConfig {
     @JsonProperty(value = "proxyVmSize")
     private String proxyVmSize;
 
-    /** Creates an instance of VirtualNetworkConfig class. */
+    /**
+     * Creates an instance of VirtualNetworkConfig class.
+     */
     public VirtualNetworkConfig() {
     }
 
     /**
      * Get the subnetId property: Resource id of a pre-existing subnet.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -38,7 +42,7 @@ public final class VirtualNetworkConfig {
 
     /**
      * Set the subnetId property: Resource id of a pre-existing subnet.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the VirtualNetworkConfig object itself.
      */
@@ -50,7 +54,7 @@ public final class VirtualNetworkConfig {
     /**
      * Get the proxyVmSize property: Size of the proxy virtual machine used to pass traffic to the build VM and
      * validation VM. Omit or specify empty string to use the default (Standard_A1_v2).
-     *
+     * 
      * @return the proxyVmSize value.
      */
     public String proxyVmSize() {
@@ -60,7 +64,7 @@ public final class VirtualNetworkConfig {
     /**
      * Set the proxyVmSize property: Size of the proxy virtual machine used to pass traffic to the build VM and
      * validation VM. Omit or specify empty string to use the default (Standard_A1_v2).
-     *
+     * 
      * @param proxyVmSize the proxyVmSize value to set.
      * @return the VirtualNetworkConfig object itself.
      */
@@ -71,7 +75,7 @@ public final class VirtualNetworkConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

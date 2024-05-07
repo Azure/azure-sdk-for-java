@@ -45,8 +45,9 @@ public final class QueryFeedOperationState extends FeedOperationState {
                 queryRequestOptions.getConsistencyLevel()),
             clientAccessor.getEffectiveDiagnosticsThresholds(
                 cosmosAsyncClient,
-                qryOptAccessor.getDiagnosticsThresholds(
-                    checkNotNull(queryRequestOptions, "Argument 'queryRequestOptions' must not be null."))),
+                qryOptAccessor.getImpl(
+                    checkNotNull(queryRequestOptions, "Argument 'queryRequestOptions' must not be null.")
+                ).getThresholds()),
             fluxOptions,
             getEffectiveMaxItemCount(fluxOptions, queryRequestOptions)
         );

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** InMage protected disk details. */
+/**
+ * InMage protected disk details.
+ */
 @Fluent
 public final class InMageProtectedDiskDetails {
     /*
@@ -143,13 +145,15 @@ public final class InMageProtectedDiskDetails {
     @JsonProperty(value = "progressStatus")
     private String progressStatus;
 
-    /** Creates an instance of InMageProtectedDiskDetails class. */
+    /**
+     * Creates an instance of InMageProtectedDiskDetails class.
+     */
     public InMageProtectedDiskDetails() {
     }
 
     /**
      * Get the diskId property: The disk id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -158,7 +162,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the diskId property: The disk id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -169,7 +173,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the diskName property: The disk name.
-     *
+     * 
      * @return the diskName value.
      */
     public String diskName() {
@@ -178,7 +182,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the diskName property: The disk name.
-     *
+     * 
      * @param diskName the diskName value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -189,7 +193,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the protectionStage property: The protection stage.
-     *
+     * 
      * @return the protectionStage value.
      */
     public String protectionStage() {
@@ -198,7 +202,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the protectionStage property: The protection stage.
-     *
+     * 
      * @param protectionStage the protectionStage value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -209,7 +213,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the healthErrorCode property: The health error code for the disk.
-     *
+     * 
      * @return the healthErrorCode value.
      */
     public String healthErrorCode() {
@@ -218,7 +222,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the healthErrorCode property: The health error code for the disk.
-     *
+     * 
      * @param healthErrorCode the healthErrorCode value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -229,7 +233,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the rpoInSeconds property: The RPO in seconds.
-     *
+     * 
      * @return the rpoInSeconds value.
      */
     public Long rpoInSeconds() {
@@ -238,7 +242,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the rpoInSeconds property: The RPO in seconds.
-     *
+     * 
      * @param rpoInSeconds the rpoInSeconds value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -249,7 +253,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the resyncRequired property: A value indicating whether resync is required for this disk.
-     *
+     * 
      * @return the resyncRequired value.
      */
     public String resyncRequired() {
@@ -258,7 +262,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the resyncRequired property: A value indicating whether resync is required for this disk.
-     *
+     * 
      * @param resyncRequired the resyncRequired value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -269,7 +273,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the resyncProgressPercentage property: The resync progress percentage.
-     *
+     * 
      * @return the resyncProgressPercentage value.
      */
     public Integer resyncProgressPercentage() {
@@ -278,7 +282,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the resyncProgressPercentage property: The resync progress percentage.
-     *
+     * 
      * @param resyncProgressPercentage the resyncProgressPercentage value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -289,7 +293,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the resyncDurationInSeconds property: The resync duration in seconds.
-     *
+     * 
      * @return the resyncDurationInSeconds value.
      */
     public Long resyncDurationInSeconds() {
@@ -298,7 +302,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the resyncDurationInSeconds property: The resync duration in seconds.
-     *
+     * 
      * @param resyncDurationInSeconds the resyncDurationInSeconds value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -309,7 +313,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the diskCapacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @return the diskCapacityInBytes value.
      */
     public Long diskCapacityInBytes() {
@@ -318,7 +322,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the diskCapacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @param diskCapacityInBytes the diskCapacityInBytes value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -329,7 +333,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the fileSystemCapacityInBytes property: The file system capacity in bytes.
-     *
+     * 
      * @return the fileSystemCapacityInBytes value.
      */
     public Long fileSystemCapacityInBytes() {
@@ -338,7 +342,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the fileSystemCapacityInBytes property: The file system capacity in bytes.
-     *
+     * 
      * @param fileSystemCapacityInBytes the fileSystemCapacityInBytes value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -349,7 +353,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the sourceDataInMB property: The source data transit in MB.
-     *
+     * 
      * @return the sourceDataInMB value.
      */
     public Double sourceDataInMB() {
@@ -358,7 +362,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the sourceDataInMB property: The source data transit in MB.
-     *
+     * 
      * @param sourceDataInMB the sourceDataInMB value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -369,7 +373,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the psDataInMB property: The PS data transit in MB.
-     *
+     * 
      * @return the psDataInMB value.
      */
     public Double psDataInMB() {
@@ -378,7 +382,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the psDataInMB property: The PS data transit in MB.
-     *
+     * 
      * @param psDataInMB the psDataInMB value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -389,7 +393,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the targetDataInMB property: The target data transit in MB.
-     *
+     * 
      * @return the targetDataInMB value.
      */
     public Double targetDataInMB() {
@@ -398,7 +402,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the targetDataInMB property: The target data transit in MB.
-     *
+     * 
      * @param targetDataInMB the targetDataInMB value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -409,7 +413,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the diskResized property: A value indicating whether disk is resized.
-     *
+     * 
      * @return the diskResized value.
      */
     public String diskResized() {
@@ -418,7 +422,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the diskResized property: A value indicating whether disk is resized.
-     *
+     * 
      * @param diskResized the diskResized value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -429,7 +433,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the lastRpoCalculatedTime property: The last RPO calculated time.
-     *
+     * 
      * @return the lastRpoCalculatedTime value.
      */
     public OffsetDateTime lastRpoCalculatedTime() {
@@ -438,7 +442,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the lastRpoCalculatedTime property: The last RPO calculated time.
-     *
+     * 
      * @param lastRpoCalculatedTime the lastRpoCalculatedTime value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -449,7 +453,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the resyncProcessedBytes property: The resync processed bytes.
-     *
+     * 
      * @return the resyncProcessedBytes value.
      */
     public Long resyncProcessedBytes() {
@@ -458,7 +462,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the resyncProcessedBytes property: The resync processed bytes.
-     *
+     * 
      * @param resyncProcessedBytes the resyncProcessedBytes value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -469,7 +473,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the resyncTotalTransferredBytes property: The resync total transferred bytes.
-     *
+     * 
      * @return the resyncTotalTransferredBytes value.
      */
     public Long resyncTotalTransferredBytes() {
@@ -478,7 +482,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the resyncTotalTransferredBytes property: The resync total transferred bytes.
-     *
+     * 
      * @param resyncTotalTransferredBytes the resyncTotalTransferredBytes value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -489,7 +493,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the resyncLast15MinutesTransferredBytes property: The resync last 15 minutes transferred bytes.
-     *
+     * 
      * @return the resyncLast15MinutesTransferredBytes value.
      */
     public Long resyncLast15MinutesTransferredBytes() {
@@ -498,19 +502,19 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the resyncLast15MinutesTransferredBytes property: The resync last 15 minutes transferred bytes.
-     *
+     * 
      * @param resyncLast15MinutesTransferredBytes the resyncLast15MinutesTransferredBytes value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
-    public InMageProtectedDiskDetails withResyncLast15MinutesTransferredBytes(
-        Long resyncLast15MinutesTransferredBytes) {
+    public InMageProtectedDiskDetails
+        withResyncLast15MinutesTransferredBytes(Long resyncLast15MinutesTransferredBytes) {
         this.resyncLast15MinutesTransferredBytes = resyncLast15MinutesTransferredBytes;
         return this;
     }
 
     /**
      * Get the resyncLastDataTransferTimeUtc property: The last data transfer time in UTC.
-     *
+     * 
      * @return the resyncLastDataTransferTimeUtc value.
      */
     public OffsetDateTime resyncLastDataTransferTimeUtc() {
@@ -519,7 +523,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the resyncLastDataTransferTimeUtc property: The last data transfer time in UTC.
-     *
+     * 
      * @param resyncLastDataTransferTimeUtc the resyncLastDataTransferTimeUtc value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -530,7 +534,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the resyncStartTime property: The resync start time.
-     *
+     * 
      * @return the resyncStartTime value.
      */
     public OffsetDateTime resyncStartTime() {
@@ -539,7 +543,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the resyncStartTime property: The resync start time.
-     *
+     * 
      * @param resyncStartTime the resyncStartTime value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -550,7 +554,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the progressHealth property: The Progress Health.
-     *
+     * 
      * @return the progressHealth value.
      */
     public String progressHealth() {
@@ -559,7 +563,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the progressHealth property: The Progress Health.
-     *
+     * 
      * @param progressHealth the progressHealth value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -570,7 +574,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Get the progressStatus property: The Progress Status.
-     *
+     * 
      * @return the progressStatus value.
      */
     public String progressStatus() {
@@ -579,7 +583,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Set the progressStatus property: The Progress Status.
-     *
+     * 
      * @param progressStatus the progressStatus value to set.
      * @return the InMageProtectedDiskDetails object itself.
      */
@@ -590,7 +594,7 @@ public final class InMageProtectedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

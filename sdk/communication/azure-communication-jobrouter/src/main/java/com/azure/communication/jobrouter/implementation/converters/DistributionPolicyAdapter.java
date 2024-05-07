@@ -58,38 +58,4 @@ public class DistributionPolicyAdapter {
         return null;
     }
 
-    public static DistributionMode convertDistributionModeToPublic(DistributionModeInternal mode) {
-        if (mode instanceof BestWorkerModeInternal) {
-            BestWorkerModeInternal bestWorker = (BestWorkerModeInternal) mode;
-            return new BestWorkerMode()
-                .setMinConcurrentOffers(bestWorker.getMinConcurrentOffers())
-                .setMaxConcurrentOffers(bestWorker.getMaxConcurrentOffers())
-                .setBypassSelectors(bestWorker.isBypassSelectors())
-                .setScoringRule(RouterRuleAdapter.convertRouterRuleToPublic(bestWorker.getScoringRule()))
-                .setScoringRuleOptions(bestWorker.getScoringRuleOptions());
-        } else if (mode instanceof RoundRobinModeInternal) {
-            RoundRobinModeInternal roundRobin = (RoundRobinModeInternal) mode;
-            return new RoundRobinMode()
-                .setMinConcurrentOffers(roundRobin.getMinConcurrentOffers())
-                .setMaxConcurrentOffers(roundRobin.getMaxConcurrentOffers())
-                .setBypassSelectors(roundRobin.isBypassSelectors());
-        } else if (mode instanceof LongestIdleModeInternal) {
-            LongestIdleModeInternal longestIdle = (LongestIdleModeInternal) mode;
-            return new LongestIdleMode()
-                .setMinConcurrentOffers(longestIdle.getMinConcurrentOffers())
-                .setMaxConcurrentOffers(longestIdle.getMaxConcurrentOffers())
-                .setBypassSelectors(longestIdle.isBypassSelectors());
-        }
-
-        return null;
-    }
-
-    public static DistributionPolicyInternal convertDistributionPolicyToInternal(DistributionPolicy distributionPolicy) {
-        return new DistributionPolicyInternal()
-            .setEtag(distributionPolicy.getEtag())
-            .setId(distributionPolicy.getId())
-            .setName(distributionPolicy.getName())
-            .setMode(convertDistributionModeToInternal(distributionPolicy.getMode()))
-            .setOfferExpiresAfterSeconds(Double.valueOf(distributionPolicy.getOfferExpiresAfter().getSeconds()));
-    }
 }

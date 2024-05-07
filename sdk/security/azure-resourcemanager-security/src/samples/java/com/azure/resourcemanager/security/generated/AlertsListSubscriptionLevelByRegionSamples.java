@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for Alerts ListSubscriptionLevelByRegion. */
+/**
+ * Samples for Alerts ListSubscriptionLevelByRegion.
+ */
 public final class AlertsListSubscriptionLevelByRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/GetAlertsSubscriptionsLocation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2022-01-01/examples/Alerts/
+     * GetAlertsSubscriptionsLocation_example.json
      */
     /**
      * Sample code: Get security alerts on a subscription from a security data location.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getSecurityAlertsOnASubscriptionFromASecurityDataLocation(

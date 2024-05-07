@@ -8,19 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** API route config of the Spring Cloud Gateway. */
+/**
+ * API route config of the Spring Cloud Gateway.
+ */
 @Fluent
 public final class GatewayApiRoute {
     /*
-     * A title, will be applied to methods in the generated OpenAPI
-     * documentation.
+     * A title, will be applied to methods in the generated OpenAPI documentation.
      */
     @JsonProperty(value = "title")
     private String title;
 
     /*
-     * A description, will be applied to methods in the generated OpenAPI
-     * documentation.
+     * A description, will be applied to methods in the generated OpenAPI documentation.
      */
     @JsonProperty(value = "description")
     private String description;
@@ -38,24 +38,21 @@ public final class GatewayApiRoute {
     private Boolean ssoEnabled;
 
     /*
-     * Pass currently-authenticated user's identity token to application
-     * service, default is 'false'
+     * Pass currently-authenticated user's identity token to application service, default is 'false'
      */
     @JsonProperty(value = "tokenRelay")
     private Boolean tokenRelay;
 
     /*
-     * A number of conditions to evaluate a route for each request. Each
-     * predicate may be evaluated against request headers and parameter values.
-     * All of the predicates associated with a route must evaluate to true for
-     * the route to be matched to the request.
+     * A number of conditions to evaluate a route for each request. Each predicate may be evaluated against request
+     * headers and parameter values. All of the predicates associated with a route must evaluate to true for the route
+     * to be matched to the request.
      */
     @JsonProperty(value = "predicates")
     private List<String> predicates;
 
     /*
-     * To modify the request before sending it to the target endpoint, or the
-     * received response.
+     * To modify the request before sending it to the target endpoint, or the received response.
      */
     @JsonProperty(value = "filters")
     private List<String> filters;
@@ -67,15 +64,20 @@ public final class GatewayApiRoute {
     private Integer order;
 
     /*
-     * Classification tags, will be applied to methods in the generated OpenAPI
-     * documentation.
+     * Classification tags, will be applied to methods in the generated OpenAPI documentation.
      */
     @JsonProperty(value = "tags")
     private List<String> tags;
 
     /**
+     * Creates an instance of GatewayApiRoute class.
+     */
+    public GatewayApiRoute() {
+    }
+
+    /**
      * Get the title property: A title, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -84,7 +86,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the title property: A title, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @param title the title value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -95,7 +97,7 @@ public final class GatewayApiRoute {
 
     /**
      * Get the description property: A description, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -104,7 +106,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the description property: A description, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @param description the description value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -115,7 +117,7 @@ public final class GatewayApiRoute {
 
     /**
      * Get the uri property: Full uri, will override `appName`.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -124,7 +126,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the uri property: Full uri, will override `appName`.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -135,7 +137,7 @@ public final class GatewayApiRoute {
 
     /**
      * Get the ssoEnabled property: Enable sso validation.
-     *
+     * 
      * @return the ssoEnabled value.
      */
     public Boolean ssoEnabled() {
@@ -144,7 +146,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the ssoEnabled property: Enable sso validation.
-     *
+     * 
      * @param ssoEnabled the ssoEnabled value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -156,7 +158,7 @@ public final class GatewayApiRoute {
     /**
      * Get the tokenRelay property: Pass currently-authenticated user's identity token to application service, default
      * is 'false'.
-     *
+     * 
      * @return the tokenRelay value.
      */
     public Boolean tokenRelay() {
@@ -166,7 +168,7 @@ public final class GatewayApiRoute {
     /**
      * Set the tokenRelay property: Pass currently-authenticated user's identity token to application service, default
      * is 'false'.
-     *
+     * 
      * @param tokenRelay the tokenRelay value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -179,7 +181,7 @@ public final class GatewayApiRoute {
      * Get the predicates property: A number of conditions to evaluate a route for each request. Each predicate may be
      * evaluated against request headers and parameter values. All of the predicates associated with a route must
      * evaluate to true for the route to be matched to the request.
-     *
+     * 
      * @return the predicates value.
      */
     public List<String> predicates() {
@@ -190,7 +192,7 @@ public final class GatewayApiRoute {
      * Set the predicates property: A number of conditions to evaluate a route for each request. Each predicate may be
      * evaluated against request headers and parameter values. All of the predicates associated with a route must
      * evaluate to true for the route to be matched to the request.
-     *
+     * 
      * @param predicates the predicates value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -202,7 +204,7 @@ public final class GatewayApiRoute {
     /**
      * Get the filters property: To modify the request before sending it to the target endpoint, or the received
      * response.
-     *
+     * 
      * @return the filters value.
      */
     public List<String> filters() {
@@ -212,7 +214,7 @@ public final class GatewayApiRoute {
     /**
      * Set the filters property: To modify the request before sending it to the target endpoint, or the received
      * response.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -223,7 +225,7 @@ public final class GatewayApiRoute {
 
     /**
      * Get the order property: Route processing order.
-     *
+     * 
      * @return the order value.
      */
     public Integer order() {
@@ -232,7 +234,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the order property: Route processing order.
-     *
+     * 
      * @param order the order value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -243,7 +245,7 @@ public final class GatewayApiRoute {
 
     /**
      * Get the tags property: Classification tags, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @return the tags value.
      */
     public List<String> tags() {
@@ -252,7 +254,7 @@ public final class GatewayApiRoute {
 
     /**
      * Set the tags property: Classification tags, will be applied to methods in the generated OpenAPI documentation.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the GatewayApiRoute object itself.
      */
@@ -263,7 +265,7 @@ public final class GatewayApiRoute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

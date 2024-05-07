@@ -11,26 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class FileDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FileDetailsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"createdOn\":\"2021-02-11T23:15:26Z\",\"chunkSize\":55.672485,\"fileSize\":54.449566,\"numberOfChunks\":78.99571}")
-                .toObject(FileDetailsProperties.class);
-        Assertions.assertEquals(55.672485F, model.chunkSize());
-        Assertions.assertEquals(54.449566F, model.fileSize());
-        Assertions.assertEquals(78.99571F, model.numberOfChunks());
+        FileDetailsProperties model = BinaryData.fromString(
+            "{\"createdOn\":\"2021-09-11T16:48:39Z\",\"chunkSize\":1819295736,\"fileSize\":1347899854,\"numberOfChunks\":1050448020}")
+            .toObject(FileDetailsProperties.class);
+        Assertions.assertEquals(1819295736, model.chunkSize());
+        Assertions.assertEquals(1347899854, model.fileSize());
+        Assertions.assertEquals(1050448020, model.numberOfChunks());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileDetailsProperties model =
-            new FileDetailsProperties()
-                .withChunkSize(55.672485F)
-                .withFileSize(54.449566F)
-                .withNumberOfChunks(78.99571F);
+        FileDetailsProperties model = new FileDetailsProperties().withChunkSize(1819295736)
+            .withFileSize(1347899854)
+            .withNumberOfChunks(1050448020);
         model = BinaryData.fromObject(model).toObject(FileDetailsProperties.class);
-        Assertions.assertEquals(55.672485F, model.chunkSize());
-        Assertions.assertEquals(54.449566F, model.fileSize());
-        Assertions.assertEquals(78.99571F, model.numberOfChunks());
+        Assertions.assertEquals(1819295736, model.chunkSize());
+        Assertions.assertEquals(1347899854, model.fileSize());
+        Assertions.assertEquals(1050448020, model.numberOfChunks());
     }
 }

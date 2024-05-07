@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Plugin certificates information for Service Mesh. */
+/**
+ * Plugin certificates information for Service Mesh.
+ */
 @Fluent
 public final class IstioPluginCertificateAuthority {
     /*
@@ -40,13 +42,15 @@ public final class IstioPluginCertificateAuthority {
     @JsonProperty(value = "certChainObjectName")
     private String certChainObjectName;
 
-    /** Creates an instance of IstioPluginCertificateAuthority class. */
+    /**
+     * Creates an instance of IstioPluginCertificateAuthority class.
+     */
     public IstioPluginCertificateAuthority() {
     }
 
     /**
      * Get the keyVaultId property: The resource ID of the Key Vault.
-     *
+     * 
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
@@ -55,7 +59,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Set the keyVaultId property: The resource ID of the Key Vault.
-     *
+     * 
      * @param keyVaultId the keyVaultId value to set.
      * @return the IstioPluginCertificateAuthority object itself.
      */
@@ -66,7 +70,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Get the certObjectName property: Intermediate certificate object name in Azure Key Vault.
-     *
+     * 
      * @return the certObjectName value.
      */
     public String certObjectName() {
@@ -75,7 +79,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Set the certObjectName property: Intermediate certificate object name in Azure Key Vault.
-     *
+     * 
      * @param certObjectName the certObjectName value to set.
      * @return the IstioPluginCertificateAuthority object itself.
      */
@@ -86,7 +90,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Get the keyObjectName property: Intermediate certificate private key object name in Azure Key Vault.
-     *
+     * 
      * @return the keyObjectName value.
      */
     public String keyObjectName() {
@@ -95,7 +99,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Set the keyObjectName property: Intermediate certificate private key object name in Azure Key Vault.
-     *
+     * 
      * @param keyObjectName the keyObjectName value to set.
      * @return the IstioPluginCertificateAuthority object itself.
      */
@@ -106,7 +110,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Get the rootCertObjectName property: Root certificate object name in Azure Key Vault.
-     *
+     * 
      * @return the rootCertObjectName value.
      */
     public String rootCertObjectName() {
@@ -115,7 +119,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Set the rootCertObjectName property: Root certificate object name in Azure Key Vault.
-     *
+     * 
      * @param rootCertObjectName the rootCertObjectName value to set.
      * @return the IstioPluginCertificateAuthority object itself.
      */
@@ -126,7 +130,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Get the certChainObjectName property: Certificate chain object name in Azure Key Vault.
-     *
+     * 
      * @return the certChainObjectName value.
      */
     public String certChainObjectName() {
@@ -135,7 +139,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Set the certChainObjectName property: Certificate chain object name in Azure Key Vault.
-     *
+     * 
      * @param certChainObjectName the certChainObjectName value to set.
      * @return the IstioPluginCertificateAuthority object itself.
      */
@@ -146,7 +150,7 @@ public final class IstioPluginCertificateAuthority {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

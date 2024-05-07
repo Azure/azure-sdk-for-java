@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Application Configuration Service properties payload. */
+/**
+ * Application Configuration Service properties payload.
+ */
 @Fluent
 public final class ConfigurationServiceProperties {
     /*
@@ -16,6 +18,12 @@ public final class ConfigurationServiceProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationServiceProvisioningState provisioningState;
+
+    /*
+     * The generation of the Application Configuration Service.
+     */
+    @JsonProperty(value = "generation")
+    private ConfigurationServiceGeneration generation;
 
     /*
      * The requested resource quantity for required CPU and Memory.
@@ -36,8 +44,14 @@ public final class ConfigurationServiceProperties {
     private ConfigurationServiceSettings settings;
 
     /**
+     * Creates an instance of ConfigurationServiceProperties class.
+     */
+    public ConfigurationServiceProperties() {
+    }
+
+    /**
      * Get the provisioningState property: State of the Application Configuration Service.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ConfigurationServiceProvisioningState provisioningState() {
@@ -45,8 +59,28 @@ public final class ConfigurationServiceProperties {
     }
 
     /**
+     * Get the generation property: The generation of the Application Configuration Service.
+     * 
+     * @return the generation value.
+     */
+    public ConfigurationServiceGeneration generation() {
+        return this.generation;
+    }
+
+    /**
+     * Set the generation property: The generation of the Application Configuration Service.
+     * 
+     * @param generation the generation value to set.
+     * @return the ConfigurationServiceProperties object itself.
+     */
+    public ConfigurationServiceProperties withGeneration(ConfigurationServiceGeneration generation) {
+        this.generation = generation;
+        return this;
+    }
+
+    /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory.
-     *
+     * 
      * @return the resourceRequests value.
      */
     public ConfigurationServiceResourceRequests resourceRequests() {
@@ -55,7 +89,7 @@ public final class ConfigurationServiceProperties {
 
     /**
      * Get the instances property: Collection of instances belong to Application Configuration Service.
-     *
+     * 
      * @return the instances value.
      */
     public List<ConfigurationServiceInstance> instances() {
@@ -64,7 +98,7 @@ public final class ConfigurationServiceProperties {
 
     /**
      * Get the settings property: The settings of Application Configuration Service.
-     *
+     * 
      * @return the settings value.
      */
     public ConfigurationServiceSettings settings() {
@@ -73,7 +107,7 @@ public final class ConfigurationServiceProperties {
 
     /**
      * Set the settings property: The settings of Application Configuration Service.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the ConfigurationServiceProperties object itself.
      */
@@ -84,7 +118,7 @@ public final class ConfigurationServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

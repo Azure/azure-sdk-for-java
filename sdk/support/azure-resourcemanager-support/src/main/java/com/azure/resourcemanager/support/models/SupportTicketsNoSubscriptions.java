@@ -9,12 +9,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.support.fluent.models.SupportTicketDetailsInner;
 
-/** Resource collection API of SupportTicketsNoSubscriptions. */
+/**
+ * Resource collection API of SupportTicketsNoSubscriptions.
+ */
 public interface SupportTicketsNoSubscriptions {
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for
      * support ticket creation for the selected subscription.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -22,13 +24,13 @@ public interface SupportTicketsNoSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of check name availability API along with {@link Response}.
      */
-    Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
+    Response<CheckNameAvailabilityOutput>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityInput checkNameAvailabilityInput, Context context);
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for
      * support ticket creation for the selected subscription.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,11 +46,11 @@ public interface SupportTicketsNoSubscriptions {
      * &lt;i&gt;nextLink&lt;/i&gt;, using which you can retrieve the next set of support tickets.
      * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
      * created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return object that represents a collection of SupportTicket resources as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<SupportTicketDetails> list();
 
@@ -59,27 +61,27 @@ public interface SupportTicketsNoSubscriptions {
      * &lt;i&gt;nextLink&lt;/i&gt;, using which you can retrieve the next set of support tickets.
      * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
      * created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param top The number of values to return in the collection. Default is 25 and max is 100.
      * @param filter The filter to apply on the operation. We support 'odata v4.0' filter semantics. &lt;a
-     *     target='_blank' href='https://docs.microsoft.com/odata/concepts/queryoptions-overview'&gt;Learn
-     *     more&lt;/a&gt; &lt;br/&gt;&lt;i&gt;Status&lt;/i&gt; , &lt;i&gt;ServiceId&lt;/i&gt;, and
-     *     &lt;i&gt;ProblemClassificationId&lt;/i&gt; filters can only be used with 'eq' operator. For
-     *     &lt;i&gt;CreatedDate&lt;/i&gt; filter, the supported operators are 'gt' and 'ge'. When using both filters,
-     *     combine them using the logical 'AND'.
+     * target='_blank' href='https://docs.microsoft.com/odata/concepts/queryoptions-overview'&gt;Learn more&lt;/a&gt;
+     * &lt;br/&gt;&lt;i&gt;Status&lt;/i&gt; , &lt;i&gt;ServiceId&lt;/i&gt;, and
+     * &lt;i&gt;ProblemClassificationId&lt;/i&gt; filters can only be used with 'eq' operator. For
+     * &lt;i&gt;CreatedDate&lt;/i&gt; filter, the supported operators are 'gt' and 'ge'. When using both filters,
+     * combine them using the logical 'AND'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return object that represents a collection of SupportTicket resources as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<SupportTicketDetails> list(Integer top, String filter, Context context);
 
     /**
      * Gets details for a specific support ticket. Support ticket data is available for 18 months after ticket creation.
      * If a ticket was created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +94,7 @@ public interface SupportTicketsNoSubscriptions {
     /**
      * Gets details for a specific support ticket. Support ticket data is available for 18 months after ticket creation.
      * If a ticket was created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -106,7 +108,7 @@ public interface SupportTicketsNoSubscriptions {
      * ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support ticket is actively being
      * worked upon by an Azure support engineer. In such a case, contact your support engineer to request severity
      * update by adding a new communication using the Communications API.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.
      * @param context The context to associate with this operation.
@@ -115,15 +117,15 @@ public interface SupportTicketsNoSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents SupportTicketDetails resource along with {@link Response}.
      */
-    Response<SupportTicketDetails> updateWithResponse(
-        String supportTicketName, UpdateSupportTicket updateSupportTicket, Context context);
+    Response<SupportTicketDetails> updateWithResponse(String supportTicketName, UpdateSupportTicket updateSupportTicket,
+        Context context);
 
     /**
      * This API allows you to update the severity level, ticket status, and your contact information in the support
      * ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support ticket is actively being
      * worked upon by an Azure support engineer. In such a case, contact your support engineer to request severity
      * update by adding a new communication using the Communications API.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,7 +146,7 @@ public interface SupportTicketsNoSubscriptions {
      * file.&lt;br/&gt;&lt;br/&gt;Providing consent to share diagnostic information with Azure support is currently not
      * supported via the API. The Azure support engineer working on your ticket will reach out to you for consent if
      * your issue requires gathering diagnostic information from your Azure resources.&lt;br/&gt;&lt;br/&gt;.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -165,7 +167,7 @@ public interface SupportTicketsNoSubscriptions {
      * file.&lt;br/&gt;&lt;br/&gt;Providing consent to share diagnostic information with Azure support is currently not
      * supported via the API. The Azure support engineer working on your ticket will reach out to you for consent if
      * your issue requires gathering diagnostic information from your Azure resources.&lt;br/&gt;&lt;br/&gt;.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @param context The context to associate with this operation.
@@ -174,6 +176,6 @@ public interface SupportTicketsNoSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents SupportTicketDetails resource.
      */
-    SupportTicketDetails create(
-        String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters, Context context);
+    SupportTicketDetails create(String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters,
+        Context context);
 }

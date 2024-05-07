@@ -8,23 +8,52 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EventSerializationType. */
+/**
+ * Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
+ */
 public final class EventSerializationType extends ExpandableStringEnum<EventSerializationType> {
-    /** Static value Csv for EventSerializationType. */
+    /**
+     * Static value Csv for EventSerializationType.
+     */
     public static final EventSerializationType CSV = fromString("Csv");
 
-    /** Static value Avro for EventSerializationType. */
+    /**
+     * Static value Avro for EventSerializationType.
+     */
     public static final EventSerializationType AVRO = fromString("Avro");
 
-    /** Static value Json for EventSerializationType. */
+    /**
+     * Static value Json for EventSerializationType.
+     */
     public static final EventSerializationType JSON = fromString("Json");
 
-    /** Static value Parquet for EventSerializationType. */
+    /**
+     * Static value CustomClr for EventSerializationType.
+     */
+    public static final EventSerializationType CUSTOM_CLR = fromString("CustomClr");
+
+    /**
+     * Static value Parquet for EventSerializationType.
+     */
     public static final EventSerializationType PARQUET = fromString("Parquet");
 
     /**
+     * Static value Delta for EventSerializationType.
+     */
+    public static final EventSerializationType DELTA = fromString("Delta");
+
+    /**
+     * Creates a new instance of EventSerializationType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventSerializationType() {
+    }
+
+    /**
      * Creates or finds a EventSerializationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventSerializationType.
      */
@@ -33,7 +62,11 @@ public final class EventSerializationType extends ExpandableStringEnum<EventSeri
         return fromString(name, EventSerializationType.class);
     }
 
-    /** @return known EventSerializationType values. */
+    /**
+     * Gets known EventSerializationType values.
+     * 
+     * @return known EventSerializationType values.
+     */
     public static Collection<EventSerializationType> values() {
         return values(EventSerializationType.class);
     }

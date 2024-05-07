@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of site details provided during the time of site creation. */
+/**
+ * Properties of site details provided during the time of site creation.
+ */
 @Fluent
 public final class FabricCreationInputProperties {
     /*
@@ -16,13 +18,15 @@ public final class FabricCreationInputProperties {
     @JsonProperty(value = "customDetails")
     private FabricSpecificCreationInput customDetails;
 
-    /** Creates an instance of FabricCreationInputProperties class. */
+    /**
+     * Creates an instance of FabricCreationInputProperties class.
+     */
     public FabricCreationInputProperties() {
     }
 
     /**
      * Get the customDetails property: Fabric provider specific creation input.
-     *
+     * 
      * @return the customDetails value.
      */
     public FabricSpecificCreationInput customDetails() {
@@ -31,7 +35,7 @@ public final class FabricCreationInputProperties {
 
     /**
      * Set the customDetails property: Fabric provider specific creation input.
-     *
+     * 
      * @param customDetails the customDetails value to set.
      * @return the FabricCreationInputProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class FabricCreationInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

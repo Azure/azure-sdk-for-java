@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VaultHealthProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Vault health details definition. */
+/**
+ * Vault health details definition.
+ */
 @Fluent
 public final class VaultHealthDetailsInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class VaultHealthDetailsInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of VaultHealthDetailsInner class. */
+    /**
+     * Creates an instance of VaultHealthDetailsInner class.
+     */
     public VaultHealthDetailsInner() {
     }
 
     /**
      * Get the properties property: The vault health related data.
-     *
+     * 
      * @return the properties value.
      */
     public VaultHealthProperties properties() {
@@ -39,7 +43,7 @@ public final class VaultHealthDetailsInner extends ProxyResource {
 
     /**
      * Set the properties property: The vault health related data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the VaultHealthDetailsInner object itself.
      */
@@ -50,7 +54,7 @@ public final class VaultHealthDetailsInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class VaultHealthDetailsInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the VaultHealthDetailsInner object itself.
      */
@@ -70,7 +74,7 @@ public final class VaultHealthDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

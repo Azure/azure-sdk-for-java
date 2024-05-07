@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Provider specific test failover input. */
+/**
+ * Provider specific test failover input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,17 +23,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzureTestFailoverInput.class),
     @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2TestFailoverInput.class),
     @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmTestFailoverInput.class),
-    @JsonSubTypes.Type(name = "InMage", value = InMageTestFailoverInput.class)
-})
+    @JsonSubTypes.Type(name = "InMage", value = InMageTestFailoverInput.class) })
 @Immutable
 public class TestFailoverProviderSpecificInput {
-    /** Creates an instance of TestFailoverProviderSpecificInput class. */
+    /**
+     * Creates an instance of TestFailoverProviderSpecificInput class.
+     */
     public TestFailoverProviderSpecificInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

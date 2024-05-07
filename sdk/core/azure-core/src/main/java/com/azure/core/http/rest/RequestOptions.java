@@ -32,7 +32,9 @@ import java.util.function.Consumer;
  * definition.</a>
  * </p>
  *
- * <p><strong>Creating an instance of RequestOptions</strong></p>
+ * <p>
+ * <strong>Creating an instance of RequestOptions</strong>
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.requestoptions.instantiation -->
  * <pre>
  * RequestOptions options = new RequestOptions&#40;&#41;
@@ -41,7 +43,9 @@ import java.util.function.Consumer;
  * </pre>
  * <!-- end com.azure.core.http.rest.requestoptions.instantiation -->
  *
- * <p><strong>Configuring the request with JSON body and making a HTTP POST request</strong></p>
+ * <p>
+ * <strong>Configuring the request with JSON body and making a HTTP POST request</strong>
+ * </p>
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, an HTTP POST call should be
  * made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
@@ -53,18 +57,18 @@ import java.util.function.Consumer;
  *   "category": {
  *     "id": 0,
  *     "name": "string"
- *   },
- *   "name": "doggie",
- *   "photoUrls": [
- *     "string"
- *   ],
- *   "tags": [
- *     {
- *       "id": 0,
- *       "name": "string"
- *     }
- *   ],
- *   "status": "available"
+ * },
+ * "name": "doggie",
+ * "photoUrls": [
+ * "string"
+ * ],
+ * "tags": [
+ * {
+ * "id": 0,
+ * "name": "string"
+ * }
+ * ],
+ * "status": "available"
  * }
  * }</pre>
  *

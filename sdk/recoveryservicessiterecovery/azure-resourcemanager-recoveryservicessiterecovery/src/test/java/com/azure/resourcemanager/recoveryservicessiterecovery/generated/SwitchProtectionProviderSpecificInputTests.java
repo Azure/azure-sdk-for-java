@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProte
 public final class SwitchProtectionProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwitchProtectionProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"SwitchProtectionProviderSpecificInput\"}")
+        SwitchProtectionProviderSpecificInput model
+            = BinaryData.fromString("{\"instanceType\":\"SwitchProtectionProviderSpecificInput\"}")
                 .toObject(SwitchProtectionProviderSpecificInput.class);
     }
 

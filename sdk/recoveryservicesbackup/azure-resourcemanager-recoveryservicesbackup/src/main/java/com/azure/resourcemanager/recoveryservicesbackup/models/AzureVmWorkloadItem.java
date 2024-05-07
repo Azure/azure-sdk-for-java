@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure VM workload-specific workload item. */
+/**
+ * Azure VM workload-specific workload item.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -23,8 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "SAPHanaDatabase", value = AzureVmWorkloadSapHanaDatabaseWorkloadItem.class),
     @JsonSubTypes.Type(name = "SAPHanaSystem", value = AzureVmWorkloadSapHanaSystemWorkloadItem.class),
     @JsonSubTypes.Type(name = "SQLDataBase", value = AzureVmWorkloadSqlDatabaseWorkloadItem.class),
-    @JsonSubTypes.Type(name = "SQLInstance", value = AzureVmWorkloadSqlInstanceWorkloadItem.class)
-})
+    @JsonSubTypes.Type(name = "SQLInstance", value = AzureVmWorkloadSqlInstanceWorkloadItem.class) })
 @Fluent
 public class AzureVmWorkloadItem extends WorkloadItem {
     /*
@@ -57,13 +58,15 @@ public class AzureVmWorkloadItem extends WorkloadItem {
     @JsonProperty(value = "subWorkloadItemCount")
     private Integer subWorkloadItemCount;
 
-    /** Creates an instance of AzureVmWorkloadItem class. */
+    /**
+     * Creates an instance of AzureVmWorkloadItem class.
+     */
     public AzureVmWorkloadItem() {
     }
 
     /**
      * Get the parentName property: Name for instance or AG.
-     *
+     * 
      * @return the parentName value.
      */
     public String parentName() {
@@ -72,7 +75,7 @@ public class AzureVmWorkloadItem extends WorkloadItem {
 
     /**
      * Set the parentName property: Name for instance or AG.
-     *
+     * 
      * @param parentName the parentName value to set.
      * @return the AzureVmWorkloadItem object itself.
      */
@@ -83,7 +86,7 @@ public class AzureVmWorkloadItem extends WorkloadItem {
 
     /**
      * Get the serverName property: Host/Cluster Name for instance or AG.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -92,7 +95,7 @@ public class AzureVmWorkloadItem extends WorkloadItem {
 
     /**
      * Set the serverName property: Host/Cluster Name for instance or AG.
-     *
+     * 
      * @param serverName the serverName value to set.
      * @return the AzureVmWorkloadItem object itself.
      */
@@ -103,7 +106,7 @@ public class AzureVmWorkloadItem extends WorkloadItem {
 
     /**
      * Get the isAutoProtectable property: Indicates if workload item is auto-protectable.
-     *
+     * 
      * @return the isAutoProtectable value.
      */
     public Boolean isAutoProtectable() {
@@ -112,7 +115,7 @@ public class AzureVmWorkloadItem extends WorkloadItem {
 
     /**
      * Set the isAutoProtectable property: Indicates if workload item is auto-protectable.
-     *
+     * 
      * @param isAutoProtectable the isAutoProtectable value to set.
      * @return the AzureVmWorkloadItem object itself.
      */
@@ -123,7 +126,7 @@ public class AzureVmWorkloadItem extends WorkloadItem {
 
     /**
      * Get the subinquireditemcount property: For instance or AG, indicates number of DB's present.
-     *
+     * 
      * @return the subinquireditemcount value.
      */
     public Integer subinquireditemcount() {
@@ -132,7 +135,7 @@ public class AzureVmWorkloadItem extends WorkloadItem {
 
     /**
      * Set the subinquireditemcount property: For instance or AG, indicates number of DB's present.
-     *
+     * 
      * @param subinquireditemcount the subinquireditemcount value to set.
      * @return the AzureVmWorkloadItem object itself.
      */
@@ -143,7 +146,7 @@ public class AzureVmWorkloadItem extends WorkloadItem {
 
     /**
      * Get the subWorkloadItemCount property: For instance or AG, indicates number of DB's to be protected.
-     *
+     * 
      * @return the subWorkloadItemCount value.
      */
     public Integer subWorkloadItemCount() {
@@ -152,7 +155,7 @@ public class AzureVmWorkloadItem extends WorkloadItem {
 
     /**
      * Set the subWorkloadItemCount property: For instance or AG, indicates number of DB's to be protected.
-     *
+     * 
      * @param subWorkloadItemCount the subWorkloadItemCount value to set.
      * @return the AzureVmWorkloadItem object itself.
      */
@@ -161,28 +164,36 @@ public class AzureVmWorkloadItem extends WorkloadItem {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadItem withWorkloadType(String workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadItem withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadItem withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -191,7 +202,7 @@ public class AzureVmWorkloadItem extends WorkloadItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

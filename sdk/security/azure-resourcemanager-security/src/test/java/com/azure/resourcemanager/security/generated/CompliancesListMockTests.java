@@ -30,36 +30,25 @@ public final class CompliancesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-01-17T17:15:03Z\",\"resourceCount\":563449519,\"assessmentResult\":[]},\"id\":\"ygysemtme\",\"name\":\"rf\",\"type\":\"vpinkzpatqt\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-05-30T13:00:18Z\",\"resourceCount\":1648750505,\"assessmentResult\":[{\"segmentType\":\"k\",\"percentage\":81.9525751527196},{\"segmentType\":\"jcbhaahnt\",\"percentage\":34.4093354141924}]},\"id\":\"fh\",\"name\":\"fixoskk\",\"type\":\"dfivsujybsr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Compliance> response =
-            manager.compliances().list("axikhfjqebglcxk", com.azure.core.util.Context.NONE);
+        PagedIterable<Compliance> response = manager.compliances().list("as", com.azure.core.util.Context.NONE);
+
     }
 }

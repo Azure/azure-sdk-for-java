@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** E2A Network Mapping fabric specific settings. */
+/**
+ * E2A Network Mapping fabric specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VmmToAzure")
 @Immutable
 public final class VmmToAzureNetworkMappingSettings extends NetworkMappingFabricSpecificSettings {
-    /** Creates an instance of VmmToAzureNetworkMappingSettings class. */
+    /**
+     * Creates an instance of VmmToAzureNetworkMappingSettings class.
+     */
     public VmmToAzureNetworkMappingSettings() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

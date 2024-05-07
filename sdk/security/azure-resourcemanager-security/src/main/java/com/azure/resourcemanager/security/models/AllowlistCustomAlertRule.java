@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A custom alert rule that checks if a value (depends on the custom alert type) is allowed. */
+/**
+ * A custom alert rule that checks if a value (depends on the custom alert type) is allowed.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -23,8 +25,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "ConnectionToIpNotAllowed", value = ConnectionToIpNotAllowed.class),
     @JsonSubTypes.Type(name = "ConnectionFromIpNotAllowed", value = ConnectionFromIpNotAllowed.class),
     @JsonSubTypes.Type(name = "LocalUserNotAllowed", value = LocalUserNotAllowed.class),
-    @JsonSubTypes.Type(name = "ProcessNotAllowed", value = ProcessNotAllowed.class)
-})
+    @JsonSubTypes.Type(name = "ProcessNotAllowed", value = ProcessNotAllowed.class) })
 @Fluent
 public class AllowlistCustomAlertRule extends ListCustomAlertRule {
     /*
@@ -33,13 +34,15 @@ public class AllowlistCustomAlertRule extends ListCustomAlertRule {
     @JsonProperty(value = "allowlistValues", required = true)
     private List<String> allowlistValues;
 
-    /** Creates an instance of AllowlistCustomAlertRule class. */
+    /**
+     * Creates an instance of AllowlistCustomAlertRule class.
+     */
     public AllowlistCustomAlertRule() {
     }
 
     /**
      * Get the allowlistValues property: The values to allow. The format of the values depends on the rule type.
-     *
+     * 
      * @return the allowlistValues value.
      */
     public List<String> allowlistValues() {
@@ -48,7 +51,7 @@ public class AllowlistCustomAlertRule extends ListCustomAlertRule {
 
     /**
      * Set the allowlistValues property: The values to allow. The format of the values depends on the rule type.
-     *
+     * 
      * @param allowlistValues the allowlistValues value to set.
      * @return the AllowlistCustomAlertRule object itself.
      */
@@ -57,7 +60,9 @@ public class AllowlistCustomAlertRule extends ListCustomAlertRule {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AllowlistCustomAlertRule withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -66,17 +71,15 @@ public class AllowlistCustomAlertRule extends ListCustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (allowlistValues() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property allowlistValues in model AllowlistCustomAlertRule"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property allowlistValues in model AllowlistCustomAlertRule"));
         }
     }
 

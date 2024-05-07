@@ -32,43 +32,33 @@ public final class AlertsSuppressionRulesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"alertType\":\"ntujmoilunwemhd\",\"lastModifiedUtc\":\"2021-12-02T08:52:50Z\",\"expirationDateUtc\":\"2021-10-18T05:10:35Z\",\"reason\":\"lkyozdsfzj\",\"state\":\"Enabled\",\"comment\":\"rhrhtsl\",\"suppressionAlertsScope\":{\"allOf\":[]}},\"id\":\"tv\",\"name\":\"j\",\"type\":\"xvgjbfi\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"alertType\":\"cnwjzbqblxr\",\"lastModifiedUtc\":\"2021-07-03T19:23:24Z\",\"expirationDateUtc\":\"2021-02-16T22:57:15Z\",\"reason\":\"voqizawws\",\"state\":\"Expired\",\"comment\":\"rgf\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"awooa\",\"\":{\"rdqyoybm\":\"datahxfqkmw\"}},{\"field\":\"otoc\",\"\":{\"qphkv\":\"datadaiovrbhr\",\"zvelffohuriw\":\"datayzadcrxylaypdt\"}},{\"field\":\"dfrwpsshrm\",\"\":{\"ospoe\":\"dataclpctuogkscxjfsg\",\"cowscuyfqlam\":\"datanxs\"}}]}},\"id\":\"bqhsujkafu\",\"name\":\"pn\",\"type\":\"qpwnikxkcajgr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AlertsSuppressionRule> response =
-            manager.alertsSuppressionRules().list("dsaidjanormovdxx", com.azure.core.util.Context.NONE);
+        PagedIterable<AlertsSuppressionRule> response
+            = manager.alertsSuppressionRules().list("rxbozp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ntujmoilunwemhd", response.iterator().next().alertType());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-10-18T05:10:35Z"), response.iterator().next().expirationDateUtc());
-        Assertions.assertEquals("lkyozdsfzj", response.iterator().next().reason());
-        Assertions.assertEquals(RuleState.ENABLED, response.iterator().next().state());
-        Assertions.assertEquals("rhrhtsl", response.iterator().next().comment());
+        Assertions.assertEquals("cnwjzbqblxr", response.iterator().next().alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T22:57:15Z"),
+            response.iterator().next().expirationDateUtc());
+        Assertions.assertEquals("voqizawws", response.iterator().next().reason());
+        Assertions.assertEquals(RuleState.EXPIRED, response.iterator().next().state());
+        Assertions.assertEquals("rgf", response.iterator().next().comment());
+        Assertions.assertEquals("awooa", response.iterator().next().suppressionAlertsScope().allOf().get(0).field());
     }
 }

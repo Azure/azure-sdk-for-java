@@ -11,7 +11,9 @@ import com.azure.resourcemanager.security.models.SuppressionAlertsScope;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** describes AlertsSuppressionRule properties. */
+/**
+ * describes AlertsSuppressionRule properties.
+ */
 @Fluent
 public final class AlertsSuppressionRuleProperties {
     /*
@@ -27,8 +29,7 @@ public final class AlertsSuppressionRuleProperties {
     private OffsetDateTime lastModifiedUtc;
 
     /*
-     * Expiration date of the rule, if value is not provided or provided as null this field will default to the maximum
-     * allowed expiration date.
+     * Expiration date of the rule, if value is not provided or provided as null there will no expiration at all
      */
     @JsonProperty(value = "expirationDateUtc")
     private OffsetDateTime expirationDateUtc;
@@ -57,13 +58,15 @@ public final class AlertsSuppressionRuleProperties {
     @JsonProperty(value = "suppressionAlertsScope")
     private SuppressionAlertsScope suppressionAlertsScope;
 
-    /** Creates an instance of AlertsSuppressionRuleProperties class. */
+    /**
+     * Creates an instance of AlertsSuppressionRuleProperties class.
+     */
     public AlertsSuppressionRuleProperties() {
     }
 
     /**
      * Get the alertType property: Type of the alert to automatically suppress. For all alert types, use '*'.
-     *
+     * 
      * @return the alertType value.
      */
     public String alertType() {
@@ -72,7 +75,7 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Set the alertType property: Type of the alert to automatically suppress. For all alert types, use '*'.
-     *
+     * 
      * @param alertType the alertType value to set.
      * @return the AlertsSuppressionRuleProperties object itself.
      */
@@ -83,7 +86,7 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Get the lastModifiedUtc property: The last time this rule was modified.
-     *
+     * 
      * @return the lastModifiedUtc value.
      */
     public OffsetDateTime lastModifiedUtc() {
@@ -92,8 +95,8 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Get the expirationDateUtc property: Expiration date of the rule, if value is not provided or provided as null
-     * this field will default to the maximum allowed expiration date.
-     *
+     * there will no expiration at all.
+     * 
      * @return the expirationDateUtc value.
      */
     public OffsetDateTime expirationDateUtc() {
@@ -102,8 +105,8 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Set the expirationDateUtc property: Expiration date of the rule, if value is not provided or provided as null
-     * this field will default to the maximum allowed expiration date.
-     *
+     * there will no expiration at all.
+     * 
      * @param expirationDateUtc the expirationDateUtc value to set.
      * @return the AlertsSuppressionRuleProperties object itself.
      */
@@ -114,7 +117,7 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Get the reason property: The reason for dismissing the alert.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -123,7 +126,7 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Set the reason property: The reason for dismissing the alert.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the AlertsSuppressionRuleProperties object itself.
      */
@@ -134,7 +137,7 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Get the state property: Possible states of the rule.
-     *
+     * 
      * @return the state value.
      */
     public RuleState state() {
@@ -143,7 +146,7 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Set the state property: Possible states of the rule.
-     *
+     * 
      * @param state the state value to set.
      * @return the AlertsSuppressionRuleProperties object itself.
      */
@@ -154,7 +157,7 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Get the comment property: Any comment regarding the rule.
-     *
+     * 
      * @return the comment value.
      */
     public String comment() {
@@ -163,7 +166,7 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Set the comment property: Any comment regarding the rule.
-     *
+     * 
      * @param comment the comment value to set.
      * @return the AlertsSuppressionRuleProperties object itself.
      */
@@ -174,7 +177,7 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Get the suppressionAlertsScope property: The suppression conditions.
-     *
+     * 
      * @return the suppressionAlertsScope value.
      */
     public SuppressionAlertsScope suppressionAlertsScope() {
@@ -183,7 +186,7 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Set the suppressionAlertsScope property: The suppression conditions.
-     *
+     * 
      * @param suppressionAlertsScope the suppressionAlertsScope value to set.
      * @return the AlertsSuppressionRuleProperties object itself.
      */
@@ -194,27 +197,21 @@ public final class AlertsSuppressionRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (alertType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property alertType in model AlertsSuppressionRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property alertType in model AlertsSuppressionRuleProperties"));
         }
         if (reason() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property reason in model AlertsSuppressionRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property reason in model AlertsSuppressionRuleProperties"));
         }
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model AlertsSuppressionRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property state in model AlertsSuppressionRuleProperties"));
         }
         if (suppressionAlertsScope() != null) {
             suppressionAlertsScope().validate();

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Restore request parameters for Secured VMs. */
+/**
+ * Restore request parameters for Secured VMs.
+ */
 @Fluent
 public final class SecuredVMDetails {
     /*
@@ -16,13 +18,15 @@ public final class SecuredVMDetails {
     @JsonProperty(value = "securedVMOsDiskEncryptionSetId")
     private String securedVmosDiskEncryptionSetId;
 
-    /** Creates an instance of SecuredVMDetails class. */
+    /**
+     * Creates an instance of SecuredVMDetails class.
+     */
     public SecuredVMDetails() {
     }
 
     /**
      * Get the securedVmosDiskEncryptionSetId property: Gets or Sets Disk Encryption Set Id for Secured VM OS Disk.
-     *
+     * 
      * @return the securedVmosDiskEncryptionSetId value.
      */
     public String securedVmosDiskEncryptionSetId() {
@@ -31,7 +35,7 @@ public final class SecuredVMDetails {
 
     /**
      * Set the securedVmosDiskEncryptionSetId property: Gets or Sets Disk Encryption Set Id for Secured VM OS Disk.
-     *
+     * 
      * @param securedVmosDiskEncryptionSetId the securedVmosDiskEncryptionSetId value to set.
      * @return the SecuredVMDetails object itself.
      */
@@ -42,7 +46,7 @@ public final class SecuredVMDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

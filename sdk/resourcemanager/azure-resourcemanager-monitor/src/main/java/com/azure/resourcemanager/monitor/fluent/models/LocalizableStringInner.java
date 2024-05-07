@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The localizable string class. */
+/**
+ * The localizable string class.
+ */
 @Fluent
 public final class LocalizableStringInner {
     /*
@@ -23,13 +25,15 @@ public final class LocalizableStringInner {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of LocalizableStringInner class. */
+    /**
+     * Creates an instance of LocalizableStringInner class.
+     */
     public LocalizableStringInner() {
     }
 
     /**
      * Get the value property: the invariant value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -38,7 +42,7 @@ public final class LocalizableStringInner {
 
     /**
      * Set the value property: the invariant value.
-     *
+     * 
      * @param value the value value to set.
      * @return the LocalizableStringInner object itself.
      */
@@ -49,7 +53,7 @@ public final class LocalizableStringInner {
 
     /**
      * Get the localizedValue property: the locale specific value.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -58,7 +62,7 @@ public final class LocalizableStringInner {
 
     /**
      * Set the localizedValue property: the locale specific value.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the LocalizableStringInner object itself.
      */
@@ -69,14 +73,13 @@ public final class LocalizableStringInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model LocalizableStringInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model LocalizableStringInner"));
         }
     }
 

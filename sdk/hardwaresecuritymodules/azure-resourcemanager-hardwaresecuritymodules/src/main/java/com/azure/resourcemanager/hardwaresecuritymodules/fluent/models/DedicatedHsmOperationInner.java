@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsmOperationDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** REST API operation. */
+/**
+ * REST API operation.
+ */
 @Fluent
 public final class DedicatedHsmOperationInner {
     /*
@@ -21,7 +23,13 @@ public final class DedicatedHsmOperationInner {
      * Gets or sets a value indicating whether it is a data plane action
      */
     @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
-    private String isDataAction;
+    private Boolean isDataAction;
+
+    /*
+     * The origin of the operation
+     */
+    @JsonProperty(value = "origin")
+    private String origin;
 
     /*
      * The display string.
@@ -30,8 +38,14 @@ public final class DedicatedHsmOperationInner {
     private DedicatedHsmOperationDisplay display;
 
     /**
+     * Creates an instance of DedicatedHsmOperationInner class.
+     */
+    public DedicatedHsmOperationInner() {
+    }
+
+    /**
      * Get the name property: The name of the Dedicated HSM Resource Provider Operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -40,7 +54,7 @@ public final class DedicatedHsmOperationInner {
 
     /**
      * Set the name property: The name of the Dedicated HSM Resource Provider Operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the DedicatedHsmOperationInner object itself.
      */
@@ -51,16 +65,36 @@ public final class DedicatedHsmOperationInner {
 
     /**
      * Get the isDataAction property: Gets or sets a value indicating whether it is a data plane action.
-     *
+     * 
      * @return the isDataAction value.
      */
-    public String isDataAction() {
+    public Boolean isDataAction() {
         return this.isDataAction;
     }
 
     /**
+     * Get the origin property: The origin of the operation.
+     * 
+     * @return the origin value.
+     */
+    public String origin() {
+        return this.origin;
+    }
+
+    /**
+     * Set the origin property: The origin of the operation.
+     * 
+     * @param origin the origin value to set.
+     * @return the DedicatedHsmOperationInner object itself.
+     */
+    public DedicatedHsmOperationInner withOrigin(String origin) {
+        this.origin = origin;
+        return this;
+    }
+
+    /**
      * Get the display property: The display string.
-     *
+     * 
      * @return the display value.
      */
     public DedicatedHsmOperationDisplay display() {
@@ -69,7 +103,7 @@ public final class DedicatedHsmOperationInner {
 
     /**
      * Set the display property: The display string.
-     *
+     * 
      * @param display the display value to set.
      * @return the DedicatedHsmOperationInner object itself.
      */
@@ -80,7 +114,7 @@ public final class DedicatedHsmOperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

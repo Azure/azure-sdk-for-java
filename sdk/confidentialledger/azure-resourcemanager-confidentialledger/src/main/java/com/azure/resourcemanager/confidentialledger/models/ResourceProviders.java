@@ -7,11 +7,13 @@ package com.azure.resourcemanager.confidentialledger.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourceProviders. */
+/**
+ * Resource collection API of ResourceProviders.
+ */
 public interface ResourceProviders {
     /**
      * To check whether a resource name is available.
-     *
+     * 
      * @param nameAvailabilityRequest Name availability request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -19,12 +21,12 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest nameAvailabilityRequest, Context context);
+    Response<CheckNameAvailabilityResponse>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest nameAvailabilityRequest, Context context);
 
     /**
      * To check whether a resource name is available.
-     *
+     * 
      * @param nameAvailabilityRequest Name availability request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

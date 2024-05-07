@@ -39,7 +39,7 @@ public final class DetectedTextLine {
 
     /**
      * Creates an instance of DetectedTextLine class.
-     * 
+     *
      * @param text the text value to set.
      * @param boundingPolygon the boundingPolygon value to set.
      * @param words the words value to set.
@@ -56,7 +56,7 @@ public final class DetectedTextLine {
 
     /**
      * Get the text property: Text content of the detected text line.
-     * 
+     *
      * @return the text value.
      */
     @Generated
@@ -67,7 +67,7 @@ public final class DetectedTextLine {
     /**
      * Get the boundingPolygon property: A bounding polygon around the text line. At the moment only quadrilaterals are
      * supported (represented by 4 image points).
-     * 
+     *
      * @return the boundingPolygon value.
      */
     @Generated
@@ -77,7 +77,7 @@ public final class DetectedTextLine {
 
     /**
      * Get the words property: A list of words in this line.
-     * 
+     *
      * @return the words value.
      */
     @Generated

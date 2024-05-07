@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPointProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Recovery point. */
+/**
+ * Recovery point.
+ */
 @Fluent
 public final class RecoveryPointInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class RecoveryPointInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of RecoveryPointInner class. */
+    /**
+     * Creates an instance of RecoveryPointInner class.
+     */
     public RecoveryPointInner() {
     }
 
     /**
      * Get the properties property: The recovery point properties.
-     *
+     * 
      * @return the properties value.
      */
     public RecoveryPointProperties properties() {
@@ -39,7 +43,7 @@ public final class RecoveryPointInner extends ProxyResource {
 
     /**
      * Set the properties property: The recovery point properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RecoveryPointInner object itself.
      */
@@ -50,7 +54,7 @@ public final class RecoveryPointInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class RecoveryPointInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the RecoveryPointInner object itself.
      */
@@ -70,7 +74,7 @@ public final class RecoveryPointInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

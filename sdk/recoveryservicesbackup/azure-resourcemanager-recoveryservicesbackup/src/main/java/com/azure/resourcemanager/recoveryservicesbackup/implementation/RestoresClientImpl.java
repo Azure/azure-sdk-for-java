@@ -31,17 +31,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RestoresClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestoresClient.
+ */
 public final class RestoresClientImpl implements RestoresClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RestoresService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of RestoresClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RestoresClientImpl(RecoveryServicesBackupClientImpl client) {
@@ -56,30 +62,25 @@ public final class RestoresClientImpl implements RestoresClient {
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface RestoresService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/restore")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/restore")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> trigger(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> trigger(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("containerName") String containerName,
-            @PathParam("protectedItemName") String protectedItemName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("containerName") String containerName, @PathParam("protectedItemName") String protectedItemName,
             @PathParam("recoveryPointId") String recoveryPointId,
-            @BodyParam("application/json") RestoreRequestResource parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") RestoreRequestResource parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -93,19 +94,12 @@ public final class RestoresClientImpl implements RestoresClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
+    private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         RestoreRequestResource parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -115,10 +109,8 @@ public final class RestoresClientImpl implements RestoresClient {
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -141,29 +133,17 @@ public final class RestoresClientImpl implements RestoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .trigger(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            containerName,
-                            protectedItemName,
-                            recoveryPointId,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.trigger(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName, protectedItemName,
+                recoveryPointId, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -178,20 +158,12 @@ public final class RestoresClientImpl implements RestoresClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        RestoreRequestResource parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -201,10 +173,8 @@ public final class RestoresClientImpl implements RestoresClient {
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -227,26 +197,16 @@ public final class RestoresClientImpl implements RestoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .trigger(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                accept,
-                context);
+        return service.trigger(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, containerName, protectedItemName, recoveryPointId, parameters,
+            accept, context);
     }
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -260,33 +220,20 @@ public final class RestoresClientImpl implements RestoresClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
+    private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         RestoreRequestResource parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            triggerWithResponseAsync(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = triggerWithResponseAsync(vaultName, resourceGroupName, fabricName,
+            containerName, protectedItemName, recoveryPointId, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -301,35 +248,21 @@ public final class RestoresClientImpl implements RestoresClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        RestoreRequestResource parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            triggerWithResponseAsync(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = triggerWithResponseAsync(vaultName, resourceGroupName, fabricName,
+            containerName, protectedItemName, recoveryPointId, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -343,24 +276,18 @@ public final class RestoresClientImpl implements RestoresClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginTrigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
+    public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         RestoreRequestResource parameters) {
-        return this
-            .beginTriggerAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .getSyncPoller();
+        return this.beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters).getSyncPoller();
     }
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -375,32 +302,18 @@ public final class RestoresClientImpl implements RestoresClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginTrigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters,
-        Context context) {
-        return this
-            .beginTriggerAsync(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        RestoreRequestResource parameters, Context context) {
+        return this.beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, context).getSyncPoller();
     }
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -414,24 +327,17 @@ public final class RestoresClientImpl implements RestoresClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> triggerAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters) {
-        return beginTriggerAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> triggerAsync(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters) {
+        return beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -446,32 +352,17 @@ public final class RestoresClientImpl implements RestoresClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> triggerAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters,
-        Context context) {
-        return beginTriggerAsync(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> triggerAsync(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters, Context context) {
+        return beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -484,23 +375,17 @@ public final class RestoresClientImpl implements RestoresClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters) {
-        triggerAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .block();
+    public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters) {
+        triggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
+            parameters).block();
     }
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
-     * use GetProtectedItemOperationResult API.
-     *
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up items.
@@ -514,24 +399,9 @@ public final class RestoresClientImpl implements RestoresClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters,
-        Context context) {
-        triggerAsync(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context)
-            .block();
+    public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters, Context context) {
+        triggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
+            parameters, context).block();
     }
 }

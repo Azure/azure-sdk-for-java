@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Metrics Response. */
+/**
+ * Metrics Response.
+ */
 @Fluent
 public final class MetricsResponseInner {
     /*
@@ -38,13 +40,15 @@ public final class MetricsResponseInner {
     @JsonProperty(value = "series")
     private List<MetricsResponseSeriesItem> series;
 
-    /** Creates an instance of MetricsResponseInner class. */
+    /**
+     * Creates an instance of MetricsResponseInner class.
+     */
     public MetricsResponseInner() {
     }
 
     /**
      * Get the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @return the dateTimeBegin value.
      */
     public OffsetDateTime dateTimeBegin() {
@@ -53,7 +57,7 @@ public final class MetricsResponseInner {
 
     /**
      * Set the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @param dateTimeBegin the dateTimeBegin value to set.
      * @return the MetricsResponseInner object itself.
      */
@@ -64,7 +68,7 @@ public final class MetricsResponseInner {
 
     /**
      * Get the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @return the dateTimeEnd value.
      */
     public OffsetDateTime dateTimeEnd() {
@@ -73,7 +77,7 @@ public final class MetricsResponseInner {
 
     /**
      * Set the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @param dateTimeEnd the dateTimeEnd value to set.
      * @return the MetricsResponseInner object itself.
      */
@@ -84,7 +88,7 @@ public final class MetricsResponseInner {
 
     /**
      * Get the granularity property: The granularity property.
-     *
+     * 
      * @return the granularity value.
      */
     public MetricsGranularity granularity() {
@@ -93,7 +97,7 @@ public final class MetricsResponseInner {
 
     /**
      * Set the granularity property: The granularity property.
-     *
+     * 
      * @param granularity the granularity value to set.
      * @return the MetricsResponseInner object itself.
      */
@@ -104,7 +108,7 @@ public final class MetricsResponseInner {
 
     /**
      * Get the series property: The series property.
-     *
+     * 
      * @return the series value.
      */
     public List<MetricsResponseSeriesItem> series() {
@@ -113,7 +117,7 @@ public final class MetricsResponseInner {
 
     /**
      * Set the series property: The series property.
-     *
+     * 
      * @param series the series value to set.
      * @return the MetricsResponseInner object itself.
      */
@@ -124,7 +128,7 @@ public final class MetricsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

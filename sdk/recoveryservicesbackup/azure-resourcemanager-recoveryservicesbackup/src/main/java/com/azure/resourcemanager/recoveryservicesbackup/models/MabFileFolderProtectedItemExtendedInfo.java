@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Additional information on the backed up item. */
+/**
+ * Additional information on the backed up item.
+ */
 @Fluent
 public final class MabFileFolderProtectedItemExtendedInfo {
     /*
@@ -29,13 +31,15 @@ public final class MabFileFolderProtectedItemExtendedInfo {
     @JsonProperty(value = "recoveryPointCount")
     private Integer recoveryPointCount;
 
-    /** Creates an instance of MabFileFolderProtectedItemExtendedInfo class. */
+    /**
+     * Creates an instance of MabFileFolderProtectedItemExtendedInfo class.
+     */
     public MabFileFolderProtectedItemExtendedInfo() {
     }
 
     /**
      * Get the lastRefreshedAt property: Last time when the agent data synced to service.
-     *
+     * 
      * @return the lastRefreshedAt value.
      */
     public OffsetDateTime lastRefreshedAt() {
@@ -44,7 +48,7 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Set the lastRefreshedAt property: Last time when the agent data synced to service.
-     *
+     * 
      * @param lastRefreshedAt the lastRefreshedAt value to set.
      * @return the MabFileFolderProtectedItemExtendedInfo object itself.
      */
@@ -55,7 +59,7 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Get the oldestRecoveryPoint property: The oldest backup copy available.
-     *
+     * 
      * @return the oldestRecoveryPoint value.
      */
     public OffsetDateTime oldestRecoveryPoint() {
@@ -64,7 +68,7 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Set the oldestRecoveryPoint property: The oldest backup copy available.
-     *
+     * 
      * @param oldestRecoveryPoint the oldestRecoveryPoint value to set.
      * @return the MabFileFolderProtectedItemExtendedInfo object itself.
      */
@@ -75,7 +79,7 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Get the recoveryPointCount property: Number of backup copies associated with the backup item.
-     *
+     * 
      * @return the recoveryPointCount value.
      */
     public Integer recoveryPointCount() {
@@ -84,7 +88,7 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Set the recoveryPointCount property: Number of backup copies associated with the backup item.
-     *
+     * 
      * @param recoveryPointCount the recoveryPointCount value to set.
      * @return the MabFileFolderProtectedItemExtendedInfo object itself.
      */
@@ -95,7 +99,7 @@ public final class MabFileFolderProtectedItemExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A2A add disk(s) input. */
+/**
+ * A2A add disk(s) input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -27,13 +29,15 @@ public final class A2AAddDisksInput extends AddDisksProviderSpecificInput {
     @JsonProperty(value = "vmManagedDisks")
     private List<A2AVmManagedDiskInputDetails> vmManagedDisks;
 
-    /** Creates an instance of A2AAddDisksInput class. */
+    /**
+     * Creates an instance of A2AAddDisksInput class.
+     */
     public A2AAddDisksInput() {
     }
 
     /**
      * Get the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @return the vmDisks value.
      */
     public List<A2AVmDiskInputDetails> vmDisks() {
@@ -42,7 +46,7 @@ public final class A2AAddDisksInput extends AddDisksProviderSpecificInput {
 
     /**
      * Set the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @param vmDisks the vmDisks value to set.
      * @return the A2AAddDisksInput object itself.
      */
@@ -53,7 +57,7 @@ public final class A2AAddDisksInput extends AddDisksProviderSpecificInput {
 
     /**
      * Get the vmManagedDisks property: The list of vm managed disk details.
-     *
+     * 
      * @return the vmManagedDisks value.
      */
     public List<A2AVmManagedDiskInputDetails> vmManagedDisks() {
@@ -62,7 +66,7 @@ public final class A2AAddDisksInput extends AddDisksProviderSpecificInput {
 
     /**
      * Set the vmManagedDisks property: The list of vm managed disk details.
-     *
+     * 
      * @param vmManagedDisks the vmManagedDisks value to set.
      * @return the A2AAddDisksInput object itself.
      */
@@ -73,7 +77,7 @@ public final class A2AAddDisksInput extends AddDisksProviderSpecificInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

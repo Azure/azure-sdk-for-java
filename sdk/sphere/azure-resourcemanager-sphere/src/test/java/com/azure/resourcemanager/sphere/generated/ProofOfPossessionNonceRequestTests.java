@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ProofOfPossessionNonceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProofOfPossessionNonceRequest model =
-            BinaryData.fromString("{\"proofOfPossessionNonce\":\"kwt\"}").toObject(ProofOfPossessionNonceRequest.class);
-        Assertions.assertEquals("kwt", model.proofOfPossessionNonce());
+        ProofOfPossessionNonceRequest model = BinaryData.fromString("{\"proofOfPossessionNonce\":\"jkot\"}")
+            .toObject(ProofOfPossessionNonceRequest.class);
+        Assertions.assertEquals("jkot", model.proofOfPossessionNonce());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProofOfPossessionNonceRequest model = new ProofOfPossessionNonceRequest().withProofOfPossessionNonce("kwt");
+        ProofOfPossessionNonceRequest model = new ProofOfPossessionNonceRequest().withProofOfPossessionNonce("jkot");
         model = BinaryData.fromObject(model).toObject(ProofOfPossessionNonceRequest.class);
-        Assertions.assertEquals("kwt", model.proofOfPossessionNonce());
+        Assertions.assertEquals("jkot", model.proofOfPossessionNonce());
     }
 }

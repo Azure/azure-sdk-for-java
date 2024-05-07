@@ -7,7 +7,9 @@ package com.azure.resourcemanager.quantum.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Active Directory info. */
+/**
+ * Azure Active Directory info.
+ */
 @Immutable
 public final class ProviderPropertiesAad {
     /*
@@ -22,13 +24,15 @@ public final class ProviderPropertiesAad {
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of ProviderPropertiesAad class. */
+    /**
+     * Creates an instance of ProviderPropertiesAad class.
+     */
     public ProviderPropertiesAad() {
     }
 
     /**
      * Get the applicationId property: Provider's application id.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -37,7 +41,7 @@ public final class ProviderPropertiesAad {
 
     /**
      * Get the tenantId property: Provider's tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -46,7 +50,7 @@ public final class ProviderPropertiesAad {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Time in a week. */
+/**
+ * Time in a week.
+ */
 @Fluent
 public final class TimeInWeek {
     /*
@@ -19,7 +21,7 @@ public final class TimeInWeek {
 
     /*
      * A list of hours in the day used to identify a time range.
-     *
+     * 
      * Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
      * (non-inclusive). 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 -
      * 02:00 UTC time range.
@@ -27,13 +29,15 @@ public final class TimeInWeek {
     @JsonProperty(value = "hourSlots")
     private List<Integer> hourSlots;
 
-    /** Creates an instance of TimeInWeek class. */
+    /**
+     * Creates an instance of TimeInWeek class.
+     */
     public TimeInWeek() {
     }
 
     /**
      * Get the day property: The day of the week.
-     *
+     * 
      * @return the day value.
      */
     public WeekDay day() {
@@ -42,7 +46,7 @@ public final class TimeInWeek {
 
     /**
      * Set the day property: The day of the week.
-     *
+     * 
      * @param day the day value to set.
      * @return the TimeInWeek object itself.
      */
@@ -53,11 +57,11 @@ public final class TimeInWeek {
 
     /**
      * Get the hourSlots property: A list of hours in the day used to identify a time range.
-     *
-     * <p>Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
+     * 
+     * Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
      * (non-inclusive). 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 -
      * 02:00 UTC time range.
-     *
+     * 
      * @return the hourSlots value.
      */
     public List<Integer> hourSlots() {
@@ -66,11 +70,11 @@ public final class TimeInWeek {
 
     /**
      * Set the hourSlots property: A list of hours in the day used to identify a time range.
-     *
-     * <p>Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
+     * 
+     * Each integer hour represents a time range beginning at 0m after the hour ending at the next hour
      * (non-inclusive). 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 -
      * 02:00 UTC time range.
-     *
+     * 
      * @param hourSlots the hourSlots value to set.
      * @return the TimeInWeek object itself.
      */
@@ -81,7 +85,7 @@ public final class TimeInWeek {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

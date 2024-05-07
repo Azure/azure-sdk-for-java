@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A priming job instance. */
+/**
+ * A priming job instance.
+ */
 @Fluent
 public final class PrimingJob {
     /*
@@ -22,7 +24,7 @@ public final class PrimingJob {
      * is in Azure blob storage the URL should include a Shared Access Signature (SAS) granting read permissions on the
      * blob.
      */
-    @JsonProperty(value = "primingManifestUrl", required = true)
+    @JsonProperty(value = "primingManifestUrl")
     private String primingManifestUrl;
 
     /*
@@ -55,13 +57,15 @@ public final class PrimingJob {
     @JsonProperty(value = "primingJobPercentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Double primingJobPercentComplete;
 
-    /** Creates an instance of PrimingJob class. */
+    /**
+     * Creates an instance of PrimingJob class.
+     */
     public PrimingJob() {
     }
 
     /**
      * Get the primingJobName property: The priming job name.
-     *
+     * 
      * @return the primingJobName value.
      */
     public String primingJobName() {
@@ -70,7 +74,7 @@ public final class PrimingJob {
 
     /**
      * Set the primingJobName property: The priming job name.
-     *
+     * 
      * @param primingJobName the primingJobName value to set.
      * @return the PrimingJob object itself.
      */
@@ -83,7 +87,7 @@ public final class PrimingJob {
      * Get the primingManifestUrl property: The URL for the priming manifest file to download. This file must be
      * readable from the HPC Cache. When the file is in Azure blob storage the URL should include a Shared Access
      * Signature (SAS) granting read permissions on the blob.
-     *
+     * 
      * @return the primingManifestUrl value.
      */
     public String primingManifestUrl() {
@@ -94,7 +98,7 @@ public final class PrimingJob {
      * Set the primingManifestUrl property: The URL for the priming manifest file to download. This file must be
      * readable from the HPC Cache. When the file is in Azure blob storage the URL should include a Shared Access
      * Signature (SAS) granting read permissions on the blob.
-     *
+     * 
      * @param primingManifestUrl the primingManifestUrl value to set.
      * @return the PrimingJob object itself.
      */
@@ -105,7 +109,7 @@ public final class PrimingJob {
 
     /**
      * Get the primingJobId property: The unique identifier of the priming job.
-     *
+     * 
      * @return the primingJobId value.
      */
     public String primingJobId() {
@@ -114,7 +118,7 @@ public final class PrimingJob {
 
     /**
      * Get the primingJobState property: The state of the priming operation.
-     *
+     * 
      * @return the primingJobState value.
      */
     public PrimingJobState primingJobState() {
@@ -123,7 +127,7 @@ public final class PrimingJob {
 
     /**
      * Get the primingJobStatus property: The status code of the priming job.
-     *
+     * 
      * @return the primingJobStatus value.
      */
     public String primingJobStatus() {
@@ -132,7 +136,7 @@ public final class PrimingJob {
 
     /**
      * Get the primingJobDetails property: The job details or error information if any.
-     *
+     * 
      * @return the primingJobDetails value.
      */
     public String primingJobDetails() {
@@ -141,7 +145,7 @@ public final class PrimingJob {
 
     /**
      * Get the primingJobPercentComplete property: The current progress of the priming job, as a percentage.
-     *
+     * 
      * @return the primingJobPercentComplete value.
      */
     public Double primingJobPercentComplete() {
@@ -150,19 +154,17 @@ public final class PrimingJob {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (primingJobName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property primingJobName in model PrimingJob"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property primingJobName in model PrimingJob"));
         }
         if (primingManifestUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property primingManifestUrl in model PrimingJob"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property primingManifestUrl in model PrimingJob"));
         }
     }
 

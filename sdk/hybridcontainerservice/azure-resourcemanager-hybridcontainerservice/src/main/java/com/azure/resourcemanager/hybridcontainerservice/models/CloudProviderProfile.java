@@ -8,12 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * CloudProviderProfile - The underlying cloud infra provider properties.
+ * The profile for the underlying cloud infrastructure provider for the provisioned cluster.
  */
 @Fluent
 public final class CloudProviderProfile {
     /*
-     * InfraNetworkProfile - List of infra network profiles for the provisioned cluster
+     * The profile for the infrastructure networks used by the provisioned cluster
      */
     @JsonProperty(value = "infraNetworkProfile")
     private CloudProviderProfileInfraNetworkProfile infraNetworkProfile;
@@ -25,7 +25,7 @@ public final class CloudProviderProfile {
     }
 
     /**
-     * Get the infraNetworkProfile property: InfraNetworkProfile - List of infra network profiles for the provisioned
+     * Get the infraNetworkProfile property: The profile for the infrastructure networks used by the provisioned
      * cluster.
      * 
      * @return the infraNetworkProfile value.
@@ -35,7 +35,7 @@ public final class CloudProviderProfile {
     }
 
     /**
-     * Set the infraNetworkProfile property: InfraNetworkProfile - List of infra network profiles for the provisioned
+     * Set the infraNetworkProfile property: The profile for the infrastructure networks used by the provisioned
      * cluster.
      * 
      * @param infraNetworkProfile the infraNetworkProfile value to set.

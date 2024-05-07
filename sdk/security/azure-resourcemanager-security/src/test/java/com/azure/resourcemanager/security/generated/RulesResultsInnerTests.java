@@ -9,30 +9,27 @@ import com.azure.resourcemanager.security.fluent.models.RuleResultsInner;
 import com.azure.resourcemanager.security.fluent.models.RulesResultsInner;
 import com.azure.resourcemanager.security.models.RuleResultsProperties;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class RulesResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RulesResultsInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"results\":[]},\"id\":\"clcdigptajbrzmq\",\"name\":\"ucycijo\",\"type\":\"lxiutgjcyzyzjdnr\"},{\"properties\":{\"results\":[]},\"id\":\"txjeaoqaqbzgy\",\"name\":\"fwwvuatbwbqam\",\"type\":\"e\"},{\"properties\":{\"results\":[]},\"id\":\"yslpkcvmw\",\"name\":\"auxxepmyw\",\"type\":\"ormcqmic\"}]}")
-                .toObject(RulesResultsInner.class);
+        RulesResultsInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"results\":[[\"pqchiszep\",\"nb\"],[\"rxgibbd\",\"xconfozauors\"],[\"okwbqplh\",\"vnuuepzl\",\"phwzsoldweyuqdu\",\"vmnnrw\"],[\"i\",\"rk\"]]},\"id\":\"alywjhhgdn\",\"name\":\"xmsivfomiloxggdu\",\"type\":\"iqndieuzaofj\"},{\"properties\":{\"results\":[[\"yysfgdot\",\"ubiipuipwoqonma\",\"jeknizshq\",\"cimpevfg\"],[\"lrri\"],[\"ywdxsmic\",\"wrwfscjfnyns\",\"qujizdvo\"]]},\"id\":\"ytibyow\",\"name\":\"blgyavutpthj\",\"type\":\"xoi\"}]}")
+            .toObject(RulesResultsInner.class);
+        Assertions.assertEquals("pqchiszep", model.value().get(0).properties().results().get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulesResultsInner model =
-            new RulesResultsInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new RuleResultsInner()
-                                .withProperties(new RuleResultsProperties().withResults(Arrays.asList())),
-                            new RuleResultsInner()
-                                .withProperties(new RuleResultsProperties().withResults(Arrays.asList())),
-                            new RuleResultsInner()
-                                .withProperties(new RuleResultsProperties().withResults(Arrays.asList()))));
+        RulesResultsInner model = new RulesResultsInner().withValue(Arrays.asList(
+            new RuleResultsInner().withProperties(new RuleResultsProperties()
+                .withResults(Arrays.asList(Arrays.asList("pqchiszep", "nb"), Arrays.asList("rxgibbd", "xconfozauors"),
+                    Arrays.asList("okwbqplh", "vnuuepzl", "phwzsoldweyuqdu", "vmnnrw"), Arrays.asList("i", "rk")))),
+            new RuleResultsInner().withProperties(new RuleResultsProperties()
+                .withResults(Arrays.asList(Arrays.asList("yysfgdot", "ubiipuipwoqonma", "jeknizshq", "cimpevfg"),
+                    Arrays.asList("lrri"), Arrays.asList("ywdxsmic", "wrwfscjfnyns", "qujizdvo"))))));
         model = BinaryData.fromObject(model).toObject(RulesResultsInner.class);
+        Assertions.assertEquals("pqchiszep", model.value().get(0).properties().results().get(0).get(0));
     }
 }

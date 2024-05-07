@@ -31,7 +31,7 @@ public final class CaptionResult {
 
     /**
      * Creates an instance of CaptionResult class.
-     * 
+     *
      * @param confidence the confidence value to set.
      * @param text the text value to set.
      */
@@ -47,7 +47,7 @@ public final class CaptionResult {
      * Get the confidence property: A score, in the range of 0 to 1 (inclusive), representing the confidence that this
      * description is accurate.
      * Higher values indicating higher confidence.
-     * 
+     *
      * @return the confidence value.
      */
     @Generated
@@ -57,7 +57,7 @@ public final class CaptionResult {
 
     /**
      * Get the text property: The text of the caption.
-     * 
+     *
      * @return the text value.
      */
     @Generated

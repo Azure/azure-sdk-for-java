@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource properties. */
+/**
+ * Resource properties.
+ */
 @Fluent
 public final class WorkspaceInfoProperties {
     /*
@@ -17,13 +19,15 @@ public final class WorkspaceInfoProperties {
     @JsonProperty(value = "customerId", required = true)
     private String customerId;
 
-    /** Creates an instance of WorkspaceInfoProperties class. */
+    /**
+     * Creates an instance of WorkspaceInfoProperties class.
+     */
     public WorkspaceInfoProperties() {
     }
 
     /**
      * Get the customerId property: Log Analytics workspace identifier.
-     *
+     * 
      * @return the customerId value.
      */
     public String customerId() {
@@ -32,7 +36,7 @@ public final class WorkspaceInfoProperties {
 
     /**
      * Set the customerId property: Log Analytics workspace identifier.
-     *
+     * 
      * @param customerId the customerId value to set.
      * @return the WorkspaceInfoProperties object itself.
      */
@@ -43,15 +47,13 @@ public final class WorkspaceInfoProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (customerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customerId in model WorkspaceInfoProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property customerId in model WorkspaceInfoProperties"));
         }
     }
 

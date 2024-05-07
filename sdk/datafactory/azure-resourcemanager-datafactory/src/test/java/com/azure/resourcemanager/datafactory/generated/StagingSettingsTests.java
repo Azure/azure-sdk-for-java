@@ -15,19 +15,21 @@ public final class StagingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StagingSettings model = BinaryData.fromString(
-            "{\"linkedServiceName\":{\"referenceName\":\"fawhoosrsol\",\"parameters\":{\"bgiqhjpelnudifie\":\"datamfoe\"}},\"path\":\"dataxorsdvu\",\"enableCompression\":\"dataqfksjll\",\"\":{\"sqcivm\":\"datadoaihlv\"}}")
+            "{\"linkedServiceName\":{\"referenceName\":\"iflzsrk\",\"parameters\":{\"svpokv\":\"dataobhhbl\"}},\"path\":\"databy\",\"enableCompression\":\"datafu\",\"\":{\"fffagoovfwzy\":\"dataus\",\"xup\":\"datavnvrfjg\",\"earowrmesziubkyv\":\"datahgonovwu\",\"kaomy\":\"datagkouf\"}}")
             .toObject(StagingSettings.class);
-        Assertions.assertEquals("fawhoosrsol", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("iflzsrk", model.linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StagingSettings model = new StagingSettings()
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("fawhoosrsol")
-                .withParameters(mapOf("bgiqhjpelnudifie", "datamfoe")))
-            .withPath("dataxorsdvu").withEnableCompression("dataqfksjll").withAdditionalProperties(mapOf());
+            .withLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("iflzsrk").withParameters(mapOf("svpokv", "dataobhhbl")))
+            .withPath("databy")
+            .withEnableCompression("datafu")
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(StagingSettings.class);
-        Assertions.assertEquals("fawhoosrsol", model.linkedServiceName().referenceName());
+        Assertions.assertEquals("iflzsrk", model.linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

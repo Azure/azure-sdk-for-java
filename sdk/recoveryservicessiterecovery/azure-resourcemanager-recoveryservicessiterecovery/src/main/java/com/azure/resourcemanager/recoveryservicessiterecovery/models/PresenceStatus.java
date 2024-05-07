@@ -12,18 +12,24 @@ import java.util.Collection;
  * A value indicating whether the VM has a physical disk attached. String value of SrsDataContract.PresenceStatus enum.
  */
 public final class PresenceStatus extends ExpandableStringEnum<PresenceStatus> {
-    /** Static value Unknown for PresenceStatus. */
+    /**
+     * Static value Unknown for PresenceStatus.
+     */
     public static final PresenceStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value Present for PresenceStatus. */
+    /**
+     * Static value Present for PresenceStatus.
+     */
     public static final PresenceStatus PRESENT = fromString("Present");
 
-    /** Static value NotPresent for PresenceStatus. */
+    /**
+     * Static value NotPresent for PresenceStatus.
+     */
     public static final PresenceStatus NOT_PRESENT = fromString("NotPresent");
 
     /**
      * Creates a new instance of PresenceStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +38,7 @@ public final class PresenceStatus extends ExpandableStringEnum<PresenceStatus> {
 
     /**
      * Creates or finds a PresenceStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PresenceStatus.
      */
@@ -43,7 +49,7 @@ public final class PresenceStatus extends ExpandableStringEnum<PresenceStatus> {
 
     /**
      * Gets known PresenceStatus values.
-     *
+     * 
      * @return known PresenceStatus values.
      */
     public static Collection<PresenceStatus> values() {

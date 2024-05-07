@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.EventInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a request to list events for a webhook. */
+/**
+ * The result of a request to list events for a webhook.
+ */
 @Fluent
 public final class EventListResult {
     /*
@@ -25,14 +27,16 @@ public final class EventListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of EventListResult class. */
+    /**
+     * Creates an instance of EventListResult class.
+     */
     public EventListResult() {
     }
 
     /**
      * Get the value property: The list of events. Since this list may be incomplete, the nextLink field should be used
      * to request the next list of events.
-     *
+     * 
      * @return the value value.
      */
     public List<EventInner> value() {
@@ -42,7 +46,7 @@ public final class EventListResult {
     /**
      * Set the value property: The list of events. Since this list may be incomplete, the nextLink field should be used
      * to request the next list of events.
-     *
+     * 
      * @param value the value value to set.
      * @return the EventListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class EventListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next list of events.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class EventListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next list of events.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the EventListResult object itself.
      */
@@ -73,7 +77,7 @@ public final class EventListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,20 +6,26 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.AzureBlobStorageWriteSettings;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
+import java.util.Arrays;
 
 public final class AzureBlobStorageWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobStorageWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobStorageWriteSettings\",\"blockSizeInMB\":\"datas\",\"maxConcurrentConnections\":\"datasxwiicfsbjhha\",\"disableMetricsCollection\":\"datadow\",\"copyBehavior\":\"dataqk\",\"\":{\"eehpvqfifr\":\"dataxpb\",\"pgqiisma\":\"datajprygjgyov\",\"tcoykr\":\"datag\"}}")
+            "{\"type\":\"enrcqickhvps\",\"blockSizeInMB\":\"dataoisbmv\",\"maxConcurrentConnections\":\"datauiuvingmonq\",\"disableMetricsCollection\":\"datatyuqdz\",\"copyBehavior\":\"dataojz\",\"metadata\":[{\"name\":\"datafjgakaysc\",\"value\":\"datadqyjzwmf\"},{\"name\":\"dataqziz\",\"value\":\"datavmuot\"}],\"\":{\"khprlt\":\"dataabfyjampvwx\",\"yw\":\"dataipmnqrbyq\"}}")
             .toObject(AzureBlobStorageWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBlobStorageWriteSettings model
-            = new AzureBlobStorageWriteSettings().withMaxConcurrentConnections("datasxwiicfsbjhha")
-                .withDisableMetricsCollection("datadow").withCopyBehavior("dataqk").withBlockSizeInMB("datas");
+            = new AzureBlobStorageWriteSettings().withMaxConcurrentConnections("datauiuvingmonq")
+                .withDisableMetricsCollection("datatyuqdz")
+                .withCopyBehavior("dataojz")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("datafjgakaysc").withValue("datadqyjzwmf"),
+                    new MetadataItem().withName("dataqziz").withValue("datavmuot")))
+                .withBlockSizeInMB("dataoisbmv");
         model = BinaryData.fromObject(model).toObject(AzureBlobStorageWriteSettings.class);
     }
 }

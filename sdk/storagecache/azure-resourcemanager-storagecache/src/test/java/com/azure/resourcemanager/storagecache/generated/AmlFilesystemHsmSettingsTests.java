@@ -11,26 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class AmlFilesystemHsmSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmlFilesystemHsmSettings model =
-            BinaryData
-                .fromString(
-                    "{\"container\":\"jgzjaoyfhrtx\",\"loggingContainer\":\"lnerkujysvleju\",\"importPrefix\":\"qawrlyxwj\"}")
-                .toObject(AmlFilesystemHsmSettings.class);
-        Assertions.assertEquals("jgzjaoyfhrtx", model.container());
-        Assertions.assertEquals("lnerkujysvleju", model.loggingContainer());
-        Assertions.assertEquals("qawrlyxwj", model.importPrefix());
+        AmlFilesystemHsmSettings model = BinaryData.fromString(
+            "{\"container\":\"xxjtfe\",\"loggingContainer\":\"luwfzitonpeqfpjk\",\"importPrefix\":\"xofpdvhpfxxypi\"}")
+            .toObject(AmlFilesystemHsmSettings.class);
+        Assertions.assertEquals("xxjtfe", model.container());
+        Assertions.assertEquals("luwfzitonpeqfpjk", model.loggingContainer());
+        Assertions.assertEquals("xofpdvhpfxxypi", model.importPrefix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlFilesystemHsmSettings model =
-            new AmlFilesystemHsmSettings()
-                .withContainer("jgzjaoyfhrtx")
-                .withLoggingContainer("lnerkujysvleju")
-                .withImportPrefix("qawrlyxwj");
+        AmlFilesystemHsmSettings model = new AmlFilesystemHsmSettings().withContainer("xxjtfe")
+            .withLoggingContainer("luwfzitonpeqfpjk").withImportPrefix("xofpdvhpfxxypi");
         model = BinaryData.fromObject(model).toObject(AmlFilesystemHsmSettings.class);
-        Assertions.assertEquals("jgzjaoyfhrtx", model.container());
-        Assertions.assertEquals("lnerkujysvleju", model.loggingContainer());
-        Assertions.assertEquals("qawrlyxwj", model.importPrefix());
+        Assertions.assertEquals("xxjtfe", model.container());
+        Assertions.assertEquals("luwfzitonpeqfpjk", model.loggingContainer());
+        Assertions.assertEquals("xofpdvhpfxxypi", model.importPrefix());
     }
 }

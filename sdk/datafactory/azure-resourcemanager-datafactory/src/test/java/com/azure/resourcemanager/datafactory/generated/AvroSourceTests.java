@@ -14,17 +14,20 @@ public final class AvroSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvroSource model = BinaryData.fromString(
-            "{\"type\":\"AvroSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datacjmsrorjbyyxkc\",\"disableMetricsCollection\":\"datahvb\",\"\":{\"ivwven\":\"datat\",\"gjyho\":\"dataicyctak\",\"chvskq\":\"datasmahb\"}},\"additionalColumns\":\"databigozrvlkl\",\"sourceRetryCount\":\"datarlysseo\",\"sourceRetryWait\":\"datapgs\",\"maxConcurrentConnections\":\"datanjgmogmc\",\"disableMetricsCollection\":\"dataqzukbwyp\",\"\":{\"lw\":\"datafzvyoxgeriz\",\"oqmwpmrlg\":\"datakovopqpfcdp\",\"vamvrejkvci\":\"datajqsxfp\"}}")
+            "{\"type\":\"ltozxdzoldwvfn\",\"storeSettings\":{\"type\":\"hgnf\",\"maxConcurrentConnections\":\"datanhwpnloifxzdo\",\"disableMetricsCollection\":\"datavxavhfhlxqww\",\"\":{\"b\":\"dataamcfrfaytcygoo\"}},\"additionalColumns\":\"datambcklfpemgfvvnk\",\"sourceRetryCount\":\"datayaterjjuz\",\"sourceRetryWait\":\"dataegeso\",\"maxConcurrentConnections\":\"datapudaluggdh\",\"disableMetricsCollection\":\"datatgekecu\",\"\":{\"sidityvvgxejhq\":\"datakuxvccpdact\"}}")
             .toObject(AvroSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvroSource model = new AvroSource().withSourceRetryCount("datarlysseo").withSourceRetryWait("datapgs")
-            .withMaxConcurrentConnections("datanjgmogmc").withDisableMetricsCollection("dataqzukbwyp")
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datacjmsrorjbyyxkc")
-                .withDisableMetricsCollection("datahvb").withAdditionalProperties(mapOf("type", "StoreReadSettings")))
-            .withAdditionalColumns("databigozrvlkl");
+        AvroSource model = new AvroSource().withSourceRetryCount("datayaterjjuz")
+            .withSourceRetryWait("dataegeso")
+            .withMaxConcurrentConnections("datapudaluggdh")
+            .withDisableMetricsCollection("datatgekecu")
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datanhwpnloifxzdo")
+                .withDisableMetricsCollection("datavxavhfhlxqww")
+                .withAdditionalProperties(mapOf("type", "hgnf")))
+            .withAdditionalColumns("datambcklfpemgfvvnk");
         model = BinaryData.fromObject(model).toObject(AvroSource.class);
     }
 

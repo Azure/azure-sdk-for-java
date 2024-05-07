@@ -435,6 +435,127 @@ trait CosmosContainerWithSubpartitions extends CosmosContainer {
     }
 }
 
+trait CosmosContainersWithPkAsPartitionKey extends CosmosDatabase {
+  this: Suite =>
+  //scalastyle:off
+
+  var cosmosContainer: String = UUID.randomUUID().toString
+  var cosmosContainersWithPkAsPartitionKey: String = UUID.randomUUID().toString
+
+  val idPath: String = "/id"
+  val pkPartitionKeyPath: String = "/pk"
+
+  def getPartitionKeyValue(objectNode: ObjectNode, partitionKeyPath: String) : Object = {
+    // assumes pkValue is always string
+    objectNode.get(partitionKeyPath.stripPrefix("/")).textValue()
+  }
+
+  def getId(objectNode: ObjectNode) : String = {
+    objectNode.get("id").textValue()
+  }
+
+  override def beforeAll(): Unit = {
+    super.beforeAll()
+    this.createContainerCore()
+  }
+
+  def reinitializeContainer(): Unit = {
+    try {
+      cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer).delete().block()
+      cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainersWithPkAsPartitionKey).delete().block()
+    }
+    finally {
+      this.cosmosContainer = UUID.randomUUID().toString
+      this.cosmosContainersWithPkAsPartitionKey = UUID.randomUUID().toString
+      this.createContainerCore()
+    }
+  }
+
+  def createContainerCore(): Unit = {
+    val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
+
+    for (containerTuple <- Array((cosmosContainer, idPath), (cosmosContainersWithPkAsPartitionKey, pkPartitionKeyPath))) {
+      cosmosClient
+        .getDatabase(cosmosDatabase)
+        .createContainerIfNotExists(containerTuple._1, containerTuple._2, throughputProperties).block()
+    }
+  }
+
+  override def afterAll(): Unit = {
+    try {
+      for (containerName <- Array(cosmosContainer, cosmosContainersWithPkAsPartitionKey)) {
+        cosmosClient.getDatabase(cosmosDatabase).getContainer(containerName).delete().block()
+      }
+    }
+    finally super.afterAll() // To be stackable, must call super.afterAll
+  }
+
+  def queryItems(query: String, cosmosContainerName: String): List[ObjectNode] = {
+    queryItems(query, cosmosDatabase, cosmosContainerName)
+  }
+
+  def queryItems(query: String, databaseName: String, containerName: String): List[ObjectNode] = {
+    cosmosClient.getDatabase(databaseName).getContainer(containerName)
+      .queryItems(query, classOf[ObjectNode])
+      .toIterable
+      .asScala
+      .toList
+  }
+
+  def readAllItems(containerName: String): List[ObjectNode] = {
+    cosmosClient.getDatabase(cosmosDatabase).getContainer(containerName)
+      .queryItems("SELECT * FROM r", classOf[ObjectNode])
+      .toIterable
+      .asScala
+      .toList
+  }
+}
+
+trait AutoCleanableCosmosContainersWithPkAsPartitionKey extends CosmosContainersWithPkAsPartitionKey with BeforeAndAfterEach {
+  this: Suite =>
+
+  override def afterEach(): Unit = {
+
+    try {
+      // wait for data to get replicated
+      Thread.sleep(1000)
+      for (containerTuple <- Array((cosmosContainer, idPath), (cosmosContainersWithPkAsPartitionKey, pkPartitionKeyPath))) {
+        System.out.println(s"cleaning the items in container ${containerTuple._1}")
+        val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(containerTuple._1)
+
+        try {
+          val emitter: Sinks.Many[CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
+
+          val bulkDeleteFlux = container.executeBulkOperations(emitter.asFlux())
+
+          val cnt = new AtomicInteger(0)
+          container.queryItems("SELECT * FROM r", classOf[ObjectNode])
+            .asScala
+            .doOnNext(item => {
+              val operation = CosmosBulkOperations.getDeleteItemOperation(getId(item), new PartitionKey(getPartitionKeyValue(item, containerTuple._2)))
+              cnt.incrementAndGet()
+              emitter.tryEmitNext(operation)
+
+            }).doOnComplete(
+            () => {
+              emitter.tryEmitComplete()
+            }).subscribe()
+
+          bulkDeleteFlux.blockLast()
+
+          System.out.println(s"Deleted ${cnt.get()} in container $cosmosContainer")
+        } catch {
+          case e: Exception =>
+            System.err.println(s"${this.getClass.getName}#afterEach: failed:" + e.getMessage)
+            throw e
+        }
+      }
+    } finally {
+      super.afterEach() // To be stackable, must call super.afterEach
+    }
+  }
+}
+
 private object Defaults {
   val DefaultContainerThroughput = 20000
 }

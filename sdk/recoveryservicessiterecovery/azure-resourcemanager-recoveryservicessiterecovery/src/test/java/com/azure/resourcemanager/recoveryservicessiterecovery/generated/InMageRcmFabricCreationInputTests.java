@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageRcmFabricCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmFabricCreationInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageRcm\",\"vmwareSiteId\":\"aj\",\"physicalSiteId\":\"iygmgs\",\"sourceAgentIdentity\":{\"tenantId\":\"vmdmzenlr\",\"applicationId\":\"tgfczljdncidtjva\",\"objectId\":\"yyznmrgcdogcvuc\",\"audience\":\"ytoxuwhttnzq\",\"aadAuthority\":\"aqm\"}}")
-                .toObject(InMageRcmFabricCreationInput.class);
+        InMageRcmFabricCreationInput model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageRcm\",\"vmwareSiteId\":\"aj\",\"physicalSiteId\":\"iygmgs\",\"sourceAgentIdentity\":{\"tenantId\":\"vmdmzenlr\",\"applicationId\":\"tgfczljdncidtjva\",\"objectId\":\"yyznmrgcdogcvuc\",\"audience\":\"ytoxuwhttnzq\",\"aadAuthority\":\"aqm\"}}")
+            .toObject(InMageRcmFabricCreationInput.class);
         Assertions.assertEquals("aj", model.vmwareSiteId());
         Assertions.assertEquals("iygmgs", model.physicalSiteId());
         Assertions.assertEquals("vmdmzenlr", model.sourceAgentIdentity().tenantId());
@@ -28,17 +26,10 @@ public final class InMageRcmFabricCreationInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmFabricCreationInput model =
-            new InMageRcmFabricCreationInput()
-                .withVmwareSiteId("aj")
-                .withPhysicalSiteId("iygmgs")
-                .withSourceAgentIdentity(
-                    new IdentityProviderInput()
-                        .withTenantId("vmdmzenlr")
-                        .withApplicationId("tgfczljdncidtjva")
-                        .withObjectId("yyznmrgcdogcvuc")
-                        .withAudience("ytoxuwhttnzq")
-                        .withAadAuthority("aqm"));
+        InMageRcmFabricCreationInput model = new InMageRcmFabricCreationInput().withVmwareSiteId("aj")
+            .withPhysicalSiteId("iygmgs").withSourceAgentIdentity(
+                new IdentityProviderInput().withTenantId("vmdmzenlr").withApplicationId("tgfczljdncidtjva")
+                    .withObjectId("yyznmrgcdogcvuc").withAudience("ytoxuwhttnzq").withAadAuthority("aqm"));
         model = BinaryData.fromObject(model).toObject(InMageRcmFabricCreationInput.class);
         Assertions.assertEquals("aj", model.vmwareSiteId());
         Assertions.assertEquals("iygmgs", model.physicalSiteId());

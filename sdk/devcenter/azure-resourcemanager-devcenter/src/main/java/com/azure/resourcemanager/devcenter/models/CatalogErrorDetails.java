@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Catalog error details. */
+/**
+ * Catalog error details.
+ */
 @Fluent
 public final class CatalogErrorDetails {
     /*
@@ -22,13 +24,15 @@ public final class CatalogErrorDetails {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of CatalogErrorDetails class. */
+    /**
+     * Creates an instance of CatalogErrorDetails class.
+     */
     public CatalogErrorDetails() {
     }
 
     /**
      * Get the code property: An identifier for the error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +41,7 @@ public final class CatalogErrorDetails {
 
     /**
      * Set the code property: An identifier for the error.
-     *
+     * 
      * @param code the code value to set.
      * @return the CatalogErrorDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class CatalogErrorDetails {
 
     /**
      * Get the message property: A message describing the error.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +61,7 @@ public final class CatalogErrorDetails {
 
     /**
      * Set the message property: A message describing the error.
-     *
+     * 
      * @param message the message value to set.
      * @return the CatalogErrorDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class CatalogErrorDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

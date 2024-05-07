@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information about a Target. A target is the component that can process a specific type of Job. */
+/**
+ * Information about a Target. A target is the component that can process a specific type of Job.
+ */
 @Fluent
 public final class TargetDescription {
     /*
@@ -41,13 +43,15 @@ public final class TargetDescription {
     @JsonProperty(value = "acceptedContentEncodings")
     private List<String> acceptedContentEncodings;
 
-    /** Creates an instance of TargetDescription class. */
+    /**
+     * Creates an instance of TargetDescription class.
+     */
     public TargetDescription() {
     }
 
     /**
      * Get the id property: Unique target id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +60,7 @@ public final class TargetDescription {
 
     /**
      * Set the id property: Unique target id.
-     *
+     * 
      * @param id the id value to set.
      * @return the TargetDescription object itself.
      */
@@ -67,7 +71,7 @@ public final class TargetDescription {
 
     /**
      * Get the name property: Display name of this target.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -76,7 +80,7 @@ public final class TargetDescription {
 
     /**
      * Set the name property: Display name of this target.
-     *
+     * 
      * @param name the name value to set.
      * @return the TargetDescription object itself.
      */
@@ -87,7 +91,7 @@ public final class TargetDescription {
 
     /**
      * Get the description property: A description about this target.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -96,7 +100,7 @@ public final class TargetDescription {
 
     /**
      * Set the description property: A description about this target.
-     *
+     * 
      * @param description the description value to set.
      * @return the TargetDescription object itself.
      */
@@ -107,7 +111,7 @@ public final class TargetDescription {
 
     /**
      * Get the acceptedDataFormats property: List of data formats accepted by this target.
-     *
+     * 
      * @return the acceptedDataFormats value.
      */
     public List<String> acceptedDataFormats() {
@@ -116,7 +120,7 @@ public final class TargetDescription {
 
     /**
      * Set the acceptedDataFormats property: List of data formats accepted by this target.
-     *
+     * 
      * @param acceptedDataFormats the acceptedDataFormats value to set.
      * @return the TargetDescription object itself.
      */
@@ -127,7 +131,7 @@ public final class TargetDescription {
 
     /**
      * Get the acceptedContentEncodings property: List of content encodings accepted by this target.
-     *
+     * 
      * @return the acceptedContentEncodings value.
      */
     public List<String> acceptedContentEncodings() {
@@ -136,7 +140,7 @@ public final class TargetDescription {
 
     /**
      * Set the acceptedContentEncodings property: List of content encodings accepted by this target.
-     *
+     * 
      * @param acceptedContentEncodings the acceptedContentEncodings value to set.
      * @return the TargetDescription object itself.
      */
@@ -147,7 +151,7 @@ public final class TargetDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

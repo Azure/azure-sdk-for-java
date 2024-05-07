@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes the data source that output will be written to. */
+/**
+ * Describes the data source that output will be written to.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,25 +19,33 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = OutputDataSource.class)
 @JsonTypeName("OutputDataSource")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "Raw", value = RawOutputDatasource.class),
     @JsonSubTypes.Type(name = "Microsoft.Storage/Blob", value = BlobOutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.Storage/Table", value = AzureTableOutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.ServiceBus/EventHub", value = EventHubOutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.EventHub/EventHub", value = EventHubV2OutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.Sql/Server/Database", value = AzureSqlDatabaseOutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.Sql/Server/DataWarehouse", value = AzureSynapseOutputDataSource.class),
+    @JsonSubTypes.Type(name = "Microsoft.DBForPostgreSQL/servers/databases", value = PostgreSqlOutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.Storage/DocumentDB", value = DocumentDbOutputDataSource.class),
+    @JsonSubTypes.Type(name = "Microsoft.AzureFunction", value = AzureFunctionOutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.ServiceBus/Queue", value = ServiceBusQueueOutputDataSource.class),
     @JsonSubTypes.Type(name = "Microsoft.ServiceBus/Topic", value = ServiceBusTopicOutputDataSource.class),
     @JsonSubTypes.Type(name = "PowerBI", value = PowerBIOutputDataSource.class),
-    @JsonSubTypes.Type(name = "Microsoft.DataLake/Accounts", value = AzureDataLakeStoreOutputDataSource.class)
-})
+    @JsonSubTypes.Type(name = "Microsoft.DataLake/Accounts", value = AzureDataLakeStoreOutputDataSource.class),
+    @JsonSubTypes.Type(name = "GatewayMessageBus", value = GatewayMessageBusOutputDataSource.class),
+    @JsonSubTypes.Type(name = "Microsoft.Kusto/clusters/databases", value = AzureDataExplorerOutputDataSource.class) })
 @Immutable
 public class OutputDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutputDataSource.class);
+    /**
+     * Creates an instance of OutputDataSource class.
+     */
+    public OutputDataSource() {
+    }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

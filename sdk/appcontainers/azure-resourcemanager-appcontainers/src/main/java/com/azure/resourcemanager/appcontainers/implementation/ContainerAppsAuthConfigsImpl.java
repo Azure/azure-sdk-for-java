@@ -21,35 +21,31 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public ContainerAppsAuthConfigsImpl(
-        ContainerAppsAuthConfigsClient innerClient,
+    public ContainerAppsAuthConfigsImpl(ContainerAppsAuthConfigsClient innerClient,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<AuthConfig> listByContainerApp(String resourceGroupName, String containerAppName) {
-        PagedIterable<AuthConfigInner> inner =
-            this.serviceClient().listByContainerApp(resourceGroupName, containerAppName);
-        return Utils.mapPage(inner, inner1 -> new AuthConfigImpl(inner1, this.manager()));
+        PagedIterable<AuthConfigInner> inner
+            = this.serviceClient().listByContainerApp(resourceGroupName, containerAppName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AuthConfigImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AuthConfig> listByContainerApp(
-        String resourceGroupName, String containerAppName, Context context) {
-        PagedIterable<AuthConfigInner> inner =
-            this.serviceClient().listByContainerApp(resourceGroupName, containerAppName, context);
-        return Utils.mapPage(inner, inner1 -> new AuthConfigImpl(inner1, this.manager()));
+    public PagedIterable<AuthConfig> listByContainerApp(String resourceGroupName, String containerAppName,
+        Context context) {
+        PagedIterable<AuthConfigInner> inner
+            = this.serviceClient().listByContainerApp(resourceGroupName, containerAppName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AuthConfigImpl(inner1, this.manager()));
     }
 
-    public Response<AuthConfig> getWithResponse(
-        String resourceGroupName, String containerAppName, String authConfigName, Context context) {
-        Response<AuthConfigInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, containerAppName, authConfigName, context);
+    public Response<AuthConfig> getWithResponse(String resourceGroupName, String containerAppName,
+        String authConfigName, Context context) {
+        Response<AuthConfigInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, containerAppName, authConfigName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AuthConfigImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,8 +61,8 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String containerAppName, String authConfigName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String containerAppName, String authConfigName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, containerAppName, authConfigName, context);
     }
 
@@ -75,105 +71,77 @@ public final class ContainerAppsAuthConfigsImpl implements ContainerAppsAuthConf
     }
 
     public AuthConfig getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String containerAppName = Utils.getValueFromIdByName(id, "containerApps");
+        String containerAppName = ResourceManagerUtils.getValueFromIdByName(id, "containerApps");
         if (containerAppName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String authConfigName = Utils.getValueFromIdByName(id, "authConfigs");
+        String authConfigName = ResourceManagerUtils.getValueFromIdByName(id, "authConfigs");
         if (authConfigName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
         }
         return this.getWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE).getValue();
     }
 
     public Response<AuthConfig> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String containerAppName = Utils.getValueFromIdByName(id, "containerApps");
+        String containerAppName = ResourceManagerUtils.getValueFromIdByName(id, "containerApps");
         if (containerAppName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String authConfigName = Utils.getValueFromIdByName(id, "authConfigs");
+        String authConfigName = ResourceManagerUtils.getValueFromIdByName(id, "authConfigs");
         if (authConfigName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
         }
         return this.getWithResponse(resourceGroupName, containerAppName, authConfigName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String containerAppName = Utils.getValueFromIdByName(id, "containerApps");
+        String containerAppName = ResourceManagerUtils.getValueFromIdByName(id, "containerApps");
         if (containerAppName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String authConfigName = Utils.getValueFromIdByName(id, "authConfigs");
+        String authConfigName = ResourceManagerUtils.getValueFromIdByName(id, "authConfigs");
         if (authConfigName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, containerAppName, authConfigName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String containerAppName = Utils.getValueFromIdByName(id, "containerApps");
+        String containerAppName = ResourceManagerUtils.getValueFromIdByName(id, "containerApps");
         if (containerAppName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'containerApps'.", id)));
         }
-        String authConfigName = Utils.getValueFromIdByName(id, "authConfigs");
+        String authConfigName = ResourceManagerUtils.getValueFromIdByName(id, "authConfigs");
         if (authConfigName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'authConfigs'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, containerAppName, authConfigName, context);
     }

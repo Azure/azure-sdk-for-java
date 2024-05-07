@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.WorkspaceSettingInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of workspace settings response. */
+/**
+ * List of workspace settings response.
+ */
 @Fluent
 public final class WorkspaceSettingList {
     /*
@@ -25,13 +27,15 @@ public final class WorkspaceSettingList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of WorkspaceSettingList class. */
+    /**
+     * Creates an instance of WorkspaceSettingList class.
+     */
     public WorkspaceSettingList() {
     }
 
     /**
      * Get the value property: List of workspace settings.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkspaceSettingInner> value() {
@@ -40,7 +44,7 @@ public final class WorkspaceSettingList {
 
     /**
      * Set the value property: List of workspace settings.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkspaceSettingList object itself.
      */
@@ -51,7 +55,7 @@ public final class WorkspaceSettingList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class WorkspaceSettingList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model WorkspaceSettingList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model WorkspaceSettingList"));
         } else {
             value().forEach(e -> e.validate());
         }

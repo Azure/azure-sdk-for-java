@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Revision resource specific properties. */
+/**
+ * Revision resource specific properties.
+ */
 @Fluent
 public final class BillingMeterProperties {
     /*
@@ -28,13 +30,15 @@ public final class BillingMeterProperties {
     @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of BillingMeterProperties class. */
+    /**
+     * Creates an instance of BillingMeterProperties class.
+     */
     public BillingMeterProperties() {
     }
 
     /**
      * Get the category property: Used to categorize billing meters.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -43,7 +47,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the category property: Used to categorize billing meters.
-     *
+     * 
      * @param category the category value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the meterType property: Billing meter type.
-     *
+     * 
      * @return the meterType value.
      */
     public String meterType() {
@@ -63,7 +67,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the meterType property: Billing meter type.
-     *
+     * 
      * @param meterType the meterType value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the displayName property: The everyday name of the billing meter.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -83,7 +87,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the displayName property: The everyday name of the billing meter.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class BillingMeterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

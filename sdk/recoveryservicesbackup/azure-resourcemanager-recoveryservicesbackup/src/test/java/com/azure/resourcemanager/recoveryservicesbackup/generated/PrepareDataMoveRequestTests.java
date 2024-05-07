@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrepareDataMoveRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrepareDataMoveRequest model =
-            BinaryData
-                .fromString(
-                    "{\"targetResourceId\":\"ujjugwdkcglh\",\"targetRegion\":\"lazjdyggdtjixhbk\",\"dataMoveLevel\":\"Container\",\"sourceContainerArmIds\":[\"wey\",\"hmenevfyexfwhybc\",\"bvyvdcsity\"],\"ignoreMoved\":false}")
-                .toObject(PrepareDataMoveRequest.class);
+        PrepareDataMoveRequest model = BinaryData.fromString(
+            "{\"targetResourceId\":\"ujjugwdkcglh\",\"targetRegion\":\"lazjdyggdtjixhbk\",\"dataMoveLevel\":\"Container\",\"sourceContainerArmIds\":[\"wey\",\"hmenevfyexfwhybc\",\"bvyvdcsity\"],\"ignoreMoved\":false}")
+            .toObject(PrepareDataMoveRequest.class);
         Assertions.assertEquals("ujjugwdkcglh", model.targetResourceId());
         Assertions.assertEquals("lazjdyggdtjixhbk", model.targetRegion());
         Assertions.assertEquals(DataMoveLevel.CONTAINER, model.dataMoveLevel());
@@ -27,13 +25,9 @@ public final class PrepareDataMoveRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrepareDataMoveRequest model =
-            new PrepareDataMoveRequest()
-                .withTargetResourceId("ujjugwdkcglh")
-                .withTargetRegion("lazjdyggdtjixhbk")
-                .withDataMoveLevel(DataMoveLevel.CONTAINER)
-                .withSourceContainerArmIds(Arrays.asList("wey", "hmenevfyexfwhybc", "bvyvdcsity"))
-                .withIgnoreMoved(false);
+        PrepareDataMoveRequest model = new PrepareDataMoveRequest().withTargetResourceId("ujjugwdkcglh")
+            .withTargetRegion("lazjdyggdtjixhbk").withDataMoveLevel(DataMoveLevel.CONTAINER)
+            .withSourceContainerArmIds(Arrays.asList("wey", "hmenevfyexfwhybc", "bvyvdcsity")).withIgnoreMoved(false);
         model = BinaryData.fromObject(model).toObject(PrepareDataMoveRequest.class);
         Assertions.assertEquals("ujjugwdkcglh", model.targetResourceId());
         Assertions.assertEquals("lazjdyggdtjixhbk", model.targetRegion());

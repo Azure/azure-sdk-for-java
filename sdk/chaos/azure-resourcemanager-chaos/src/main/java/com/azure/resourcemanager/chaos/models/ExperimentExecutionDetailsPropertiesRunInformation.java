@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The information of the experiment run. */
+/**
+ * The information of the experiment run.
+ */
 @Immutable
 public final class ExperimentExecutionDetailsPropertiesRunInformation {
     /*
@@ -17,13 +19,15 @@ public final class ExperimentExecutionDetailsPropertiesRunInformation {
     @JsonProperty(value = "steps", access = JsonProperty.Access.WRITE_ONLY)
     private List<StepStatus> steps;
 
-    /** Creates an instance of ExperimentExecutionDetailsPropertiesRunInformation class. */
+    /**
+     * Creates an instance of ExperimentExecutionDetailsPropertiesRunInformation class.
+     */
     public ExperimentExecutionDetailsPropertiesRunInformation() {
     }
 
     /**
      * Get the steps property: The steps of the experiment run.
-     *
+     * 
      * @return the steps value.
      */
     public List<StepStatus> steps() {
@@ -32,7 +36,7 @@ public final class ExperimentExecutionDetailsPropertiesRunInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

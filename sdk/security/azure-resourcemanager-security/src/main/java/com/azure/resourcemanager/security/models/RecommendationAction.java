@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The recommendation action of the machine or rule. */
+/**
+ * The recommendation action of the machine or rule.
+ */
 public final class RecommendationAction extends ExpandableStringEnum<RecommendationAction> {
-    /** Static value Recommended for RecommendationAction. */
+    /**
+     * Static value Recommended for RecommendationAction.
+     */
     public static final RecommendationAction RECOMMENDED = fromString("Recommended");
 
-    /** Static value Add for RecommendationAction. */
+    /**
+     * Static value Add for RecommendationAction.
+     */
     public static final RecommendationAction ADD = fromString("Add");
 
-    /** Static value Remove for RecommendationAction. */
+    /**
+     * Static value Remove for RecommendationAction.
+     */
     public static final RecommendationAction REMOVE = fromString("Remove");
 
     /**
      * Creates a new instance of RecommendationAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class RecommendationAction extends ExpandableStringEnum<Recommendat
 
     /**
      * Creates or finds a RecommendationAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecommendationAction.
      */
@@ -41,7 +49,7 @@ public final class RecommendationAction extends ExpandableStringEnum<Recommendat
 
     /**
      * Gets known RecommendationAction values.
-     *
+     * 
      * @return known RecommendationAction values.
      */
     public static Collection<RecommendationAction> values() {

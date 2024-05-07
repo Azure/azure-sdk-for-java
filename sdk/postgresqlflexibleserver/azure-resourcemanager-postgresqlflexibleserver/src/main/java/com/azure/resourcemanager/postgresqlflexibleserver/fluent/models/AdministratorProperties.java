@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.PrincipalType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Active Directory administrator. */
+/**
+ * The properties of an Active Directory administrator.
+ */
 @Fluent
 public final class AdministratorProperties {
     /*
@@ -35,13 +37,15 @@ public final class AdministratorProperties {
     @JsonProperty(value = "tenantId")
     private String tenantId;
 
-    /** Creates an instance of AdministratorProperties class. */
+    /**
+     * Creates an instance of AdministratorProperties class.
+     */
     public AdministratorProperties() {
     }
 
     /**
      * Get the principalType property: The principal type used to represent the type of Active Directory Administrator.
-     *
+     * 
      * @return the principalType value.
      */
     public PrincipalType principalType() {
@@ -50,7 +54,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the principalType property: The principal type used to represent the type of Active Directory Administrator.
-     *
+     * 
      * @param principalType the principalType value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class AdministratorProperties {
 
     /**
      * Get the principalName property: Active Directory administrator principal name.
-     *
+     * 
      * @return the principalName value.
      */
     public String principalName() {
@@ -70,7 +74,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the principalName property: Active Directory administrator principal name.
-     *
+     * 
      * @param principalName the principalName value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class AdministratorProperties {
 
     /**
      * Get the objectId property: The objectId of the Active Directory administrator.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -90,7 +94,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the objectId property: The objectId of the Active Directory administrator.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class AdministratorProperties {
 
     /**
      * Get the tenantId property: The tenantId of the Active Directory administrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -110,7 +114,7 @@ public final class AdministratorProperties {
 
     /**
      * Set the tenantId property: The tenantId of the Active Directory administrator.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AdministratorProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class AdministratorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

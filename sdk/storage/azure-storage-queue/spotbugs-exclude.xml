@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Or>
+      <Class name="com.azure.storage.queue.implementation.AzureQueueStorageImpl" />
+      <Class name="com.azure.storage.queue.implementation.models.ListQueuesSegmentResponse" />
+      <Class name="com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper" />
+      <Class name="com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper" />
+      <Class name="com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper" />
+      <Class name="com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders" />
+      <Class name="com.azure.storage.queue.implementation.models.SendMessageResultWrapper" />
+      <Class name="com.azure.storage.queue.models.PeekedMessageItem" />
+      <Class name="com.azure.storage.queue.models.QueueItem" />
+      <Class name="com.azure.storage.queue.models.QueueMessageDecodingError" />
+      <Class name="com.azure.storage.queue.models.QueueMessageItem" />
+      <Class name="com.azure.storage.queue.models.QueueProperties" />
+      <Class name="com.azure.storage.queue.models.QueueServiceProperties" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="com.azure.storage.queue.QueueClientBuilder" />
+      <Class name="com.azure.storage.queue.QueueServiceClientBuilder" />
+      <Class name="com.azure.storage.queue.implementation.models.ListQueuesSegmentResponse" />
+      <Class name="com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper" />
+      <Class name="com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper" />
+      <Class name="com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper" />
+      <Class name="com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders" />
+      <Class name="com.azure.storage.queue.implementation.models.SendMessageResultWrapper" />
+      <Class name="com.azure.storage.queue.models.PeekedMessageItem" />
+      <Class name="com.azure.storage.queue.models.QueueItem" />
+      <Class name="com.azure.storage.queue.models.QueueMessageDecodingError" />
+      <Class name="com.azure.storage.queue.models.QueueMessageItem" />
+      <Class name="com.azure.storage.queue.models.QueueProperties" />
+      <Class name="com.azure.storage.queue.models.QueueServiceProperties" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="MS_EXPOSE_REP" />
+    <Class name="com.azure.storage.queue.implementation.util.QueueHeadersAndQueryParameters" />
+  </Match>
+</FindBugsFilter>

@@ -3,78 +3,103 @@
 
 package com.azure.messaging.eventhubs.stress.scenarios;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerClientBuilder;
+import com.azure.messaging.eventhubs.stress.util.RateLimiter;
+import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.trace.Span;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
+import java.time.Duration;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
+
+import static com.azure.messaging.eventhubs.stress.util.TestUtils.blockingWait;
+import static com.azure.messaging.eventhubs.stress.util.TestUtils.createMessagePayload;
 
 /**
  * Test for EventSenderBuffered
  */
 @Component("EventSenderBuffered")
 public class EventSenderBuffered extends EventHubsScenario {
+    private static final String PREFIX = UUID.randomUUID().toString().substring(25);
     private static final ClientLogger LOGGER = new ClientLogger(EventSenderBuffered.class);
 
-    private static final Random RANDOM = new Random();
+    @Value("${SEND_MESSAGE_RATE:100}")
+    private int sendMessageRatePerSecond;
 
-    @Value("${SEND_TIMES:1000000}")
-    private int sendTimes;
+    @Value("${MAX_EVENT_BUFFER_LENGTH_PER_PARTITION:100}")
+    private int maxEventBufferLengthPerPartition;
 
-    @Value("${SEND_EVENTS:100}")
-    private int eventsToSend;
+    @Value("${MAX_WAIT_TIME_IN_MS:0}")
+    private int maxWaitTimeInMs;
 
-    @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
-    private int payloadSize;
+    private BinaryData messagePayload;
+    private final AtomicLong sentCounter = new AtomicLong();
+    private EventHubBufferedProducerAsyncClient sender;
+    private RateLimiter rateLimiter;
 
     @Override
     public void run() {
+        sender = toClose(getBuilder()
+            .onSendBatchFailed(context -> telemetryHelper.recordError(context.getThrowable(), "sendBuffed", context.getPartitionId()))
+            .onSendBatchSucceeded(context -> LOGGER.verbose("Send success."))
+            .buildAsyncClient());
 
-        final String eventHubConnStr = options.getEventhubsConnectionString();
-        final String eventHub = options.getEventHubsEventHubName();
+        messagePayload = createMessagePayload(options.getMessageSize());
+        rateLimiter = toClose(new RateLimiter(sendMessageRatePerSecond, 10));
 
-        final EventHubBufferedProducerAsyncClient sender = new EventHubBufferedProducerClientBuilder()
-            .connectionString(eventHubConnStr, eventHub)
-            .onSendBatchFailed(context -> {
-                final String numberOfEvents;
+        toClose(telemetryHelper.instrumentRunAsync(singleRun(), "enqueue event")
+            .repeat()
+            .take(options.getTestDuration())
+            .subscribe());
 
-                if (context.getEvents() == null) {
-                    numberOfEvents = "N/A";
-                } else {
-                    final Stream<EventData> stream = StreamSupport.stream(context.getEvents().spliterator(),
-                        false);
-                    numberOfEvents = String.valueOf(stream.count());
-                }
+        blockingWait(options.getTestDuration().plusSeconds(30));
+    }
 
-                LOGGER.warning("partitionId[{}] # events[{}] Unable to publish events. ",
-                    context.getPartitionId(), numberOfEvents, context.getThrowable());
-            })
-            .onSendBatchSucceeded(context -> {
-                LOGGER.verbose("Send success.");
-            })
-            .buildAsyncClient();
+    private Mono<Void> singleRun() {
+        return createEvent().flatMap(event ->
+                Mono.usingWhen(rateLimiter.acquire(),
+                    i -> sender.enqueueEvent(event),
+                    i -> {
+                        rateLimiter.release();
+                        return Mono.empty();
+                    }))
+            .then();
+    }
 
-        final byte[] payload = new byte[payloadSize];
-        RANDOM.nextBytes(payload);
+    @Override
+    public void recordRunOptions(Span span) {
+        span.setAttribute(AttributeKey.longKey("sendMessageRatePerSecond"), sendMessageRatePerSecond);
+        span.setAttribute(AttributeKey.longKey("maxEventBufferLengthPerPartition"), maxEventBufferLengthPerPartition);
+        span.setAttribute(AttributeKey.longKey("maxWaitTimeInMs"), maxWaitTimeInMs);
+    }
 
-        Flux.range(0, sendTimes).concatMap(i -> {
-            List<EventData> eventDataList = new ArrayList<>();
-            IntStream.range(0, eventsToSend).forEach(j -> {
-                eventDataList.add(new EventData(payload));
-            });
+    private Mono<EventData> createEvent() {
+        return Mono.fromCallable(() -> {
+            EventData message = new EventData(messagePayload);
+            message.setMessageId(PREFIX + sentCounter.getAndIncrement());
+            return message;
+        });
+    }
 
-            return sender.enqueueEvents(eventDataList);
-        }).blockLast();
+    private EventHubBufferedProducerClientBuilder getBuilder() {
+        EventHubBufferedProducerClientBuilder builder = new EventHubBufferedProducerClientBuilder()
+            .connectionString(options.getEventHubsConnectionString(), options.getEventHubsEventHubName());
 
-        sender.close();
+        if (maxEventBufferLengthPerPartition > 0) {
+            builder.maxEventBufferLengthPerPartition(maxEventBufferLengthPerPartition);
+        }
+
+        if (maxWaitTimeInMs > 0) {
+            builder.maxWaitTime(Duration.ofMillis(maxWaitTimeInMs));
+        }
+
+        return builder;
     }
 }

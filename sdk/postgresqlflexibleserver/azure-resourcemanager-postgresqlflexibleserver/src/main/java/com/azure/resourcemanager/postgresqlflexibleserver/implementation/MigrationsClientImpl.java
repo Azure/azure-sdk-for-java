@@ -36,22 +36,28 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResour
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResourceListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MigrationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MigrationsClient.
+ */
 public final class MigrationsClientImpl implements MigrationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MigrationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PostgreSqlManagementClientImpl client;
 
     /**
      * Initializes an instance of MigrationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MigrationsClientImpl(PostgreSqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(MigrationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MigrationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,97 +68,73 @@ public final class MigrationsClientImpl implements MigrationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")
     public interface MigrationsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MigrationResourceInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<MigrationResourceInner>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("targetDbServerName") String targetDbServerName,
             @PathParam("migrationName") String migrationName,
-            @BodyParam("application/json") MigrationResourceInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MigrationResourceInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MigrationResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<MigrationResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("targetDbServerName") String targetDbServerName,
+            @PathParam("migrationName") String migrationName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MigrationResourceInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("targetDbServerName") String targetDbServerName,
             @PathParam("migrationName") String migrationName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MigrationResourceForPatch parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MigrationResourceInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("targetDbServerName") String targetDbServerName,
-            @PathParam("migrationName") String migrationName,
-            @BodyParam("application/json") MigrationResourceForPatch parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("migrationName") String migrationName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations/{migrationName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("targetDbServerName") String targetDbServerName,
-            @PathParam("migrationName") String migrationName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/migrations")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MigrationResourceListResult>> listByTargetServer(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<MigrationResourceListResult>> listByTargetServer(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("targetDbServerName") String targetDbServerName,
             @QueryParam("migrationListFilter") MigrationListFilter migrationListFilter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MigrationResourceListResult>> listByTargetServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a new migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -164,17 +146,11 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return represents a migration resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MigrationResourceInner>> createWithResponseAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceInner parameters) {
+    public Mono<Response<MigrationResourceInner>> createWithResponseAsync(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, String migrationName, MigrationResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -197,25 +173,14 @@ public final class MigrationsClientImpl implements MigrationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            subscriptionId,
-                            resourceGroupName,
-                            targetDbServerName,
-                            migrationName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -228,18 +193,12 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return represents a migration resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MigrationResourceInner>> createWithResponseAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceInner parameters,
+    private Mono<Response<MigrationResourceInner>> createWithResponseAsync(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, String migrationName, MigrationResourceInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -262,22 +221,13 @@ public final class MigrationsClientImpl implements MigrationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                subscriptionId,
-                resourceGroupName,
-                targetDbServerName,
-                migrationName,
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), subscriptionId, resourceGroupName,
+            targetDbServerName, migrationName, parameters, accept, context);
     }
 
     /**
      * Creates a new migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -289,19 +239,15 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return represents a migration resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MigrationResourceInner> createAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceInner parameters) {
+    public Mono<MigrationResourceInner> createAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, MigrationResourceInner parameters) {
         return createWithResponseAsync(subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -314,21 +260,15 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return represents a migration resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MigrationResourceInner> createWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceInner parameters,
-        Context context) {
-        return createWithResponseAsync(
-                subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters, context)
-            .block();
+    public Response<MigrationResourceInner> createWithResponse(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, MigrationResourceInner parameters, Context context) {
+        return createWithResponseAsync(subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters,
+            context).block();
     }
 
     /**
      * Creates a new migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -340,20 +280,15 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return represents a migration resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationResourceInner create(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceInner parameters) {
-        return createWithResponse(
-                subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters, Context.NONE)
-            .getValue();
+    public MigrationResourceInner create(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName, MigrationResourceInner parameters) {
+        return createWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -364,13 +299,11 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return details of a migration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MigrationResourceInner>> getWithResponseAsync(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName) {
+    public Mono<Response<MigrationResourceInner>> getWithResponseAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -388,24 +321,14 @@ public final class MigrationsClientImpl implements MigrationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            subscriptionId,
-                            resourceGroupName,
-                            targetDbServerName,
-                            migrationName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), subscriptionId,
+                resourceGroupName, targetDbServerName, migrationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -417,17 +340,11 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return details of a migration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MigrationResourceInner>> getWithResponseAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        Context context) {
+    private Mono<Response<MigrationResourceInner>> getWithResponseAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -445,21 +362,13 @@ public final class MigrationsClientImpl implements MigrationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                subscriptionId,
-                resourceGroupName,
-                targetDbServerName,
-                migrationName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), subscriptionId, resourceGroupName,
+            targetDbServerName, migrationName, accept, context);
     }
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -470,15 +379,15 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return details of a migration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MigrationResourceInner> getAsync(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName) {
+    public Mono<MigrationResourceInner> getAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName) {
         return getWithResponseAsync(subscriptionId, resourceGroupName, targetDbServerName, migrationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -490,19 +399,15 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return details of a migration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MigrationResourceInner> getWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        Context context) {
+    public Response<MigrationResourceInner> getWithResponse(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, Context context) {
         return getWithResponseAsync(subscriptionId, resourceGroupName, targetDbServerName, migrationName, context)
             .block();
     }
 
     /**
      * Gets details of a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -513,8 +418,8 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return details of a migration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationResourceInner get(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName) {
+    public MigrationResourceInner get(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName) {
         return getWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, Context.NONE)
             .getValue();
     }
@@ -522,7 +427,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -534,17 +439,12 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return represents a migration resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MigrationResourceInner>> updateWithResponseAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
+    public Mono<Response<MigrationResourceInner>> updateWithResponseAsync(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, String migrationName,
         MigrationResourceForPatch parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -567,26 +467,15 @@ public final class MigrationsClientImpl implements MigrationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            subscriptionId,
-                            resourceGroupName,
-                            targetDbServerName,
-                            migrationName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -599,18 +488,12 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return represents a migration resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MigrationResourceInner>> updateWithResponseAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceForPatch parameters,
+    private Mono<Response<MigrationResourceInner>> updateWithResponseAsync(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, String migrationName, MigrationResourceForPatch parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -633,23 +516,14 @@ public final class MigrationsClientImpl implements MigrationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                subscriptionId,
-                resourceGroupName,
-                targetDbServerName,
-                migrationName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), subscriptionId, resourceGroupName,
+            targetDbServerName, migrationName, parameters, accept, context);
     }
 
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -661,12 +535,8 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return represents a migration resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MigrationResourceInner> updateAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceForPatch parameters) {
+    public Mono<MigrationResourceInner> updateAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, MigrationResourceForPatch parameters) {
         return updateWithResponseAsync(subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -674,7 +544,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -687,22 +557,16 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return represents a migration resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MigrationResourceInner> updateWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceForPatch parameters,
-        Context context) {
-        return updateWithResponseAsync(
-                subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters, context)
-            .block();
+    public Response<MigrationResourceInner> updateWithResponse(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, MigrationResourceForPatch parameters, Context context) {
+        return updateWithResponseAsync(subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters,
+            context).block();
     }
 
     /**
      * Updates an existing migration. The request body can contain one to many of the mutable properties present in the
      * migration definition. Certain property updates initiate migration state transitions.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -714,20 +578,15 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return represents a migration resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationResourceInner update(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        MigrationResourceForPatch parameters) {
-        return updateWithResponse(
-                subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters, Context.NONE)
-            .getValue();
+    public MigrationResourceInner update(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName, MigrationResourceForPatch parameters) {
+        return updateWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -738,13 +597,11 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -762,24 +619,14 @@ public final class MigrationsClientImpl implements MigrationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            subscriptionId,
-                            resourceGroupName,
-                            targetDbServerName,
-                            migrationName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                subscriptionId, resourceGroupName, targetDbServerName, migrationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -791,17 +638,11 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, String migrationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -819,21 +660,13 @@ public final class MigrationsClientImpl implements MigrationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                subscriptionId,
-                resourceGroupName,
-                targetDbServerName,
-                migrationName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), subscriptionId, resourceGroupName,
+            targetDbServerName, migrationName, accept, context);
     }
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -844,15 +677,15 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName) {
+    public Mono<Void> deleteAsync(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName) {
         return deleteWithResponseAsync(subscriptionId, resourceGroupName, targetDbServerName, migrationName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -864,19 +697,15 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        String migrationName,
-        Context context) {
+    public Response<Void> deleteWithResponse(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName, Context context) {
         return deleteWithResponseAsync(subscriptionId, resourceGroupName, targetDbServerName, migrationName, context)
             .block();
     }
 
     /**
      * Deletes a migration.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -886,14 +715,14 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String subscriptionId, String resourceGroupName, String targetDbServerName, String migrationName) {
+    public void delete(String subscriptionId, String resourceGroupName, String targetDbServerName,
+        String migrationName) {
         deleteWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, Context.NONE);
     }
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -904,16 +733,11 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return a list of migration resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MigrationResourceInner>> listByTargetServerSinglePageAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationListFilter migrationListFilter) {
+    private Mono<PagedResponse<MigrationResourceInner>> listByTargetServerSinglePageAsync(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, MigrationListFilter migrationListFilter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -928,33 +752,16 @@ public final class MigrationsClientImpl implements MigrationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByTargetServer(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            subscriptionId,
-                            resourceGroupName,
-                            targetDbServerName,
-                            migrationListFilter,
-                            accept,
-                            context))
-            .<PagedResponse<MigrationResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByTargetServer(this.client.getEndpoint(), this.client.getApiVersion(),
+                subscriptionId, resourceGroupName, targetDbServerName, migrationListFilter, accept, context))
+            .<PagedResponse<MigrationResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -966,17 +773,11 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return a list of migration resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MigrationResourceInner>> listByTargetServerSinglePageAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationListFilter migrationListFilter,
-        Context context) {
+    private Mono<PagedResponse<MigrationResourceInner>> listByTargetServerSinglePageAsync(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, MigrationListFilter migrationListFilter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -992,29 +793,15 @@ public final class MigrationsClientImpl implements MigrationsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByTargetServer(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                subscriptionId,
-                resourceGroupName,
-                targetDbServerName,
-                migrationListFilter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByTargetServer(this.client.getEndpoint(), this.client.getApiVersion(), subscriptionId,
+                resourceGroupName, targetDbServerName, migrationListFilter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -1025,21 +812,15 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return a list of migration resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MigrationResourceInner> listByTargetServerAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationListFilter migrationListFilter) {
-        return new PagedFlux<>(
-            () ->
-                listByTargetServerSinglePageAsync(
-                    subscriptionId, resourceGroupName, targetDbServerName, migrationListFilter),
-            nextLink -> listByTargetServerNextSinglePageAsync(nextLink));
+    public PagedFlux<MigrationResourceInner> listByTargetServerAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, MigrationListFilter migrationListFilter) {
+        return new PagedFlux<>(() -> listByTargetServerSinglePageAsync(subscriptionId, resourceGroupName,
+            targetDbServerName, migrationListFilter), nextLink -> listByTargetServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -1049,19 +830,16 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return a list of migration resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MigrationResourceInner> listByTargetServerAsync(
-        String subscriptionId, String resourceGroupName, String targetDbServerName) {
+    public PagedFlux<MigrationResourceInner> listByTargetServerAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName) {
         final MigrationListFilter migrationListFilter = null;
-        return new PagedFlux<>(
-            () ->
-                listByTargetServerSinglePageAsync(
-                    subscriptionId, resourceGroupName, targetDbServerName, migrationListFilter),
-            nextLink -> listByTargetServerNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByTargetServerSinglePageAsync(subscriptionId, resourceGroupName,
+            targetDbServerName, migrationListFilter), nextLink -> listByTargetServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -1073,22 +851,16 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return a list of migration resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MigrationResourceInner> listByTargetServerAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationListFilter migrationListFilter,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByTargetServerSinglePageAsync(
-                    subscriptionId, resourceGroupName, targetDbServerName, migrationListFilter, context),
+    private PagedFlux<MigrationResourceInner> listByTargetServerAsync(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, MigrationListFilter migrationListFilter, Context context) {
+        return new PagedFlux<>(() -> listByTargetServerSinglePageAsync(subscriptionId, resourceGroupName,
+            targetDbServerName, migrationListFilter, context),
             nextLink -> listByTargetServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -1098,8 +870,8 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return a list of migration resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MigrationResourceInner> listByTargetServer(
-        String subscriptionId, String resourceGroupName, String targetDbServerName) {
+    public PagedIterable<MigrationResourceInner> listByTargetServer(String subscriptionId, String resourceGroupName,
+        String targetDbServerName) {
         final MigrationListFilter migrationListFilter = null;
         return new PagedIterable<>(
             listByTargetServerAsync(subscriptionId, resourceGroupName, targetDbServerName, migrationListFilter));
@@ -1107,7 +879,7 @@ public final class MigrationsClientImpl implements MigrationsClient {
 
     /**
      * List all the migrations on a given target server.
-     *
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -1119,22 +891,18 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return a list of migration resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MigrationResourceInner> listByTargetServer(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationListFilter migrationListFilter,
-        Context context) {
-        return new PagedIterable<>(
-            listByTargetServerAsync(
-                subscriptionId, resourceGroupName, targetDbServerName, migrationListFilter, context));
+    public PagedIterable<MigrationResourceInner> listByTargetServer(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, MigrationListFilter migrationListFilter, Context context) {
+        return new PagedIterable<>(listByTargetServerAsync(subscriptionId, resourceGroupName, targetDbServerName,
+            migrationListFilter, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1146,32 +914,24 @@ public final class MigrationsClientImpl implements MigrationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByTargetServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MigrationResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<MigrationResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1179,29 +939,19 @@ public final class MigrationsClientImpl implements MigrationsClient {
      * @return a list of migration resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MigrationResourceInner>> listByTargetServerNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<MigrationResourceInner>> listByTargetServerNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTargetServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTargetServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

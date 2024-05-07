@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** There can be multiple identifiers of different type per alert, this field specify the identifier type. */
+/**
+ * There can be multiple identifiers of different type per alert, this field specify the identifier type.
+ */
 public final class ResourceIdentifierType extends ExpandableStringEnum<ResourceIdentifierType> {
-    /** Static value AzureResource for ResourceIdentifierType. */
+    /**
+     * Static value AzureResource for ResourceIdentifierType.
+     */
     public static final ResourceIdentifierType AZURE_RESOURCE = fromString("AzureResource");
 
-    /** Static value LogAnalytics for ResourceIdentifierType. */
+    /**
+     * Static value LogAnalytics for ResourceIdentifierType.
+     */
     public static final ResourceIdentifierType LOG_ANALYTICS = fromString("LogAnalytics");
 
     /**
      * Creates a new instance of ResourceIdentifierType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ResourceIdentifierType extends ExpandableStringEnum<ResourceI
 
     /**
      * Creates or finds a ResourceIdentifierType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceIdentifierType.
      */
@@ -38,7 +44,7 @@ public final class ResourceIdentifierType extends ExpandableStringEnum<ResourceI
 
     /**
      * Gets known ResourceIdentifierType values.
-     *
+     * 
      * @return known ResourceIdentifierType values.
      */
     public static Collection<ResourceIdentifierType> values() {

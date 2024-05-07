@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** HTTPGet specifies the http request to perform. */
+/**
+ * HTTPGet specifies the http request to perform.
+ */
 @Fluent
 public final class ContainerAppProbeHttpGet {
     /*
@@ -42,14 +44,16 @@ public final class ContainerAppProbeHttpGet {
     @JsonProperty(value = "scheme")
     private Scheme scheme;
 
-    /** Creates an instance of ContainerAppProbeHttpGet class. */
+    /**
+     * Creates an instance of ContainerAppProbeHttpGet class.
+     */
     public ContainerAppProbeHttpGet() {
     }
 
     /**
      * Get the host property: Host name to connect to, defaults to the pod IP. You probably want to set "Host" in
      * httpHeaders instead.
-     *
+     * 
      * @return the host value.
      */
     public String host() {
@@ -59,7 +63,7 @@ public final class ContainerAppProbeHttpGet {
     /**
      * Set the host property: Host name to connect to, defaults to the pod IP. You probably want to set "Host" in
      * httpHeaders instead.
-     *
+     * 
      * @param host the host value to set.
      * @return the ContainerAppProbeHttpGet object itself.
      */
@@ -70,7 +74,7 @@ public final class ContainerAppProbeHttpGet {
 
     /**
      * Get the httpHeaders property: Custom headers to set in the request. HTTP allows repeated headers.
-     *
+     * 
      * @return the httpHeaders value.
      */
     public List<ContainerAppProbeHttpGetHttpHeadersItem> httpHeaders() {
@@ -79,7 +83,7 @@ public final class ContainerAppProbeHttpGet {
 
     /**
      * Set the httpHeaders property: Custom headers to set in the request. HTTP allows repeated headers.
-     *
+     * 
      * @param httpHeaders the httpHeaders value to set.
      * @return the ContainerAppProbeHttpGet object itself.
      */
@@ -90,7 +94,7 @@ public final class ContainerAppProbeHttpGet {
 
     /**
      * Get the path property: Path to access on the HTTP server.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -99,7 +103,7 @@ public final class ContainerAppProbeHttpGet {
 
     /**
      * Set the path property: Path to access on the HTTP server.
-     *
+     * 
      * @param path the path value to set.
      * @return the ContainerAppProbeHttpGet object itself.
      */
@@ -111,7 +115,7 @@ public final class ContainerAppProbeHttpGet {
     /**
      * Get the port property: Name or number of the port to access on the container. Number must be in the range 1 to
      * 65535. Name must be an IANA_SVC_NAME.
-     *
+     * 
      * @return the port value.
      */
     public int port() {
@@ -121,7 +125,7 @@ public final class ContainerAppProbeHttpGet {
     /**
      * Set the port property: Name or number of the port to access on the container. Number must be in the range 1 to
      * 65535. Name must be an IANA_SVC_NAME.
-     *
+     * 
      * @param port the port value to set.
      * @return the ContainerAppProbeHttpGet object itself.
      */
@@ -132,7 +136,7 @@ public final class ContainerAppProbeHttpGet {
 
     /**
      * Get the scheme property: Scheme to use for connecting to the host. Defaults to HTTP.
-     *
+     * 
      * @return the scheme value.
      */
     public Scheme scheme() {
@@ -141,7 +145,7 @@ public final class ContainerAppProbeHttpGet {
 
     /**
      * Set the scheme property: Scheme to use for connecting to the host. Defaults to HTTP.
-     *
+     * 
      * @param scheme the scheme value to set.
      * @return the ContainerAppProbeHttpGet object itself.
      */
@@ -152,7 +156,7 @@ public final class ContainerAppProbeHttpGet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

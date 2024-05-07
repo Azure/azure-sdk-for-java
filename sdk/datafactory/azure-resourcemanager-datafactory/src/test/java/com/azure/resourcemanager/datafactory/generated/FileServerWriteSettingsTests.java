@@ -6,20 +6,23 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.FileServerWriteSettings;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
+import java.util.Arrays;
 
 public final class FileServerWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileServerWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"FileServerWriteSettings\",\"maxConcurrentConnections\":\"datamrjngrjsqtirhab\",\"disableMetricsCollection\":\"datapcvsd\",\"copyBehavior\":\"datambydrgxvnmtjmu\",\"\":{\"thfqcyycx\":\"datamudwruog\",\"wfssgiebq\":\"datallkfjgj\"}}")
+            "{\"type\":\"vfiskkqspzwsxn\",\"maxConcurrentConnections\":\"datackpcssusdr\",\"disableMetricsCollection\":\"datammrzwm\",\"copyBehavior\":\"datatkcvolaxnuk\",\"metadata\":[{\"name\":\"datau\",\"value\":\"datadcqoxyxiyhmj\"}],\"\":{\"qiygbouv\":\"datawkezgva\"}}")
             .toObject(FileServerWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileServerWriteSettings model
-            = new FileServerWriteSettings().withMaxConcurrentConnections("datamrjngrjsqtirhab")
-                .withDisableMetricsCollection("datapcvsd").withCopyBehavior("datambydrgxvnmtjmu");
+        FileServerWriteSettings model = new FileServerWriteSettings().withMaxConcurrentConnections("datackpcssusdr")
+            .withDisableMetricsCollection("datammrzwm")
+            .withCopyBehavior("datatkcvolaxnuk")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datau").withValue("datadcqoxyxiyhmj")));
         model = BinaryData.fromObject(model).toObject(FileServerWriteSettings.class);
     }
 }

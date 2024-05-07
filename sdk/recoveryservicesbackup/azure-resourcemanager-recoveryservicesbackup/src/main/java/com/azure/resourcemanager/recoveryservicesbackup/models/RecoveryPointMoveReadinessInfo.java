@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RecoveryPointMoveReadinessInfo model. */
+/**
+ * The RecoveryPointMoveReadinessInfo model.
+ */
 @Fluent
 public final class RecoveryPointMoveReadinessInfo {
     /*
@@ -22,13 +24,15 @@ public final class RecoveryPointMoveReadinessInfo {
     @JsonProperty(value = "additionalInfo")
     private String additionalInfo;
 
-    /** Creates an instance of RecoveryPointMoveReadinessInfo class. */
+    /**
+     * Creates an instance of RecoveryPointMoveReadinessInfo class.
+     */
     public RecoveryPointMoveReadinessInfo() {
     }
 
     /**
      * Get the isReadyForMove property: The isReadyForMove property.
-     *
+     * 
      * @return the isReadyForMove value.
      */
     public Boolean isReadyForMove() {
@@ -37,7 +41,7 @@ public final class RecoveryPointMoveReadinessInfo {
 
     /**
      * Set the isReadyForMove property: The isReadyForMove property.
-     *
+     * 
      * @param isReadyForMove the isReadyForMove value to set.
      * @return the RecoveryPointMoveReadinessInfo object itself.
      */
@@ -48,7 +52,7 @@ public final class RecoveryPointMoveReadinessInfo {
 
     /**
      * Get the additionalInfo property: The additionalInfo property.
-     *
+     * 
      * @return the additionalInfo value.
      */
     public String additionalInfo() {
@@ -57,7 +61,7 @@ public final class RecoveryPointMoveReadinessInfo {
 
     /**
      * Set the additionalInfo property: The additionalInfo property.
-     *
+     * 
      * @param additionalInfo the additionalInfo value to set.
      * @return the RecoveryPointMoveReadinessInfo object itself.
      */
@@ -68,7 +72,7 @@ public final class RecoveryPointMoveReadinessInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

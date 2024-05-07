@@ -150,37 +150,6 @@ public interface Accounts {
     void renewCredentials(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void migrateEncryptionKey(String resourceGroupName, String accountName);
-
-    /**
-     * Migrate volumes encryption key source.
-     * 
-     * Migrates all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key Vault).
-     * Operation fails if targeted volumes share encryption sibling set with volumes from another account.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName The name of the NetApp account.
-     * @param body The required parameters to perform encryption migration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void migrateEncryptionKey(String resourceGroupName, String accountName, EncryptionMigrationRequest body,
-        Context context);
-
-    /**
      * Describe a NetApp Account
      * 
      * Get the NetApp account.

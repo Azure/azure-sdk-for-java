@@ -7,7 +7,9 @@ package com.azure.resourcemanager.quantum.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Detailed pricing information for an sku. */
+/**
+ * Detailed pricing information for an sku.
+ */
 @Fluent
 public final class PricingDetail {
     /*
@@ -22,13 +24,15 @@ public final class PricingDetail {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of PricingDetail class. */
+    /**
+     * Creates an instance of PricingDetail class.
+     */
     public PricingDetail() {
     }
 
     /**
      * Get the id property: Unique id for this pricing information.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +41,7 @@ public final class PricingDetail {
 
     /**
      * Set the id property: Unique id for this pricing information.
-     *
+     * 
      * @param id the id value to set.
      * @return the PricingDetail object itself.
      */
@@ -48,7 +52,7 @@ public final class PricingDetail {
 
     /**
      * Get the value property: The unit cost of this sku.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class PricingDetail {
 
     /**
      * Set the value property: The unit cost of this sku.
-     *
+     * 
      * @param value the value value to set.
      * @return the PricingDetail object itself.
      */
@@ -68,7 +72,7 @@ public final class PricingDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

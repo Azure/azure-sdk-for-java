@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The JitNetworkAccessRequestPort model. */
+/**
+ * The JitNetworkAccessRequestPort model.
+ */
 @Fluent
 public final class JitNetworkAccessRequestPort {
     /*
@@ -56,13 +58,15 @@ public final class JitNetworkAccessRequestPort {
     @JsonProperty(value = "mappedPort")
     private Integer mappedPort;
 
-    /** Creates an instance of JitNetworkAccessRequestPort class. */
+    /**
+     * Creates an instance of JitNetworkAccessRequestPort class.
+     */
     public JitNetworkAccessRequestPort() {
     }
 
     /**
      * Get the number property: The number property.
-     *
+     * 
      * @return the number value.
      */
     public int number() {
@@ -71,7 +75,7 @@ public final class JitNetworkAccessRequestPort {
 
     /**
      * Set the number property: The number property.
-     *
+     * 
      * @param number the number value to set.
      * @return the JitNetworkAccessRequestPort object itself.
      */
@@ -83,7 +87,7 @@ public final class JitNetworkAccessRequestPort {
     /**
      * Get the allowedSourceAddressPrefix property: Mutually exclusive with the "allowedSourceAddressPrefixes"
      * parameter. Should be an IP address or CIDR, for example "192.168.0.3" or "192.168.0.0/16".
-     *
+     * 
      * @return the allowedSourceAddressPrefix value.
      */
     public String allowedSourceAddressPrefix() {
@@ -93,7 +97,7 @@ public final class JitNetworkAccessRequestPort {
     /**
      * Set the allowedSourceAddressPrefix property: Mutually exclusive with the "allowedSourceAddressPrefixes"
      * parameter. Should be an IP address or CIDR, for example "192.168.0.3" or "192.168.0.0/16".
-     *
+     * 
      * @param allowedSourceAddressPrefix the allowedSourceAddressPrefix value to set.
      * @return the JitNetworkAccessRequestPort object itself.
      */
@@ -105,7 +109,7 @@ public final class JitNetworkAccessRequestPort {
     /**
      * Get the allowedSourceAddressPrefixes property: Mutually exclusive with the "allowedSourceAddressPrefix"
      * parameter.
-     *
+     * 
      * @return the allowedSourceAddressPrefixes value.
      */
     public List<String> allowedSourceAddressPrefixes() {
@@ -115,7 +119,7 @@ public final class JitNetworkAccessRequestPort {
     /**
      * Set the allowedSourceAddressPrefixes property: Mutually exclusive with the "allowedSourceAddressPrefix"
      * parameter.
-     *
+     * 
      * @param allowedSourceAddressPrefixes the allowedSourceAddressPrefixes value to set.
      * @return the JitNetworkAccessRequestPort object itself.
      */
@@ -126,7 +130,7 @@ public final class JitNetworkAccessRequestPort {
 
     /**
      * Get the endTimeUtc property: The date &amp; time at which the request ends in UTC.
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -135,7 +139,7 @@ public final class JitNetworkAccessRequestPort {
 
     /**
      * Set the endTimeUtc property: The date &amp; time at which the request ends in UTC.
-     *
+     * 
      * @param endTimeUtc the endTimeUtc value to set.
      * @return the JitNetworkAccessRequestPort object itself.
      */
@@ -146,7 +150,7 @@ public final class JitNetworkAccessRequestPort {
 
     /**
      * Get the status property: The status of the port.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -155,7 +159,7 @@ public final class JitNetworkAccessRequestPort {
 
     /**
      * Set the status property: The status of the port.
-     *
+     * 
      * @param status the status value to set.
      * @return the JitNetworkAccessRequestPort object itself.
      */
@@ -166,7 +170,7 @@ public final class JitNetworkAccessRequestPort {
 
     /**
      * Get the statusReason property: A description of why the `status` has its value.
-     *
+     * 
      * @return the statusReason value.
      */
     public StatusReason statusReason() {
@@ -175,7 +179,7 @@ public final class JitNetworkAccessRequestPort {
 
     /**
      * Set the statusReason property: A description of why the `status` has its value.
-     *
+     * 
      * @param statusReason the statusReason value to set.
      * @return the JitNetworkAccessRequestPort object itself.
      */
@@ -187,7 +191,7 @@ public final class JitNetworkAccessRequestPort {
     /**
      * Get the mappedPort property: The port which is mapped to this port's `number` in the Azure Firewall, if
      * applicable.
-     *
+     * 
      * @return the mappedPort value.
      */
     public Integer mappedPort() {
@@ -197,7 +201,7 @@ public final class JitNetworkAccessRequestPort {
     /**
      * Set the mappedPort property: The port which is mapped to this port's `number` in the Azure Firewall, if
      * applicable.
-     *
+     * 
      * @param mappedPort the mappedPort value to set.
      * @return the JitNetworkAccessRequestPort object itself.
      */
@@ -208,27 +212,21 @@ public final class JitNetworkAccessRequestPort {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (endTimeUtc() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endTimeUtc in model JitNetworkAccessRequestPort"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property endTimeUtc in model JitNetworkAccessRequestPort"));
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model JitNetworkAccessRequestPort"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property status in model JitNetworkAccessRequestPort"));
         }
         if (statusReason() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property statusReason in model JitNetworkAccessRequestPort"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property statusReason in model JitNetworkAccessRequestPort"));
         }
     }
 

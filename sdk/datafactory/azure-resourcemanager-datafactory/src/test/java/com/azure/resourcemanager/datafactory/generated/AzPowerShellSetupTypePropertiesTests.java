@@ -12,14 +12,14 @@ public final class AzPowerShellSetupTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzPowerShellSetupTypeProperties model
-            = BinaryData.fromString("{\"version\":\"bqqqeetsq\"}").toObject(AzPowerShellSetupTypeProperties.class);
-        Assertions.assertEquals("bqqqeetsq", model.version());
+            = BinaryData.fromString("{\"version\":\"qksrgkvg\"}").toObject(AzPowerShellSetupTypeProperties.class);
+        Assertions.assertEquals("qksrgkvg", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzPowerShellSetupTypeProperties model = new AzPowerShellSetupTypeProperties().withVersion("bqqqeetsq");
+        AzPowerShellSetupTypeProperties model = new AzPowerShellSetupTypeProperties().withVersion("qksrgkvg");
         model = BinaryData.fromObject(model).toObject(AzPowerShellSetupTypeProperties.class);
-        Assertions.assertEquals("bqqqeetsq", model.version());
+        Assertions.assertEquals("qksrgkvg", model.version());
     }
 }

@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the AML file system subnet check. */
+/**
+ * The status of the AML file system subnet check.
+ */
 public final class FilesystemSubnetStatusType extends ExpandableStringEnum<FilesystemSubnetStatusType> {
-    /** Static value Ok for FilesystemSubnetStatusType. */
+    /**
+     * Static value Ok for FilesystemSubnetStatusType.
+     */
     public static final FilesystemSubnetStatusType OK = fromString("Ok");
 
-    /** Static value Invalid for FilesystemSubnetStatusType. */
+    /**
+     * Static value Invalid for FilesystemSubnetStatusType.
+     */
     public static final FilesystemSubnetStatusType INVALID = fromString("Invalid");
 
     /**
      * Creates a new instance of FilesystemSubnetStatusType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class FilesystemSubnetStatusType extends ExpandableStringEnum<Files
 
     /**
      * Creates or finds a FilesystemSubnetStatusType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FilesystemSubnetStatusType.
      */
@@ -38,7 +44,7 @@ public final class FilesystemSubnetStatusType extends ExpandableStringEnum<Files
 
     /**
      * Gets known FilesystemSubnetStatusType values.
-     *
+     * 
      * @return known FilesystemSubnetStatusType values.
      */
     public static Collection<FilesystemSubnetStatusType> values() {

@@ -1,10 +1,4 @@
 parameters:
-  - name: SDKType
-    type: string
-    default: client
-  - name: ServiceDirectory
-    type: string
-    default: 'not-specified' # Set a default that breaks in obvious ways.
   - name: BuildParallelization
     type: string
     default: '2C'
@@ -124,9 +118,9 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - template: ../steps/upload-repository-on-failure.yml
+  - template: /eng/pipelines/templates/steps/retain-test-logs.yml
 
-  - template: ../steps/retain-heap-dump-hprofs.yml
+  - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
 
   - task: PublishTestResults@2
     condition: always()

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** VMwareCbt specific resync input. */
+/**
+ * VMwareCbt specific resync input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
 @Fluent
@@ -21,13 +23,15 @@ public final class VMwareCbtResyncInput extends ResyncProviderSpecificInput {
     @JsonProperty(value = "skipCbtReset", required = true)
     private String skipCbtReset;
 
-    /** Creates an instance of VMwareCbtResyncInput class. */
+    /**
+     * Creates an instance of VMwareCbtResyncInput class.
+     */
     public VMwareCbtResyncInput() {
     }
 
     /**
      * Get the skipCbtReset property: A value indicating whether CBT is to be reset.
-     *
+     * 
      * @return the skipCbtReset value.
      */
     public String skipCbtReset() {
@@ -36,7 +40,7 @@ public final class VMwareCbtResyncInput extends ResyncProviderSpecificInput {
 
     /**
      * Set the skipCbtReset property: A value indicating whether CBT is to be reset.
-     *
+     * 
      * @param skipCbtReset the skipCbtReset value to set.
      * @return the VMwareCbtResyncInput object itself.
      */
@@ -47,17 +51,15 @@ public final class VMwareCbtResyncInput extends ResyncProviderSpecificInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (skipCbtReset() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property skipCbtReset in model VMwareCbtResyncInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property skipCbtReset in model VMwareCbtResyncInput"));
         }
     }
 

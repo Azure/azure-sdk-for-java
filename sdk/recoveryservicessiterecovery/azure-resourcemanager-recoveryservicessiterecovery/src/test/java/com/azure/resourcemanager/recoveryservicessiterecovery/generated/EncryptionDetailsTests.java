@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EncryptionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EncryptionDetails model =
-            BinaryData
-                .fromString(
-                    "{\"kekState\":\"soodqxhcrmnoh\",\"kekCertThumbprint\":\"ckwhds\",\"kekCertExpiryDate\":\"2021-07-22T01:38:16Z\"}")
-                .toObject(EncryptionDetails.class);
+        EncryptionDetails model = BinaryData.fromString(
+            "{\"kekState\":\"soodqxhcrmnoh\",\"kekCertThumbprint\":\"ckwhds\",\"kekCertExpiryDate\":\"2021-07-22T01:38:16Z\"}")
+            .toObject(EncryptionDetails.class);
         Assertions.assertEquals("soodqxhcrmnoh", model.kekState());
         Assertions.assertEquals("ckwhds", model.kekCertThumbprint());
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T01:38:16Z"), model.kekCertExpiryDate());
@@ -24,11 +22,8 @@ public final class EncryptionDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EncryptionDetails model =
-            new EncryptionDetails()
-                .withKekState("soodqxhcrmnoh")
-                .withKekCertThumbprint("ckwhds")
-                .withKekCertExpiryDate(OffsetDateTime.parse("2021-07-22T01:38:16Z"));
+        EncryptionDetails model = new EncryptionDetails().withKekState("soodqxhcrmnoh").withKekCertThumbprint("ckwhds")
+            .withKekCertExpiryDate(OffsetDateTime.parse("2021-07-22T01:38:16Z"));
         model = BinaryData.fromObject(model).toObject(EncryptionDetails.class);
         Assertions.assertEquals("soodqxhcrmnoh", model.kekState());
         Assertions.assertEquals("ckwhds", model.kekCertThumbprint());

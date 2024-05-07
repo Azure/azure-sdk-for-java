@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageRcmPolicyCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmPolicyCreationInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageRcm\",\"recoveryPointHistoryInMinutes\":1480236782,\"crashConsistentFrequencyInMinutes\":1722632251,\"appConsistentFrequencyInMinutes\":2131568654,\"enableMultiVmSync\":\"yxedznmx\"}")
-                .toObject(InMageRcmPolicyCreationInput.class);
+        InMageRcmPolicyCreationInput model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageRcm\",\"recoveryPointHistoryInMinutes\":1480236782,\"crashConsistentFrequencyInMinutes\":1722632251,\"appConsistentFrequencyInMinutes\":2131568654,\"enableMultiVmSync\":\"yxedznmx\"}")
+            .toObject(InMageRcmPolicyCreationInput.class);
         Assertions.assertEquals(1480236782, model.recoveryPointHistoryInMinutes());
         Assertions.assertEquals(1722632251, model.crashConsistentFrequencyInMinutes());
         Assertions.assertEquals(2131568654, model.appConsistentFrequencyInMinutes());
@@ -24,12 +22,9 @@ public final class InMageRcmPolicyCreationInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmPolicyCreationInput model =
-            new InMageRcmPolicyCreationInput()
-                .withRecoveryPointHistoryInMinutes(1480236782)
-                .withCrashConsistentFrequencyInMinutes(1722632251)
-                .withAppConsistentFrequencyInMinutes(2131568654)
-                .withEnableMultiVmSync("yxedznmx");
+        InMageRcmPolicyCreationInput model = new InMageRcmPolicyCreationInput()
+            .withRecoveryPointHistoryInMinutes(1480236782).withCrashConsistentFrequencyInMinutes(1722632251)
+            .withAppConsistentFrequencyInMinutes(2131568654).withEnableMultiVmSync("yxedznmx");
         model = BinaryData.fromObject(model).toObject(InMageRcmPolicyCreationInput.class);
         Assertions.assertEquals(1480236782, model.recoveryPointHistoryInMinutes());
         Assertions.assertEquals(1722632251, model.crashConsistentFrequencyInMinutes());

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appplatform.fluent.models.GatewayResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that includes an array of gateway resources and a possible link for next set. */
+/**
+ * Object that includes an array of gateway resources and a possible link for next set.
+ */
 @Fluent
 public final class GatewayResourceCollection {
     /*
@@ -26,8 +28,14 @@ public final class GatewayResourceCollection {
     private String nextLink;
 
     /**
+     * Creates an instance of GatewayResourceCollection class.
+     */
+    public GatewayResourceCollection() {
+    }
+
+    /**
      * Get the value property: Collection of gateway resources.
-     *
+     * 
      * @return the value value.
      */
     public List<GatewayResourceInner> value() {
@@ -36,7 +44,7 @@ public final class GatewayResourceCollection {
 
     /**
      * Set the value property: Collection of gateway resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the GatewayResourceCollection object itself.
      */
@@ -46,9 +54,9 @@ public final class GatewayResourceCollection {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +64,9 @@ public final class GatewayResourceCollection {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GatewayResourceCollection object itself.
      */
@@ -69,7 +77,7 @@ public final class GatewayResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

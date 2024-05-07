@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Remediation details. */
+/**
+ * Remediation details.
+ */
 @Fluent
 public final class Remediation {
     /*
@@ -35,13 +37,15 @@ public final class Remediation {
     @JsonProperty(value = "portalLink")
     private String portalLink;
 
-    /** Creates an instance of Remediation class. */
+    /**
+     * Creates an instance of Remediation class.
+     */
     public Remediation() {
     }
 
     /**
      * Get the description property: Remediation description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -50,7 +54,7 @@ public final class Remediation {
 
     /**
      * Set the description property: Remediation description.
-     *
+     * 
      * @param description the description value to set.
      * @return the Remediation object itself.
      */
@@ -61,7 +65,7 @@ public final class Remediation {
 
     /**
      * Get the scripts property: Remediation script.
-     *
+     * 
      * @return the scripts value.
      */
     public List<String> scripts() {
@@ -70,7 +74,7 @@ public final class Remediation {
 
     /**
      * Set the scripts property: Remediation script.
-     *
+     * 
      * @param scripts the scripts value to set.
      * @return the Remediation object itself.
      */
@@ -81,7 +85,7 @@ public final class Remediation {
 
     /**
      * Get the automated property: Is remediation automated.
-     *
+     * 
      * @return the automated value.
      */
     public Boolean automated() {
@@ -90,7 +94,7 @@ public final class Remediation {
 
     /**
      * Set the automated property: Is remediation automated.
-     *
+     * 
      * @param automated the automated value to set.
      * @return the Remediation object itself.
      */
@@ -101,7 +105,7 @@ public final class Remediation {
 
     /**
      * Get the portalLink property: Optional link to remediate in Azure Portal.
-     *
+     * 
      * @return the portalLink value.
      */
     public String portalLink() {
@@ -110,7 +114,7 @@ public final class Remediation {
 
     /**
      * Set the portalLink property: Optional link to remediate in Azure Portal.
-     *
+     * 
      * @param portalLink the portalLink value to set.
      * @return the Remediation object itself.
      */
@@ -121,7 +125,7 @@ public final class Remediation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

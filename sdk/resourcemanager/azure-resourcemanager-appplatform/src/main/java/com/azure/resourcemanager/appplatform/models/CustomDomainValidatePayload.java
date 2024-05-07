@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Custom domain validate payload. */
+/**
+ * Custom domain validate payload.
+ */
 @Fluent
 public final class CustomDomainValidatePayload {
     /*
@@ -18,8 +20,14 @@ public final class CustomDomainValidatePayload {
     private String name;
 
     /**
+     * Creates an instance of CustomDomainValidatePayload class.
+     */
+    public CustomDomainValidatePayload() {
+    }
+
+    /**
      * Get the name property: Name to be validated.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -28,7 +36,7 @@ public final class CustomDomainValidatePayload {
 
     /**
      * Set the name property: Name to be validated.
-     *
+     * 
      * @param name the name value to set.
      * @return the CustomDomainValidatePayload object itself.
      */
@@ -39,15 +47,13 @@ public final class CustomDomainValidatePayload {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model CustomDomainValidatePayload"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model CustomDomainValidatePayload"));
         }
     }
 

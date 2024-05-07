@@ -7,24 +7,38 @@ package com.azure.resourcemanager.monitor.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Aggregation operators allowed in a rule. */
+/**
+ * Aggregation operators allowed in a rule.
+ */
 public enum TimeAggregationOperator {
-    /** Enum value Average. */
+    /**
+     * Enum value Average.
+     */
     AVERAGE("Average"),
 
-    /** Enum value Minimum. */
+    /**
+     * Enum value Minimum.
+     */
     MINIMUM("Minimum"),
 
-    /** Enum value Maximum. */
+    /**
+     * Enum value Maximum.
+     */
     MAXIMUM("Maximum"),
 
-    /** Enum value Total. */
+    /**
+     * Enum value Total.
+     */
     TOTAL("Total"),
 
-    /** Enum value Last. */
+    /**
+     * Enum value Last.
+     */
     LAST("Last");
 
-    /** The actual serialized value for a TimeAggregationOperator instance. */
+    /**
+     * The actual serialized value for a TimeAggregationOperator instance.
+     */
     private final String value;
 
     TimeAggregationOperator(String value) {
@@ -33,7 +47,7 @@ public enum TimeAggregationOperator {
 
     /**
      * Parses a serialized value to a TimeAggregationOperator instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed TimeAggregationOperator object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum TimeAggregationOperator {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -13,7 +13,9 @@ import com.azure.resourcemanager.elasticsan.models.SkuTier;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ElasticSAN SKU and its properties. */
+/**
+ * ElasticSAN SKU and its properties.
+ */
 @Fluent
 public final class SkuInformationInner {
     /*
@@ -53,13 +55,15 @@ public final class SkuInformationInner {
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
 
-    /** Creates an instance of SkuInformationInner class. */
+    /**
+     * Creates an instance of SkuInformationInner class.
+     */
     public SkuInformationInner() {
     }
 
     /**
      * Get the name property: Sku Name.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -68,7 +72,7 @@ public final class SkuInformationInner {
 
     /**
      * Set the name property: Sku Name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SkuInformationInner object itself.
      */
@@ -79,7 +83,7 @@ public final class SkuInformationInner {
 
     /**
      * Get the tier property: Sku Tier.
-     *
+     * 
      * @return the tier value.
      */
     public SkuTier tier() {
@@ -88,7 +92,7 @@ public final class SkuInformationInner {
 
     /**
      * Set the tier property: Sku Tier.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the SkuInformationInner object itself.
      */
@@ -99,7 +103,7 @@ public final class SkuInformationInner {
 
     /**
      * Get the resourceType property: The type of the resource.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -107,9 +111,9 @@ public final class SkuInformationInner {
     }
 
     /**
-     * Get the locations property: The set of locations that the SKU is available. This will be supported and registered
-     * Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.).
-     *
+     * Get the locations property: The set of locations that the SKU is available. This will be supported and
+     * registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.).
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -118,7 +122,7 @@ public final class SkuInformationInner {
 
     /**
      * Get the locationInfo property: Availability of the SKU for the location/zone.
-     *
+     * 
      * @return the locationInfo value.
      */
     public List<SkuLocationInfo> locationInfo() {
@@ -127,7 +131,7 @@ public final class SkuInformationInner {
 
     /**
      * Get the capabilities property: The capability information in the specified SKU.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<SkuCapability> capabilities() {
@@ -136,14 +140,13 @@ public final class SkuInformationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SkuInformationInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model SkuInformationInner"));
         }
         if (locationInfo() != null) {
             locationInfo().forEach(e -> e.validate());

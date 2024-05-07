@@ -17,25 +17,22 @@ public final class LogSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LogSettings model = BinaryData.fromString(
-            "{\"enableCopyActivityLog\":\"dataaarqhpxwqhzsxgmg\",\"copyActivityLogSettings\":{\"logLevel\":\"datamtywivbuiteed\",\"enableReliableLogging\":\"dataklv\"},\"logLocationSettings\":{\"linkedServiceName\":{\"referenceName\":\"rsxykw\",\"parameters\":{\"djitlqxpsnnnxhgd\":\"datasd\",\"kqjzfzk\":\"datasdxylndbgaic\",\"mrxjdfkqlkaipf\":\"datadnp\",\"vakqaho\":\"datavquasvywkbiek\"}},\"path\":\"datanapkpaied\"}}")
+            "{\"enableCopyActivityLog\":\"dataxdwecvkwwjj\",\"copyActivityLogSettings\":{\"logLevel\":\"dataunsduejx\",\"enableReliableLogging\":\"datawalekqedofuobxml\"},\"logLocationSettings\":{\"linkedServiceName\":{\"referenceName\":\"i\",\"parameters\":{\"ib\":\"datahlpf\",\"gzy\":\"datalmihvzdaycmen\",\"lvgqlexwqwbbell\":\"datal\"}},\"path\":\"datadotpcvd\"}}")
             .toObject(LogSettings.class);
-        Assertions.assertEquals("rsxykw", model.logLocationSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("i", model.logLocationSettings().linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogSettings model = new LogSettings().withEnableCopyActivityLog("dataaarqhpxwqhzsxgmg")
-            .withCopyActivityLogSettings(new CopyActivityLogSettings().withLogLevel("datamtywivbuiteed")
-                .withEnableReliableLogging("dataklv"))
-            .withLogLocationSettings(
-                new LogLocationSettings()
-                    .withLinkedServiceName(
-                        new LinkedServiceReference().withReferenceName("rsxykw")
-                            .withParameters(mapOf("djitlqxpsnnnxhgd", "datasd", "kqjzfzk", "datasdxylndbgaic",
-                                "mrxjdfkqlkaipf", "datadnp", "vakqaho", "datavquasvywkbiek")))
-                    .withPath("datanapkpaied"));
+        LogSettings model = new LogSettings().withEnableCopyActivityLog("dataxdwecvkwwjj")
+            .withCopyActivityLogSettings(new CopyActivityLogSettings().withLogLevel("dataunsduejx")
+                .withEnableReliableLogging("datawalekqedofuobxml"))
+            .withLogLocationSettings(new LogLocationSettings()
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("i")
+                    .withParameters(mapOf("ib", "datahlpf", "gzy", "datalmihvzdaycmen", "lvgqlexwqwbbell", "datal")))
+                .withPath("datadotpcvd"));
         model = BinaryData.fromObject(model).toObject(LogSettings.class);
-        Assertions.assertEquals("rsxykw", model.logLocationSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals("i", model.logLocationSettings().linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

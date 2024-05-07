@@ -9,7 +9,9 @@ import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Configuration properties for apps environment custom domain. */
+/**
+ * Configuration properties for apps environment custom domain.
+ */
 @Fluent
 public final class CustomDomainConfiguration {
     /*
@@ -23,6 +25,12 @@ public final class CustomDomainConfiguration {
      */
     @JsonProperty(value = "dnsSuffix")
     private String dnsSuffix;
+
+    /*
+     * Certificate stored in Azure Key Vault.
+     */
+    @JsonProperty(value = "certificateKeyVaultProperties")
+    private CertificateKeyVaultProperties certificateKeyVaultProperties;
 
     /*
      * PFX or PEM blob
@@ -54,13 +62,15 @@ public final class CustomDomainConfiguration {
     @JsonProperty(value = "subjectName", access = JsonProperty.Access.WRITE_ONLY)
     private String subjectName;
 
-    /** Creates an instance of CustomDomainConfiguration class. */
+    /**
+     * Creates an instance of CustomDomainConfiguration class.
+     */
     public CustomDomainConfiguration() {
     }
 
     /**
      * Get the customDomainVerificationId property: Id used to verify domain name ownership.
-     *
+     * 
      * @return the customDomainVerificationId value.
      */
     public String customDomainVerificationId() {
@@ -69,7 +79,7 @@ public final class CustomDomainConfiguration {
 
     /**
      * Get the dnsSuffix property: Dns suffix for the environment domain.
-     *
+     * 
      * @return the dnsSuffix value.
      */
     public String dnsSuffix() {
@@ -78,7 +88,7 @@ public final class CustomDomainConfiguration {
 
     /**
      * Set the dnsSuffix property: Dns suffix for the environment domain.
-     *
+     * 
      * @param dnsSuffix the dnsSuffix value to set.
      * @return the CustomDomainConfiguration object itself.
      */
@@ -88,8 +98,29 @@ public final class CustomDomainConfiguration {
     }
 
     /**
+     * Get the certificateKeyVaultProperties property: Certificate stored in Azure Key Vault.
+     * 
+     * @return the certificateKeyVaultProperties value.
+     */
+    public CertificateKeyVaultProperties certificateKeyVaultProperties() {
+        return this.certificateKeyVaultProperties;
+    }
+
+    /**
+     * Set the certificateKeyVaultProperties property: Certificate stored in Azure Key Vault.
+     * 
+     * @param certificateKeyVaultProperties the certificateKeyVaultProperties value to set.
+     * @return the CustomDomainConfiguration object itself.
+     */
+    public CustomDomainConfiguration
+        withCertificateKeyVaultProperties(CertificateKeyVaultProperties certificateKeyVaultProperties) {
+        this.certificateKeyVaultProperties = certificateKeyVaultProperties;
+        return this;
+    }
+
+    /**
      * Get the certificateValue property: PFX or PEM blob.
-     *
+     * 
      * @return the certificateValue value.
      */
     public byte[] certificateValue() {
@@ -98,7 +129,7 @@ public final class CustomDomainConfiguration {
 
     /**
      * Set the certificateValue property: PFX or PEM blob.
-     *
+     * 
      * @param certificateValue the certificateValue value to set.
      * @return the CustomDomainConfiguration object itself.
      */
@@ -109,7 +140,7 @@ public final class CustomDomainConfiguration {
 
     /**
      * Get the certificatePassword property: Certificate password.
-     *
+     * 
      * @return the certificatePassword value.
      */
     public String certificatePassword() {
@@ -118,7 +149,7 @@ public final class CustomDomainConfiguration {
 
     /**
      * Set the certificatePassword property: Certificate password.
-     *
+     * 
      * @param certificatePassword the certificatePassword value to set.
      * @return the CustomDomainConfiguration object itself.
      */
@@ -129,7 +160,7 @@ public final class CustomDomainConfiguration {
 
     /**
      * Get the expirationDate property: Certificate expiration date.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -138,7 +169,7 @@ public final class CustomDomainConfiguration {
 
     /**
      * Get the thumbprint property: Certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -147,7 +178,7 @@ public final class CustomDomainConfiguration {
 
     /**
      * Get the subjectName property: Subject name of the certificate.
-     *
+     * 
      * @return the subjectName value.
      */
     public String subjectName() {
@@ -156,9 +187,12 @@ public final class CustomDomainConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (certificateKeyVaultProperties() != null) {
+            certificateKeyVaultProperties().validate();
+        }
     }
 }

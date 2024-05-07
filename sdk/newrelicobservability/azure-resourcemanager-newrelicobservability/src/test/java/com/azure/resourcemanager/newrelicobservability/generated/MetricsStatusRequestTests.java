@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricsStatusRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricsStatusRequest model =
-            BinaryData
-                .fromString(
-                    "{\"azureResourceIds\":[\"dlwtgrhpdj\",\"jumasx\",\"zj\",\"qyeg\"],\"userEmail\":\"alhbx\"}")
+        MetricsStatusRequest model
+            = BinaryData.fromString("{\"azureResourceIds\":[\"khbzhfepgzg\",\"e\"],\"userEmail\":\"zloc\"}")
                 .toObject(MetricsStatusRequest.class);
-        Assertions.assertEquals("dlwtgrhpdj", model.azureResourceIds().get(0));
-        Assertions.assertEquals("alhbx", model.userEmail());
+        Assertions.assertEquals("khbzhfepgzg", model.azureResourceIds().get(0));
+        Assertions.assertEquals("zloc", model.userEmail());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricsStatusRequest model =
-            new MetricsStatusRequest()
-                .withAzureResourceIds(Arrays.asList("dlwtgrhpdj", "jumasx", "zj", "qyeg"))
-                .withUserEmail("alhbx");
+        MetricsStatusRequest model
+            = new MetricsStatusRequest().withAzureResourceIds(Arrays.asList("khbzhfepgzg", "e")).withUserEmail("zloc");
         model = BinaryData.fromObject(model).toObject(MetricsStatusRequest.class);
-        Assertions.assertEquals("dlwtgrhpdj", model.azureResourceIds().get(0));
-        Assertions.assertEquals("alhbx", model.userEmail());
+        Assertions.assertEquals("khbzhfepgzg", model.azureResourceIds().get(0));
+        Assertions.assertEquals("zloc", model.userEmail());
     }
 }

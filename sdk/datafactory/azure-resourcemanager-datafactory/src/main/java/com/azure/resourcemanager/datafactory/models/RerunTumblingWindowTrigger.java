@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.RerunTumblingWindowTriggerTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -17,10 +18,21 @@ import java.util.List;
  * Trigger that schedules pipeline reruns for all fixed time interval windows from a requested start time to requested
  * end time.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = RerunTumblingWindowTrigger.class,
+    visible = true)
 @JsonTypeName("RerunTumblingWindowTrigger")
 @Fluent
 public final class RerunTumblingWindowTrigger extends Trigger {
+    /*
+     * Trigger type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "RerunTumblingWindowTrigger";
+
     /*
      * Rerun Trigger properties.
      */
@@ -32,6 +44,16 @@ public final class RerunTumblingWindowTrigger extends Trigger {
      * Creates an instance of RerunTumblingWindowTrigger class.
      */
     public RerunTumblingWindowTrigger() {
+    }
+
+    /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -168,8 +190,9 @@ public final class RerunTumblingWindowTrigger extends Trigger {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model RerunTumblingWindowTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model RerunTumblingWindowTrigger"));
         } else {
             innerTypeProperties().validate();
         }

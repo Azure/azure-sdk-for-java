@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.DeviceSecurityGroupInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of device security groups. */
+/**
+ * List of device security groups.
+ */
 @Fluent
 public final class DeviceSecurityGroupList {
     /*
@@ -24,13 +26,15 @@ public final class DeviceSecurityGroupList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DeviceSecurityGroupList class. */
+    /**
+     * Creates an instance of DeviceSecurityGroupList class.
+     */
     public DeviceSecurityGroupList() {
     }
 
     /**
      * Get the value property: List of device security group objects.
-     *
+     * 
      * @return the value value.
      */
     public List<DeviceSecurityGroupInner> value() {
@@ -39,7 +43,7 @@ public final class DeviceSecurityGroupList {
 
     /**
      * Set the value property: List of device security group objects.
-     *
+     * 
      * @param value the value value to set.
      * @return the DeviceSecurityGroupList object itself.
      */
@@ -50,7 +54,7 @@ public final class DeviceSecurityGroupList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class DeviceSecurityGroupList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

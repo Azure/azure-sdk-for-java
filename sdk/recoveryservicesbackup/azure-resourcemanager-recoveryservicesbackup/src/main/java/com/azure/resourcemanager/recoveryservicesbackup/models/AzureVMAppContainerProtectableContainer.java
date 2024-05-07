@@ -8,37 +8,49 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure workload-specific container. */
+/**
+ * Azure workload-specific container.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableContainerType")
 @JsonTypeName("VMAppContainer")
 @Fluent
 public final class AzureVMAppContainerProtectableContainer extends ProtectableContainer {
-    /** Creates an instance of AzureVMAppContainerProtectableContainer class. */
+    /**
+     * Creates an instance of AzureVMAppContainerProtectableContainer class.
+     */
     public AzureVMAppContainerProtectableContainer() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectableContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectableContainer withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectableContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVMAppContainerProtectableContainer withContainerId(String containerId) {
         super.withContainerId(containerId);
@@ -47,7 +59,7 @@ public final class AzureVMAppContainerProtectableContainer extends ProtectableCo
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

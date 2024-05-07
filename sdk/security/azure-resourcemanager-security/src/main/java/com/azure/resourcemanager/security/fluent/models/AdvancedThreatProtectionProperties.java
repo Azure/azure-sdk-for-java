@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Advanced Threat Protection settings. */
+/**
+ * The Advanced Threat Protection settings.
+ */
 @Fluent
 public final class AdvancedThreatProtectionProperties {
     /*
@@ -16,13 +18,15 @@ public final class AdvancedThreatProtectionProperties {
     @JsonProperty(value = "isEnabled")
     private Boolean isEnabled;
 
-    /** Creates an instance of AdvancedThreatProtectionProperties class. */
+    /**
+     * Creates an instance of AdvancedThreatProtectionProperties class.
+     */
     public AdvancedThreatProtectionProperties() {
     }
 
     /**
      * Get the isEnabled property: Indicates whether Advanced Threat Protection is enabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -31,7 +35,7 @@ public final class AdvancedThreatProtectionProperties {
 
     /**
      * Set the isEnabled property: Indicates whether Advanced Threat Protection is enabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the AdvancedThreatProtectionProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class AdvancedThreatProtectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

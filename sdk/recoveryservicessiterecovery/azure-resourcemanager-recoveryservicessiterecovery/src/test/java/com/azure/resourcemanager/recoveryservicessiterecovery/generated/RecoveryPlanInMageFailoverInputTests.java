@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanInMageFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanInMageFailoverInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"InMage\",\"recoveryPointType\":\"LatestTag\"}")
+        RecoveryPlanInMageFailoverInput model
+            = BinaryData.fromString("{\"instanceType\":\"InMage\",\"recoveryPointType\":\"LatestTag\"}")
                 .toObject(RecoveryPlanInMageFailoverInput.class);
         Assertions.assertEquals(RpInMageRecoveryPointType.LATEST_TAG, model.recoveryPointType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanInMageFailoverInput model =
-            new RecoveryPlanInMageFailoverInput().withRecoveryPointType(RpInMageRecoveryPointType.LATEST_TAG);
+        RecoveryPlanInMageFailoverInput model
+            = new RecoveryPlanInMageFailoverInput().withRecoveryPointType(RpInMageRecoveryPointType.LATEST_TAG);
         model = BinaryData.fromObject(model).toObject(RecoveryPlanInMageFailoverInput.class);
         Assertions.assertEquals(RpInMageRecoveryPointType.LATEST_TAG, model.recoveryPointType());
     }

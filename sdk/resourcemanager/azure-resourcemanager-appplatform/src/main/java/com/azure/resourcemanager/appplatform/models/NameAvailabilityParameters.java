@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Name availability parameters payload. */
+/**
+ * Name availability parameters payload.
+ */
 @Fluent
 public final class NameAvailabilityParameters {
     /*
@@ -24,8 +26,14 @@ public final class NameAvailabilityParameters {
     private String name;
 
     /**
+     * Creates an instance of NameAvailabilityParameters class.
+     */
+    public NameAvailabilityParameters() {
+    }
+
+    /**
      * Get the type property: Type of the resource to check name availability.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -34,7 +42,7 @@ public final class NameAvailabilityParameters {
 
     /**
      * Set the type property: Type of the resource to check name availability.
-     *
+     * 
      * @param type the type value to set.
      * @return the NameAvailabilityParameters object itself.
      */
@@ -45,7 +53,7 @@ public final class NameAvailabilityParameters {
 
     /**
      * Get the name property: Name to be checked.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -54,7 +62,7 @@ public final class NameAvailabilityParameters {
 
     /**
      * Set the name property: Name to be checked.
-     *
+     * 
      * @param name the name value to set.
      * @return the NameAvailabilityParameters object itself.
      */
@@ -65,19 +73,17 @@ public final class NameAvailabilityParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model NameAvailabilityParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model NameAvailabilityParameters"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model NameAvailabilityParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model NameAvailabilityParameters"));
         }
     }
 

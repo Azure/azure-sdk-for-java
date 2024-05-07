@@ -5,7 +5,7 @@
  * version 2.0 (the "License"); you may not use this file except in compliance
  * with the License. You may obtain a copy of the License at:
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
@@ -98,6 +98,13 @@ public final class HttpProxyHandler extends ProxyHandler {
     private HttpResponseStatus status;
     private HttpHeaders innerHeaders;
 
+    /**
+     * Creates an instance of HttpProxyHandler.
+     *
+     * @param proxyAddress The address of the proxy.
+     * @param challengeHandler The challenge handler to use when authenticating with the proxy.
+     * @param proxyChallengeHolderReference The reference to the proxy challenge holder.
+     */
     public HttpProxyHandler(InetSocketAddress proxyAddress, AuthorizationChallengeHandler challengeHandler,
         AtomicReference<ChallengeHolder> proxyChallengeHolderReference) {
         super(proxyAddress);
@@ -132,6 +139,7 @@ public final class HttpProxyHandler extends ProxyHandler {
         this.codec.removeInboundHandler();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected Object newInitialMessage(ChannelHandlerContext ctx) {
         // This needs to handle no authorization proxying.
@@ -140,8 +148,8 @@ public final class HttpProxyHandler extends ProxyHandler {
         int port = destinationAddress.getPort();
         String url = hostString + ":" + port;
         String hostHeader = (port == 80 || port == 443) ? url : hostString;
-        FullHttpRequest request = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.CONNECT, url,
-            Unpooled.EMPTY_BUFFER, false);
+        FullHttpRequest request
+            = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.CONNECT, url, Unpooled.EMPTY_BUFFER, false);
 
         request.headers().set(HttpHeaderNames.HOST, hostHeader);
 
@@ -173,8 +181,8 @@ public final class HttpProxyHandler extends ProxyHandler {
          * This may fail and result in the server requesting authentication by returning a proxy authentication
          * challenge.
          */
-        String authorizationHeader = challengeHandler.attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH,
-            NO_BODY);
+        String authorizationHeader
+            = challengeHandler.attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, NO_BODY);
 
         if (!CoreUtils.isNullOrEmpty(authorizationHeader)) {
             return authorizationHeader;
@@ -191,8 +199,8 @@ public final class HttpProxyHandler extends ProxyHandler {
             // Attempt to apply digest challenges, these are preferred over basic authorization.
             List<Map<String, String>> digestChallenges = proxyChallengeHolder.getDigestChallenges();
             if (!CoreUtils.isNullOrEmpty(digestChallenges)) {
-                authorizationHeader = challengeHandler.handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges,
-                    NO_BODY);
+                authorizationHeader
+                    = challengeHandler.handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, NO_BODY);
             }
 
             // If digest challenges exist or all failed attempt to use basic authorization.

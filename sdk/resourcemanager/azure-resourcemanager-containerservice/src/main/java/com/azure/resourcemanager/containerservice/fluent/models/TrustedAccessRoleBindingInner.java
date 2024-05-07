@@ -12,7 +12,9 @@ import com.azure.resourcemanager.containerservice.models.TrustedAccessRoleBindin
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines binding between a resource and role. */
+/**
+ * Defines binding between a resource and role.
+ */
 @Fluent
 public final class TrustedAccessRoleBindingInner extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public final class TrustedAccessRoleBindingInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of TrustedAccessRoleBindingInner class. */
+    /**
+     * Creates an instance of TrustedAccessRoleBindingInner class.
+     */
     public TrustedAccessRoleBindingInner() {
     }
 
     /**
      * Get the innerProperties property: Properties for trusted access role binding.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TrustedAccessRoleBindingProperties innerProperties() {
@@ -42,7 +46,7 @@ public final class TrustedAccessRoleBindingInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class TrustedAccessRoleBindingInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The current provisioning state of trusted access role binding.
-     *
+     * 
      * @return the provisioningState value.
      */
     public TrustedAccessRoleBindingProvisioningState provisioningState() {
@@ -60,7 +64,7 @@ public final class TrustedAccessRoleBindingInner extends ProxyResource {
 
     /**
      * Get the sourceResourceId property: The ARM resource ID of source resource that trusted access is configured for.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -69,7 +73,7 @@ public final class TrustedAccessRoleBindingInner extends ProxyResource {
 
     /**
      * Set the sourceResourceId property: The ARM resource ID of source resource that trusted access is configured for.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the TrustedAccessRoleBindingInner object itself.
      */
@@ -84,7 +88,7 @@ public final class TrustedAccessRoleBindingInner extends ProxyResource {
     /**
      * Get the roles property: A list of roles to bind, each item is a resource type qualified role name. For example:
      * 'Microsoft.MachineLearningServices/workspaces/reader'.
-     *
+     * 
      * @return the roles value.
      */
     public List<String> roles() {
@@ -94,7 +98,7 @@ public final class TrustedAccessRoleBindingInner extends ProxyResource {
     /**
      * Set the roles property: A list of roles to bind, each item is a resource type qualified role name. For example:
      * 'Microsoft.MachineLearningServices/workspaces/reader'.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the TrustedAccessRoleBindingInner object itself.
      */
@@ -108,15 +112,13 @@ public final class TrustedAccessRoleBindingInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model TrustedAccessRoleBindingInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model TrustedAccessRoleBindingInner"));
         } else {
             innerProperties().validate();
         }

@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.BuilderProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** KPack Builder resource. */
+/**
+ * KPack Builder resource.
+ */
 @Fluent
 public final class BuilderResourceInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class BuilderResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of BuilderResourceInner class.
+     */
+    public BuilderResourceInner() {
+    }
+
+    /**
      * Get the properties property: Property of the Builder resource.
-     *
+     * 
      * @return the properties value.
      */
     public BuilderProperties properties() {
@@ -36,7 +44,7 @@ public final class BuilderResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: Property of the Builder resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BuilderResourceInner object itself.
      */
@@ -47,7 +55,7 @@ public final class BuilderResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class BuilderResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

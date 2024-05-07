@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface ConfluentManagementClient {
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets Microsoft Azure subscription id.
      * 
      * @return the subscriptionId value.
      */

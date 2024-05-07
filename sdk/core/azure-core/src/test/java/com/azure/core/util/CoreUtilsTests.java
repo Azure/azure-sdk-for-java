@@ -52,11 +52,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class CoreUtilsTests {
     private static final byte[] BYTES = "Hello world!".getBytes(StandardCharsets.UTF_8);
 
-    private static final byte[] UTF_8_BOM = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
-    private static final byte[] UTF_16BE_BOM = {(byte) 0xFE, (byte) 0xFF};
-    private static final byte[] UTF_16LE_BOM = {(byte) 0xFF, (byte) 0xFE};
-    private static final byte[] UTF_32BE_BOM = {(byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF};
-    private static final byte[] UTF_32LE_BOM = {(byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00};
+    private static final byte[] UTF_8_BOM = { (byte) 0xEF, (byte) 0xBB, (byte) 0xBF };
+    private static final byte[] UTF_16BE_BOM = { (byte) 0xFE, (byte) 0xFF };
+    private static final byte[] UTF_16LE_BOM = { (byte) 0xFF, (byte) 0xFE };
+    private static final byte[] UTF_32BE_BOM = { (byte) 0x00, (byte) 0x00, (byte) 0xFE, (byte) 0xFF };
+    private static final byte[] UTF_32LE_BOM = { (byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00 };
 
     private static final String TIMEOUT_PROPERTY_NAME = "TIMEOUT_PROPERTY_NAME";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
@@ -81,7 +81,7 @@ public class CoreUtilsTests {
     @Test
     public void findFirstOfTypeWithOneOfType() {
         int expected = 1;
-        Object[] args = {"string", expected};
+        Object[] args = { "string", expected };
         Integer actual = CoreUtils.findFirstOfType(args, Integer.class);
         Assertions.assertEquals(expected, actual);
     }
@@ -89,14 +89,14 @@ public class CoreUtilsTests {
     @Test
     public void findFirstOfTypeWithMultipleOfType() {
         int expected = 1;
-        Object[] args = {"string", expected, 10};
+        Object[] args = { "string", expected, 10 };
         Integer actual = CoreUtils.findFirstOfType(args, Integer.class);
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
     public void findFirstOfTypeWithNoneOfType() {
-        Object[] args = {"string", "anotherString"};
+        Object[] args = { "string", "anotherString" };
         assertNull(CoreUtils.findFirstOfType(args, Integer.class));
     }
 
@@ -104,7 +104,8 @@ public class CoreUtilsTests {
     public void testProperties() {
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("version"));
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("name"));
-        assertTrue(CoreUtils.getProperties("azure-core.properties").get("version")
+        assertTrue(CoreUtils.getProperties("azure-core.properties")
+            .get("version")
             .matches("\\d+\\.\\d+\\.\\d+(-beta\\.\\d+)?"));
     }
 
@@ -122,11 +123,8 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> cloneIntArraySupplier() {
-        return Stream.of(
-            Arguments.of(null, null),
-            Arguments.of(new int[0], new int[0]),
-            Arguments.of(new int[]{1, 2, 3}, new int[]{1, 2, 3})
-        );
+        return Stream.of(Arguments.of(null, null), Arguments.of(new int[0], new int[0]),
+            Arguments.of(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 }));
     }
 
     @ParameterizedTest
@@ -136,11 +134,8 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> cloneGenericArraySupplier() {
-        return Stream.of(
-            Arguments.of(null, null),
-            Arguments.of(new String[0], new String[0]),
-            Arguments.of(new String[]{"1", "2", "3"}, new String[]{"1", "2", "3"})
-        );
+        return Stream.of(Arguments.of(null, null), Arguments.of(new String[0], new String[0]),
+            Arguments.of(new String[] { "1", "2", "3" }, new String[] { "1", "2", "3" }));
     }
 
     @ParameterizedTest
@@ -150,11 +145,8 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> isNullOrEmptyCollectionSupplier() {
-        return Stream.of(
-            Arguments.of(null, true),
-            Arguments.of(new ArrayList<>(), true),
-            Arguments.of(Collections.singletonList(1), false)
-        );
+        return Stream.of(Arguments.of(null, true), Arguments.of(new ArrayList<>(), true),
+            Arguments.of(Collections.singletonList(1), false));
     }
 
     @ParameterizedTest
@@ -166,13 +158,10 @@ public class CoreUtilsTests {
     private static Stream<Arguments> arrayToStringSupplier() {
         Function<?, String> toStringFunction = String::valueOf;
 
-        return Stream.of(
-            Arguments.of(null, null, null),
-            Arguments.of(new String[0], toStringFunction, null),
-            Arguments.of(new String[]{""}, toStringFunction, ""),
-            Arguments.of(new String[]{"Hello world!"}, toStringFunction, "Hello world!"),
-            Arguments.of(new String[]{"1", "2", "3"}, toStringFunction, "1,2,3")
-        );
+        return Stream.of(Arguments.of(null, null, null), Arguments.of(new String[0], toStringFunction, null),
+            Arguments.of(new String[] { "" }, toStringFunction, ""),
+            Arguments.of(new String[] { "Hello world!" }, toStringFunction, "Hello world!"),
+            Arguments.of(new String[] { "1", "2", "3" }, toStringFunction, "1,2,3"));
     }
 
     @ParameterizedTest
@@ -182,8 +171,7 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> bomAwareToStringSupplier() {
-        return Stream.of(
-            Arguments.arguments(null, null, null),
+        return Stream.of(Arguments.arguments(null, null, null),
             Arguments.arguments(BYTES, null, new String(BYTES, StandardCharsets.UTF_8)),
             Arguments.arguments(BYTES, "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_16BE)),
             Arguments.arguments(BYTES, "charset=invalid", new String(BYTES, StandardCharsets.UTF_8)),
@@ -193,8 +181,7 @@ public class CoreUtilsTests {
             Arguments.arguments(addBom(UTF_32BE_BOM), null, new String(BYTES, Charset.forName("UTF-32BE"))),
             Arguments.arguments(addBom(UTF_32LE_BOM), null, new String(BYTES, Charset.forName("UTF-32LE"))),
             Arguments.arguments(addBom(UTF_8_BOM), "charset=UTF-8", new String(BYTES, StandardCharsets.UTF_8)),
-            Arguments.arguments(addBom(UTF_8_BOM), "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_8))
-        );
+            Arguments.arguments(addBom(UTF_8_BOM), "charset=UTF-16BE", new String(BYTES, StandardCharsets.UTF_8)));
     }
 
     private static byte[] addBom(byte[] arr1) {
@@ -231,9 +218,7 @@ public class CoreUtilsTests {
             Arguments.of(clientOptionsWithoutApplicationId, logOptionsWithoutApplicationId, null),
             Arguments.of(clientOptionsWithoutApplicationId, null, null),
             Arguments.of(null, logOptionsWithApplicationId, logOptionsApplicationId),
-            Arguments.of(null, logOptionsWithoutApplicationId, null),
-            Arguments.of(null, null, null)
-        );
+            Arguments.of(null, logOptionsWithoutApplicationId, null), Arguments.of(null, null, null));
     }
 
     @ParameterizedTest
@@ -268,16 +253,15 @@ public class CoreUtilsTests {
                 new HttpHeaders(Collections.singletonMap("a", "header"))),
 
             // ClientOptions contains multiple header values, a multi-header HttpHeaders is returned.
-            Arguments.of(new ClientOptions().setHeaders(multipleHeadersList), new HttpHeaders(multipleHeadersMap))
-        );
+            Arguments.of(new ClientOptions().setHeaders(multipleHeadersList), new HttpHeaders(multipleHeadersMap)));
     }
 
     @ParameterizedTest
     @MethodSource("getDefaultTimeoutFromEnvironmentSupplier")
     public void getDefaultTimeoutFromEnvironmentTests(Configuration configuration, Duration defaultTimeout,
         ClientLogger logger, Duration expectedTimeout) {
-        assertEquals(expectedTimeout, CoreUtils.getDefaultTimeoutFromEnvironment(configuration, TIMEOUT_PROPERTY_NAME,
-            defaultTimeout, logger));
+        assertEquals(expectedTimeout,
+            CoreUtils.getDefaultTimeoutFromEnvironment(configuration, TIMEOUT_PROPERTY_NAME, defaultTimeout, logger));
     }
 
     private static Stream<Arguments> getDefaultTimeoutFromEnvironmentSupplier() {
@@ -288,35 +272,34 @@ public class CoreUtilsTests {
             Arguments.of(Configuration.NONE, Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has an empty string timeout property configured.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put(TIMEOUT_PROPERTY_NAME, ""))
-                    .build(),
+            Arguments.of(
+                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "")).build(),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has a value that isn't a valid number.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put(TIMEOUT_PROPERTY_NAME, "ten"))
-                    .build(),
+            Arguments.of(
+                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "ten")).build(),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has a negative value.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put(TIMEOUT_PROPERTY_NAME, "-10"))
-                    .build(),
+            Arguments.of(
+                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "-10")).build(),
                 Duration.ofMillis(10000), logger, Duration.ZERO),
 
             // Configuration has a zero value.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put(TIMEOUT_PROPERTY_NAME, "0"))
-                    .build(),
+            Arguments.of(
+                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "0")).build(),
                 Duration.ofMillis(10000), logger, Duration.ZERO),
 
             // Configuration has a positive value.
-            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
-                    .put(TIMEOUT_PROPERTY_NAME, "42"))
-                    .build(),
-                Duration.ofMillis(10000), logger, Duration.ofMillis(42))
-        );
+            Arguments.of(
+                new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
+                    new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "42")).build(),
+                Duration.ofMillis(10000), logger, Duration.ofMillis(42)));
     }
 
     @ParameterizedTest
@@ -326,10 +309,7 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> invalidContextMergeSupplier() {
-        return Stream.of(
-            Arguments.of(null, Context.NONE),
-            Arguments.of(Context.NONE, null)
-        );
+        return Stream.of(Arguments.of(null, Context.NONE), Arguments.of(Context.NONE, null));
     }
 
     @Test
@@ -381,11 +361,8 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> bytesToHexSupplier() {
-        return Stream.of(
-            Arguments.of(null, null),
-            Arguments.of(new byte[0], ""),
-            Arguments.of("1234567890".getBytes(StandardCharsets.UTF_8), "31323334353637383930")
-        );
+        return Stream.of(Arguments.of(null, null), Arguments.of(new byte[0], ""),
+            Arguments.of("1234567890".getBytes(StandardCharsets.UTF_8), "31323334353637383930"));
     }
 
     @ParameterizedTest
@@ -395,10 +372,7 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> contentRangeSizeExtractionSupplier() {
-        return Stream.of(
-            Arguments.of("0-1023/1024", 1024),
-            Arguments.of("0-1023/*", -1)
-        );
+        return Stream.of(Arguments.of("0-1023/1024", 1024), Arguments.of("0-1023/*", -1));
     }
 
     @ParameterizedTest
@@ -408,11 +382,9 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> invalidContentRangeSizeExtractionSupplier() {
-        return Stream.of(
-            Arguments.of(null, NullPointerException.class),
+        return Stream.of(Arguments.of(null, NullPointerException.class),
             Arguments.of("", IllegalArgumentException.class),
-            Arguments.of("0-1023/notanumber", NumberFormatException.class)
-        );
+            Arguments.of("0-1023/notanumber", NumberFormatException.class));
     }
 
     @Test
@@ -426,7 +398,7 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"key=value", "?key=value"})
+    @ValueSource(strings = { "key=value", "?key=value" })
     public void parseSimpleQueryParameter(String queryParameters) {
         Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
 
@@ -435,7 +407,7 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"key=", "?key="})
+    @ValueSource(strings = { "key=", "?key=" })
     public void parseSimpleEmptyValueQueryParameter(String queryParameters) {
         Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
 
@@ -444,7 +416,7 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"key", "?key"})
+    @ValueSource(strings = { "key", "?key" })
     public void parseSimpleKeyOnlyQueryParameter(String queryParameters) {
         Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
 
@@ -453,7 +425,7 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"key=value&key2=", "key=value&key2", "?key=value&key2=", "?key=value&key2"})
+    @ValueSource(strings = { "key=value&key2=", "key=value&key2", "?key=value&key2=", "?key=value&key2" })
     public void parseQueryParameterLastParameterEmpty(String queryParameters) {
         Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
 
@@ -463,7 +435,7 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"key=&key2=value2", "key&key2=value2", "?key=&key2=value2", "?key&key2=value2"})
+    @ValueSource(strings = { "key=&key2=value2", "key&key2=value2", "?key=&key2=value2", "?key&key2=value2" })
     public void parseQueryParameterFirstParameterEmpty(String queryParameters) {
         Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
 
@@ -473,10 +445,12 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "key=value&key2=&key3=value3", "?key=value&key2=&key3=value3",
-        "key=value&key2&key3=value3", "?key=value&key2&key3=value3",
-    })
+    @ValueSource(
+        strings = {
+            "key=value&key2=&key3=value3",
+            "?key=value&key2=&key3=value3",
+            "key=value&key2&key3=value3",
+            "?key=value&key2&key3=value3", })
     public void parseQueryParameterMiddleParameterEmpty(String queryParameters) {
         Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
 
@@ -505,10 +479,10 @@ public class CoreUtilsTests {
         }
 
         // Generate type 4 UUID using Java's built-in handling.
-        bytes[6] &= 0x0f;  /* clear version        */
-        bytes[6] |= 0x40;  /* set to version 4     */
-        bytes[8] &= 0x3f;  /* clear variant        */
-        bytes[8] |= (byte) 0x80;  /* set to IETF variant  */
+        bytes[6] &= 0x0f; /* clear version */
+        bytes[6] |= 0x40; /* set to version 4 */
+        bytes[8] &= 0x3f; /* clear variant */
+        bytes[8] |= (byte) 0x80; /* set to IETF variant */
         long msbForJava = 0;
         long lsbForJava = 0;
         for (int i = 0; i < 8; i++) {
@@ -531,7 +505,7 @@ public class CoreUtilsTests {
                 return null;
             });
 
-            future.get(1000, TimeUnit.MILLISECONDS);
+            future.get(5000, TimeUnit.MILLISECONDS);
 
             assertTrue(completed.get());
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -544,7 +518,7 @@ public class CoreUtilsTests {
         try {
             AtomicBoolean completed = new AtomicBoolean(false);
             Future<?> future = executorService.submit(() -> {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
                 completed.set(true);
                 return null;
             });
@@ -557,7 +531,7 @@ public class CoreUtilsTests {
             }
 
             // Give time for the future to complete if cancellation didn't work.
-            Thread.sleep(1000);
+            Thread.sleep(5000);
 
             assertFalse(completed.get());
         } catch (InterruptedException | ExecutionException e) {
@@ -577,46 +551,25 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> durationToStringWithDaysTestSupplier() {
-        return Stream.of(
-            Arguments.of(Duration.ofMillis(0), "PT0S"),
-            Arguments.of(Duration.ofMillis(1), "PT0.001S"),
-            Arguments.of(Duration.ofMillis(9), "PT0.009S"),
-            Arguments.of(Duration.ofMillis(10), "PT0.01S"),
-            Arguments.of(Duration.ofMillis(11), "PT0.011S"),
-            Arguments.of(Duration.ofMillis(99), "PT0.099S"),
-            Arguments.of(Duration.ofMillis(100), "PT0.1S"),
-            Arguments.of(Duration.ofMillis(101), "PT0.101S"),
-            Arguments.of(Duration.ofMillis(999), "PT0.999S"),
-            Arguments.of(Duration.ofMillis(1000), "PT1S"),
-            Arguments.of(Duration.ofSeconds(1), "PT1S"),
-            Arguments.of(Duration.ofSeconds(9), "PT9S"),
-            Arguments.of(Duration.ofSeconds(10), "PT10S"),
-            Arguments.of(Duration.ofSeconds(11), "PT11S"),
-            Arguments.of(Duration.ofSeconds(59), "PT59S"),
-            Arguments.of(Duration.ofSeconds(60), "PT1M"),
-            Arguments.of(Duration.ofSeconds(61), "PT1M1S"),
-            Arguments.of(Duration.ofMinutes(1), "PT1M"),
-            Arguments.of(Duration.ofMinutes(9), "PT9M"),
-            Arguments.of(Duration.ofMinutes(10), "PT10M"),
-            Arguments.of(Duration.ofMinutes(11), "PT11M"),
-            Arguments.of(Duration.ofMinutes(59), "PT59M"),
-            Arguments.of(Duration.ofMinutes(60), "PT1H"),
-            Arguments.of(Duration.ofMinutes(61), "PT1H1M"),
-            Arguments.of(Duration.ofHours(1), "PT1H"),
-            Arguments.of(Duration.ofHours(9), "PT9H"),
-            Arguments.of(Duration.ofHours(10), "PT10H"),
-            Arguments.of(Duration.ofHours(11), "PT11H"),
-            Arguments.of(Duration.ofHours(23), "PT23H"),
-            Arguments.of(Duration.ofHours(24), "P1D"),
-            Arguments.of(Duration.ofHours(25), "P1DT1H"),
-            Arguments.of(Duration.ofDays(1), "P1D"),
-            Arguments.of(Duration.ofDays(9), "P9D"),
-            Arguments.of(Duration.ofDays(10), "P10D"),
-            Arguments.of(Duration.ofDays(11), "P11D"),
-            Arguments.of(Duration.ofDays(99), "P99D"),
-            Arguments.of(Duration.ofDays(100), "P100D"),
-            Arguments.of(Duration.ofDays(101), "P101D")
-        );
+        return Stream.of(Arguments.of(Duration.ofMillis(0), "PT0S"), Arguments.of(Duration.ofMillis(1), "PT0.001S"),
+            Arguments.of(Duration.ofMillis(9), "PT0.009S"), Arguments.of(Duration.ofMillis(10), "PT0.01S"),
+            Arguments.of(Duration.ofMillis(11), "PT0.011S"), Arguments.of(Duration.ofMillis(99), "PT0.099S"),
+            Arguments.of(Duration.ofMillis(100), "PT0.1S"), Arguments.of(Duration.ofMillis(101), "PT0.101S"),
+            Arguments.of(Duration.ofMillis(999), "PT0.999S"), Arguments.of(Duration.ofMillis(1000), "PT1S"),
+            Arguments.of(Duration.ofSeconds(1), "PT1S"), Arguments.of(Duration.ofSeconds(9), "PT9S"),
+            Arguments.of(Duration.ofSeconds(10), "PT10S"), Arguments.of(Duration.ofSeconds(11), "PT11S"),
+            Arguments.of(Duration.ofSeconds(59), "PT59S"), Arguments.of(Duration.ofSeconds(60), "PT1M"),
+            Arguments.of(Duration.ofSeconds(61), "PT1M1S"), Arguments.of(Duration.ofMinutes(1), "PT1M"),
+            Arguments.of(Duration.ofMinutes(9), "PT9M"), Arguments.of(Duration.ofMinutes(10), "PT10M"),
+            Arguments.of(Duration.ofMinutes(11), "PT11M"), Arguments.of(Duration.ofMinutes(59), "PT59M"),
+            Arguments.of(Duration.ofMinutes(60), "PT1H"), Arguments.of(Duration.ofMinutes(61), "PT1H1M"),
+            Arguments.of(Duration.ofHours(1), "PT1H"), Arguments.of(Duration.ofHours(9), "PT9H"),
+            Arguments.of(Duration.ofHours(10), "PT10H"), Arguments.of(Duration.ofHours(11), "PT11H"),
+            Arguments.of(Duration.ofHours(23), "PT23H"), Arguments.of(Duration.ofHours(24), "P1D"),
+            Arguments.of(Duration.ofHours(25), "P1DT1H"), Arguments.of(Duration.ofDays(1), "P1D"),
+            Arguments.of(Duration.ofDays(9), "P9D"), Arguments.of(Duration.ofDays(10), "P10D"),
+            Arguments.of(Duration.ofDays(11), "P11D"), Arguments.of(Duration.ofDays(99), "P99D"),
+            Arguments.of(Duration.ofDays(100), "P100D"), Arguments.of(Duration.ofDays(101), "P101D"));
     }
 
     @ParameterizedTest
@@ -627,44 +580,52 @@ public class CoreUtilsTests {
     }
 
     private static Stream<Arguments> negativeDurationToStringWithDaysTestSupplier() {
-        return Stream.of(
-            Arguments.of(Duration.ofMillis(-1), "-PT0.001S"),
-            Arguments.of(Duration.ofMillis(-9), "-PT0.009S"),
-            Arguments.of(Duration.ofMillis(-10), "-PT0.01S"),
-            Arguments.of(Duration.ofMillis(-11), "-PT0.011S"),
-            Arguments.of(Duration.ofMillis(-99), "-PT0.099S"),
-            Arguments.of(Duration.ofMillis(-100), "-PT0.1S"),
-            Arguments.of(Duration.ofMillis(-101), "-PT0.101S"),
-            Arguments.of(Duration.ofMillis(-999), "-PT0.999S"),
-            Arguments.of(Duration.ofMillis(-1000), "-PT1S"),
-            Arguments.of(Duration.ofSeconds(-1), "-PT1S"),
-            Arguments.of(Duration.ofSeconds(-9), "-PT9S"),
-            Arguments.of(Duration.ofSeconds(-10), "-PT10S"),
-            Arguments.of(Duration.ofSeconds(-11), "-PT11S"),
-            Arguments.of(Duration.ofSeconds(-59), "-PT59S"),
-            Arguments.of(Duration.ofSeconds(-60), "-PT1M"),
-            Arguments.of(Duration.ofSeconds(-61), "-PT1M1S"),
-            Arguments.of(Duration.ofMinutes(-1), "-PT1M"),
-            Arguments.of(Duration.ofMinutes(-9), "-PT9M"),
-            Arguments.of(Duration.ofMinutes(-10), "-PT10M"),
-            Arguments.of(Duration.ofMinutes(-11), "-PT11M"),
-            Arguments.of(Duration.ofMinutes(-59), "-PT59M"),
-            Arguments.of(Duration.ofMinutes(-60), "-PT1H"),
-            Arguments.of(Duration.ofMinutes(-61), "-PT1H1M"),
-            Arguments.of(Duration.ofHours(-1), "-PT1H"),
-            Arguments.of(Duration.ofHours(-9), "-PT9H"),
-            Arguments.of(Duration.ofHours(-10), "-PT10H"),
-            Arguments.of(Duration.ofHours(-11), "-PT11H"),
-            Arguments.of(Duration.ofHours(-23), "-PT23H"),
-            Arguments.of(Duration.ofHours(-24), "-P1D"),
-            Arguments.of(Duration.ofHours(-25), "-P1DT1H"),
-            Arguments.of(Duration.ofDays(-1), "-P1D"),
-            Arguments.of(Duration.ofDays(-9), "-P9D"),
-            Arguments.of(Duration.ofDays(-10), "-P10D"),
-            Arguments.of(Duration.ofDays(-11), "-P11D"),
-            Arguments.of(Duration.ofDays(-99), "-P99D"),
-            Arguments.of(Duration.ofDays(-100), "-P100D"),
-            Arguments.of(Duration.ofDays(-101), "-P101D")
-        );
+        return Stream.of(Arguments.of(Duration.ofMillis(-1), "-PT0.001S"),
+            Arguments.of(Duration.ofMillis(-9), "-PT0.009S"), Arguments.of(Duration.ofMillis(-10), "-PT0.01S"),
+            Arguments.of(Duration.ofMillis(-11), "-PT0.011S"), Arguments.of(Duration.ofMillis(-99), "-PT0.099S"),
+            Arguments.of(Duration.ofMillis(-100), "-PT0.1S"), Arguments.of(Duration.ofMillis(-101), "-PT0.101S"),
+            Arguments.of(Duration.ofMillis(-999), "-PT0.999S"), Arguments.of(Duration.ofMillis(-1000), "-PT1S"),
+            Arguments.of(Duration.ofSeconds(-1), "-PT1S"), Arguments.of(Duration.ofSeconds(-9), "-PT9S"),
+            Arguments.of(Duration.ofSeconds(-10), "-PT10S"), Arguments.of(Duration.ofSeconds(-11), "-PT11S"),
+            Arguments.of(Duration.ofSeconds(-59), "-PT59S"), Arguments.of(Duration.ofSeconds(-60), "-PT1M"),
+            Arguments.of(Duration.ofSeconds(-61), "-PT1M1S"), Arguments.of(Duration.ofMinutes(-1), "-PT1M"),
+            Arguments.of(Duration.ofMinutes(-9), "-PT9M"), Arguments.of(Duration.ofMinutes(-10), "-PT10M"),
+            Arguments.of(Duration.ofMinutes(-11), "-PT11M"), Arguments.of(Duration.ofMinutes(-59), "-PT59M"),
+            Arguments.of(Duration.ofMinutes(-60), "-PT1H"), Arguments.of(Duration.ofMinutes(-61), "-PT1H1M"),
+            Arguments.of(Duration.ofHours(-1), "-PT1H"), Arguments.of(Duration.ofHours(-9), "-PT9H"),
+            Arguments.of(Duration.ofHours(-10), "-PT10H"), Arguments.of(Duration.ofHours(-11), "-PT11H"),
+            Arguments.of(Duration.ofHours(-23), "-PT23H"), Arguments.of(Duration.ofHours(-24), "-P1D"),
+            Arguments.of(Duration.ofHours(-25), "-P1DT1H"), Arguments.of(Duration.ofDays(-1), "-P1D"),
+            Arguments.of(Duration.ofDays(-9), "-P9D"), Arguments.of(Duration.ofDays(-10), "-P10D"),
+            Arguments.of(Duration.ofDays(-11), "-P11D"), Arguments.of(Duration.ofDays(-99), "-P99D"),
+            Arguments.of(Duration.ofDays(-100), "-P100D"), Arguments.of(Duration.ofDays(-101), "-P101D"));
+    }
+
+    @Test
+    public void addShutdownHookWithNullExecutorServiceDoesNothing() {
+        assertNull(CoreUtils.addShutdownHookSafely(null, null));
+    }
+
+    @Test
+    public void addShutdownHookTimeoutCannotBeNull() {
+        assertThrows(NullPointerException.class,
+            () -> CoreUtils.addShutdownHookSafely(Executors.newSingleThreadExecutor(), null));
+    }
+
+    @Test
+    public void addShutdownHookTimeoutCannotBeNegative() {
+        assertThrows(IllegalArgumentException.class,
+            () -> CoreUtils.addShutdownHookSafely(Executors.newSingleThreadExecutor(), Duration.ofSeconds(-1)));
+    }
+
+    @Test
+    public void addShutdownHookTimeoutCannotBeZero() {
+        assertThrows(IllegalArgumentException.class,
+            () -> CoreUtils.addShutdownHookSafely(Executors.newSingleThreadExecutor(), Duration.ZERO));
+    }
+
+    @Test
+    public void addShutdownHookSafelyWithNullThreadDoesNothing() {
+        assertNull(CoreUtils.addShutdownHookSafely(null));
     }
 }

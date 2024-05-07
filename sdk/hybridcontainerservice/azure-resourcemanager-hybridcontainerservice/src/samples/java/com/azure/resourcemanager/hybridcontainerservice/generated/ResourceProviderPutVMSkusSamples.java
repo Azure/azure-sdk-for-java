@@ -14,8 +14,8 @@ import com.azure.resourcemanager.hybridcontainerservice.models.ExtendedLocationT
 public final class ResourceProviderPutVMSkusSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/
-     * PutVmSkus.json
+     * specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/PutVmSkus.
+     * json
      */
     /**
      * Sample code: PutVMSkus.

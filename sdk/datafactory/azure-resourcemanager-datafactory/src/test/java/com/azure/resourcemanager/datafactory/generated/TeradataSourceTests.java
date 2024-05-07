@@ -12,19 +12,23 @@ public final class TeradataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TeradataSource model = BinaryData.fromString(
-            "{\"type\":\"TeradataSource\",\"query\":\"dataxvccpdactasidity\",\"partitionOption\":\"datagx\",\"partitionSettings\":{\"partitionColumnName\":\"dataqoswjwbh\",\"partitionUpperBound\":\"datawbchybne\",\"partitionLowerBound\":\"dataueikadhusg\"},\"queryTimeout\":\"databgljcy\",\"additionalColumns\":\"datarzxipxhlxxkviyj\",\"sourceRetryCount\":\"dataqyejyavxgm\",\"sourceRetryWait\":\"datacnwxkqqxpnj\",\"maxConcurrentConnections\":\"datazdahvethn\",\"disableMetricsCollection\":\"dataeggyqlvnhmuut\",\"\":{\"k\":\"datatymbccmwsyfsg\"}}")
+            "{\"type\":\"moyxdigkggzmyl\",\"query\":\"datakqiqsriubem\",\"partitionOption\":\"datauygmrenrbn\",\"partitionSettings\":{\"partitionColumnName\":\"datafmophtkyzsgayn\",\"partitionUpperBound\":\"dataowvcnvf\",\"partitionLowerBound\":\"dataxqhysuapdns\"},\"queryTimeout\":\"dataycjdnio\",\"additionalColumns\":\"datagyxmpmsacbamtoqs\",\"sourceRetryCount\":\"dataqeosx\",\"sourceRetryWait\":\"dataxilefiottdawgka\",\"maxConcurrentConnections\":\"datah\",\"disableMetricsCollection\":\"datatyhypi\",\"\":{\"nkkxoicb\":\"datajjfcysk\",\"pmvppvgrigjegrl\":\"datasmfvltbocqhv\"}}")
             .toObject(TeradataSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TeradataSource model
-            = new TeradataSource().withSourceRetryCount("dataqyejyavxgm").withSourceRetryWait("datacnwxkqqxpnj")
-                .withMaxConcurrentConnections("datazdahvethn").withDisableMetricsCollection("dataeggyqlvnhmuut")
-                .withQueryTimeout("databgljcy").withAdditionalColumns("datarzxipxhlxxkviyj")
-                .withQuery("dataxvccpdactasidity").withPartitionOption("datagx")
-                .withPartitionSettings(new TeradataPartitionSettings().withPartitionColumnName("dataqoswjwbh")
-                    .withPartitionUpperBound("datawbchybne").withPartitionLowerBound("dataueikadhusg"));
+        TeradataSource model = new TeradataSource().withSourceRetryCount("dataqeosx")
+            .withSourceRetryWait("dataxilefiottdawgka")
+            .withMaxConcurrentConnections("datah")
+            .withDisableMetricsCollection("datatyhypi")
+            .withQueryTimeout("dataycjdnio")
+            .withAdditionalColumns("datagyxmpmsacbamtoqs")
+            .withQuery("datakqiqsriubem")
+            .withPartitionOption("datauygmrenrbn")
+            .withPartitionSettings(new TeradataPartitionSettings().withPartitionColumnName("datafmophtkyzsgayn")
+                .withPartitionUpperBound("dataowvcnvf")
+                .withPartitionLowerBound("dataxqhysuapdns"));
         model = BinaryData.fromObject(model).toObject(TeradataSource.class);
     }
 }

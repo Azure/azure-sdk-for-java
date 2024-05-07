@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Custom container payload. */
+/**
+ * Custom container payload.
+ */
 @Fluent
 public final class CustomContainer {
     /*
@@ -18,22 +20,20 @@ public final class CustomContainer {
     private String server;
 
     /*
-     * Container image of the custom container. This should be in the form of
-     * <repository>:<tag> without the server name of the registry
+     * Container image of the custom container. This should be in the form of <repository>:<tag> without the server
+     * name of the registry
      */
     @JsonProperty(value = "containerImage")
     private String containerImage;
 
     /*
-     * Entrypoint array. Not executed within a shell. The docker image's
-     * ENTRYPOINT is used if this is not provided.
+     * Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if this is not provided.
      */
     @JsonProperty(value = "command")
     private List<String> command;
 
     /*
-     * Arguments to the entrypoint. The docker image's CMD is used if this is
-     * not provided.
+     * Arguments to the entrypoint. The docker image's CMD is used if this is not provided.
      */
     @JsonProperty(value = "args")
     private List<String> args;
@@ -45,14 +45,20 @@ public final class CustomContainer {
     private ImageRegistryCredential imageRegistryCredential;
 
     /*
-     * Language framework of the container image uploaded
+     * Language framework of the container image uploaded. Supported values: "springboot", "", null.
      */
     @JsonProperty(value = "languageFramework")
     private String languageFramework;
 
     /**
+     * Creates an instance of CustomContainer class.
+     */
+    public CustomContainer() {
+    }
+
+    /**
      * Get the server property: The name of the registry that contains the container image.
-     *
+     * 
      * @return the server value.
      */
     public String server() {
@@ -61,7 +67,7 @@ public final class CustomContainer {
 
     /**
      * Set the server property: The name of the registry that contains the container image.
-     *
+     * 
      * @param server the server value to set.
      * @return the CustomContainer object itself.
      */
@@ -73,7 +79,7 @@ public final class CustomContainer {
     /**
      * Get the containerImage property: Container image of the custom container. This should be in the form of
      * &lt;repository&gt;:&lt;tag&gt; without the server name of the registry.
-     *
+     * 
      * @return the containerImage value.
      */
     public String containerImage() {
@@ -83,7 +89,7 @@ public final class CustomContainer {
     /**
      * Set the containerImage property: Container image of the custom container. This should be in the form of
      * &lt;repository&gt;:&lt;tag&gt; without the server name of the registry.
-     *
+     * 
      * @param containerImage the containerImage value to set.
      * @return the CustomContainer object itself.
      */
@@ -93,9 +99,9 @@ public final class CustomContainer {
     }
 
     /**
-     * Get the command property: Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if
-     * this is not provided.
-     *
+     * Get the command property: Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used
+     * if this is not provided.
+     * 
      * @return the command value.
      */
     public List<String> command() {
@@ -103,9 +109,9 @@ public final class CustomContainer {
     }
 
     /**
-     * Set the command property: Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used if
-     * this is not provided.
-     *
+     * Set the command property: Entrypoint array. Not executed within a shell. The docker image's ENTRYPOINT is used
+     * if this is not provided.
+     * 
      * @param command the command value to set.
      * @return the CustomContainer object itself.
      */
@@ -116,7 +122,7 @@ public final class CustomContainer {
 
     /**
      * Get the args property: Arguments to the entrypoint. The docker image's CMD is used if this is not provided.
-     *
+     * 
      * @return the args value.
      */
     public List<String> args() {
@@ -125,7 +131,7 @@ public final class CustomContainer {
 
     /**
      * Set the args property: Arguments to the entrypoint. The docker image's CMD is used if this is not provided.
-     *
+     * 
      * @param args the args value to set.
      * @return the CustomContainer object itself.
      */
@@ -136,7 +142,7 @@ public final class CustomContainer {
 
     /**
      * Get the imageRegistryCredential property: Credential of the image registry.
-     *
+     * 
      * @return the imageRegistryCredential value.
      */
     public ImageRegistryCredential imageRegistryCredential() {
@@ -145,7 +151,7 @@ public final class CustomContainer {
 
     /**
      * Set the imageRegistryCredential property: Credential of the image registry.
-     *
+     * 
      * @param imageRegistryCredential the imageRegistryCredential value to set.
      * @return the CustomContainer object itself.
      */
@@ -155,8 +161,9 @@ public final class CustomContainer {
     }
 
     /**
-     * Get the languageFramework property: Language framework of the container image uploaded.
-     *
+     * Get the languageFramework property: Language framework of the container image uploaded. Supported values:
+     * "springboot", "", null.
+     * 
      * @return the languageFramework value.
      */
     public String languageFramework() {
@@ -164,8 +171,9 @@ public final class CustomContainer {
     }
 
     /**
-     * Set the languageFramework property: Language framework of the container image uploaded.
-     *
+     * Set the languageFramework property: Language framework of the container image uploaded. Supported values:
+     * "springboot", "", null.
+     * 
      * @param languageFramework the languageFramework value to set.
      * @return the CustomContainer object itself.
      */
@@ -176,7 +184,7 @@ public final class CustomContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

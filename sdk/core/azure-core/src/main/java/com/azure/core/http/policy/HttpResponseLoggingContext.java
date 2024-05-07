@@ -9,7 +9,16 @@ import com.azure.core.util.Context;
 import java.time.Duration;
 
 /**
- * Options class containing information available during HTTP response logging.
+ * The {@code HttpResponseLoggingContext} class provides contextual information available during HTTP response logging.
+ *
+ * <p>This class is useful when you need to access information about an HTTP response during logging. It provides
+ * access to the HTTP response being received, the duration between the HTTP request being sent and the HTTP response
+ * being received, the contextual information about the response, and the try count for the request.</p>
+ *
+ * @see com.azure.core.http.HttpResponse
+ * @see java.time.Duration
+ * @see com.azure.core.util.Context
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
  */
 public final class HttpResponseLoggingContext {
     private final HttpResponse httpResponse;

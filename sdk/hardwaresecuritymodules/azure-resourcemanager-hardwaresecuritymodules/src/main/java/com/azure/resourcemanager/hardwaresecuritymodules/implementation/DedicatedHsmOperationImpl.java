@@ -13,8 +13,7 @@ public final class DedicatedHsmOperationImpl implements DedicatedHsmOperation {
 
     private final com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager serviceManager;
 
-    DedicatedHsmOperationImpl(
-        DedicatedHsmOperationInner innerObject,
+    DedicatedHsmOperationImpl(DedicatedHsmOperationInner innerObject,
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -24,8 +23,12 @@ public final class DedicatedHsmOperationImpl implements DedicatedHsmOperation {
         return this.innerModel().name();
     }
 
-    public String isDataAction() {
+    public Boolean isDataAction() {
         return this.innerModel().isDataAction();
+    }
+
+    public String origin() {
+        return this.innerModel().origin();
     }
 
     public DedicatedHsmOperationDisplay display() {

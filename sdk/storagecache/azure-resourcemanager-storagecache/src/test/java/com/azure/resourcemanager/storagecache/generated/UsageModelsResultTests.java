@@ -14,45 +14,27 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageModelsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageModelsResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"clhocohsl\",\"value\":[{\"display\":{\"description\":\"ggzfbu\"},\"modelName\":\"mvfaxkffeiith\",\"targetType\":\"m\"},{\"display\":{\"description\":\"v\"},\"modelName\":\"xmzsbbzogg\",\"targetType\":\"rxwburv\"},{\"display\":{\"description\":\"jnspydp\"},\"modelName\":\"oenkouknvudwti\",\"targetType\":\"bldngkpoc\"},{\"display\":{\"description\":\"z\"},\"modelName\":\"o\",\"targetType\":\"ukgjnpiucgygevq\"}]}")
-                .toObject(UsageModelsResult.class);
-        Assertions.assertEquals("clhocohsl", model.nextLink());
-        Assertions.assertEquals("ggzfbu", model.value().get(0).display().description());
-        Assertions.assertEquals("mvfaxkffeiith", model.value().get(0).modelName());
-        Assertions.assertEquals("m", model.value().get(0).targetType());
+        UsageModelsResult model = BinaryData.fromString(
+            "{\"nextLink\":\"fbishcbkha\",\"value\":[{\"display\":{\"description\":\"a\"},\"modelName\":\"p\",\"targetType\":\"g\"},{\"display\":{\"description\":\"buxwgip\"},\"modelName\":\"onowk\",\"targetType\":\"hwankixzbinjepu\"}]}")
+            .toObject(UsageModelsResult.class);
+        Assertions.assertEquals("fbishcbkha", model.nextLink());
+        Assertions.assertEquals("a", model.value().get(0).display().description());
+        Assertions.assertEquals("p", model.value().get(0).modelName());
+        Assertions.assertEquals("g", model.value().get(0).targetType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageModelsResult model =
-            new UsageModelsResult()
-                .withNextLink("clhocohsl")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new UsageModelInner()
-                                .withDisplay(new UsageModelDisplay().withDescription("ggzfbu"))
-                                .withModelName("mvfaxkffeiith")
-                                .withTargetType("m"),
-                            new UsageModelInner()
-                                .withDisplay(new UsageModelDisplay().withDescription("v"))
-                                .withModelName("xmzsbbzogg")
-                                .withTargetType("rxwburv"),
-                            new UsageModelInner()
-                                .withDisplay(new UsageModelDisplay().withDescription("jnspydp"))
-                                .withModelName("oenkouknvudwti")
-                                .withTargetType("bldngkpoc"),
-                            new UsageModelInner()
-                                .withDisplay(new UsageModelDisplay().withDescription("z"))
-                                .withModelName("o")
-                                .withTargetType("ukgjnpiucgygevq")));
+        UsageModelsResult model = new UsageModelsResult().withNextLink("fbishcbkha")
+            .withValue(Arrays.asList(
+                new UsageModelInner().withDisplay(new UsageModelDisplay().withDescription("a")).withModelName("p")
+                    .withTargetType("g"),
+                new UsageModelInner().withDisplay(new UsageModelDisplay().withDescription("buxwgip"))
+                    .withModelName("onowk").withTargetType("hwankixzbinjepu")));
         model = BinaryData.fromObject(model).toObject(UsageModelsResult.class);
-        Assertions.assertEquals("clhocohsl", model.nextLink());
-        Assertions.assertEquals("ggzfbu", model.value().get(0).display().description());
-        Assertions.assertEquals("mvfaxkffeiith", model.value().get(0).modelName());
-        Assertions.assertEquals("m", model.value().get(0).targetType());
+        Assertions.assertEquals("fbishcbkha", model.nextLink());
+        Assertions.assertEquals("a", model.value().get(0).display().description());
+        Assertions.assertEquals("p", model.value().get(0).modelName());
+        Assertions.assertEquals("g", model.value().get(0).targetType());
     }
 }

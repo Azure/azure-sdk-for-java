@@ -9,7 +9,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualE
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of virtual endpoints. */
+/**
+ * A list of virtual endpoints.
+ */
 @Fluent
 public final class VirtualEndpointsListResult {
     /*
@@ -24,13 +26,15 @@ public final class VirtualEndpointsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VirtualEndpointsListResult class. */
+    /**
+     * Creates an instance of VirtualEndpointsListResult class.
+     */
     public VirtualEndpointsListResult() {
     }
 
     /**
      * Get the value property: The list of virtual endpoints.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualEndpointResourceInner> value() {
@@ -39,7 +43,7 @@ public final class VirtualEndpointsListResult {
 
     /**
      * Set the value property: The list of virtual endpoints.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualEndpointsListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class VirtualEndpointsListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class VirtualEndpointsListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualEndpointsListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class VirtualEndpointsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

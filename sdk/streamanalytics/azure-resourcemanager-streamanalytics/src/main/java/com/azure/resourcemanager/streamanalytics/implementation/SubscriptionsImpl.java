@@ -9,23 +9,45 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.SubscriptionsClient;
+import com.azure.resourcemanager.streamanalytics.fluent.models.QueryCompilationResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.QueryTestingResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.SampleInputInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.SampleInputResultInner;
 import com.azure.resourcemanager.streamanalytics.fluent.models.SubscriptionQuotasListResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestDatasourceResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestInputInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestOutputInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestQueryInner;
+import com.azure.resourcemanager.streamanalytics.models.CompileQuery;
+import com.azure.resourcemanager.streamanalytics.models.QueryCompilationResult;
+import com.azure.resourcemanager.streamanalytics.models.QueryTestingResult;
+import com.azure.resourcemanager.streamanalytics.models.SampleInputResult;
 import com.azure.resourcemanager.streamanalytics.models.SubscriptionQuotasListResult;
 import com.azure.resourcemanager.streamanalytics.models.Subscriptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.streamanalytics.models.TestDatasourceResult;
 
 public final class SubscriptionsImpl implements Subscriptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubscriptionsImpl.class);
 
     private final SubscriptionsClient innerClient;
 
     private final com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager;
 
-    public SubscriptionsImpl(
-        SubscriptionsClient innerClient,
+    public SubscriptionsImpl(SubscriptionsClient innerClient,
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<SubscriptionQuotasListResult> listQuotasWithResponse(String location, Context context) {
+        Response<SubscriptionQuotasListResultInner> inner
+            = this.serviceClient().listQuotasWithResponse(location, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SubscriptionQuotasListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SubscriptionQuotasListResult listQuotas(String location) {
@@ -37,15 +59,94 @@ public final class SubscriptionsImpl implements Subscriptions {
         }
     }
 
-    public Response<SubscriptionQuotasListResult> listQuotasWithResponse(String location, Context context) {
-        Response<SubscriptionQuotasListResultInner> inner =
-            this.serviceClient().listQuotasWithResponse(location, context);
+    public QueryTestingResult testQuery(String location, TestQueryInner testQuery) {
+        QueryTestingResultInner inner = this.serviceClient().testQuery(location, testQuery);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SubscriptionQuotasListResultImpl(inner.getValue(), this.manager()));
+            return new QueryTestingResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public QueryTestingResult testQuery(String location, TestQueryInner testQuery, Context context) {
+        QueryTestingResultInner inner = this.serviceClient().testQuery(location, testQuery, context);
+        if (inner != null) {
+            return new QueryTestingResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<QueryCompilationResult> compileQueryWithResponse(String location, CompileQuery compileQuery,
+        Context context) {
+        Response<QueryCompilationResultInner> inner
+            = this.serviceClient().compileQueryWithResponse(location, compileQuery, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new QueryCompilationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public QueryCompilationResult compileQuery(String location, CompileQuery compileQuery) {
+        QueryCompilationResultInner inner = this.serviceClient().compileQuery(location, compileQuery);
+        if (inner != null) {
+            return new QueryCompilationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SampleInputResult sampleInput(String location, SampleInputInner sampleInput) {
+        SampleInputResultInner inner = this.serviceClient().sampleInput(location, sampleInput);
+        if (inner != null) {
+            return new SampleInputResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SampleInputResult sampleInput(String location, SampleInputInner sampleInput, Context context) {
+        SampleInputResultInner inner = this.serviceClient().sampleInput(location, sampleInput, context);
+        if (inner != null) {
+            return new SampleInputResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public TestDatasourceResult testInput(String location, TestInputInner testInput) {
+        TestDatasourceResultInner inner = this.serviceClient().testInput(location, testInput);
+        if (inner != null) {
+            return new TestDatasourceResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public TestDatasourceResult testInput(String location, TestInputInner testInput, Context context) {
+        TestDatasourceResultInner inner = this.serviceClient().testInput(location, testInput, context);
+        if (inner != null) {
+            return new TestDatasourceResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public TestDatasourceResult testOutput(String location, TestOutputInner testOutput) {
+        TestDatasourceResultInner inner = this.serviceClient().testOutput(location, testOutput);
+        if (inner != null) {
+            return new TestDatasourceResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public TestDatasourceResult testOutput(String location, TestOutputInner testOutput, Context context) {
+        TestDatasourceResultInner inner = this.serviceClient().testOutput(location, testOutput, context);
+        if (inner != null) {
+            return new TestDatasourceResultImpl(inner, this.manager());
         } else {
             return null;
         }

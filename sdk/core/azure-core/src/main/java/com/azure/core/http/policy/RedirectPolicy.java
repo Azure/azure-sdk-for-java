@@ -16,8 +16,33 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as
- * {@link HttpResponse response}.
+ * The {@code RedirectPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy
+ * handles HTTP redirects by determining if an HTTP request should be redirected based on the received
+ * {@link HttpResponse}.
+ *
+ * <p>This class is useful when you need to handle HTTP redirects in a pipeline. It uses a {@link RedirectStrategy} to
+ * decide if a request should be redirected. By default, it uses the {@link DefaultRedirectStrategy}, which redirects
+ * the request based on the HTTP status code of the response.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, a {@code RedirectPolicy} is constructed and can be added to a pipeline. For a request sent by the
+ * pipeline, if the server responds with a redirect status code, the request will be redirected according
+ * to the {@link RedirectStrategy} used by the {@code RedirectPolicy}.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.RedirectPolicy.constructor -->
+ * <pre>
+ * RedirectPolicy redirectPolicy = new RedirectPolicy&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.RedirectPolicy.constructor -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ * @see com.azure.core.http.policy.RedirectStrategy
+ * @see com.azure.core.http.policy.DefaultRedirectStrategy
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private final RedirectStrategy redirectStrategy;
@@ -57,25 +82,19 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * Function to process through the HTTP Response received in the pipeline
      * and redirect sending the request with new redirect url.
      */
-    private Mono<HttpResponse> attemptRedirect(final HttpPipelineCallContext context,
-                                               final HttpPipelineNextPolicy next,
-                                               final HttpRequest originalHttpRequest,
-                                               final int redirectAttempt,
-                                               Set<String> attemptedRedirectUrls) {
+    private Mono<HttpResponse> attemptRedirect(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next,
+        final HttpRequest originalHttpRequest, final int redirectAttempt, Set<String> attemptedRedirectUrls) {
         // make sure the context is not modified during retry, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
 
-        return next.clone().process()
-            .flatMap(httpResponse -> {
-                if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt,
-                    attemptedRedirectUrls)) {
-
-                    HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
-                    return attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
-                } else {
-                    return Mono.just(httpResponse);
-                }
-            });
+        return next.clone().process().flatMap(httpResponse -> {
+            if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
+                HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
+                return attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
+            } else {
+                return Mono.just(httpResponse);
+            }
+        });
     }
 
     /**
@@ -83,21 +102,16 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * and redirect sending the request with new redirect url.
      */
     private HttpResponse attemptRedirectSync(final HttpPipelineCallContext context,
-                                             final HttpPipelineNextSyncPolicy next,
-                                             final HttpRequest originalHttpRequest,
-                                             final int redirectAttempt,
-                                             Set<String> attemptedRedirectUrls) {
+        final HttpPipelineNextSyncPolicy next, final HttpRequest originalHttpRequest, final int redirectAttempt,
+        Set<String> attemptedRedirectUrls) {
         // make sure the context is not modified during retry, except for the URL
         context.setHttpRequest(originalHttpRequest.copy());
 
         HttpResponse httpResponse = next.clone().processSync();
 
-        if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt,
-            attemptedRedirectUrls)) {
-
+        if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
             HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
-            return attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1,
-                attemptedRedirectUrls);
+            return attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
         } else {
             return httpResponse;
         }

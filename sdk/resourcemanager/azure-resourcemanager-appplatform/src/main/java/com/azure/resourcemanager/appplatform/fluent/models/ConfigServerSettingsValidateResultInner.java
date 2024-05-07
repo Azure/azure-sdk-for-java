@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appplatform.models.ConfigServerSettingsErrorRec
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Validation result for config server settings. */
+/**
+ * Validation result for config server settings.
+ */
 @Fluent
 public final class ConfigServerSettingsValidateResultInner {
     /*
@@ -25,8 +27,14 @@ public final class ConfigServerSettingsValidateResultInner {
     private List<ConfigServerSettingsErrorRecord> details;
 
     /**
+     * Creates an instance of ConfigServerSettingsValidateResultInner class.
+     */
+    public ConfigServerSettingsValidateResultInner() {
+    }
+
+    /**
      * Get the isValid property: Indicate if the config server settings are valid.
-     *
+     * 
      * @return the isValid value.
      */
     public Boolean isValid() {
@@ -35,7 +43,7 @@ public final class ConfigServerSettingsValidateResultInner {
 
     /**
      * Set the isValid property: Indicate if the config server settings are valid.
-     *
+     * 
      * @param isValid the isValid value to set.
      * @return the ConfigServerSettingsValidateResultInner object itself.
      */
@@ -46,7 +54,7 @@ public final class ConfigServerSettingsValidateResultInner {
 
     /**
      * Get the details property: The detail validation results.
-     *
+     * 
      * @return the details value.
      */
     public List<ConfigServerSettingsErrorRecord> details() {
@@ -55,7 +63,7 @@ public final class ConfigServerSettingsValidateResultInner {
 
     /**
      * Set the details property: The detail validation results.
-     *
+     * 
      * @param details the details value to set.
      * @return the ConfigServerSettingsValidateResultInner object itself.
      */
@@ -66,7 +74,7 @@ public final class ConfigServerSettingsValidateResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

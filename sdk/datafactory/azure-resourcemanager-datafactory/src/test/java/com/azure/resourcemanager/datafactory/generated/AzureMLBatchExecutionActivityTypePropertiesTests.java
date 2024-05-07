@@ -16,37 +16,47 @@ public final class AzureMLBatchExecutionActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMLBatchExecutionActivityTypeProperties model = BinaryData.fromString(
-            "{\"globalParameters\":{\"vmixfqqm\":\"databcwfp\"},\"webServiceOutputs\":{\"pkevtofvqjrdyd\":{\"filePath\":\"datau\",\"linkedServiceName\":{\"referenceName\":\"fbrjmpdtzu\",\"parameters\":{\"qikouravdqe\":\"datarvpcwyn\",\"ma\":\"dataewgpmademlo\",\"hgdvgcgunqitzwn\":\"datakbmkkun\"}}}},\"webServiceInputs\":{\"krxajta\":{\"filePath\":\"datauppxdzpjewp\",\"linkedServiceName\":{\"referenceName\":\"lyszw\",\"parameters\":{\"tfgbxiao\":\"dataokgrnxly\",\"n\":\"datazrouwkkwtoxl\",\"keeeakzys\":\"datavealwdltstxronbz\"}}},\"zhiradklzg\":{\"filePath\":\"datadfqc\",\"linkedServiceName\":{\"referenceName\":\"jwkdwpcm\",\"parameters\":{\"gwxoreedor\":\"datarrkfhla\",\"qdmzsitrs\":\"dataiycvou\",\"mrjla\":\"datapucxigkpevtb\",\"z\":\"datadggwaldtelnvcfum\"}}},\"jfkuqvt\":{\"filePath\":\"dataqmmapxnoog\",\"linkedServiceName\":{\"referenceName\":\"fujecisicmez\",\"parameters\":{\"nljy\":\"datazpgy\",\"bcufhkrvxxzhqouo\":\"dataumpydk\",\"la\":\"datasczcksjwdwzfdfkg\",\"niybotuq\":\"datavmbsmxhsqdotbnf\"}}}}}")
+            "{\"globalParameters\":{\"ovburvekbknr\":\"dataet\",\"qbyoyhfbbbhxly\":\"datakxcpnxdzpfzmdsly\"},\"webServiceOutputs\":{\"svhsieev\":{\"filePath\":\"datalqprhnchpets\",\"linkedServiceName\":{\"referenceName\":\"bfmttpz\",\"parameters\":{\"dusizsnhekpcnq\":\"datampu\"}}},\"qmaiegrxoo\":{\"filePath\":\"datamubzlmmctdkzp\",\"linkedServiceName\":{\"referenceName\":\"ud\",\"parameters\":{\"res\":\"datagxrsxvzwnuib\",\"w\":\"datajohrvkpnma\"}}}},\"webServiceInputs\":{\"oaallveezesdn\":{\"filePath\":\"datalmbuzkayfjzyco\",\"linkedServiceName\":{\"referenceName\":\"wjpyf\",\"parameters\":{\"hrl\":\"datamgw\",\"cvaibzbvkoxl\":\"dataosqlfvsvwauqxh\",\"fbiodgtziylp\":\"datatv\"}}},\"mddv\":{\"filePath\":\"datalkzzlokmrudepzl\",\"linkedServiceName\":{\"referenceName\":\"uzcwlbefjh\",\"parameters\":{\"txttahsojgf\":\"datapv\",\"fmgudkfoybih\":\"datay\",\"tkkufbi\":\"datapnkwt\"}}},\"vumvhpichsbzgwif\":{\"filePath\":\"dataub\",\"linkedServiceName\":{\"referenceName\":\"iomfflrnggwujy\",\"parameters\":{\"fmuwhgxvgkbffqsi\":\"datafsbmrgbnrnihx\",\"tyhd\":\"datalaubijvavqq\",\"atzgxtasryivlfbr\":\"datakd\"}}}}}")
             .toObject(AzureMLBatchExecutionActivityTypeProperties.class);
-        Assertions.assertEquals("fbrjmpdtzu",
-            model.webServiceOutputs().get("pkevtofvqjrdyd").linkedServiceName().referenceName());
-        Assertions.assertEquals("lyszw", model.webServiceInputs().get("krxajta").linkedServiceName().referenceName());
+        Assertions.assertEquals("bfmttpz",
+            model.webServiceOutputs().get("svhsieev").linkedServiceName().referenceName());
+        Assertions.assertEquals("wjpyf",
+            model.webServiceInputs().get("oaallveezesdn").linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMLBatchExecutionActivityTypeProperties model = new AzureMLBatchExecutionActivityTypeProperties()
-            .withGlobalParameters(mapOf("vmixfqqm", "databcwfp"))
-            .withWebServiceOutputs(mapOf("pkevtofvqjrdyd", new AzureMLWebServiceFile().withFilePath("datau")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("fbrjmpdtzu").withParameters(
-                    mapOf("qikouravdqe", "datarvpcwyn", "ma", "dataewgpmademlo", "hgdvgcgunqitzwn", "datakbmkkun")))))
-            .withWebServiceInputs(mapOf("krxajta", new AzureMLWebServiceFile().withFilePath("datauppxdzpjewp")
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("lyszw").withParameters(
-                    mapOf("tfgbxiao", "dataokgrnxly", "n", "datazrouwkkwtoxl", "keeeakzys", "datavealwdltstxronbz"))),
-                "zhiradklzg",
-                new AzureMLWebServiceFile().withFilePath("datadfqc")
-                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("jwkdwpcm")
-                        .withParameters(mapOf("gwxoreedor", "datarrkfhla", "qdmzsitrs", "dataiycvou", "mrjla",
-                            "datapucxigkpevtb", "z", "datadggwaldtelnvcfum"))),
-                "jfkuqvt",
-                new AzureMLWebServiceFile().withFilePath("dataqmmapxnoog")
-                    .withLinkedServiceName(new LinkedServiceReference().withReferenceName("fujecisicmez")
-                        .withParameters(mapOf("nljy", "datazpgy", "bcufhkrvxxzhqouo", "dataumpydk", "la",
-                            "datasczcksjwdwzfdfkg", "niybotuq", "datavmbsmxhsqdotbnf")))));
+        AzureMLBatchExecutionActivityTypeProperties model
+            = new AzureMLBatchExecutionActivityTypeProperties()
+                .withGlobalParameters(mapOf("ovburvekbknr", "dataet", "qbyoyhfbbbhxly", "datakxcpnxdzpfzmdsly"))
+                .withWebServiceOutputs(mapOf("svhsieev",
+                    new AzureMLWebServiceFile().withFilePath("datalqprhnchpets")
+                        .withLinkedServiceName(new LinkedServiceReference().withReferenceName("bfmttpz")
+                            .withParameters(mapOf("dusizsnhekpcnq", "datampu"))),
+                    "qmaiegrxoo",
+                    new AzureMLWebServiceFile().withFilePath("datamubzlmmctdkzp")
+                        .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ud")
+                            .withParameters(mapOf("res", "datagxrsxvzwnuib", "w", "datajohrvkpnma")))))
+                .withWebServiceInputs(mapOf("oaallveezesdn",
+                    new AzureMLWebServiceFile().withFilePath("datalmbuzkayfjzyco")
+                        .withLinkedServiceName(new LinkedServiceReference().withReferenceName("wjpyf")
+                            .withParameters(mapOf("hrl", "datamgw", "cvaibzbvkoxl", "dataosqlfvsvwauqxh",
+                                "fbiodgtziylp", "datatv"))),
+                    "mddv",
+                    new AzureMLWebServiceFile().withFilePath("datalkzzlokmrudepzl")
+                        .withLinkedServiceName(new LinkedServiceReference().withReferenceName("uzcwlbefjh")
+                            .withParameters(
+                                mapOf("txttahsojgf", "datapv", "fmgudkfoybih", "datay", "tkkufbi", "datapnkwt"))),
+                    "vumvhpichsbzgwif",
+                    new AzureMLWebServiceFile().withFilePath("dataub")
+                        .withLinkedServiceName(new LinkedServiceReference().withReferenceName("iomfflrnggwujy")
+                            .withParameters(mapOf("fmuwhgxvgkbffqsi", "datafsbmrgbnrnihx", "tyhd", "datalaubijvavqq",
+                                "atzgxtasryivlfbr", "datakd")))));
         model = BinaryData.fromObject(model).toObject(AzureMLBatchExecutionActivityTypeProperties.class);
-        Assertions.assertEquals("fbrjmpdtzu",
-            model.webServiceOutputs().get("pkevtofvqjrdyd").linkedServiceName().referenceName());
-        Assertions.assertEquals("lyszw", model.webServiceInputs().get("krxajta").linkedServiceName().referenceName());
+        Assertions.assertEquals("bfmttpz",
+            model.webServiceOutputs().get("svhsieev").linkedServiceName().referenceName());
+        Assertions.assertEquals("wjpyf",
+            model.webServiceInputs().get("oaallveezesdn").linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ProvisionedClusterLicenseProfile {
     /*
-     * Indicates whether Azure Hybrid Benefit is opted in
+     * Indicates whether Azure Hybrid Benefit is opted in. Default value is false
      */
     @JsonProperty(value = "azureHybridBenefit")
     private AzureHybridBenefit azureHybridBenefit;
@@ -25,7 +25,7 @@ public final class ProvisionedClusterLicenseProfile {
     }
 
     /**
-     * Get the azureHybridBenefit property: Indicates whether Azure Hybrid Benefit is opted in.
+     * Get the azureHybridBenefit property: Indicates whether Azure Hybrid Benefit is opted in. Default value is false.
      * 
      * @return the azureHybridBenefit value.
      */
@@ -34,7 +34,7 @@ public final class ProvisionedClusterLicenseProfile {
     }
 
     /**
-     * Set the azureHybridBenefit property: Indicates whether Azure Hybrid Benefit is opted in.
+     * Set the azureHybridBenefit property: Indicates whether Azure Hybrid Benefit is opted in. Default value is false.
      * 
      * @param azureHybridBenefit the azureHybridBenefit value to set.
      * @return the ProvisionedClusterLicenseProfile object itself.

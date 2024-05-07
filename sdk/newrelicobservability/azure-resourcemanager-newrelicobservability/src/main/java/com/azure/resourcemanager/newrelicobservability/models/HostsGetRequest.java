@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Request of a Hosts get Operation. */
+/**
+ * Request of a Hosts get Operation.
+ */
 @Fluent
 public final class HostsGetRequest {
     /*
@@ -24,13 +26,15 @@ public final class HostsGetRequest {
     @JsonProperty(value = "userEmail", required = true)
     private String userEmail;
 
-    /** Creates an instance of HostsGetRequest class. */
+    /**
+     * Creates an instance of HostsGetRequest class.
+     */
     public HostsGetRequest() {
     }
 
     /**
      * Get the vmIds property: VM resource IDs.
-     *
+     * 
      * @return the vmIds value.
      */
     public List<String> vmIds() {
@@ -39,7 +43,7 @@ public final class HostsGetRequest {
 
     /**
      * Set the vmIds property: VM resource IDs.
-     *
+     * 
      * @param vmIds the vmIds value to set.
      * @return the HostsGetRequest object itself.
      */
@@ -50,7 +54,7 @@ public final class HostsGetRequest {
 
     /**
      * Get the userEmail property: User Email.
-     *
+     * 
      * @return the userEmail value.
      */
     public String userEmail() {
@@ -59,7 +63,7 @@ public final class HostsGetRequest {
 
     /**
      * Set the userEmail property: User Email.
-     *
+     * 
      * @param userEmail the userEmail value to set.
      * @return the HostsGetRequest object itself.
      */
@@ -70,14 +74,13 @@ public final class HostsGetRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userEmail() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property userEmail in model HostsGetRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property userEmail in model HostsGetRequest"));
         }
     }
 

@@ -5,7 +5,11 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A table column.
@@ -13,17 +17,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A column in a table.
  */
 @Fluent
-public final class Column {
+public final class Column implements JsonSerializable<Column> {
     /*
      * The name of this column.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The data type of this column.
      */
-    @JsonProperty(value = "type")
     private LogsColumnType type;
 
     /**
@@ -70,5 +72,41 @@ public final class Column {
     public Column setType(LogsColumnType type) {
         this.type = type;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Column from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Column if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Column.
+     */
+    public static Column fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Column deserializedColumn = new Column();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedColumn.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedColumn.type = LogsColumnType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedColumn;
+        });
     }
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Event details for VMwareCbt provider. */
+/**
+ * Event details for VMwareCbt provider.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
 @Immutable
@@ -20,13 +22,15 @@ public final class VMwareCbtEventDetails extends EventProviderSpecificDetails {
     @JsonProperty(value = "migrationItemName", access = JsonProperty.Access.WRITE_ONLY)
     private String migrationItemName;
 
-    /** Creates an instance of VMwareCbtEventDetails class. */
+    /**
+     * Creates an instance of VMwareCbtEventDetails class.
+     */
     public VMwareCbtEventDetails() {
     }
 
     /**
      * Get the migrationItemName property: The migration item name.
-     *
+     * 
      * @return the migrationItemName value.
      */
     public String migrationItemName() {
@@ -35,7 +39,7 @@ public final class VMwareCbtEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

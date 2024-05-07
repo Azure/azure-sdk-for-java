@@ -6,64 +6,46 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterResource;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class GlobalParametersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"ijyzhmf\":{\"type\":\"Float\",\"value\":\"datavjvwkzaqqkq\"},\"gxunldbku\":{\"type\":\"Bool\",\"value\":\"datasqiqz\"},\"t\":{\"type\":\"Object\",\"value\":\"datanjiwzqnbjk\"},\"wyyyjage\":{\"type\":\"Float\",\"value\":\"datamfnjuzvww\"}},\"name\":\"ghxjwiggcaim\",\"type\":\"xpaytzqgsaegaahw\",\"etag\":\"rdxhgrg\",\"id\":\"mwkykvoskjixb\"}";
+            = "{\"properties\":{\"cuieuid\":{\"type\":\"String\",\"value\":\"datauhtsnkeelunhjm\"},\"vekcv\":{\"type\":\"Array\",\"value\":\"dataeoh\"},\"ppmejdocwglrknoz\":{\"type\":\"Int\",\"value\":\"dataapwhicuafml\"},\"qcvruafsyjgvty\":{\"type\":\"Array\",\"value\":\"dataiaqtqzimllznw\"}},\"name\":\"pzdwdicauzexzl\",\"type\":\"nfrcjyulmvtej\",\"etag\":\"plavbjujbmw\",\"id\":\"d\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        GlobalParameterResource response = manager.globalParameters()
+            .define("ehaky")
+            .withExistingFactory("xjkkdltfdbe", "bllqi")
+            .withProperties(mapOf("kz",
+                new GlobalParameterSpecification().withType(GlobalParameterType.STRING).withValue("dataazjuu"),
+                "wljjcsuruiwopurh",
+                new GlobalParameterSpecification().withType(GlobalParameterType.ARRAY).withValue("datalko"), "o",
+                new GlobalParameterSpecification().withType(GlobalParameterType.STRING).withValue("dataxtnjfmhafqt")))
+            .create();
 
-        GlobalParameterResource response
-            = manager.globalParameters().define("f").withExistingFactory("spocutpnyz", "tgkdwvtmmvqliq")
-                .withProperties(mapOf("puavxidytjmk",
-                    new GlobalParameterSpecification().withType(GlobalParameterType.FLOAT).withValue("datarlji"),
-                    "agfbreyvr",
-                    new GlobalParameterSpecification().withType(GlobalParameterType.ARRAY).withValue("datazgopckm"),
-                    "fryourlywxjvsqz",
-                    new GlobalParameterSpecification().withType(GlobalParameterType.ARRAY).withValue("datacikwqtl")))
-                .create();
-
-        Assertions.assertEquals("mwkykvoskjixb", response.id());
-        Assertions.assertEquals(GlobalParameterType.FLOAT, response.properties().get("ijyzhmf").type());
+        Assertions.assertEquals("d", response.id());
+        Assertions.assertEquals(GlobalParameterType.STRING, response.properties().get("cuieuid").type());
     }
 
     // Use "Map.of" if available

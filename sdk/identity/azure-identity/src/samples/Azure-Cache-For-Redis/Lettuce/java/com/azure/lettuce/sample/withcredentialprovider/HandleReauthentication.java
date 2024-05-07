@@ -89,7 +89,7 @@ public class HandleReauthentication {
      */
     public static class AzureRedisCredentials implements RedisCredentials {
         private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-            .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+            .addScopes("https://redis.azure.com/.default");
         private TokenCredential tokenCredential;
         private final String username;
 

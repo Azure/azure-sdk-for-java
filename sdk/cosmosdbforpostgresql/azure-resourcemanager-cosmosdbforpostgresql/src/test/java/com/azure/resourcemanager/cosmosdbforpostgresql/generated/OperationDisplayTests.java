@@ -10,11 +10,9 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.models.OperationDisplay;
 public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"auu\",\"resource\":\"jmvxie\",\"operation\":\"ugidyjrr\",\"description\":\"y\"}")
-                .toObject(OperationDisplay.class);
+        OperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"deyeamdphagalpbu\",\"resource\":\"gipwhonowkg\",\"operation\":\"wankixzbi\",\"description\":\"eputtmrywnuzoqf\"}")
+            .toObject(OperationDisplay.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundE
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of OutboundEnvironmentEndpoint. */
+/**
+ * Collection of OutboundEnvironmentEndpoint.
+ */
 @Fluent
 public final class OutboundEnvironmentEndpointCollection {
     /*
@@ -26,8 +28,14 @@ public final class OutboundEnvironmentEndpointCollection {
     private String nextLink;
 
     /**
+     * Creates an instance of OutboundEnvironmentEndpointCollection class.
+     */
+    public OutboundEnvironmentEndpointCollection() {
+    }
+
+    /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<OutboundEnvironmentEndpointInner> value() {
@@ -36,7 +44,7 @@ public final class OutboundEnvironmentEndpointCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the OutboundEnvironmentEndpointCollection object itself.
      */
@@ -47,7 +55,7 @@ public final class OutboundEnvironmentEndpointCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,15 +64,13 @@ public final class OutboundEnvironmentEndpointCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model OutboundEnvironmentEndpointCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model OutboundEnvironmentEndpointCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

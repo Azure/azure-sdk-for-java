@@ -6,17 +6,16 @@ package com.azure.resourcemanager.playwrighttesting.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.playwrighttesting.fluent.models.QuotaInner;
-import com.azure.resourcemanager.playwrighttesting.models.FreeTrialProperties;
-import com.azure.resourcemanager.playwrighttesting.models.ProvisioningState;
 import com.azure.resourcemanager.playwrighttesting.models.Quota;
+import com.azure.resourcemanager.playwrighttesting.models.QuotaProperties;
 
 public final class QuotaImpl implements Quota {
     private QuotaInner innerObject;
 
     private final com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager serviceManager;
 
-    QuotaImpl(
-        QuotaInner innerObject, com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager serviceManager) {
+    QuotaImpl(QuotaInner innerObject,
+        com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -33,16 +32,12 @@ public final class QuotaImpl implements Quota {
         return this.innerModel().type();
     }
 
+    public QuotaProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public FreeTrialProperties freeTrial() {
-        return this.innerModel().freeTrial();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public QuotaInner innerModel() {

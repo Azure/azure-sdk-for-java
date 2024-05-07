@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure Workload SQL Auto Protection intent item. */
+/**
+ * Azure Workload SQL Auto Protection intent item.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectionIntentItemType")
 @JsonTypeName("AzureWorkloadSQLAutoProtectionIntent")
 @Fluent
@@ -20,13 +22,15 @@ public final class AzureWorkloadSqlAutoProtectionIntent extends AzureWorkloadAut
     @JsonProperty(value = "workloadItemType")
     private WorkloadItemType workloadItemType;
 
-    /** Creates an instance of AzureWorkloadSqlAutoProtectionIntent class. */
+    /**
+     * Creates an instance of AzureWorkloadSqlAutoProtectionIntent class.
+     */
     public AzureWorkloadSqlAutoProtectionIntent() {
     }
 
     /**
      * Get the workloadItemType property: Workload item type of the item for which intent is to be set.
-     *
+     * 
      * @return the workloadItemType value.
      */
     public WorkloadItemType workloadItemType() {
@@ -35,7 +39,7 @@ public final class AzureWorkloadSqlAutoProtectionIntent extends AzureWorkloadAut
 
     /**
      * Set the workloadItemType property: Workload item type of the item for which intent is to be set.
-     *
+     * 
      * @param workloadItemType the workloadItemType value to set.
      * @return the AzureWorkloadSqlAutoProtectionIntent object itself.
      */
@@ -44,35 +48,45 @@ public final class AzureWorkloadSqlAutoProtectionIntent extends AzureWorkloadAut
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlAutoProtectionIntent withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlAutoProtectionIntent withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlAutoProtectionIntent withItemId(String itemId) {
         super.withItemId(itemId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlAutoProtectionIntent withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlAutoProtectionIntent withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -81,7 +95,7 @@ public final class AzureWorkloadSqlAutoProtectionIntent extends AzureWorkloadAut
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

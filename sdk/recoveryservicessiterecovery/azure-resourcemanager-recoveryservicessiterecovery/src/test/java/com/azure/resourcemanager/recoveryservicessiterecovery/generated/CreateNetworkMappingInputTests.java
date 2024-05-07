@@ -13,24 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateNetworkMappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateNetworkMappingInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"recoveryFabricName\":\"yp\",\"recoveryNetworkId\":\"rbpizc\",\"fabricSpecificDetails\":{\"instanceType\":\"FabricSpecificCreateNetworkMappingInput\"}}}")
-                .toObject(CreateNetworkMappingInput.class);
+        CreateNetworkMappingInput model = BinaryData.fromString(
+            "{\"properties\":{\"recoveryFabricName\":\"yp\",\"recoveryNetworkId\":\"rbpizc\",\"fabricSpecificDetails\":{\"instanceType\":\"FabricSpecificCreateNetworkMappingInput\"}}}")
+            .toObject(CreateNetworkMappingInput.class);
         Assertions.assertEquals("yp", model.properties().recoveryFabricName());
         Assertions.assertEquals("rbpizc", model.properties().recoveryNetworkId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateNetworkMappingInput model =
-            new CreateNetworkMappingInput()
-                .withProperties(
-                    new CreateNetworkMappingInputProperties()
-                        .withRecoveryFabricName("yp")
-                        .withRecoveryNetworkId("rbpizc")
-                        .withFabricSpecificDetails(new FabricSpecificCreateNetworkMappingInput()));
+        CreateNetworkMappingInput model = new CreateNetworkMappingInput().withProperties(
+            new CreateNetworkMappingInputProperties().withRecoveryFabricName("yp").withRecoveryNetworkId("rbpizc")
+                .withFabricSpecificDetails(new FabricSpecificCreateNetworkMappingInput()));
         model = BinaryData.fromObject(model).toObject(CreateNetworkMappingInput.class);
         Assertions.assertEquals("yp", model.properties().recoveryFabricName());
         Assertions.assertEquals("rbpizc", model.properties().recoveryNetworkId());

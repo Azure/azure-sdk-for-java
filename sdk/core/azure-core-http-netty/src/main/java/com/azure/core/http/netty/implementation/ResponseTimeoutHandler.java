@@ -42,8 +42,8 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
         if (timeoutMillis > 0) {
-            this.responseTimeoutWatcher = ctx.executor().schedule(() -> responseTimedOut(ctx), timeoutMillis,
-                TimeUnit.MILLISECONDS);
+            this.responseTimeoutWatcher
+                = ctx.executor().schedule(() -> responseTimedOut(ctx), timeoutMillis, TimeUnit.MILLISECONDS);
         }
     }
 

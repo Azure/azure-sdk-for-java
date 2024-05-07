@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request to configure alerts for the system. */
+/**
+ * Request to configure alerts for the system.
+ */
 @Fluent
 public final class ConfigureAlertRequest {
     /*
@@ -16,13 +18,15 @@ public final class ConfigureAlertRequest {
     @JsonProperty(value = "properties")
     private ConfigureAlertRequestProperties properties;
 
-    /** Creates an instance of ConfigureAlertRequest class. */
+    /**
+     * Creates an instance of ConfigureAlertRequest class.
+     */
     public ConfigureAlertRequest() {
     }
 
     /**
      * Get the properties property: The properties of a configure alert request.
-     *
+     * 
      * @return the properties value.
      */
     public ConfigureAlertRequestProperties properties() {
@@ -31,7 +35,7 @@ public final class ConfigureAlertRequest {
 
     /**
      * Set the properties property: The properties of a configure alert request.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ConfigureAlertRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class ConfigureAlertRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

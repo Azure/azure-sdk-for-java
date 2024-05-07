@@ -7,7 +7,9 @@ package com.azure.resourcemanager.newrelicobservability.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of VM Resource having NewRelic OneAgent installed. */
+/**
+ * Details of VM Resource having NewRelic OneAgent installed.
+ */
 @Fluent
 public final class VMInfoInner {
     /*
@@ -28,13 +30,15 @@ public final class VMInfoInner {
     @JsonProperty(value = "agentStatus")
     private String agentStatus;
 
-    /** Creates an instance of VMInfoInner class. */
+    /**
+     * Creates an instance of VMInfoInner class.
+     */
     public VMInfoInner() {
     }
 
     /**
      * Get the vmId property: Azure VM resource ID.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -43,7 +47,7 @@ public final class VMInfoInner {
 
     /**
      * Set the vmId property: Azure VM resource ID.
-     *
+     * 
      * @param vmId the vmId value to set.
      * @return the VMInfoInner object itself.
      */
@@ -54,7 +58,7 @@ public final class VMInfoInner {
 
     /**
      * Get the agentVersion property: Version of the NewRelic agent installed on the VM.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -63,7 +67,7 @@ public final class VMInfoInner {
 
     /**
      * Set the agentVersion property: Version of the NewRelic agent installed on the VM.
-     *
+     * 
      * @param agentVersion the agentVersion value to set.
      * @return the VMInfoInner object itself.
      */
@@ -74,7 +78,7 @@ public final class VMInfoInner {
 
     /**
      * Get the agentStatus property: Status of the NewRelic agent installed on the VM.
-     *
+     * 
      * @return the agentStatus value.
      */
     public String agentStatus() {
@@ -83,7 +87,7 @@ public final class VMInfoInner {
 
     /**
      * Set the agentStatus property: Status of the NewRelic agent installed on the VM.
-     *
+     * 
      * @param agentStatus the agentStatus value to set.
      * @return the VMInfoInner object itself.
      */
@@ -94,7 +98,7 @@ public final class VMInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

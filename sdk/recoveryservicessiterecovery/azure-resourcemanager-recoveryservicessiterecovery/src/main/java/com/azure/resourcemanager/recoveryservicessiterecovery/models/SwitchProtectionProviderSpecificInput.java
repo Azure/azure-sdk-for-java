@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Provider specific switch protection input. */
+/**
+ * Provider specific switch protection input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = SwitchProtectionProviderSpecificInput.class)
 @JsonTypeName("SwitchProtectionProviderSpecificInput")
-@JsonSubTypes({@JsonSubTypes.Type(name = "A2A", value = A2ASwitchProtectionInput.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "A2A", value = A2ASwitchProtectionInput.class) })
 @Immutable
 public class SwitchProtectionProviderSpecificInput {
-    /** Creates an instance of SwitchProtectionProviderSpecificInput class. */
+    /**
+     * Creates an instance of SwitchProtectionProviderSpecificInput class.
+     */
     public SwitchProtectionProviderSpecificInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

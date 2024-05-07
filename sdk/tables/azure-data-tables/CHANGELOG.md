@@ -1,6 +1,6 @@
 # Release History
 
-## 12.4.0-beta.1 (Unreleased)
+## 12.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,62 @@
 
 ### Other Changes
 
+## 12.4.0 (2024-04-12)
+
+### Breaking Changes
+
+- Removed `jackson-dataformat-xml` as a dependency.
+
+### Bugs Fixed
+
+- Fixed the issue where `createTableIfNotExists` utilized improper logic for checking for 409 status code.
+
+### Other Changes
+
+- Migrating from Jackson to stream-style serialization.
+
+#### Dependency Updates
+
+- Introducing `azure-xml` version `1.0.0` as a dependency.
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+## 12.4.0-beta.1 (2024-03-13)
+
+### Breaking Changes
+
+- Removed `jackson-dataformat-xml` as a dependency.
+
+### Other Changes
+
+- Migrating from Jackson to stream-style serialization.
+
+#### Dependency Updates
+
+- Introducing `azure-xml` version `1.0.0-beta.3` as a beta dependency.
+
+## 12.3.20 (2024-03-07)
+
+### Bugs Fixed
+- Removed the 409 status-code error-level log message "TableAlreadyExists" that was printed when calling `TableServiceClient.createTableIfNotExists()` on a table that already exists.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+## 12.3.19 (2024-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
+
 ## 12.3.18 (2023-12-04)
 
 ### Other Changes
@@ -18,6 +74,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
 
 ## 12.3.17 (2023-11-20)
 
@@ -37,6 +94,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
 
 ## 12.3.15 (2023-09-18)
 
@@ -217,7 +275,7 @@
 ## 12.2.0 (2022-02-10)
 
 ### Features added
-- Implemented new traits (micro-interfaces) in `TableClientBuiler` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
+- Implemented new traits (micro-interfaces) in `TableClientBuilder` and `TableServiceClientBuilder`. This makes the experience of using client builders more consistent across libraries in the Azure SDK for Java.
 
 ### Other Changes
 

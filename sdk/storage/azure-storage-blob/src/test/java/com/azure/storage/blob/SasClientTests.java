@@ -6,9 +6,7 @@ package com.azure.storage.blob;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
-import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
@@ -42,7 +40,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -154,43 +151,6 @@ public class SasClientTests extends BlobTestBase {
         assertTrue(validateSasProperties(properties));
     }
 
-    @Test
-    public void containerSasIdentifierAndPermissions() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy().setPermissions("racwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1)));
-        cc.setAccessPolicy(null, Arrays.asList(identifier));
-
-        // Check containerSASPermissions
-        BlobContainerSasPermission permissions = new BlobContainerSasPermission()
-            .setReadPermission(true)
-            .setWritePermission(true)
-            .setListPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true)
-            .setAddPermission(true)
-            .setListPermission(true);
-        if (Constants.SAS_SERVICE_VERSION.compareTo("2019-12-12") >= 0) {
-            permissions.setDeleteVersionPermission(true).setFilterPermission(true);
-        }
-        if (Constants.SAS_SERVICE_VERSION.compareTo("2020-06-12") >= 0) {
-            permissions.setImmutabilityPolicyPermission(true);
-        }
-
-        OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
-
-        BlobServiceSasSignatureValues sasValues = new BlobServiceSasSignatureValues(identifier.getId());
-        String sasWithId = cc.generateSas(sasValues);
-        BlobContainerClient client1 = getContainerClient(sasWithId, cc.getBlobContainerUrl());
-        assertDoesNotThrow(() -> client1.listBlobs().iterator().hasNext());
-
-        sasValues = new BlobServiceSasSignatureValues(expiryTime, permissions);
-        String sasWithPermissions = cc.generateSas(sasValues);
-        BlobContainerClient client2 = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl());
-        assertDoesNotThrow(() -> client2.listBlobs().iterator().hasNext());
-    }
-
     // RBAC replication lag
     @Test
     public void blobSasUserDelegation() {
@@ -285,7 +245,6 @@ public class SasClientTests extends BlobTestBase {
             assertEquals(DATA.getDefaultText(), os.toString());
             assertTrue(validateSasProperties(properties));
         });
-
     }
 
     // RBAC replication lag
@@ -420,7 +379,6 @@ public class SasClientTests extends BlobTestBase {
         client.setTags(tags);
 
         assertDoesNotThrow(() -> cc.findBlobsByTags("\"foo\"='bar'").iterator().hasNext());
-
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")

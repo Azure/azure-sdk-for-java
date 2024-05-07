@@ -76,27 +76,20 @@ public final class InformationProtectionPolicyImpl
     }
 
     public InformationProtectionPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInformationProtectionPolicies()
-                .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
+            .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public InformationProtectionPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInformationProtectionPolicies()
-                .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
+            .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), context).getValue();
         return this;
     }
 
-    InformationProtectionPolicyImpl(
-        InformationProtectionPolicyName name, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    InformationProtectionPolicyImpl(InformationProtectionPolicyName name,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = new InformationProtectionPolicyInner();
         this.serviceManager = serviceManager;
         this.informationProtectionPolicyName = name;
@@ -107,63 +100,40 @@ public final class InformationProtectionPolicyImpl
     }
 
     public InformationProtectionPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInformationProtectionPolicies()
-                .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
+            .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public InformationProtectionPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInformationProtectionPolicies()
-                .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
+            .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), context).getValue();
         return this;
     }
 
-    InformationProtectionPolicyImpl(
-        InformationProtectionPolicyInner innerObject,
+    InformationProtectionPolicyImpl(InformationProtectionPolicyInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
-                    "scope");
-        this.informationProtectionPolicyName =
-            InformationProtectionPolicyName
-                .fromString(
-                    Utils
-                        .getValueFromIdByParameterName(
-                            innerObject.id(),
-                            "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
-                            "informationProtectionPolicyName"));
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
+            "scope");
+        this.informationProtectionPolicyName = InformationProtectionPolicyName
+            .fromString(ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+                "/{scope}/providers/Microsoft.Security/informationProtectionPolicies/{informationProtectionPolicyName}",
+                "informationProtectionPolicyName"));
     }
 
     public InformationProtectionPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInformationProtectionPolicies()
-                .getWithResponse(scope, informationProtectionPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
+            .getWithResponse(scope, informationProtectionPolicyName, Context.NONE).getValue();
         return this;
     }
 
     public InformationProtectionPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInformationProtectionPolicies()
-                .getWithResponse(scope, informationProtectionPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
+            .getWithResponse(scope, informationProtectionPolicyName, context).getValue();
         return this;
     }
 

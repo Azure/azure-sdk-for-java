@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class LocalUserNotAllowedTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocalUserNotAllowed model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"LocalUserNotAllowed\",\"allowlistValues\":[\"rijwai\",\"fanraybfu\",\"qfrojsydgrhyd\",\"ygywe\"],\"valueType\":\"String\",\"displayName\":\"ec\",\"description\":\"ygzmxieqvdsmak\",\"isEnabled\":true}")
-                .toObject(LocalUserNotAllowed.class);
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals("rijwai", model.allowlistValues().get(0));
+        LocalUserNotAllowed model = BinaryData.fromString(
+            "{\"ruleType\":\"LocalUserNotAllowed\",\"allowlistValues\":[\"jlvkrkegtyczupp\",\"yxlz\",\"iydd\"],\"valueType\":\"String\",\"displayName\":\"qvabmhvsexduet\",\"description\":\"pfczewxtrl\",\"isEnabled\":false}")
+            .toObject(LocalUserNotAllowed.class);
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals("jlvkrkegtyczupp", model.allowlistValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocalUserNotAllowed model =
-            new LocalUserNotAllowed()
-                .withIsEnabled(true)
-                .withAllowlistValues(Arrays.asList("rijwai", "fanraybfu", "qfrojsydgrhyd", "ygywe"));
+        LocalUserNotAllowed model = new LocalUserNotAllowed().withIsEnabled(false)
+            .withAllowlistValues(Arrays.asList("jlvkrkegtyczupp", "yxlz", "iydd"));
         model = BinaryData.fromObject(model).toObject(LocalUserNotAllowed.class);
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals("rijwai", model.allowlistValues().get(0));
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals("jlvkrkegtyczupp", model.allowlistValues().get(0));
     }
 }

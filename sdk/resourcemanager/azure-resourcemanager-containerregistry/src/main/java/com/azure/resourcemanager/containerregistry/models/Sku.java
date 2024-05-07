@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SKU of a container registry. */
+/**
+ * The SKU of a container registry.
+ */
 @Fluent
 public final class Sku {
     /*
@@ -23,13 +25,15 @@ public final class Sku {
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private SkuTier tier;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
     /**
      * Get the name property: The SKU name of the container registry. Required for registry creation.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -38,7 +42,7 @@ public final class Sku {
 
     /**
      * Set the name property: The SKU name of the container registry. Required for registry creation.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -49,7 +53,7 @@ public final class Sku {
 
     /**
      * Get the tier property: The SKU tier based on the SKU name.
-     *
+     * 
      * @return the tier value.
      */
     public SkuTier tier() {
@@ -58,7 +62,7 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

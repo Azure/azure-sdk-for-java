@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Represents a predictive metric value in the given bucket. */
+/**
+ * Represents a predictive metric value in the given bucket.
+ */
 @Fluent
 public final class PredictiveValue {
     /*
@@ -24,13 +26,15 @@ public final class PredictiveValue {
     @JsonProperty(value = "value", required = true)
     private double value;
 
-    /** Creates an instance of PredictiveValue class. */
+    /**
+     * Creates an instance of PredictiveValue class.
+     */
     public PredictiveValue() {
     }
 
     /**
      * Get the timestamp property: the timestamp for the metric value in ISO 8601 format.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -39,7 +43,7 @@ public final class PredictiveValue {
 
     /**
      * Set the timestamp property: the timestamp for the metric value in ISO 8601 format.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the PredictiveValue object itself.
      */
@@ -50,7 +54,7 @@ public final class PredictiveValue {
 
     /**
      * Get the value property: Predictive value in this time bucket.
-     *
+     * 
      * @return the value value.
      */
     public double value() {
@@ -59,7 +63,7 @@ public final class PredictiveValue {
 
     /**
      * Set the value property: Predictive value in this time bucket.
-     *
+     * 
      * @param value the value value to set.
      * @return the PredictiveValue object itself.
      */
@@ -70,14 +74,13 @@ public final class PredictiveValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (timestamp() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timestamp in model PredictiveValue"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property timestamp in model PredictiveValue"));
         }
     }
 

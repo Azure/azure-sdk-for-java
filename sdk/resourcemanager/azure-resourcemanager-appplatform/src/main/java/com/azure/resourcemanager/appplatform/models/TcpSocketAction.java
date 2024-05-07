@@ -8,14 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** TCPSocketAction describes an action based on opening a socket. */
+/**
+ * TCPSocketAction describes an action based on opening a socket.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("TCPSocketAction")
 @Immutable
 public final class TcpSocketAction extends ProbeAction {
     /**
+     * Creates an instance of TcpSocketAction class.
+     */
+    public TcpSocketAction() {
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

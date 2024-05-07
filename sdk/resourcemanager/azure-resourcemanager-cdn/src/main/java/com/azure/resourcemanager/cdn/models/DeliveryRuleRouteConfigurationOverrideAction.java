@@ -24,13 +24,15 @@ public final class DeliveryRuleRouteConfigurationOverrideAction extends Delivery
     @JsonProperty(value = "parameters", required = true)
     private RouteConfigurationOverrideActionParameters parameters;
 
-    /** Creates an instance of DeliveryRuleRouteConfigurationOverrideAction class. */
+    /**
+     * Creates an instance of DeliveryRuleRouteConfigurationOverrideAction class.
+     */
     public DeliveryRuleRouteConfigurationOverrideAction() {
     }
 
     /**
      * Get the parameters property: Defines the parameters for the action.
-     *
+     * 
      * @return the parameters value.
      */
     public RouteConfigurationOverrideActionParameters parameters() {
@@ -39,29 +41,27 @@ public final class DeliveryRuleRouteConfigurationOverrideAction extends Delivery
 
     /**
      * Set the parameters property: Defines the parameters for the action.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRuleRouteConfigurationOverrideAction object itself.
      */
-    public DeliveryRuleRouteConfigurationOverrideAction withParameters(
-        RouteConfigurationOverrideActionParameters parameters) {
+    public DeliveryRuleRouteConfigurationOverrideAction
+        withParameters(RouteConfigurationOverrideActionParameters parameters) {
         this.parameters = parameters;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRuleRouteConfigurationOverrideAction"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model DeliveryRuleRouteConfigurationOverrideAction"));
         } else {
             parameters().validate();
         }

@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for SecurityOperators CreateOrUpdate. */
+/**
+ * Samples for SecurityOperators CreateOrUpdate.
+ */
 public final class SecurityOperatorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/PutSecurityOperatorByName_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/
+     * PutSecurityOperatorByName_example.json
      */
     /**
      * Sample code: Create a security operator on the given scope.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
-    public static void createASecurityOperatorOnTheGivenScope(
-        com.azure.resourcemanager.security.SecurityManager manager) {
-        manager
-            .securityOperators()
-            .createOrUpdateWithResponse(
-                "CloudPosture", "DefenderCSPMSecurityOperator", com.azure.core.util.Context.NONE);
+    public static void
+        createASecurityOperatorOnTheGivenScope(com.azure.resourcemanager.security.SecurityManager manager) {
+        manager.securityOperators().createOrUpdateWithResponse("CloudPosture", "DefenderCSPMSecurityOperator",
+            com.azure.core.util.Context.NONE);
     }
 }

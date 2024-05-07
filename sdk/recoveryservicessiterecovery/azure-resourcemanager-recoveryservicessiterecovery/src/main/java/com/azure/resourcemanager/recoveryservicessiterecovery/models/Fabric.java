@@ -8,80 +8,90 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.FabricInner;
 
-/** An immutable client-side representation of Fabric. */
+/**
+ * An immutable client-side representation of Fabric.
+ */
 public interface Fabric {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Fabric related data.
-     *
+     * 
      * @return the properties value.
      */
     FabricProperties properties();
 
     /**
      * Gets the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.FabricInner object.
-     *
+     * 
      * @return the inner object.
      */
     FabricInner innerModel();
 
-    /** The entirety of the Fabric definition. */
+    /**
+     * The entirety of the Fabric definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The Fabric definition stages. */
+    /**
+     * The Fabric definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Fabric definition. */
+        /**
+         * The first stage of the Fabric definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the Fabric definition allowing to specify parent resource. */
+        /**
+         * The stage of the Fabric definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceName, resourceGroupName.
-             *
+             * 
              * @param resourceName The name of the recovery services vault.
              * @param resourceGroupName The name of the resource group where the recovery services vault is present.
              * @return the next definition stage.
@@ -96,25 +106,27 @@ public interface Fabric {
         interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Fabric create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Fabric create(Context context);
         }
 
-        /** The stage of the Fabric definition allowing to specify properties. */
+        /**
+         * The stage of the Fabric definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Fabric creation input..
-             *
+             * 
              * @param properties Fabric creation input.
              * @return the next definition stage.
              */
@@ -124,14 +136,14 @@ public interface Fabric {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Fabric refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -139,9 +151,9 @@ public interface Fabric {
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return fabric definition.
@@ -150,9 +162,9 @@ public interface Fabric {
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -163,9 +175,9 @@ public interface Fabric {
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -173,9 +185,9 @@ public interface Fabric {
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,9 +197,9 @@ public interface Fabric {
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param failoverProcessServerRequest The input to the failover process server operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -198,9 +210,9 @@ public interface Fabric {
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param failoverProcessServerRequest The input to the failover process server operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -212,9 +224,9 @@ public interface Fabric {
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -222,9 +234,9 @@ public interface Fabric {
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -234,9 +246,9 @@ public interface Fabric {
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param renewCertificate Renew certificate input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -247,9 +259,9 @@ public interface Fabric {
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param renewCertificate Renew certificate input.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,4 +270,22 @@ public interface Fabric {
      * @return fabric definition.
      */
     Fabric renewCertificate(RenewCertificateInput renewCertificate, Context context);
+
+    /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removeInfra();
+
+    /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removeInfra(Context context);
 }

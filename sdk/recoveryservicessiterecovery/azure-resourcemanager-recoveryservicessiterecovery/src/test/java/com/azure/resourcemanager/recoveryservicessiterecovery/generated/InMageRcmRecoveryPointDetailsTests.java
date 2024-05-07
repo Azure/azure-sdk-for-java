@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmRe
 public final class InMageRcmRecoveryPointDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmRecoveryPointDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"InMageRcm\",\"isMultiVmSyncPoint\":\"dtncmsps\"}")
+        InMageRcmRecoveryPointDetails model
+            = BinaryData.fromString("{\"instanceType\":\"InMageRcm\",\"isMultiVmSyncPoint\":\"dtncmsps\"}")
                 .toObject(InMageRcmRecoveryPointDetails.class);
     }
 

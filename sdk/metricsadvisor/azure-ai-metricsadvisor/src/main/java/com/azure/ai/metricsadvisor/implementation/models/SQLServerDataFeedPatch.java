@@ -10,8 +10,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The SQLServerDataFeedPatch model.
@@ -241,28 +241,32 @@ public final class SQLServerDataFeedPatch extends DataFeedDetailPatch {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dataSourceType", Objects.toString(DataSourceType.SQL_SERVER, null));
+        jsonWriter.writeStringField("dataSourceType",
+            DataSourceType.SQL_SERVER == null ? null : DataSourceType.SQL_SERVER.toString());
         jsonWriter.writeStringField("dataFeedName", getDataFeedName());
         jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
         jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
-        jsonWriter.writeStringField("dataStartFrom", Objects.toString(getDataStartFrom(), null));
+        jsonWriter.writeStringField("dataStartFrom",
+            getDataStartFrom() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getDataStartFrom()));
         jsonWriter.writeNumberField("startOffsetInSeconds", getStartOffsetInSeconds());
         jsonWriter.writeNumberField("maxConcurrency", getMaxConcurrency());
         jsonWriter.writeNumberField("minRetryIntervalInSeconds", getMinRetryIntervalInSeconds());
         jsonWriter.writeNumberField("stopRetryAfterInSeconds", getStopRetryAfterInSeconds());
-        jsonWriter.writeStringField("needRollup", Objects.toString(getNeedRollup(), null));
-        jsonWriter.writeStringField("rollUpMethod", Objects.toString(getRollUpMethod(), null));
+        jsonWriter.writeStringField("needRollup", getNeedRollup() == null ? null : getNeedRollup().toString());
+        jsonWriter.writeStringField("rollUpMethod", getRollUpMethod() == null ? null : getRollUpMethod().toString());
         jsonWriter.writeArrayField("rollUpColumns", getRollUpColumns(),
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("allUpIdentification", getAllUpIdentification());
-        jsonWriter.writeStringField("fillMissingPointType", Objects.toString(getFillMissingPointType(), null));
+        jsonWriter.writeStringField("fillMissingPointType",
+            getFillMissingPointType() == null ? null : getFillMissingPointType().toString());
         jsonWriter.writeNumberField("fillMissingPointValue", getFillMissingPointValue());
-        jsonWriter.writeStringField("viewMode", Objects.toString(getViewMode(), null));
+        jsonWriter.writeStringField("viewMode", getViewMode() == null ? null : getViewMode().toString());
         jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("viewers", getViewers(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("status", Objects.toString(getStatus(), null));
+        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("actionLinkTemplate", getActionLinkTemplate());
-        jsonWriter.writeStringField("authenticationType", Objects.toString(getAuthenticationType(), null));
+        jsonWriter.writeStringField("authenticationType",
+            getAuthenticationType() == null ? null : getAuthenticationType().toString());
         jsonWriter.writeStringField("credentialId", getCredentialId());
         jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
         return jsonWriter.writeEndObject();

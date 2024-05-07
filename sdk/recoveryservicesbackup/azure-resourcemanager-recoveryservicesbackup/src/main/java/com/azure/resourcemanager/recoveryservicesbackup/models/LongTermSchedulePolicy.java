@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Long term policy schedule. */
+/**
+ * Long term policy schedule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "schedulePolicyType")
 @JsonTypeName("LongTermSchedulePolicy")
 @Immutable
 public final class LongTermSchedulePolicy extends SchedulePolicy {
-    /** Creates an instance of LongTermSchedulePolicy class. */
+    /**
+     * Creates an instance of LongTermSchedulePolicy class.
+     */
     public LongTermSchedulePolicy() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

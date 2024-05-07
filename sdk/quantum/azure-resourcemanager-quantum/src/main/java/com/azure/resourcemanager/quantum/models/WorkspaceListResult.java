@@ -9,7 +9,9 @@ import com.azure.resourcemanager.quantum.fluent.models.QuantumWorkspaceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a list Workspaces operation. */
+/**
+ * The response of a list Workspaces operation.
+ */
 @Fluent
 public final class WorkspaceListResult {
     /*
@@ -24,13 +26,15 @@ public final class WorkspaceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of WorkspaceListResult class. */
+    /**
+     * Creates an instance of WorkspaceListResult class.
+     */
     public WorkspaceListResult() {
     }
 
     /**
      * Get the value property: Result of a list Workspaces operation.
-     *
+     * 
      * @return the value value.
      */
     public List<QuantumWorkspaceInner> value() {
@@ -39,7 +43,7 @@ public final class WorkspaceListResult {
 
     /**
      * Set the value property: Result of a list Workspaces operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkspaceListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class WorkspaceListResult {
     /**
      * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * Workspaces.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,7 +65,7 @@ public final class WorkspaceListResult {
     /**
      * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * Workspaces.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WorkspaceListResult object itself.
      */
@@ -72,7 +76,7 @@ public final class WorkspaceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

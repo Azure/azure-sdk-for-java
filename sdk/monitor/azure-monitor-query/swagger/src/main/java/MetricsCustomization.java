@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
@@ -11,11 +14,11 @@ public class MetricsCustomization extends Customization {
         metrics.rename("MetricsImpl");
 
         ClassCustomization metricsClient = libraryCustomization
-                .getClass("com.azure.monitor.query.implementation.metrics", "MonitorManagementClient");
+            .getClass("com.azure.monitor.query.implementation.metrics", "AzureMonitorMetricsDataAPI");
         metricsClient.rename("MonitorManagementClientImpl");
 
         ClassCustomization metricsClientBuilder = libraryCustomization
-                .getClass("com.azure.monitor.query.implementation.metrics", "MonitorManagementClientBuilder");
+                .getClass("com.azure.monitor.query.implementation.metrics", "AzureMonitorMetricsDataAPIBuilder");
         metricsClientBuilder.rename("MonitorManagementClientImplBuilder");
 
         String replace = libraryCustomization.getRawEditor().getFileContent("src/main/java/com/azure/monitor/query/implementation" +

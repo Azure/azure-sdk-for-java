@@ -12,26 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class OrganizationResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrganizationResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"organizationId\":\"okaj\",\"organizationName\":\"npime\",\"billingSource\":\"AZURE\"},\"id\":\"xgcp\",\"name\":\"dg\",\"type\":\"aajrm\"}")
-                .toObject(OrganizationResourceInner.class);
-        Assertions.assertEquals("okaj", model.organizationId());
-        Assertions.assertEquals("npime", model.organizationName());
-        Assertions.assertEquals(BillingSource.AZURE, model.billingSource());
+        OrganizationResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"organizationId\":\"kgfg\",\"organizationName\":\"madgakeqsrxyb\",\"billingSource\":\"NEWRELIC\"},\"id\":\"dqytbciqfouflmm\",\"name\":\"kzsmodm\",\"type\":\"lougpbkw\"}")
+            .toObject(OrganizationResourceInner.class);
+        Assertions.assertEquals("kgfg", model.organizationId());
+        Assertions.assertEquals("madgakeqsrxyb", model.organizationName());
+        Assertions.assertEquals(BillingSource.NEWRELIC, model.billingSource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrganizationResourceInner model =
-            new OrganizationResourceInner()
-                .withOrganizationId("okaj")
-                .withOrganizationName("npime")
-                .withBillingSource(BillingSource.AZURE);
+        OrganizationResourceInner model = new OrganizationResourceInner().withOrganizationId("kgfg")
+            .withOrganizationName("madgakeqsrxyb").withBillingSource(BillingSource.NEWRELIC);
         model = BinaryData.fromObject(model).toObject(OrganizationResourceInner.class);
-        Assertions.assertEquals("okaj", model.organizationId());
-        Assertions.assertEquals("npime", model.organizationName());
-        Assertions.assertEquals(BillingSource.AZURE, model.billingSource());
+        Assertions.assertEquals("kgfg", model.organizationId());
+        Assertions.assertEquals("madgakeqsrxyb", model.organizationName());
+        Assertions.assertEquals(BillingSource.NEWRELIC, model.billingSource());
     }
 }

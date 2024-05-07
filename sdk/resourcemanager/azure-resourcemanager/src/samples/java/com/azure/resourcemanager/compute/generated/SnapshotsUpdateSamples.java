@@ -15,7 +15,7 @@ import java.util.Map;
 public final class SnapshotsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
      * Snapshot_Update_WithAcceleratedNetwork.json
      */
     /**
@@ -33,7 +33,7 @@ public final class SnapshotsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/snapshotExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/snapshotExamples/
      * Snapshot_Update.json
      */
     /**

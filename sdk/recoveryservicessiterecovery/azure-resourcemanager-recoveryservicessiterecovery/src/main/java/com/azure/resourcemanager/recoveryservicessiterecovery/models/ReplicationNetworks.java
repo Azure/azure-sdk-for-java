@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationNetworks. */
+/**
+ * Resource collection API of ReplicationNetworks.
+ */
 public interface ReplicationNetworks {
     /**
      * Gets the list of networks under a fabric.
-     *
-     * <p>Lists the networks available for a fabric.
-     *
+     * 
+     * Lists the networks available for a fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -27,9 +29,9 @@ public interface ReplicationNetworks {
 
     /**
      * Gets the list of networks under a fabric.
-     *
-     * <p>Lists the networks available for a fabric.
-     *
+     * 
+     * Lists the networks available for a fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -39,14 +41,14 @@ public interface ReplicationNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of networks as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Network> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName, Context context);
+    PagedIterable<Network> listByReplicationFabrics(String resourceName, String resourceGroupName, String fabricName,
+        Context context);
 
     /**
      * Gets a network with specified server id and network name.
-     *
-     * <p>Gets the details of a network.
-     *
+     * 
+     * Gets the details of a network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Server Id.
@@ -57,14 +59,14 @@ public interface ReplicationNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a network along with {@link Response}.
      */
-    Response<Network> getWithResponse(
-        String resourceName, String resourceGroupName, String fabricName, String networkName, Context context);
+    Response<Network> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, Context context);
 
     /**
      * Gets a network with specified server id and network name.
-     *
-     * <p>Gets the details of a network.
-     *
+     * 
+     * Gets the details of a network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Server Id.
@@ -78,9 +80,9 @@ public interface ReplicationNetworks {
 
     /**
      * Gets the list of networks. View-only API.
-     *
-     * <p>Lists the networks available in a vault.
-     *
+     * 
+     * Lists the networks available in a vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,9 +94,9 @@ public interface ReplicationNetworks {
 
     /**
      * Gets the list of networks. View-only API.
-     *
-     * <p>Lists the networks available in a vault.
-     *
+     * 
+     * Lists the networks available in a vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.

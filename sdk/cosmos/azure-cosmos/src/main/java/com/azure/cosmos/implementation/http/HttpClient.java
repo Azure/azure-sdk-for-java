@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.implementation.Configs;
 import reactor.core.publisher.Mono;
 import reactor.netty.resources.ConnectionProvider;
 
@@ -45,7 +46,7 @@ public interface HttpClient {
         }
 
         //  Default pool size
-        Integer maxPoolSize = httpClientConfig.getConfigs().getReactorNettyMaxConnectionPoolSize();
+        Integer maxPoolSize = Configs.getDefaultHttpPoolSize();
         if (httpClientConfig.getMaxPoolSize() != null) {
             maxPoolSize = httpClientConfig.getMaxPoolSize();
         }

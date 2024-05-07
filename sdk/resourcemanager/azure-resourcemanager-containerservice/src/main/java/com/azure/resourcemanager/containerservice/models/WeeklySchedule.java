@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'. */
+/**
+ * For schedules like: 'recur every Monday' or 'recur every 3 weeks on Wednesday'.
+ */
 @Fluent
 public final class WeeklySchedule {
     /*
@@ -23,13 +25,15 @@ public final class WeeklySchedule {
     @JsonProperty(value = "dayOfWeek", required = true)
     private WeekDay dayOfWeek;
 
-    /** Creates an instance of WeeklySchedule class. */
+    /**
+     * Creates an instance of WeeklySchedule class.
+     */
     public WeeklySchedule() {
     }
 
     /**
      * Get the intervalWeeks property: Specifies the number of weeks between each set of occurrences.
-     *
+     * 
      * @return the intervalWeeks value.
      */
     public int intervalWeeks() {
@@ -38,7 +42,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the intervalWeeks property: Specifies the number of weeks between each set of occurrences.
-     *
+     * 
      * @param intervalWeeks the intervalWeeks value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -49,7 +53,7 @@ public final class WeeklySchedule {
 
     /**
      * Get the dayOfWeek property: Specifies on which day of the week the maintenance occurs.
-     *
+     * 
      * @return the dayOfWeek value.
      */
     public WeekDay dayOfWeek() {
@@ -58,7 +62,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the dayOfWeek property: Specifies on which day of the week the maintenance occurs.
-     *
+     * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -69,14 +73,13 @@ public final class WeeklySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dayOfWeek() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dayOfWeek in model WeeklySchedule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property dayOfWeek in model WeeklySchedule"));
         }
     }
 

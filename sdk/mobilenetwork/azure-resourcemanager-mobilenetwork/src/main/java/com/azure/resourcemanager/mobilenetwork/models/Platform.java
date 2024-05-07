@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Platform specific packet core control plane version properties. */
+/**
+ * Platform specific packet core control plane version properties.
+ */
 @Fluent
 public final class Platform {
     /*
@@ -46,13 +48,15 @@ public final class Platform {
     @JsonProperty(value = "obsoleteVersion")
     private ObsoleteVersion obsoleteVersion;
 
-    /** Creates an instance of Platform class. */
+    /**
+     * Creates an instance of Platform class.
+     */
     public Platform() {
     }
 
     /**
      * Get the platformType property: The platform type where this version can be deployed.
-     *
+     * 
      * @return the platformType value.
      */
     public PlatformType platformType() {
@@ -61,7 +65,7 @@ public final class Platform {
 
     /**
      * Set the platformType property: The platform type where this version can be deployed.
-     *
+     * 
      * @param platformType the platformType value to set.
      * @return the Platform object itself.
      */
@@ -72,7 +76,7 @@ public final class Platform {
 
     /**
      * Get the versionState property: The state of this packet core control plane version on this platform.
-     *
+     * 
      * @return the versionState value.
      */
     public VersionState versionState() {
@@ -81,7 +85,7 @@ public final class Platform {
 
     /**
      * Set the versionState property: The state of this packet core control plane version on this platform.
-     *
+     * 
      * @param versionState the versionState value to set.
      * @return the Platform object itself.
      */
@@ -93,7 +97,7 @@ public final class Platform {
     /**
      * Get the minimumPlatformSoftwareVersion property: The minimum software version of the platform where this packet
      * core version can be deployed.
-     *
+     * 
      * @return the minimumPlatformSoftwareVersion value.
      */
     public String minimumPlatformSoftwareVersion() {
@@ -103,7 +107,7 @@ public final class Platform {
     /**
      * Set the minimumPlatformSoftwareVersion property: The minimum software version of the platform where this packet
      * core version can be deployed.
-     *
+     * 
      * @param minimumPlatformSoftwareVersion the minimumPlatformSoftwareVersion value to set.
      * @return the Platform object itself.
      */
@@ -115,7 +119,7 @@ public final class Platform {
     /**
      * Get the maximumPlatformSoftwareVersion property: The maximum software version of the platform where this packet
      * core version can be deployed.
-     *
+     * 
      * @return the maximumPlatformSoftwareVersion value.
      */
     public String maximumPlatformSoftwareVersion() {
@@ -125,7 +129,7 @@ public final class Platform {
     /**
      * Set the maximumPlatformSoftwareVersion property: The maximum software version of the platform where this packet
      * core version can be deployed.
-     *
+     * 
      * @param maximumPlatformSoftwareVersion the maximumPlatformSoftwareVersion value to set.
      * @return the Platform object itself.
      */
@@ -136,7 +140,7 @@ public final class Platform {
 
     /**
      * Get the recommendedVersion property: Indicates whether this is the recommended version for this platform.
-     *
+     * 
      * @return the recommendedVersion value.
      */
     public RecommendedVersion recommendedVersion() {
@@ -145,7 +149,7 @@ public final class Platform {
 
     /**
      * Set the recommendedVersion property: Indicates whether this is the recommended version for this platform.
-     *
+     * 
      * @param recommendedVersion the recommendedVersion value to set.
      * @return the Platform object itself.
      */
@@ -156,7 +160,7 @@ public final class Platform {
 
     /**
      * Get the obsoleteVersion property: Indicates whether this version is obsoleted for this platform.
-     *
+     * 
      * @return the obsoleteVersion value.
      */
     public ObsoleteVersion obsoleteVersion() {
@@ -165,7 +169,7 @@ public final class Platform {
 
     /**
      * Set the obsoleteVersion property: Indicates whether this version is obsoleted for this platform.
-     *
+     * 
      * @param obsoleteVersion the obsoleteVersion value to set.
      * @return the Platform object itself.
      */
@@ -176,7 +180,7 @@ public final class Platform {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

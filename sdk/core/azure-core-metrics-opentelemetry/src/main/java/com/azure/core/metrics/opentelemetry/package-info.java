@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- *  OpenTelemetry implementation of azure-core metrics API.
+ * OpenTelemetry implementation of azure-core metrics API.
  */
 package com.azure.core.metrics.opentelemetry;

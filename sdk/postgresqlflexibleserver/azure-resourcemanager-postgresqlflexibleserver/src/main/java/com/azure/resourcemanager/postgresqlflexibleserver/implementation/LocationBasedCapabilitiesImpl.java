@@ -19,8 +19,7 @@ public final class LocationBasedCapabilitiesImpl implements LocationBasedCapabil
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public LocationBasedCapabilitiesImpl(
-        LocationBasedCapabilitiesClient innerClient,
+    public LocationBasedCapabilitiesImpl(LocationBasedCapabilitiesClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class LocationBasedCapabilitiesImpl implements LocationBasedCapabil
 
     public PagedIterable<FlexibleServerCapability> execute(String locationName) {
         PagedIterable<FlexibleServerCapabilityInner> inner = this.serviceClient().execute(locationName);
-        return Utils.mapPage(inner, inner1 -> new FlexibleServerCapabilityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FlexibleServerCapabilityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FlexibleServerCapability> execute(String locationName, Context context) {
         PagedIterable<FlexibleServerCapabilityInner> inner = this.serviceClient().execute(locationName, context);
-        return Utils.mapPage(inner, inner1 -> new FlexibleServerCapabilityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FlexibleServerCapabilityImpl(inner1, this.manager()));
     }
 
     private LocationBasedCapabilitiesClient serviceClient() {

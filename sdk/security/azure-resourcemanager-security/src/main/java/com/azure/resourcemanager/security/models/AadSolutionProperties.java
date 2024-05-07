@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The external security solution properties for AAD solutions. */
+/**
+ * The external security solution properties for AAD solutions.
+ */
 @Fluent
 public final class AadSolutionProperties extends ExternalSecuritySolutionProperties {
     /*
@@ -16,13 +18,15 @@ public final class AadSolutionProperties extends ExternalSecuritySolutionPropert
     @JsonProperty(value = "connectivityState")
     private AadConnectivityState connectivityState;
 
-    /** Creates an instance of AadSolutionProperties class. */
+    /**
+     * Creates an instance of AadSolutionProperties class.
+     */
     public AadSolutionProperties() {
     }
 
     /**
      * Get the connectivityState property: The connectivity state of the external AAD solution.
-     *
+     * 
      * @return the connectivityState value.
      */
     public AadConnectivityState connectivityState() {
@@ -31,7 +35,7 @@ public final class AadSolutionProperties extends ExternalSecuritySolutionPropert
 
     /**
      * Set the connectivityState property: The connectivity state of the external AAD solution.
-     *
+     * 
      * @param connectivityState the connectivityState value to set.
      * @return the AadSolutionProperties object itself.
      */
@@ -40,21 +44,27 @@ public final class AadSolutionProperties extends ExternalSecuritySolutionPropert
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AadSolutionProperties withDeviceVendor(String deviceVendor) {
         super.withDeviceVendor(deviceVendor);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AadSolutionProperties withDeviceType(String deviceType) {
         super.withDeviceType(deviceType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AadSolutionProperties withWorkspace(ConnectedWorkspace workspace) {
         super.withWorkspace(workspace);
@@ -63,7 +73,7 @@ public final class AadSolutionProperties extends ExternalSecuritySolutionPropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -6,39 +6,41 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.resourcemanager.security.fluent.models.SecurityOperatorInner;
 
-/** An immutable client-side representation of SecurityOperator. */
+/**
+ * An immutable client-side representation of SecurityOperator.
+ */
 public interface SecurityOperator {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     Identity identity();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.SecurityOperatorInner object.
-     *
+     * 
      * @return the inner object.
      */
     SecurityOperatorInner innerModel();

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for backup item. Workload-specific backup items are derived from this class. */
+/**
+ * Base class for backup item. Workload-specific backup items are derived from this class.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,8 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureFileShare", value = AzureFileShareProtectableItem.class),
     @JsonSubTypes.Type(name = "IaaSVMProtectableItem", value = IaaSvmProtectableItem.class),
-    @JsonSubTypes.Type(name = "AzureVmWorkloadProtectableItem", value = AzureVmWorkloadProtectableItem.class)
-})
+    @JsonSubTypes.Type(name = "AzureVmWorkloadProtectableItem", value = AzureVmWorkloadProtectableItem.class) })
 @Fluent
 public class WorkloadProtectableItem {
     /*
@@ -48,13 +49,15 @@ public class WorkloadProtectableItem {
     @JsonProperty(value = "protectionState")
     private ProtectionStatus protectionState;
 
-    /** Creates an instance of WorkloadProtectableItem class. */
+    /**
+     * Creates an instance of WorkloadProtectableItem class.
+     */
     public WorkloadProtectableItem() {
     }
 
     /**
      * Get the backupManagementType property: Type of backup management to backup an item.
-     *
+     * 
      * @return the backupManagementType value.
      */
     public String backupManagementType() {
@@ -63,7 +66,7 @@ public class WorkloadProtectableItem {
 
     /**
      * Set the backupManagementType property: Type of backup management to backup an item.
-     *
+     * 
      * @param backupManagementType the backupManagementType value to set.
      * @return the WorkloadProtectableItem object itself.
      */
@@ -74,7 +77,7 @@ public class WorkloadProtectableItem {
 
     /**
      * Get the workloadType property: Type of workload for the backup management.
-     *
+     * 
      * @return the workloadType value.
      */
     public String workloadType() {
@@ -83,7 +86,7 @@ public class WorkloadProtectableItem {
 
     /**
      * Set the workloadType property: Type of workload for the backup management.
-     *
+     * 
      * @param workloadType the workloadType value to set.
      * @return the WorkloadProtectableItem object itself.
      */
@@ -94,7 +97,7 @@ public class WorkloadProtectableItem {
 
     /**
      * Get the friendlyName property: Friendly name of the backup item.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -103,7 +106,7 @@ public class WorkloadProtectableItem {
 
     /**
      * Set the friendlyName property: Friendly name of the backup item.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the WorkloadProtectableItem object itself.
      */
@@ -114,7 +117,7 @@ public class WorkloadProtectableItem {
 
     /**
      * Get the protectionState property: State of the back up item.
-     *
+     * 
      * @return the protectionState value.
      */
     public ProtectionStatus protectionState() {
@@ -123,7 +126,7 @@ public class WorkloadProtectableItem {
 
     /**
      * Set the protectionState property: State of the back up item.
-     *
+     * 
      * @param protectionState the protectionState value to set.
      * @return the WorkloadProtectableItem object itself.
      */
@@ -134,7 +137,7 @@ public class WorkloadProtectableItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

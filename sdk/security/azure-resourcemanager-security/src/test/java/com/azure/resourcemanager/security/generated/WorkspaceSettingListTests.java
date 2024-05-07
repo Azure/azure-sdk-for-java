@@ -13,27 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceSettingListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceSettingList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"workspaceId\":\"pv\",\"scope\":\"srp\"},\"id\":\"vu\",\"name\":\"zraehtwd\",\"type\":\"r\"},{\"properties\":{\"workspaceId\":\"swibyr\",\"scope\":\"dl\"},\"id\":\"h\",\"name\":\"hfwpracstwit\",\"type\":\"khevxccedc\"},{\"properties\":{\"workspaceId\":\"md\",\"scope\":\"odn\"},\"id\":\"zxltjcvn\",\"name\":\"ltiugcxnavv\",\"type\":\"xqi\"}],\"nextLink\":\"qunyowxwlmdjr\"}")
-                .toObject(WorkspaceSettingList.class);
-        Assertions.assertEquals("pv", model.value().get(0).workspaceId());
-        Assertions.assertEquals("srp", model.value().get(0).scope());
+        WorkspaceSettingList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"workspaceId\":\"hqyudxorrqnbpoc\",\"scope\":\"vyifqrvkdvjsl\"},\"id\":\"rm\",\"name\":\"vdfwatkpn\",\"type\":\"ulexxbczwtr\"}],\"nextLink\":\"iqzbq\"}")
+            .toObject(WorkspaceSettingList.class);
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.value().get(0).workspaceId());
+        Assertions.assertEquals("vyifqrvkdvjsl", model.value().get(0).scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceSettingList model =
-            new WorkspaceSettingList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new WorkspaceSettingInner().withWorkspaceId("pv").withScope("srp"),
-                            new WorkspaceSettingInner().withWorkspaceId("swibyr").withScope("dl"),
-                            new WorkspaceSettingInner().withWorkspaceId("md").withScope("odn")));
+        WorkspaceSettingList model = new WorkspaceSettingList().withValue(
+            Arrays.asList(new WorkspaceSettingInner().withWorkspaceId("hqyudxorrqnbpoc").withScope("vyifqrvkdvjsl")));
         model = BinaryData.fromObject(model).toObject(WorkspaceSettingList.class);
-        Assertions.assertEquals("pv", model.value().get(0).workspaceId());
-        Assertions.assertEquals("srp", model.value().get(0).scope());
+        Assertions.assertEquals("hqyudxorrqnbpoc", model.value().get(0).workspaceId());
+        Assertions.assertEquals("vyifqrvkdvjsl", model.value().get(0).scope());
     }
 }

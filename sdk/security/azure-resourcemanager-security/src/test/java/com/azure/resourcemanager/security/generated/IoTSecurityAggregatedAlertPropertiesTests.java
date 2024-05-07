@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedAle
 public final class IoTSecurityAggregatedAlertPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IoTSecurityAggregatedAlertProperties model =
-            BinaryData
-                .fromString(
-                    "{\"alertType\":\"nsmvbxwyj\",\"alertDisplayName\":\"lh\",\"vendorName\":\"aln\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"sxyawjoyaqcs\",\"description\":\"jpkiidzyexznelix\",\"count\":3030315127445847890,\"effectedResourceType\":\"folhbnxknal\",\"systemSource\":\"lp\",\"actionTaken\":\"gdtpnapnyiro\",\"logAnalyticsQuery\":\"hpigv\",\"topDevicesList\":[{\"deviceId\":\"gqgitxmedjvcsl\",\"alertsCount\":5849348987172300465,\"lastOccurrence\":\"ncw\"},{\"deviceId\":\"hxg\",\"alertsCount\":8312530618702549187,\"lastOccurrence\":\"ucnapkteoellwp\"},{\"deviceId\":\"d\",\"alertsCount\":4494990539994529771,\"lastOccurrence\":\"b\"},{\"deviceId\":\"ceopzfqrhhuaopp\",\"alertsCount\":5543596082951034644,\"lastOccurrence\":\"xolzdahzx\"}]}")
-                .toObject(IoTSecurityAggregatedAlertProperties.class);
+        IoTSecurityAggregatedAlertProperties model = BinaryData.fromString(
+            "{\"alertType\":\"gywezskiec\",\"alertDisplayName\":\"ygzmxieqvdsmak\",\"vendorName\":\"qcahyhxal\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"woijpodtbl\",\"description\":\"kkwjdjodq\",\"count\":2151822412404776825,\"effectedResourceType\":\"cnre\",\"systemSource\":\"hllizhceumoq\",\"actionTaken\":\"kadppyibngq\",\"logAnalyticsQuery\":\"d\",\"topDevicesList\":[{\"deviceId\":\"whydt\",\"alertsCount\":8816509357070030186,\"lastOccurrence\":\"ds\"},{\"deviceId\":\"snuyemlowuowhl\",\"alertsCount\":9005545277468499123,\"lastOccurrence\":\"rmouvb\"},{\"deviceId\":\"mo\",\"alertsCount\":7638104837802960488,\"lastOccurrence\":\"rfowtdvrfmvlih\"}]}")
+            .toObject(IoTSecurityAggregatedAlertProperties.class);
     }
 
     @org.junit.jupiter.api.Test

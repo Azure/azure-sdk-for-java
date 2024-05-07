@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class TargetDiskNetworkAccessSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetDiskNetworkAccessSettings model =
-            BinaryData
-                .fromString(
-                    "{\"targetDiskNetworkAccessOption\":\"SameAsOnSourceDisks\",\"targetDiskAccessId\":\"bgqjxgpnrhgo\"}")
-                .toObject(TargetDiskNetworkAccessSettings.class);
-        Assertions
-            .assertEquals(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS, model.targetDiskNetworkAccessOption());
-        Assertions.assertEquals("bgqjxgpnrhgo", model.targetDiskAccessId());
+        TargetDiskNetworkAccessSettings model = BinaryData
+            .fromString("{\"targetDiskNetworkAccessOption\":\"SameAsOnSourceDisks\",\"targetDiskAccessId\":\"vthn\"}")
+            .toObject(TargetDiskNetworkAccessSettings.class);
+        Assertions.assertEquals(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS,
+            model.targetDiskNetworkAccessOption());
+        Assertions.assertEquals("vthn", model.targetDiskAccessId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetDiskNetworkAccessSettings model =
-            new TargetDiskNetworkAccessSettings()
-                .withTargetDiskNetworkAccessOption(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS)
-                .withTargetDiskAccessId("bgqjxgpnrhgo");
+        TargetDiskNetworkAccessSettings model = new TargetDiskNetworkAccessSettings()
+            .withTargetDiskNetworkAccessOption(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS)
+            .withTargetDiskAccessId("vthn");
         model = BinaryData.fromObject(model).toObject(TargetDiskNetworkAccessSettings.class);
-        Assertions
-            .assertEquals(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS, model.targetDiskNetworkAccessOption());
-        Assertions.assertEquals("bgqjxgpnrhgo", model.targetDiskAccessId());
+        Assertions.assertEquals(TargetDiskNetworkAccessOption.SAME_AS_ON_SOURCE_DISKS,
+            model.targetDiskNetworkAccessOption());
+        Assertions.assertEquals("vthn", model.targetDiskAccessId());
     }
 }

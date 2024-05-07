@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The classification of the health report. */
+/**
+ * The classification of the health report.
+ */
 @Fluent
 public final class HealthDataClassification {
     /*
@@ -26,15 +28,17 @@ public final class HealthDataClassification {
      * The resource scope of the health report
      */
     @JsonProperty(value = "scope")
-    private ScopeName scope;
+    private String scope;
 
-    /** Creates an instance of HealthDataClassification class. */
+    /**
+     * Creates an instance of HealthDataClassification class.
+     */
     public HealthDataClassification() {
     }
 
     /**
      * Get the component property: The component describes the name of the agent/service that scans the issue.
-     *
+     * 
      * @return the component value.
      */
     public String component() {
@@ -43,7 +47,7 @@ public final class HealthDataClassification {
 
     /**
      * Set the component property: The component describes the name of the agent/service that scans the issue.
-     *
+     * 
      * @param component the component value to set.
      * @return the HealthDataClassification object itself.
      */
@@ -54,7 +58,7 @@ public final class HealthDataClassification {
 
     /**
      * Get the scenario property: The scenario describes the health scenario issue of the component.
-     *
+     * 
      * @return the scenario value.
      */
     public String scenario() {
@@ -63,7 +67,7 @@ public final class HealthDataClassification {
 
     /**
      * Set the scenario property: The scenario describes the health scenario issue of the component.
-     *
+     * 
      * @param scenario the scenario value to set.
      * @return the HealthDataClassification object itself.
      */
@@ -74,27 +78,27 @@ public final class HealthDataClassification {
 
     /**
      * Get the scope property: The resource scope of the health report.
-     *
+     * 
      * @return the scope value.
      */
-    public ScopeName scope() {
+    public String scope() {
         return this.scope;
     }
 
     /**
      * Set the scope property: The resource scope of the health report.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the HealthDataClassification object itself.
      */
-    public HealthDataClassification withScope(ScopeName scope) {
+    public HealthDataClassification withScope(String scope) {
         this.scope = scope;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DiskExclusionProperties model. */
+/**
+ * The DiskExclusionProperties model.
+ */
 @Fluent
 public final class DiskExclusionProperties {
     /*
@@ -23,13 +25,15 @@ public final class DiskExclusionProperties {
     @JsonProperty(value = "isInclusionList")
     private Boolean isInclusionList;
 
-    /** Creates an instance of DiskExclusionProperties class. */
+    /**
+     * Creates an instance of DiskExclusionProperties class.
+     */
     public DiskExclusionProperties() {
     }
 
     /**
      * Get the diskLunList property: List of Disks' Logical Unit Numbers (LUN) to be used for VM Protection.
-     *
+     * 
      * @return the diskLunList value.
      */
     public List<Integer> diskLunList() {
@@ -38,7 +42,7 @@ public final class DiskExclusionProperties {
 
     /**
      * Set the diskLunList property: List of Disks' Logical Unit Numbers (LUN) to be used for VM Protection.
-     *
+     * 
      * @param diskLunList the diskLunList value to set.
      * @return the DiskExclusionProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class DiskExclusionProperties {
 
     /**
      * Get the isInclusionList property: Flag to indicate whether DiskLunList is to be included/ excluded from backup.
-     *
+     * 
      * @return the isInclusionList value.
      */
     public Boolean isInclusionList() {
@@ -58,7 +62,7 @@ public final class DiskExclusionProperties {
 
     /**
      * Set the isInclusionList property: Flag to indicate whether DiskLunList is to be included/ excluded from backup.
-     *
+     * 
      * @param isInclusionList the isInclusionList value to set.
      * @return the DiskExclusionProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class DiskExclusionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

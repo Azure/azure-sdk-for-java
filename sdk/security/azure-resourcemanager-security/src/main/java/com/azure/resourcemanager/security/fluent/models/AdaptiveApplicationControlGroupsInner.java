@@ -20,13 +20,15 @@ public final class AdaptiveApplicationControlGroupsInner {
     @JsonProperty(value = "value")
     private List<AdaptiveApplicationControlGroupInner> value;
 
-    /** Creates an instance of AdaptiveApplicationControlGroupsInner class. */
+    /**
+     * Creates an instance of AdaptiveApplicationControlGroupsInner class.
+     */
     public AdaptiveApplicationControlGroupsInner() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<AdaptiveApplicationControlGroupInner> value() {
@@ -35,7 +37,7 @@ public final class AdaptiveApplicationControlGroupsInner {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the AdaptiveApplicationControlGroupsInner object itself.
      */
@@ -46,7 +48,7 @@ public final class AdaptiveApplicationControlGroupsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

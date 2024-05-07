@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.TumblingWindowTriggerTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -17,10 +18,17 @@ import java.util.List;
  * Trigger that schedules pipeline runs for all fixed time interval windows from a start time without gaps and also
  * supports backfill scenarios (when start time is in the past).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = TumblingWindowTrigger.class, visible = true)
 @JsonTypeName("TumblingWindowTrigger")
 @Fluent
 public final class TumblingWindowTrigger extends Trigger {
+    /*
+     * Trigger type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "TumblingWindowTrigger";
+
     /*
      * Pipeline for which runs are created when an event is fired for trigger window that is ready.
      */
@@ -37,6 +45,16 @@ public final class TumblingWindowTrigger extends Trigger {
      * Creates an instance of TumblingWindowTrigger class.
      */
     public TumblingWindowTrigger() {
+    }
+
+    /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -291,14 +309,15 @@ public final class TumblingWindowTrigger extends Trigger {
     public void validate() {
         super.validate();
         if (pipeline() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property pipeline in model TumblingWindowTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property pipeline in model TumblingWindowTrigger"));
         } else {
             pipeline().validate();
         }
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model TumblingWindowTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model TumblingWindowTrigger"));
         } else {
             innerTypeProperties().validate();
         }

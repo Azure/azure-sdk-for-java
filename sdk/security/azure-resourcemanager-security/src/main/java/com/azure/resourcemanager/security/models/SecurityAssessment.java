@@ -11,7 +11,9 @@ import com.azure.resourcemanager.security.fluent.models.SecurityAssessmentProper
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Security assessment on a resource. */
+/**
+ * Security assessment on a resource.
+ */
 @Fluent
 public final class SecurityAssessment extends ProxyResource {
     /*
@@ -20,13 +22,15 @@ public final class SecurityAssessment extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecurityAssessmentProperties innerProperties;
 
-    /** Creates an instance of SecurityAssessment class. */
+    /**
+     * Creates an instance of SecurityAssessment class.
+     */
     public SecurityAssessment() {
     }
 
     /**
      * Get the innerProperties property: Describes properties of an assessment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityAssessmentProperties innerProperties() {
@@ -35,7 +39,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Get the status property: The result of the assessment.
-     *
+     * 
      * @return the status value.
      */
     public AssessmentStatus status() {
@@ -44,7 +48,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Set the status property: The result of the assessment.
-     *
+     * 
      * @param status the status value to set.
      * @return the SecurityAssessment object itself.
      */
@@ -58,7 +62,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Get the resourceDetails property: Details of the resource that was assessed.
-     *
+     * 
      * @return the resourceDetails value.
      */
     public ResourceDetails resourceDetails() {
@@ -67,7 +71,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Set the resourceDetails property: Details of the resource that was assessed.
-     *
+     * 
      * @param resourceDetails the resourceDetails value to set.
      * @return the SecurityAssessment object itself.
      */
@@ -81,7 +85,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Get the displayName property: User friendly display name of the assessment.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -90,7 +94,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Get the additionalData property: Additional data regarding the assessment.
-     *
+     * 
      * @return the additionalData value.
      */
     public Map<String, String> additionalData() {
@@ -99,7 +103,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Set the additionalData property: Additional data regarding the assessment.
-     *
+     * 
      * @param additionalData the additionalData value to set.
      * @return the SecurityAssessment object itself.
      */
@@ -113,7 +117,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Get the links property: Links relevant to the assessment.
-     *
+     * 
      * @return the links value.
      */
     public AssessmentLinks links() {
@@ -122,7 +126,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Get the metadata property: Describes properties of an assessment metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public SecurityAssessmentMetadataProperties metadata() {
@@ -131,7 +135,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Set the metadata property: Describes properties of an assessment metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the SecurityAssessment object itself.
      */
@@ -145,7 +149,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Get the partnersData property: Data regarding 3rd party partner integration.
-     *
+     * 
      * @return the partnersData value.
      */
     public SecurityAssessmentPartnerData partnersData() {
@@ -154,7 +158,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Set the partnersData property: Data regarding 3rd party partner integration.
-     *
+     * 
      * @param partnersData the partnersData value to set.
      * @return the SecurityAssessment object itself.
      */
@@ -168,7 +172,7 @@ public final class SecurityAssessment extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

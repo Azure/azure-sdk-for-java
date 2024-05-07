@@ -11,17 +11,23 @@ public final class RestSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestSource model = BinaryData.fromString(
-            "{\"type\":\"RestSource\",\"requestMethod\":\"datatwcyigrhfevxypqu\",\"requestBody\":\"dataojyxhhvoowrtcsuc\",\"additionalHeaders\":\"dataawyiqzj\",\"paginationRules\":\"datazv\",\"httpRequestTimeout\":\"datampvsbludf\",\"requestInterval\":\"datazukrpfbhih\",\"additionalColumns\":\"dataiiuexyqy\",\"sourceRetryCount\":\"dataudmlqpward\",\"sourceRetryWait\":\"datar\",\"maxConcurrentConnections\":\"datavfiskkqspzwsxn\",\"disableMetricsCollection\":\"datackpcssusdr\",\"\":{\"mibt\":\"datamrz\",\"axnukgovoumndcqo\":\"datacvo\"}}")
+            "{\"type\":\"pxoelfobehr\",\"requestMethod\":\"dataqikcork\",\"requestBody\":\"dataobobxfhtb\",\"additionalHeaders\":\"datavwzjycgcie\",\"paginationRules\":\"datax\",\"httpRequestTimeout\":\"datazvnghtknr\",\"requestInterval\":\"datahysnmyuvf\",\"additionalColumns\":\"datacnrapxw\",\"sourceRetryCount\":\"dataglojjcziytf\",\"sourceRetryWait\":\"datavirmbr\",\"maxConcurrentConnections\":\"datagnqa\",\"disableMetricsCollection\":\"datak\",\"\":{\"dzvuhw\":\"dataybh\"}}")
             .toObject(RestSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestSource model = new RestSource().withSourceRetryCount("dataudmlqpward").withSourceRetryWait("datar")
-            .withMaxConcurrentConnections("datavfiskkqspzwsxn").withDisableMetricsCollection("datackpcssusdr")
-            .withRequestMethod("datatwcyigrhfevxypqu").withRequestBody("dataojyxhhvoowrtcsuc")
-            .withAdditionalHeaders("dataawyiqzj").withPaginationRules("datazv").withHttpRequestTimeout("datampvsbludf")
-            .withRequestInterval("datazukrpfbhih").withAdditionalColumns("dataiiuexyqy");
+        RestSource model = new RestSource().withSourceRetryCount("dataglojjcziytf")
+            .withSourceRetryWait("datavirmbr")
+            .withMaxConcurrentConnections("datagnqa")
+            .withDisableMetricsCollection("datak")
+            .withRequestMethod("dataqikcork")
+            .withRequestBody("dataobobxfhtb")
+            .withAdditionalHeaders("datavwzjycgcie")
+            .withPaginationRules("datax")
+            .withHttpRequestTimeout("datazvnghtknr")
+            .withRequestInterval("datahysnmyuvf")
+            .withAdditionalColumns("datacnrapxw");
         model = BinaryData.fromObject(model).toObject(RestSource.class);
     }
 }

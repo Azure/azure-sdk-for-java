@@ -7,7 +7,9 @@ package com.azure.resourcemanager.support.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This property is required for providing the region and new quota limits. */
+/**
+ * This property is required for providing the region and new quota limits.
+ */
 @Fluent
 public final class QuotaChangeRequest {
     /*
@@ -22,13 +24,15 @@ public final class QuotaChangeRequest {
     @JsonProperty(value = "payload")
     private String payload;
 
-    /** Creates an instance of QuotaChangeRequest class. */
+    /**
+     * Creates an instance of QuotaChangeRequest class.
+     */
     public QuotaChangeRequest() {
     }
 
     /**
      * Get the region property: Region for which the quota increase request is being made.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -37,7 +41,7 @@ public final class QuotaChangeRequest {
 
     /**
      * Set the region property: Region for which the quota increase request is being made.
-     *
+     * 
      * @param region the region value to set.
      * @return the QuotaChangeRequest object itself.
      */
@@ -48,7 +52,7 @@ public final class QuotaChangeRequest {
 
     /**
      * Get the payload property: Payload of the quota increase request.
-     *
+     * 
      * @return the payload value.
      */
     public String payload() {
@@ -57,7 +61,7 @@ public final class QuotaChangeRequest {
 
     /**
      * Set the payload property: Payload of the quota increase request.
-     *
+     * 
      * @param payload the payload value to set.
      * @return the QuotaChangeRequest object itself.
      */
@@ -68,7 +72,7 @@ public final class QuotaChangeRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

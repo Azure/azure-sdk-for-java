@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
@@ -168,7 +169,9 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         @JsonProperty
         public long connectionAcquisitionTimeoutInNanos() {
-            return this.options.connectionAcquisitionTimeout().toNanos();
+            // by default it will use the connectionTimeout value, but allow system property override
+            return Configs
+                .getTcpConnectionAcquisitionTimeout(this.connectTimeoutInMillis()).toNanos();
         }
 
         @JsonProperty
@@ -259,7 +262,9 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
-        public boolean isChannelAcquisitionContextEnabled() { return this.options.isChannelAcquisitionContextEnabled(); }
+        public long channelAcquisitionContextLatencyThresholdInMillis() {
+            return this.options.channelAcquisitionContextLatencyThresholdInMillis();
+        }
 
         @JsonProperty
         public int tcpKeepIntvl() { return this.options.tcpKeepIntvl(); }

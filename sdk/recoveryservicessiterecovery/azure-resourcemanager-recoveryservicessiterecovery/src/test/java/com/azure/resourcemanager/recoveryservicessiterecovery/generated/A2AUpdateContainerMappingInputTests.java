@@ -13,30 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class A2AUpdateContainerMappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2AUpdateContainerMappingInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"A2A\",\"agentAutoUpdateStatus\":\"Enabled\",\"automationAccountArmId\":\"cadwvpsozjii\",\"automationAccountAuthenticationType\":\"RunAsAccount\"}")
-                .toObject(A2AUpdateContainerMappingInput.class);
+        A2AUpdateContainerMappingInput model = BinaryData.fromString(
+            "{\"instanceType\":\"A2A\",\"agentAutoUpdateStatus\":\"Enabled\",\"automationAccountArmId\":\"cadwvpsozjii\",\"automationAccountAuthenticationType\":\"RunAsAccount\"}")
+            .toObject(A2AUpdateContainerMappingInput.class);
         Assertions.assertEquals(AgentAutoUpdateStatus.ENABLED, model.agentAutoUpdateStatus());
         Assertions.assertEquals("cadwvpsozjii", model.automationAccountArmId());
-        Assertions
-            .assertEquals(
-                AutomationAccountAuthenticationType.RUN_AS_ACCOUNT, model.automationAccountAuthenticationType());
+        Assertions.assertEquals(AutomationAccountAuthenticationType.RUN_AS_ACCOUNT,
+            model.automationAccountAuthenticationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AUpdateContainerMappingInput model =
-            new A2AUpdateContainerMappingInput()
-                .withAgentAutoUpdateStatus(AgentAutoUpdateStatus.ENABLED)
-                .withAutomationAccountArmId("cadwvpsozjii")
-                .withAutomationAccountAuthenticationType(AutomationAccountAuthenticationType.RUN_AS_ACCOUNT);
+        A2AUpdateContainerMappingInput model = new A2AUpdateContainerMappingInput()
+            .withAgentAutoUpdateStatus(AgentAutoUpdateStatus.ENABLED).withAutomationAccountArmId("cadwvpsozjii")
+            .withAutomationAccountAuthenticationType(AutomationAccountAuthenticationType.RUN_AS_ACCOUNT);
         model = BinaryData.fromObject(model).toObject(A2AUpdateContainerMappingInput.class);
         Assertions.assertEquals(AgentAutoUpdateStatus.ENABLED, model.agentAutoUpdateStatus());
         Assertions.assertEquals("cadwvpsozjii", model.automationAccountArmId());
-        Assertions
-            .assertEquals(
-                AutomationAccountAuthenticationType.RUN_AS_ACCOUNT, model.automationAccountAuthenticationType());
+        Assertions.assertEquals(AutomationAccountAuthenticationType.RUN_AS_ACCOUNT,
+            model.automationAccountAuthenticationType());
     }
 }

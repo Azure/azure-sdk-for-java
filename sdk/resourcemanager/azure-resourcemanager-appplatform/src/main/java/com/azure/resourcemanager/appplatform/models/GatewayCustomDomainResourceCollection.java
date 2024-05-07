@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appplatform.fluent.models.GatewayCustomDomainRe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that includes an array of Spring Cloud Gateway custom domain resources and a possible link for next set. */
+/**
+ * Object that includes an array of Spring Cloud Gateway custom domain resources and a possible link for next set.
+ */
 @Fluent
 public final class GatewayCustomDomainResourceCollection {
     /*
@@ -26,8 +28,14 @@ public final class GatewayCustomDomainResourceCollection {
     private String nextLink;
 
     /**
+     * Creates an instance of GatewayCustomDomainResourceCollection class.
+     */
+    public GatewayCustomDomainResourceCollection() {
+    }
+
+    /**
      * Get the value property: Collection of Spring Cloud Gateway custom domain resources.
-     *
+     * 
      * @return the value value.
      */
     public List<GatewayCustomDomainResourceInner> value() {
@@ -36,7 +44,7 @@ public final class GatewayCustomDomainResourceCollection {
 
     /**
      * Set the value property: Collection of Spring Cloud Gateway custom domain resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the GatewayCustomDomainResourceCollection object itself.
      */
@@ -46,9 +54,9 @@ public final class GatewayCustomDomainResourceCollection {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +64,9 @@ public final class GatewayCustomDomainResourceCollection {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GatewayCustomDomainResourceCollection object itself.
      */
@@ -69,7 +77,7 @@ public final class GatewayCustomDomainResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

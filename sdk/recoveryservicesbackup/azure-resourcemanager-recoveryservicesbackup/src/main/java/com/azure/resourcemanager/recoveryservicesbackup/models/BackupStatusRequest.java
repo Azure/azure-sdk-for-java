@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** BackupStatus request. */
+/**
+ * BackupStatus request.
+ */
 @Fluent
 public final class BackupStatusRequest {
     /*
@@ -28,13 +30,15 @@ public final class BackupStatusRequest {
     @JsonProperty(value = "poLogicalName")
     private String poLogicalName;
 
-    /** Creates an instance of BackupStatusRequest class. */
+    /**
+     * Creates an instance of BackupStatusRequest class.
+     */
     public BackupStatusRequest() {
     }
 
     /**
      * Get the resourceType property: Container Type - VM, SQLPaaS, DPM, AzureFileShare...
-     *
+     * 
      * @return the resourceType value.
      */
     public DataSourceType resourceType() {
@@ -43,7 +47,7 @@ public final class BackupStatusRequest {
 
     /**
      * Set the resourceType property: Container Type - VM, SQLPaaS, DPM, AzureFileShare...
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the BackupStatusRequest object itself.
      */
@@ -54,7 +58,7 @@ public final class BackupStatusRequest {
 
     /**
      * Get the resourceId property: Entire ARM resource id of the resource.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -63,7 +67,7 @@ public final class BackupStatusRequest {
 
     /**
      * Set the resourceId property: Entire ARM resource id of the resource.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the BackupStatusRequest object itself.
      */
@@ -74,7 +78,7 @@ public final class BackupStatusRequest {
 
     /**
      * Get the poLogicalName property: Protectable Item Logical Name.
-     *
+     * 
      * @return the poLogicalName value.
      */
     public String poLogicalName() {
@@ -83,7 +87,7 @@ public final class BackupStatusRequest {
 
     /**
      * Set the poLogicalName property: Protectable Item Logical Name.
-     *
+     * 
      * @param poLogicalName the poLogicalName value to set.
      * @return the BackupStatusRequest object itself.
      */
@@ -94,7 +98,7 @@ public final class BackupStatusRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

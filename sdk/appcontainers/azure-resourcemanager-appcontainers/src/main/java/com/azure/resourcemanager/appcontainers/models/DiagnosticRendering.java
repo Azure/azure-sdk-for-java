@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Rendering details of a diagnostics table. */
+/**
+ * Rendering details of a diagnostics table.
+ */
 @Fluent
 public final class DiagnosticRendering {
     /*
@@ -34,13 +36,15 @@ public final class DiagnosticRendering {
     @JsonProperty(value = "isVisible")
     private Boolean isVisible;
 
-    /** Creates an instance of DiagnosticRendering class. */
+    /**
+     * Creates an instance of DiagnosticRendering class.
+     */
     public DiagnosticRendering() {
     }
 
     /**
      * Get the type property: Rendering type.
-     *
+     * 
      * @return the type value.
      */
     public Integer type() {
@@ -49,7 +53,7 @@ public final class DiagnosticRendering {
 
     /**
      * Set the type property: Rendering type.
-     *
+     * 
      * @param type the type value to set.
      * @return the DiagnosticRendering object itself.
      */
@@ -60,7 +64,7 @@ public final class DiagnosticRendering {
 
     /**
      * Get the title property: Title of the table.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -69,7 +73,7 @@ public final class DiagnosticRendering {
 
     /**
      * Set the title property: Title of the table.
-     *
+     * 
      * @param title the title value to set.
      * @return the DiagnosticRendering object itself.
      */
@@ -80,7 +84,7 @@ public final class DiagnosticRendering {
 
     /**
      * Get the description property: Description of the table.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -89,7 +93,7 @@ public final class DiagnosticRendering {
 
     /**
      * Set the description property: Description of the table.
-     *
+     * 
      * @param description the description value to set.
      * @return the DiagnosticRendering object itself.
      */
@@ -100,7 +104,7 @@ public final class DiagnosticRendering {
 
     /**
      * Get the isVisible property: Flag if the table should be rendered.
-     *
+     * 
      * @return the isVisible value.
      */
     public Boolean isVisible() {
@@ -109,7 +113,7 @@ public final class DiagnosticRendering {
 
     /**
      * Set the isVisible property: Flag if the table should be rendered.
-     *
+     * 
      * @param isVisible the isVisible value to set.
      * @return the DiagnosticRendering object itself.
      */
@@ -120,7 +124,7 @@ public final class DiagnosticRendering {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

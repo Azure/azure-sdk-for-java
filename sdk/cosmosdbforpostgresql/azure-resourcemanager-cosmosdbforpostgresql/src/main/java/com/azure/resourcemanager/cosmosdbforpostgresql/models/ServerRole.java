@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The role of a server. */
+/**
+ * The role of a server.
+ */
 public final class ServerRole extends ExpandableStringEnum<ServerRole> {
-    /** Static value Coordinator for ServerRole. */
+    /**
+     * Static value Coordinator for ServerRole.
+     */
     public static final ServerRole COORDINATOR = fromString("Coordinator");
 
-    /** Static value Worker for ServerRole. */
+    /**
+     * Static value Worker for ServerRole.
+     */
     public static final ServerRole WORKER = fromString("Worker");
 
     /**
      * Creates a new instance of ServerRole value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ServerRole extends ExpandableStringEnum<ServerRole> {
 
     /**
      * Creates or finds a ServerRole from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServerRole.
      */
@@ -38,7 +44,7 @@ public final class ServerRole extends ExpandableStringEnum<ServerRole> {
 
     /**
      * Gets known ServerRole values.
-     *
+     * 
      * @return known ServerRole values.
      */
     public static Collection<ServerRole> values() {

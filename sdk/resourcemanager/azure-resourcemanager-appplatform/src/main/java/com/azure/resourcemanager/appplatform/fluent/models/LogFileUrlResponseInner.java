@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log file URL payload. */
+/**
+ * Log file URL payload.
+ */
 @Fluent
 public final class LogFileUrlResponseInner {
     /*
@@ -18,8 +20,14 @@ public final class LogFileUrlResponseInner {
     private String url;
 
     /**
+     * Creates an instance of LogFileUrlResponseInner class.
+     */
+    public LogFileUrlResponseInner() {
+    }
+
+    /**
      * Get the url property: URL of the log file.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -28,7 +36,7 @@ public final class LogFileUrlResponseInner {
 
     /**
      * Set the url property: URL of the log file.
-     *
+     * 
      * @param url the url value to set.
      * @return the LogFileUrlResponseInner object itself.
      */
@@ -39,14 +47,13 @@ public final class LogFileUrlResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model LogFileUrlResponseInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property url in model LogFileUrlResponseInner"));
         }
     }
 

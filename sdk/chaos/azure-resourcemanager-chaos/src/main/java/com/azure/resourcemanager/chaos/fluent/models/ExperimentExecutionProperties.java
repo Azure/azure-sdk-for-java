@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Model that represents the execution properties of an Experiment. */
+/**
+ * Model that represents the execution properties of an Experiment.
+ */
 @Immutable
 public class ExperimentExecutionProperties {
     /*
@@ -29,13 +31,15 @@ public class ExperimentExecutionProperties {
     @JsonProperty(value = "stoppedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stoppedAt;
 
-    /** Creates an instance of ExperimentExecutionProperties class. */
+    /**
+     * Creates an instance of ExperimentExecutionProperties class.
+     */
     public ExperimentExecutionProperties() {
     }
 
     /**
      * Get the status property: The status of the execution.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -44,7 +48,7 @@ public class ExperimentExecutionProperties {
 
     /**
      * Get the startedAt property: String that represents the start date time.
-     *
+     * 
      * @return the startedAt value.
      */
     public OffsetDateTime startedAt() {
@@ -53,7 +57,7 @@ public class ExperimentExecutionProperties {
 
     /**
      * Get the stoppedAt property: String that represents the stop date time.
-     *
+     * 
      * @return the stoppedAt value.
      */
     public OffsetDateTime stoppedAt() {
@@ -62,7 +66,7 @@ public class ExperimentExecutionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

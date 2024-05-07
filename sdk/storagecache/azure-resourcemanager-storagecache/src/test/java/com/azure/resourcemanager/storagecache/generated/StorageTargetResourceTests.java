@@ -10,10 +10,10 @@ import com.azure.resourcemanager.storagecache.models.StorageTargetResource;
 public final class StorageTargetResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageTargetResource model =
-            BinaryData
-                .fromString("{\"location\":\"hgwxrtfudx\",\"id\":\"xg\",\"name\":\"qagvrvm\",\"type\":\"pkukghi\"}")
-                .toObject(StorageTargetResource.class);
+        StorageTargetResource model = BinaryData
+            .fromString(
+                "{\"location\":\"kojvd\",\"id\":\"zfoqouicybxar\",\"name\":\"gszufoxciqopid\",\"type\":\"amcio\"}")
+            .toObject(StorageTargetResource.class);
     }
 
     @org.junit.jupiter.api.Test

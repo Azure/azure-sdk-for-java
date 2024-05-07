@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.AccountResourceInner;
 
-/** An instance of this class provides access to all the operations defined in AccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccountsClient.
+ */
 public interface AccountsClient {
     /**
      * List all the existing accounts.
-     *
+     * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface AccountsClient {
 
     /**
      * List all the existing accounts.
-     *
+     * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
      * @param context The context to associate with this operation.

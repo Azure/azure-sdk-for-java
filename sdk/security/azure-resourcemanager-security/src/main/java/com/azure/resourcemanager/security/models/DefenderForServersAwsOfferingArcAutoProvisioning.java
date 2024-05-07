@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ARC autoprovisioning configuration. */
+/**
+ * The ARC autoprovisioning configuration.
+ */
 @Fluent
 public final class DefenderForServersAwsOfferingArcAutoProvisioning {
     /*
@@ -28,13 +30,15 @@ public final class DefenderForServersAwsOfferingArcAutoProvisioning {
     @JsonProperty(value = "configuration")
     private DefenderForServersAwsOfferingArcAutoProvisioningConfiguration configuration;
 
-    /** Creates an instance of DefenderForServersAwsOfferingArcAutoProvisioning class. */
+    /**
+     * Creates an instance of DefenderForServersAwsOfferingArcAutoProvisioning class.
+     */
     public DefenderForServersAwsOfferingArcAutoProvisioning() {
     }
 
     /**
      * Get the enabled property: Is arc auto provisioning enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -43,7 +47,7 @@ public final class DefenderForServersAwsOfferingArcAutoProvisioning {
 
     /**
      * Set the enabled property: Is arc auto provisioning enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the DefenderForServersAwsOfferingArcAutoProvisioning object itself.
      */
@@ -54,7 +58,7 @@ public final class DefenderForServersAwsOfferingArcAutoProvisioning {
 
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @return the cloudRoleArn value.
      */
     public String cloudRoleArn() {
@@ -63,7 +67,7 @@ public final class DefenderForServersAwsOfferingArcAutoProvisioning {
 
     /**
      * Set the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the DefenderForServersAwsOfferingArcAutoProvisioning object itself.
      */
@@ -74,7 +78,7 @@ public final class DefenderForServersAwsOfferingArcAutoProvisioning {
 
     /**
      * Get the configuration property: Configuration for servers Arc auto provisioning.
-     *
+     * 
      * @return the configuration value.
      */
     public DefenderForServersAwsOfferingArcAutoProvisioningConfiguration configuration() {
@@ -83,19 +87,19 @@ public final class DefenderForServersAwsOfferingArcAutoProvisioning {
 
     /**
      * Set the configuration property: Configuration for servers Arc auto provisioning.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the DefenderForServersAwsOfferingArcAutoProvisioning object itself.
      */
-    public DefenderForServersAwsOfferingArcAutoProvisioning withConfiguration(
-        DefenderForServersAwsOfferingArcAutoProvisioningConfiguration configuration) {
+    public DefenderForServersAwsOfferingArcAutoProvisioning
+        withConfiguration(DefenderForServersAwsOfferingArcAutoProvisioningConfiguration configuration) {
         this.configuration = configuration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

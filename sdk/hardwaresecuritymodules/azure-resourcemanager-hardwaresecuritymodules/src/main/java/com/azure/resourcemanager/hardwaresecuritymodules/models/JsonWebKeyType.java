@@ -8,32 +8,57 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for JsonWebKeyType. */
+/**
+ * Provisioning state.
+ */
 public final class JsonWebKeyType extends ExpandableStringEnum<JsonWebKeyType> {
-    /** Static value Succeeded for JsonWebKeyType. */
+    /**
+     * Static value Succeeded for JsonWebKeyType.
+     */
     public static final JsonWebKeyType SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Provisioning for JsonWebKeyType. */
+    /**
+     * Static value Provisioning for JsonWebKeyType.
+     */
     public static final JsonWebKeyType PROVISIONING = fromString("Provisioning");
 
-    /** Static value Allocating for JsonWebKeyType. */
+    /**
+     * Static value Allocating for JsonWebKeyType.
+     */
     public static final JsonWebKeyType ALLOCATING = fromString("Allocating");
 
-    /** Static value Connecting for JsonWebKeyType. */
+    /**
+     * Static value Connecting for JsonWebKeyType.
+     */
     public static final JsonWebKeyType CONNECTING = fromString("Connecting");
 
-    /** Static value Failed for JsonWebKeyType. */
+    /**
+     * Static value Failed for JsonWebKeyType.
+     */
     public static final JsonWebKeyType FAILED = fromString("Failed");
 
-    /** Static value CheckingQuota for JsonWebKeyType. */
+    /**
+     * Static value CheckingQuota for JsonWebKeyType.
+     */
     public static final JsonWebKeyType CHECKING_QUOTA = fromString("CheckingQuota");
 
-    /** Static value Deleting for JsonWebKeyType. */
+    /**
+     * Static value Deleting for JsonWebKeyType.
+     */
     public static final JsonWebKeyType DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of JsonWebKeyType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public JsonWebKeyType() {
+    }
+
+    /**
      * Creates or finds a JsonWebKeyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JsonWebKeyType.
      */
@@ -44,7 +69,7 @@ public final class JsonWebKeyType extends ExpandableStringEnum<JsonWebKeyType> {
 
     /**
      * Gets known JsonWebKeyType values.
-     *
+     * 
      * @return known JsonWebKeyType values.
      */
     public static Collection<JsonWebKeyType> values() {

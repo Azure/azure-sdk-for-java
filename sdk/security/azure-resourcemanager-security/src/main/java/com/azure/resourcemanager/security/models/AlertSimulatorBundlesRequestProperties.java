@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Simulate alerts according to this bundles. */
+/**
+ * Simulate alerts according to this bundles.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("Bundles")
 @Fluent
@@ -21,13 +23,15 @@ public final class AlertSimulatorBundlesRequestProperties extends AlertSimulator
     @JsonProperty(value = "bundles")
     private List<BundleType> bundles;
 
-    /** Creates an instance of AlertSimulatorBundlesRequestProperties class. */
+    /**
+     * Creates an instance of AlertSimulatorBundlesRequestProperties class.
+     */
     public AlertSimulatorBundlesRequestProperties() {
     }
 
     /**
      * Get the bundles property: Bundles list.
-     *
+     * 
      * @return the bundles value.
      */
     public List<BundleType> bundles() {
@@ -36,7 +40,7 @@ public final class AlertSimulatorBundlesRequestProperties extends AlertSimulator
 
     /**
      * Set the bundles property: Bundles list.
-     *
+     * 
      * @param bundles the bundles value to set.
      * @return the AlertSimulatorBundlesRequestProperties object itself.
      */
@@ -47,7 +51,7 @@ public final class AlertSimulatorBundlesRequestProperties extends AlertSimulator
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

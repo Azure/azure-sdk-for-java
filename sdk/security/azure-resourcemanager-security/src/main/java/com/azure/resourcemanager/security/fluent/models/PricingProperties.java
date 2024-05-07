@@ -6,26 +6,33 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.security.models.Enforce;
 import com.azure.resourcemanager.security.models.Extension;
+import com.azure.resourcemanager.security.models.Inherited;
 import com.azure.resourcemanager.security.models.PricingTier;
+import com.azure.resourcemanager.security.models.ResourcesCoverageStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Pricing properties for the relevant scope. */
+/**
+ * Pricing properties for the relevant scope.
+ */
 @Fluent
 public final class PricingProperties {
     /*
-     * The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The
-     * standard tier offers advanced security capabilities, while the free tier offers basic security features.
+     * Indicates whether the Defender plan is enabled on the selected scope. Microsoft Defender for Cloud is provided
+     * in two pricing tiers: free and standard. The standard tier offers advanced security capabilities, while the free
+     * tier offers basic security features.
      */
     @JsonProperty(value = "pricingTier", required = true)
     private PricingTier pricingTier;
 
     /*
      * The sub-plan selected for a Standard pricing configuration, when more than one sub-plan is available. Each
-     * sub-plan enables a set of security features. When not specified, full plan is applied.
+     * sub-plan enables a set of security features. When not specified, full plan is applied. For VirtualMachines plan,
+     * available sub plans are 'P1' & 'P2', where for resource level only 'P1' sub plan is supported.
      */
     @JsonProperty(value = "subPlan")
     private String subPlan;
@@ -44,6 +51,47 @@ public final class PricingProperties {
     private OffsetDateTime enablementTime;
 
     /*
+     * If set to "False", it allows the descendants of this scope to override the pricing configuration set on this
+     * scope (allows setting inherited="False"). If set to "True", it prevents overrides and forces this pricing
+     * configuration on all the descendants of this scope. This field is only available for subscription-level pricing.
+     */
+    @JsonProperty(value = "enforce")
+    private Enforce enforce;
+
+    /*
+     * "inherited" = "True" indicates that the current scope inherits its pricing configuration from its parent. The ID
+     * of the parent scope that provides the inherited configuration is displayed in the "inheritedFrom" field. On the
+     * other hand, "inherited" = "False" indicates that the current scope has its own pricing configuration explicitly
+     * set, and does not inherit from its parent. This field is read only and available only for resource-level
+     * pricing.
+     */
+    @JsonProperty(value = "inherited", access = JsonProperty.Access.WRITE_ONLY)
+    private Inherited inherited;
+
+    /*
+     * The id of the scope inherited from. "Null" if not inherited. This field is only available for resource-level
+     * pricing.
+     */
+    @JsonProperty(value = "inheritedFrom", access = JsonProperty.Access.WRITE_ONLY)
+    private String inheritedFrom;
+
+    /*
+     * This field is available for subscription-level only, and reflects the coverage status of the resources under the
+     * subscription. Please note: The "pricingTier" field reflects the plan status of the subscription. However, since
+     * the plan status can also be defined at the resource level, there might be misalignment between the
+     * subscription's plan status and the resource status. This field helps indicate the coverage status of the
+     * resources.
+     */
+    @JsonProperty(value = "resourcesCoverageStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private ResourcesCoverageStatus resourcesCoverageStatus;
+
+    /*
+     * Optional. List of extensions offered under a plan.
+     */
+    @JsonProperty(value = "extensions")
+    private List<Extension> extensions;
+
+    /*
      * Optional. True if the plan is deprecated. If there are replacing plans they will appear in `replacedBy` property
      */
     @JsonProperty(value = "deprecated", access = JsonProperty.Access.WRITE_ONLY)
@@ -55,21 +103,17 @@ public final class PricingProperties {
     @JsonProperty(value = "replacedBy", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> replacedBy;
 
-    /*
-     * Optional. List of extensions offered under a plan.
+    /**
+     * Creates an instance of PricingProperties class.
      */
-    @JsonProperty(value = "extensions")
-    private List<Extension> extensions;
-
-    /** Creates an instance of PricingProperties class. */
     public PricingProperties() {
     }
 
     /**
-     * Get the pricingTier property: The pricing tier value. Microsoft Defender for Cloud is provided in two pricing
-     * tiers: free and standard. The standard tier offers advanced security capabilities, while the free tier offers
-     * basic security features.
-     *
+     * Get the pricingTier property: Indicates whether the Defender plan is enabled on the selected scope. Microsoft
+     * Defender for Cloud is provided in two pricing tiers: free and standard. The standard tier offers advanced
+     * security capabilities, while the free tier offers basic security features.
+     * 
      * @return the pricingTier value.
      */
     public PricingTier pricingTier() {
@@ -77,10 +121,10 @@ public final class PricingProperties {
     }
 
     /**
-     * Set the pricingTier property: The pricing tier value. Microsoft Defender for Cloud is provided in two pricing
-     * tiers: free and standard. The standard tier offers advanced security capabilities, while the free tier offers
-     * basic security features.
-     *
+     * Set the pricingTier property: Indicates whether the Defender plan is enabled on the selected scope. Microsoft
+     * Defender for Cloud is provided in two pricing tiers: free and standard. The standard tier offers advanced
+     * security capabilities, while the free tier offers basic security features.
+     * 
      * @param pricingTier the pricingTier value to set.
      * @return the PricingProperties object itself.
      */
@@ -90,9 +134,11 @@ public final class PricingProperties {
     }
 
     /**
-     * Get the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one sub-plan
-     * is available. Each sub-plan enables a set of security features. When not specified, full plan is applied.
-     *
+     * Get the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one
+     * sub-plan is available. Each sub-plan enables a set of security features. When not specified, full plan is
+     * applied. For VirtualMachines plan, available sub plans are 'P1' &amp; 'P2', where for resource level only 'P1'
+     * sub plan is supported.
+     * 
      * @return the subPlan value.
      */
     public String subPlan() {
@@ -100,9 +146,11 @@ public final class PricingProperties {
     }
 
     /**
-     * Set the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one sub-plan
-     * is available. Each sub-plan enables a set of security features. When not specified, full plan is applied.
-     *
+     * Set the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one
+     * sub-plan is available. Each sub-plan enables a set of security features. When not specified, full plan is
+     * applied. For VirtualMachines plan, available sub plans are 'P1' &amp; 'P2', where for resource level only 'P1'
+     * sub plan is supported.
+     * 
      * @param subPlan the subPlan value to set.
      * @return the PricingProperties object itself.
      */
@@ -114,7 +162,7 @@ public final class PricingProperties {
     /**
      * Get the freeTrialRemainingTime property: The duration left for the subscriptions free trial period - in ISO 8601
      * format (e.g. P3Y6M4DT12H30M5S).
-     *
+     * 
      * @return the freeTrialRemainingTime value.
      */
     public Duration freeTrialRemainingTime() {
@@ -124,7 +172,7 @@ public final class PricingProperties {
     /**
      * Get the enablementTime property: Optional. If `pricingTier` is `Standard` then this property holds the date of
      * the last time the `pricingTier` was set to `Standard`, when available (e.g 2023-03-01T12:42:42.1921106Z).
-     *
+     * 
      * @return the enablementTime value.
      */
     public OffsetDateTime enablementTime() {
@@ -132,28 +180,70 @@ public final class PricingProperties {
     }
 
     /**
-     * Get the deprecated property: Optional. True if the plan is deprecated. If there are replacing plans they will
-     * appear in `replacedBy` property.
-     *
-     * @return the deprecated value.
+     * Get the enforce property: If set to "False", it allows the descendants of this scope to override the pricing
+     * configuration set on this scope (allows setting inherited="False"). If set to "True", it prevents overrides and
+     * forces this pricing configuration on all the descendants of this scope. This field is only available for
+     * subscription-level pricing.
+     * 
+     * @return the enforce value.
      */
-    public Boolean deprecated() {
-        return this.deprecated;
+    public Enforce enforce() {
+        return this.enforce;
     }
 
     /**
-     * Get the replacedBy property: Optional. List of plans that replace this plan. This property exists only if this
-     * plan is deprecated.
-     *
-     * @return the replacedBy value.
+     * Set the enforce property: If set to "False", it allows the descendants of this scope to override the pricing
+     * configuration set on this scope (allows setting inherited="False"). If set to "True", it prevents overrides and
+     * forces this pricing configuration on all the descendants of this scope. This field is only available for
+     * subscription-level pricing.
+     * 
+     * @param enforce the enforce value to set.
+     * @return the PricingProperties object itself.
      */
-    public List<String> replacedBy() {
-        return this.replacedBy;
+    public PricingProperties withEnforce(Enforce enforce) {
+        this.enforce = enforce;
+        return this;
+    }
+
+    /**
+     * Get the inherited property: "inherited" = "True" indicates that the current scope inherits its pricing
+     * configuration from its parent. The ID of the parent scope that provides the inherited configuration is displayed
+     * in the "inheritedFrom" field. On the other hand, "inherited" = "False" indicates that the current scope has its
+     * own pricing configuration explicitly set, and does not inherit from its parent. This field is read only and
+     * available only for resource-level pricing.
+     * 
+     * @return the inherited value.
+     */
+    public Inherited inherited() {
+        return this.inherited;
+    }
+
+    /**
+     * Get the inheritedFrom property: The id of the scope inherited from. "Null" if not inherited. This field is only
+     * available for resource-level pricing.
+     * 
+     * @return the inheritedFrom value.
+     */
+    public String inheritedFrom() {
+        return this.inheritedFrom;
+    }
+
+    /**
+     * Get the resourcesCoverageStatus property: This field is available for subscription-level only, and reflects the
+     * coverage status of the resources under the subscription. Please note: The "pricingTier" field reflects the plan
+     * status of the subscription. However, since the plan status can also be defined at the resource level, there
+     * might be misalignment between the subscription's plan status and the resource status. This field helps indicate
+     * the coverage status of the resources.
+     * 
+     * @return the resourcesCoverageStatus value.
+     */
+    public ResourcesCoverageStatus resourcesCoverageStatus() {
+        return this.resourcesCoverageStatus;
     }
 
     /**
      * Get the extensions property: Optional. List of extensions offered under a plan.
-     *
+     * 
      * @return the extensions value.
      */
     public List<Extension> extensions() {
@@ -162,7 +252,7 @@ public final class PricingProperties {
 
     /**
      * Set the extensions property: Optional. List of extensions offered under a plan.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the PricingProperties object itself.
      */
@@ -172,15 +262,34 @@ public final class PricingProperties {
     }
 
     /**
+     * Get the deprecated property: Optional. True if the plan is deprecated. If there are replacing plans they will
+     * appear in `replacedBy` property.
+     * 
+     * @return the deprecated value.
+     */
+    public Boolean deprecated() {
+        return this.deprecated;
+    }
+
+    /**
+     * Get the replacedBy property: Optional. List of plans that replace this plan. This property exists only if this
+     * plan is deprecated.
+     * 
+     * @return the replacedBy value.
+     */
+    public List<String> replacedBy() {
+        return this.replacedBy;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (pricingTier() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property pricingTier in model PricingProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property pricingTier in model PricingProperties"));
         }
         if (extensions() != null) {
             extensions().forEach(e -> e.validate());

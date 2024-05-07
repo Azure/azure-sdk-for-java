@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Azure Automation Runbook notification receiver. */
+/**
+ * The Azure Automation Runbook notification receiver.
+ */
 @Fluent
 public final class AutomationRunbookReceiver {
     /*
@@ -53,14 +55,16 @@ public final class AutomationRunbookReceiver {
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
-    /** Creates an instance of AutomationRunbookReceiver class. */
+    /**
+     * Creates an instance of AutomationRunbookReceiver class.
+     */
     public AutomationRunbookReceiver() {
     }
 
     /**
      * Get the automationAccountId property: The Azure automation account Id which holds this runbook and authenticate
      * to Azure resource.
-     *
+     * 
      * @return the automationAccountId value.
      */
     public String automationAccountId() {
@@ -70,7 +74,7 @@ public final class AutomationRunbookReceiver {
     /**
      * Set the automationAccountId property: The Azure automation account Id which holds this runbook and authenticate
      * to Azure resource.
-     *
+     * 
      * @param automationAccountId the automationAccountId value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -81,7 +85,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Get the runbookName property: The name for this runbook.
-     *
+     * 
      * @return the runbookName value.
      */
     public String runbookName() {
@@ -90,7 +94,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Set the runbookName property: The name for this runbook.
-     *
+     * 
      * @param runbookName the runbookName value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -101,7 +105,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Get the webhookResourceId property: The resource id for webhook linked to this runbook.
-     *
+     * 
      * @return the webhookResourceId value.
      */
     public String webhookResourceId() {
@@ -110,7 +114,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Set the webhookResourceId property: The resource id for webhook linked to this runbook.
-     *
+     * 
      * @param webhookResourceId the webhookResourceId value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -121,7 +125,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Get the isGlobalRunbook property: Indicates whether this instance is global runbook.
-     *
+     * 
      * @return the isGlobalRunbook value.
      */
     public boolean isGlobalRunbook() {
@@ -130,7 +134,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Set the isGlobalRunbook property: Indicates whether this instance is global runbook.
-     *
+     * 
      * @param isGlobalRunbook the isGlobalRunbook value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -141,7 +145,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Get the name property: Indicates name of the webhook.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -150,7 +154,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Set the name property: Indicates name of the webhook.
-     *
+     * 
      * @param name the name value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -161,7 +165,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Get the serviceUri property: The URI where webhooks should be sent.
-     *
+     * 
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -170,7 +174,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Set the serviceUri property: The URI where webhooks should be sent.
-     *
+     * 
      * @param serviceUri the serviceUri value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -181,7 +185,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Get the useCommonAlertSchema property: Indicates whether to use common alert schema.
-     *
+     * 
      * @return the useCommonAlertSchema value.
      */
     public Boolean useCommonAlertSchema() {
@@ -190,7 +194,7 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Set the useCommonAlertSchema property: Indicates whether to use common alert schema.
-     *
+     * 
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the AutomationRunbookReceiver object itself.
      */
@@ -201,27 +205,21 @@ public final class AutomationRunbookReceiver {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (automationAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property automationAccountId in model AutomationRunbookReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property automationAccountId in model AutomationRunbookReceiver"));
         }
         if (runbookName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property runbookName in model AutomationRunbookReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property runbookName in model AutomationRunbookReceiver"));
         }
         if (webhookResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property webhookResourceId in model AutomationRunbookReceiver"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property webhookResourceId in model AutomationRunbookReceiver"));
         }
     }
 

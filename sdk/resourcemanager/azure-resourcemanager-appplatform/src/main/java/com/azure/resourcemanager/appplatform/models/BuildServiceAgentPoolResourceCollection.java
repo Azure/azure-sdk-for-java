@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appplatform.fluent.models.BuildServiceAgentPool
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that includes an array of build service agent pool resources and a possible link for next set. */
+/**
+ * Object that includes an array of build service agent pool resources and a possible link for next set.
+ */
 @Fluent
 public final class BuildServiceAgentPoolResourceCollection {
     /*
@@ -26,8 +28,14 @@ public final class BuildServiceAgentPoolResourceCollection {
     private String nextLink;
 
     /**
+     * Creates an instance of BuildServiceAgentPoolResourceCollection class.
+     */
+    public BuildServiceAgentPoolResourceCollection() {
+    }
+
+    /**
      * Get the value property: Collection of build service agent pool resource.
-     *
+     * 
      * @return the value value.
      */
     public List<BuildServiceAgentPoolResourceInner> value() {
@@ -36,7 +44,7 @@ public final class BuildServiceAgentPoolResourceCollection {
 
     /**
      * Set the value property: Collection of build service agent pool resource.
-     *
+     * 
      * @param value the value value to set.
      * @return the BuildServiceAgentPoolResourceCollection object itself.
      */
@@ -46,9 +54,9 @@ public final class BuildServiceAgentPoolResourceCollection {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +64,9 @@ public final class BuildServiceAgentPoolResourceCollection {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BuildServiceAgentPoolResourceCollection object itself.
      */
@@ -69,7 +77,7 @@ public final class BuildServiceAgentPoolResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

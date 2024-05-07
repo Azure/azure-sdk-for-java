@@ -13,30 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class RunOutputCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RunOutputCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"artifactId\":\"bbjfddgmbmbexp\",\"artifactUri\":\"htqqrolfp\",\"provisioningState\":\"Canceled\"},\"id\":\"lgbquxig\",\"name\":\"yjgzjaoyfhrtxiln\",\"type\":\"rkujy\"},{\"properties\":{\"artifactId\":\"eju\",\"artifactUri\":\"qawrlyxwj\",\"provisioningState\":\"Succeeded\"},\"id\":\"bnwbxgjvtbvpyssz\",\"name\":\"nruj\",\"type\":\"guhmuouqfpr\"},{\"properties\":{\"artifactId\":\"bngui\",\"artifactUri\":\"wu\",\"provisioningState\":\"Updating\"},\"id\":\"zxufiz\",\"name\":\"ckyfih\",\"type\":\"fidfvzw\"}],\"nextLink\":\"uht\"}")
-                .toObject(RunOutputCollection.class);
-        Assertions.assertEquals("bbjfddgmbmbexp", model.value().get(0).artifactId());
-        Assertions.assertEquals("htqqrolfp", model.value().get(0).artifactUri());
-        Assertions.assertEquals("uht", model.nextLink());
+        RunOutputCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"artifactId\":\"nsez\",\"artifactUri\":\"tbzsgfyccs\",\"provisioningState\":\"Creating\"},\"id\":\"dwzjeiach\",\"name\":\"oosflnr\",\"type\":\"sfqpteehz\"},{\"properties\":{\"artifactId\":\"pyqr\",\"artifactUri\":\"z\",\"provisioningState\":\"Updating\"},\"id\":\"swjdkirso\",\"name\":\"dqxhcrmnohjtckwh\",\"type\":\"soifiyipjxsqw\"},{\"properties\":{\"artifactId\":\"jbznorc\",\"artifactUri\":\"vsnb\",\"provisioningState\":\"Failed\"},\"id\":\"bnmo\",\"name\":\"pcyshu\",\"type\":\"zafb\"},{\"properties\":{\"artifactId\":\"gpbtoqcjmklj\",\"artifactUri\":\"bqidtqaj\",\"provisioningState\":\"Creating\"},\"id\":\"pku\",\"name\":\"jkrlkhbzhfepg\",\"type\":\"gqexzlocxs\"}],\"nextLink\":\"aierhhb\"}")
+            .toObject(RunOutputCollection.class);
+        Assertions.assertEquals("nsez", model.value().get(0).artifactId());
+        Assertions.assertEquals("tbzsgfyccs", model.value().get(0).artifactUri());
+        Assertions.assertEquals("aierhhb", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RunOutputCollection model =
-            new RunOutputCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new RunOutputInner().withArtifactId("bbjfddgmbmbexp").withArtifactUri("htqqrolfp"),
-                            new RunOutputInner().withArtifactId("eju").withArtifactUri("qawrlyxwj"),
-                            new RunOutputInner().withArtifactId("bngui").withArtifactUri("wu")))
-                .withNextLink("uht");
+        RunOutputCollection model = new RunOutputCollection()
+            .withValue(Arrays.asList(new RunOutputInner().withArtifactId("nsez").withArtifactUri("tbzsgfyccs"),
+                new RunOutputInner().withArtifactId("pyqr").withArtifactUri("z"),
+                new RunOutputInner().withArtifactId("jbznorc").withArtifactUri("vsnb"),
+                new RunOutputInner().withArtifactId("gpbtoqcjmklj").withArtifactUri("bqidtqaj")))
+            .withNextLink("aierhhb");
         model = BinaryData.fromObject(model).toObject(RunOutputCollection.class);
-        Assertions.assertEquals("bbjfddgmbmbexp", model.value().get(0).artifactId());
-        Assertions.assertEquals("htqqrolfp", model.value().get(0).artifactUri());
-        Assertions.assertEquals("uht", model.nextLink());
+        Assertions.assertEquals("nsez", model.value().get(0).artifactId());
+        Assertions.assertEquals("tbzsgfyccs", model.value().get(0).artifactUri());
+        Assertions.assertEquals("aierhhb", model.nextLink());
     }
 }

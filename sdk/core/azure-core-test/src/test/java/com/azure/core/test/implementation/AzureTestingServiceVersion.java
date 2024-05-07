@@ -9,9 +9,7 @@ import com.azure.core.util.ServiceVersion;
  * Testing implementation of {@link ServiceVersion}.
  */
 public enum AzureTestingServiceVersion implements ServiceVersion {
-    ALPHA("alpha"),
-    BETA("beta"),
-    GA("ga");
+    ALPHA("alpha"), BETA("beta"), GA("ga");
 
     private final String version;
 

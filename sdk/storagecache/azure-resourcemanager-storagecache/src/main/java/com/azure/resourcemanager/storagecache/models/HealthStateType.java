@@ -15,45 +15,69 @@ import java.util.Collection;
  * given access to the encryption key in the encryption settings.
  */
 public final class HealthStateType extends ExpandableStringEnum<HealthStateType> {
-    /** Static value Unknown for HealthStateType. */
+    /**
+     * Static value Unknown for HealthStateType.
+     */
     public static final HealthStateType UNKNOWN = fromString("Unknown");
 
-    /** Static value Healthy for HealthStateType. */
+    /**
+     * Static value Healthy for HealthStateType.
+     */
     public static final HealthStateType HEALTHY = fromString("Healthy");
 
-    /** Static value Degraded for HealthStateType. */
+    /**
+     * Static value Degraded for HealthStateType.
+     */
     public static final HealthStateType DEGRADED = fromString("Degraded");
 
-    /** Static value Down for HealthStateType. */
+    /**
+     * Static value Down for HealthStateType.
+     */
     public static final HealthStateType DOWN = fromString("Down");
 
-    /** Static value Transitioning for HealthStateType. */
+    /**
+     * Static value Transitioning for HealthStateType.
+     */
     public static final HealthStateType TRANSITIONING = fromString("Transitioning");
 
-    /** Static value Stopping for HealthStateType. */
+    /**
+     * Static value Stopping for HealthStateType.
+     */
     public static final HealthStateType STOPPING = fromString("Stopping");
 
-    /** Static value Stopped for HealthStateType. */
+    /**
+     * Static value Stopped for HealthStateType.
+     */
     public static final HealthStateType STOPPED = fromString("Stopped");
 
-    /** Static value Upgrading for HealthStateType. */
+    /**
+     * Static value Upgrading for HealthStateType.
+     */
     public static final HealthStateType UPGRADING = fromString("Upgrading");
 
-    /** Static value Flushing for HealthStateType. */
+    /**
+     * Static value Flushing for HealthStateType.
+     */
     public static final HealthStateType FLUSHING = fromString("Flushing");
 
-    /** Static value WaitingForKey for HealthStateType. */
+    /**
+     * Static value WaitingForKey for HealthStateType.
+     */
     public static final HealthStateType WAITING_FOR_KEY = fromString("WaitingForKey");
 
-    /** Static value StartFailed for HealthStateType. */
+    /**
+     * Static value StartFailed for HealthStateType.
+     */
     public static final HealthStateType START_FAILED = fromString("StartFailed");
 
-    /** Static value UpgradeFailed for HealthStateType. */
+    /**
+     * Static value UpgradeFailed for HealthStateType.
+     */
     public static final HealthStateType UPGRADE_FAILED = fromString("UpgradeFailed");
 
     /**
      * Creates a new instance of HealthStateType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -62,7 +86,7 @@ public final class HealthStateType extends ExpandableStringEnum<HealthStateType>
 
     /**
      * Creates or finds a HealthStateType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HealthStateType.
      */
@@ -73,7 +97,7 @@ public final class HealthStateType extends ExpandableStringEnum<HealthStateType>
 
     /**
      * Gets known HealthStateType values.
-     *
+     * 
      * @return known HealthStateType values.
      */
     public static Collection<HealthStateType> values() {

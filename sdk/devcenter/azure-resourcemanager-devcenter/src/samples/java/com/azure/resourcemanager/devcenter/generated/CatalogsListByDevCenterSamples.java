@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-/** Samples for Catalogs ListByDevCenter. */
+/**
+ * Samples for Catalogs ListByDevCenter.
+ */
 public final class CatalogsListByDevCenterSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Catalogs_List.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_List.json
      */
     /**
      * Sample code: Catalogs_ListByDevCenter.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void catalogsListByDevCenter(com.azure.resourcemanager.devcenter.DevCenterManager manager) {

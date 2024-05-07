@@ -7,18 +7,20 @@ package com.azure.resourcemanager.streamanalytics.models;
 import com.azure.resourcemanager.streamanalytics.fluent.models.SubscriptionQuotasListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of SubscriptionQuotasListResult. */
+/**
+ * An immutable client-side representation of SubscriptionQuotasListResult.
+ */
 public interface SubscriptionQuotasListResult {
     /**
      * Gets the value property: List of quotas for the subscription in a particular region.
-     *
+     * 
      * @return the value value.
      */
     List<SubscriptionQuota> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.streamanalytics.fluent.models.SubscriptionQuotasListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     SubscriptionQuotasListResultInner innerModel();

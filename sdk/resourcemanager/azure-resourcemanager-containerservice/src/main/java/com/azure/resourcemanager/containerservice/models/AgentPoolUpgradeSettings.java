@@ -7,12 +7,14 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for upgrading an agentpool. */
+/**
+ * Settings for upgrading an agentpool.
+ */
 @Fluent
 public final class AgentPoolUpgradeSettings {
     /*
      * The maximum number or percentage of nodes that are surged during upgrade.
-     *
+     * 
      * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
      * is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
      * rounded up. If not specified, the default is 1. For more information, including best practices, see:
@@ -23,7 +25,7 @@ public final class AgentPoolUpgradeSettings {
 
     /*
      * The drain timeout for a node
-     *
+     * 
      * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
      * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
      * specified, the default is 30 minutes.
@@ -31,18 +33,29 @@ public final class AgentPoolUpgradeSettings {
     @JsonProperty(value = "drainTimeoutInMinutes")
     private Integer drainTimeoutInMinutes;
 
-    /** Creates an instance of AgentPoolUpgradeSettings class. */
+    /*
+     * The soak duration for a node
+     * 
+     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next
+     * node. If not specified, the default is 0 minutes.
+     */
+    @JsonProperty(value = "nodeSoakDurationInMinutes")
+    private Integer nodeSoakDurationInMinutes;
+
+    /**
+     * Creates an instance of AgentPoolUpgradeSettings class.
+     */
     public AgentPoolUpgradeSettings() {
     }
 
     /**
      * Get the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade.
-     *
-     * <p>This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
+     * 
+     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
      * is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
      * rounded up. If not specified, the default is 1. For more information, including best practices, see:
      * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
-     *
+     * 
      * @return the maxSurge value.
      */
     public String maxSurge() {
@@ -51,12 +64,12 @@ public final class AgentPoolUpgradeSettings {
 
     /**
      * Set the maxSurge property: The maximum number or percentage of nodes that are surged during upgrade.
-     *
-     * <p>This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
+     * 
+     * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it
      * is the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
      * rounded up. If not specified, the default is 1. For more information, including best practices, see:
      * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
-     *
+     * 
      * @param maxSurge the maxSurge value to set.
      * @return the AgentPoolUpgradeSettings object itself.
      */
@@ -67,11 +80,11 @@ public final class AgentPoolUpgradeSettings {
 
     /**
      * Get the drainTimeoutInMinutes property: The drain timeout for a node
-     *
-     * <p>The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
+     * 
+     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
      * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
      * specified, the default is 30 minutes.
-     *
+     * 
      * @return the drainTimeoutInMinutes value.
      */
     public Integer drainTimeoutInMinutes() {
@@ -80,11 +93,11 @@ public final class AgentPoolUpgradeSettings {
 
     /**
      * Set the drainTimeoutInMinutes property: The drain timeout for a node
-     *
-     * <p>The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
+     * 
+     * The amount of time (in minutes) to wait on eviction of pods and graceful termination per node. This eviction
      * wait time honors waiting on pod disruption budgets. If this time is exceeded, the upgrade fails. If not
      * specified, the default is 30 minutes.
-     *
+     * 
      * @param drainTimeoutInMinutes the drainTimeoutInMinutes value to set.
      * @return the AgentPoolUpgradeSettings object itself.
      */
@@ -94,8 +107,34 @@ public final class AgentPoolUpgradeSettings {
     }
 
     /**
+     * Get the nodeSoakDurationInMinutes property: The soak duration for a node
+     * 
+     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next
+     * node. If not specified, the default is 0 minutes.
+     * 
+     * @return the nodeSoakDurationInMinutes value.
+     */
+    public Integer nodeSoakDurationInMinutes() {
+        return this.nodeSoakDurationInMinutes;
+    }
+
+    /**
+     * Set the nodeSoakDurationInMinutes property: The soak duration for a node
+     * 
+     * The amount of time (in minutes) to wait after draining a node and before reimaging it and moving on to next
+     * node. If not specified, the default is 0 minutes.
+     * 
+     * @param nodeSoakDurationInMinutes the nodeSoakDurationInMinutes value to set.
+     * @return the AgentPoolUpgradeSettings object itself.
+     */
+    public AgentPoolUpgradeSettings withNodeSoakDurationInMinutes(Integer nodeSoakDurationInMinutes) {
+        this.nodeSoakDurationInMinutes = nodeSoakDurationInMinutes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

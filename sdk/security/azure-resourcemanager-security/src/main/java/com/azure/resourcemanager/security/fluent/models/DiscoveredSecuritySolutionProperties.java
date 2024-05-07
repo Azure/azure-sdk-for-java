@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.SecurityFamily;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DiscoveredSecuritySolutionProperties model. */
+/**
+ * The DiscoveredSecuritySolutionProperties model.
+ */
 @Fluent
 public final class DiscoveredSecuritySolutionProperties {
     /*
@@ -36,13 +38,15 @@ public final class DiscoveredSecuritySolutionProperties {
     @JsonProperty(value = "sku", required = true)
     private String sku;
 
-    /** Creates an instance of DiscoveredSecuritySolutionProperties class. */
+    /**
+     * Creates an instance of DiscoveredSecuritySolutionProperties class.
+     */
     public DiscoveredSecuritySolutionProperties() {
     }
 
     /**
      * Get the securityFamily property: The security family of the discovered solution.
-     *
+     * 
      * @return the securityFamily value.
      */
     public SecurityFamily securityFamily() {
@@ -51,7 +55,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Set the securityFamily property: The security family of the discovered solution.
-     *
+     * 
      * @param securityFamily the securityFamily value to set.
      * @return the DiscoveredSecuritySolutionProperties object itself.
      */
@@ -62,7 +66,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Get the offer property: The security solutions' image offer.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -71,7 +75,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Set the offer property: The security solutions' image offer.
-     *
+     * 
      * @param offer the offer value to set.
      * @return the DiscoveredSecuritySolutionProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Get the publisher property: The security solutions' image publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -91,7 +95,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Set the publisher property: The security solutions' image publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the DiscoveredSecuritySolutionProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Get the sku property: The security solutions' image sku.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -111,7 +115,7 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Set the sku property: The security solutions' image sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DiscoveredSecuritySolutionProperties object itself.
      */
@@ -122,33 +126,25 @@ public final class DiscoveredSecuritySolutionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (securityFamily() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property securityFamily in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property securityFamily in model DiscoveredSecuritySolutionProperties"));
         }
         if (offer() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property offer in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property offer in model DiscoveredSecuritySolutionProperties"));
         }
         if (publisher() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publisher in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property publisher in model DiscoveredSecuritySolutionProperties"));
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sku in model DiscoveredSecuritySolutionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sku in model DiscoveredSecuritySolutionProperties"));
         }
     }
 

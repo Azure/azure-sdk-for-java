@@ -12,24 +12,15 @@ import java.util.Arrays;
 public final class ComplianceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComplianceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-08-25T09:33:34Z\",\"resourceCount\":624778524,\"assessmentResult\":[]},\"id\":\"bqfatpxllrxcyjmo\",\"name\":\"dsuvarmywdmjsjqb\",\"type\":\"hhyxxrw\"},{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-02-04T08:50:40Z\",\"resourceCount\":803302222,\"assessmentResult\":[]},\"id\":\"p\",\"name\":\"xkgymareqnajxqu\",\"type\":\"jhkycub\"},{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-03-22T14:35:21Z\",\"resourceCount\":2056337569,\"assessmentResult\":[]},\"id\":\"fwqmzqalkrmn\",\"name\":\"i\",\"type\":\"pxacqqudfn\"},{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-06-13T18:20:41Z\",\"resourceCount\":1365725065,\"assessmentResult\":[]},\"id\":\"bjyvay\",\"name\":\"fimrzrtuzqogse\",\"type\":\"nevfdnw\"}],\"nextLink\":\"mewzsyyc\"}")
-                .toObject(ComplianceList.class);
+        ComplianceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-04-07T17:13:30Z\",\"resourceCount\":1406047285,\"assessmentResult\":[{\"segmentType\":\"xdcu\",\"percentage\":74.31170370830898},{\"segmentType\":\"pymzidnsezcxtbzs\",\"percentage\":7.2017595592759776}]},\"id\":\"cs\",\"name\":\"ewmdw\",\"type\":\"jeiachboosfl\"},{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-02-05T00:34:52Z\",\"resourceCount\":1593237527,\"assessmentResult\":[{\"segmentType\":\"ehzzvypyqrim\",\"percentage\":74.94883188966803}]},\"id\":\"vswjdk\",\"name\":\"rsoodqxhcrmnoh\",\"type\":\"t\"},{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-05-22T08:16:02Z\",\"resourceCount\":1289285070,\"assessmentResult\":[{\"segmentType\":\"iy\",\"percentage\":67.43541185344014},{\"segmentType\":\"qwpgrjbzn\",\"percentage\":72.581338495922},{\"segmentType\":\"vsnb\",\"percentage\":39.60468133853106},{\"segmentType\":\"nmoc\",\"percentage\":13.547693135596006}]},\"id\":\"hurzafblj\",\"name\":\"gpbtoqcjmklj\",\"type\":\"vbqid\"},{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-07-23T07:35:18Z\",\"resourceCount\":352301275,\"assessmentResult\":[{\"segmentType\":\"kudjkrlkhb\",\"percentage\":42.61178604549292}]},\"id\":\"pgzgq\",\"name\":\"xzlocxscp\",\"type\":\"ierhhbcsglummaj\"}],\"nextLink\":\"aodxo\"}")
+            .toObject(ComplianceList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComplianceList model =
-            new ComplianceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ComplianceInner(),
-                            new ComplianceInner(),
-                            new ComplianceInner(),
-                            new ComplianceInner()));
+        ComplianceList model = new ComplianceList().withValue(
+            Arrays.asList(new ComplianceInner(), new ComplianceInner(), new ComplianceInner(), new ComplianceInner()));
         model = BinaryData.fromObject(model).toObject(ComplianceList.class);
     }
 }

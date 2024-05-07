@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-/** Samples for ReplicationProtectedItems List. */
+/**
+ * Samples for ReplicationProtectedItems List.
+ */
 public final class ReplicationProtectedItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * /ReplicationProtectedItems_List.json
      */
     /**
      * Sample code: Gets the list of replication protected items.
-     *
+     * 
      * @param manager Entry point to SiteRecoveryManager.
      */
     public static void getsTheListOfReplicationProtectedItems(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager
-            .replicationProtectedItems()
-            .list("vault1", "resourceGroupPS1", null, null, com.azure.core.util.Context.NONE);
+        manager.replicationProtectedItems().list("vault1", "resourceGroupPS1", null, null,
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,9 @@ import java.util.Objects;
  * This represents Message id. Amqp specification support message id in various types. This class only implements
  * {@link String} representation at present.
  *
- * <p><strong>Create and retrieve message id </strong></p>
+ * <p>
+ * <strong>Create and retrieve message id </strong>
+ * </p>
  * <!-- src_embed com.azure.core.amqp.models.AmqpMessageId.createAndGet -->
  * <pre>
  * AmqpMessageId messageId = new AmqpMessageId&#40;&quot;my-message-id&quot;&#41;;
@@ -19,8 +21,9 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.core.amqp.models.AmqpMessageId.createAndGet -->
  *
- * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-string" target="_blank">
- *     String </a>
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-string"
+ * target="_blank">
+ * String </a>
  */
 public final class AmqpMessageId {
     private final String messageId;

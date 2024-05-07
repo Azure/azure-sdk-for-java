@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Name availability result payload. */
+/**
+ * Name availability result payload.
+ */
 @Fluent
 public final class NameAvailability {
     /*
@@ -29,8 +31,14 @@ public final class NameAvailability {
     private String message;
 
     /**
+     * Creates an instance of NameAvailability class.
+     */
+    public NameAvailability() {
+    }
+
+    /**
      * Get the nameAvailable property: Indicates whether the name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -39,7 +47,7 @@ public final class NameAvailability {
 
     /**
      * Set the nameAvailable property: Indicates whether the name is available.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the NameAvailability object itself.
      */
@@ -50,7 +58,7 @@ public final class NameAvailability {
 
     /**
      * Get the reason property: Reason why the name is not available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -59,7 +67,7 @@ public final class NameAvailability {
 
     /**
      * Set the reason property: Reason why the name is not available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the NameAvailability object itself.
      */
@@ -70,7 +78,7 @@ public final class NameAvailability {
 
     /**
      * Get the message property: Message why the name is not available.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -79,7 +87,7 @@ public final class NameAvailability {
 
     /**
      * Set the message property: Message why the name is not available.
-     *
+     * 
      * @param message the message value to set.
      * @return the NameAvailability object itself.
      */
@@ -90,7 +98,7 @@ public final class NameAvailability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

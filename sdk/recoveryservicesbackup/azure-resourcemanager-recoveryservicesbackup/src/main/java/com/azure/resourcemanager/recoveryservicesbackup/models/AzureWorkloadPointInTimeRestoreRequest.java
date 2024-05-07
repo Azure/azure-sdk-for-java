@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** AzureWorkload SAP Hana -specific restore. Specifically for PointInTime/Log restore. */
+/**
+ * AzureWorkload SAP Hana -specific restore. Specifically for PointInTime/Log restore.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureWorkloadPointInTimeRestoreRequest")
 @Fluent
@@ -22,13 +24,15 @@ public final class AzureWorkloadPointInTimeRestoreRequest extends AzureWorkloadR
     @JsonProperty(value = "pointInTime")
     private OffsetDateTime pointInTime;
 
-    /** Creates an instance of AzureWorkloadPointInTimeRestoreRequest class. */
+    /**
+     * Creates an instance of AzureWorkloadPointInTimeRestoreRequest class.
+     */
     public AzureWorkloadPointInTimeRestoreRequest() {
     }
 
     /**
      * Get the pointInTime property: PointInTime value.
-     *
+     * 
      * @return the pointInTime value.
      */
     public OffsetDateTime pointInTime() {
@@ -37,7 +41,7 @@ public final class AzureWorkloadPointInTimeRestoreRequest extends AzureWorkloadR
 
     /**
      * Set the pointInTime property: PointInTime value.
-     *
+     * 
      * @param pointInTime the pointInTime value to set.
      * @return the AzureWorkloadPointInTimeRestoreRequest object itself.
      */
@@ -46,42 +50,83 @@ public final class AzureWorkloadPointInTimeRestoreRequest extends AzureWorkloadR
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withRecoveryType(RecoveryType recoveryType) {
         super.withRecoveryType(recoveryType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withPropertyBag(Map<String, String> propertyBag) {
         super.withPropertyBag(propertyBag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withTargetInfo(TargetRestoreInfo targetInfo) {
         super.withTargetInfo(targetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadPointInTimeRestoreRequest withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadPointInTimeRestoreRequest
+        withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails userAssignedManagedIdentityDetails) {
+        super.withUserAssignedManagedIdentityDetails(userAssignedManagedIdentityDetails);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadPointInTimeRestoreRequest
+        withSnapshotRestoreParameters(SnapshotRestoreParameters snapshotRestoreParameters) {
+        super.withSnapshotRestoreParameters(snapshotRestoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadPointInTimeRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
@@ -90,7 +135,7 @@ public final class AzureWorkloadPointInTimeRestoreRequest extends AzureWorkloadR
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -21,29 +21,26 @@ public final class LocationsImpl implements Locations {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public LocationsImpl(
-        LocationsClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public LocationsImpl(LocationsClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<AscLocation> list() {
         PagedIterable<AscLocationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AscLocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AscLocationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AscLocation> list(Context context) {
         PagedIterable<AscLocationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AscLocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AscLocationImpl(inner1, this.manager()));
     }
 
     public Response<AscLocation> getWithResponse(String ascLocation, Context context) {
         Response<AscLocationInner> inner = this.serviceClient().getWithResponse(ascLocation, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AscLocationImpl(inner.getValue(), this.manager()));
         } else {
             return null;

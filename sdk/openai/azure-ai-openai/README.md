@@ -21,6 +21,7 @@ For concrete examples you can have a look at the following links. Some of the mo
 * [Image Generation sample](#image-generation "Image Generation")
 * [Audio Transcription sample](#audio-transcription "Audio Transcription")
 * [Audio Translation sample](#audio-translation "Audio Translation")
+* [Text To Speech sample](#text-to-speech "Text To Speech")
 
 If you want to see the full code for these snippets check out our [samples folder][samples_folder].
 
@@ -42,7 +43,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.6</version>
+    <version>1.0.0-beta.9</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -104,7 +105,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.4</version>
+    <version>1.12.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -233,26 +234,23 @@ chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
 chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
 chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
 
-IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelName}",
-    new ChatCompletionsOptions(chatMessages));
-
-chatCompletionsStream
-    .stream()
-    // Remove .skip(1) when using Non-Azure OpenAI API
-    // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-    // TODO: remove .skip(1) when service fix the issue.
-    .skip(1)
-    .forEach(chatCompletions -> {
-        ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
-        if (delta.getRole() != null) {
-            System.out.println("Role = " + delta.getRole());
-        }
-        if (delta.getContent() != null) {
-            System.out.print(delta.getContent());
-        }
-    });
+client.getChatCompletionsStream("{deploymentOrModelName}", new ChatCompletionsOptions(chatMessages))
+        .forEach(chatCompletions -> {
+            if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
+                return;
+            }
+            ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
+            if (delta.getRole() != null) {
+                System.out.println("Role = " + delta.getRole());
+            }
+            if (delta.getContent() != null) {
+                String content = delta.getContent();
+                System.out.print(content);
+            }
+        });
 ```
-For a complete sample example, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
+
+To compute tokens in streaming chat completions, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
 
 ### Text embeddings
 
@@ -264,7 +262,7 @@ Embeddings embeddings = client.getEmbeddings("{deploymentOrModelName}", embeddin
 
 for (EmbeddingItem item : embeddings.getData()) {
     System.out.printf("Index: %d.%n", item.getPromptIndex());
-    for (Double embedding : item.getEmbedding()) {
+    for (Float embedding : item.getEmbedding()) {
         System.out.printf("%f;", embedding);
     }
 }
@@ -403,6 +401,23 @@ if (choice.getFinishReason() == CompletionsFinishReason.TOOL_CALLS) {
 }
 ```
 
+### Text To Speech
+
+The OpenAI service starts supporting `text to speech` with the introduction of `tts` models.
+The following code snippet shows how to use the service to convert text to speech.
+```java readme-sample-textToSpeech
+String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+SpeechGenerationOptions options = new SpeechGenerationOptions(
+        "Today is a wonderful day to build something people love!",
+        SpeechVoice.ALLOY);
+BinaryData speech = client.generateSpeechFromText(deploymentOrModelId, options);
+// Checkout your generated speech in the file system.
+Path path = Paths.get("{your-local-file-path}/speech.wav");
+Files.write(path, speech.toBytes());
+```
+See sample [Text to Speech][sample_text_to_speech] for a complete sample.
+Please refer to the service documentation for a conceptual discussion of [Text to Speech][microsoft_docs_text_to_speech].
+
 ## Troubleshooting
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
@@ -441,10 +456,12 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_subscription]: https://azure.microsoft.com/free/
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jtokkit]: https://github.com/knuddelsgmbh/jtokkit
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
 [microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings
 [microsoft_docs_whisper_model]: https://learn.microsoft.com/azure/ai-services/openai/whisper-quickstart?tabs=command-line
+[microsoft_docs_text_to_speech]: https://learn.microsoft.com/azure/ai-services/openai/text-to-speech-quickstart?tabs=command-line
 [non_azure_openai_authentication]: https://platform.openai.com/docs/api-reference/authentication
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://azure.microsoft.com/services/
@@ -464,6 +481,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_audio_translation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranslationSample.java
 [sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionSample.java
 [sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallSample.java
+[sample_text_to_speech]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/TextToSpeechSample.java
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java

@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MobilityServiceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MobilityServiceUpdate model =
-            BinaryData
-                .fromString("{\"version\":\"cdsgxceluji\",\"rebootStatus\":\"lluunxh\",\"osType\":\"lfxzfwuge\"}")
-                .toObject(MobilityServiceUpdate.class);
+        MobilityServiceUpdate model = BinaryData
+            .fromString("{\"version\":\"cdsgxceluji\",\"rebootStatus\":\"lluunxh\",\"osType\":\"lfxzfwuge\"}")
+            .toObject(MobilityServiceUpdate.class);
         Assertions.assertEquals("cdsgxceluji", model.version());
         Assertions.assertEquals("lluunxh", model.rebootStatus());
         Assertions.assertEquals("lfxzfwuge", model.osType());
@@ -22,8 +21,8 @@ public final class MobilityServiceUpdateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MobilityServiceUpdate model =
-            new MobilityServiceUpdate().withVersion("cdsgxceluji").withRebootStatus("lluunxh").withOsType("lfxzfwuge");
+        MobilityServiceUpdate model = new MobilityServiceUpdate().withVersion("cdsgxceluji").withRebootStatus("lluunxh")
+            .withOsType("lfxzfwuge");
         model = BinaryData.fromObject(model).toObject(MobilityServiceUpdate.class);
         Assertions.assertEquals("cdsgxceluji", model.version());
         Assertions.assertEquals("lluunxh", model.rebootStatus());

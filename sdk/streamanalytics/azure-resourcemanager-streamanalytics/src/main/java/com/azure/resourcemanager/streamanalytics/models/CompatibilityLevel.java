@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CompatibilityLevel. */
+/**
+ * Controls certain runtime behaviors of the streaming job.
+ */
 public final class CompatibilityLevel extends ExpandableStringEnum<CompatibilityLevel> {
-    /** Static value 1.0 for CompatibilityLevel. */
+    /**
+     * Static value 1.0 for CompatibilityLevel.
+     */
     public static final CompatibilityLevel ONE_ZERO = fromString("1.0");
 
-    /** Static value 1.2 for CompatibilityLevel. */
+    /**
+     * Static value 1.2 for CompatibilityLevel.
+     */
     public static final CompatibilityLevel ONE_TWO = fromString("1.2");
 
     /**
+     * Creates a new instance of CompatibilityLevel value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CompatibilityLevel() {
+    }
+
+    /**
      * Creates or finds a CompatibilityLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CompatibilityLevel.
      */
@@ -27,7 +42,11 @@ public final class CompatibilityLevel extends ExpandableStringEnum<Compatibility
         return fromString(name, CompatibilityLevel.class);
     }
 
-    /** @return known CompatibilityLevel values. */
+    /**
+     * Gets known CompatibilityLevel values.
+     * 
+     * @return known CompatibilityLevel values.
+     */
     public static Collection<CompatibilityLevel> values() {
         return values(CompatibilityLevel.class);
     }

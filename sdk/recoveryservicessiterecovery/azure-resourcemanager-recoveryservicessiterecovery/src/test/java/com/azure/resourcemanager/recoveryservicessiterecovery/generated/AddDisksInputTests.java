@@ -12,19 +12,16 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.AddDisksPro
 public final class AddDisksInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddDisksInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"AddDisksProviderSpecificInput\"}}}")
-                .toObject(AddDisksInput.class);
+        AddDisksInput model = BinaryData
+            .fromString(
+                "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"AddDisksProviderSpecificInput\"}}}")
+            .toObject(AddDisksInput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddDisksInput model =
-            new AddDisksInput()
-                .withProperties(
-                    new AddDisksInputProperties().withProviderSpecificDetails(new AddDisksProviderSpecificInput()));
+        AddDisksInput model = new AddDisksInput().withProperties(
+            new AddDisksInputProperties().withProviderSpecificDetails(new AddDisksProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(AddDisksInput.class);
     }
 }

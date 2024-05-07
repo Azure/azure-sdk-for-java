@@ -10,9 +10,8 @@ import com.azure.resourcemanager.security.models.GcpOrganizationalData;
 public final class GcpOrganizationalDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GcpOrganizationalData model =
-            BinaryData
-                .fromString("{\"organizationMembershipType\":\"GcpOrganizationalData\"}")
+        GcpOrganizationalData model
+            = BinaryData.fromString("{\"organizationMembershipType\":\"GcpOrganizationalData\"}")
                 .toObject(GcpOrganizationalData.class);
     }
 

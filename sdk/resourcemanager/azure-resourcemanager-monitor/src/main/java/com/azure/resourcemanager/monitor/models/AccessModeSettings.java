@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties that define the scope private link mode settings. */
+/**
+ * Properties that define the scope private link mode settings.
+ */
 @Fluent
 public final class AccessModeSettings {
     /*
@@ -34,7 +36,9 @@ public final class AccessModeSettings {
     @JsonProperty(value = "exclusions")
     private List<AccessModeSettingsExclusion> exclusions;
 
-    /** Creates an instance of AccessModeSettings class. */
+    /**
+     * Creates an instance of AccessModeSettings class.
+     */
     public AccessModeSettings() {
     }
 
@@ -42,7 +46,7 @@ public final class AccessModeSettings {
      * Get the queryAccessMode property: Specifies the default access mode of queries through associated private
      * endpoints in scope. If not specified default value is 'Open'. You can override this default setting for a
      * specific private endpoint connection by adding an exclusion in the 'exclusions' array.
-     *
+     * 
      * @return the queryAccessMode value.
      */
     public AccessMode queryAccessMode() {
@@ -53,7 +57,7 @@ public final class AccessModeSettings {
      * Set the queryAccessMode property: Specifies the default access mode of queries through associated private
      * endpoints in scope. If not specified default value is 'Open'. You can override this default setting for a
      * specific private endpoint connection by adding an exclusion in the 'exclusions' array.
-     *
+     * 
      * @param queryAccessMode the queryAccessMode value to set.
      * @return the AccessModeSettings object itself.
      */
@@ -66,7 +70,7 @@ public final class AccessModeSettings {
      * Get the ingestionAccessMode property: Specifies the default access mode of ingestion through associated private
      * endpoints in scope. If not specified default value is 'Open'. You can override this default setting for a
      * specific private endpoint connection by adding an exclusion in the 'exclusions' array.
-     *
+     * 
      * @return the ingestionAccessMode value.
      */
     public AccessMode ingestionAccessMode() {
@@ -77,7 +81,7 @@ public final class AccessModeSettings {
      * Set the ingestionAccessMode property: Specifies the default access mode of ingestion through associated private
      * endpoints in scope. If not specified default value is 'Open'. You can override this default setting for a
      * specific private endpoint connection by adding an exclusion in the 'exclusions' array.
-     *
+     * 
      * @param ingestionAccessMode the ingestionAccessMode value to set.
      * @return the AccessModeSettings object itself.
      */
@@ -89,7 +93,7 @@ public final class AccessModeSettings {
     /**
      * Get the exclusions property: List of exclusions that override the default access mode settings for specific
      * private endpoint connections.
-     *
+     * 
      * @return the exclusions value.
      */
     public List<AccessModeSettingsExclusion> exclusions() {
@@ -99,7 +103,7 @@ public final class AccessModeSettings {
     /**
      * Set the exclusions property: List of exclusions that override the default access mode settings for specific
      * private endpoint connections.
-     *
+     * 
      * @param exclusions the exclusions value to set.
      * @return the AccessModeSettings object itself.
      */
@@ -110,21 +114,17 @@ public final class AccessModeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (queryAccessMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property queryAccessMode in model AccessModeSettings"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property queryAccessMode in model AccessModeSettings"));
         }
         if (ingestionAccessMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ingestionAccessMode in model AccessModeSettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ingestionAccessMode in model AccessModeSettings"));
         }
         if (exclusions() != null) {
             exclusions().forEach(e -> e.validate());

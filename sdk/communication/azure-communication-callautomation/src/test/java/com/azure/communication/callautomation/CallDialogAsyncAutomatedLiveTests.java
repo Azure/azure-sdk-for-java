@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CallDialogAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
 
-    @Disabled("Disabled for now until live test fixed against live service")
     @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -34,6 +33,7 @@ public class CallDialogAsyncAutomatedLiveTests extends CallAutomationAutomatedLi
         named = "SKIP_LIVE_TEST",
         matches = "(?i)(true)",
         disabledReason = "Requires environment to be set up")
+    @Disabled("Disabling this for now as there is service issue with this test case")
     public void dialogActionInACallAutomatedTest(HttpClient httpClient) {
         /* Test case:Start and Stop Dialog on ACS to ACS call
          * 1. create a CallAutomationClient.

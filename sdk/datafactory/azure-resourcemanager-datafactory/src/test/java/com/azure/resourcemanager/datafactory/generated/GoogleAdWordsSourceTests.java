@@ -11,16 +11,19 @@ public final class GoogleAdWordsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleAdWordsSource model = BinaryData.fromString(
-            "{\"type\":\"GoogleAdWordsSource\",\"query\":\"datavktuxwzvlhibri\",\"queryTimeout\":\"datagwuv\",\"additionalColumns\":\"dataymoqv\",\"sourceRetryCount\":\"datakrynziudmhed\",\"sourceRetryWait\":\"dataygwagvuioxjwztr\",\"maxConcurrentConnections\":\"datatll\",\"disableMetricsCollection\":\"datacv\",\"\":{\"bt\":\"databccffsbz\",\"xoudjcttavbc\":\"dataxqle\",\"erjwhonnqudexnic\":\"datapzvqzml\"}}")
+            "{\"type\":\"ty\",\"query\":\"dataese\",\"queryTimeout\":\"dataetackjuwkkva\",\"additionalColumns\":\"datafjuefjbmowqwodmd\",\"sourceRetryCount\":\"datajqwahciapvcsw\",\"sourceRetryWait\":\"datarpcpg\",\"maxConcurrentConnections\":\"datatftaqmrimletjvz\",\"disableMetricsCollection\":\"datafgabiblhzfgl\",\"\":{\"pwri\":\"datagszx\",\"haskuiosl\":\"datakqnbiiandhsjp\",\"rcx\":\"datachcuhvdrfh\"}}")
             .toObject(GoogleAdWordsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleAdWordsSource model = new GoogleAdWordsSource().withSourceRetryCount("datakrynziudmhed")
-            .withSourceRetryWait("dataygwagvuioxjwztr").withMaxConcurrentConnections("datatll")
-            .withDisableMetricsCollection("datacv").withQueryTimeout("datagwuv").withAdditionalColumns("dataymoqv")
-            .withQuery("datavktuxwzvlhibri");
+        GoogleAdWordsSource model = new GoogleAdWordsSource().withSourceRetryCount("datajqwahciapvcsw")
+            .withSourceRetryWait("datarpcpg")
+            .withMaxConcurrentConnections("datatftaqmrimletjvz")
+            .withDisableMetricsCollection("datafgabiblhzfgl")
+            .withQueryTimeout("dataetackjuwkkva")
+            .withAdditionalColumns("datafjuefjbmowqwodmd")
+            .withQuery("dataese");
         model = BinaryData.fromObject(model).toObject(GoogleAdWordsSource.class);
     }
 }

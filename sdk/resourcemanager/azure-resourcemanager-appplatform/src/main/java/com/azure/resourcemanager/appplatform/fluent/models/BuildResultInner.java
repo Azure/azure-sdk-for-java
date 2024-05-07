@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.BuildResultProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Build result resource payload. */
+/**
+ * Build result resource payload.
+ */
 @Fluent
 public final class BuildResultInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class BuildResultInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of BuildResultInner class.
+     */
+    public BuildResultInner() {
+    }
+
+    /**
      * Get the properties property: Properties of the build result resource.
-     *
+     * 
      * @return the properties value.
      */
     public BuildResultProperties properties() {
@@ -36,7 +44,7 @@ public final class BuildResultInner extends ProxyResource {
 
     /**
      * Set the properties property: Properties of the build result resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BuildResultInner object itself.
      */
@@ -47,7 +55,7 @@ public final class BuildResultInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class BuildResultInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationJobs. */
+/**
+ * Resource collection API of ReplicationJobs.
+ */
 public interface ReplicationJobs {
     /**
      * Gets the list of jobs.
-     *
-     * <p>Gets the list of Azure Site Recovery Jobs for the vault.
-     *
+     * 
+     * Gets the list of Azure Site Recovery Jobs for the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface ReplicationJobs {
 
     /**
      * Gets the list of jobs.
-     *
-     * <p>Gets the list of Azure Site Recovery Jobs for the vault.
-     *
+     * 
+     * Gets the list of Azure Site Recovery Jobs for the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -42,9 +44,9 @@ public interface ReplicationJobs {
 
     /**
      * Gets the job details.
-     *
-     * <p>Get the details of an Azure Site Recovery job.
-     *
+     * 
+     * Get the details of an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -58,9 +60,9 @@ public interface ReplicationJobs {
 
     /**
      * Gets the job details.
-     *
-     * <p>Get the details of an Azure Site Recovery job.
-     *
+     * 
+     * Get the details of an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -73,9 +75,9 @@ public interface ReplicationJobs {
 
     /**
      * Cancels the specified job.
-     *
-     * <p>The operation to cancel an Azure Site Recovery job.
-     *
+     * 
+     * The operation to cancel an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -88,9 +90,9 @@ public interface ReplicationJobs {
 
     /**
      * Cancels the specified job.
-     *
-     * <p>The operation to cancel an Azure Site Recovery job.
-     *
+     * 
+     * The operation to cancel an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -104,9 +106,9 @@ public interface ReplicationJobs {
 
     /**
      * Restarts the specified job.
-     *
-     * <p>The operation to restart an Azure Site Recovery job.
-     *
+     * 
+     * The operation to restart an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -119,9 +121,9 @@ public interface ReplicationJobs {
 
     /**
      * Restarts the specified job.
-     *
-     * <p>The operation to restart an Azure Site Recovery job.
-     *
+     * 
+     * The operation to restart an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -135,9 +137,9 @@ public interface ReplicationJobs {
 
     /**
      * Resumes the specified job.
-     *
-     * <p>The operation to resume an Azure Site Recovery job.
-     *
+     * 
+     * The operation to resume an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -151,9 +153,9 @@ public interface ReplicationJobs {
 
     /**
      * Resumes the specified job.
-     *
-     * <p>The operation to resume an Azure Site Recovery job.
-     *
+     * 
+     * The operation to resume an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -164,18 +166,14 @@ public interface ReplicationJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job details.
      */
-    Job resume(
-        String resourceName,
-        String resourceGroupName,
-        String jobName,
-        ResumeJobParams resumeJobParams,
+    Job resume(String resourceName, String resourceGroupName, String jobName, ResumeJobParams resumeJobParams,
         Context context);
 
     /**
      * Exports the details of the Azure Site Recovery jobs of the vault.
-     *
-     * <p>The operation to export the details of the Azure Site Recovery jobs of the vault.
-     *
+     * 
+     * The operation to export the details of the Azure Site Recovery jobs of the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobQueryParameter job query filter.
@@ -188,9 +186,9 @@ public interface ReplicationJobs {
 
     /**
      * Exports the details of the Azure Site Recovery jobs of the vault.
-     *
-     * <p>The operation to export the details of the Azure Site Recovery jobs of the vault.
-     *
+     * 
+     * The operation to export the details of the Azure Site Recovery jobs of the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobQueryParameter job query filter.

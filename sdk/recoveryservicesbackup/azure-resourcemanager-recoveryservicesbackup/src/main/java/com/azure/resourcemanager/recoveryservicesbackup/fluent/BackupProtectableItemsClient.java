@@ -10,12 +10,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.WorkloadProtectableItemResourceInner;
 
-/** An instance of this class provides access to all the operations defined in BackupProtectableItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupProtectableItemsClient.
+ */
 public interface BackupProtectableItemsClient {
     /**
      * Provides a pageable list of protectable objects within your subscription according to the query filter and the
      * pagination parameters.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface BackupProtectableItemsClient {
     /**
      * Provides a pageable list of protectable objects within your subscription according to the query filter and the
      * pagination parameters.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -41,6 +43,6 @@ public interface BackupProtectableItemsClient {
      * @return list of WorkloadProtectableItem resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadProtectableItemResourceInner> list(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context);
+    PagedIterable<WorkloadProtectableItemResourceInner> list(String vaultName, String resourceGroupName, String filter,
+        String skipToken, Context context);
 }

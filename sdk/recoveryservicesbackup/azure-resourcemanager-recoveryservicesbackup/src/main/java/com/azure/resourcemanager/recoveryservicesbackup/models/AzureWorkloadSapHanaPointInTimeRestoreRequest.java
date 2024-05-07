@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** AzureWorkload SAP Hana -specific restore. Specifically for PointInTime/Log restore. */
+/**
+ * AzureWorkload SAP Hana -specific restore. Specifically for PointInTime/Log restore.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -22,8 +24,7 @@ import java.util.Map;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "AzureWorkloadSAPHanaPointInTimeRestoreWithRehydrateRequest",
-        value = AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest.class)
-})
+        value = AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest.class) })
 @Fluent
 public class AzureWorkloadSapHanaPointInTimeRestoreRequest extends AzureWorkloadSapHanaRestoreRequest {
     /*
@@ -32,13 +33,15 @@ public class AzureWorkloadSapHanaPointInTimeRestoreRequest extends AzureWorkload
     @JsonProperty(value = "pointInTime")
     private OffsetDateTime pointInTime;
 
-    /** Creates an instance of AzureWorkloadSapHanaPointInTimeRestoreRequest class. */
+    /**
+     * Creates an instance of AzureWorkloadSapHanaPointInTimeRestoreRequest class.
+     */
     public AzureWorkloadSapHanaPointInTimeRestoreRequest() {
     }
 
     /**
      * Get the pointInTime property: PointInTime value.
-     *
+     * 
      * @return the pointInTime value.
      */
     public OffsetDateTime pointInTime() {
@@ -47,7 +50,7 @@ public class AzureWorkloadSapHanaPointInTimeRestoreRequest extends AzureWorkload
 
     /**
      * Set the pointInTime property: PointInTime value.
-     *
+     * 
      * @param pointInTime the pointInTime value to set.
      * @return the AzureWorkloadSapHanaPointInTimeRestoreRequest object itself.
      */
@@ -56,42 +59,83 @@ public class AzureWorkloadSapHanaPointInTimeRestoreRequest extends AzureWorkload
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreRequest withRecoveryType(RecoveryType recoveryType) {
         super.withRecoveryType(recoveryType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreRequest withPropertyBag(Map<String, String> propertyBag) {
         super.withPropertyBag(propertyBag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreRequest withTargetInfo(TargetRestoreInfo targetInfo) {
         super.withTargetInfo(targetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaPointInTimeRestoreRequest withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaPointInTimeRestoreRequest
+        withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails userAssignedManagedIdentityDetails) {
+        super.withUserAssignedManagedIdentityDetails(userAssignedManagedIdentityDetails);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaPointInTimeRestoreRequest
+        withSnapshotRestoreParameters(SnapshotRestoreParameters snapshotRestoreParameters) {
+        super.withSnapshotRestoreParameters(snapshotRestoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSapHanaPointInTimeRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
@@ -100,7 +144,7 @@ public class AzureWorkloadSapHanaPointInTimeRestoreRequest extends AzureWorkload
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

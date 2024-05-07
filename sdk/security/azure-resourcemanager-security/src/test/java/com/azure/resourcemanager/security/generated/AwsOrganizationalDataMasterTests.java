@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AwsOrganizationalDataMasterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AwsOrganizationalDataMaster model =
-            BinaryData
-                .fromString(
-                    "{\"organizationMembershipType\":\"Organization\",\"stacksetName\":\"rvfyifkdsch\",\"excludedAccountIds\":[\"fict\",\"kjjwgcwn\",\"hbkgfyrt\",\"gm\"]}")
-                .toObject(AwsOrganizationalDataMaster.class);
-        Assertions.assertEquals("rvfyifkdsch", model.stacksetName());
-        Assertions.assertEquals("fict", model.excludedAccountIds().get(0));
+        AwsOrganizationalDataMaster model = BinaryData.fromString(
+            "{\"organizationMembershipType\":\"Organization\",\"stacksetName\":\"aeo\",\"excludedAccountIds\":[\"jtfeyvkbdgddkr\",\"dccxbeuuqu\"]}")
+            .toObject(AwsOrganizationalDataMaster.class);
+        Assertions.assertEquals("aeo", model.stacksetName());
+        Assertions.assertEquals("jtfeyvkbdgddkr", model.excludedAccountIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AwsOrganizationalDataMaster model =
-            new AwsOrganizationalDataMaster()
-                .withStacksetName("rvfyifkdsch")
-                .withExcludedAccountIds(Arrays.asList("fict", "kjjwgcwn", "hbkgfyrt", "gm"));
+        AwsOrganizationalDataMaster model = new AwsOrganizationalDataMaster().withStacksetName("aeo")
+            .withExcludedAccountIds(Arrays.asList("jtfeyvkbdgddkr", "dccxbeuuqu"));
         model = BinaryData.fromObject(model).toObject(AwsOrganizationalDataMaster.class);
-        Assertions.assertEquals("rvfyifkdsch", model.stacksetName());
-        Assertions.assertEquals("fict", model.excludedAccountIds().get(0));
+        Assertions.assertEquals("aeo", model.stacksetName());
+        Assertions.assertEquals("jtfeyvkbdgddkr", model.excludedAccountIds().get(0));
     }
 }

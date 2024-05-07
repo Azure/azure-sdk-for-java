@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.ConfigurationServiceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application Configuration Service resource. */
+/**
+ * Application Configuration Service resource.
+ */
 @Fluent
 public final class ConfigurationServiceResourceInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class ConfigurationServiceResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of ConfigurationServiceResourceInner class.
+     */
+    public ConfigurationServiceResourceInner() {
+    }
+
+    /**
      * Get the properties property: Application Configuration Service properties payload.
-     *
+     * 
      * @return the properties value.
      */
     public ConfigurationServiceProperties properties() {
@@ -36,7 +44,7 @@ public final class ConfigurationServiceResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: Application Configuration Service properties payload.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ConfigurationServiceResourceInner object itself.
      */
@@ -47,7 +55,7 @@ public final class ConfigurationServiceResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class ConfigurationServiceResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

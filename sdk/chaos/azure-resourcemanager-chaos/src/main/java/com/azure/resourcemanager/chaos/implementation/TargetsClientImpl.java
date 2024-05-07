@@ -33,17 +33,23 @@ import com.azure.resourcemanager.chaos.fluent.models.TargetInner;
 import com.azure.resourcemanager.chaos.models.TargetListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TargetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TargetsClient.
+ */
 public final class TargetsClientImpl implements TargetsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TargetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ChaosManagementClientImpl client;
 
     /**
      * Initializes an instance of TargetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TargetsClientImpl(ChaosManagementClientImpl client) {
@@ -58,89 +64,66 @@ public final class TargetsClientImpl implements TargetsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ChaosManagementClien")
     public interface TargetsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TargetListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<TargetListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("parentProviderNamespace") String parentProviderNamespace,
             @PathParam("parentResourceType") String parentResourceType,
             @PathParam("parentResourceName") String parentResourceName,
-            @QueryParam("continuationToken") String continuationToken,
-            @HeaderParam("Accept") String accept,
+            @QueryParam("continuationToken") String continuationToken, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TargetInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<TargetInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("parentProviderNamespace") String parentProviderNamespace,
+            @PathParam("parentResourceType") String parentResourceType,
+            @PathParam("parentResourceName") String parentResourceName, @PathParam("targetName") String targetName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("parentProviderNamespace") String parentProviderNamespace,
             @PathParam("parentResourceType") String parentResourceType,
-            @PathParam("parentResourceName") String parentResourceName,
-            @PathParam("targetName") String targetName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("parentResourceName") String parentResourceName, @PathParam("targetName") String targetName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<TargetInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("parentProviderNamespace") String parentProviderNamespace,
             @PathParam("parentResourceType") String parentResourceType,
-            @PathParam("parentResourceName") String parentResourceName,
-            @PathParam("targetName") String targetName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("parentResourceName") String parentResourceName, @PathParam("targetName") String targetName,
+            @BodyParam("application/json") TargetInner target, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TargetInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("parentProviderNamespace") String parentProviderNamespace,
-            @PathParam("parentResourceType") String parentResourceType,
-            @PathParam("parentResourceName") String parentResourceName,
-            @PathParam("targetName") String targetName,
-            @BodyParam("application/json") TargetInner target,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TargetListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TargetListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a list of Target resources that extend a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -150,35 +133,27 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Target resources that extend a tracked regional resource along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TargetInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
+    private Mono<PagedResponse<TargetInner>> listSinglePageAsync(String resourceGroupName,
+        String parentProviderNamespace, String parentResourceType, String parentResourceName,
         String continuationToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (parentProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
         }
         if (parentResourceType == null) {
             return Mono
@@ -190,35 +165,17 @@ public final class TargetsClientImpl implements TargetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            parentProviderNamespace,
-                            parentResourceType,
-                            parentResourceName,
-                            continuationToken,
-                            accept,
-                            context))
-            .<PagedResponse<TargetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
+                parentResourceName, continuationToken, accept, context))
+            .<PagedResponse<TargetInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a list of Target resources that extend a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -229,36 +186,27 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Target resources that extend a tracked regional resource along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TargetInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String continuationToken,
+    private Mono<PagedResponse<TargetInner>> listSinglePageAsync(String resourceGroupName,
+        String parentProviderNamespace, String parentResourceType, String parentResourceName, String continuationToken,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (parentProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
         }
         if (parentResourceType == null) {
             return Mono
@@ -271,31 +219,16 @@ public final class TargetsClientImpl implements TargetsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                parentProviderNamespace,
-                parentResourceType,
-                parentResourceName,
-                continuationToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, continuationToken,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get a list of Target resources that extend a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -304,30 +237,19 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Target resources that extend a tracked regional resource as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of Target resources that extend a tracked regional resource as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TargetInner> listAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String continuationToken) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    resourceGroupName,
-                    parentProviderNamespace,
-                    parentResourceType,
-                    parentResourceName,
-                    continuationToken),
-            nextLink -> listNextSinglePageAsync(nextLink));
+    private PagedFlux<TargetInner> listAsync(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String continuationToken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, continuationToken), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get a list of Target resources that extend a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -335,30 +257,20 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Target resources that extend a tracked regional resource as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of Target resources that extend a tracked regional resource as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TargetInner> listAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName) {
+    private PagedFlux<TargetInner> listAsync(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName) {
         final String continuationToken = null;
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    resourceGroupName,
-                    parentProviderNamespace,
-                    parentResourceType,
-                    parentResourceName,
-                    continuationToken),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, continuationToken), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get a list of Target resources that extend a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -368,32 +280,21 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Target resources that extend a tracked regional resource as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of Target resources that extend a tracked regional resource as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TargetInner> listAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String continuationToken,
-        Context context) {
+    private PagedFlux<TargetInner> listAsync(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String continuationToken, Context context) {
         return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    resourceGroupName,
-                    parentProviderNamespace,
-                    parentResourceType,
-                    parentResourceName,
-                    continuationToken,
-                    context),
+            () -> listSinglePageAsync(resourceGroupName, parentProviderNamespace, parentResourceType,
+                parentResourceName, continuationToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of Target resources that extend a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -401,24 +302,20 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Target resources that extend a tracked regional resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Target resources that extend a tracked regional resource as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TargetInner> list(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName) {
+    public PagedIterable<TargetInner> list(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName) {
         final String continuationToken = null;
-        return new PagedIterable<>(
-            listAsync(
-                resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, continuationToken));
+        return new PagedIterable<>(listAsync(resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, continuationToken));
     }
 
     /**
      * Get a list of Target resources that extend a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -428,30 +325,19 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Target resources that extend a tracked regional resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Target resources that extend a tracked regional resource as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TargetInner> list(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String continuationToken,
-        Context context) {
-        return new PagedIterable<>(
-            listAsync(
-                resourceGroupName,
-                parentProviderNamespace,
-                parentResourceType,
-                parentResourceName,
-                continuationToken,
-                context));
+    public PagedIterable<TargetInner> list(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String continuationToken, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, continuationToken, context));
     }
 
     /**
      * Get a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -461,35 +347,26 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Target resource that extends a tracked regional resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TargetInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName) {
+    private Mono<Response<TargetInner>> getWithResponseAsync(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (parentProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
         }
         if (parentResourceType == null) {
             return Mono
@@ -504,26 +381,15 @@ public final class TargetsClientImpl implements TargetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            parentProviderNamespace,
-                            parentResourceType,
-                            parentResourceName,
-                            targetName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
+                parentResourceName, targetName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -534,36 +400,26 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Target resource that extends a tracked regional resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TargetInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        Context context) {
+    private Mono<Response<TargetInner>> getWithResponseAsync(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (parentProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
         }
         if (parentResourceType == null) {
             return Mono
@@ -578,23 +434,14 @@ public final class TargetsClientImpl implements TargetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                parentProviderNamespace,
-                parentResourceType,
-                parentResourceName,
-                targetName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, accept,
+            context);
     }
 
     /**
      * Get a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -606,20 +453,15 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return a Target resource that extends a tracked regional resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TargetInner> getAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName) {
-        return getWithResponseAsync(
-                resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<TargetInner> getAsync(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName) {
+        return getWithResponseAsync(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
+            targetName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -632,21 +474,15 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return a Target resource that extends a tracked regional resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TargetInner> getWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, context)
-            .block();
+    public Response<TargetInner> getWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, Context context) {
+        return getWithResponseAsync(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
+            targetName, context).block();
     }
 
     /**
      * Get a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -658,25 +494,15 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return a Target resource that extends a tracked regional resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TargetInner get(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName) {
-        return getWithResponse(
-                resourceGroupName,
-                parentProviderNamespace,
-                parentResourceType,
-                parentResourceName,
-                targetName,
-                Context.NONE)
-            .getValue();
+    public TargetInner get(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName) {
+        return getWithResponse(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
+            targetName, Context.NONE).getValue();
     }
 
     /**
      * Delete a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -688,32 +514,23 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (parentProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
         }
         if (parentResourceType == null) {
             return Mono
@@ -728,26 +545,15 @@ public final class TargetsClientImpl implements TargetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            parentProviderNamespace,
-                            parentResourceType,
-                            parentResourceName,
-                            targetName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
+                parentResourceName, targetName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -760,33 +566,23 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (parentProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
         }
         if (parentResourceType == null) {
             return Mono
@@ -801,23 +597,14 @@ public final class TargetsClientImpl implements TargetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                parentProviderNamespace,
-                parentResourceType,
-                parentResourceName,
-                targetName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, accept,
+            context);
     }
 
     /**
      * Delete a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -829,20 +616,15 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName) {
-        return deleteWithResponseAsync(
-                resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> deleteAsync(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName) {
+        return deleteWithResponseAsync(resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, targetName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Delete a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -855,21 +637,15 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        Context context) {
-        return deleteWithResponseAsync(
-                resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, context)
-            .block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, targetName, context).block();
     }
 
     /**
      * Delete a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -880,24 +656,15 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName) {
-        deleteWithResponse(
-            resourceGroupName,
-            parentProviderNamespace,
-            parentResourceType,
-            parentResourceName,
-            targetName,
-            Context.NONE);
+    public void delete(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName) {
+        deleteWithResponse(resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName,
+            targetName, Context.NONE);
     }
 
     /**
      * Create or update a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -907,37 +674,28 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Target resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return model that represents a Target resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TargetInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
+    private Mono<Response<TargetInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String parentProviderNamespace, String parentResourceType, String parentResourceName, String targetName,
         TargetInner target) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (parentProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
         }
         if (parentResourceType == null) {
             return Mono
@@ -957,27 +715,15 @@ public final class TargetsClientImpl implements TargetsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            parentProviderNamespace,
-                            parentResourceType,
-                            parentResourceName,
-                            targetName,
-                            target,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
+                parentResourceName, targetName, target, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -988,38 +734,28 @@ public final class TargetsClientImpl implements TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a Target resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return model that represents a Target resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TargetInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        TargetInner target,
-        Context context) {
+    private Mono<Response<TargetInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String parentProviderNamespace, String parentResourceType, String parentResourceName, String targetName,
+        TargetInner target, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (parentProviderNamespace == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter parentProviderNamespace is required and cannot be null."));
         }
         if (parentResourceType == null) {
             return Mono
@@ -1039,24 +775,14 @@ public final class TargetsClientImpl implements TargetsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                parentProviderNamespace,
-                parentResourceType,
-                parentResourceName,
-                targetName,
-                target,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, targetName, target, accept, context);
     }
 
     /**
      * Create or update a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -1069,21 +795,15 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return model that represents a Target resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TargetInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        TargetInner target) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, target)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<TargetInner> createOrUpdateAsync(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, TargetInner target) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, targetName, target).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -1097,28 +817,15 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return model that represents a Target resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TargetInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        TargetInner target,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                parentProviderNamespace,
-                parentResourceType,
-                parentResourceName,
-                targetName,
-                target,
-                context)
-            .block();
+    public Response<TargetInner> createOrUpdateWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, TargetInner target, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, targetName, target, context).block();
     }
 
     /**
      * Create or update a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -1131,34 +838,23 @@ public final class TargetsClientImpl implements TargetsClient {
      * @return model that represents a Target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TargetInner createOrUpdate(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        TargetInner target) {
-        return createOrUpdateWithResponse(
-                resourceGroupName,
-                parentProviderNamespace,
-                parentResourceType,
-                parentResourceName,
-                targetName,
-                target,
-                Context.NONE)
-            .getValue();
+    public TargetInner createOrUpdate(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, TargetInner target) {
+        return createOrUpdateWithResponse(resourceGroupName, parentProviderNamespace, parentResourceType,
+            parentResourceName, targetName, target, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Target resources and a link for pagination along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return model that represents a list of Target resources and a link for pagination along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TargetInner>> listNextSinglePageAsync(String nextLink) {
@@ -1166,37 +862,28 @@ public final class TargetsClientImpl implements TargetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TargetInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TargetInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model that represents a list of Target resources and a link for pagination along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return model that represents a list of Target resources and a link for pagination along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TargetInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1204,23 +891,13 @@ public final class TargetsClientImpl implements TargetsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

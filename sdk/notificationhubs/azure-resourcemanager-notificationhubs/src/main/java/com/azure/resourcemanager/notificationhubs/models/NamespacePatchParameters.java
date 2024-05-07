@@ -5,53 +5,44 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters supplied to the Patch Namespace operation. */
+/**
+ * Patch parameter for NamespaceResource.
+ */
 @Fluent
 public final class NamespacePatchParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamespacePatchParameters.class);
+    /*
+     * The Sku description for a namespace
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
 
     /*
-     * Resource tags
+     * Represents namespace properties.
+     */
+    @JsonProperty(value = "properties")
+    private NamespaceProperties properties;
+
+    /*
+     * Dictionary of <string>
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The sku of the created namespace
-     */
-    @JsonProperty(value = "sku")
-    private Sku sku;
-
     /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
+     * Creates an instance of NamespacePatchParameters class.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    public NamespacePatchParameters() {
     }
 
     /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the NamespacePatchParameters object itself.
-     */
-    public NamespacePatchParameters withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the sku property: The sku of the created namespace.
-     *
+     * Get the sku property: The Sku description for a namespace.
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -59,8 +50,8 @@ public final class NamespacePatchParameters {
     }
 
     /**
-     * Set the sku property: The sku of the created namespace.
-     *
+     * Set the sku property: The Sku description for a namespace.
+     * 
      * @param sku the sku value to set.
      * @return the NamespacePatchParameters object itself.
      */
@@ -70,13 +61,56 @@ public final class NamespacePatchParameters {
     }
 
     /**
+     * Get the properties property: Represents namespace properties.
+     * 
+     * @return the properties value.
+     */
+    public NamespaceProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Represents namespace properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the NamespacePatchParameters object itself.
+     */
+    public NamespacePatchParameters withProperties(NamespaceProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Dictionary of &lt;string&gt;.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Dictionary of &lt;string&gt;.
+     * 
+     * @param tags the tags value to set.
+     * @return the NamespacePatchParameters object itself.
+     */
+    public NamespacePatchParameters withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

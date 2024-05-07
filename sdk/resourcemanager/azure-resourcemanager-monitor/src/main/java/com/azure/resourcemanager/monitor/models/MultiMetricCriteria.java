@@ -17,7 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The types of conditions for a multi resource alert. */
+/**
+ * The types of conditions for a multi resource alert.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -26,8 +28,7 @@ import java.util.Map;
 @JsonTypeName("MultiMetricCriteria")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "StaticThresholdCriterion", value = MetricCriteria.class),
-    @JsonSubTypes.Type(name = "DynamicThresholdCriterion", value = DynamicMetricCriteria.class)
-})
+    @JsonSubTypes.Type(name = "DynamicThresholdCriterion", value = DynamicMetricCriteria.class) })
 @Fluent
 public class MultiMetricCriteria {
     /*
@@ -70,15 +71,18 @@ public class MultiMetricCriteria {
     /*
      * The types of conditions for a multi resource alert.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MultiMetricCriteria class. */
+    /**
+     * Creates an instance of MultiMetricCriteria class.
+     */
     public MultiMetricCriteria() {
     }
 
     /**
      * Get the name property: Name of the criteria.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -87,7 +91,7 @@ public class MultiMetricCriteria {
 
     /**
      * Set the name property: Name of the criteria.
-     *
+     * 
      * @param name the name value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -98,7 +102,7 @@ public class MultiMetricCriteria {
 
     /**
      * Get the metricName property: Name of the metric.
-     *
+     * 
      * @return the metricName value.
      */
     public String metricName() {
@@ -107,7 +111,7 @@ public class MultiMetricCriteria {
 
     /**
      * Set the metricName property: Name of the metric.
-     *
+     * 
      * @param metricName the metricName value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -118,7 +122,7 @@ public class MultiMetricCriteria {
 
     /**
      * Get the metricNamespace property: Namespace of the metric.
-     *
+     * 
      * @return the metricNamespace value.
      */
     public String metricNamespace() {
@@ -127,7 +131,7 @@ public class MultiMetricCriteria {
 
     /**
      * Set the metricNamespace property: Namespace of the metric.
-     *
+     * 
      * @param metricNamespace the metricNamespace value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -138,7 +142,7 @@ public class MultiMetricCriteria {
 
     /**
      * Get the timeAggregation property: the criteria time aggregation types.
-     *
+     * 
      * @return the timeAggregation value.
      */
     public AggregationTypeEnum timeAggregation() {
@@ -147,7 +151,7 @@ public class MultiMetricCriteria {
 
     /**
      * Set the timeAggregation property: the criteria time aggregation types.
-     *
+     * 
      * @param timeAggregation the timeAggregation value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -158,7 +162,7 @@ public class MultiMetricCriteria {
 
     /**
      * Get the dimensions property: List of dimension conditions.
-     *
+     * 
      * @return the dimensions value.
      */
     public List<MetricDimension> dimensions() {
@@ -167,7 +171,7 @@ public class MultiMetricCriteria {
 
     /**
      * Set the dimensions property: List of dimension conditions.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -179,7 +183,7 @@ public class MultiMetricCriteria {
     /**
      * Get the skipMetricValidation property: Allows creating an alert rule on a custom metric that isn't yet emitted,
      * by causing the metric validation to be skipped.
-     *
+     * 
      * @return the skipMetricValidation value.
      */
     public Boolean skipMetricValidation() {
@@ -189,7 +193,7 @@ public class MultiMetricCriteria {
     /**
      * Set the skipMetricValidation property: Allows creating an alert rule on a custom metric that isn't yet emitted,
      * by causing the metric validation to be skipped.
-     *
+     * 
      * @param skipMetricValidation the skipMetricValidation value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -200,7 +204,7 @@ public class MultiMetricCriteria {
 
     /**
      * Get the additionalProperties property: The types of conditions for a multi resource alert.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -210,7 +214,7 @@ public class MultiMetricCriteria {
 
     /**
      * Set the additionalProperties property: The types of conditions for a multi resource alert.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -229,25 +233,21 @@ public class MultiMetricCriteria {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model MultiMetricCriteria"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model MultiMetricCriteria"));
         }
         if (metricName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property metricName in model MultiMetricCriteria"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property metricName in model MultiMetricCriteria"));
         }
         if (timeAggregation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property timeAggregation in model MultiMetricCriteria"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property timeAggregation in model MultiMetricCriteria"));
         }
         if (dimensions() != null) {
             dimensions().forEach(e -> e.validate());

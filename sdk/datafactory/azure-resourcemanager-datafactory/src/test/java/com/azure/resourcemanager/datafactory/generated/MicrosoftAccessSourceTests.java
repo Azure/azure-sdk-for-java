@@ -11,15 +11,18 @@ public final class MicrosoftAccessSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftAccessSource model = BinaryData.fromString(
-            "{\"type\":\"MicrosoftAccessSource\",\"query\":\"databuwhbpojuj\",\"additionalColumns\":\"datafxtg\",\"sourceRetryCount\":\"dataavfjx\",\"sourceRetryWait\":\"datawx\",\"maxConcurrentConnections\":\"dataauh\",\"disableMetricsCollection\":\"datachphovu\",\"\":{\"hywfvyriawfwws\":\"dataczwcxlnc\",\"zsspfwm\":\"datadkbd\",\"thjyyirybuqmkm\":\"datacortox\"}}")
+            "{\"type\":\"hsodofsxjik\",\"query\":\"datawkwxdgcfcfkyyrj\",\"additionalColumns\":\"datahslrbwwkbyw\",\"sourceRetryCount\":\"datasquhu\",\"sourceRetryWait\":\"dataqwoggwcxdm\",\"maxConcurrentConnections\":\"datauwldfahkyft\",\"disableMetricsCollection\":\"datakbgsgopyckmncru\",\"\":{\"qkgixfnrneyav\":\"datadjmda\",\"iizbwfjumulhf\":\"datadovpwrqcfzokplz\",\"qcapbkfvowzbk\":\"datadgnchahldnrpt\"}}")
             .toObject(MicrosoftAccessSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MicrosoftAccessSource model = new MicrosoftAccessSource().withSourceRetryCount("dataavfjx")
-            .withSourceRetryWait("datawx").withMaxConcurrentConnections("dataauh")
-            .withDisableMetricsCollection("datachphovu").withQuery("databuwhbpojuj").withAdditionalColumns("datafxtg");
+        MicrosoftAccessSource model = new MicrosoftAccessSource().withSourceRetryCount("datasquhu")
+            .withSourceRetryWait("dataqwoggwcxdm")
+            .withMaxConcurrentConnections("datauwldfahkyft")
+            .withDisableMetricsCollection("datakbgsgopyckmncru")
+            .withQuery("datawkwxdgcfcfkyyrj")
+            .withAdditionalColumns("datahslrbwwkbyw");
         model = BinaryData.fromObject(model).toObject(MicrosoftAccessSource.class);
     }
 }

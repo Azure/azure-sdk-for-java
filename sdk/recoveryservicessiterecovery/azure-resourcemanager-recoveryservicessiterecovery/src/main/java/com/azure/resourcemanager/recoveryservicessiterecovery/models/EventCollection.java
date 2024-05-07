@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Even
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of fabric details. */
+/**
+ * Collection of fabric details.
+ */
 @Fluent
 public final class EventCollection {
     /*
@@ -24,13 +26,15 @@ public final class EventCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of EventCollection class. */
+    /**
+     * Creates an instance of EventCollection class.
+     */
     public EventCollection() {
     }
 
     /**
      * Get the value property: The list of events.
-     *
+     * 
      * @return the value value.
      */
     public List<EventInner> value() {
@@ -39,7 +43,7 @@ public final class EventCollection {
 
     /**
      * Set the value property: The list of events.
-     *
+     * 
      * @param value the value value to set.
      * @return the EventCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class EventCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class EventCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the EventCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class EventCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

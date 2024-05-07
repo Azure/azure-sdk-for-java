@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.storage.implementation;
 
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
@@ -22,9 +23,11 @@ public class StorageAccountsImpl
     extends TopLevelModifiableResourcesImpl<
         StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsClient, StorageManager>
     implements StorageAccounts {
+    private final AuthorizationManager authorizationManager;
 
-    public StorageAccountsImpl(final StorageManager storageManager) {
+    public StorageAccountsImpl(final StorageManager storageManager, AuthorizationManager authorizationManager) {
         super(storageManager.serviceClient().getStorageAccounts(), storageManager);
+        this.authorizationManager = authorizationManager;
     }
 
     @Override
@@ -53,7 +56,7 @@ public class StorageAccountsImpl
 
     @Override
     protected StorageAccountImpl wrapModel(String name) {
-        return new StorageAccountImpl(name, new StorageAccountInner(), this.manager());
+        return new StorageAccountImpl(name, new StorageAccountInner(), this.manager(), this.authorizationManager);
     }
 
     @Override
@@ -61,7 +64,7 @@ public class StorageAccountsImpl
         if (storageAccountInner == null) {
             return null;
         }
-        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.manager());
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.manager(), this.authorizationManager);
     }
 
     @Override

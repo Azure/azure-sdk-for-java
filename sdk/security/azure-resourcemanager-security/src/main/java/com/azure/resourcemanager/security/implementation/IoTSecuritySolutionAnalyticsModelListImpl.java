@@ -17,8 +17,7 @@ public final class IoTSecuritySolutionAnalyticsModelListImpl implements IoTSecur
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    IoTSecuritySolutionAnalyticsModelListImpl(
-        IoTSecuritySolutionAnalyticsModelListInner innerObject,
+    IoTSecuritySolutionAnalyticsModelListImpl(IoTSecuritySolutionAnalyticsModelListInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class IoTSecuritySolutionAnalyticsModelListImpl implements IoTSecur
     public List<IoTSecuritySolutionAnalyticsModel> value() {
         List<IoTSecuritySolutionAnalyticsModelInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new IoTSecuritySolutionAnalyticsModelImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new IoTSecuritySolutionAnalyticsModelImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

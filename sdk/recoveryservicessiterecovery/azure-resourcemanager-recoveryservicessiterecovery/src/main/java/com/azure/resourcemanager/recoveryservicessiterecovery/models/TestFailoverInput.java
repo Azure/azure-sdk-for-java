@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input definition for test failover. */
+/**
+ * Input definition for test failover.
+ */
 @Fluent
 public final class TestFailoverInput {
     /*
@@ -17,13 +19,15 @@ public final class TestFailoverInput {
     @JsonProperty(value = "properties", required = true)
     private TestFailoverInputProperties properties;
 
-    /** Creates an instance of TestFailoverInput class. */
+    /**
+     * Creates an instance of TestFailoverInput class.
+     */
     public TestFailoverInput() {
     }
 
     /**
      * Get the properties property: Test failover input properties.
-     *
+     * 
      * @return the properties value.
      */
     public TestFailoverInputProperties properties() {
@@ -32,7 +36,7 @@ public final class TestFailoverInput {
 
     /**
      * Set the properties property: Test failover input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the TestFailoverInput object itself.
      */
@@ -43,14 +47,13 @@ public final class TestFailoverInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model TestFailoverInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model TestFailoverInput"));
         } else {
             properties().validate();
         }

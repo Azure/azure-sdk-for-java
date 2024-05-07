@@ -64,8 +64,8 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldGetConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // The request (subscription) for connection should get a connection.
@@ -90,8 +90,8 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldCacheConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
@@ -111,15 +111,11 @@ public class ReactorConnectionCacheTest {
             connectionSupplier.assertInvocationCount(1);
 
             // Later a second connection request (Subscription) must be served from the cache.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .expectNextMatches(con -> {
-                    // Assert the second subscription got the same connection (cached) as first subscription.
-                    Assertions.assertEquals(c[0], con);
-                    return true;
-                })
-                .expectComplete()
-                .verify(VERIFY_TIMEOUT);
+            StepVerifier.create(connectionMono, 0).thenRequest(1).expectNextMatches(con -> {
+                // Assert the second subscription got the same connection (cached) as first subscription.
+                Assertions.assertEquals(c[0], con);
+                return true;
+            }).expectComplete().verify(VERIFY_TIMEOUT);
 
             // Assert that there was only one connection supplied.
             connectionSupplier.assertInvocationCount(1);
@@ -132,8 +128,8 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldRefreshCacheOnCompletionOfCachedConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
@@ -180,8 +176,8 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldRefreshCacheOnErrorInCachedConnection() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         try {
             final ReactorConnection[] c = new ReactorConnection[1];
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
@@ -229,8 +225,8 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldBubbleUpNonRetriableError() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         final Throwable nonRetriableError = new Throwable("non-retriable");
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
@@ -267,8 +263,8 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldDisposeConnectionUponTermination() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         final ReactorConnection[] c = new ReactorConnection[1];
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
@@ -301,22 +297,19 @@ public class ReactorConnectionCacheTest {
     @Test
     public void shouldNotProvideConnectionAfterTermination() {
         final ConnectionSupplier connectionSupplier = new ConnectionSupplier();
-        final ReactorConnectionCache<ReactorConnection> connectionCache = new ReactorConnectionCache<>(
-            connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
+        final ReactorConnectionCache<ReactorConnection> connectionCache
+            = new ReactorConnectionCache<>(connectionSupplier, FQDN, ENTITY_PATH, retryPolicy, new HashMap<>());
         // Terminating the recovery support.
         connectionCache.dispose();
         try {
             final Mono<ReactorConnection> connectionMono = connectionCache.get();
             // Attempt to obtain a connection post the termination of recovery support will fail.
-            StepVerifier.create(connectionMono, 0)
-                .thenRequest(1)
-                .expectErrorSatisfies(e -> {
-                    Assertions.assertTrue(e instanceof AmqpException);
-                    final AmqpException amqpException = (AmqpException) e;
-                    Assertions.assertFalse(amqpException.isTransient());
-                    Assertions.assertEquals("Connection recovery support is terminated.", amqpException.getMessage());
-                })
-                .verify(VERIFY_TIMEOUT);
+            StepVerifier.create(connectionMono, 0).thenRequest(1).expectErrorSatisfies(e -> {
+                Assertions.assertTrue(e instanceof AmqpException);
+                final AmqpException amqpException = (AmqpException) e;
+                Assertions.assertFalse(amqpException.isTransient());
+                Assertions.assertEquals("Connection recovery support is terminated.", amqpException.getMessage());
+            }).verify(VERIFY_TIMEOUT);
             connectionSupplier.assertInvocationCount(0);
         } finally {
             connectionSupplier.dispose();
@@ -357,8 +350,7 @@ public class ReactorConnectionCacheTest {
             }
 
             invocationCount++;
-            currentConnectionStates = Sinks.many().replay()
-                .latestOrDefault(EndpointState.UNINITIALIZED);
+            currentConnectionStates = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
             currentConnection = createMockConnection(String.valueOf(invocationCount),
                 currentConnectionStates.asFlux().distinctUntilChanged());
             if (connectionsStateQueue != null) {
@@ -439,10 +431,9 @@ public class ReactorConnectionCacheTest {
             final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
             when(handlerProvider.createConnectionHandler(anyString(), any())).thenReturn(connectionHandler);
 
-            final ReactorConnection connection = new ReactorConnection(id, connectionOptions,
-                reactorProvider, handlerProvider, mock(AmqpLinkProvider.class),
-                mock(TokenManagerProvider.class), mock(MessageSerializer.class),
-                SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true);
+            final ReactorConnection connection = new ReactorConnection(id, connectionOptions, reactorProvider,
+                handlerProvider, mock(AmqpLinkProvider.class), mock(TokenManagerProvider.class),
+                mock(MessageSerializer.class), SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true);
             return connection;
         }
     }
@@ -489,7 +480,7 @@ public class ReactorConnectionCacheTest {
                 sink.emitNext(state, Sinks.EmitFailureHandler.FAIL_FAST);
             }
             // else if (never) {
-            //   NOP (the sink never emits).
+            // NOP (the sink never emits).
             // }
         }
     }

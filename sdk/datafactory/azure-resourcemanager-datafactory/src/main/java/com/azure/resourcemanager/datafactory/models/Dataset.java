@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -22,11 +23,7 @@ import java.util.Map;
  * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
  * folders, and documents.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = Dataset.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = Dataset.class, visible = true)
 @JsonTypeName("Dataset")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AmazonS3Object", value = AmazonS3Dataset.class),
@@ -70,6 +67,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "OdbcTable", value = OdbcTableDataset.class),
     @JsonSubTypes.Type(name = "MySqlTable", value = MySqlTableDataset.class),
     @JsonSubTypes.Type(name = "PostgreSqlTable", value = PostgreSqlTableDataset.class),
+    @JsonSubTypes.Type(name = "PostgreSqlV2Table", value = PostgreSqlV2TableDataset.class),
     @JsonSubTypes.Type(name = "MicrosoftAccessTable", value = MicrosoftAccessTableDataset.class),
     @JsonSubTypes.Type(name = "SalesforceObject", value = SalesforceObjectDataset.class),
     @JsonSubTypes.Type(name = "SalesforceServiceCloudObject", value = SalesforceServiceCloudObjectDataset.class),
@@ -94,6 +92,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "DrillTable", value = DrillTableDataset.class),
     @JsonSubTypes.Type(name = "EloquaObject", value = EloquaObjectDataset.class),
     @JsonSubTypes.Type(name = "GoogleBigQueryObject", value = GoogleBigQueryObjectDataset.class),
+    @JsonSubTypes.Type(name = "GoogleBigQueryV2Object", value = GoogleBigQueryV2ObjectDataset.class),
     @JsonSubTypes.Type(name = "GreenplumTable", value = GreenplumTableDataset.class),
     @JsonSubTypes.Type(name = "HBaseObject", value = HBaseObjectDataset.class),
     @JsonSubTypes.Type(name = "HiveObject", value = HiveObjectDataset.class),
@@ -123,11 +122,23 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureDataExplorerTable", value = AzureDataExplorerTableDataset.class),
     @JsonSubTypes.Type(name = "GoogleAdWordsObject", value = GoogleAdWordsObjectDataset.class),
     @JsonSubTypes.Type(name = "SnowflakeTable", value = SnowflakeDataset.class),
+    @JsonSubTypes.Type(name = "SnowflakeV2Table", value = SnowflakeV2Dataset.class),
     @JsonSubTypes.Type(name = "SharePointOnlineListResource", value = SharePointOnlineListResourceDataset.class),
     @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeDataset", value = AzureDatabricksDeltaLakeDataset.class),
-    @JsonSubTypes.Type(name = "LakeHouseTable", value = LakeHouseTableDataset.class) })
+    @JsonSubTypes.Type(name = "LakeHouseTable", value = LakeHouseTableDataset.class),
+    @JsonSubTypes.Type(name = "SalesforceV2Object", value = SalesforceV2ObjectDataset.class),
+    @JsonSubTypes.Type(name = "SalesforceServiceCloudV2Object", value = SalesforceServiceCloudV2ObjectDataset.class),
+    @JsonSubTypes.Type(name = "WarehouseTable", value = WarehouseTableDataset.class),
+    @JsonSubTypes.Type(name = "ServiceNowV2Object", value = ServiceNowV2ObjectDataset.class) })
 @Fluent
 public class Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
     /*
      * Dataset description.
      */
@@ -135,15 +146,13 @@ public class Dataset {
     private String description;
 
     /*
-     * Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType:
-     * DatasetDataElement.
+     * Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType: DatasetDataElement.
      */
     @JsonProperty(value = "structure")
     private Object structure;
 
     /*
-     * Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array),
-     * itemType: DatasetSchemaDataElement.
+     * Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType: DatasetSchemaDataElement.
      */
     @JsonProperty(value = "schema")
     private Object schema;
@@ -174,8 +183,7 @@ public class Dataset {
     private DatasetFolder folder;
 
     /*
-     * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
-     * folders, and documents.
+     * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files, folders, and documents.
      */
     @JsonIgnore
     private Map<String, Object> additionalProperties;
@@ -184,6 +192,16 @@ public class Dataset {
      * Creates an instance of Dataset class.
      */
     public Dataset() {
+        this.type = "Dataset";
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -370,8 +388,8 @@ public class Dataset {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property linkedServiceName in model Dataset"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property linkedServiceName in model Dataset"));
         } else {
             linkedServiceName().validate();
         }

@@ -15,13 +15,15 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.JobI
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.JobQueryParameter;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeJobParams;
 
-/** An instance of this class provides access to all the operations defined in ReplicationJobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationJobsClient.
+ */
 public interface ReplicationJobsClient {
     /**
      * Gets the list of jobs.
-     *
-     * <p>Gets the list of Azure Site Recovery Jobs for the vault.
-     *
+     * 
+     * Gets the list of Azure Site Recovery Jobs for the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,9 +36,9 @@ public interface ReplicationJobsClient {
 
     /**
      * Gets the list of jobs.
-     *
-     * <p>Gets the list of Azure Site Recovery Jobs for the vault.
-     *
+     * 
+     * Gets the list of Azure Site Recovery Jobs for the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -51,9 +53,9 @@ public interface ReplicationJobsClient {
 
     /**
      * Gets the job details.
-     *
-     * <p>Get the details of an Azure Site Recovery job.
-     *
+     * 
+     * Get the details of an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -68,9 +70,9 @@ public interface ReplicationJobsClient {
 
     /**
      * Gets the job details.
-     *
-     * <p>Get the details of an Azure Site Recovery job.
-     *
+     * 
+     * Get the details of an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -84,9 +86,9 @@ public interface ReplicationJobsClient {
 
     /**
      * Cancels the specified job.
-     *
-     * <p>The operation to cancel an Azure Site Recovery job.
-     *
+     * 
+     * The operation to cancel an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -96,14 +98,14 @@ public interface ReplicationJobsClient {
      * @return the {@link SyncPoller} for polling of job details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobInner>, JobInner> beginCancel(
-        String resourceName, String resourceGroupName, String jobName);
+    SyncPoller<PollResult<JobInner>, JobInner> beginCancel(String resourceName, String resourceGroupName,
+        String jobName);
 
     /**
      * Cancels the specified job.
-     *
-     * <p>The operation to cancel an Azure Site Recovery job.
-     *
+     * 
+     * The operation to cancel an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -114,14 +116,14 @@ public interface ReplicationJobsClient {
      * @return the {@link SyncPoller} for polling of job details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobInner>, JobInner> beginCancel(
-        String resourceName, String resourceGroupName, String jobName, Context context);
+    SyncPoller<PollResult<JobInner>, JobInner> beginCancel(String resourceName, String resourceGroupName,
+        String jobName, Context context);
 
     /**
      * Cancels the specified job.
-     *
-     * <p>The operation to cancel an Azure Site Recovery job.
-     *
+     * 
+     * The operation to cancel an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -135,9 +137,9 @@ public interface ReplicationJobsClient {
 
     /**
      * Cancels the specified job.
-     *
-     * <p>The operation to cancel an Azure Site Recovery job.
-     *
+     * 
+     * The operation to cancel an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -152,9 +154,9 @@ public interface ReplicationJobsClient {
 
     /**
      * Restarts the specified job.
-     *
-     * <p>The operation to restart an Azure Site Recovery job.
-     *
+     * 
+     * The operation to restart an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -164,14 +166,14 @@ public interface ReplicationJobsClient {
      * @return the {@link SyncPoller} for polling of job details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobInner>, JobInner> beginRestart(
-        String resourceName, String resourceGroupName, String jobName);
+    SyncPoller<PollResult<JobInner>, JobInner> beginRestart(String resourceName, String resourceGroupName,
+        String jobName);
 
     /**
      * Restarts the specified job.
-     *
-     * <p>The operation to restart an Azure Site Recovery job.
-     *
+     * 
+     * The operation to restart an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -182,14 +184,14 @@ public interface ReplicationJobsClient {
      * @return the {@link SyncPoller} for polling of job details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobInner>, JobInner> beginRestart(
-        String resourceName, String resourceGroupName, String jobName, Context context);
+    SyncPoller<PollResult<JobInner>, JobInner> beginRestart(String resourceName, String resourceGroupName,
+        String jobName, Context context);
 
     /**
      * Restarts the specified job.
-     *
-     * <p>The operation to restart an Azure Site Recovery job.
-     *
+     * 
+     * The operation to restart an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -203,9 +205,9 @@ public interface ReplicationJobsClient {
 
     /**
      * Restarts the specified job.
-     *
-     * <p>The operation to restart an Azure Site Recovery job.
-     *
+     * 
+     * The operation to restart an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -220,9 +222,9 @@ public interface ReplicationJobsClient {
 
     /**
      * Resumes the specified job.
-     *
-     * <p>The operation to resume an Azure Site Recovery job.
-     *
+     * 
+     * The operation to resume an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -233,14 +235,14 @@ public interface ReplicationJobsClient {
      * @return the {@link SyncPoller} for polling of job details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobInner>, JobInner> beginResume(
-        String resourceName, String resourceGroupName, String jobName, ResumeJobParams resumeJobParams);
+    SyncPoller<PollResult<JobInner>, JobInner> beginResume(String resourceName, String resourceGroupName,
+        String jobName, ResumeJobParams resumeJobParams);
 
     /**
      * Resumes the specified job.
-     *
-     * <p>The operation to resume an Azure Site Recovery job.
-     *
+     * 
+     * The operation to resume an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -252,18 +254,14 @@ public interface ReplicationJobsClient {
      * @return the {@link SyncPoller} for polling of job details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobInner>, JobInner> beginResume(
-        String resourceName,
-        String resourceGroupName,
-        String jobName,
-        ResumeJobParams resumeJobParams,
-        Context context);
+    SyncPoller<PollResult<JobInner>, JobInner> beginResume(String resourceName, String resourceGroupName,
+        String jobName, ResumeJobParams resumeJobParams, Context context);
 
     /**
      * Resumes the specified job.
-     *
-     * <p>The operation to resume an Azure Site Recovery job.
-     *
+     * 
+     * The operation to resume an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -278,9 +276,9 @@ public interface ReplicationJobsClient {
 
     /**
      * Resumes the specified job.
-     *
-     * <p>The operation to resume an Azure Site Recovery job.
-     *
+     * 
+     * The operation to resume an Azure Site Recovery job.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job identifier.
@@ -292,18 +290,14 @@ public interface ReplicationJobsClient {
      * @return job details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobInner resume(
-        String resourceName,
-        String resourceGroupName,
-        String jobName,
-        ResumeJobParams resumeJobParams,
+    JobInner resume(String resourceName, String resourceGroupName, String jobName, ResumeJobParams resumeJobParams,
         Context context);
 
     /**
      * Exports the details of the Azure Site Recovery jobs of the vault.
-     *
-     * <p>The operation to export the details of the Azure Site Recovery jobs of the vault.
-     *
+     * 
+     * The operation to export the details of the Azure Site Recovery jobs of the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobQueryParameter job query filter.
@@ -313,14 +307,14 @@ public interface ReplicationJobsClient {
      * @return the {@link SyncPoller} for polling of job details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobInner>, JobInner> beginExport(
-        String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter);
+    SyncPoller<PollResult<JobInner>, JobInner> beginExport(String resourceName, String resourceGroupName,
+        JobQueryParameter jobQueryParameter);
 
     /**
      * Exports the details of the Azure Site Recovery jobs of the vault.
-     *
-     * <p>The operation to export the details of the Azure Site Recovery jobs of the vault.
-     *
+     * 
+     * The operation to export the details of the Azure Site Recovery jobs of the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobQueryParameter job query filter.
@@ -331,14 +325,14 @@ public interface ReplicationJobsClient {
      * @return the {@link SyncPoller} for polling of job details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobInner>, JobInner> beginExport(
-        String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter, Context context);
+    SyncPoller<PollResult<JobInner>, JobInner> beginExport(String resourceName, String resourceGroupName,
+        JobQueryParameter jobQueryParameter, Context context);
 
     /**
      * Exports the details of the Azure Site Recovery jobs of the vault.
-     *
-     * <p>The operation to export the details of the Azure Site Recovery jobs of the vault.
-     *
+     * 
+     * The operation to export the details of the Azure Site Recovery jobs of the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobQueryParameter job query filter.
@@ -352,9 +346,9 @@ public interface ReplicationJobsClient {
 
     /**
      * Exports the details of the Azure Site Recovery jobs of the vault.
-     *
-     * <p>The operation to export the details of the Azure Site Recovery jobs of the vault.
-     *
+     * 
+     * The operation to export the details of the Azure Site Recovery jobs of the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobQueryParameter job query filter.
@@ -365,6 +359,6 @@ public interface ReplicationJobsClient {
      * @return job details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobInner export(
-        String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter, Context context);
+    JobInner export(String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter,
+        Context context);
 }

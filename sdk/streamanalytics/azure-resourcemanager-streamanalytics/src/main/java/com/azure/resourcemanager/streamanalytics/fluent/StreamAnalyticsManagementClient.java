@@ -7,102 +7,104 @@ package com.azure.resourcemanager.streamanalytics.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for StreamAnalyticsManagementClient class. */
+/**
+ * The interface for StreamAnalyticsManagementClient class.
+ */
 public interface StreamAnalyticsManagementClient {
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
-     * Gets Api Version.
-     *
-     * @return the apiVersion value.
-     */
-    String getApiVersion();
-
-    /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
+     * Gets the FunctionsClient object to access its operations.
+     * 
+     * @return the FunctionsClient object.
      */
-    OperationsClient getOperations();
-
-    /**
-     * Gets the StreamingJobsClient object to access its operations.
-     *
-     * @return the StreamingJobsClient object.
-     */
-    StreamingJobsClient getStreamingJobs();
+    FunctionsClient getFunctions();
 
     /**
      * Gets the InputsClient object to access its operations.
-     *
+     * 
      * @return the InputsClient object.
      */
     InputsClient getInputs();
 
     /**
      * Gets the OutputsClient object to access its operations.
-     *
+     * 
      * @return the OutputsClient object.
      */
     OutputsClient getOutputs();
 
     /**
-     * Gets the TransformationsClient object to access its operations.
-     *
-     * @return the TransformationsClient object.
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
      */
-    TransformationsClient getTransformations();
+    OperationsClient getOperations();
 
     /**
-     * Gets the FunctionsClient object to access its operations.
-     *
-     * @return the FunctionsClient object.
+     * Gets the StreamingJobsClient object to access its operations.
+     * 
+     * @return the StreamingJobsClient object.
      */
-    FunctionsClient getFunctions();
+    StreamingJobsClient getStreamingJobs();
+
+    /**
+     * Gets the SkusClient object to access its operations.
+     * 
+     * @return the SkusClient object.
+     */
+    SkusClient getSkus();
 
     /**
      * Gets the SubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the SubscriptionsClient object.
      */
     SubscriptionsClient getSubscriptions();
 
     /**
+     * Gets the TransformationsClient object to access its operations.
+     * 
+     * @return the TransformationsClient object.
+     */
+    TransformationsClient getTransformations();
+
+    /**
      * Gets the ClustersClient object to access its operations.
-     *
+     * 
      * @return the ClustersClient object.
      */
     ClustersClient getClusters();
 
     /**
      * Gets the PrivateEndpointsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointsClient object.
      */
     PrivateEndpointsClient getPrivateEndpoints();

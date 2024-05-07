@@ -5,70 +5,48 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Optional settings to control how fields are processed when using a configured Pinecone resource.
  */
 @Fluent
-public final class PineconeFieldMappingOptions {
+public final class PineconeFieldMappingOptions implements JsonSerializable<PineconeFieldMappingOptions> {
 
     /*
      * The name of the index field to use as a title.
      */
     @Generated
-    @JsonProperty(value = "titleField")
     private String titleField;
 
     /*
      * The name of the index field to use as a URL.
      */
     @Generated
-    @JsonProperty(value = "urlField")
     private String urlField;
 
     /*
      * The name of the index field to use as a filepath.
      */
     @Generated
-    @JsonProperty(value = "filepathField")
     private String filepathField;
 
     /*
      * The names of index fields that should be treated as content.
      */
     @Generated
-    @JsonProperty(value = "contentFields")
-    private List<String> contentFields;
+    private final List<String> contentFields;
 
     /*
      * The separator pattern that content fields should use.
      */
     @Generated
-    @JsonProperty(value = "contentFieldsSeparator")
     private String contentFieldsSeparator;
-
-    /*
-     * The names of fields that represent vector data.
-     */
-    @Generated
-    @JsonProperty(value = "vectorFields")
-    private List<String> vectorFields;
-
-    /*
-     * The names of fields that represent image vector data.
-     */
-    @Generated
-    @JsonProperty(value = "imageVectorFields")
-    private List<String> imageVectorFields;
-
-    /**
-     * Creates an instance of PineconeFieldMappingOptions class.
-     */
-    @Generated
-    public PineconeFieldMappingOptions() {
-    }
 
     /**
      * Get the titleField property: The name of the index field to use as a title.
@@ -147,18 +125,6 @@ public final class PineconeFieldMappingOptions {
     }
 
     /**
-     * Set the contentFields property: The names of index fields that should be treated as content.
-     *
-     * @param contentFields the contentFields value to set.
-     * @return the PineconeFieldMappingOptions object itself.
-     */
-    @Generated
-    public PineconeFieldMappingOptions setContentFields(List<String> contentFields) {
-        this.contentFields = contentFields;
-        return this;
-    }
-
-    /**
      * Get the contentFieldsSeparator property: The separator pattern that content fields should use.
      *
      * @return the contentFieldsSeparator value.
@@ -181,46 +147,72 @@ public final class PineconeFieldMappingOptions {
     }
 
     /**
-     * Get the vectorFields property: The names of fields that represent vector data.
+     * Creates an instance of PineconeFieldMappingOptions class.
      *
-     * @return the vectorFields value.
+     * @param contentFields the contentFields value to set.
      */
     @Generated
-    public List<String> getVectorFields() {
-        return this.vectorFields;
+    public PineconeFieldMappingOptions(List<String> contentFields) {
+        this.contentFields = contentFields;
     }
 
     /**
-     * Set the vectorFields property: The names of fields that represent vector data.
-     *
-     * @param vectorFields the vectorFields value to set.
-     * @return the PineconeFieldMappingOptions object itself.
+     * {@inheritDoc}
      */
     @Generated
-    public PineconeFieldMappingOptions setVectorFields(List<String> vectorFields) {
-        this.vectorFields = vectorFields;
-        return this;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("content_fields", this.contentFields,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("title_field", this.titleField);
+        jsonWriter.writeStringField("url_field", this.urlField);
+        jsonWriter.writeStringField("filepath_field", this.filepathField);
+        jsonWriter.writeStringField("content_fields_separator", this.contentFieldsSeparator);
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Get the imageVectorFields property: The names of fields that represent image vector data.
+     * Reads an instance of PineconeFieldMappingOptions from the JsonReader.
      *
-     * @return the imageVectorFields value.
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PineconeFieldMappingOptions if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PineconeFieldMappingOptions.
      */
     @Generated
-    public List<String> getImageVectorFields() {
-        return this.imageVectorFields;
-    }
-
-    /**
-     * Set the imageVectorFields property: The names of fields that represent image vector data.
-     *
-     * @param imageVectorFields the imageVectorFields value to set.
-     * @return the PineconeFieldMappingOptions object itself.
-     */
-    @Generated
-    public PineconeFieldMappingOptions setImageVectorFields(List<String> imageVectorFields) {
-        this.imageVectorFields = imageVectorFields;
-        return this;
+    public static PineconeFieldMappingOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<String> contentFields = null;
+            String titleField = null;
+            String urlField = null;
+            String filepathField = null;
+            String contentFieldsSeparator = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("content_fields".equals(fieldName)) {
+                    contentFields = reader.readArray(reader1 -> reader1.getString());
+                } else if ("title_field".equals(fieldName)) {
+                    titleField = reader.getString();
+                } else if ("url_field".equals(fieldName)) {
+                    urlField = reader.getString();
+                } else if ("filepath_field".equals(fieldName)) {
+                    filepathField = reader.getString();
+                } else if ("content_fields_separator".equals(fieldName)) {
+                    contentFieldsSeparator = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            PineconeFieldMappingOptions deserializedPineconeFieldMappingOptions
+                = new PineconeFieldMappingOptions(contentFields);
+            deserializedPineconeFieldMappingOptions.titleField = titleField;
+            deserializedPineconeFieldMappingOptions.urlField = urlField;
+            deserializedPineconeFieldMappingOptions.filepathField = filepathField;
+            deserializedPineconeFieldMappingOptions.contentFieldsSeparator = contentFieldsSeparator;
+            return deserializedPineconeFieldMappingOptions;
+        });
     }
 }

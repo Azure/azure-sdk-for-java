@@ -9,8 +9,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.PrivateEndPointConnectionsClient;
 import com.azure.resourcemanager.datafactory.fluent.models.PrivateEndpointConnectionResourceInner;
-import com.azure.resourcemanager.datafactory.models.PrivateEndPointConnections;
 import com.azure.resourcemanager.datafactory.models.PrivateEndpointConnectionResource;
+import com.azure.resourcemanager.datafactory.models.PrivateEndPointConnections;
 
 public final class PrivateEndPointConnectionsImpl implements PrivateEndPointConnections {
     private static final ClientLogger LOGGER = new ClientLogger(PrivateEndPointConnectionsImpl.class);
@@ -29,14 +29,16 @@ public final class PrivateEndPointConnectionsImpl implements PrivateEndPointConn
         String factoryName) {
         PagedIterable<PrivateEndpointConnectionResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PrivateEndpointConnectionResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateEndpointConnectionResource> listByFactory(String resourceGroupName, String factoryName,
         Context context) {
         PagedIterable<PrivateEndpointConnectionResourceInner> inner
             = this.serviceClient().listByFactory(resourceGroupName, factoryName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PrivateEndpointConnectionResourceImpl(inner1, this.manager()));
     }
 
     private PrivateEndPointConnectionsClient serviceClient() {

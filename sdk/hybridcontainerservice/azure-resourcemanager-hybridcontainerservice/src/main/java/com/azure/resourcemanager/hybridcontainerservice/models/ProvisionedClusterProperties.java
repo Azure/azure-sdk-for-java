@@ -9,54 +9,66 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * All properties of the provisioned cluster.
+ * Properties of the provisioned cluster.
  */
 @Fluent
 public final class ProvisionedClusterProperties {
     /*
-     * LinuxProfile - The profile for Linux VMs in the Provisioned Cluster.
+     * The profile for Linux VMs in the provisioned cluster.
      */
     @JsonProperty(value = "linuxProfile")
     private LinuxProfileProperties linuxProfile;
 
     /*
-     * ControlPlane - ControlPlane Configuration
+     * The profile for control plane of the provisioned cluster.
      */
     @JsonProperty(value = "controlPlane")
     private ControlPlaneProfile controlPlane;
 
     /*
-     * KubernetesVersion - Version of Kubernetes specified when creating the managed cluster.
+     * The version of Kubernetes in use by the provisioned cluster.
      */
     @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
 
     /*
-     * NetworkProfile - Profile of network configuration.
+     * The network configuration profile for the provisioned cluster.
      */
     @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
-     * The agent pools of the cluster.
+     * The storage configuration profile for the provisioned cluster.
+     */
+    @JsonProperty(value = "storageProfile")
+    private StorageProfile storageProfile;
+
+    /*
+     * The SSH restricted access profile for the VMs in the provisioned cluster.
+     */
+    @JsonProperty(value = "clusterVMAccessProfile")
+    private ClusterVMAccessProfile clusterVMAccessProfile;
+
+    /*
+     * The agent pool properties for the provisioned cluster.
      */
     @JsonProperty(value = "agentPoolProfiles")
     private List<NamedAgentPoolProfile> agentPoolProfiles;
 
     /*
-     * The underlying cloud infra provider properties.
+     * The profile for the underlying cloud infrastructure provider for the provisioned cluster.
      */
     @JsonProperty(value = "cloudProviderProfile")
     private CloudProviderProfile cloudProviderProfile;
 
     /*
-     * Provisioning state of the resource
+     * The status of the latest long running operation for the provisioned cluster.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /*
-     * HybridAKSClusterStatus defines the observed state of HybridAKSCluster
+     * The observed status of the provisioned cluster.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisionedClusterPropertiesStatus status;
@@ -67,6 +79,12 @@ public final class ProvisionedClusterProperties {
     @JsonProperty(value = "licenseProfile")
     private ProvisionedClusterLicenseProfile licenseProfile;
 
+    /*
+     * Parameters to be applied to the cluster-autoscaler when auto scaling is enabled for the provisioned cluster.
+     */
+    @JsonProperty(value = "autoScalerProfile")
+    private ProvisionedClusterPropertiesAutoScalerProfile autoScalerProfile;
+
     /**
      * Creates an instance of ProvisionedClusterProperties class.
      */
@@ -74,7 +92,7 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Get the linuxProfile property: LinuxProfile - The profile for Linux VMs in the Provisioned Cluster.
+     * Get the linuxProfile property: The profile for Linux VMs in the provisioned cluster.
      * 
      * @return the linuxProfile value.
      */
@@ -83,7 +101,7 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Set the linuxProfile property: LinuxProfile - The profile for Linux VMs in the Provisioned Cluster.
+     * Set the linuxProfile property: The profile for Linux VMs in the provisioned cluster.
      * 
      * @param linuxProfile the linuxProfile value to set.
      * @return the ProvisionedClusterProperties object itself.
@@ -94,7 +112,7 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Get the controlPlane property: ControlPlane - ControlPlane Configuration.
+     * Get the controlPlane property: The profile for control plane of the provisioned cluster.
      * 
      * @return the controlPlane value.
      */
@@ -103,7 +121,7 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Set the controlPlane property: ControlPlane - ControlPlane Configuration.
+     * Set the controlPlane property: The profile for control plane of the provisioned cluster.
      * 
      * @param controlPlane the controlPlane value to set.
      * @return the ProvisionedClusterProperties object itself.
@@ -114,8 +132,7 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Get the kubernetesVersion property: KubernetesVersion - Version of Kubernetes specified when creating the
-     * managed cluster.
+     * Get the kubernetesVersion property: The version of Kubernetes in use by the provisioned cluster.
      * 
      * @return the kubernetesVersion value.
      */
@@ -124,8 +141,7 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Set the kubernetesVersion property: KubernetesVersion - Version of Kubernetes specified when creating the
-     * managed cluster.
+     * Set the kubernetesVersion property: The version of Kubernetes in use by the provisioned cluster.
      * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ProvisionedClusterProperties object itself.
@@ -136,7 +152,7 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Get the networkProfile property: NetworkProfile - Profile of network configuration.
+     * Get the networkProfile property: The network configuration profile for the provisioned cluster.
      * 
      * @return the networkProfile value.
      */
@@ -145,7 +161,7 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Set the networkProfile property: NetworkProfile - Profile of network configuration.
+     * Set the networkProfile property: The network configuration profile for the provisioned cluster.
      * 
      * @param networkProfile the networkProfile value to set.
      * @return the ProvisionedClusterProperties object itself.
@@ -156,7 +172,49 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Get the agentPoolProfiles property: The agent pools of the cluster.
+     * Get the storageProfile property: The storage configuration profile for the provisioned cluster.
+     * 
+     * @return the storageProfile value.
+     */
+    public StorageProfile storageProfile() {
+        return this.storageProfile;
+    }
+
+    /**
+     * Set the storageProfile property: The storage configuration profile for the provisioned cluster.
+     * 
+     * @param storageProfile the storageProfile value to set.
+     * @return the ProvisionedClusterProperties object itself.
+     */
+    public ProvisionedClusterProperties withStorageProfile(StorageProfile storageProfile) {
+        this.storageProfile = storageProfile;
+        return this;
+    }
+
+    /**
+     * Get the clusterVMAccessProfile property: The SSH restricted access profile for the VMs in the provisioned
+     * cluster.
+     * 
+     * @return the clusterVMAccessProfile value.
+     */
+    public ClusterVMAccessProfile clusterVMAccessProfile() {
+        return this.clusterVMAccessProfile;
+    }
+
+    /**
+     * Set the clusterVMAccessProfile property: The SSH restricted access profile for the VMs in the provisioned
+     * cluster.
+     * 
+     * @param clusterVMAccessProfile the clusterVMAccessProfile value to set.
+     * @return the ProvisionedClusterProperties object itself.
+     */
+    public ProvisionedClusterProperties withClusterVMAccessProfile(ClusterVMAccessProfile clusterVMAccessProfile) {
+        this.clusterVMAccessProfile = clusterVMAccessProfile;
+        return this;
+    }
+
+    /**
+     * Get the agentPoolProfiles property: The agent pool properties for the provisioned cluster.
      * 
      * @return the agentPoolProfiles value.
      */
@@ -165,7 +223,7 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Set the agentPoolProfiles property: The agent pools of the cluster.
+     * Set the agentPoolProfiles property: The agent pool properties for the provisioned cluster.
      * 
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ProvisionedClusterProperties object itself.
@@ -176,7 +234,8 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Get the cloudProviderProfile property: The underlying cloud infra provider properties.
+     * Get the cloudProviderProfile property: The profile for the underlying cloud infrastructure provider for the
+     * provisioned cluster.
      * 
      * @return the cloudProviderProfile value.
      */
@@ -185,7 +244,8 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Set the cloudProviderProfile property: The underlying cloud infra provider properties.
+     * Set the cloudProviderProfile property: The profile for the underlying cloud infrastructure provider for the
+     * provisioned cluster.
      * 
      * @param cloudProviderProfile the cloudProviderProfile value to set.
      * @return the ProvisionedClusterProperties object itself.
@@ -196,7 +256,7 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the resource.
+     * Get the provisioningState property: The status of the latest long running operation for the provisioned cluster.
      * 
      * @return the provisioningState value.
      */
@@ -205,7 +265,7 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
-     * Get the status property: HybridAKSClusterStatus defines the observed state of HybridAKSCluster.
+     * Get the status property: The observed status of the provisioned cluster.
      * 
      * @return the status value.
      */
@@ -234,6 +294,29 @@ public final class ProvisionedClusterProperties {
     }
 
     /**
+     * Get the autoScalerProfile property: Parameters to be applied to the cluster-autoscaler when auto scaling is
+     * enabled for the provisioned cluster.
+     * 
+     * @return the autoScalerProfile value.
+     */
+    public ProvisionedClusterPropertiesAutoScalerProfile autoScalerProfile() {
+        return this.autoScalerProfile;
+    }
+
+    /**
+     * Set the autoScalerProfile property: Parameters to be applied to the cluster-autoscaler when auto scaling is
+     * enabled for the provisioned cluster.
+     * 
+     * @param autoScalerProfile the autoScalerProfile value to set.
+     * @return the ProvisionedClusterProperties object itself.
+     */
+    public ProvisionedClusterProperties
+        withAutoScalerProfile(ProvisionedClusterPropertiesAutoScalerProfile autoScalerProfile) {
+        this.autoScalerProfile = autoScalerProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -248,6 +331,12 @@ public final class ProvisionedClusterProperties {
         if (networkProfile() != null) {
             networkProfile().validate();
         }
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
+        if (clusterVMAccessProfile() != null) {
+            clusterVMAccessProfile().validate();
+        }
         if (agentPoolProfiles() != null) {
             agentPoolProfiles().forEach(e -> e.validate());
         }
@@ -259,6 +348,9 @@ public final class ProvisionedClusterProperties {
         }
         if (licenseProfile() != null) {
             licenseProfile().validate();
+        }
+        if (autoScalerProfile() != null) {
+            autoScalerProfile().validate();
         }
     }
 }

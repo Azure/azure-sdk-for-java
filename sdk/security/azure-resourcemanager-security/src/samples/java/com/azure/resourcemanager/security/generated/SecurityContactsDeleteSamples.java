@@ -4,17 +4,23 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for SecurityContacts Delete. */
+import com.azure.resourcemanager.security.models.SecurityContactName;
+
+/**
+ * Samples for SecurityContacts Delete.
+ */
 public final class SecurityContactsDeleteSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/SecurityContacts/DeleteSecurityContact_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/SecurityContacts/
+     * DeleteSecurityContact_example.json
      */
     /**
      * Sample code: Deletes a security contact data.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void deletesASecurityContactData(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securityContacts().deleteWithResponse("default", com.azure.core.util.Context.NONE);
+        manager.securityContacts().deleteWithResponse(SecurityContactName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }

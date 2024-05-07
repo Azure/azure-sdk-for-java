@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.fluent.models.ExperimentExecutionInner;
 public final class ExperimentExecutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentExecutionInner model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ttouwaboekqvkel\",\"id\":\"mvb\",\"name\":\"yjsflhhcaalnji\",\"properties\":{\"status\":\"xyawj\",\"startedAt\":\"2021-08-07T05:01:18Z\",\"stoppedAt\":\"2021-10-05T03:46:28Z\"}}")
-                .toObject(ExperimentExecutionInner.class);
+        ExperimentExecutionInner model = BinaryData.fromString(
+            "{\"type\":\"tpnapnyiropuhpig\",\"id\":\"gylgqgitxmedjvcs\",\"name\":\"n\",\"properties\":{\"status\":\"ncw\",\"startedAt\":\"2021-09-15T03:16:23Z\",\"stoppedAt\":\"2021-03-30T03:40:31Z\"}}")
+            .toObject(ExperimentExecutionInner.class);
     }
 
     @org.junit.jupiter.api.Test

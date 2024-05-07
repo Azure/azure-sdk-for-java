@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.implementation;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationsClient;
-import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperations;
 
 public final class ValidateOperationsImpl implements ValidateOperations {
@@ -17,19 +17,18 @@ public final class ValidateOperationsImpl implements ValidateOperations {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ValidateOperationsImpl(
-        ValidateOperationsClient innerClient,
+    public ValidateOperationsImpl(ValidateOperationsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public void trigger(String vaultName, String resourceGroupName, ValidateOperationRequest parameters) {
+    public void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters) {
         this.serviceClient().trigger(vaultName, resourceGroupName, parameters);
     }
 
-    public void trigger(
-        String vaultName, String resourceGroupName, ValidateOperationRequest parameters, Context context) {
+    public void trigger(String vaultName, String resourceGroupName, ValidateOperationRequestResource parameters,
+        Context context) {
         this.serviceClient().trigger(vaultName, resourceGroupName, parameters, context);
     }
 

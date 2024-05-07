@@ -12,22 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class UnplannedFailoverInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UnplannedFailoverInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"failoverDirection\":\"oxoismsksbpim\",\"sourceSiteOperations\":\"oljxkcgx\",\"providerSpecificDetails\":{\"instanceType\":\"UnplannedFailoverProviderSpecificInput\"}}")
-                .toObject(UnplannedFailoverInputProperties.class);
+        UnplannedFailoverInputProperties model = BinaryData.fromString(
+            "{\"failoverDirection\":\"oxoismsksbpim\",\"sourceSiteOperations\":\"oljxkcgx\",\"providerSpecificDetails\":{\"instanceType\":\"UnplannedFailoverProviderSpecificInput\"}}")
+            .toObject(UnplannedFailoverInputProperties.class);
         Assertions.assertEquals("oxoismsksbpim", model.failoverDirection());
         Assertions.assertEquals("oljxkcgx", model.sourceSiteOperations());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnplannedFailoverInputProperties model =
-            new UnplannedFailoverInputProperties()
-                .withFailoverDirection("oxoismsksbpim")
-                .withSourceSiteOperations("oljxkcgx")
-                .withProviderSpecificDetails(new UnplannedFailoverProviderSpecificInput());
+        UnplannedFailoverInputProperties model = new UnplannedFailoverInputProperties()
+            .withFailoverDirection("oxoismsksbpim").withSourceSiteOperations("oljxkcgx")
+            .withProviderSpecificDetails(new UnplannedFailoverProviderSpecificInput());
         model = BinaryData.fromObject(model).toObject(UnplannedFailoverInputProperties.class);
         Assertions.assertEquals("oxoismsksbpim", model.failoverDirection());
         Assertions.assertEquals("oljxkcgx", model.sourceSiteOperations());

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.iotfirmwaredefense.models.OperationDisplay;
 public final class OperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"wlrsffrzpwv\",\"resource\":\"dqgbiqylihkaetc\",\"operation\":\"vfcivfsnkymuc\",\"description\":\"hjfbebrjcxe\"}")
-                .toObject(OperationDisplay.class);
+        OperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"mpvecxgodebfqk\",\"resource\":\"bmpukgriwflz\",\"operation\":\"bxzpuzycisp\",\"description\":\"zahmgkbrpyydhibn\"}")
+            .toObject(OperationDisplay.class);
     }
 
     @org.junit.jupiter.api.Test

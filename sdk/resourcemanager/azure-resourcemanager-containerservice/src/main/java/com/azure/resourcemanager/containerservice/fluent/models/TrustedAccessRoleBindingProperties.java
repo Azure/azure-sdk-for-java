@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservice.models.TrustedAccessRoleBindin
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties for trusted access role binding. */
+/**
+ * Properties for trusted access role binding.
+ */
 @Fluent
 public final class TrustedAccessRoleBindingProperties {
     /*
@@ -32,13 +34,15 @@ public final class TrustedAccessRoleBindingProperties {
     @JsonProperty(value = "roles", required = true)
     private List<String> roles;
 
-    /** Creates an instance of TrustedAccessRoleBindingProperties class. */
+    /**
+     * Creates an instance of TrustedAccessRoleBindingProperties class.
+     */
     public TrustedAccessRoleBindingProperties() {
     }
 
     /**
      * Get the provisioningState property: The current provisioning state of trusted access role binding.
-     *
+     * 
      * @return the provisioningState value.
      */
     public TrustedAccessRoleBindingProvisioningState provisioningState() {
@@ -47,7 +51,7 @@ public final class TrustedAccessRoleBindingProperties {
 
     /**
      * Get the sourceResourceId property: The ARM resource ID of source resource that trusted access is configured for.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -56,7 +60,7 @@ public final class TrustedAccessRoleBindingProperties {
 
     /**
      * Set the sourceResourceId property: The ARM resource ID of source resource that trusted access is configured for.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the TrustedAccessRoleBindingProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class TrustedAccessRoleBindingProperties {
     /**
      * Get the roles property: A list of roles to bind, each item is a resource type qualified role name. For example:
      * 'Microsoft.MachineLearningServices/workspaces/reader'.
-     *
+     * 
      * @return the roles value.
      */
     public List<String> roles() {
@@ -78,7 +82,7 @@ public final class TrustedAccessRoleBindingProperties {
     /**
      * Set the roles property: A list of roles to bind, each item is a resource type qualified role name. For example:
      * 'Microsoft.MachineLearningServices/workspaces/reader'.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the TrustedAccessRoleBindingProperties object itself.
      */
@@ -89,21 +93,17 @@ public final class TrustedAccessRoleBindingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceResourceId in model TrustedAccessRoleBindingProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceResourceId in model TrustedAccessRoleBindingProperties"));
         }
         if (roles() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property roles in model TrustedAccessRoleBindingProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property roles in model TrustedAccessRoleBindingProperties"));
         }
     }
 

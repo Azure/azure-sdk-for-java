@@ -58,22 +58,14 @@ public final class RuleResultsImpl implements RuleResults, RuleResults.Definitio
     }
 
     public RuleResults create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlVulnerabilityAssessmentBaselineRules()
-                .createOrUpdateWithResponse(ruleId, createWorkspaceId, resourceId, createBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSqlVulnerabilityAssessmentBaselineRules()
+            .createOrUpdateWithResponse(ruleId, createWorkspaceId, resourceId, createBody, Context.NONE).getValue();
         return this;
     }
 
     public RuleResults create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlVulnerabilityAssessmentBaselineRules()
-                .createOrUpdateWithResponse(ruleId, createWorkspaceId, resourceId, createBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSqlVulnerabilityAssessmentBaselineRules()
+            .createOrUpdateWithResponse(ruleId, createWorkspaceId, resourceId, createBody, context).getValue();
         return this;
     }
 
@@ -92,40 +84,26 @@ public final class RuleResultsImpl implements RuleResults, RuleResults.Definitio
     }
 
     public RuleResults apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlVulnerabilityAssessmentBaselineRules()
-                .createOrUpdateWithResponse(ruleId, updateWorkspaceId, resourceId, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSqlVulnerabilityAssessmentBaselineRules()
+            .createOrUpdateWithResponse(ruleId, updateWorkspaceId, resourceId, updateBody, Context.NONE).getValue();
         return this;
     }
 
     public RuleResults apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlVulnerabilityAssessmentBaselineRules()
-                .createOrUpdateWithResponse(ruleId, updateWorkspaceId, resourceId, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSqlVulnerabilityAssessmentBaselineRules()
+            .createOrUpdateWithResponse(ruleId, updateWorkspaceId, resourceId, updateBody, context).getValue();
         return this;
     }
 
     RuleResultsImpl(RuleResultsInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.ruleId =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{resourceId}/providers/Microsoft.Security/sqlVulnerabilityAssessments/default/baselineRules/{ruleId}",
-                    "ruleId");
-        this.resourceId =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{resourceId}/providers/Microsoft.Security/sqlVulnerabilityAssessments/default/baselineRules/{ruleId}",
-                    "resourceId");
+        this.ruleId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceId}/providers/Microsoft.Security/sqlVulnerabilityAssessments/default/baselineRules/{ruleId}",
+            "ruleId");
+        this.resourceId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceId}/providers/Microsoft.Security/sqlVulnerabilityAssessments/default/baselineRules/{ruleId}",
+            "resourceId");
     }
 
     public RuleResultsImpl withLatestScan(Boolean latestScan) {

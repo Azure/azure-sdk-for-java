@@ -14,19 +14,20 @@ public final class DetectorListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DetectorListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"spkwlhzdobpxjm\"},\"etag\":\"bvvnchrkcciw\",\"id\":\"zjuqkhrsaj\",\"name\":\"wkuofoskghsauu\",\"type\":\"mjmvxieduugidyjr\"},{\"properties\":{\"value\":\"y\"},\"etag\":\"svexcsonpclhoco\",\"id\":\"slkevle\",\"name\":\"gz\",\"type\":\"buhfmvfaxkffeiit\"}],\"nextLink\":\"vmezy\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"q\"},\"etag\":\"a\",\"id\":\"oaeupfhyhltrpmo\",\"name\":\"jmcmatuokthfu\",\"type\":\"uaodsfcpk\"},{\"properties\":{\"value\":\"dpuozmyz\"},\"etag\":\"agfuaxbezyiu\",\"id\":\"kktwhrdxw\",\"name\":\"ywqsmbsurexim\",\"type\":\"ryocfsfksymdd\"},{\"properties\":{\"value\":\"kiiuxhqyudxor\"},\"etag\":\"nbpoczvyifqrvkdv\",\"id\":\"sllr\",\"name\":\"vvdfwatkpnpul\",\"type\":\"xxbczwtr\"}],\"nextLink\":\"iqzbq\"}")
             .toObject(DetectorListResult.class);
-        Assertions.assertEquals("spkwlhzdobpxjm", model.value().get(0).value());
-        Assertions.assertEquals("vmezy", model.nextLink());
+        Assertions.assertEquals("q", model.value().get(0).value());
+        Assertions.assertEquals("iqzbq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DetectorListResult model
-            = new DetectorListResult().withValue(Arrays.asList(new DetectorResponseInner().withValue("spkwlhzdobpxjm"),
-                new DetectorResponseInner().withValue("y"))).withNextLink("vmezy");
+        DetectorListResult model = new DetectorListResult().withValue(
+            Arrays.asList(new DetectorResponseInner().withValue("q"), new DetectorResponseInner().withValue("dpuozmyz"),
+                new DetectorResponseInner().withValue("kiiuxhqyudxor")))
+            .withNextLink("iqzbq");
         model = BinaryData.fromObject(model).toObject(DetectorListResult.class);
-        Assertions.assertEquals("spkwlhzdobpxjm", model.value().get(0).value());
-        Assertions.assertEquals("vmezy", model.nextLink());
+        Assertions.assertEquals("q", model.value().get(0).value());
+        Assertions.assertEquals("iqzbq", model.nextLink());
     }
 }

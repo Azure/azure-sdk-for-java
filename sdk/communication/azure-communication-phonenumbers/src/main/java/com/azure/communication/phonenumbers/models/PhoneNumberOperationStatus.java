@@ -33,7 +33,11 @@ public final class PhoneNumberOperationStatus extends ExpandableStringEnum<Phone
         return fromString(name, PhoneNumberOperationStatus.class);
     }
 
-    /** @return known PhoneNumberOperationStatus values. */
+    /**
+     * Gets known PhoneNumberOperationStatus values.
+     *
+     * @return known PhoneNumberOperationStatus values.
+     */
     public static Collection<PhoneNumberOperationStatus> values() {
         return values(PhoneNumberOperationStatus.class);
     }

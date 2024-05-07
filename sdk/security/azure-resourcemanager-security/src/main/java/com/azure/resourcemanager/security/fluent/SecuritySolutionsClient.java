@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.SecuritySolutionInner;
 
-/** An instance of this class provides access to all the operations defined in SecuritySolutionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SecuritySolutionsClient.
+ */
 public interface SecuritySolutionsClient {
     /**
      * Gets a list of Security Solutions for the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Security Solutions for the subscription as paginated response with {@link PagedIterable}.
@@ -25,7 +27,7 @@ public interface SecuritySolutionsClient {
 
     /**
      * Gets a list of Security Solutions for the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,11 +39,11 @@ public interface SecuritySolutionsClient {
 
     /**
      * Gets a specific Security Solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param securitySolutionName Name of security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,16 +52,16 @@ public interface SecuritySolutionsClient {
      * @return a specific Security Solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecuritySolutionInner> getWithResponse(
-        String resourceGroupName, String ascLocation, String securitySolutionName, Context context);
+    Response<SecuritySolutionInner> getWithResponse(String resourceGroupName, String ascLocation,
+        String securitySolutionName, Context context);
 
     /**
      * Gets a specific Security Solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param securitySolutionName Name of security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

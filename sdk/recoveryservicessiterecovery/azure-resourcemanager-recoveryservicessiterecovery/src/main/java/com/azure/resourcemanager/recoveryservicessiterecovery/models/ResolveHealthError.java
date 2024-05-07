@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resolve health errors input properties. */
+/**
+ * Resolve health errors input properties.
+ */
 @Fluent
 public final class ResolveHealthError {
     /*
@@ -16,13 +18,15 @@ public final class ResolveHealthError {
     @JsonProperty(value = "healthErrorId")
     private String healthErrorId;
 
-    /** Creates an instance of ResolveHealthError class. */
+    /**
+     * Creates an instance of ResolveHealthError class.
+     */
     public ResolveHealthError() {
     }
 
     /**
      * Get the healthErrorId property: Health error id.
-     *
+     * 
      * @return the healthErrorId value.
      */
     public String healthErrorId() {
@@ -31,7 +35,7 @@ public final class ResolveHealthError {
 
     /**
      * Set the healthErrorId property: Health error id.
-     *
+     * 
      * @param healthErrorId the healthErrorId value to set.
      * @return the ResolveHealthError object itself.
      */
@@ -42,7 +46,7 @@ public final class ResolveHealthError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

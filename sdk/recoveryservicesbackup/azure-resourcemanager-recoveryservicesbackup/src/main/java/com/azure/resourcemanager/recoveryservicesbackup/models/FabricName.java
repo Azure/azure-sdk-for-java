@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the fabric name - Azure or AD. */
+/**
+ * Specifies the fabric name - Azure or AD.
+ */
 public final class FabricName extends ExpandableStringEnum<FabricName> {
-    /** Static value Invalid for FabricName. */
+    /**
+     * Static value Invalid for FabricName.
+     */
     public static final FabricName INVALID = fromString("Invalid");
 
-    /** Static value Azure for FabricName. */
+    /**
+     * Static value Azure for FabricName.
+     */
     public static final FabricName AZURE = fromString("Azure");
 
     /**
      * Creates a new instance of FabricName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class FabricName extends ExpandableStringEnum<FabricName> {
 
     /**
      * Creates or finds a FabricName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FabricName.
      */
@@ -38,7 +44,7 @@ public final class FabricName extends ExpandableStringEnum<FabricName> {
 
     /**
      * Gets known FabricName values.
-     *
+     * 
      * @return known FabricName values.
      */
     public static Collection<FabricName> values() {

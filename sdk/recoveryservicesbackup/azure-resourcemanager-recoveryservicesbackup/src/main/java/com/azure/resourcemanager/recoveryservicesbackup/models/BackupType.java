@@ -8,35 +8,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of backup, viz. Full, Differential, Log or CopyOnlyFull. */
+/**
+ * Type of backup, viz. Full, Differential, Log or CopyOnlyFull.
+ */
 public final class BackupType extends ExpandableStringEnum<BackupType> {
-    /** Static value Invalid for BackupType. */
+    /**
+     * Static value Invalid for BackupType.
+     */
     public static final BackupType INVALID = fromString("Invalid");
 
-    /** Static value Full for BackupType. */
+    /**
+     * Static value Full for BackupType.
+     */
     public static final BackupType FULL = fromString("Full");
 
-    /** Static value Differential for BackupType. */
+    /**
+     * Static value Differential for BackupType.
+     */
     public static final BackupType DIFFERENTIAL = fromString("Differential");
 
-    /** Static value Log for BackupType. */
+    /**
+     * Static value Log for BackupType.
+     */
     public static final BackupType LOG = fromString("Log");
 
-    /** Static value CopyOnlyFull for BackupType. */
+    /**
+     * Static value CopyOnlyFull for BackupType.
+     */
     public static final BackupType COPY_ONLY_FULL = fromString("CopyOnlyFull");
 
-    /** Static value Incremental for BackupType. */
+    /**
+     * Static value Incremental for BackupType.
+     */
     public static final BackupType INCREMENTAL = fromString("Incremental");
 
-    /** Static value SnapshotFull for BackupType. */
+    /**
+     * Static value SnapshotFull for BackupType.
+     */
     public static final BackupType SNAPSHOT_FULL = fromString("SnapshotFull");
 
-    /** Static value SnapshotCopyOnlyFull for BackupType. */
+    /**
+     * Static value SnapshotCopyOnlyFull for BackupType.
+     */
     public static final BackupType SNAPSHOT_COPY_ONLY_FULL = fromString("SnapshotCopyOnlyFull");
 
     /**
      * Creates a new instance of BackupType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +63,7 @@ public final class BackupType extends ExpandableStringEnum<BackupType> {
 
     /**
      * Creates or finds a BackupType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackupType.
      */
@@ -56,7 +74,7 @@ public final class BackupType extends ExpandableStringEnum<BackupType> {
 
     /**
      * Gets known BackupType values.
-     *
+     * 
      * @return known BackupType values.
      */
     public static Collection<BackupType> values() {

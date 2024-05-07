@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ServerConfigurationInner;
 
-/** Resource collection API of Configurations. */
+/**
+ * Resource collection API of Configurations.
+ */
 public interface Configurations {
     /**
      * List all the configurations of a server in cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param serverName The name of the server.
@@ -26,7 +28,7 @@ public interface Configurations {
 
     /**
      * List all the configurations of a server in cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param serverName The name of the server.
@@ -36,12 +38,12 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server configurations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ServerConfiguration> listByServer(
-        String resourceGroupName, String clusterName, String serverName, Context context);
+    PagedIterable<ServerConfiguration> listByServer(String resourceGroupName, String clusterName, String serverName,
+        Context context);
 
     /**
      * List all the configurations of a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +55,7 @@ public interface Configurations {
 
     /**
      * List all the configurations of a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -66,7 +68,7 @@ public interface Configurations {
 
     /**
      * Gets information of a configuration for coordinator and nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -76,12 +78,12 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information of a configuration for coordinator and nodes along with {@link Response}.
      */
-    Response<Configuration> getWithResponse(
-        String resourceGroupName, String clusterName, String configurationName, Context context);
+    Response<Configuration> getWithResponse(String resourceGroupName, String clusterName, String configurationName,
+        Context context);
 
     /**
      * Gets information of a configuration for coordinator and nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -94,7 +96,7 @@ public interface Configurations {
 
     /**
      * Gets information of a configuration for coordinator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -104,12 +106,12 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information of a configuration for coordinator along with {@link Response}.
      */
-    Response<ServerConfiguration> getCoordinatorWithResponse(
-        String resourceGroupName, String clusterName, String configurationName, Context context);
+    Response<ServerConfiguration> getCoordinatorWithResponse(String resourceGroupName, String clusterName,
+        String configurationName, Context context);
 
     /**
      * Gets information of a configuration for coordinator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -122,7 +124,7 @@ public interface Configurations {
 
     /**
      * Updates configuration of coordinator in a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -132,12 +134,12 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a configuration.
      */
-    ServerConfiguration updateOnCoordinator(
-        String resourceGroupName, String clusterName, String configurationName, ServerConfigurationInner parameters);
+    ServerConfiguration updateOnCoordinator(String resourceGroupName, String clusterName, String configurationName,
+        ServerConfigurationInner parameters);
 
     /**
      * Updates configuration of coordinator in a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -148,16 +150,12 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a configuration.
      */
-    ServerConfiguration updateOnCoordinator(
-        String resourceGroupName,
-        String clusterName,
-        String configurationName,
-        ServerConfigurationInner parameters,
-        Context context);
+    ServerConfiguration updateOnCoordinator(String resourceGroupName, String clusterName, String configurationName,
+        ServerConfigurationInner parameters, Context context);
 
     /**
      * Gets information of a configuration for worker nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -167,12 +165,12 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information of a configuration for worker nodes along with {@link Response}.
      */
-    Response<ServerConfiguration> getNodeWithResponse(
-        String resourceGroupName, String clusterName, String configurationName, Context context);
+    Response<ServerConfiguration> getNodeWithResponse(String resourceGroupName, String clusterName,
+        String configurationName, Context context);
 
     /**
      * Gets information of a configuration for worker nodes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -185,7 +183,7 @@ public interface Configurations {
 
     /**
      * Updates configuration of worker nodes in a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -195,12 +193,12 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a configuration.
      */
-    ServerConfiguration updateOnNode(
-        String resourceGroupName, String clusterName, String configurationName, ServerConfigurationInner parameters);
+    ServerConfiguration updateOnNode(String resourceGroupName, String clusterName, String configurationName,
+        ServerConfigurationInner parameters);
 
     /**
      * Updates configuration of worker nodes in a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param configurationName The name of the cluster configuration.
@@ -211,10 +209,6 @@ public interface Configurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a configuration.
      */
-    ServerConfiguration updateOnNode(
-        String resourceGroupName,
-        String clusterName,
-        String configurationName,
-        ServerConfigurationInner parameters,
-        Context context);
+    ServerConfiguration updateOnNode(String resourceGroupName, String clusterName, String configurationName,
+        ServerConfigurationInner parameters, Context context);
 }

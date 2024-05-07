@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.AlertsSuppressionRuleInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Suppression rules list for subscription. */
+/**
+ * Suppression rules list for subscription.
+ */
 @Fluent
 public final class AlertsSuppressionRulesList {
     /*
@@ -25,13 +27,15 @@ public final class AlertsSuppressionRulesList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AlertsSuppressionRulesList class. */
+    /**
+     * Creates an instance of AlertsSuppressionRulesList class.
+     */
     public AlertsSuppressionRulesList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<AlertsSuppressionRuleInner> value() {
@@ -40,7 +44,7 @@ public final class AlertsSuppressionRulesList {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the AlertsSuppressionRulesList object itself.
      */
@@ -51,7 +55,7 @@ public final class AlertsSuppressionRulesList {
 
     /**
      * Get the nextLink property: URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class AlertsSuppressionRulesList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model AlertsSuppressionRulesList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model AlertsSuppressionRulesList"));
         } else {
             value().forEach(e -> e.validate());
         }

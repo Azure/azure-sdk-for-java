@@ -123,14 +123,6 @@ public final class TestUtils {
         return true;
     }
 
-    public static Span startSampledInSpan(String name) {
-        return TRACER.spanBuilder(name)
-            // guarantee that we have before/after spans sampled in
-            // and record duration/result of the test
-            .setAttribute("sample.in", "true")
-            .startSpan();
-    }
-
     private TestUtils() {
     }
 }

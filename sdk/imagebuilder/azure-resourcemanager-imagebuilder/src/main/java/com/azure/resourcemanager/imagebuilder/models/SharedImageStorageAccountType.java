@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the storage account type to be used to store the Azure Compute Gallery image version in. */
+/**
+ * Specifies the storage account type to be used to store the Azure Compute Gallery image version in.
+ */
 public final class SharedImageStorageAccountType extends ExpandableStringEnum<SharedImageStorageAccountType> {
-    /** Static value Standard_LRS for SharedImageStorageAccountType. */
+    /**
+     * Static value Standard_LRS for SharedImageStorageAccountType.
+     */
     public static final SharedImageStorageAccountType STANDARD_LRS = fromString("Standard_LRS");
 
-    /** Static value Standard_ZRS for SharedImageStorageAccountType. */
+    /**
+     * Static value Standard_ZRS for SharedImageStorageAccountType.
+     */
     public static final SharedImageStorageAccountType STANDARD_ZRS = fromString("Standard_ZRS");
 
-    /** Static value Premium_LRS for SharedImageStorageAccountType. */
+    /**
+     * Static value Premium_LRS for SharedImageStorageAccountType.
+     */
     public static final SharedImageStorageAccountType PREMIUM_LRS = fromString("Premium_LRS");
 
     /**
      * Creates a new instance of SharedImageStorageAccountType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class SharedImageStorageAccountType extends ExpandableStringEnum<Sh
 
     /**
      * Creates or finds a SharedImageStorageAccountType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SharedImageStorageAccountType.
      */
@@ -41,7 +49,7 @@ public final class SharedImageStorageAccountType extends ExpandableStringEnum<Sh
 
     /**
      * Gets known SharedImageStorageAccountType values.
-     *
+     * 
      * @return known SharedImageStorageAccountType values.
      */
     public static Collection<SharedImageStorageAccountType> values() {

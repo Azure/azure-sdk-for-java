@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.ComplianceInner;
 public final class ComplianceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComplianceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-08-15T01:34:53Z\",\"resourceCount\":207967373,\"assessmentResult\":[{\"segmentType\":\"dpfrxtrthzvaytdw\",\"percentage\":34.16180582030333},{\"segmentType\":\"ubpaxhe\",\"percentage\":1.5196984611925868}]},\"id\":\"ivpdtiir\",\"name\":\"tdqoaxoruzfgsq\",\"type\":\"yfxrx\"}")
-                .toObject(ComplianceInner.class);
+        ComplianceInner model = BinaryData.fromString(
+            "{\"properties\":{\"assessmentTimestampUtcDate\":\"2021-08-14T18:53:09Z\",\"resourceCount\":64161547,\"assessmentResult\":[{\"segmentType\":\"okaj\",\"percentage\":25.986608743983886},{\"segmentType\":\"mexgstxgcp\",\"percentage\":43.470360102063474},{\"segmentType\":\"ajrmvdjwzrlovmc\",\"percentage\":26.31656310465652}]},\"id\":\"j\",\"name\":\"oejctbzaqsqsy\",\"type\":\"bkbfkgukdkex\"}")
+            .toObject(ComplianceInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of deployments resource ids. */
+/**
+ * A list of deployments resource ids.
+ */
 @Fluent
 public final class DeploymentListInner {
     /*
@@ -18,8 +20,14 @@ public final class DeploymentListInner {
     private List<String> deployments;
 
     /**
+     * Creates an instance of DeploymentListInner class.
+     */
+    public DeploymentListInner() {
+    }
+
+    /**
      * Get the deployments property: A list of deployment resource ids.
-     *
+     * 
      * @return the deployments value.
      */
     public List<String> deployments() {
@@ -28,7 +36,7 @@ public final class DeploymentListInner {
 
     /**
      * Set the deployments property: A list of deployment resource ids.
-     *
+     * 
      * @param deployments the deployments value to set.
      * @return the DeploymentListInner object itself.
      */
@@ -39,7 +47,7 @@ public final class DeploymentListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

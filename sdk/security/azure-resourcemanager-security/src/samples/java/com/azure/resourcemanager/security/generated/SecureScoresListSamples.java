@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for SecureScores List. */
+/**
+ * Samples for SecureScores List.
+ */
 public final class SecureScoresListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/ListSecureScores_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/
+     * ListSecureScores_example.json
      */
     /**
      * Sample code: List secure scores.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void listSecureScores(com.azure.resourcemanager.security.SecurityManager manager) {

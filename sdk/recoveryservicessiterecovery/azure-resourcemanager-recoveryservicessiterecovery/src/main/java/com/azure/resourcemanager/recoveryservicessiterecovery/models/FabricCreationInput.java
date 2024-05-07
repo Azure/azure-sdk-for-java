@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Site details provided during the time of site creation. */
+/**
+ * Site details provided during the time of site creation.
+ */
 @Fluent
 public final class FabricCreationInput {
     /*
@@ -16,13 +18,15 @@ public final class FabricCreationInput {
     @JsonProperty(value = "properties")
     private FabricCreationInputProperties properties;
 
-    /** Creates an instance of FabricCreationInput class. */
+    /**
+     * Creates an instance of FabricCreationInput class.
+     */
     public FabricCreationInput() {
     }
 
     /**
      * Get the properties property: Fabric creation input.
-     *
+     * 
      * @return the properties value.
      */
     public FabricCreationInputProperties properties() {
@@ -31,7 +35,7 @@ public final class FabricCreationInput {
 
     /**
      * Set the properties property: Fabric creation input.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the FabricCreationInput object itself.
      */
@@ -42,7 +46,7 @@ public final class FabricCreationInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

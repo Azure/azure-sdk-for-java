@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationEligibilityResultsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Replication eligibility results response model. */
+/**
+ * Replication eligibility results response model.
+ */
 @Immutable
 public final class ReplicationEligibilityResultsInner {
     /*
@@ -35,13 +37,15 @@ public final class ReplicationEligibilityResultsInner {
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationEligibilityResultsProperties properties;
 
-    /** Creates an instance of ReplicationEligibilityResultsInner class. */
+    /**
+     * Creates an instance of ReplicationEligibilityResultsInner class.
+     */
     public ReplicationEligibilityResultsInner() {
     }
 
     /**
      * Get the name property: Gets the name of this object.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class ReplicationEligibilityResultsInner {
 
     /**
      * Get the type property: Gets the object type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -59,7 +63,7 @@ public final class ReplicationEligibilityResultsInner {
 
     /**
      * Get the id property: Gets Unique ARM identifier for this object.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -68,7 +72,7 @@ public final class ReplicationEligibilityResultsInner {
 
     /**
      * Get the properties property: Gets properties model for replication eligibility results API.
-     *
+     * 
      * @return the properties value.
      */
     public ReplicationEligibilityResultsProperties properties() {
@@ -77,7 +81,7 @@ public final class ReplicationEligibilityResultsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

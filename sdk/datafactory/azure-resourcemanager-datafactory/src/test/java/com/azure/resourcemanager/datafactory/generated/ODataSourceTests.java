@@ -11,16 +11,19 @@ public final class ODataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ODataSource model = BinaryData.fromString(
-            "{\"type\":\"ODataSource\",\"query\":\"datavhjkwfolpj\",\"httpRequestTimeout\":\"datapahvoiranxqnz\",\"additionalColumns\":\"datavnldtqykz\",\"sourceRetryCount\":\"datadoqrejl\",\"sourceRetryWait\":\"datan\",\"maxConcurrentConnections\":\"dataicyozryoxmfrxf\",\"disableMetricsCollection\":\"datacjialvchfumlfgm\",\"\":{\"ipklfwn\":\"dataxko\",\"dkvljitbnhg\":\"datafkbqlrtffsw\",\"abgsdxtwqqukgo\":\"datarvlarozswmucr\",\"ksltunrwxsqvx\":\"datalvjgsk\"}}")
+            "{\"type\":\"gd\",\"query\":\"datajjprd\",\"httpRequestTimeout\":\"datablonlhtgexwjhicu\",\"additionalColumns\":\"dataavimxnhylwogtvl\",\"sourceRetryCount\":\"datat\",\"sourceRetryWait\":\"datadxlfn\",\"maxConcurrentConnections\":\"dataclkmggnzlfyxaiaf\",\"disableMetricsCollection\":\"datamxekfvycvhwduo\",\"\":{\"sbahcassqeybd\":\"datapzzcxku\",\"cxtumqinawctaarb\":\"datazeyakgrkohfqmxzk\"}}")
             .toObject(ODataSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ODataSource model = new ODataSource().withSourceRetryCount("datadoqrejl").withSourceRetryWait("datan")
-            .withMaxConcurrentConnections("dataicyozryoxmfrxf").withDisableMetricsCollection("datacjialvchfumlfgm")
-            .withQuery("datavhjkwfolpj").withHttpRequestTimeout("datapahvoiranxqnz")
-            .withAdditionalColumns("datavnldtqykz");
+        ODataSource model = new ODataSource().withSourceRetryCount("datat")
+            .withSourceRetryWait("datadxlfn")
+            .withMaxConcurrentConnections("dataclkmggnzlfyxaiaf")
+            .withDisableMetricsCollection("datamxekfvycvhwduo")
+            .withQuery("datajjprd")
+            .withHttpRequestTimeout("datablonlhtgexwjhicu")
+            .withAdditionalColumns("dataavimxnhylwogtvl");
         model = BinaryData.fromObject(model).toObject(ODataSource.class);
     }
 }

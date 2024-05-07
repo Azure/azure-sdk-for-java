@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TimerTriggerDescriptor model. */
+/**
+ * The TimerTriggerDescriptor model.
+ */
 @Fluent
 public final class TimerTriggerDescriptor {
     /*
@@ -22,13 +24,15 @@ public final class TimerTriggerDescriptor {
     @JsonProperty(value = "scheduleOccurrence")
     private String scheduleOccurrence;
 
-    /** Creates an instance of TimerTriggerDescriptor class. */
+    /**
+     * Creates an instance of TimerTriggerDescriptor class.
+     */
     public TimerTriggerDescriptor() {
     }
 
     /**
      * Get the timerTriggerName property: The timer trigger name that caused the run.
-     *
+     * 
      * @return the timerTriggerName value.
      */
     public String timerTriggerName() {
@@ -37,7 +41,7 @@ public final class TimerTriggerDescriptor {
 
     /**
      * Set the timerTriggerName property: The timer trigger name that caused the run.
-     *
+     * 
      * @param timerTriggerName the timerTriggerName value to set.
      * @return the TimerTriggerDescriptor object itself.
      */
@@ -48,7 +52,7 @@ public final class TimerTriggerDescriptor {
 
     /**
      * Get the scheduleOccurrence property: The occurrence that triggered the run.
-     *
+     * 
      * @return the scheduleOccurrence value.
      */
     public String scheduleOccurrence() {
@@ -57,7 +61,7 @@ public final class TimerTriggerDescriptor {
 
     /**
      * Set the scheduleOccurrence property: The occurrence that triggered the run.
-     *
+     * 
      * @param scheduleOccurrence the scheduleOccurrence value to set.
      * @return the TimerTriggerDescriptor object itself.
      */
@@ -68,7 +72,7 @@ public final class TimerTriggerDescriptor {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

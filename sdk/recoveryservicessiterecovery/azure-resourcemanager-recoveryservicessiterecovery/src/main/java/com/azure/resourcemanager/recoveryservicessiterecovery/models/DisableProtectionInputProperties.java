@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Disable protection input properties. */
+/**
+ * Disable protection input properties.
+ */
 @Fluent
 public final class DisableProtectionInputProperties {
     /*
@@ -22,14 +24,16 @@ public final class DisableProtectionInputProperties {
     @JsonProperty(value = "replicationProviderInput")
     private DisableProtectionProviderSpecificInput replicationProviderInput;
 
-    /** Creates an instance of DisableProtectionInputProperties class. */
+    /**
+     * Creates an instance of DisableProtectionInputProperties class.
+     */
     public DisableProtectionInputProperties() {
     }
 
     /**
      * Get the disableProtectionReason property: Disable protection reason. It can have values
      * NotSpecified/MigrationComplete.
-     *
+     * 
      * @return the disableProtectionReason value.
      */
     public DisableProtectionReason disableProtectionReason() {
@@ -39,19 +43,19 @@ public final class DisableProtectionInputProperties {
     /**
      * Set the disableProtectionReason property: Disable protection reason. It can have values
      * NotSpecified/MigrationComplete.
-     *
+     * 
      * @param disableProtectionReason the disableProtectionReason value to set.
      * @return the DisableProtectionInputProperties object itself.
      */
-    public DisableProtectionInputProperties withDisableProtectionReason(
-        DisableProtectionReason disableProtectionReason) {
+    public DisableProtectionInputProperties
+        withDisableProtectionReason(DisableProtectionReason disableProtectionReason) {
         this.disableProtectionReason = disableProtectionReason;
         return this;
     }
 
     /**
      * Get the replicationProviderInput property: Replication provider specific input.
-     *
+     * 
      * @return the replicationProviderInput value.
      */
     public DisableProtectionProviderSpecificInput replicationProviderInput() {
@@ -60,19 +64,19 @@ public final class DisableProtectionInputProperties {
 
     /**
      * Set the replicationProviderInput property: Replication provider specific input.
-     *
+     * 
      * @param replicationProviderInput the replicationProviderInput value to set.
      * @return the DisableProtectionInputProperties object itself.
      */
-    public DisableProtectionInputProperties withReplicationProviderInput(
-        DisableProtectionProviderSpecificInput replicationProviderInput) {
+    public DisableProtectionInputProperties
+        withReplicationProviderInput(DisableProtectionProviderSpecificInput replicationProviderInput) {
         this.replicationProviderInput = replicationProviderInput;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

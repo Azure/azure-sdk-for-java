@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** InMageRcm protected disk details. */
+/**
+ * InMageRcm protected disk details.
+ */
 @Fluent
 public final class InMageRcmProtectedDiskDetails {
     /*
@@ -100,13 +102,15 @@ public final class InMageRcmProtectedDiskDetails {
     @JsonProperty(value = "resyncDetails")
     private InMageRcmSyncDetails resyncDetails;
 
-    /** Creates an instance of InMageRcmProtectedDiskDetails class. */
+    /**
+     * Creates an instance of InMageRcmProtectedDiskDetails class.
+     */
     public InMageRcmProtectedDiskDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -115,7 +119,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the diskName property: The disk name.
-     *
+     * 
      * @return the diskName value.
      */
     public String diskName() {
@@ -124,7 +128,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the isOSDisk property: A value indicating whether the disk is the OS disk.
-     *
+     * 
      * @return the isOSDisk value.
      */
     public String isOSDisk() {
@@ -133,7 +137,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the capacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @return the capacityInBytes value.
      */
     public Long capacityInBytes() {
@@ -142,7 +146,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -151,7 +155,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -160,7 +164,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the seedManagedDiskId property: The ARM Id of the seed managed disk.
-     *
+     * 
      * @return the seedManagedDiskId value.
      */
     public String seedManagedDiskId() {
@@ -169,7 +173,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the seedBlobUri property: The uri of the seed blob.
-     *
+     * 
      * @return the seedBlobUri value.
      */
     public String seedBlobUri() {
@@ -178,7 +182,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the targetManagedDiskId property: The ARM Id of the target managed disk.
-     *
+     * 
      * @return the targetManagedDiskId value.
      */
     public String targetManagedDiskId() {
@@ -187,7 +191,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the diskType property: The disk type.
-     *
+     * 
      * @return the diskType value.
      */
     public DiskAccountType diskType() {
@@ -196,7 +200,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Set the diskType property: The disk type.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the InMageRcmProtectedDiskDetails object itself.
      */
@@ -207,7 +211,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the dataPendingInLogDataStoreInMB property: The data pending in log data store in MB.
-     *
+     * 
      * @return the dataPendingInLogDataStoreInMB value.
      */
     public Double dataPendingInLogDataStoreInMB() {
@@ -216,7 +220,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the dataPendingAtSourceAgentInMB property: The data pending at source agent in MB.
-     *
+     * 
      * @return the dataPendingAtSourceAgentInMB value.
      */
     public Double dataPendingAtSourceAgentInMB() {
@@ -224,8 +228,9 @@ public final class InMageRcmProtectedDiskDetails {
     }
 
     /**
-     * Get the isInitialReplicationComplete property: A value indicating whether initial replication is complete or not.
-     *
+     * Get the isInitialReplicationComplete property: A value indicating whether initial replication is complete or
+     * not.
+     * 
      * @return the isInitialReplicationComplete value.
      */
     public String isInitialReplicationComplete() {
@@ -234,7 +239,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the irDetails property: The initial replication details.
-     *
+     * 
      * @return the irDetails value.
      */
     public InMageRcmSyncDetails irDetails() {
@@ -243,7 +248,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Set the irDetails property: The initial replication details.
-     *
+     * 
      * @param irDetails the irDetails value to set.
      * @return the InMageRcmProtectedDiskDetails object itself.
      */
@@ -254,7 +259,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Get the resyncDetails property: The resync details.
-     *
+     * 
      * @return the resyncDetails value.
      */
     public InMageRcmSyncDetails resyncDetails() {
@@ -263,7 +268,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Set the resyncDetails property: The resync details.
-     *
+     * 
      * @param resyncDetails the resyncDetails value to set.
      * @return the InMageRcmProtectedDiskDetails object itself.
      */
@@ -274,7 +279,7 @@ public final class InMageRcmProtectedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

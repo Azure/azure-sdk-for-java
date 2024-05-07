@@ -7,11 +7,13 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the publisher information of a process/rule. */
+/**
+ * Represents the publisher information of a process/rule.
+ */
 @Fluent
 public final class PublisherInfo {
     /*
-     * The Subject field of the x.509 certificate used to sign the code, using the following fields -  O =
+     * The Subject field of the x.509 certificate used to sign the code, using the following fields - O =
      * Organization, L = Locality, S = State or Province, and C = Country
      */
     @JsonProperty(value = "publisherName")
@@ -35,14 +37,16 @@ public final class PublisherInfo {
     @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of PublisherInfo class. */
+    /**
+     * Creates an instance of PublisherInfo class.
+     */
     public PublisherInfo() {
     }
 
     /**
      * Get the publisherName property: The Subject field of the x.509 certificate used to sign the code, using the
      * following fields - O = Organization, L = Locality, S = State or Province, and C = Country.
-     *
+     * 
      * @return the publisherName value.
      */
     public String publisherName() {
@@ -52,7 +56,7 @@ public final class PublisherInfo {
     /**
      * Set the publisherName property: The Subject field of the x.509 certificate used to sign the code, using the
      * following fields - O = Organization, L = Locality, S = State or Province, and C = Country.
-     *
+     * 
      * @param publisherName the publisherName value to set.
      * @return the PublisherInfo object itself.
      */
@@ -63,7 +67,7 @@ public final class PublisherInfo {
 
     /**
      * Get the productName property: The product name taken from the file's version resource.
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -72,7 +76,7 @@ public final class PublisherInfo {
 
     /**
      * Set the productName property: The product name taken from the file's version resource.
-     *
+     * 
      * @param productName the productName value to set.
      * @return the PublisherInfo object itself.
      */
@@ -83,7 +87,7 @@ public final class PublisherInfo {
 
     /**
      * Get the binaryName property: The "OriginalName" field taken from the file's version resource.
-     *
+     * 
      * @return the binaryName value.
      */
     public String binaryName() {
@@ -92,7 +96,7 @@ public final class PublisherInfo {
 
     /**
      * Set the binaryName property: The "OriginalName" field taken from the file's version resource.
-     *
+     * 
      * @param binaryName the binaryName value to set.
      * @return the PublisherInfo object itself.
      */
@@ -103,7 +107,7 @@ public final class PublisherInfo {
 
     /**
      * Get the version property: The binary file version taken from the file's version resource.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -112,7 +116,7 @@ public final class PublisherInfo {
 
     /**
      * Set the version property: The binary file version taken from the file's version resource.
-     *
+     * 
      * @param version the version value to set.
      * @return the PublisherInfo object itself.
      */
@@ -123,7 +127,7 @@ public final class PublisherInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

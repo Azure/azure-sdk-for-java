@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The GCP project connector environment data. */
+/**
+ * The GCP project connector environment data.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "environmentType")
 @JsonTypeName("GcpProject")
 @Fluent
@@ -26,13 +28,21 @@ public final class GcpProjectEnvironmentData extends EnvironmentData {
     @JsonProperty(value = "projectDetails")
     private GcpProjectDetails projectDetails;
 
-    /** Creates an instance of GcpProjectEnvironmentData class. */
+    /*
+     * Scan interval in hours (value should be between 1-hour to 24-hours)
+     */
+    @JsonProperty(value = "scanInterval")
+    private Long scanInterval;
+
+    /**
+     * Creates an instance of GcpProjectEnvironmentData class.
+     */
     public GcpProjectEnvironmentData() {
     }
 
     /**
      * Get the organizationalData property: The Gcp project's organizational data.
-     *
+     * 
      * @return the organizationalData value.
      */
     public GcpOrganizationalData organizationalData() {
@@ -41,7 +51,7 @@ public final class GcpProjectEnvironmentData extends EnvironmentData {
 
     /**
      * Set the organizationalData property: The Gcp project's organizational data.
-     *
+     * 
      * @param organizationalData the organizationalData value to set.
      * @return the GcpProjectEnvironmentData object itself.
      */
@@ -52,7 +62,7 @@ public final class GcpProjectEnvironmentData extends EnvironmentData {
 
     /**
      * Get the projectDetails property: The Gcp project's details.
-     *
+     * 
      * @return the projectDetails value.
      */
     public GcpProjectDetails projectDetails() {
@@ -61,7 +71,7 @@ public final class GcpProjectEnvironmentData extends EnvironmentData {
 
     /**
      * Set the projectDetails property: The Gcp project's details.
-     *
+     * 
      * @param projectDetails the projectDetails value to set.
      * @return the GcpProjectEnvironmentData object itself.
      */
@@ -71,8 +81,28 @@ public final class GcpProjectEnvironmentData extends EnvironmentData {
     }
 
     /**
+     * Get the scanInterval property: Scan interval in hours (value should be between 1-hour to 24-hours).
+     * 
+     * @return the scanInterval value.
+     */
+    public Long scanInterval() {
+        return this.scanInterval;
+    }
+
+    /**
+     * Set the scanInterval property: Scan interval in hours (value should be between 1-hour to 24-hours).
+     * 
+     * @param scanInterval the scanInterval value to set.
+     * @return the GcpProjectEnvironmentData object itself.
+     */
+    public GcpProjectEnvironmentData withScanInterval(Long scanInterval) {
+        this.scanInterval = scanInterval;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

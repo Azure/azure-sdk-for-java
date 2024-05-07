@@ -9,7 +9,9 @@ import java.time.Duration;
 
 /**
  * The representation of message header as defined by AMQP protocol.
- * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
+ * 
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format"
+ * target="_blank">
  * Amqp Message Format.</a>
  */
 @Fluent

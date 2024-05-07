@@ -12,20 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrationRecoveryPointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationRecoveryPointInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"recoveryPointTime\":\"2021-03-19T18:16:56Z\",\"recoveryPointType\":\"NotSpecified\"},\"location\":\"tdzumveekgpw\",\"id\":\"zuhkfpbsjyof\",\"name\":\"xl\",\"type\":\"us\"}")
-                .toObject(MigrationRecoveryPointInner.class);
+        MigrationRecoveryPointInner model = BinaryData.fromString(
+            "{\"properties\":{\"recoveryPointTime\":\"2021-03-19T18:16:56Z\",\"recoveryPointType\":\"NotSpecified\"},\"location\":\"tdzumveekgpw\",\"id\":\"zuhkfpbsjyof\",\"name\":\"xl\",\"type\":\"us\"}")
+            .toObject(MigrationRecoveryPointInner.class);
         Assertions.assertEquals("tdzumveekgpw", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrationRecoveryPointInner model =
-            new MigrationRecoveryPointInner()
-                .withProperties(new MigrationRecoveryPointProperties())
-                .withLocation("tdzumveekgpw");
+        MigrationRecoveryPointInner model = new MigrationRecoveryPointInner()
+            .withProperties(new MigrationRecoveryPointProperties()).withLocation("tdzumveekgpw");
         model = BinaryData.fromObject(model).toObject(MigrationRecoveryPointInner.class);
         Assertions.assertEquals("tdzumveekgpw", model.location());
     }

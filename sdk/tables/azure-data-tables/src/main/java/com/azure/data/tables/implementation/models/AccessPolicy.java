@@ -5,38 +5,45 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** An Access policy. */
-@JacksonXmlRootElement(localName = "AccessPolicy")
+/**
+ * An Access policy.
+ */
 @Fluent
-public final class AccessPolicy {
+public final class AccessPolicy implements XmlSerializable<AccessPolicy> {
     /*
      * The start datetime from which the policy is active.
      */
-    @JsonProperty(value = "Start", required = true)
     private OffsetDateTime start;
 
     /*
      * The datetime that the policy expires.
      */
-    @JsonProperty(value = "Expiry", required = true)
     private OffsetDateTime expiry;
 
     /*
      * The permissions for the acl policy.
      */
-    @JsonProperty(value = "Permission", required = true)
     private String permission;
 
-    /** Creates an instance of AccessPolicy class. */
-    public AccessPolicy() {}
+    /**
+     * Creates an instance of AccessPolicy class.
+     */
+    public AccessPolicy() {
+    }
 
     /**
      * Get the start property: The start datetime from which the policy is active.
-     *
+     * 
      * @return the start value.
      */
     public OffsetDateTime getStart() {
@@ -45,7 +52,7 @@ public final class AccessPolicy {
 
     /**
      * Set the start property: The start datetime from which the policy is active.
-     *
+     * 
      * @param start the start value to set.
      * @return the AccessPolicy object itself.
      */
@@ -56,7 +63,7 @@ public final class AccessPolicy {
 
     /**
      * Get the expiry property: The datetime that the policy expires.
-     *
+     * 
      * @return the expiry value.
      */
     public OffsetDateTime getExpiry() {
@@ -65,7 +72,7 @@ public final class AccessPolicy {
 
     /**
      * Set the expiry property: The datetime that the policy expires.
-     *
+     * 
      * @param expiry the expiry value to set.
      * @return the AccessPolicy object itself.
      */
@@ -76,7 +83,7 @@ public final class AccessPolicy {
 
     /**
      * Get the permission property: The permissions for the acl policy.
-     *
+     * 
      * @return the permission value.
      */
     public String getPermission() {
@@ -85,12 +92,77 @@ public final class AccessPolicy {
 
     /**
      * Set the permission property: The permissions for the acl policy.
-     *
+     * 
      * @param permission the permission value to set.
      * @return the AccessPolicy object itself.
      */
     public AccessPolicy setPermission(String permission) {
         this.permission = permission;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "AccessPolicy" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("Start",
+            this.start == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.start));
+        xmlWriter.writeStringElement("Expiry",
+            this.expiry == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiry));
+        xmlWriter.writeStringElement("Permission", this.permission);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of AccessPolicy from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of AccessPolicy if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the AccessPolicy.
+     */
+    public static AccessPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of AccessPolicy from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of AccessPolicy if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the AccessPolicy.
+     */
+    public static AccessPolicy fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "AccessPolicy" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            AccessPolicy deserializedAccessPolicy = new AccessPolicy();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Start".equals(elementName.getLocalPart())) {
+                    deserializedAccessPolicy.start
+                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                } else if ("Expiry".equals(elementName.getLocalPart())) {
+                    deserializedAccessPolicy.expiry
+                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                } else if ("Permission".equals(elementName.getLocalPart())) {
+                    deserializedAccessPolicy.permission = reader.getStringElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedAccessPolicy;
+        });
     }
 }

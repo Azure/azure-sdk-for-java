@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the Power State of the cluster. */
+/**
+ * Describes the Power State of the cluster.
+ */
 @Fluent
 public final class PowerState {
     /*
@@ -16,13 +18,15 @@ public final class PowerState {
     @JsonProperty(value = "code")
     private Code code;
 
-    /** Creates an instance of PowerState class. */
+    /**
+     * Creates an instance of PowerState class.
+     */
     public PowerState() {
     }
 
     /**
      * Get the code property: Tells whether the cluster is Running or Stopped.
-     *
+     * 
      * @return the code value.
      */
     public Code code() {
@@ -31,7 +35,7 @@ public final class PowerState {
 
     /**
      * Set the code property: Tells whether the cluster is Running or Stopped.
-     *
+     * 
      * @param code the code value to set.
      * @return the PowerState object itself.
      */
@@ -42,7 +46,7 @@ public final class PowerState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.imagebuilder.fluent.models.TriggerInner;
 
-/** An instance of this class provides access to all the operations defined in TriggersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TriggersClient.
+ */
 public interface TriggersClient {
     /**
      * List all triggers for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface TriggersClient {
 
     /**
      * List all triggers for the specified Image Template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param context The context to associate with this operation.
@@ -40,12 +42,12 @@ public interface TriggersClient {
      * @return the result of List triggers operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TriggerInner> listByImageTemplate(
-        String resourceGroupName, String imageTemplateName, Context context);
+    PagedIterable<TriggerInner> listByImageTemplate(String resourceGroupName, String imageTemplateName,
+        Context context);
 
     /**
      * Get the specified trigger for the specified image template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -56,12 +58,12 @@ public interface TriggersClient {
      * @return the specified trigger for the specified image template resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TriggerInner> getWithResponse(
-        String resourceGroupName, String imageTemplateName, String triggerName, Context context);
+    Response<TriggerInner> getWithResponse(String resourceGroupName, String imageTemplateName, String triggerName,
+        Context context);
 
     /**
      * Get the specified trigger for the specified image template resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -75,7 +77,7 @@ public interface TriggersClient {
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -86,12 +88,12 @@ public interface TriggersClient {
      * @return the {@link SyncPoller} for polling of represents a trigger that can invoke an image template build.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(
-        String resourceGroupName, String imageTemplateName, String triggerName, TriggerInner parameters);
+    SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(String resourceGroupName,
+        String imageTemplateName, String triggerName, TriggerInner parameters);
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -103,16 +105,12 @@ public interface TriggersClient {
      * @return the {@link SyncPoller} for polling of represents a trigger that can invoke an image template build.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String imageTemplateName,
-        String triggerName,
-        TriggerInner parameters,
-        Context context);
+    SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(String resourceGroupName,
+        String imageTemplateName, String triggerName, TriggerInner parameters, Context context);
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -123,12 +121,12 @@ public interface TriggersClient {
      * @return represents a trigger that can invoke an image template build.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TriggerInner createOrUpdate(
-        String resourceGroupName, String imageTemplateName, String triggerName, TriggerInner parameters);
+    TriggerInner createOrUpdate(String resourceGroupName, String imageTemplateName, String triggerName,
+        TriggerInner parameters);
 
     /**
      * Create or update a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -140,16 +138,12 @@ public interface TriggersClient {
      * @return represents a trigger that can invoke an image template build.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TriggerInner createOrUpdate(
-        String resourceGroupName,
-        String imageTemplateName,
-        String triggerName,
-        TriggerInner parameters,
-        Context context);
+    TriggerInner createOrUpdate(String resourceGroupName, String imageTemplateName, String triggerName,
+        TriggerInner parameters, Context context);
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -159,12 +153,12 @@ public interface TriggersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String imageTemplateName, String triggerName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName,
+        String triggerName);
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -175,12 +169,12 @@ public interface TriggersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String imageTemplateName, String triggerName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String imageTemplateName,
+        String triggerName, Context context);
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.
@@ -193,7 +187,7 @@ public interface TriggersClient {
 
     /**
      * Delete a trigger for the specified virtual machine image template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param imageTemplateName The name of the image Template.
      * @param triggerName The name of the trigger.

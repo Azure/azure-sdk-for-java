@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SupportedOSProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Supported operating systems. */
+/**
+ * Supported operating systems.
+ */
 @Fluent
 public final class SupportedOperatingSystemsInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class SupportedOperatingSystemsInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of SupportedOperatingSystemsInner class. */
+    /**
+     * Creates an instance of SupportedOperatingSystemsInner class.
+     */
     public SupportedOperatingSystemsInner() {
     }
 
     /**
      * Get the properties property: The supported operating systems properties.
-     *
+     * 
      * @return the properties value.
      */
     public SupportedOSProperties properties() {
@@ -39,7 +43,7 @@ public final class SupportedOperatingSystemsInner extends ProxyResource {
 
     /**
      * Set the properties property: The supported operating systems properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SupportedOperatingSystemsInner object itself.
      */
@@ -50,7 +54,7 @@ public final class SupportedOperatingSystemsInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class SupportedOperatingSystemsInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the SupportedOperatingSystemsInner object itself.
      */
@@ -70,7 +74,7 @@ public final class SupportedOperatingSystemsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

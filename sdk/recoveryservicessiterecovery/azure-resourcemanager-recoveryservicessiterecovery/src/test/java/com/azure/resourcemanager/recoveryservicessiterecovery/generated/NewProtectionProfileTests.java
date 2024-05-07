@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NewProtectionProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NewProtectionProfile model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"New\",\"policyName\":\"pc\",\"recoveryPointHistory\":1754737974,\"crashConsistentFrequencyInMinutes\":381406744,\"appConsistentFrequencyInMinutes\":198630766,\"multiVmSyncStatus\":\"Enable\"}")
-                .toObject(NewProtectionProfile.class);
+        NewProtectionProfile model = BinaryData.fromString(
+            "{\"resourceType\":\"New\",\"policyName\":\"pc\",\"recoveryPointHistory\":1754737974,\"crashConsistentFrequencyInMinutes\":381406744,\"appConsistentFrequencyInMinutes\":198630766,\"multiVmSyncStatus\":\"Enable\"}")
+            .toObject(NewProtectionProfile.class);
         Assertions.assertEquals("pc", model.policyName());
         Assertions.assertEquals(1754737974, model.recoveryPointHistory());
         Assertions.assertEquals(381406744, model.crashConsistentFrequencyInMinutes());
@@ -26,13 +24,9 @@ public final class NewProtectionProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NewProtectionProfile model =
-            new NewProtectionProfile()
-                .withPolicyName("pc")
-                .withRecoveryPointHistory(1754737974)
-                .withCrashConsistentFrequencyInMinutes(381406744)
-                .withAppConsistentFrequencyInMinutes(198630766)
-                .withMultiVmSyncStatus(SetMultiVmSyncStatus.ENABLE);
+        NewProtectionProfile model = new NewProtectionProfile().withPolicyName("pc")
+            .withRecoveryPointHistory(1754737974).withCrashConsistentFrequencyInMinutes(381406744)
+            .withAppConsistentFrequencyInMinutes(198630766).withMultiVmSyncStatus(SetMultiVmSyncStatus.ENABLE);
         model = BinaryData.fromObject(model).toObject(NewProtectionProfile.class);
         Assertions.assertEquals("pc", model.policyName());
         Assertions.assertEquals(1754737974, model.recoveryPointHistory());

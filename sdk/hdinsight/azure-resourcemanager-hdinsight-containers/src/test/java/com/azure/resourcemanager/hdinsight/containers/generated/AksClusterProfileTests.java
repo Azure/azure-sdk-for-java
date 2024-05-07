@@ -12,31 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class AksClusterProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AksClusterProfile model =
-            BinaryData
-                .fromString(
-                    "{\"aksClusterResourceId\":\"udccsnhsjc\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"ejhkry\",\"msiClientId\":\"tnapczwlokjyemkk\",\"msiObjectId\":\"ni\"},\"aksVersion\":\"oxzjnchgejspod\"}")
-                .toObject(AksClusterProfile.class);
-        Assertions.assertEquals("udccsnhsjc", model.aksClusterResourceId());
-        Assertions.assertEquals("ejhkry", model.aksClusterAgentPoolIdentityProfile().msiResourceId());
-        Assertions.assertEquals("tnapczwlokjyemkk", model.aksClusterAgentPoolIdentityProfile().msiClientId());
-        Assertions.assertEquals("ni", model.aksClusterAgentPoolIdentityProfile().msiObjectId());
+        AksClusterProfile model = BinaryData.fromString(
+            "{\"aksClusterResourceId\":\"wmfdatscmdvpjhul\",\"aksClusterAgentPoolIdentityProfile\":{\"msiResourceId\":\"uvm\",\"msiClientId\":\"jozkrwfndiod\",\"msiObjectId\":\"pslwejdpvw\"},\"aksVersion\":\"oqpsoa\"}")
+            .toObject(AksClusterProfile.class);
+        Assertions.assertEquals("wmfdatscmdvpjhul", model.aksClusterResourceId());
+        Assertions.assertEquals("uvm", model.aksClusterAgentPoolIdentityProfile().msiResourceId());
+        Assertions.assertEquals("jozkrwfndiod", model.aksClusterAgentPoolIdentityProfile().msiClientId());
+        Assertions.assertEquals("pslwejdpvw", model.aksClusterAgentPoolIdentityProfile().msiObjectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AksClusterProfile model =
-            new AksClusterProfile()
-                .withAksClusterResourceId("udccsnhsjc")
-                .withAksClusterAgentPoolIdentityProfile(
-                    new AksClusterProfileAksClusterAgentPoolIdentityProfile()
-                        .withMsiResourceId("ejhkry")
-                        .withMsiClientId("tnapczwlokjyemkk")
-                        .withMsiObjectId("ni"));
+        AksClusterProfile model = new AksClusterProfile().withAksClusterResourceId("wmfdatscmdvpjhul")
+            .withAksClusterAgentPoolIdentityProfile(new AksClusterProfileAksClusterAgentPoolIdentityProfile()
+                .withMsiResourceId("uvm").withMsiClientId("jozkrwfndiod").withMsiObjectId("pslwejdpvw"));
         model = BinaryData.fromObject(model).toObject(AksClusterProfile.class);
-        Assertions.assertEquals("udccsnhsjc", model.aksClusterResourceId());
-        Assertions.assertEquals("ejhkry", model.aksClusterAgentPoolIdentityProfile().msiResourceId());
-        Assertions.assertEquals("tnapczwlokjyemkk", model.aksClusterAgentPoolIdentityProfile().msiClientId());
-        Assertions.assertEquals("ni", model.aksClusterAgentPoolIdentityProfile().msiObjectId());
+        Assertions.assertEquals("wmfdatscmdvpjhul", model.aksClusterResourceId());
+        Assertions.assertEquals("uvm", model.aksClusterAgentPoolIdentityProfile().msiResourceId());
+        Assertions.assertEquals("jozkrwfndiod", model.aksClusterAgentPoolIdentityProfile().msiClientId());
+        Assertions.assertEquals("pslwejdpvw", model.aksClusterAgentPoolIdentityProfile().msiObjectId());
     }
 }

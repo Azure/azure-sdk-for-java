@@ -16,8 +16,7 @@ public final class PlanDataResourceImpl implements PlanDataResource {
 
     private final com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager;
 
-    PlanDataResourceImpl(
-        PlanDataResourceInner innerObject,
+    PlanDataResourceImpl(PlanDataResourceInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

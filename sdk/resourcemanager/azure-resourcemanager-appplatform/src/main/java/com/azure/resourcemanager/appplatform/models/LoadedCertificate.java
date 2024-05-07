@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Loaded certificate payload. */
+/**
+ * Loaded certificate payload.
+ */
 @Fluent
 public final class LoadedCertificate {
     /*
@@ -18,15 +20,20 @@ public final class LoadedCertificate {
     private String resourceId;
 
     /*
-     * Indicate whether the certificate will be loaded into default trust
-     * store, only work for Java runtime.
+     * Indicate whether the certificate will be loaded into default trust store, only work for Java runtime.
      */
     @JsonProperty(value = "loadTrustStore")
     private Boolean loadTrustStore;
 
     /**
+     * Creates an instance of LoadedCertificate class.
+     */
+    public LoadedCertificate() {
+    }
+
+    /**
      * Get the resourceId property: Resource Id of loaded certificate.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -35,7 +42,7 @@ public final class LoadedCertificate {
 
     /**
      * Set the resourceId property: Resource Id of loaded certificate.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the LoadedCertificate object itself.
      */
@@ -47,7 +54,7 @@ public final class LoadedCertificate {
     /**
      * Get the loadTrustStore property: Indicate whether the certificate will be loaded into default trust store, only
      * work for Java runtime.
-     *
+     * 
      * @return the loadTrustStore value.
      */
     public Boolean loadTrustStore() {
@@ -57,7 +64,7 @@ public final class LoadedCertificate {
     /**
      * Set the loadTrustStore property: Indicate whether the certificate will be loaded into default trust store, only
      * work for Java runtime.
-     *
+     * 
      * @param loadTrustStore the loadTrustStore value to set.
      * @return the LoadedCertificate object itself.
      */
@@ -68,14 +75,13 @@ public final class LoadedCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model LoadedCertificate"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property resourceId in model LoadedCertificate"));
         }
     }
 

@@ -7,9 +7,12 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
-/** Build resource properties payload. */
+/**
+ * Build resource properties payload.
+ */
 @Fluent
 public final class BuildProperties {
     /*
@@ -44,6 +47,18 @@ public final class BuildProperties {
     private Map<String, String> env;
 
     /*
+     * The APMs for this build
+     */
+    @JsonProperty(value = "apms")
+    private List<ApmReference> apms;
+
+    /*
+     * The CA Certificates for this build
+     */
+    @JsonProperty(value = "certificates")
+    private List<CertificateReference> certificates;
+
+    /*
      * The build result triggered by this build
      */
     @JsonProperty(value = "triggeredBuildResult", access = JsonProperty.Access.WRITE_ONLY)
@@ -56,8 +71,14 @@ public final class BuildProperties {
     private BuildResourceRequests resourceRequests;
 
     /**
+     * Creates an instance of BuildProperties class.
+     */
+    public BuildProperties() {
+    }
+
+    /**
      * Get the relativePath property: The relative path of source code.
-     *
+     * 
      * @return the relativePath value.
      */
     public String relativePath() {
@@ -66,7 +87,7 @@ public final class BuildProperties {
 
     /**
      * Set the relativePath property: The relative path of source code.
-     *
+     * 
      * @param relativePath the relativePath value to set.
      * @return the BuildProperties object itself.
      */
@@ -77,7 +98,7 @@ public final class BuildProperties {
 
     /**
      * Get the builder property: The resource id of builder to build the source code.
-     *
+     * 
      * @return the builder value.
      */
     public String builder() {
@@ -86,7 +107,7 @@ public final class BuildProperties {
 
     /**
      * Set the builder property: The resource id of builder to build the source code.
-     *
+     * 
      * @param builder the builder value to set.
      * @return the BuildProperties object itself.
      */
@@ -97,7 +118,7 @@ public final class BuildProperties {
 
     /**
      * Get the agentPool property: The resource id of agent pool.
-     *
+     * 
      * @return the agentPool value.
      */
     public String agentPool() {
@@ -106,7 +127,7 @@ public final class BuildProperties {
 
     /**
      * Set the agentPool property: The resource id of agent pool.
-     *
+     * 
      * @param agentPool the agentPool value to set.
      * @return the BuildProperties object itself.
      */
@@ -117,7 +138,7 @@ public final class BuildProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the KPack build result.
-     *
+     * 
      * @return the provisioningState value.
      */
     public BuildProvisioningState provisioningState() {
@@ -126,7 +147,7 @@ public final class BuildProperties {
 
     /**
      * Get the env property: The environment variables for this build.
-     *
+     * 
      * @return the env value.
      */
     public Map<String, String> env() {
@@ -135,7 +156,7 @@ public final class BuildProperties {
 
     /**
      * Set the env property: The environment variables for this build.
-     *
+     * 
      * @param env the env value to set.
      * @return the BuildProperties object itself.
      */
@@ -145,8 +166,48 @@ public final class BuildProperties {
     }
 
     /**
+     * Get the apms property: The APMs for this build.
+     * 
+     * @return the apms value.
+     */
+    public List<ApmReference> apms() {
+        return this.apms;
+    }
+
+    /**
+     * Set the apms property: The APMs for this build.
+     * 
+     * @param apms the apms value to set.
+     * @return the BuildProperties object itself.
+     */
+    public BuildProperties withApms(List<ApmReference> apms) {
+        this.apms = apms;
+        return this;
+    }
+
+    /**
+     * Get the certificates property: The CA Certificates for this build.
+     * 
+     * @return the certificates value.
+     */
+    public List<CertificateReference> certificates() {
+        return this.certificates;
+    }
+
+    /**
+     * Set the certificates property: The CA Certificates for this build.
+     * 
+     * @param certificates the certificates value to set.
+     * @return the BuildProperties object itself.
+     */
+    public BuildProperties withCertificates(List<CertificateReference> certificates) {
+        this.certificates = certificates;
+        return this;
+    }
+
+    /**
      * Get the triggeredBuildResult property: The build result triggered by this build.
-     *
+     * 
      * @return the triggeredBuildResult value.
      */
     public TriggeredBuildResult triggeredBuildResult() {
@@ -155,7 +216,7 @@ public final class BuildProperties {
 
     /**
      * Get the resourceRequests property: The customized build resource for this build.
-     *
+     * 
      * @return the resourceRequests value.
      */
     public BuildResourceRequests resourceRequests() {
@@ -164,7 +225,7 @@ public final class BuildProperties {
 
     /**
      * Set the resourceRequests property: The customized build resource for this build.
-     *
+     * 
      * @param resourceRequests the resourceRequests value to set.
      * @return the BuildProperties object itself.
      */
@@ -175,10 +236,16 @@ public final class BuildProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (apms() != null) {
+            apms().forEach(e -> e.validate());
+        }
+        if (certificates() != null) {
+            certificates().forEach(e -> e.validate());
+        }
         if (triggeredBuildResult() != null) {
             triggeredBuildResult().validate();
         }

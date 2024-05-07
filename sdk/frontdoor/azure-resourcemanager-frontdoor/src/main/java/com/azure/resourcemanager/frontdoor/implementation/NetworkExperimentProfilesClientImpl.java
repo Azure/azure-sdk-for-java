@@ -40,24 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkExperimentProfilesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkExperimentProfilesClient.
+ */
 public final class NetworkExperimentProfilesClientImpl implements NetworkExperimentProfilesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkExperimentProfilesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final FrontDoorManagementClientImpl client;
 
     /**
      * Initializes an instance of NetworkExperimentProfilesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkExperimentProfilesClientImpl(FrontDoorManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    NetworkExperimentProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(NetworkExperimentProfilesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,193 +72,136 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
     @Host("{$host}")
     @ServiceInterface(name = "FrontDoorManagementC")
     public interface NetworkExperimentProfilesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/NetworkExperimentProfiles")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ProfileList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ProfileList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ProfileInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("profileName") String profileName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @BodyParam("application/json") ProfileInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @BodyParam("application/json") ProfileUpdateModel parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("profileName") String profileName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @BodyParam("application/json") ProfileInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @BodyParam("application/json") ProfileUpdateModel parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ProfileList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProfileList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of Network Experiment Profiles under a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Network Experiment Profiles under a subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
-            .<PagedResponse<ProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
+            .<PagedResponse<ProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of Network Experiment Profiles under a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Network Experiment Profiles under a subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of Network Experiment Profiles under a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Network Experiment Profiles under a subscription as paginated response with {@link PagedFlux}.
@@ -266,7 +213,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Gets a list of Network Experiment Profiles under a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -275,17 +222,17 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProfileInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of Network Experiment Profiles under a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles under a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Network Experiment Profiles under a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> list() {
@@ -294,13 +241,13 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Gets a list of Network Experiment Profiles under a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles under a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Network Experiment Profiles under a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> list(Context context) {
@@ -309,27 +256,23 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Gets a list of Network Experiment Profiles within a resource group under a subscription.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles within a resource group under a subscription along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of Network Experiment Profiles within a resource group under a subscription along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -338,53 +281,34 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
         final String apiVersion = "2019-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<ProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), apiVersion, resourceGroupName, accept, context))
+            .<PagedResponse<ProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of Network Experiment Profiles within a resource group under a subscription.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Network Experiment Profiles within a resource group under a subscription along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of Network Experiment Profiles within a resource group under a subscription along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProfileInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -394,68 +318,54 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                apiVersion,
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of Network Experiment Profiles within a resource group under a subscription.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Network Experiment Profiles within a resource group under a subscription as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProfileInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of Network Experiment Profiles within a resource group under a subscription.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Network Experiment Profiles within a resource group under a subscription as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProfileInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets a list of Network Experiment Profiles within a resource group under a subscription.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Network Experiment Profiles within a resource group under a subscription as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName) {
@@ -464,14 +374,14 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Gets a list of Network Experiment Profiles within a resource group under a subscription.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Network Experiment Profiles within a resource group under a subscription as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -480,29 +390,25 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Gets an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an NetworkExperiment Profile by ProfileName along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String profileName) {
+    private Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String profileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -514,23 +420,14 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
         final String apiVersion = "2019-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            resourceGroupName,
-                            profileName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), apiVersion, resourceGroupName, profileName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.
@@ -538,22 +435,18 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an NetworkExperiment Profile by ProfileName along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String profileName, Context context) {
+    private Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String profileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -565,20 +458,13 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
         final String apiVersion = "2019-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                apiVersion,
-                resourceGroupName,
-                profileName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+            resourceGroupName, profileName, accept, context);
     }
 
     /**
      * Gets an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -594,7 +480,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Gets an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.
@@ -604,14 +490,14 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return an NetworkExperiment Profile by ProfileName along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProfileInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String profileName, Context context) {
+    public Response<ProfileInner> getByResourceGroupWithResponse(String resourceGroupName, String profileName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, profileName, context).block();
     }
 
     /**
      * Gets an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -626,7 +512,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Creates an NetworkExperiment Profile.
-     *
+     * 
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param parameters An Network Experiment Profile.
@@ -634,25 +520,21 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines an Network Experiment Profile and lists of Experiments along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String profileName, String resourceGroupName, ProfileInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String profileName,
+        String resourceGroupName, ProfileInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (profileName == null) {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -666,24 +548,14 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
         final String apiVersion = "2019-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            profileName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            resourceGroupName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), profileName,
+                this.client.getSubscriptionId(), apiVersion, resourceGroupName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates an NetworkExperiment Profile.
-     *
+     * 
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param parameters An Network Experiment Profile.
@@ -692,25 +564,21 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines an Network Experiment Profile and lists of Experiments along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String profileName, String resourceGroupName, ProfileInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String profileName,
+        String resourceGroupName, ProfileInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (profileName == null) {
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -724,21 +592,13 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
         final String apiVersion = "2019-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                profileName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                resourceGroupName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), profileName, this.client.getSubscriptionId(),
+            apiVersion, resourceGroupName, parameters, accept, context);
     }
 
     /**
      * Creates an NetworkExperiment Profile.
-     *
+     * 
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param parameters An Network Experiment Profile.
@@ -748,19 +608,17 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return the {@link PollerFlux} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdateAsync(
-        String profileName, String resourceGroupName, ProfileInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(profileName, resourceGroupName, parameters);
-        return this
-            .client
-            .<ProfileInner, ProfileInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ProfileInner.class, ProfileInner.class, this.client.getContext());
+    private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdateAsync(String profileName,
+        String resourceGroupName, ProfileInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(profileName, resourceGroupName, parameters);
+        return this.client.<ProfileInner, ProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ProfileInner.class, ProfileInner.class, this.client.getContext());
     }
 
     /**
      * Creates an NetworkExperiment Profile.
-     *
+     * 
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param parameters An Network Experiment Profile.
@@ -771,20 +629,18 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return the {@link PollerFlux} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdateAsync(
-        String profileName, String resourceGroupName, ProfileInner parameters, Context context) {
+    private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdateAsync(String profileName,
+        String resourceGroupName, ProfileInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(profileName, resourceGroupName, parameters, context);
-        return this
-            .client
-            .<ProfileInner, ProfileInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ProfileInner.class, ProfileInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(profileName, resourceGroupName, parameters, context);
+        return this.client.<ProfileInner, ProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ProfileInner.class, ProfileInner.class, context);
     }
 
     /**
      * Creates an NetworkExperiment Profile.
-     *
+     * 
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param parameters An Network Experiment Profile.
@@ -794,14 +650,14 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdate(
-        String profileName, String resourceGroupName, ProfileInner parameters) {
+    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdate(String profileName,
+        String resourceGroupName, ProfileInner parameters) {
         return this.beginCreateOrUpdateAsync(profileName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
      * Creates an NetworkExperiment Profile.
-     *
+     * 
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param parameters An Network Experiment Profile.
@@ -812,14 +668,14 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdate(
-        String profileName, String resourceGroupName, ProfileInner parameters, Context context) {
+    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginCreateOrUpdate(String profileName,
+        String resourceGroupName, ProfileInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(profileName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
      * Creates an NetworkExperiment Profile.
-     *
+     * 
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param parameters An Network Experiment Profile.
@@ -829,16 +685,15 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return defines an Network Experiment Profile and lists of Experiments on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProfileInner> createOrUpdateAsync(
-        String profileName, String resourceGroupName, ProfileInner parameters) {
-        return beginCreateOrUpdateAsync(profileName, resourceGroupName, parameters)
-            .last()
+    private Mono<ProfileInner> createOrUpdateAsync(String profileName, String resourceGroupName,
+        ProfileInner parameters) {
+        return beginCreateOrUpdateAsync(profileName, resourceGroupName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates an NetworkExperiment Profile.
-     *
+     * 
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param parameters An Network Experiment Profile.
@@ -849,16 +704,15 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return defines an Network Experiment Profile and lists of Experiments on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProfileInner> createOrUpdateAsync(
-        String profileName, String resourceGroupName, ProfileInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(profileName, resourceGroupName, parameters, context)
-            .last()
+    private Mono<ProfileInner> createOrUpdateAsync(String profileName, String resourceGroupName,
+        ProfileInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(profileName, resourceGroupName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates an NetworkExperiment Profile.
-     *
+     * 
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param parameters An Network Experiment Profile.
@@ -874,7 +728,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Creates an NetworkExperiment Profile.
-     *
+     * 
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param parameters An Network Experiment Profile.
@@ -885,16 +739,16 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return defines an Network Experiment Profile and lists of Experiments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProfileInner createOrUpdate(
-        String profileName, String resourceGroupName, ProfileInner parameters, Context context) {
+    public ProfileInner createOrUpdate(String profileName, String resourceGroupName, ProfileInner parameters,
+        Context context) {
         return createOrUpdateAsync(profileName, resourceGroupName, parameters, context).block();
     }
 
     /**
      * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     *
-     * <p>Updates an NetworkExperimentProfiles.
-     *
+     * 
+     * Updates an NetworkExperimentProfiles.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param parameters The Profile Update Model.
@@ -902,22 +756,18 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines an Network Experiment Profile and lists of Experiments along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String profileName, ProfileUpdateModel parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        ProfileUpdateModel parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -934,26 +784,16 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
         final String apiVersion = "2019-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            resourceGroupName,
-                            profileName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                apiVersion, resourceGroupName, profileName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     *
-     * <p>Updates an NetworkExperimentProfiles.
-     *
+     * 
+     * Updates an NetworkExperimentProfiles.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param parameters The Profile Update Model.
@@ -962,22 +802,18 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines an Network Experiment Profile and lists of Experiments along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String profileName, ProfileUpdateModel parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        ProfileUpdateModel parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -994,23 +830,15 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
         final String apiVersion = "2019-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                apiVersion,
-                resourceGroupName,
-                profileName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, resourceGroupName,
+            profileName, parameters, accept, context);
     }
 
     /**
      * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     *
-     * <p>Updates an NetworkExperimentProfiles.
-     *
+     * 
+     * Updates an NetworkExperimentProfiles.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param parameters The Profile Update Model.
@@ -1020,20 +848,18 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return the {@link PollerFlux} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpdateAsync(
-        String resourceGroupName, String profileName, ProfileUpdateModel parameters) {
+    private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpdateAsync(String resourceGroupName,
+        String profileName, ProfileUpdateModel parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, profileName, parameters);
-        return this
-            .client
-            .<ProfileInner, ProfileInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ProfileInner.class, ProfileInner.class, this.client.getContext());
+        return this.client.<ProfileInner, ProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ProfileInner.class, ProfileInner.class, this.client.getContext());
     }
 
     /**
      * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     *
-     * <p>Updates an NetworkExperimentProfiles.
-     *
+     * 
+     * Updates an NetworkExperimentProfiles.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param parameters The Profile Update Model.
@@ -1044,22 +870,20 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return the {@link PollerFlux} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpdateAsync(
-        String resourceGroupName, String profileName, ProfileUpdateModel parameters, Context context) {
+    private PollerFlux<PollResult<ProfileInner>, ProfileInner> beginUpdateAsync(String resourceGroupName,
+        String profileName, ProfileUpdateModel parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, profileName, parameters, context);
-        return this
-            .client
-            .<ProfileInner, ProfileInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ProfileInner.class, ProfileInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, profileName, parameters, context);
+        return this.client.<ProfileInner, ProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ProfileInner.class, ProfileInner.class, context);
     }
 
     /**
      * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     *
-     * <p>Updates an NetworkExperimentProfiles.
-     *
+     * 
+     * Updates an NetworkExperimentProfiles.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param parameters The Profile Update Model.
@@ -1069,16 +893,16 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(
-        String resourceGroupName, String profileName, ProfileUpdateModel parameters) {
+    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(String resourceGroupName, String profileName,
+        ProfileUpdateModel parameters) {
         return this.beginUpdateAsync(resourceGroupName, profileName, parameters).getSyncPoller();
     }
 
     /**
      * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     *
-     * <p>Updates an NetworkExperimentProfiles.
-     *
+     * 
+     * Updates an NetworkExperimentProfiles.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param parameters The Profile Update Model.
@@ -1089,16 +913,16 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return the {@link SyncPoller} for polling of defines an Network Experiment Profile and lists of Experiments.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(
-        String resourceGroupName, String profileName, ProfileUpdateModel parameters, Context context) {
+    public SyncPoller<PollResult<ProfileInner>, ProfileInner> beginUpdate(String resourceGroupName, String profileName,
+        ProfileUpdateModel parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, profileName, parameters, context).getSyncPoller();
     }
 
     /**
      * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     *
-     * <p>Updates an NetworkExperimentProfiles.
-     *
+     * 
+     * Updates an NetworkExperimentProfiles.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param parameters The Profile Update Model.
@@ -1108,18 +932,17 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return defines an Network Experiment Profile and lists of Experiments on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProfileInner> updateAsync(
-        String resourceGroupName, String profileName, ProfileUpdateModel parameters) {
-        return beginUpdateAsync(resourceGroupName, profileName, parameters)
-            .last()
+    private Mono<ProfileInner> updateAsync(String resourceGroupName, String profileName,
+        ProfileUpdateModel parameters) {
+        return beginUpdateAsync(resourceGroupName, profileName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     *
-     * <p>Updates an NetworkExperimentProfiles.
-     *
+     * 
+     * Updates an NetworkExperimentProfiles.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param parameters The Profile Update Model.
@@ -1130,18 +953,17 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return defines an Network Experiment Profile and lists of Experiments on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProfileInner> updateAsync(
-        String resourceGroupName, String profileName, ProfileUpdateModel parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, profileName, parameters, context)
-            .last()
+    private Mono<ProfileInner> updateAsync(String resourceGroupName, String profileName, ProfileUpdateModel parameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, profileName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     *
-     * <p>Updates an NetworkExperimentProfiles.
-     *
+     * 
+     * Updates an NetworkExperimentProfiles.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param parameters The Profile Update Model.
@@ -1157,9 +979,9 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Updates an NetworkExperimentProfiles by NetworkExperimentProfile name
-     *
-     * <p>Updates an NetworkExperimentProfiles.
-     *
+     * 
+     * Updates an NetworkExperimentProfiles.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param parameters The Profile Update Model.
@@ -1170,14 +992,14 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return defines an Network Experiment Profile and lists of Experiments.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProfileInner update(
-        String resourceGroupName, String profileName, ProfileUpdateModel parameters, Context context) {
+    public ProfileInner update(String resourceGroupName, String profileName, ProfileUpdateModel parameters,
+        Context context) {
         return updateAsync(resourceGroupName, profileName, parameters, context).block();
     }
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1188,16 +1010,12 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1209,23 +1027,14 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
         final String apiVersion = "2019-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            resourceGroupName,
-                            profileName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                apiVersion, resourceGroupName, profileName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.
@@ -1235,19 +1044,15 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String profileName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1259,20 +1064,13 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
         final String apiVersion = "2019-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                apiVersion,
-                resourceGroupName,
-                profileName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, resourceGroupName,
+            profileName, accept, context);
     }
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1283,15 +1081,13 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, profileName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.
@@ -1301,18 +1097,17 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String profileName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String profileName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, profileName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1327,7 +1122,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.
@@ -1337,14 +1132,14 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, profileName, context).getSyncPoller();
     }
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1359,7 +1154,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.
@@ -1370,14 +1165,13 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String profileName, Context context) {
-        return beginDeleteAsync(resourceGroupName, profileName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, profileName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1391,7 +1185,7 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Deletes an NetworkExperiment Profile by ProfileName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.
@@ -1406,9 +1200,10 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1420,31 +1215,22 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1457,31 +1243,22 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1493,32 +1270,24 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1531,23 +1300,13 @@ public final class NetworkExperimentProfilesClientImpl implements NetworkExperim
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

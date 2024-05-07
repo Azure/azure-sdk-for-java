@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The error code compose of code and message. */
+/**
+ * The error code compose of code and message.
+ */
 @Fluent
 public final class Error {
     /*
@@ -23,8 +25,14 @@ public final class Error {
     private String message;
 
     /**
+     * Creates an instance of Error class.
+     */
+    public Error() {
+    }
+
+    /**
      * Get the code property: The code of error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -33,7 +41,7 @@ public final class Error {
 
     /**
      * Set the code property: The code of error.
-     *
+     * 
      * @param code the code value to set.
      * @return the Error object itself.
      */
@@ -44,7 +52,7 @@ public final class Error {
 
     /**
      * Get the message property: The message of error.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -53,7 +61,7 @@ public final class Error {
 
     /**
      * Set the message property: The message of error.
-     *
+     * 
      * @param message the message value to set.
      * @return the Error object itself.
      */
@@ -64,7 +72,7 @@ public final class Error {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

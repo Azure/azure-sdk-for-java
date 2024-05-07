@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for XMsDeleteSnapshots. */
+/**
+ * Defines values for XMsDeleteSnapshots.
+ */
 public final class XMsDeleteSnapshots extends ExpandableStringEnum<XMsDeleteSnapshots> {
-    /** Static value true for XMsDeleteSnapshots. */
+    /**
+     * Static value true for XMsDeleteSnapshots.
+     */
     public static final XMsDeleteSnapshots TRUE = fromString("true");
 
-    /** Static value false for XMsDeleteSnapshots. */
+    /**
+     * Static value false for XMsDeleteSnapshots.
+     */
     public static final XMsDeleteSnapshots FALSE = fromString("false");
 
     /**
      * Creates a new instance of XMsDeleteSnapshots value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class XMsDeleteSnapshots extends ExpandableStringEnum<XMsDeleteSnap
 
     /**
      * Creates or finds a XMsDeleteSnapshots from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding XMsDeleteSnapshots.
      */
@@ -38,7 +44,7 @@ public final class XMsDeleteSnapshots extends ExpandableStringEnum<XMsDeleteSnap
 
     /**
      * Gets known XMsDeleteSnapshots values.
-     *
+     * 
      * @return known XMsDeleteSnapshots values.
      */
     public static Collection<XMsDeleteSnapshots> values() {

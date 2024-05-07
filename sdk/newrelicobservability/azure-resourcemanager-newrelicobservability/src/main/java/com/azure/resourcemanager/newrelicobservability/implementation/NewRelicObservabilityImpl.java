@@ -23,6 +23,9 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.newrelicobservability.fluent.AccountsClient;
+import com.azure.resourcemanager.newrelicobservability.fluent.BillingInfoesClient;
+import com.azure.resourcemanager.newrelicobservability.fluent.ConnectedPartnerResourcesClient;
+import com.azure.resourcemanager.newrelicobservability.fluent.MonitoredSubscriptionsClient;
 import com.azure.resourcemanager.newrelicobservability.fluent.MonitorsClient;
 import com.azure.resourcemanager.newrelicobservability.fluent.NewRelicObservability;
 import com.azure.resourcemanager.newrelicobservability.fluent.OperationsClient;
@@ -38,147 +41,201 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the NewRelicObservabilityImpl type. */
+/**
+ * Initializes a new instance of the NewRelicObservabilityImpl type.
+ */
 @ServiceClient(builder = NewRelicObservabilityBuilder.class)
 public final class NewRelicObservabilityImpl implements NewRelicObservability {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The AccountsClient object to access its operations. */
+    /**
+     * The AccountsClient object to access its operations.
+     */
     private final AccountsClient accounts;
 
     /**
      * Gets the AccountsClient object to access its operations.
-     *
+     * 
      * @return the AccountsClient object.
      */
     public AccountsClient getAccounts() {
         return this.accounts;
     }
 
-    /** The MonitorsClient object to access its operations. */
+    /**
+     * The MonitorsClient object to access its operations.
+     */
     private final MonitorsClient monitors;
 
     /**
      * Gets the MonitorsClient object to access its operations.
-     *
+     * 
      * @return the MonitorsClient object.
      */
     public MonitorsClient getMonitors() {
         return this.monitors;
     }
 
-    /** The OrganizationsClient object to access its operations. */
+    /**
+     * The OrganizationsClient object to access its operations.
+     */
     private final OrganizationsClient organizations;
 
     /**
      * Gets the OrganizationsClient object to access its operations.
-     *
+     * 
      * @return the OrganizationsClient object.
      */
     public OrganizationsClient getOrganizations() {
         return this.organizations;
     }
 
-    /** The PlansClient object to access its operations. */
+    /**
+     * The PlansClient object to access its operations.
+     */
     private final PlansClient plans;
 
     /**
      * Gets the PlansClient object to access its operations.
-     *
+     * 
      * @return the PlansClient object.
      */
     public PlansClient getPlans() {
         return this.plans;
     }
 
-    /** The TagRulesClient object to access its operations. */
+    /**
+     * The BillingInfoesClient object to access its operations.
+     */
+    private final BillingInfoesClient billingInfoes;
+
+    /**
+     * Gets the BillingInfoesClient object to access its operations.
+     * 
+     * @return the BillingInfoesClient object.
+     */
+    public BillingInfoesClient getBillingInfoes() {
+        return this.billingInfoes;
+    }
+
+    /**
+     * The ConnectedPartnerResourcesClient object to access its operations.
+     */
+    private final ConnectedPartnerResourcesClient connectedPartnerResources;
+
+    /**
+     * Gets the ConnectedPartnerResourcesClient object to access its operations.
+     * 
+     * @return the ConnectedPartnerResourcesClient object.
+     */
+    public ConnectedPartnerResourcesClient getConnectedPartnerResources() {
+        return this.connectedPartnerResources;
+    }
+
+    /**
+     * The TagRulesClient object to access its operations.
+     */
     private final TagRulesClient tagRules;
 
     /**
      * Gets the TagRulesClient object to access its operations.
-     *
+     * 
      * @return the TagRulesClient object.
      */
     public TagRulesClient getTagRules() {
@@ -186,8 +243,22 @@ public final class NewRelicObservabilityImpl implements NewRelicObservability {
     }
 
     /**
+     * The MonitoredSubscriptionsClient object to access its operations.
+     */
+    private final MonitoredSubscriptionsClient monitoredSubscriptions;
+
+    /**
+     * Gets the MonitoredSubscriptionsClient object to access its operations.
+     * 
+     * @return the MonitoredSubscriptionsClient object.
+     */
+    public MonitoredSubscriptionsClient getMonitoredSubscriptions() {
+        return this.monitoredSubscriptions;
+    }
+
+    /**
      * Initializes an instance of NewRelicObservability client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -195,30 +266,28 @@ public final class NewRelicObservabilityImpl implements NewRelicObservability {
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    NewRelicObservabilityImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    NewRelicObservabilityImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-07-01";
+        this.apiVersion = "2024-01-01";
         this.operations = new OperationsClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
         this.monitors = new MonitorsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
         this.plans = new PlansClientImpl(this);
+        this.billingInfoes = new BillingInfoesClientImpl(this);
+        this.connectedPartnerResources = new ConnectedPartnerResourcesClientImpl(this);
         this.tagRules = new TagRulesClientImpl(this);
+        this.monitoredSubscriptions = new MonitoredSubscriptionsClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -227,7 +296,7 @@ public final class NewRelicObservabilityImpl implements NewRelicObservability {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -237,7 +306,7 @@ public final class NewRelicObservabilityImpl implements NewRelicObservability {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -247,26 +316,15 @@ public final class NewRelicObservabilityImpl implements NewRelicObservability {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -279,19 +337,16 @@ public final class NewRelicObservabilityImpl implements NewRelicObservability {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

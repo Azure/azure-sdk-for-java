@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties that are associated with the CSV serialization type. */
+/**
+ * The properties that are associated with the CSV serialization type.
+ */
 @Fluent
 public final class CsvSerializationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CsvSerializationProperties.class);
-
     /*
-     * Specifies the delimiter that will be used to separate comma-separated
-     * value (CSV) records. See
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input
-     * or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
-     * for a list of supported values. Required on PUT (CreateOrReplace)
-     * requests.
+     * Specifies the delimiter that will be used to separate comma-separated value (CSV) records. See
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported
+     * values. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "fieldDelimiter")
     private String fieldDelimiter;
 
     /*
-     * Specifies the encoding of the incoming data in the case of input and the
-     * encoding of outgoing data in the case of output. Required on PUT
-     * (CreateOrReplace) requests.
+     * Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case
+     * of output. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "encoding")
     private Encoding encoding;
 
     /**
+     * Creates an instance of CsvSerializationProperties class.
+     */
+    public CsvSerializationProperties() {
+    }
+
+    /**
      * Get the fieldDelimiter property: Specifies the delimiter that will be used to separate comma-separated value
      * (CSV) records. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported values.
-     * Required on PUT (CreateOrReplace) requests.
-     *
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported
+     * values. Required on PUT (CreateOrReplace) requests.
+     * 
      * @return the fieldDelimiter value.
      */
     public String fieldDelimiter() {
@@ -50,9 +50,9 @@ public final class CsvSerializationProperties {
     /**
      * Set the fieldDelimiter property: Specifies the delimiter that will be used to separate comma-separated value
      * (CSV) records. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported values.
-     * Required on PUT (CreateOrReplace) requests.
-     *
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported
+     * values. Required on PUT (CreateOrReplace) requests.
+     * 
      * @param fieldDelimiter the fieldDelimiter value to set.
      * @return the CsvSerializationProperties object itself.
      */
@@ -64,7 +64,7 @@ public final class CsvSerializationProperties {
     /**
      * Get the encoding property: Specifies the encoding of the incoming data in the case of input and the encoding of
      * outgoing data in the case of output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the encoding value.
      */
     public Encoding encoding() {
@@ -74,7 +74,7 @@ public final class CsvSerializationProperties {
     /**
      * Set the encoding property: Specifies the encoding of the incoming data in the case of input and the encoding of
      * outgoing data in the case of output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param encoding the encoding value to set.
      * @return the CsvSerializationProperties object itself.
      */
@@ -85,7 +85,7 @@ public final class CsvSerializationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

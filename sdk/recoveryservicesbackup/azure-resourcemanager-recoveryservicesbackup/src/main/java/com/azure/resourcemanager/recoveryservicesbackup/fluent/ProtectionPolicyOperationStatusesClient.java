@@ -17,8 +17,9 @@ public interface ProtectionPolicyOperationStatusesClient {
     /**
      * Provides the status of the asynchronous operations like backup, restore. The status can be in progress, completed
      * or failed. You can refer to the Operation Status enum for all the possible states of an operation. Some
-     * operations create jobs. This method returns the list of jobs associated with operation.
-     *
+     * operations
+     * create jobs. This method returns the list of jobs associated with operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's status needs to be fetched.
@@ -30,14 +31,15 @@ public interface ProtectionPolicyOperationStatusesClient {
      * @return operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusInner> getWithResponse(
-        String vaultName, String resourceGroupName, String policyName, String operationId, Context context);
+    Response<OperationStatusInner> getWithResponse(String vaultName, String resourceGroupName, String policyName,
+        String operationId, Context context);
 
     /**
      * Provides the status of the asynchronous operations like backup, restore. The status can be in progress, completed
      * or failed. You can refer to the Operation Status enum for all the possible states of an operation. Some
-     * operations create jobs. This method returns the list of jobs associated with operation.
-     *
+     * operations
+     * create jobs. This method returns the list of jobs associated with operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's status needs to be fetched.

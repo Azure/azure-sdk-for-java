@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hardwaresecuritymodules.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SKU of the dedicated HSM. */
+/**
+ * SKU of the dedicated HSM.
+ */
 @Fluent
 public final class Sku {
     /*
@@ -17,8 +19,14 @@ public final class Sku {
     private SkuName name;
 
     /**
+     * Creates an instance of Sku class.
+     */
+    public Sku() {
+    }
+
+    /**
      * Get the name property: SKU of the dedicated HSM.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -27,7 +35,7 @@ public final class Sku {
 
     /**
      * Set the name property: SKU of the dedicated HSM.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -38,7 +46,7 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

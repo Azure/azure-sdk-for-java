@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Current scenario details of the protected entity. */
+/**
+ * Current scenario details of the protected entity.
+ */
 @Fluent
 public final class CurrentScenarioDetails {
     /*
@@ -29,13 +31,15 @@ public final class CurrentScenarioDetails {
     @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
-    /** Creates an instance of CurrentScenarioDetails class. */
+    /**
+     * Creates an instance of CurrentScenarioDetails class.
+     */
     public CurrentScenarioDetails() {
     }
 
     /**
      * Get the scenarioName property: Scenario name.
-     *
+     * 
      * @return the scenarioName value.
      */
     public String scenarioName() {
@@ -44,7 +48,7 @@ public final class CurrentScenarioDetails {
 
     /**
      * Set the scenarioName property: Scenario name.
-     *
+     * 
      * @param scenarioName the scenarioName value to set.
      * @return the CurrentScenarioDetails object itself.
      */
@@ -55,7 +59,7 @@ public final class CurrentScenarioDetails {
 
     /**
      * Get the jobId property: ARM Id of the job being executed.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -64,7 +68,7 @@ public final class CurrentScenarioDetails {
 
     /**
      * Set the jobId property: ARM Id of the job being executed.
-     *
+     * 
      * @param jobId the jobId value to set.
      * @return the CurrentScenarioDetails object itself.
      */
@@ -75,7 +79,7 @@ public final class CurrentScenarioDetails {
 
     /**
      * Get the startTime property: Start time of the workflow.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -84,7 +88,7 @@ public final class CurrentScenarioDetails {
 
     /**
      * Set the startTime property: Start time of the workflow.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the CurrentScenarioDetails object itself.
      */
@@ -95,7 +99,7 @@ public final class CurrentScenarioDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

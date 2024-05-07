@@ -19,10 +19,8 @@ import com.azure.resourcemanager.security.models.VmRecommendation;
 import java.util.Collections;
 import java.util.List;
 
-public final class AdaptiveApplicationControlGroupImpl
-    implements AdaptiveApplicationControlGroup,
-        AdaptiveApplicationControlGroup.Definition,
-        AdaptiveApplicationControlGroup.Update {
+public final class AdaptiveApplicationControlGroupImpl implements AdaptiveApplicationControlGroup,
+    AdaptiveApplicationControlGroup.Definition, AdaptiveApplicationControlGroup.Update {
     private AdaptiveApplicationControlGroupInner innerObject;
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
@@ -116,27 +114,19 @@ public final class AdaptiveApplicationControlGroupImpl
     }
 
     public AdaptiveApplicationControlGroup create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .putWithResponse(ascLocation, groupName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
+            .putWithResponse(ascLocation, groupName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public AdaptiveApplicationControlGroup create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .putWithResponse(ascLocation, groupName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
+            .putWithResponse(ascLocation, groupName, this.innerModel(), context).getValue();
         return this;
     }
 
-    AdaptiveApplicationControlGroupImpl(
-        String name, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    AdaptiveApplicationControlGroupImpl(String name,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = new AdaptiveApplicationControlGroupInner();
         this.serviceManager = serviceManager;
         this.groupName = name;
@@ -147,51 +137,34 @@ public final class AdaptiveApplicationControlGroupImpl
     }
 
     public AdaptiveApplicationControlGroup apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .putWithResponse(ascLocation, groupName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
+            .putWithResponse(ascLocation, groupName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public AdaptiveApplicationControlGroup apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .putWithResponse(ascLocation, groupName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
+            .putWithResponse(ascLocation, groupName, this.innerModel(), context).getValue();
         return this;
     }
 
-    AdaptiveApplicationControlGroupImpl(
-        AdaptiveApplicationControlGroupInner innerObject,
+    AdaptiveApplicationControlGroupImpl(AdaptiveApplicationControlGroupInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.ascLocation = Utils.getValueFromIdByName(innerObject.id(), "locations");
-        this.groupName = Utils.getValueFromIdByName(innerObject.id(), "applicationWhitelistings");
+        this.ascLocation = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
+        this.groupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applicationWhitelistings");
     }
 
     public AdaptiveApplicationControlGroup refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .getWithResponse(ascLocation, groupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
+            .getWithResponse(ascLocation, groupName, Context.NONE).getValue();
         return this;
     }
 
     public AdaptiveApplicationControlGroup refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAdaptiveApplicationControls()
-                .getWithResponse(ascLocation, groupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
+            .getWithResponse(ascLocation, groupName, context).getValue();
         return this;
     }
 

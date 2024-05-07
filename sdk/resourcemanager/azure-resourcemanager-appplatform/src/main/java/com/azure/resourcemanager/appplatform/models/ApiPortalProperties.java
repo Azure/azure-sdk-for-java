@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** API portal properties payload. */
+/**
+ * API portal properties payload.
+ */
 @Fluent
 public final class ApiPortalProperties {
     /*
@@ -65,9 +67,22 @@ public final class ApiPortalProperties {
     @JsonProperty(value = "instances", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiPortalInstance> instances;
 
+    /*
+     * Indicates whether the API try-out feature is enabled or disabled. When enabled, users can try out the API by
+     * sending requests and viewing responses in API portal. When disabled, users cannot try out the API.
+     */
+    @JsonProperty(value = "apiTryOutEnabledState")
+    private ApiPortalApiTryOutEnabledState apiTryOutEnabledState;
+
+    /**
+     * Creates an instance of ApiPortalProperties class.
+     */
+    public ApiPortalProperties() {
+    }
+
     /**
      * Get the provisioningState property: State of the API portal.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ApiPortalProvisioningState provisioningState() {
@@ -76,7 +91,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the publicProperty property: Indicates whether the API portal exposes endpoint.
-     *
+     * 
      * @return the publicProperty value.
      */
     public Boolean publicProperty() {
@@ -85,7 +100,7 @@ public final class ApiPortalProperties {
 
     /**
      * Set the publicProperty property: Indicates whether the API portal exposes endpoint.
-     *
+     * 
      * @param publicProperty the publicProperty value to set.
      * @return the ApiPortalProperties object itself.
      */
@@ -96,7 +111,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the url property: URL of the API portal, exposed when 'public' is true.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -105,7 +120,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the httpsOnly property: Indicate if only https is allowed.
-     *
+     * 
      * @return the httpsOnly value.
      */
     public Boolean httpsOnly() {
@@ -114,7 +129,7 @@ public final class ApiPortalProperties {
 
     /**
      * Set the httpsOnly property: Indicate if only https is allowed.
-     *
+     * 
      * @param httpsOnly the httpsOnly value to set.
      * @return the ApiPortalProperties object itself.
      */
@@ -125,7 +140,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the gatewayIds property: The array of resource Ids of gateway to integrate with API portal.
-     *
+     * 
      * @return the gatewayIds value.
      */
     public List<String> gatewayIds() {
@@ -134,7 +149,7 @@ public final class ApiPortalProperties {
 
     /**
      * Set the gatewayIds property: The array of resource Ids of gateway to integrate with API portal.
-     *
+     * 
      * @param gatewayIds the gatewayIds value to set.
      * @return the ApiPortalProperties object itself.
      */
@@ -145,7 +160,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the sourceUrls property: Collection of OpenAPI source URL locations.
-     *
+     * 
      * @return the sourceUrls value.
      */
     public List<String> sourceUrls() {
@@ -154,7 +169,7 @@ public final class ApiPortalProperties {
 
     /**
      * Set the sourceUrls property: Collection of OpenAPI source URL locations.
-     *
+     * 
      * @param sourceUrls the sourceUrls value to set.
      * @return the ApiPortalProperties object itself.
      */
@@ -165,7 +180,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the ssoProperties property: Single sign-on related configuration.
-     *
+     * 
      * @return the ssoProperties value.
      */
     public SsoProperties ssoProperties() {
@@ -174,7 +189,7 @@ public final class ApiPortalProperties {
 
     /**
      * Set the ssoProperties property: Single sign-on related configuration.
-     *
+     * 
      * @param ssoProperties the ssoProperties value to set.
      * @return the ApiPortalProperties object itself.
      */
@@ -185,7 +200,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory.
-     *
+     * 
      * @return the resourceRequests value.
      */
     public ApiPortalResourceRequests resourceRequests() {
@@ -194,7 +209,7 @@ public final class ApiPortalProperties {
 
     /**
      * Get the instances property: Collection of instances belong to API portal.
-     *
+     * 
      * @return the instances value.
      */
     public List<ApiPortalInstance> instances() {
@@ -202,8 +217,32 @@ public final class ApiPortalProperties {
     }
 
     /**
+     * Get the apiTryOutEnabledState property: Indicates whether the API try-out feature is enabled or disabled. When
+     * enabled, users can try out the API by sending requests and viewing responses in API portal. When disabled, users
+     * cannot try out the API.
+     * 
+     * @return the apiTryOutEnabledState value.
+     */
+    public ApiPortalApiTryOutEnabledState apiTryOutEnabledState() {
+        return this.apiTryOutEnabledState;
+    }
+
+    /**
+     * Set the apiTryOutEnabledState property: Indicates whether the API try-out feature is enabled or disabled. When
+     * enabled, users can try out the API by sending requests and viewing responses in API portal. When disabled, users
+     * cannot try out the API.
+     * 
+     * @param apiTryOutEnabledState the apiTryOutEnabledState value to set.
+     * @return the ApiPortalProperties object itself.
+     */
+    public ApiPortalProperties withApiTryOutEnabledState(ApiPortalApiTryOutEnabledState apiTryOutEnabledState) {
+        this.apiTryOutEnabledState = apiTryOutEnabledState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

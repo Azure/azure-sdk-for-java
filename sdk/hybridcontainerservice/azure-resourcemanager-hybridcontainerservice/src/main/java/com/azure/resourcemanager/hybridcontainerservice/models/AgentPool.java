@@ -4,11 +4,9 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
-import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolInner;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,11 +35,11 @@ public interface AgentPool {
     String type();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
+     * Gets the properties property: Properties of the agent pool resource.
      * 
-     * @return the location value.
+     * @return the properties value.
      */
-    String location();
+    AgentPoolProperties properties();
 
     /**
      * Gets the tags property: Resource tags.
@@ -51,91 +49,18 @@ public interface AgentPool {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    SystemData systemData();
-
-    /**
-     * Gets the extendedLocation property: Extended Location definition.
+     * Gets the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @return the extendedLocation value.
      */
     ExtendedLocation extendedLocation();
 
     /**
-     * Gets the count property: Count - Number of agents to host docker containers. Allowed values must be in the range
-     * of 1 to 100 (inclusive). The default value is 1.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
-     * @return the count value.
+     * @return the systemData value.
      */
-    Integer count();
-
-    /**
-     * Gets the vmSize property: VmSize - The size of the agent pool VMs.
-     * 
-     * @return the vmSize value.
-     */
-    String vmSize();
-
-    /**
-     * Gets the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    ResourceProvisioningState provisioningState();
-
-    /**
-     * Gets the status property: Defines the observed state of the agent pool.
-     * 
-     * @return the status value.
-     */
-    AgentPoolProvisioningStatusStatus status();
-
-    /**
-     * Gets the availabilityZones property: AvailabilityZones - The list of Availability zones to use for nodes.
-     * Datacenter racks modelled as zones.
-     * 
-     * @return the availabilityZones value.
-     */
-    List<String> availabilityZones();
-
-    /**
-     * Gets the osType property: The particular KubernetesVersion's Image's OS Type (Linux, Windows).
-     * 
-     * @return the osType value.
-     */
-    OsType osType();
-
-    /**
-     * Gets the osSku property: Specifies the OS SKU used by the agent pool. The default is CBLMariner if OSType is
-     * Linux. The default is Windows2019 when OSType is Windows.
-     * 
-     * @return the osSku value.
-     */
-    Ossku osSku();
-
-    /**
-     * Gets the nodeImageVersion property: The version of node image.
-     * 
-     * @return the nodeImageVersion value.
-     */
-    String nodeImageVersion();
-
-    /**
-     * Gets the region of the resource.
-     * 
-     * @return the region of the resource.
-     */
-    Region region();
-
-    /**
-     * Gets the name of the resource region.
-     * 
-     * @return the name of the resource region.
-     */
-    String regionName();
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridcontainerservice.fluent.models.AgentPoolInner object.
@@ -147,8 +72,7 @@ public interface AgentPool {
     /**
      * The entirety of the AgentPool definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithScope,
-        DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
     }
 
     /**
@@ -158,28 +82,7 @@ public interface AgentPool {
         /**
          * The first stage of the AgentPool definition.
          */
-        interface Blank extends WithLocation {
-        }
-
-        /**
-         * The stage of the AgentPool definition allowing to specify location.
-         */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithScope withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The geo-location where the resource lives.
-             * @return the next definition stage.
-             */
-            WithScope withRegion(String location);
+        interface Blank extends WithScope {
         }
 
         /**
@@ -189,7 +92,7 @@ public interface AgentPool {
             /**
              * Specifies connectedClusterResourceUri.
              * 
-             * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected
+             * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected
              * cluster resource.
              * @return the next definition stage.
              */
@@ -201,9 +104,7 @@ public interface AgentPool {
          * be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation, DefinitionStages.WithCount,
-            DefinitionStages.WithVmSize, DefinitionStages.WithStatus, DefinitionStages.WithAvailabilityZones,
-            DefinitionStages.WithOsType, DefinitionStages.WithOsSku, DefinitionStages.WithNodeImageVersion {
+            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithExtendedLocation {
             /**
              * Executes the create request.
              * 
@@ -225,7 +126,7 @@ public interface AgentPool {
          */
         interface WithTags {
             /**
-             * Specifies the tags property: Resource tags..
+             * Specifies the tags property: Resource tags.
              * 
              * @param tags Resource tags.
              * @return the next definition stage.
@@ -234,113 +135,29 @@ public interface AgentPool {
         }
 
         /**
+         * The stage of the AgentPool definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Properties of the agent pool resource.
+             * 
+             * @param properties Properties of the agent pool resource.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(AgentPoolProperties properties);
+        }
+
+        /**
          * The stage of the AgentPool definition allowing to specify extendedLocation.
          */
         interface WithExtendedLocation {
             /**
-             * Specifies the extendedLocation property: Extended Location definition.
+             * Specifies the extendedLocation property: Extended location pointing to the underlying infrastructure.
              * 
-             * @param extendedLocation Extended Location definition.
+             * @param extendedLocation Extended location pointing to the underlying infrastructure.
              * @return the next definition stage.
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
-        }
-
-        /**
-         * The stage of the AgentPool definition allowing to specify count.
-         */
-        interface WithCount {
-            /**
-             * Specifies the count property: Count - Number of agents to host docker containers. Allowed values must be
-             * in the range of 1 to 100 (inclusive). The default value is 1..
-             * 
-             * @param count Count - Number of agents to host docker containers. Allowed values must be in the range of 1
-             * to 100 (inclusive). The default value is 1.
-             * @return the next definition stage.
-             */
-            WithCreate withCount(Integer count);
-        }
-
-        /**
-         * The stage of the AgentPool definition allowing to specify vmSize.
-         */
-        interface WithVmSize {
-            /**
-             * Specifies the vmSize property: VmSize - The size of the agent pool VMs..
-             * 
-             * @param vmSize VmSize - The size of the agent pool VMs.
-             * @return the next definition stage.
-             */
-            WithCreate withVmSize(String vmSize);
-        }
-
-        /**
-         * The stage of the AgentPool definition allowing to specify status.
-         */
-        interface WithStatus {
-            /**
-             * Specifies the status property: Defines the observed state of the agent pool.
-             * 
-             * @param status Defines the observed state of the agent pool.
-             * @return the next definition stage.
-             */
-            WithCreate withStatus(AgentPoolProvisioningStatusStatus status);
-        }
-
-        /**
-         * The stage of the AgentPool definition allowing to specify availabilityZones.
-         */
-        interface WithAvailabilityZones {
-            /**
-             * Specifies the availabilityZones property: AvailabilityZones - The list of Availability zones to use for
-             * nodes. Datacenter racks modelled as zones.
-             * 
-             * @param availabilityZones AvailabilityZones - The list of Availability zones to use for nodes. Datacenter
-             * racks modelled as zones.
-             * @return the next definition stage.
-             */
-            WithCreate withAvailabilityZones(List<String> availabilityZones);
-        }
-
-        /**
-         * The stage of the AgentPool definition allowing to specify osType.
-         */
-        interface WithOsType {
-            /**
-             * Specifies the osType property: The particular KubernetesVersion's Image's OS Type (Linux, Windows).
-             * 
-             * @param osType The particular KubernetesVersion's Image's OS Type (Linux, Windows).
-             * @return the next definition stage.
-             */
-            WithCreate withOsType(OsType osType);
-        }
-
-        /**
-         * The stage of the AgentPool definition allowing to specify osSku.
-         */
-        interface WithOsSku {
-            /**
-             * Specifies the osSku property: Specifies the OS SKU used by the agent pool. The default is CBLMariner if
-             * OSType is Linux. The default is Windows2019 when OSType is Windows..
-             * 
-             * @param osSku Specifies the OS SKU used by the agent pool. The default is CBLMariner if OSType is Linux.
-             * The default is Windows2019 when OSType is Windows.
-             * @return the next definition stage.
-             */
-            WithCreate withOsSku(Ossku osSku);
-        }
-
-        /**
-         * The stage of the AgentPool definition allowing to specify nodeImageVersion.
-         */
-        interface WithNodeImageVersion {
-            /**
-             * Specifies the nodeImageVersion property: The version of node image.
-             * 
-             * @param nodeImageVersion The version of node image.
-             * @return the next definition stage.
-             */
-            WithCreate withNodeImageVersion(String nodeImageVersion);
         }
     }
 
@@ -354,7 +171,7 @@ public interface AgentPool {
     /**
      * The template for AgentPool update.
      */
-    interface Update extends UpdateStages.WithTags {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithExtendedLocation {
         /**
          * Executes the update request.
          * 
@@ -386,6 +203,32 @@ public interface AgentPool {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the AgentPool update allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: Properties of the agent pool resource.
+             * 
+             * @param properties Properties of the agent pool resource.
+             * @return the next definition stage.
+             */
+            Update withProperties(AgentPoolProperties properties);
+        }
+
+        /**
+         * The stage of the AgentPool update allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: Extended location pointing to the underlying infrastructure.
+             * 
+             * @param extendedLocation Extended location pointing to the underlying infrastructure.
+             * @return the next definition stage.
+             */
+            Update withExtendedLocation(ExtendedLocation extendedLocation);
         }
     }
 

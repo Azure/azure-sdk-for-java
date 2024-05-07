@@ -15,50 +15,52 @@ import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.Dedicated
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.OutboundEnvironmentEndpointInner;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsmPatchParameters;
 
-/** An instance of this class provides access to all the operations defined in DedicatedHsmsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DedicatedHsmsClient.
+ */
 public interface DedicatedHsmsClient {
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, DedicatedHsmInner parameters);
+    SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginCreateOrUpdate(String resourceGroupName,
+        String name, DedicatedHsmInner parameters);
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, DedicatedHsmInner parameters, Context context);
+    SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginCreateOrUpdate(String resourceGroupName,
+        String name, DedicatedHsmInner parameters, Context context);
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information with extended details.
      */
@@ -67,63 +69,63 @@ public interface DedicatedHsmsClient {
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedHsmInner createOrUpdate(
-        String resourceGroupName, String name, DedicatedHsmInner parameters, Context context);
+    DedicatedHsmInner createOrUpdate(String resourceGroupName, String name, DedicatedHsmInner parameters,
+        Context context);
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdate(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters);
+    SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdate(String resourceGroupName, String name,
+        DedicatedHsmPatchParameters parameters);
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdate(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters, Context context);
+    SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdate(String resourceGroupName, String name,
+        DedicatedHsmPatchParameters parameters, Context context);
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information with extended details.
      */
@@ -132,29 +134,29 @@ public interface DedicatedHsmsClient {
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedHsmInner update(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters, Context context);
+    DedicatedHsmInner update(String resourceGroupName, String name, DedicatedHsmPatchParameters parameters,
+        Context context);
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
@@ -163,13 +165,13 @@ public interface DedicatedHsmsClient {
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
@@ -178,12 +180,12 @@ public interface DedicatedHsmsClient {
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -191,13 +193,13 @@ public interface DedicatedHsmsClient {
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -205,27 +207,13 @@ public interface DedicatedHsmsClient {
 
     /**
      * Gets the specified Azure dedicated HSM.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
-     * @param name The name of the dedicated HSM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure dedicated HSM.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedHsmInner getByResourceGroup(String resourceGroupName, String name);
-
-    /**
-     * Gets the specified Azure dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Azure dedicated HSM along with {@link Response}.
      */
@@ -233,13 +221,27 @@ public interface DedicatedHsmsClient {
     Response<DedicatedHsmInner> getByResourceGroupWithResponse(String resourceGroupName, String name, Context context);
 
     /**
+     * Gets the specified Azure dedicated HSM.
+     * 
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
+     * by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure dedicated HSM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DedicatedHsmInner getByResourceGroup(String resourceGroupName, String name);
+
+    /**
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of dedicated HSMs as paginated response with {@link PagedIterable}.
      */
@@ -249,13 +251,13 @@ public interface DedicatedHsmsClient {
     /**
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of dedicated HSMs as paginated response with {@link PagedIterable}.
      */
@@ -264,9 +266,9 @@ public interface DedicatedHsmsClient {
 
     /**
      * The List operation gets information about the dedicated HSMs associated with the subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of dedicated HSMs as paginated response with {@link PagedIterable}.
      */
@@ -275,12 +277,12 @@ public interface DedicatedHsmsClient {
 
     /**
      * The List operation gets information about the dedicated HSMs associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of dedicated HSMs as paginated response with {@link PagedIterable}.
      */
@@ -289,36 +291,42 @@ public interface DedicatedHsmsClient {
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
+     * resource.
+     * 
+     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     *     hsm resource as paginated response with {@link PagedIterable}.
+     * hsm resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String name);
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String name);
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
+     * resource.
+     * 
+     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     *     hsm resource as paginated response with {@link PagedIterable}.
+     * hsm resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String name, Context context);
+    PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(String resourceGroupName,
+        String name, Context context);
 }

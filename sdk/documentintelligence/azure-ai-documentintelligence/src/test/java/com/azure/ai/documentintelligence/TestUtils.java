@@ -40,7 +40,6 @@ public final class TestUtils {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
     // Local test files
-    public static final String BLANK_PDF = "blank.pdf";
     static final String CONTENT_FORM_JPG = "Form_1.jpg";
     static final String CONTENT_GERMAN_PDF = "content_german.pdf";
     static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
@@ -52,34 +51,32 @@ public final class TestUtils {
     static final String EXPECTED_MERCHANT_NAME = "Contoso";
     public static final String INVALID_KEY = "invalid key";
     static final String URL_TEST_FILE_FORMAT = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/"
-        + "master/sdk/formrecognizer/azure-ai-formrecognizer/src/test/resources/sample_files/Test/";
+        + "main/sdk/documentintelligence/azure-ai-documentintelligence/src/test/resources/sample_files/Test/";
     public static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
     public static final Map<String, String> EXPECTED_MODEL_TAGS = new HashMap<String, String>();
     static {
         EXPECTED_MODEL_TAGS.put("createdBy", "java_test");
     }
     static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
-    public static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL");
-    public static final String FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL");
-    public static final String FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL");
-    public static final String AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_API_KEY");
-    public static final String AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("AZURE_FORM_RECOGNIZER_ENDPOINT");
-    public static final String FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL");
-    public static final String FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL");
-    public static final String FORM_RECOGNIZER_CLASSIFIER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION =
-        GLOBAL_CONFIGURATION.get("FORM_RECOGNIZER_CLASSIFIER_TRAINING_BLOB_CONTAINER_SAS_URL");
+    public static final String DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL");
+    public static final String DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL");
+    public static final String AZURE_DOCUMENTINTELLIGENCE_API_KEY_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_API_KEY");
+    public static final String AZURE_DOCUMENTINTELLIGENCE_ENDPOINT_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_ENDPOINT");
+    public static final String DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL");
+    public static final String DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL");
+    public static final String DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION =
+        GLOBAL_CONFIGURATION.get("DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL");
     public static final String AZURE_CLIENT_ID
         = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_ID");
     public static final String AZURE_TENANT_ID
         = GLOBAL_CONFIGURATION.get("AZURE_TENANT_ID");
-    public static final String AZURE_FORM_RECOGNIZER_CLIENT_SECRET
+    public static final String AZURE_DOCUMENTINTELLIGENCE_CLIENT_SECRET
         = GLOBAL_CONFIGURATION.get("AZURE_CLIENT_SECRET");
     public static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     private TestUtils() {
@@ -123,7 +120,7 @@ public final class TestUtils {
      * @param isPlaybackMode boolean to indicate if the test running in playback mode
      */
     private static String getTestingSasUri(boolean isPlaybackMode) {
-        return isPlaybackMode ? "https://isPlaybackmode" : FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
+        return isPlaybackMode ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
@@ -146,16 +143,7 @@ public final class TestUtils {
      * @return the training data set Url
      */
     private static String getTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode ? "https://isPlaybackmode" : FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
-    }
-
-    /**
-     * Get the training data set SAS Url value based on the test running mode.
-     *
-     * @return the training data set Url
-     */
-    private static String getErrorTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode ? "https://isPlaybackmode" : FORM_RECOGNIZER_ERROR_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
+        return isPlaybackMode ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
@@ -165,7 +153,7 @@ public final class TestUtils {
      */
     private static String getMultipageTrainingSasUri(boolean isPlaybackMode) {
         return isPlaybackMode
-            ? "https://isPlaybackmode" : FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
+            ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
@@ -175,7 +163,7 @@ public final class TestUtils {
      */
     private static String getSelectionMarkTrainingSasUri(boolean isPlaybackMode) {
         return isPlaybackMode
-            ? "https://isPlaybackmode" : FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
+            ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
@@ -184,7 +172,7 @@ public final class TestUtils {
      * @return the training data set Url for classifiers
      */
     private static String getClassifierTrainingFilesContainerUrl(boolean isPlaybackMode) {
-        return isPlaybackMode ? "https://isPlaybackmode" : FORM_RECOGNIZER_CLASSIFIER_TRAINING_BLOB_CONTAINER_SAS_URL_CONFIGURATION;
+        return isPlaybackMode ? "https://isPlaybackmode" : DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL_CONFIGURATION;
     }
 
     /**
@@ -224,7 +212,7 @@ public final class TestUtils {
      */
     private static boolean shouldServiceVersionBeTested(DocumentIntelligenceServiceVersion serviceVersion) {
         String serviceVersionFromEnv =
-            Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS");
+            Configuration.getGlobalConfiguration().get("AZURE_DOCUMENTINTELLIGENCE_TEST_SERVICE_VERSIONS");
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return DocumentIntelligenceServiceVersion.getLatest().equals(serviceVersion);
         }

@@ -4,7 +4,8 @@
 package com.azure.core.test.models;
 
 /**
- * A matcher is applied during a playback session. The default matcher matches a request on headers, URI, and the body on playback recorded data.
+ * A matcher is applied during a playback session. The default matcher matches a request on headers, URI, and the body
+ * on playback recorded data.
  */
 public class TestProxyRequestMatcher {
     private final TestProxyRequestMatcherType testProxyMatcherType;

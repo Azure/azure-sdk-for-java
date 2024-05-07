@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -225,12 +226,21 @@ public class AddressResolver implements IAddressResolver {
                 !(request.getResourceType() == ResourceType.StoredProcedure && request.getOperationType() == OperationType.ExecuteJavaScript) &&
                 // Collection head is sent internally for strong consistency given routing hints from original requst, which is for partitioned resource.
                 !(request.getResourceType() == ResourceType.DocumentCollection && request.getOperationType() == OperationType.Head)) {
-                logger.error(
+
+                String errorMessage = String.format(
                     "Shouldn't come here for non partitioned resources. resourceType : {}, operationtype:{}, resourceaddress:{}",
                     request.getResourceType(),
                     request.getOperationType(),
                     request.getResourceAddress());
-                return Mono.error(BridgeInternal.setResourceAddress(new InternalServerErrorException(RMResources.InternalServerError), request.requestContext.resourcePhysicalAddress));
+
+                logger.error(errorMessage);
+                return Mono.error(
+                    BridgeInternal
+                        .setResourceAddress(
+                            new InternalServerErrorException(
+                                Exceptions.getInternalServerErrorMessage(errorMessage),
+                                HttpConstants.SubStatusCodes.NON_PARTITIONED_RESOURCES),
+                            request.requestContext.resourcePhysicalAddress));
             }
 
             PartitionKeyRange range;
@@ -661,7 +671,9 @@ public class AddressResolver implements IAddressResolver {
         }
 
         if (partitionKey == null) {
-            throw new InternalServerErrorException(String.format("partition key is null"));
+            throw new InternalServerErrorException(
+                Exceptions.getInternalServerErrorMessage("partition key is null"),
+                HttpConstants.SubStatusCodes.PARTITION_KEY_IS_NULL);
         }
 
         if (partitionKey.equals(PartitionKeyInternal.Empty) || Utils.getCollectionSize(partitionKey.getComponents()) == collection.getPartitionKey().getPaths().size()) {

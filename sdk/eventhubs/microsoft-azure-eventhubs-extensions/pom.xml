@@ -40,7 +40,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-eventhubs</artifactId>
-      <version>3.3.0</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;dependency} -->
+      <version>3.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -68,7 +68,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>msal4j</artifactId>
-        <version>1.14.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+        <version>1.15.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
         <scope>test</scope>
       </dependency>
       <dependency>

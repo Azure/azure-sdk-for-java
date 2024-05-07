@@ -60,22 +60,14 @@ public final class ApplicationImpl implements Application, Application.Definitio
     private String applicationId;
 
     public Application create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationOperations()
-                .createOrUpdateWithResponse(applicationId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getApplicationOperations()
+            .createOrUpdateWithResponse(applicationId, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public Application create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationOperations()
-                .createOrUpdateWithResponse(applicationId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getApplicationOperations()
+            .createOrUpdateWithResponse(applicationId, this.innerModel(), context).getValue();
         return this;
     }
 
@@ -90,48 +82,32 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationOperations()
-                .createOrUpdateWithResponse(applicationId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getApplicationOperations()
+            .createOrUpdateWithResponse(applicationId, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public Application apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationOperations()
-                .createOrUpdateWithResponse(applicationId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getApplicationOperations()
+            .createOrUpdateWithResponse(applicationId, this.innerModel(), context).getValue();
         return this;
     }
 
     ApplicationImpl(ApplicationInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.applicationId = Utils.getValueFromIdByName(innerObject.id(), "applications");
+        this.applicationId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applications");
     }
 
     public Application refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationOperations()
-                .getWithResponse(applicationId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getApplicationOperations()
+            .getWithResponse(applicationId, Context.NONE).getValue();
         return this;
     }
 
     public Application refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationOperations()
-                .getWithResponse(applicationId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getApplicationOperations()
+            .getWithResponse(applicationId, context).getValue();
         return this;
     }
 

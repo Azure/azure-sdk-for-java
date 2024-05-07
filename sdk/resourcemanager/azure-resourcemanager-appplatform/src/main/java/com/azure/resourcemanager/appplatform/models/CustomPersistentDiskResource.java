@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Custom persistent disk resource payload. */
+/**
+ * Custom persistent disk resource payload.
+ */
 @Fluent
 public final class CustomPersistentDiskResource {
     /*
@@ -24,8 +26,14 @@ public final class CustomPersistentDiskResource {
     private String storageId;
 
     /**
+     * Creates an instance of CustomPersistentDiskResource class.
+     */
+    public CustomPersistentDiskResource() {
+    }
+
+    /**
      * Get the customPersistentDiskProperties property: Properties of the custom persistent disk resource payload.
-     *
+     * 
      * @return the customPersistentDiskProperties value.
      */
     public CustomPersistentDiskProperties customPersistentDiskProperties() {
@@ -34,19 +42,19 @@ public final class CustomPersistentDiskResource {
 
     /**
      * Set the customPersistentDiskProperties property: Properties of the custom persistent disk resource payload.
-     *
+     * 
      * @param customPersistentDiskProperties the customPersistentDiskProperties value to set.
      * @return the CustomPersistentDiskResource object itself.
      */
-    public CustomPersistentDiskResource withCustomPersistentDiskProperties(
-        CustomPersistentDiskProperties customPersistentDiskProperties) {
+    public CustomPersistentDiskResource
+        withCustomPersistentDiskProperties(CustomPersistentDiskProperties customPersistentDiskProperties) {
         this.customPersistentDiskProperties = customPersistentDiskProperties;
         return this;
     }
 
     /**
      * Get the storageId property: The resource id of Azure Spring Apps Storage resource.
-     *
+     * 
      * @return the storageId value.
      */
     public String storageId() {
@@ -55,7 +63,7 @@ public final class CustomPersistentDiskResource {
 
     /**
      * Set the storageId property: The resource id of Azure Spring Apps Storage resource.
-     *
+     * 
      * @param storageId the storageId value to set.
      * @return the CustomPersistentDiskResource object itself.
      */
@@ -66,7 +74,7 @@ public final class CustomPersistentDiskResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -74,10 +82,8 @@ public final class CustomPersistentDiskResource {
             customPersistentDiskProperties().validate();
         }
         if (storageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageId in model CustomPersistentDiskResource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageId in model CustomPersistentDiskResource"));
         }
     }
 

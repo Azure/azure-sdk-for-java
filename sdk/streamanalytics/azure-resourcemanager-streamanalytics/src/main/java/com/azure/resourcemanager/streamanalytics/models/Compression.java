@@ -6,25 +6,29 @@ package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes how input data is compressed. */
+/**
+ * Describes how input data is compressed.
+ */
 @Fluent
 public final class Compression {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Compression.class);
-
     /*
-     * Indicates the type of compression that the input uses. Required on PUT
-     * (CreateOrReplace) requests.
+     * Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "type", required = true)
     private CompressionType type;
 
     /**
+     * Creates an instance of Compression class.
+     */
+    public Compression() {
+    }
+
+    /**
      * Get the type property: Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @return the type value.
      */
     public CompressionType type() {
@@ -34,7 +38,7 @@ public final class Compression {
     /**
      * Set the type property: Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @param type the type value to set.
      * @return the Compression object itself.
      */
@@ -45,14 +49,15 @@ public final class Compression {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model Compression"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model Compression"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Compression.class);
 }

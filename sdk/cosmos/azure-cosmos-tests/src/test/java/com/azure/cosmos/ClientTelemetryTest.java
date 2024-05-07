@@ -223,10 +223,12 @@ public class ClientTelemetryTest extends TestSuiteBase {
     public void systemInfo(CosmosClient cosmosClient) throws Exception {
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
         readClientTelemetry(clientTelemetry);
-        assertThat(clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().size()).isEqualTo(2);
+        assertThat(clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().size()).isGreaterThanOrEqualTo(2);
         for (ReportPayload reportPayload : clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().keySet()) {
             if (reportPayload.getMetricInfo().getMetricsName().equals("CPU")) {
                 assertThat(reportPayload.getMetricInfo().getUnitName()).isEqualTo("Percentage");
+            } else if (reportPayload.getMetricInfo().getMetricsName().equals(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_NAME)) {
+                assertThat(reportPayload.getMetricInfo().getUnitName()).isEqualTo(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_UNIT);
             } else {
                 assertThat(reportPayload.getMetricInfo().getMetricsName()).isEqualTo("MemoryRemaining");
                 assertThat(reportPayload.getMetricInfo().getUnitName()).isEqualTo("MB");
@@ -379,7 +381,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
-        BridgeInternal.setProperty(internalObjectNode, "mypk", uuid);
+        internalObjectNode.set("mypk", uuid, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return internalObjectNode;
     }
 

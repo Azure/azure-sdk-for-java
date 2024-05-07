@@ -12,7 +12,9 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRoleGroupCon
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of configuration. */
+/**
+ * The properties of configuration.
+ */
 @Fluent
 public final class ConfigurationProperties {
     /*
@@ -51,13 +53,15 @@ public final class ConfigurationProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ConfigurationProperties class. */
+    /**
+     * Creates an instance of ConfigurationProperties class.
+     */
     public ConfigurationProperties() {
     }
 
     /**
      * Get the description property: Description of the configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -66,7 +70,7 @@ public final class ConfigurationProperties {
 
     /**
      * Get the dataType property: Data type of the configuration.
-     *
+     * 
      * @return the dataType value.
      */
     public ConfigurationDataType dataType() {
@@ -75,7 +79,7 @@ public final class ConfigurationProperties {
 
     /**
      * Get the allowedValues property: Allowed values of the configuration.
-     *
+     * 
      * @return the allowedValues value.
      */
     public String allowedValues() {
@@ -84,7 +88,7 @@ public final class ConfigurationProperties {
 
     /**
      * Get the requiresRestart property: If configuration change requires restart.
-     *
+     * 
      * @return the requiresRestart value.
      */
     public Boolean requiresRestart() {
@@ -93,7 +97,7 @@ public final class ConfigurationProperties {
 
     /**
      * Set the requiresRestart property: If configuration change requires restart.
-     *
+     * 
      * @param requiresRestart the requiresRestart value to set.
      * @return the ConfigurationProperties object itself.
      */
@@ -104,7 +108,7 @@ public final class ConfigurationProperties {
 
     /**
      * Get the serverRoleGroupConfigurations property: The list of server role group configuration values.
-     *
+     * 
      * @return the serverRoleGroupConfigurations value.
      */
     public List<ServerRoleGroupConfiguration> serverRoleGroupConfigurations() {
@@ -113,19 +117,19 @@ public final class ConfigurationProperties {
 
     /**
      * Set the serverRoleGroupConfigurations property: The list of server role group configuration values.
-     *
+     * 
      * @param serverRoleGroupConfigurations the serverRoleGroupConfigurations value to set.
      * @return the ConfigurationProperties object itself.
      */
-    public ConfigurationProperties withServerRoleGroupConfigurations(
-        List<ServerRoleGroupConfiguration> serverRoleGroupConfigurations) {
+    public ConfigurationProperties
+        withServerRoleGroupConfigurations(List<ServerRoleGroupConfiguration> serverRoleGroupConfigurations) {
         this.serverRoleGroupConfigurations = serverRoleGroupConfigurations;
         return this;
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -134,15 +138,13 @@ public final class ConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serverRoleGroupConfigurations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverRoleGroupConfigurations in model ConfigurationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serverRoleGroupConfigurations in model ConfigurationProperties"));
         } else {
             serverRoleGroupConfigurations().forEach(e -> e.validate());
         }

@@ -4,29 +4,27 @@
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.jdk.httpclient.implementation.AzureJdkHttpRequest;
+import com.azure.core.http.jdk.httpclient.implementation.ByteArrayTimeoutResponseSubscriber;
+import com.azure.core.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber;
+import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseAsync;
+import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseSync;
 import com.azure.core.util.Context;
-import com.azure.core.util.Contexts;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Map;
+import java.time.Duration;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
-import static java.net.http.HttpRequest.BodyPublishers.noBody;
-import static java.net.http.HttpResponse.BodyHandlers.ofByteArray;
-import static java.net.http.HttpResponse.BodyHandlers.ofInputStream;
-import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
+import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
 
 /**
  * HttpClient implementation for the JDK HttpClient.
@@ -40,7 +38,13 @@ class JdkHttpClient implements HttpClient {
 
     private final Set<String> restrictedHeaders;
 
-    JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders) {
+    private final Duration writeTimeout;
+    private final Duration responseTimeout;
+    private final Duration readTimeout;
+    private final boolean hasReadTimeout;
+
+    JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
+        Duration responseTimeout, Duration readTimeout) {
         this.jdkHttpClient = httpClient;
         int javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
@@ -50,6 +54,22 @@ class JdkHttpClient implements HttpClient {
 
         this.restrictedHeaders = restrictedHeaders;
         LOGGER.verbose("Effective restricted headers: {}", restrictedHeaders);
+
+        // Set the write and response timeouts to null if they are negative or zero.
+        // The writeTimeout is used with 'Flux.timeout(Duration)' which uses thread switching, always. When the timeout
+        // is zero or negative it's treated as an infinite timeout. So, setting this to null will prevent that thread
+        // switching with the same runtime behavior.
+        this.writeTimeout
+            = (writeTimeout != null && !writeTimeout.isNegative() && !writeTimeout.isZero()) ? writeTimeout : null;
+
+        // The responseTimeout is used by JDK 'HttpRequest.timeout()' which will throw an exception when the timeout
+        // is non-null and is zero or negative. We treat zero or negative as an infinite timeout, so reset to null to
+        // prevent the exception from being thrown and have the behavior we want.
+        this.responseTimeout = (responseTimeout != null && !responseTimeout.isNegative() && !responseTimeout.isZero())
+            ? responseTimeout
+            : null;
+        this.readTimeout = readTimeout;
+        this.hasReadTimeout = readTimeout != null && !readTimeout.isNegative() && !readTimeout.isZero();
     }
 
     @Override
@@ -65,8 +85,11 @@ class JdkHttpClient implements HttpClient {
         Mono<java.net.http.HttpRequest> jdkRequestMono = Mono.fromCallable(() -> toJdkHttpRequest(request, context));
 
         if (eagerlyReadResponse || ignoreResponseBody) {
+            java.net.http.HttpResponse.BodyHandler<byte[]> bodyHandler = getResponseHandler(hasReadTimeout, readTimeout,
+                java.net.http.HttpResponse.BodyHandlers::ofByteArray, ByteArrayTimeoutResponseSubscriber::new);
+
             return jdkRequestMono
-                .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, ofByteArray())))
+                .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, bodyHandler)))
                 .map(jdkResponse -> {
                     // For now, eagerlyReadResponse and ignoreResponseBody works the same.
                     HttpHeaders headers = fromJdkHttpHeaders(jdkResponse.headers());
@@ -75,9 +98,14 @@ class JdkHttpClient implements HttpClient {
                     return new JdkHttpResponseSync(request, statusCode, headers, jdkResponse.body());
                 });
         } else {
+            // The way 'BodyHandlers.ofPublisher()' works is that it returns the 'CompletableFuture' as soon as the
+            // response is received, before any values of the 'Flow.Publisher<List<ByteBuffer>>' are emitted.
+            // Given this, we can hook into 'Flux.timeout(Duration)' when we convert the
+            // 'Flow.Publisher<List<ByteBuffer>>' to 'Flux<ByteBuffer>' to track the read timeout.
             return jdkRequestMono
-                .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, ofPublisher())))
-                .map(jdkResponse -> new JdkHttpResponseAsync(request, jdkResponse));
+                .flatMap(jdkRequest -> Mono.fromCompletionStage(
+                    jdkHttpClient.sendAsync(jdkRequest, java.net.http.HttpResponse.BodyHandlers.ofPublisher())))
+                .map(jdkResponse -> new JdkHttpResponseAsync(request, readTimeout, hasReadTimeout, jdkResponse));
         }
     }
 
@@ -89,19 +117,27 @@ class JdkHttpClient implements HttpClient {
         java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request, context);
         try {
             // For now, eagerlyReadResponse and ignoreResponseBody works the same.
-//            if (ignoreResponseBody) {
-//                java.net.http.HttpResponse<Void> jdKResponse = jdkHttpClient.send(jdkRequest,
-//                    responseInfo -> new BodyIgnoringSubscriber(LOGGER));
-//                return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
-//                    fromJdkHttpHeaders(jdKResponse.headers()), IGNORED_BODY);
-//            }
+            // if (ignoreResponseBody) {
+            // java.net.http.HttpResponse<Void> jdKResponse = jdkHttpClient.send(jdkRequest,
+            // responseInfo -> new BodyIgnoringSubscriber(LOGGER));
+            // return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
+            // fromJdkHttpHeaders(jdKResponse.headers()), IGNORED_BODY);
+            // }
 
             if (eagerlyReadResponse || ignoreResponseBody) {
-                java.net.http.HttpResponse<byte[]> jdKResponse = jdkHttpClient.send(jdkRequest, ofByteArray());
+                java.net.http.HttpResponse.BodyHandler<byte[]> bodyHandler
+                    = getResponseHandler(hasReadTimeout, readTimeout,
+                        java.net.http.HttpResponse.BodyHandlers::ofByteArray, ByteArrayTimeoutResponseSubscriber::new);
+
+                java.net.http.HttpResponse<byte[]> jdKResponse = jdkHttpClient.send(jdkRequest, bodyHandler);
                 return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
                     fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
             } else {
-                return new JdkHttpResponseSync(request, jdkHttpClient.send(jdkRequest, ofInputStream()));
+                java.net.http.HttpResponse.BodyHandler<InputStream> bodyHandler = getResponseHandler(hasReadTimeout,
+                    readTimeout, java.net.http.HttpResponse.BodyHandlers::ofInputStream,
+                    InputStreamTimeoutResponseSubscriber::new);
+
+                return new JdkHttpResponseSync(request, jdkHttpClient.send(jdkRequest, bodyHandler));
             }
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
@@ -117,38 +153,7 @@ class JdkHttpClient implements HttpClient {
      * @return the HttpRequest
      */
     private java.net.http.HttpRequest toJdkHttpRequest(HttpRequest request, Context context) {
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-
-        final java.net.http.HttpRequest.Builder builder = java.net.http.HttpRequest.newBuilder();
-        try {
-            builder.uri(request.getUrl().toURI());
-        } catch (URISyntaxException e) {
-            throw LOGGER.logExceptionAsError(Exceptions.propagate(e));
-        }
-        final HttpHeaders headers = request.getHeaders();
-        if (headers != null) {
-            for (HttpHeader header : headers) {
-                final String headerName = header.getName();
-                if (!restrictedHeaders.contains(headerName)) {
-                    header.getValuesList().forEach(headerValue -> builder.header(headerName, headerValue));
-                } else {
-                    LOGGER.warning("The header '" + headerName + "' is restricted by default in JDK HttpClient 12 "
-                        + "and above. This header can be added to allow list in JAVA_HOME/conf/net.properties "
-                        + "or in System.setProperty() or in Configuration. Use the key 'jdk.httpclient"
-                        + ".allowRestrictedHeaders' and a comma separated list of header names.");
-                }
-            }
-        }
-        switch (request.getHttpMethod()) {
-            case GET:
-                return builder.GET().build();
-            case HEAD:
-                return builder.method("HEAD", noBody()).build();
-            default:
-                java.net.http.HttpRequest.BodyPublisher bodyPublisher = BodyPublisherUtils.toBodyPublisher(request,
-                    progressReporter);
-                return builder.method(request.getHttpMethod().toString(), bodyPublisher).build();
-        }
+        return new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER, writeTimeout, responseTimeout);
     }
 
     /**
@@ -156,55 +161,26 @@ class JdkHttpClient implements HttpClient {
      *
      * @return the java major version
      */
-    private int getJavaVersion() {
-        // java.version format:
-        // 8 and lower: 1.7, 1.8.0
-        // 9 and above: 12, 14.1.1
-        String version = System.getProperty("java.version");
-        if (CoreUtils.isNullOrEmpty(version)) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Can't find 'java.version' system property."));
-        }
-        if (version.startsWith("1.")) {
-            if (version.length() < 3) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version));
-            }
-            try {
-                return Integer.parseInt(version.substring(2, 3));
-            } catch (Exception t) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
-            }
-        } else {
-            int idx = version.indexOf(".");
-
-            if (idx == -1) {
-                return Integer.parseInt(version);
-            }
-            try {
-                return Integer.parseInt(version.substring(0, idx));
-            } catch (Exception t) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
-            }
-        }
+    private static int getJavaVersion() {
+        return Runtime.version().feature();
     }
 
     /**
-     * Converts the given JDK Http headers to azure-core Http header.
+     * Gets the response body handler based on whether a read timeout is configured.
+     * <p>
+     * When a read timeout is configured our custom handler is used that tracks the time taken between each read
+     * operation to pull the body from the network. If a timeout isn't configured the built-in JDK handler is used.
      *
-     * @param headers the JDK Http headers
-     * @return the azure-core Http headers
+     * @param hasReadTimeout Flag indicating if a read timeout is configured.
+     * @param readTimeout The configured read timeout.
+     * @param jdkBodyHandler The JDK body handler to use when no read timeout is configured.
+     * @param timeoutSubscriber The supplier for the custom body subscriber to use when a read timeout is configured.
+     * @return The response body handler to use.
+     * @param <T> The type of the response body.
      */
-    @SuppressWarnings("deprecation")
-    static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
-        final HttpHeaders httpHeaders = new HttpHeaders();
-
-        for (Map.Entry<String, List<String>> kvp : headers.map().entrySet()) {
-            if (CoreUtils.isNullOrEmpty(kvp.getValue())) {
-                continue;
-            }
-
-            httpHeaders.set(kvp.getKey(), kvp.getValue());
-        }
-
-        return httpHeaders;
+    private static <T> java.net.http.HttpResponse.BodyHandler<T> getResponseHandler(boolean hasReadTimeout,
+        Duration readTimeout, Supplier<java.net.http.HttpResponse.BodyHandler<T>> jdkBodyHandler,
+        Function<Long, java.net.http.HttpResponse.BodySubscriber<T>> timeoutSubscriber) {
+        return hasReadTimeout ? responseInfo -> timeoutSubscriber.apply(readTimeout.toMillis()) : jdkBodyHandler.get();
     }
 }

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TestFailoverInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestFailoverInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"failoverDirection\":\"qvci\",\"networkType\":\"ev\",\"networkId\":\"mblrrilbywd\",\"providerSpecificDetails\":{\"instanceType\":\"TestFailoverProviderSpecificInput\"}}")
-                .toObject(TestFailoverInputProperties.class);
+        TestFailoverInputProperties model = BinaryData.fromString(
+            "{\"failoverDirection\":\"qvci\",\"networkType\":\"ev\",\"networkId\":\"mblrrilbywd\",\"providerSpecificDetails\":{\"instanceType\":\"TestFailoverProviderSpecificInput\"}}")
+            .toObject(TestFailoverInputProperties.class);
         Assertions.assertEquals("qvci", model.failoverDirection());
         Assertions.assertEquals("ev", model.networkType());
         Assertions.assertEquals("mblrrilbywd", model.networkId());
@@ -24,12 +22,9 @@ public final class TestFailoverInputPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestFailoverInputProperties model =
-            new TestFailoverInputProperties()
-                .withFailoverDirection("qvci")
-                .withNetworkType("ev")
-                .withNetworkId("mblrrilbywd")
-                .withProviderSpecificDetails(new TestFailoverProviderSpecificInput());
+        TestFailoverInputProperties model
+            = new TestFailoverInputProperties().withFailoverDirection("qvci").withNetworkType("ev")
+                .withNetworkId("mblrrilbywd").withProviderSpecificDetails(new TestFailoverProviderSpecificInput());
         model = BinaryData.fromObject(model).toObject(TestFailoverInputProperties.class);
         Assertions.assertEquals("qvci", model.failoverDirection());
         Assertions.assertEquals("ev", model.networkType());

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.35.0-beta.1 (Unreleased)
+## 2.39.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,37 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.38.0 (2024-04-16)
+
+### Features Added
+
+- Supported disabling public network access in `StorageAccount` via `disablePublicNetworkAccess()`, for private link feature.
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.36.0 (2024-02-29)
+
+### Features Added
+
+- Supported encryption with Customer-managed keys using user-assigned service identity.
+- Supported `withExistingUserAssignedManagedServiceIdentity(String)` for `StorageAccount`. 
+
+## 2.35.0 (2024-01-26)
+
+### Features Added
+
+- Supported user-assigned service identity for `StorageAccount` in create and update. 
+
+### Other Changes
+
+- Added dependency of `azure-resourcemanager-msi` and `azure-resourcemanager-authorization`.
 
 ## 2.34.0 (2023-12-22)
 

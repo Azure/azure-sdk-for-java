@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TriggerDataMoveRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TriggerDataMoveRequest model =
-            BinaryData
-                .fromString(
-                    "{\"sourceResourceId\":\"amdecte\",\"sourceRegion\":\"f\",\"dataMoveLevel\":\"Container\",\"correlationId\":\"scjeypv\",\"sourceContainerArmIds\":[\"rkgqhcjrefo\",\"gm\",\"qsl\",\"yyvxyqjpkcattpn\"],\"pauseGC\":false}")
-                .toObject(TriggerDataMoveRequest.class);
+        TriggerDataMoveRequest model = BinaryData.fromString(
+            "{\"sourceResourceId\":\"amdecte\",\"sourceRegion\":\"f\",\"dataMoveLevel\":\"Container\",\"correlationId\":\"scjeypv\",\"sourceContainerArmIds\":[\"rkgqhcjrefo\",\"gm\",\"qsl\",\"yyvxyqjpkcattpn\"],\"pauseGC\":false}")
+            .toObject(TriggerDataMoveRequest.class);
         Assertions.assertEquals("amdecte", model.sourceResourceId());
         Assertions.assertEquals("f", model.sourceRegion());
         Assertions.assertEquals(DataMoveLevel.CONTAINER, model.dataMoveLevel());
@@ -28,14 +26,9 @@ public final class TriggerDataMoveRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TriggerDataMoveRequest model =
-            new TriggerDataMoveRequest()
-                .withSourceResourceId("amdecte")
-                .withSourceRegion("f")
-                .withDataMoveLevel(DataMoveLevel.CONTAINER)
-                .withCorrelationId("scjeypv")
-                .withSourceContainerArmIds(Arrays.asList("rkgqhcjrefo", "gm", "qsl", "yyvxyqjpkcattpn"))
-                .withPauseGC(false);
+        TriggerDataMoveRequest model = new TriggerDataMoveRequest().withSourceResourceId("amdecte")
+            .withSourceRegion("f").withDataMoveLevel(DataMoveLevel.CONTAINER).withCorrelationId("scjeypv")
+            .withSourceContainerArmIds(Arrays.asList("rkgqhcjrefo", "gm", "qsl", "yyvxyqjpkcattpn")).withPauseGC(false);
         model = BinaryData.fromObject(model).toObject(TriggerDataMoveRequest.class);
         Assertions.assertEquals("amdecte", model.sourceResourceId());
         Assertions.assertEquals("f", model.sourceRegion());

@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A2A Cross-Cluster Migration Policy creation input. */
+/**
+ * A2A Cross-Cluster Migration Policy creation input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2ACrossClusterMigration")
 @Immutable
 public final class A2ACrossClusterMigrationPolicyCreationInput extends PolicyProviderSpecificInput {
-    /** Creates an instance of A2ACrossClusterMigrationPolicyCreationInput class. */
+    /**
+     * Creates an instance of A2ACrossClusterMigrationPolicyCreationInput class.
+     */
     public A2ACrossClusterMigrationPolicyCreationInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

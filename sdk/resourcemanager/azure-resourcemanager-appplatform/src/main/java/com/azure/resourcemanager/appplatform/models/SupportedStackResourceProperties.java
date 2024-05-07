@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Supported stack resource properties. */
+/**
+ * Supported stack resource properties.
+ */
 @Fluent
 public final class SupportedStackResourceProperties {
     /*
@@ -23,8 +25,14 @@ public final class SupportedStackResourceProperties {
     private String version;
 
     /**
+     * Creates an instance of SupportedStackResourceProperties class.
+     */
+    public SupportedStackResourceProperties() {
+    }
+
+    /**
      * Get the stackId property: The id of supported stack.
-     *
+     * 
      * @return the stackId value.
      */
     public String stackId() {
@@ -33,7 +41,7 @@ public final class SupportedStackResourceProperties {
 
     /**
      * Set the stackId property: The id of supported stack.
-     *
+     * 
      * @param stackId the stackId value to set.
      * @return the SupportedStackResourceProperties object itself.
      */
@@ -44,7 +52,7 @@ public final class SupportedStackResourceProperties {
 
     /**
      * Get the version property: The version of supported stack.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -53,7 +61,7 @@ public final class SupportedStackResourceProperties {
 
     /**
      * Set the version property: The version of supported stack.
-     *
+     * 
      * @param version the version value to set.
      * @return the SupportedStackResourceProperties object itself.
      */
@@ -64,7 +72,7 @@ public final class SupportedStackResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

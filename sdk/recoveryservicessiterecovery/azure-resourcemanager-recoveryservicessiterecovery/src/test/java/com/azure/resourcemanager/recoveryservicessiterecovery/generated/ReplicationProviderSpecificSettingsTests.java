@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.Replication
 public final class ReplicationProviderSpecificSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationProviderSpecificSettings model =
-            BinaryData
-                .fromString("{\"instanceType\":\"ReplicationProviderSpecificSettings\"}")
+        ReplicationProviderSpecificSettings model
+            = BinaryData.fromString("{\"instanceType\":\"ReplicationProviderSpecificSettings\"}")
                 .toObject(ReplicationProviderSpecificSettings.class);
     }
 

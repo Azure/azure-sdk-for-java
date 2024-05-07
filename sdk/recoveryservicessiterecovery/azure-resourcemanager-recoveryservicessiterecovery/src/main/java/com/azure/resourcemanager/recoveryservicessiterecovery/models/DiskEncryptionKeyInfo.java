@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Disk Encryption Key Information (BitLocker Encryption Key (BEK) on Windows). */
+/**
+ * Disk Encryption Key Information (BitLocker Encryption Key (BEK) on Windows).
+ */
 @Fluent
 public final class DiskEncryptionKeyInfo {
     /*
@@ -22,13 +24,15 @@ public final class DiskEncryptionKeyInfo {
     @JsonProperty(value = "keyVaultResourceArmId")
     private String keyVaultResourceArmId;
 
-    /** Creates an instance of DiskEncryptionKeyInfo class. */
+    /**
+     * Creates an instance of DiskEncryptionKeyInfo class.
+     */
     public DiskEncryptionKeyInfo() {
     }
 
     /**
      * Get the secretIdentifier property: The secret url / identifier.
-     *
+     * 
      * @return the secretIdentifier value.
      */
     public String secretIdentifier() {
@@ -37,7 +41,7 @@ public final class DiskEncryptionKeyInfo {
 
     /**
      * Set the secretIdentifier property: The secret url / identifier.
-     *
+     * 
      * @param secretIdentifier the secretIdentifier value to set.
      * @return the DiskEncryptionKeyInfo object itself.
      */
@@ -48,7 +52,7 @@ public final class DiskEncryptionKeyInfo {
 
     /**
      * Get the keyVaultResourceArmId property: The KeyVault resource ARM id for secret.
-     *
+     * 
      * @return the keyVaultResourceArmId value.
      */
     public String keyVaultResourceArmId() {
@@ -57,7 +61,7 @@ public final class DiskEncryptionKeyInfo {
 
     /**
      * Set the keyVaultResourceArmId property: The KeyVault resource ARM id for secret.
-     *
+     * 
      * @param keyVaultResourceArmId the keyVaultResourceArmId value to set.
      * @return the DiskEncryptionKeyInfo object itself.
      */
@@ -68,7 +72,7 @@ public final class DiskEncryptionKeyInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

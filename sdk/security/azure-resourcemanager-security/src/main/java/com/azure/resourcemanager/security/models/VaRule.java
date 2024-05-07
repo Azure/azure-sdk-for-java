@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** vulnerability assessment rule metadata details. */
+/**
+ * vulnerability assessment rule metadata details.
+ */
 @Fluent
 public final class VaRule {
     /*
@@ -65,13 +67,15 @@ public final class VaRule {
     @JsonProperty(value = "benchmarkReferences")
     private List<BenchmarkReference> benchmarkReferences;
 
-    /** Creates an instance of VaRule class. */
+    /**
+     * Creates an instance of VaRule class.
+     */
     public VaRule() {
     }
 
     /**
      * Get the ruleId property: The rule Id.
-     *
+     * 
      * @return the ruleId value.
      */
     public String ruleId() {
@@ -80,7 +84,7 @@ public final class VaRule {
 
     /**
      * Set the ruleId property: The rule Id.
-     *
+     * 
      * @param ruleId the ruleId value to set.
      * @return the VaRule object itself.
      */
@@ -91,7 +95,7 @@ public final class VaRule {
 
     /**
      * Get the severity property: The rule severity.
-     *
+     * 
      * @return the severity value.
      */
     public RuleSeverity severity() {
@@ -100,7 +104,7 @@ public final class VaRule {
 
     /**
      * Set the severity property: The rule severity.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the VaRule object itself.
      */
@@ -111,7 +115,7 @@ public final class VaRule {
 
     /**
      * Get the category property: The rule category.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -120,7 +124,7 @@ public final class VaRule {
 
     /**
      * Set the category property: The rule category.
-     *
+     * 
      * @param category the category value to set.
      * @return the VaRule object itself.
      */
@@ -131,7 +135,7 @@ public final class VaRule {
 
     /**
      * Get the ruleType property: The rule type.
-     *
+     * 
      * @return the ruleType value.
      */
     public RuleType ruleType() {
@@ -140,7 +144,7 @@ public final class VaRule {
 
     /**
      * Set the ruleType property: The rule type.
-     *
+     * 
      * @param ruleType the ruleType value to set.
      * @return the VaRule object itself.
      */
@@ -151,7 +155,7 @@ public final class VaRule {
 
     /**
      * Get the title property: The rule title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -160,7 +164,7 @@ public final class VaRule {
 
     /**
      * Set the title property: The rule title.
-     *
+     * 
      * @param title the title value to set.
      * @return the VaRule object itself.
      */
@@ -171,7 +175,7 @@ public final class VaRule {
 
     /**
      * Get the description property: The rule description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -180,7 +184,7 @@ public final class VaRule {
 
     /**
      * Set the description property: The rule description.
-     *
+     * 
      * @param description the description value to set.
      * @return the VaRule object itself.
      */
@@ -191,7 +195,7 @@ public final class VaRule {
 
     /**
      * Get the rationale property: The rule rationale.
-     *
+     * 
      * @return the rationale value.
      */
     public String rationale() {
@@ -200,7 +204,7 @@ public final class VaRule {
 
     /**
      * Set the rationale property: The rule rationale.
-     *
+     * 
      * @param rationale the rationale value to set.
      * @return the VaRule object itself.
      */
@@ -211,7 +215,7 @@ public final class VaRule {
 
     /**
      * Get the queryCheck property: The rule query details.
-     *
+     * 
      * @return the queryCheck value.
      */
     public QueryCheck queryCheck() {
@@ -220,7 +224,7 @@ public final class VaRule {
 
     /**
      * Set the queryCheck property: The rule query details.
-     *
+     * 
      * @param queryCheck the queryCheck value to set.
      * @return the VaRule object itself.
      */
@@ -231,7 +235,7 @@ public final class VaRule {
 
     /**
      * Get the benchmarkReferences property: The benchmark references.
-     *
+     * 
      * @return the benchmarkReferences value.
      */
     public List<BenchmarkReference> benchmarkReferences() {
@@ -240,7 +244,7 @@ public final class VaRule {
 
     /**
      * Set the benchmarkReferences property: The benchmark references.
-     *
+     * 
      * @param benchmarkReferences the benchmarkReferences value to set.
      * @return the VaRule object itself.
      */
@@ -251,7 +255,7 @@ public final class VaRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.EventSpecif
 public final class EventSpecificDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventSpecificDetails model =
-            BinaryData.fromString("{\"instanceType\":\"EventSpecificDetails\"}").toObject(EventSpecificDetails.class);
+        EventSpecificDetails model
+            = BinaryData.fromString("{\"instanceType\":\"EventSpecificDetails\"}").toObject(EventSpecificDetails.class);
     }
 
     @org.junit.jupiter.api.Test

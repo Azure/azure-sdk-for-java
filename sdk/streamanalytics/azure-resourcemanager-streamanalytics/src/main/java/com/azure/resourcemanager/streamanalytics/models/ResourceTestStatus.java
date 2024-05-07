@@ -6,25 +6,27 @@ package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.resourcemanager.streamanalytics.fluent.models.ResourceTestStatusInner;
 
-/** An immutable client-side representation of ResourceTestStatus. */
+/**
+ * An immutable client-side representation of ResourceTestStatus.
+ */
 public interface ResourceTestStatus {
     /**
      * Gets the status property: The status of the test operation.
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the error property: Describes the error that occurred.
-     *
+     * 
      * @return the error value.
      */
     ErrorResponse error();
 
     /**
      * Gets the inner com.azure.resourcemanager.streamanalytics.fluent.models.ResourceTestStatusInner object.
-     *
+     * 
      * @return the inner object.
      */
     ResourceTestStatusInner innerModel();

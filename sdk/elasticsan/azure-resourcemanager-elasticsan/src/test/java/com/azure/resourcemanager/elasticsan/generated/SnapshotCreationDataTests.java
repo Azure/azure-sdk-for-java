@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SnapshotCreationDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SnapshotCreationData model =
-            BinaryData.fromString("{\"sourceId\":\"aruoujmkcjhwqyt\"}").toObject(SnapshotCreationData.class);
+        SnapshotCreationData model
+            = BinaryData.fromString("{\"sourceId\":\"aruoujmkcjhwqyt\"}").toObject(SnapshotCreationData.class);
         Assertions.assertEquals("aruoujmkcjhwqyt", model.sourceId());
     }
 

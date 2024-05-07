@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The available sub plans. */
+/**
+ * The available sub plans.
+ */
 public final class SubPlan extends ExpandableStringEnum<SubPlan> {
-    /** Static value P1 for SubPlan. */
+    /**
+     * Static value P1 for SubPlan.
+     */
     public static final SubPlan P1 = fromString("P1");
 
-    /** Static value P2 for SubPlan. */
+    /**
+     * Static value P2 for SubPlan.
+     */
     public static final SubPlan P2 = fromString("P2");
 
     /**
      * Creates a new instance of SubPlan value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class SubPlan extends ExpandableStringEnum<SubPlan> {
 
     /**
      * Creates or finds a SubPlan from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SubPlan.
      */
@@ -38,7 +44,7 @@ public final class SubPlan extends ExpandableStringEnum<SubPlan> {
 
     /**
      * Gets known SubPlan values.
-     *
+     * 
      * @return known SubPlan values.
      */
     public static Collection<SubPlan> values() {

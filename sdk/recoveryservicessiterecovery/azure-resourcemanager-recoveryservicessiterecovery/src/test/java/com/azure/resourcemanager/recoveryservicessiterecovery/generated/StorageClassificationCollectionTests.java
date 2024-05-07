@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageClassificationCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageClassificationCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"friendlyName\":\"zjcjbtr\"},\"location\":\"ehvvib\",\"id\":\"xjjs\",\"name\":\"oqbeitpkxzt\",\"type\":\"oobklftidgfcwq\"}],\"nextLink\":\"imaq\"}")
-                .toObject(StorageClassificationCollection.class);
+        StorageClassificationCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"friendlyName\":\"zjcjbtr\"},\"location\":\"ehvvib\",\"id\":\"xjjs\",\"name\":\"oqbeitpkxzt\",\"type\":\"oobklftidgfcwq\"}],\"nextLink\":\"imaq\"}")
+            .toObject(StorageClassificationCollection.class);
         Assertions.assertEquals("zjcjbtr", model.value().get(0).properties().friendlyName());
         Assertions.assertEquals("ehvvib", model.value().get(0).location());
         Assertions.assertEquals("imaq", model.nextLink());
@@ -26,15 +24,10 @@ public final class StorageClassificationCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageClassificationCollection model =
-            new StorageClassificationCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new StorageClassificationInner()
-                                .withProperties(new StorageClassificationProperties().withFriendlyName("zjcjbtr"))
-                                .withLocation("ehvvib")))
-                .withNextLink("imaq");
+        StorageClassificationCollection model
+            = new StorageClassificationCollection().withValue(Arrays.asList(new StorageClassificationInner()
+                .withProperties(new StorageClassificationProperties().withFriendlyName("zjcjbtr"))
+                .withLocation("ehvvib"))).withNextLink("imaq");
         model = BinaryData.fromObject(model).toObject(StorageClassificationCollection.class);
         Assertions.assertEquals("zjcjbtr", model.value().get(0).properties().friendlyName());
         Assertions.assertEquals("ehvvib", model.value().get(0).location());

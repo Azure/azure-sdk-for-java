@@ -8,16 +8,22 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** AzureRestoreValidation request. */
+/**
+ * AzureRestoreValidation request.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("ValidateIaasVMRestoreOperationRequest")
 @Fluent
 public final class ValidateIaasVMRestoreOperationRequest extends ValidateRestoreOperationRequest {
-    /** Creates an instance of ValidateIaasVMRestoreOperationRequest class. */
+    /**
+     * Creates an instance of ValidateIaasVMRestoreOperationRequest class.
+     */
     public ValidateIaasVMRestoreOperationRequest() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ValidateIaasVMRestoreOperationRequest withRestoreRequest(RestoreRequest restoreRequest) {
         super.withRestoreRequest(restoreRequest);
@@ -26,7 +32,7 @@ public final class ValidateIaasVMRestoreOperationRequest extends ValidateRestore
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

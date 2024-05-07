@@ -23,6 +23,12 @@ public final class OkHttpProgressReportingRequestBody extends RequestBody {
     private final RequestBody delegate;
     private final ProgressReporter progressReporter;
 
+    /**
+     * Creates an OkHttpProgressReportingRequestBody.
+     *
+     * @param delegate The delegate {@link RequestBody} to wrap.
+     * @param progressReporter The {@link ProgressReporter} to report progress to.
+     */
     public OkHttpProgressReportingRequestBody(RequestBody delegate, ProgressReporter progressReporter) {
         this.delegate = Objects.requireNonNull(delegate, "'delegate' must not be null");
         this.progressReporter = Objects.requireNonNull(progressReporter, "'progressReporter' must not be null");

@@ -44,7 +44,7 @@ public final class ImageBoundingBox {
 
     /**
      * Creates an instance of ImageBoundingBox class.
-     * 
+     *
      * @param x the x value to set.
      * @param y the y value to set.
      * @param width the width value to set.
@@ -62,7 +62,7 @@ public final class ImageBoundingBox {
 
     /**
      * Get the x property: X-coordinate of the top left point of the area, in pixels.
-     * 
+     *
      * @return the x value.
      */
     @Generated
@@ -72,7 +72,7 @@ public final class ImageBoundingBox {
 
     /**
      * Get the y property: Y-coordinate of the top left point of the area, in pixels.
-     * 
+     *
      * @return the y value.
      */
     @Generated
@@ -82,7 +82,7 @@ public final class ImageBoundingBox {
 
     /**
      * Get the width property: Width of the area, in pixels.
-     * 
+     *
      * @return the width value.
      */
     @Generated
@@ -92,7 +92,7 @@ public final class ImageBoundingBox {
 
     /**
      * Get the height property: Height of the area, in pixels.
-     * 
+     *
      * @return the height value.
      */
     @Generated

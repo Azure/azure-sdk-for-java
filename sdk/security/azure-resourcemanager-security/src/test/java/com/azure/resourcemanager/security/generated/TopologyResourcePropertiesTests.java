@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.TopologyResourceProperti
 public final class TopologyResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TopologyResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"calculatedDateTime\":\"2020-12-30T06:35:30Z\",\"topologyResources\":[{\"resourceId\":\"qzbqqxlajrnwxa\",\"severity\":\"veh\",\"recommendationsExist\":false,\"networkZones\":\"xoafgaoqltfae\",\"topologyScore\":420432271,\"location\":\"mfgvxirpghriypo\",\"parents\":[],\"children\":[]},{\"resourceId\":\"h\",\"severity\":\"prlpy\",\"recommendationsExist\":false,\"networkZones\":\"iq\",\"topologyScore\":593641633,\"location\":\"xiitdfuxt\",\"parents\":[],\"children\":[]},{\"resourceId\":\"miybnn\",\"severity\":\"tgnljhnmgixhcmav\",\"recommendationsExist\":false,\"networkZones\":\"udorh\",\"topologyScore\":256597525,\"location\":\"prot\",\"parents\":[],\"children\":[]},{\"resourceId\":\"mbxhugcmjkav\",\"severity\":\"or\",\"recommendationsExist\":true,\"networkZones\":\"pmdtz\",\"topologyScore\":1527890487,\"location\":\"fvnz\",\"parents\":[],\"children\":[]}]}")
-                .toObject(TopologyResourceProperties.class);
+        TopologyResourceProperties model = BinaryData.fromString(
+            "{\"calculatedDateTime\":\"2021-07-28T19:10:41Z\",\"topologyResources\":[{\"resourceId\":\"kqejtpjfojiunr\",\"severity\":\"hxuk\",\"recommendationsExist\":false,\"networkZones\":\"dtoiboancdrcoanv\",\"topologyScore\":1880181772,\"location\":\"xonckbnlblfxlup\",\"parents\":[{\"resourceId\":\"zizxzpzweghlwwbo\"},{\"resourceId\":\"gfklqiyndve\"}],\"children\":[{\"resourceId\":\"b\"}]},{\"resourceId\":\"dstrkzxsgtz\",\"severity\":\"vlrdsmovpi\",\"recommendationsExist\":true,\"networkZones\":\"noxaxnrqaqotnndx\",\"topologyScore\":74841439,\"location\":\"sdvr\",\"parents\":[{\"resourceId\":\"m\"}],\"children\":[{\"resourceId\":\"drpizfulgyctsdb\"},{\"resourceId\":\"gkujdsooxrqwoe\"}]},{\"resourceId\":\"btigapdyarikeejd\",\"severity\":\"fhtwmmkfqb\",\"recommendationsExist\":false,\"networkZones\":\"lwwtr\",\"topologyScore\":1274697788,\"location\":\"kvyhzokpoyu\",\"parents\":[{\"resourceId\":\"nsnaajphmp\"},{\"resourceId\":\"jnglpwsad\"}],\"children\":[{\"resourceId\":\"umxpezcoi\"},{\"resourceId\":\"jrmfqzwqd\"},{\"resourceId\":\"keedcnw\"}]},{\"resourceId\":\"wxf\",\"severity\":\"kvemyzdpczaqpqi\",\"recommendationsExist\":true,\"networkZones\":\"ptrwtxzuisamo\",\"topologyScore\":551279456,\"location\":\"izexroqsqj\",\"parents\":[{\"resourceId\":\"thsplwsttxsr\"},{\"resourceId\":\"fq\"},{\"resourceId\":\"niceovxgzwh\"}],\"children\":[{\"resourceId\":\"ujmtikesliky\"},{\"resourceId\":\"zix\"}]}]}")
+            .toObject(TopologyResourceProperties.class);
     }
 
     @org.junit.jupiter.api.Test

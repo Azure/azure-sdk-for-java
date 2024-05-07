@@ -12,21 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class InformationProtectionAwsOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InformationProtectionAwsOffering model =
-            BinaryData
-                .fromString(
-                    "{\"offeringType\":\"InformationProtectionAws\",\"informationProtection\":{\"cloudRoleArn\":\"ytt\"},\"description\":\"knwfrkebsmhpdujd\"}")
-                .toObject(InformationProtectionAwsOffering.class);
-        Assertions.assertEquals("ytt", model.informationProtection().cloudRoleArn());
+        InformationProtectionAwsOffering model = BinaryData.fromString(
+            "{\"offeringType\":\"InformationProtectionAws\",\"informationProtection\":{\"cloudRoleArn\":\"w\"},\"description\":\"gsioc\"}")
+            .toObject(InformationProtectionAwsOffering.class);
+        Assertions.assertEquals("w", model.informationProtection().cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InformationProtectionAwsOffering model =
-            new InformationProtectionAwsOffering()
-                .withInformationProtection(
-                    new InformationProtectionAwsOfferingInformationProtection().withCloudRoleArn("ytt"));
+        InformationProtectionAwsOffering model = new InformationProtectionAwsOffering().withInformationProtection(
+            new InformationProtectionAwsOfferingInformationProtection().withCloudRoleArn("w"));
         model = BinaryData.fromObject(model).toObject(InformationProtectionAwsOffering.class);
-        Assertions.assertEquals("ytt", model.informationProtection().cloudRoleArn());
+        Assertions.assertEquals("w", model.informationProtection().cloudRoleArn());
     }
 }

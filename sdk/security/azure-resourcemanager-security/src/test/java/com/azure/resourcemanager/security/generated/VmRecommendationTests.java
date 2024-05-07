@@ -14,29 +14,24 @@ import org.junit.jupiter.api.Assertions;
 public final class VmRecommendationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmRecommendation model =
-            BinaryData
-                .fromString(
-                    "{\"configurationStatus\":\"Configured\",\"recommendationAction\":\"Remove\",\"resourceId\":\"euvyinzqodfvpgs\",\"enforcementSupport\":\"NotSupported\"}")
-                .toObject(VmRecommendation.class);
-        Assertions.assertEquals(ConfigurationStatus.CONFIGURED, model.configurationStatus());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.recommendationAction());
-        Assertions.assertEquals("euvyinzqodfvpgs", model.resourceId());
+        VmRecommendation model = BinaryData.fromString(
+            "{\"configurationStatus\":\"InProgress\",\"recommendationAction\":\"Recommended\",\"resourceId\":\"ftksd\",\"enforcementSupport\":\"NotSupported\"}")
+            .toObject(VmRecommendation.class);
+        Assertions.assertEquals(ConfigurationStatus.IN_PROGRESS, model.configurationStatus());
+        Assertions.assertEquals(RecommendationAction.RECOMMENDED, model.recommendationAction());
+        Assertions.assertEquals("ftksd", model.resourceId());
         Assertions.assertEquals(EnforcementSupport.NOT_SUPPORTED, model.enforcementSupport());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmRecommendation model =
-            new VmRecommendation()
-                .withConfigurationStatus(ConfigurationStatus.CONFIGURED)
-                .withRecommendationAction(RecommendationAction.REMOVE)
-                .withResourceId("euvyinzqodfvpgs")
-                .withEnforcementSupport(EnforcementSupport.NOT_SUPPORTED);
+        VmRecommendation model = new VmRecommendation().withConfigurationStatus(ConfigurationStatus.IN_PROGRESS)
+            .withRecommendationAction(RecommendationAction.RECOMMENDED).withResourceId("ftksd")
+            .withEnforcementSupport(EnforcementSupport.NOT_SUPPORTED);
         model = BinaryData.fromObject(model).toObject(VmRecommendation.class);
-        Assertions.assertEquals(ConfigurationStatus.CONFIGURED, model.configurationStatus());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.recommendationAction());
-        Assertions.assertEquals("euvyinzqodfvpgs", model.resourceId());
+        Assertions.assertEquals(ConfigurationStatus.IN_PROGRESS, model.configurationStatus());
+        Assertions.assertEquals(RecommendationAction.RECOMMENDED, model.recommendationAction());
+        Assertions.assertEquals("ftksd", model.resourceId());
         Assertions.assertEquals(EnforcementSupport.NOT_SUPPORTED, model.enforcementSupport());
     }
 }

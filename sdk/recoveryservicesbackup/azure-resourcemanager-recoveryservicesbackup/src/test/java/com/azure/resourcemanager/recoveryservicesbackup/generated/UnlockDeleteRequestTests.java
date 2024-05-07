@@ -12,23 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class UnlockDeleteRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UnlockDeleteRequest model =
-            BinaryData
-                .fromString(
-                    "{\"resourceGuardOperationRequests\":[\"niffcdmqnroj\",\"pij\"],\"resourceToBeDeleted\":\"rxfrddhc\"}")
-                .toObject(UnlockDeleteRequest.class);
-        Assertions.assertEquals("niffcdmqnroj", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("rxfrddhc", model.resourceToBeDeleted());
+        UnlockDeleteRequest model = BinaryData.fromString(
+            "{\"resourceGuardOperationRequests\":[\"qqmtedltmmji\",\"yeozphvwauyqncy\"],\"resourceToBeDeleted\":\"p\"}")
+            .toObject(UnlockDeleteRequest.class);
+        Assertions.assertEquals("qqmtedltmmji", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("p", model.resourceToBeDeleted());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnlockDeleteRequest model =
-            new UnlockDeleteRequest()
-                .withResourceGuardOperationRequests(Arrays.asList("niffcdmqnroj", "pij"))
-                .withResourceToBeDeleted("rxfrddhc");
+        UnlockDeleteRequest model = new UnlockDeleteRequest()
+            .withResourceGuardOperationRequests(Arrays.asList("qqmtedltmmji", "yeozphvwauyqncy"))
+            .withResourceToBeDeleted("p");
         model = BinaryData.fromObject(model).toObject(UnlockDeleteRequest.class);
-        Assertions.assertEquals("niffcdmqnroj", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("rxfrddhc", model.resourceToBeDeleted());
+        Assertions.assertEquals("qqmtedltmmji", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("p", model.resourceToBeDeleted());
     }
 }

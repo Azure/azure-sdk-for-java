@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class RestartParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestartParameter model =
-            BinaryData
-                .fromString("{\"restartWithFailover\":false,\"failoverMode\":\"PlannedSwitchover\"}")
+        RestartParameter model
+            = BinaryData.fromString("{\"restartWithFailover\":true,\"failoverMode\":\"ForcedSwitchover\"}")
                 .toObject(RestartParameter.class);
-        Assertions.assertEquals(false, model.restartWithFailover());
-        Assertions.assertEquals(FailoverMode.PLANNED_SWITCHOVER, model.failoverMode());
+        Assertions.assertEquals(true, model.restartWithFailover());
+        Assertions.assertEquals(FailoverMode.FORCED_SWITCHOVER, model.failoverMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestartParameter model =
-            new RestartParameter().withRestartWithFailover(false).withFailoverMode(FailoverMode.PLANNED_SWITCHOVER);
+        RestartParameter model
+            = new RestartParameter().withRestartWithFailover(true).withFailoverMode(FailoverMode.FORCED_SWITCHOVER);
         model = BinaryData.fromObject(model).toObject(RestartParameter.class);
-        Assertions.assertEquals(false, model.restartWithFailover());
-        Assertions.assertEquals(FailoverMode.PLANNED_SWITCHOVER, model.failoverMode());
+        Assertions.assertEquals(true, model.restartWithFailover());
+        Assertions.assertEquals(FailoverMode.FORCED_SWITCHOVER, model.failoverMode());
     }
 }

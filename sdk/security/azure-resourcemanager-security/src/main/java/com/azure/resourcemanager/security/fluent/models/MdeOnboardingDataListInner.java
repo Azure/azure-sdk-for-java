@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of all MDE onboarding data resources. */
+/**
+ * List of all MDE onboarding data resources.
+ */
 @Fluent
 public final class MdeOnboardingDataListInner {
     /*
@@ -17,13 +19,15 @@ public final class MdeOnboardingDataListInner {
     @JsonProperty(value = "value")
     private List<MdeOnboardingDataInner> value;
 
-    /** Creates an instance of MdeOnboardingDataListInner class. */
+    /**
+     * Creates an instance of MdeOnboardingDataListInner class.
+     */
     public MdeOnboardingDataListInner() {
     }
 
     /**
      * Get the value property: List of the resources of the configuration or data needed to onboard the machine to MDE.
-     *
+     * 
      * @return the value value.
      */
     public List<MdeOnboardingDataInner> value() {
@@ -32,7 +36,7 @@ public final class MdeOnboardingDataListInner {
 
     /**
      * Set the value property: List of the resources of the configuration or data needed to onboard the machine to MDE.
-     *
+     * 
      * @param value the value value to set.
      * @return the MdeOnboardingDataListInner object itself.
      */
@@ -43,7 +47,7 @@ public final class MdeOnboardingDataListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Service properties payload. */
+/**
+ * Service properties payload.
+ */
 @Fluent
 public final class ClusterResourceProperties {
     /*
@@ -35,7 +37,7 @@ public final class ClusterResourceProperties {
     private Integer version;
 
     /*
-     * ServiceInstanceEntity GUID which uniquely identifies a created resource
+     * ServiceInstanceEntity Id which uniquely identifies a created resource
      */
     @JsonProperty(value = "serviceId", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceId;
@@ -58,9 +60,21 @@ public final class ClusterResourceProperties {
     @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
 
+    /*
+     * Purchasing 3rd party product of the Service resource.
+     */
+    @JsonProperty(value = "marketplaceResource")
+    private MarketplaceResource marketplaceResource;
+
+    /**
+     * Creates an instance of ClusterResourceProperties class.
+     */
+    public ClusterResourceProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the Service.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -69,7 +83,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the networkProfile property: Network profile of the Service.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -78,7 +92,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Set the networkProfile property: Network profile of the Service.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -89,7 +103,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the vnetAddons property: Additional Service settings in vnet injection instance.
-     *
+     * 
      * @return the vnetAddons value.
      */
     public ServiceVNetAddons vnetAddons() {
@@ -98,7 +112,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Set the vnetAddons property: Additional Service settings in vnet injection instance.
-     *
+     * 
      * @param vnetAddons the vnetAddons value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -109,7 +123,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the version property: Version of the Service.
-     *
+     * 
      * @return the version value.
      */
     public Integer version() {
@@ -117,8 +131,8 @@ public final class ClusterResourceProperties {
     }
 
     /**
-     * Get the serviceId property: ServiceInstanceEntity GUID which uniquely identifies a created resource.
-     *
+     * Get the serviceId property: ServiceInstanceEntity Id which uniquely identifies a created resource.
+     * 
      * @return the serviceId value.
      */
     public String serviceId() {
@@ -127,7 +141,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the powerState property: Power state of the Service.
-     *
+     * 
      * @return the powerState value.
      */
     public PowerState powerState() {
@@ -136,7 +150,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the zoneRedundant property: The zoneRedundant property.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -145,7 +159,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Set the zoneRedundant property: The zoneRedundant property.
-     *
+     * 
      * @param zoneRedundant the zoneRedundant value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -156,7 +170,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the fqdn property: Fully qualified dns name of the service instance.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -164,8 +178,28 @@ public final class ClusterResourceProperties {
     }
 
     /**
+     * Get the marketplaceResource property: Purchasing 3rd party product of the Service resource.
+     * 
+     * @return the marketplaceResource value.
+     */
+    public MarketplaceResource marketplaceResource() {
+        return this.marketplaceResource;
+    }
+
+    /**
+     * Set the marketplaceResource property: Purchasing 3rd party product of the Service resource.
+     * 
+     * @param marketplaceResource the marketplaceResource value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withMarketplaceResource(MarketplaceResource marketplaceResource) {
+        this.marketplaceResource = marketplaceResource;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -174,6 +208,9 @@ public final class ClusterResourceProperties {
         }
         if (vnetAddons() != null) {
             vnetAddons().validate();
+        }
+        if (marketplaceResource() != null) {
+            marketplaceResource().validate();
         }
     }
 }

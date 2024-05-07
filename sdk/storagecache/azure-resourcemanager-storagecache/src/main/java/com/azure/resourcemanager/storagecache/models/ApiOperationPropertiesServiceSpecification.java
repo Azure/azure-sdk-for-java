@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specification of the all the metrics provided for a resource type. */
+/**
+ * Specification of the all the metrics provided for a resource type.
+ */
 @Fluent
 public final class ApiOperationPropertiesServiceSpecification {
     /*
@@ -23,13 +25,15 @@ public final class ApiOperationPropertiesServiceSpecification {
     @JsonProperty(value = "logSpecifications")
     private List<LogSpecification> logSpecifications;
 
-    /** Creates an instance of ApiOperationPropertiesServiceSpecification class. */
+    /**
+     * Creates an instance of ApiOperationPropertiesServiceSpecification class.
+     */
     public ApiOperationPropertiesServiceSpecification() {
     }
 
     /**
      * Get the metricSpecifications property: Details about operations related to metrics.
-     *
+     * 
      * @return the metricSpecifications value.
      */
     public List<MetricSpecification> metricSpecifications() {
@@ -38,19 +42,19 @@ public final class ApiOperationPropertiesServiceSpecification {
 
     /**
      * Set the metricSpecifications property: Details about operations related to metrics.
-     *
+     * 
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the ApiOperationPropertiesServiceSpecification object itself.
      */
-    public ApiOperationPropertiesServiceSpecification withMetricSpecifications(
-        List<MetricSpecification> metricSpecifications) {
+    public ApiOperationPropertiesServiceSpecification
+        withMetricSpecifications(List<MetricSpecification> metricSpecifications) {
         this.metricSpecifications = metricSpecifications;
         return this;
     }
 
     /**
      * Get the logSpecifications property: Details about operations related to logs.
-     *
+     * 
      * @return the logSpecifications value.
      */
     public List<LogSpecification> logSpecifications() {
@@ -59,7 +63,7 @@ public final class ApiOperationPropertiesServiceSpecification {
 
     /**
      * Set the logSpecifications property: Details about operations related to logs.
-     *
+     * 
      * @param logSpecifications the logSpecifications value to set.
      * @return the ApiOperationPropertiesServiceSpecification object itself.
      */
@@ -70,7 +74,7 @@ public final class ApiOperationPropertiesServiceSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

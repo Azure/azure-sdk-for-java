@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Microsoft Defender settings for the security profile. */
+/**
+ * Microsoft Defender settings for the security profile.
+ */
 @Fluent
 public final class ManagedClusterSecurityProfileDefender {
     /*
@@ -24,15 +26,17 @@ public final class ManagedClusterSecurityProfileDefender {
     @JsonProperty(value = "securityMonitoring")
     private ManagedClusterSecurityProfileDefenderSecurityMonitoring securityMonitoring;
 
-    /** Creates an instance of ManagedClusterSecurityProfileDefender class. */
+    /**
+     * Creates an instance of ManagedClusterSecurityProfileDefender class.
+     */
     public ManagedClusterSecurityProfileDefender() {
     }
 
     /**
      * Get the logAnalyticsWorkspaceResourceId property: Resource ID of the Log Analytics workspace to be associated
-     * with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid workspace
-     * resource ID. When Microsoft Defender is disabled, leave the field empty.
-     *
+     * with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid
+     * workspace resource ID. When Microsoft Defender is disabled, leave the field empty.
+     * 
      * @return the logAnalyticsWorkspaceResourceId value.
      */
     public String logAnalyticsWorkspaceResourceId() {
@@ -41,14 +45,14 @@ public final class ManagedClusterSecurityProfileDefender {
 
     /**
      * Set the logAnalyticsWorkspaceResourceId property: Resource ID of the Log Analytics workspace to be associated
-     * with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid workspace
-     * resource ID. When Microsoft Defender is disabled, leave the field empty.
-     *
+     * with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid
+     * workspace resource ID. When Microsoft Defender is disabled, leave the field empty.
+     * 
      * @param logAnalyticsWorkspaceResourceId the logAnalyticsWorkspaceResourceId value to set.
      * @return the ManagedClusterSecurityProfileDefender object itself.
      */
-    public ManagedClusterSecurityProfileDefender withLogAnalyticsWorkspaceResourceId(
-        String logAnalyticsWorkspaceResourceId) {
+    public ManagedClusterSecurityProfileDefender
+        withLogAnalyticsWorkspaceResourceId(String logAnalyticsWorkspaceResourceId) {
         this.logAnalyticsWorkspaceResourceId = logAnalyticsWorkspaceResourceId;
         return this;
     }
@@ -56,7 +60,7 @@ public final class ManagedClusterSecurityProfileDefender {
     /**
      * Get the securityMonitoring property: Microsoft Defender threat detection for Cloud settings for the security
      * profile.
-     *
+     * 
      * @return the securityMonitoring value.
      */
     public ManagedClusterSecurityProfileDefenderSecurityMonitoring securityMonitoring() {
@@ -66,19 +70,19 @@ public final class ManagedClusterSecurityProfileDefender {
     /**
      * Set the securityMonitoring property: Microsoft Defender threat detection for Cloud settings for the security
      * profile.
-     *
+     * 
      * @param securityMonitoring the securityMonitoring value to set.
      * @return the ManagedClusterSecurityProfileDefender object itself.
      */
-    public ManagedClusterSecurityProfileDefender withSecurityMonitoring(
-        ManagedClusterSecurityProfileDefenderSecurityMonitoring securityMonitoring) {
+    public ManagedClusterSecurityProfileDefender
+        withSecurityMonitoring(ManagedClusterSecurityProfileDefenderSecurityMonitoring securityMonitoring) {
         this.securityMonitoring = securityMonitoring;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

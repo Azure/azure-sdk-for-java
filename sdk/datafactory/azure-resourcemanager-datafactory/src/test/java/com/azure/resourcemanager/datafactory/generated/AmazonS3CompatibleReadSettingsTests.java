@@ -11,18 +11,25 @@ public final class AmazonS3CompatibleReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonS3CompatibleReadSettings model = BinaryData.fromString(
-            "{\"type\":\"AmazonS3CompatibleReadSettings\",\"recursive\":\"datacayazibhwyb\",\"wildcardFolderPath\":\"dataebmx\",\"wildcardFileName\":\"datacfd\",\"prefix\":\"datakurppwksixh\",\"fileListPath\":\"datanvydxjkdsqe\",\"enablePartitionDiscovery\":\"datajd\",\"partitionRootPath\":\"datatiqwixsdxxflwfv\",\"deleteFilesAfterCompletion\":\"databwhrguqetvbqh\",\"modifiedDatetimeStart\":\"datazflzjz\",\"modifiedDatetimeEnd\":\"dataiwxlggr\",\"maxConcurrentConnections\":\"dataayfklbg\",\"disableMetricsCollection\":\"databkdptcms\",\"\":{\"kloeqxccpq\":\"datavkhjtrashnfofi\",\"zipyiafsuuv\":\"dataoube\",\"wwjikgpwdczzkzib\":\"dataqqseoinxkothrnlg\"}}")
+            "{\"type\":\"ojgmobkaligo\",\"recursive\":\"databpiie\",\"wildcardFolderPath\":\"datagchsgotgwerbpob\",\"wildcardFileName\":\"datah\",\"prefix\":\"dataicgrxceivvm\",\"fileListPath\":\"datakllqh\",\"enablePartitionDiscovery\":\"datautr\",\"partitionRootPath\":\"datamztrnniarje\",\"deleteFilesAfterCompletion\":\"datahyxiqfoq\",\"modifiedDatetimeStart\":\"datasqykqfserlsai\",\"modifiedDatetimeEnd\":\"datahhetagwmzg\",\"maxConcurrentConnections\":\"datakehpdssvlubdp\",\"disableMetricsCollection\":\"datawxsxbxdkmixurce\",\"\":{\"kcnkghkr\":\"datamjqqauftghmtbu\",\"eayodrvwnqb\":\"datairshl\"}}")
             .toObject(AmazonS3CompatibleReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonS3CompatibleReadSettings model = new AmazonS3CompatibleReadSettings()
-            .withMaxConcurrentConnections("dataayfklbg").withDisableMetricsCollection("databkdptcms")
-            .withRecursive("datacayazibhwyb").withWildcardFolderPath("dataebmx").withWildcardFileName("datacfd")
-            .withPrefix("datakurppwksixh").withFileListPath("datanvydxjkdsqe").withEnablePartitionDiscovery("datajd")
-            .withPartitionRootPath("datatiqwixsdxxflwfv").withDeleteFilesAfterCompletion("databwhrguqetvbqh")
-            .withModifiedDatetimeStart("datazflzjz").withModifiedDatetimeEnd("dataiwxlggr");
+        AmazonS3CompatibleReadSettings model
+            = new AmazonS3CompatibleReadSettings().withMaxConcurrentConnections("datakehpdssvlubdp")
+                .withDisableMetricsCollection("datawxsxbxdkmixurce")
+                .withRecursive("databpiie")
+                .withWildcardFolderPath("datagchsgotgwerbpob")
+                .withWildcardFileName("datah")
+                .withPrefix("dataicgrxceivvm")
+                .withFileListPath("datakllqh")
+                .withEnablePartitionDiscovery("datautr")
+                .withPartitionRootPath("datamztrnniarje")
+                .withDeleteFilesAfterCompletion("datahyxiqfoq")
+                .withModifiedDatetimeStart("datasqykqfserlsai")
+                .withModifiedDatetimeEnd("datahhetagwmzg");
         model = BinaryData.fromObject(model).toObject(AmazonS3CompatibleReadSettings.class);
     }
 }

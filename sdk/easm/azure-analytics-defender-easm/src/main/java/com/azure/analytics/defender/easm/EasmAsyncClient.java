@@ -1637,7 +1637,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return createOrReplaceDataConnectionWithResponse(dataConnectionName, BinaryData.fromObject(dataConnectionData),
             requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DataConnection.class));
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(DataConnection.class));
     }
 
     /**
@@ -2086,7 +2086,7 @@ public final class EasmAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return createOrReplaceSavedFilterWithResponse(filterName, BinaryData.fromObject(savedFilterData),
             requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(SavedFilter.class));
+            .map(protocolMethodData -> cleanUp(protocolMethodData).toObject(SavedFilter.class));
     }
 
     /**

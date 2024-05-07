@@ -6,54 +6,35 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
-import com.azure.resourcemanager.datafactory.models.ManagedIdentityCredentialResource;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.datafactory.models.CredentialResource;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class CredentialOperationsListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"yqgfimllradqwpu\"},\"description\":\"uphizztkl\",\"annotations\":[\"datadeehtjmdefkph\",\"datakkivy\"],\"\":{\"curkf\":\"datapcnnpjulpwwmxwl\",\"vruxmpnugujiwi\":\"datazjazepbjukikd\",\"anxs\":\"dataunsvsjo\"}},\"name\":\"tfgh\",\"type\":\"qxruqrobk\",\"etag\":\"npyb\",\"id\":\"kvjbf\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"nniyg\",\"description\":\"u\",\"annotations\":[\"datafpbgcvnqrstgp\",\"datas\"],\"\":{\"ttamfrnumwos\":\"datagxak\",\"uxmrsogmscfno\":\"datatibcd\",\"iiif\":\"datajqvqcboky\"}},\"name\":\"tbwzc\",\"type\":\"auctltbtmqjkz\",\"etag\":\"sblismnwywod\",\"id\":\"r\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<CredentialResource> response
+            = manager.credentialOperations().listByFactory("aiecqmt", "tvlarmfhaind", com.azure.core.util.Context.NONE);
 
-        PagedIterable<ManagedIdentityCredentialResource> response = manager.credentialOperations()
-            .listByFactory("plhfwqdvd", "cohjwzynbhltrmb", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("kvjbf", response.iterator().next().id());
-        Assertions.assertEquals("uphizztkl", response.iterator().next().properties().description());
-        Assertions.assertEquals("yqgfimllradqwpu", response.iterator().next().properties().resourceId());
+        Assertions.assertEquals("r", response.iterator().next().id());
+        Assertions.assertEquals("u", response.iterator().next().properties().description());
     }
 }

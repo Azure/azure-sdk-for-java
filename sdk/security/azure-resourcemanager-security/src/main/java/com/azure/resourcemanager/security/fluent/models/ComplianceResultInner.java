@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.security.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** a compliance result. */
+/**
+ * a compliance result.
+ */
 @Immutable
 public final class ComplianceResultInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class ComplianceResultInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ComplianceResultProperties innerProperties;
 
-    /** Creates an instance of ComplianceResultInner class. */
+    /**
+     * Creates an instance of ComplianceResultInner class.
+     */
     public ComplianceResultInner() {
     }
 
     /**
      * Get the innerProperties property: Compliance result data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ComplianceResultProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class ComplianceResultInner extends ProxyResource {
 
     /**
      * Get the resourceStatus property: The status of the resource regarding a single assessment.
-     *
+     * 
      * @return the resourceStatus value.
      */
     public ResourceStatus resourceStatus() {
@@ -42,7 +46,7 @@ public final class ComplianceResultInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

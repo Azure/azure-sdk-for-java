@@ -32,58 +32,44 @@ public final class AttachedDataNetworksListByPacketCoreDataPlaneMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"userPlaneDataInterface\":{\"name\":\"clj\",\"ipv4Address\":\"gvkzqkjjeokbze\",\"ipv4Subnet\":\"zrxcczurt\",\"ipv4Gateway\":\"ipqxbkwvzgnzv\"},\"dnsAddresses\":[\"bzdixzmq\",\"noda\",\"opqhewjptmc\",\"sbostzel\"],\"naptConfiguration\":{\"enabled\":\"Disabled\",\"portRange\":{\"minPort\":492133944,\"maxPort\":1611840724},\"portReuseHoldTime\":{\"tcp\":204672914,\"udp\":1115327100},\"pinholeLimits\":1010329526,\"pinholeTimeouts\":{\"tcp\":1281899778,\"udp\":1426924958,\"icmp\":1171808306}},\"userEquipmentAddressPoolPrefix\":[\"vcwwyyurmochppr\",\"rsnm\"],\"userEquipmentStaticAddressPoolPrefix\":[\"yzejnhlbk\",\"bzpcpiljhahzvec\",\"ndbnwieh\",\"lewjwiuubwef\"]},\"location\":\"fapaqtfer\",\"tags\":{\"kmfx\":\"ex\",\"pud\":\"pjwogqqno\",\"yawbzasqbu\":\"dabtqwp\",\"oguyaip\":\"ljgkyex\"},\"id\":\"dsdaultxijjumf\",\"name\":\"waz\",\"type\":\"nqnm\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"userPlaneDataInterface\":{\"name\":\"nmwmqtibx\",\"ipv4Address\":\"jddtvqct\",\"ipv4Subnet\":\"dija\",\"ipv4Gateway\":\"kmr\"},\"dnsAddresses\":[\"eekpndz\",\"apm\",\"dqmeqwigpibudq\"],\"naptConfiguration\":{\"enabled\":\"Enabled\",\"portRange\":{\"minPort\":1568036168,\"maxPort\":650775767},\"portReuseHoldTime\":{\"tcp\":606462246,\"udp\":619135714},\"pinholeLimits\":310350754,\"pinholeTimeouts\":{\"tcp\":639795933,\"udp\":1808729813,\"icmp\":547449174}},\"userEquipmentAddressPoolPrefix\":[\"eioqaqhvse\",\"fuqyrxpdlcgqlsi\"],\"userEquipmentStaticAddressPoolPrefix\":[\"qfrddgam\",\"uhiosrsju\",\"vfcdisyirn\"]},\"location\":\"hcz\",\"tags\":{\"vk\":\"xzbujrtrhqvwr\",\"zonzlrpiqywnc\":\"gnl\"},\"id\":\"jtszcof\",\"name\":\"zehtdhgb\",\"type\":\"k\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AttachedDataNetwork> response =
-            manager
-                .attachedDataNetworks()
-                .listByPacketCoreDataPlane(
-                    "ohdxbzlmcmu", "pcvhdbevwqqxeys", "onqzinkfkbgbzbow", com.azure.core.util.Context.NONE);
+        PagedIterable<AttachedDataNetwork> response = manager.attachedDataNetworks().listByPacketCoreDataPlane(
+            "fuzboyjathwtzolb", "emwmdxmebwjs", "jpahlxvea", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fapaqtfer", response.iterator().next().location());
-        Assertions.assertEquals("ex", response.iterator().next().tags().get("kmfx"));
-        Assertions.assertEquals("clj", response.iterator().next().userPlaneDataInterface().name());
-        Assertions.assertEquals("gvkzqkjjeokbze", response.iterator().next().userPlaneDataInterface().ipv4Address());
-        Assertions.assertEquals("zrxcczurt", response.iterator().next().userPlaneDataInterface().ipv4Subnet());
-        Assertions.assertEquals("ipqxbkwvzgnzv", response.iterator().next().userPlaneDataInterface().ipv4Gateway());
-        Assertions.assertEquals("bzdixzmq", response.iterator().next().dnsAddresses().get(0));
-        Assertions.assertEquals(NaptEnabled.DISABLED, response.iterator().next().naptConfiguration().enabled());
-        Assertions.assertEquals(492133944, response.iterator().next().naptConfiguration().portRange().minPort());
-        Assertions.assertEquals(1611840724, response.iterator().next().naptConfiguration().portRange().maxPort());
-        Assertions.assertEquals(204672914, response.iterator().next().naptConfiguration().portReuseHoldTime().tcp());
-        Assertions.assertEquals(1115327100, response.iterator().next().naptConfiguration().portReuseHoldTime().udp());
-        Assertions.assertEquals(1010329526, response.iterator().next().naptConfiguration().pinholeLimits());
-        Assertions.assertEquals(1281899778, response.iterator().next().naptConfiguration().pinholeTimeouts().tcp());
-        Assertions.assertEquals(1426924958, response.iterator().next().naptConfiguration().pinholeTimeouts().udp());
-        Assertions.assertEquals(1171808306, response.iterator().next().naptConfiguration().pinholeTimeouts().icmp());
-        Assertions.assertEquals("vcwwyyurmochppr", response.iterator().next().userEquipmentAddressPoolPrefix().get(0));
-        Assertions.assertEquals("yzejnhlbk", response.iterator().next().userEquipmentStaticAddressPoolPrefix().get(0));
+        Assertions.assertEquals("hcz", response.iterator().next().location());
+        Assertions.assertEquals("xzbujrtrhqvwr", response.iterator().next().tags().get("vk"));
+        Assertions.assertEquals("nmwmqtibx", response.iterator().next().userPlaneDataInterface().name());
+        Assertions.assertEquals("jddtvqct", response.iterator().next().userPlaneDataInterface().ipv4Address());
+        Assertions.assertEquals("dija", response.iterator().next().userPlaneDataInterface().ipv4Subnet());
+        Assertions.assertEquals("kmr", response.iterator().next().userPlaneDataInterface().ipv4Gateway());
+        Assertions.assertEquals("eekpndz", response.iterator().next().dnsAddresses().get(0));
+        Assertions.assertEquals(NaptEnabled.ENABLED, response.iterator().next().naptConfiguration().enabled());
+        Assertions.assertEquals(1568036168, response.iterator().next().naptConfiguration().portRange().minPort());
+        Assertions.assertEquals(650775767, response.iterator().next().naptConfiguration().portRange().maxPort());
+        Assertions.assertEquals(606462246, response.iterator().next().naptConfiguration().portReuseHoldTime().tcp());
+        Assertions.assertEquals(619135714, response.iterator().next().naptConfiguration().portReuseHoldTime().udp());
+        Assertions.assertEquals(310350754, response.iterator().next().naptConfiguration().pinholeLimits());
+        Assertions.assertEquals(639795933, response.iterator().next().naptConfiguration().pinholeTimeouts().tcp());
+        Assertions.assertEquals(1808729813, response.iterator().next().naptConfiguration().pinholeTimeouts().udp());
+        Assertions.assertEquals(547449174, response.iterator().next().naptConfiguration().pinholeTimeouts().icmp());
+        Assertions.assertEquals("eioqaqhvse", response.iterator().next().userEquipmentAddressPoolPrefix().get(0));
+        Assertions.assertEquals("qfrddgam", response.iterator().next().userEquipmentStaticAddressPoolPrefix().get(0));
     }
 }

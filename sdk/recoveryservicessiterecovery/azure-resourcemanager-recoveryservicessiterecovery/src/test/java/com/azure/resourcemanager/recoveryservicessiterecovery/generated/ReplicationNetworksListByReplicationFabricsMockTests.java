@@ -31,39 +31,26 @@ public final class ReplicationNetworksListByReplicationFabricsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"fabricType\":\"sorch\",\"subnets\":[{\"name\":\"o\",\"friendlyName\":\"yhl\",\"addressList\":[\"vhs\",\"b\",\"pwxslaj\"]},{\"name\":\"fzga\",\"friendlyName\":\"hawkmibuydwi\",\"addressList\":[\"icupdyt\",\"qmiuvjpl\"]},{\"name\":\"ebmhhtuq\",\"friendlyName\":\"xynof\",\"addressList\":[\"bfix\",\"gxebihexhnk\",\"ng\"]},{\"name\":\"cdolrpgupsjlbsmn\",\"friendlyName\":\"fbncuyje\",\"addressList\":[\"nhpplzhcfzxjzi\",\"ucrln\",\"wnuwkkfzzetl\",\"hdyxz\"]}],\"friendlyName\":\"wywjvrlgqpwwlzp\",\"networkType\":\"arcbcdwhslxebaja\"},\"location\":\"n\",\"id\":\"stbdoprwkampyh\",\"name\":\"pbldz\",\"type\":\"iudrcycmwhuzym\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"fabricType\":\"sorch\",\"subnets\":[{\"name\":\"o\",\"friendlyName\":\"yhl\",\"addressList\":[\"vhs\",\"b\",\"pwxslaj\"]},{\"name\":\"fzga\",\"friendlyName\":\"hawkmibuydwi\",\"addressList\":[\"icupdyt\",\"qmiuvjpl\"]},{\"name\":\"ebmhhtuq\",\"friendlyName\":\"xynof\",\"addressList\":[\"bfix\",\"gxebihexhnk\",\"ng\"]},{\"name\":\"cdolrpgupsjlbsmn\",\"friendlyName\":\"fbncuyje\",\"addressList\":[\"nhpplzhcfzxjzi\",\"ucrln\",\"wnuwkkfzzetl\",\"hdyxz\"]}],\"friendlyName\":\"wywjvrlgqpwwlzp\",\"networkType\":\"arcbcdwhslxebaja\"},\"location\":\"n\",\"id\":\"stbdoprwkampyh\",\"name\":\"pbldz\",\"type\":\"iudrcycmwhuzym\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SiteRecoveryManager manager =
-            SiteRecoveryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Network> response =
-            manager
-                .replicationNetworks()
-                .listByReplicationFabrics("kdv", "el", "modpe", com.azure.core.util.Context.NONE);
+        PagedIterable<Network> response = manager.replicationNetworks().listByReplicationFabrics("kdv", "el", "modpe",
+            com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("sorch", response.iterator().next().properties().fabricType());
         Assertions.assertEquals("o", response.iterator().next().properties().subnets().get(0).name());

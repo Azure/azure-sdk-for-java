@@ -79,13 +79,13 @@ public final class HybridIdentityMetadatasImpl implements HybridIdentityMetadata
     public PagedIterable<HybridIdentityMetadata> listByCluster(String connectedClusterResourceUri) {
         PagedIterable<HybridIdentityMetadataInner> inner
             = this.serviceClient().listByCluster(connectedClusterResourceUri);
-        return Utils.mapPage(inner, inner1 -> new HybridIdentityMetadataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HybridIdentityMetadataImpl(inner1, this.manager()));
     }
 
     public PagedIterable<HybridIdentityMetadata> listByCluster(String connectedClusterResourceUri, Context context) {
         PagedIterable<HybridIdentityMetadataInner> inner
             = this.serviceClient().listByCluster(connectedClusterResourceUri, context);
-        return Utils.mapPage(inner, inner1 -> new HybridIdentityMetadataImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HybridIdentityMetadataImpl(inner1, this.manager()));
     }
 
     private HybridIdentityMetadatasClient serviceClient() {

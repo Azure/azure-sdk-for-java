@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ImportSourceCredentials model. */
+/**
+ * The ImportSourceCredentials model.
+ */
 @Fluent
 public final class ImportSourceCredentials {
     /*
@@ -23,13 +25,15 @@ public final class ImportSourceCredentials {
     @JsonProperty(value = "password", required = true)
     private String password;
 
-    /** Creates an instance of ImportSourceCredentials class. */
+    /**
+     * Creates an instance of ImportSourceCredentials class.
+     */
     public ImportSourceCredentials() {
     }
 
     /**
      * Get the username property: The username to authenticate with the source registry.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -38,7 +42,7 @@ public final class ImportSourceCredentials {
 
     /**
      * Set the username property: The username to authenticate with the source registry.
-     *
+     * 
      * @param username the username value to set.
      * @return the ImportSourceCredentials object itself.
      */
@@ -49,7 +53,7 @@ public final class ImportSourceCredentials {
 
     /**
      * Get the password property: The password used to authenticate with the source registry.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -58,7 +62,7 @@ public final class ImportSourceCredentials {
 
     /**
      * Set the password property: The password used to authenticate with the source registry.
-     *
+     * 
      * @param password the password value to set.
      * @return the ImportSourceCredentials object itself.
      */
@@ -69,15 +73,13 @@ public final class ImportSourceCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model ImportSourceCredentials"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property password in model ImportSourceCredentials"));
         }
     }
 

@@ -12,17 +12,22 @@ public final class SapHanaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapHanaSource model = BinaryData.fromString(
-            "{\"type\":\"SapHanaSource\",\"query\":\"datagpqsmglutnlynp\",\"packetSize\":\"dataxnbogxkid\",\"partitionOption\":\"dataxbgfwwcfwlwnj\",\"partitionSettings\":{\"partitionColumnName\":\"datamopcmetd\"},\"queryTimeout\":\"dataugimvief\",\"additionalColumns\":\"dataesmiyjkhjuue\",\"sourceRetryCount\":\"datajuqwn\",\"sourceRetryWait\":\"databbpxqsv\",\"maxConcurrentConnections\":\"datavqwi\",\"disableMetricsCollection\":\"datawtugadxu\",\"\":{\"t\":\"datagcbwiw\"}}")
+            "{\"type\":\"pceuwmfdy\",\"query\":\"dataoizabjbh\",\"packetSize\":\"dataddijfkkt\",\"partitionOption\":\"dataiseepl\",\"partitionSettings\":{\"partitionColumnName\":\"datarxydsompnce\"},\"queryTimeout\":\"dataczkjkfakgrwtpe\",\"additionalColumns\":\"dataanm\",\"sourceRetryCount\":\"datapy\",\"sourceRetryWait\":\"datagqyszjuijzhvejqj\",\"maxConcurrentConnections\":\"dataolnylpykjpa\",\"disableMetricsCollection\":\"dataouya\",\"\":{\"on\":\"dataxaicheycak\"}}")
             .toObject(SapHanaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapHanaSource model = new SapHanaSource().withSourceRetryCount("datajuqwn").withSourceRetryWait("databbpxqsv")
-            .withMaxConcurrentConnections("datavqwi").withDisableMetricsCollection("datawtugadxu")
-            .withQueryTimeout("dataugimvief").withAdditionalColumns("dataesmiyjkhjuue").withQuery("datagpqsmglutnlynp")
-            .withPacketSize("dataxnbogxkid").withPartitionOption("dataxbgfwwcfwlwnj")
-            .withPartitionSettings(new SapHanaPartitionSettings().withPartitionColumnName("datamopcmetd"));
+        SapHanaSource model = new SapHanaSource().withSourceRetryCount("datapy")
+            .withSourceRetryWait("datagqyszjuijzhvejqj")
+            .withMaxConcurrentConnections("dataolnylpykjpa")
+            .withDisableMetricsCollection("dataouya")
+            .withQueryTimeout("dataczkjkfakgrwtpe")
+            .withAdditionalColumns("dataanm")
+            .withQuery("dataoizabjbh")
+            .withPacketSize("dataddijfkkt")
+            .withPartitionOption("dataiseepl")
+            .withPartitionSettings(new SapHanaPartitionSettings().withPartitionColumnName("datarxydsompnce"));
         model = BinaryData.fromObject(model).toObject(SapHanaSource.class);
     }
 }

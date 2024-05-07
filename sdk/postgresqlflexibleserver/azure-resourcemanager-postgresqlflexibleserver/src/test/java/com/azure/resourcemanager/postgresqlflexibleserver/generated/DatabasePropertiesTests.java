@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseProperties model =
-            BinaryData
-                .fromString("{\"charset\":\"siarbutrcvpn\",\"collation\":\"zmhjrunmp\"}")
-                .toObject(DatabaseProperties.class);
+        DatabaseProperties model = BinaryData.fromString("{\"charset\":\"siarbutrcvpn\",\"collation\":\"zmhjrunmp\"}")
+            .toObject(DatabaseProperties.class);
         Assertions.assertEquals("siarbutrcvpn", model.charset());
         Assertions.assertEquals("zmhjrunmp", model.collation());
     }

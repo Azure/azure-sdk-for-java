@@ -5,32 +5,40 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties that are associated with an Azure Storage account. */
+/**
+ * The properties that are associated with an Azure Storage account.
+ */
 @Fluent
 public class StorageAccount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccount.class);
-
     /*
-     * The name of the Azure Storage account. Required on PUT (CreateOrReplace)
-     * requests.
+     * The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
-     * The account key for the Azure Storage account. Required on PUT
-     * (CreateOrReplace) requests.
+     * The account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "accountKey")
     private String accountKey;
 
+    /*
+     * Authentication Mode.
+     */
+    @JsonProperty(value = "authenticationMode")
+    private AuthenticationMode authenticationMode;
+
+    /**
+     * Creates an instance of StorageAccount class.
+     */
+    public StorageAccount() {
+    }
+
     /**
      * Get the accountName property: The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -39,7 +47,7 @@ public class StorageAccount {
 
     /**
      * Set the accountName property: The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the StorageAccount object itself.
      */
@@ -51,7 +59,7 @@ public class StorageAccount {
     /**
      * Get the accountKey property: The account key for the Azure Storage account. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @return the accountKey value.
      */
     public String accountKey() {
@@ -61,7 +69,7 @@ public class StorageAccount {
     /**
      * Set the accountKey property: The account key for the Azure Storage account. Required on PUT (CreateOrReplace)
      * requests.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the StorageAccount object itself.
      */
@@ -71,8 +79,28 @@ public class StorageAccount {
     }
 
     /**
+     * Get the authenticationMode property: Authentication Mode.
+     * 
+     * @return the authenticationMode value.
+     */
+    public AuthenticationMode authenticationMode() {
+        return this.authenticationMode;
+    }
+
+    /**
+     * Set the authenticationMode property: Authentication Mode.
+     * 
+     * @param authenticationMode the authenticationMode value to set.
+     * @return the StorageAccount object itself.
+     */
+    public StorageAccount withAuthenticationMode(AuthenticationMode authenticationMode) {
+        this.authenticationMode = authenticationMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

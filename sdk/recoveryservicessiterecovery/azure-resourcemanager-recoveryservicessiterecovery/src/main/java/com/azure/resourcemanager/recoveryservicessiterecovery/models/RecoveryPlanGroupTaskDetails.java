@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** This class represents the recovery plan group task. */
+/**
+ * This class represents the recovery plan group task.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,8 +23,7 @@ import java.util.List;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "RecoveryPlanShutdownGroupTaskDetails",
-        value = RecoveryPlanShutdownGroupTaskDetails.class)
-})
+        value = RecoveryPlanShutdownGroupTaskDetails.class) })
 @Fluent
 public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
     /*
@@ -43,13 +44,15 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
     @JsonProperty(value = "rpGroupType")
     private String rpGroupType;
 
-    /** Creates an instance of RecoveryPlanGroupTaskDetails class. */
+    /**
+     * Creates an instance of RecoveryPlanGroupTaskDetails class.
+     */
     public RecoveryPlanGroupTaskDetails() {
     }
 
     /**
      * Get the name property: The name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +61,7 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Set the name property: The name.
-     *
+     * 
      * @param name the name value to set.
      * @return the RecoveryPlanGroupTaskDetails object itself.
      */
@@ -69,7 +72,7 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Get the groupId property: The group identifier.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -78,7 +81,7 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Set the groupId property: The group identifier.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the RecoveryPlanGroupTaskDetails object itself.
      */
@@ -89,7 +92,7 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Get the rpGroupType property: The group type.
-     *
+     * 
      * @return the rpGroupType value.
      */
     public String rpGroupType() {
@@ -98,7 +101,7 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Set the rpGroupType property: The group type.
-     *
+     * 
      * @param rpGroupType the rpGroupType value to set.
      * @return the RecoveryPlanGroupTaskDetails object itself.
      */
@@ -107,7 +110,9 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPlanGroupTaskDetails withChildTasks(List<AsrTask> childTasks) {
         super.withChildTasks(childTasks);
@@ -116,7 +121,7 @@ public class RecoveryPlanGroupTaskDetails extends GroupTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

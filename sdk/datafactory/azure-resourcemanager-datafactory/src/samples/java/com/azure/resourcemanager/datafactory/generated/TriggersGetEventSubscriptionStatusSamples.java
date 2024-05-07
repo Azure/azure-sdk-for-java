@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class TriggersGetEventSubscriptionStatusSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * Triggers_GetEventSubscriptionStatus.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Triggers_GetEventSubscriptionStatus.json
      */
     /**
      * Sample code: Triggers_GetEventSubscriptionStatus.
@@ -19,7 +18,8 @@ public final class TriggersGetEventSubscriptionStatusSamples {
      */
     public static void
         triggersGetEventSubscriptionStatus(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggers().getEventSubscriptionStatusWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleTrigger", com.azure.core.util.Context.NONE);
+        manager.triggers()
+            .getEventSubscriptionStatusWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                com.azure.core.util.Context.NONE);
     }
 }

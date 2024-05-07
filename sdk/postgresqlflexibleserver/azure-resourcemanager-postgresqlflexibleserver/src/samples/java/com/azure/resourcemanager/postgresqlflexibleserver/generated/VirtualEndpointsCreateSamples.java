@@ -7,20 +7,21 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
 import java.util.Arrays;
 
-/** Samples for VirtualEndpoints Create. */
+/**
+ * Samples for VirtualEndpoints Create.
+ */
 public final class VirtualEndpointsCreateSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/VirtualEndpointCreate.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/VirtualEndpointCreate.json
      */
     /**
      * Sample code: Create a new virtual endpoint for a flexible server.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void createANewVirtualEndpointForAFlexibleServer(
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager
-            .virtualEndpoints()
+        manager.virtualEndpoints()
             .define("pgVirtualEndpoint1")
             .withExistingFlexibleServer("testrg", "pgtestsvc4")
             .withEndpointType(VirtualEndpointType.READ_WRITE)

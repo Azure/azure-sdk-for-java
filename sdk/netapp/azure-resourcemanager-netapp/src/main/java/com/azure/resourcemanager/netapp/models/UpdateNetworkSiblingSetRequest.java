@@ -44,7 +44,7 @@ public final class UpdateNetworkSiblingSetRequest {
     /*
      * Network features
      * 
-     * Network features available to the volume
+     * Network features available to the volume, some such
      */
     @JsonProperty(value = "networkFeatures", required = true)
     private NetworkFeatures networkFeatures;
@@ -132,7 +132,7 @@ public final class UpdateNetworkSiblingSetRequest {
     /**
      * Get the networkFeatures property: Network features
      * 
-     * Network features available to the volume.
+     * Network features available to the volume, some such.
      * 
      * @return the networkFeatures value.
      */
@@ -143,7 +143,7 @@ public final class UpdateNetworkSiblingSetRequest {
     /**
      * Set the networkFeatures property: Network features
      * 
-     * Network features available to the volume.
+     * Network features available to the volume, some such.
      * 
      * @param networkFeatures the networkFeatures value to set.
      * @return the UpdateNetworkSiblingSetRequest object itself.

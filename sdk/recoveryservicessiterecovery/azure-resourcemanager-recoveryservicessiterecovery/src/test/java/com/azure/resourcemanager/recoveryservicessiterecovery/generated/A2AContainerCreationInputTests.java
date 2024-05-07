@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2AContaine
 public final class A2AContainerCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2AContainerCreationInput model =
-            BinaryData.fromString("{\"instanceType\":\"A2A\"}").toObject(A2AContainerCreationInput.class);
+        A2AContainerCreationInput model
+            = BinaryData.fromString("{\"instanceType\":\"A2A\"}").toObject(A2AContainerCreationInput.class);
     }
 
     @org.junit.jupiter.api.Test

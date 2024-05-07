@@ -5,20 +5,17 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.OutputInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object containing a list of outputs under a streaming job. */
+/**
+ * Object containing a list of outputs under a streaming job.
+ */
 @Immutable
 public final class OutputListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutputListResult.class);
-
     /*
-     * A list of outputs under a streaming job. Populated by a 'List'
-     * operation.
+     * A list of outputs under a streaming job. Populated by a 'List' operation.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OutputInner> value;
@@ -30,8 +27,14 @@ public final class OutputListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of OutputListResult class.
+     */
+    public OutputListResult() {
+    }
+
+    /**
      * Get the value property: A list of outputs under a streaming job. Populated by a 'List' operation.
-     *
+     * 
      * @return the value value.
      */
     public List<OutputInner> value() {
@@ -40,7 +43,7 @@ public final class OutputListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -49,7 +52,7 @@ public final class OutputListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,71 +6,70 @@ package com.azure.resourcemanager.sphere.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.sphere.models.ProvisioningState;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.sphere.models.ProductProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An product resource belonging to a catalog resource. */
+/**
+ * An product resource belonging to a catalog resource.
+ */
 @Fluent
 public final class ProductInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
-    private ProductProperties innerProperties;
+    private ProductProperties properties;
 
-    /** Creates an instance of ProductInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of ProductInner class.
+     */
     public ProductInner() {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    private ProductProperties innerProperties() {
-        return this.innerProperties;
+    public ProductProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the description property: Description of the product.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Set the description property: Description of the product.
-     *
-     * @param description the description value to set.
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
      * @return the ProductInner object itself.
      */
-    public ProductInner withDescription(String description) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ProductProperties();
-        }
-        this.innerProperties().withDescription(description);
+    public ProductInner withProperties(ProductProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

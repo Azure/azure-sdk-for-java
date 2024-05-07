@@ -12,40 +12,42 @@ import com.azure.resourcemanager.monitor.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkScopeOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkScopeOperationStatusClient.
+ */
 public interface PrivateLinkScopeOperationStatusClient extends InnerSupportsGet<OperationStatusInner> {
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param asyncOperationId The operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of an azure asynchronous operation associated with a private link scope operation along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<OperationStatusInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String asyncOperationId);
+    Mono<Response<OperationStatusInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String asyncOperationId);
 
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param asyncOperationId The operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of an azure asynchronous operation associated with a private link scope operation on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<OperationStatusInner> getByResourceGroupAsync(String resourceGroupName, String asyncOperationId);
 
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param asyncOperationId The operation Id.
      * @param context The context to associate with this operation.
@@ -53,15 +55,15 @@ public interface PrivateLinkScopeOperationStatusClient extends InnerSupportsGet<
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of an azure asynchronous operation associated with a private link scope operation along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String asyncOperationId, Context context);
+    Response<OperationStatusInner> getByResourceGroupWithResponse(String resourceGroupName, String asyncOperationId,
+        Context context);
 
     /**
      * Get the status of an azure asynchronous operation associated with a private link scope operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param asyncOperationId The operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

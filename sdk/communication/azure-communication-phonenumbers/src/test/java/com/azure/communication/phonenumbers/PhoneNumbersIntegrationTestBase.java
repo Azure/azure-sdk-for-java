@@ -16,12 +16,16 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
 public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(PhoneNumbersIntegrationTestBase.class);
+
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
             .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
                     "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
@@ -53,15 +57,19 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
 
     private void addTestProxyMatchers() {
         interceptorManager.addMatchers(Arrays.asList(
-            new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
+            new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
     }
 
     private void addTestProxySanitizer() {
         // sanitize phone numbers
         interceptorManager.addSanitizers(Arrays.asList(
             new TestProxySanitizer("(?<=/phoneNumbers/)([^/?]+)", "REDACTED", TestProxySanitizerType.URL),
-            new TestProxySanitizer("id", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+            new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..nationalFormat", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..internationalFormat", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("((?:\\\\u002B)[0-9]{11,})|((?:\\\\%2B)[0-9]{11,})|((?:[+]?)[0-9]{11,})", "REDACTED", TestProxySanitizerType.BODY_REGEX)));
     }
 
     protected PhoneNumbersClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
@@ -137,8 +145,8 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
                     final HttpResponse bufferedResponse = httpResponse.buffer();
 
                     // Should sanitize printed reponse url
-                    System.out.println("MS-CV header for " + testName + " request "
-                            + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                    LOGGER.log(LogLevel.VERBOSE, () -> "MS-CV header for " + testName + " request "
+                        + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                     return Mono.just(bufferedResponse);
                 });
     }

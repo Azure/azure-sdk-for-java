@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.iotfirmwaredefense.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workspace properties. */
+/**
+ * Workspace properties.
+ */
 @Immutable
 public final class WorkspaceProperties {
     /*
@@ -17,13 +19,15 @@ public final class WorkspaceProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of WorkspaceProperties class. */
+    /**
+     * Creates an instance of WorkspaceProperties class.
+     */
     public WorkspaceProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -32,7 +36,7 @@ public final class WorkspaceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

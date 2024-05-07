@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** InMageAzureV2 specific provider input. */
+/**
+ * InMageAzureV2 specific provider input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageAzureV2")
 @Fluent
@@ -57,13 +59,15 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
     @JsonProperty(value = "disksToInclude")
     private List<String> disksToInclude;
 
-    /** Creates an instance of InMageAzureV2ReprotectInput class. */
+    /**
+     * Creates an instance of InMageAzureV2ReprotectInput class.
+     */
     public InMageAzureV2ReprotectInput() {
     }
 
     /**
      * Get the masterTargetId property: The Master target Id.
-     *
+     * 
      * @return the masterTargetId value.
      */
     public String masterTargetId() {
@@ -72,7 +76,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Set the masterTargetId property: The Master target Id.
-     *
+     * 
      * @param masterTargetId the masterTargetId value to set.
      * @return the InMageAzureV2ReprotectInput object itself.
      */
@@ -83,7 +87,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Get the processServerId property: The Process Server Id.
-     *
+     * 
      * @return the processServerId value.
      */
     public String processServerId() {
@@ -92,7 +96,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Set the processServerId property: The Process Server Id.
-     *
+     * 
      * @param processServerId the processServerId value to set.
      * @return the InMageAzureV2ReprotectInput object itself.
      */
@@ -103,7 +107,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Get the storageAccountId property: The storage account id.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -112,7 +116,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Set the storageAccountId property: The storage account id.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the InMageAzureV2ReprotectInput object itself.
      */
@@ -123,7 +127,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Get the runAsAccountId property: The CS account Id.
-     *
+     * 
      * @return the runAsAccountId value.
      */
     public String runAsAccountId() {
@@ -132,7 +136,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Set the runAsAccountId property: The CS account Id.
-     *
+     * 
      * @param runAsAccountId the runAsAccountId value to set.
      * @return the InMageAzureV2ReprotectInput object itself.
      */
@@ -143,7 +147,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Get the policyId property: The Policy Id.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -152,7 +156,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Set the policyId property: The Policy Id.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the InMageAzureV2ReprotectInput object itself.
      */
@@ -163,7 +167,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Get the logStorageAccountId property: The storage account to be used for logging during replication.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -172,7 +176,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Set the logStorageAccountId property: The storage account to be used for logging during replication.
-     *
+     * 
      * @param logStorageAccountId the logStorageAccountId value to set.
      * @return the InMageAzureV2ReprotectInput object itself.
      */
@@ -183,7 +187,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Get the disksToInclude property: The disks to include list.
-     *
+     * 
      * @return the disksToInclude value.
      */
     public List<String> disksToInclude() {
@@ -192,7 +196,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Set the disksToInclude property: The disks to include list.
-     *
+     * 
      * @param disksToInclude the disksToInclude value to set.
      * @return the InMageAzureV2ReprotectInput object itself.
      */
@@ -203,7 +207,7 @@ public final class InMageAzureV2ReprotectInput extends ReverseReplicationProvide
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

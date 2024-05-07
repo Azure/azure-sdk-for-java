@@ -27,13 +27,15 @@ public final class ResourceUsagesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceUsageInner> value;
 
-    /** Creates an instance of ResourceUsagesListResult class. */
+    /**
+     * Creates an instance of ResourceUsagesListResult class.
+     */
     public ResourceUsagesListResult() {
     }
 
     /**
      * Get the nextLink property: URL to get the next set of resource usage list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -41,9 +43,9 @@ public final class ResourceUsagesListResult {
     }
 
     /**
-     * Get the value property: List of usages and limits for resources controlled by the Microsoft.StorageCache resource
-     * provider.
-     *
+     * Get the value property: List of usages and limits for resources controlled by the Microsoft.StorageCache
+     * resource provider.
+     * 
      * @return the value value.
      */
     public List<ResourceUsageInner> value() {
@@ -52,7 +54,7 @@ public final class ResourceUsagesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

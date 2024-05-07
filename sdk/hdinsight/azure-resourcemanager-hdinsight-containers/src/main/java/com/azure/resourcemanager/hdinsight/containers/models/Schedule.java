@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Schedule definition. */
+/**
+ * Schedule definition.
+ */
 @Fluent
 public final class Schedule {
     /*
@@ -37,14 +39,16 @@ public final class Schedule {
     @JsonProperty(value = "days", required = true)
     private List<ScheduleDay> days;
 
-    /** Creates an instance of Schedule class. */
+    /**
+     * Creates an instance of Schedule class.
+     */
     public Schedule() {
     }
 
     /**
      * Get the startTime property: User has to set the start time of current schedule configuration, format like 10:30
      * (HH:MM).
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -54,7 +58,7 @@ public final class Schedule {
     /**
      * Set the startTime property: User has to set the start time of current schedule configuration, format like 10:30
      * (HH:MM).
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the Schedule object itself.
      */
@@ -66,7 +70,7 @@ public final class Schedule {
     /**
      * Get the endTime property: User has to set the end time of current schedule configuration, format like 10:30
      * (HH:MM).
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -76,7 +80,7 @@ public final class Schedule {
     /**
      * Set the endTime property: User has to set the end time of current schedule configuration, format like 10:30
      * (HH:MM).
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the Schedule object itself.
      */
@@ -88,7 +92,7 @@ public final class Schedule {
     /**
      * Get the count property: User has to set the node count anticipated at end of the scaling operation of the set
      * current schedule configuration, format is integer.
-     *
+     * 
      * @return the count value.
      */
     public int count() {
@@ -98,7 +102,7 @@ public final class Schedule {
     /**
      * Set the count property: User has to set the node count anticipated at end of the scaling operation of the set
      * current schedule configuration, format is integer.
-     *
+     * 
      * @param count the count value to set.
      * @return the Schedule object itself.
      */
@@ -109,7 +113,7 @@ public final class Schedule {
 
     /**
      * Get the days property: User has to set the days where schedule has to be set for autoscale operation.
-     *
+     * 
      * @return the days value.
      */
     public List<ScheduleDay> days() {
@@ -118,7 +122,7 @@ public final class Schedule {
 
     /**
      * Set the days property: User has to set the days where schedule has to be set for autoscale operation.
-     *
+     * 
      * @param days the days value to set.
      * @return the Schedule object itself.
      */
@@ -129,19 +133,17 @@ public final class Schedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startTime in model Schedule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property startTime in model Schedule"));
         }
         if (endTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endTime in model Schedule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endTime in model Schedule"));
         }
         if (days() == null) {
             throw LOGGER

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The WafMetricsResponseSeriesPropertiesItemsItem model. */
+/**
+ * The WafMetricsResponseSeriesPropertiesItemsItem model.
+ */
 @Fluent
 public final class WafMetricsResponseSeriesPropertiesItemsItem {
     /*
@@ -22,13 +24,15 @@ public final class WafMetricsResponseSeriesPropertiesItemsItem {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of WafMetricsResponseSeriesPropertiesItemsItem class. */
+    /**
+     * Creates an instance of WafMetricsResponseSeriesPropertiesItemsItem class.
+     */
     public WafMetricsResponseSeriesPropertiesItemsItem() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class WafMetricsResponseSeriesPropertiesItemsItem {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the WafMetricsResponseSeriesPropertiesItemsItem object itself.
      */
@@ -48,7 +52,7 @@ public final class WafMetricsResponseSeriesPropertiesItemsItem {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class WafMetricsResponseSeriesPropertiesItemsItem {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the WafMetricsResponseSeriesPropertiesItemsItem object itself.
      */
@@ -68,7 +72,7 @@ public final class WafMetricsResponseSeriesPropertiesItemsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,17 +5,15 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ClusterJobInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of streaming jobs. Populated by a List operation. */
+/**
+ * A list of streaming jobs. Populated by a List operation.
+ */
 @Immutable
 public final class ClusterJobListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterJobListResult.class);
-
     /*
      * A list of streaming jobs.
      */
@@ -29,8 +27,14 @@ public final class ClusterJobListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of ClusterJobListResult class.
+     */
+    public ClusterJobListResult() {
+    }
+
+    /**
      * Get the value property: A list of streaming jobs.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterJobInner> value() {
@@ -39,7 +43,7 @@ public final class ClusterJobListResult {
 
     /**
      * Get the nextLink property: The URL to fetch the next set of streaming jobs.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ClusterJobListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

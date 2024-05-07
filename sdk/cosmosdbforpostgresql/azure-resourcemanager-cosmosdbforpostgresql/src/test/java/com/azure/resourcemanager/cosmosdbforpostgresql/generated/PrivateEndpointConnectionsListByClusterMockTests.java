@@ -32,46 +32,32 @@ public final class PrivateEndpointConnectionsListByClusterMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"groupIds\":[\"uqerpqlpqwc\"],\"privateEndpoint\":{\"id\":\"qgbdbuta\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"tkuwhhmhykojo\",\"actionsRequired\":\"fnndl\"},\"provisioningState\":\"Deleting\"},\"id\":\"koymkcd\",\"name\":\"h\",\"type\":\"pkkpw\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"i\",\"ynkedyatrwyhqmib\",\"yhwitsmypyynpcdp\",\"mnzgmwznmabi\"],\"privateEndpoint\":{\"id\":\"orgjhxbldt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"lkdmtncvokotllxd\",\"actionsRequired\":\"gsyocogj\"},\"provisioningState\":\"Creating\"},\"id\":\"bnnhadoocrkvcik\",\"name\":\"nvpamq\",\"type\":\"x\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CosmosDBForPostgreSqlManager manager =
-            CosmosDBForPostgreSqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateEndpointConnection> response =
-            manager.privateEndpointConnections().listByCluster("ulpiuj", "aasipqi", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateEndpointConnection> response = manager.privateEndpointConnections()
+            .listByCluster("slyzrpzbchckqq", "qioxi", com.azure.core.util.Context.NONE);
 
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.APPROVED,
-                response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions
-            .assertEquals(
-                "tkuwhhmhykojo", response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals("fnndl", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+            response.iterator().next().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("lkdmtncvokotllxd",
+            response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("gsyocogj",
+            response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

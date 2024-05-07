@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** When present, these are the credentials for the secure LDAP connection. */
+/**
+ * When present, these are the credentials for the secure LDAP connection.
+ */
 @Fluent
 public final class CacheUsernameDownloadSettingsCredentials {
     /*
@@ -24,14 +26,16 @@ public final class CacheUsernameDownloadSettingsCredentials {
     @JsonProperty(value = "bindPassword")
     private String bindPassword;
 
-    /** Creates an instance of CacheUsernameDownloadSettingsCredentials class. */
+    /**
+     * Creates an instance of CacheUsernameDownloadSettingsCredentials class.
+     */
     public CacheUsernameDownloadSettingsCredentials() {
     }
 
     /**
      * Get the bindDn property: The Bind Distinguished Name identity to be used in the secure LDAP connection. This
      * value is stored encrypted and not returned on response.
-     *
+     * 
      * @return the bindDn value.
      */
     public String bindDn() {
@@ -41,7 +45,7 @@ public final class CacheUsernameDownloadSettingsCredentials {
     /**
      * Set the bindDn property: The Bind Distinguished Name identity to be used in the secure LDAP connection. This
      * value is stored encrypted and not returned on response.
-     *
+     * 
      * @param bindDn the bindDn value to set.
      * @return the CacheUsernameDownloadSettingsCredentials object itself.
      */
@@ -53,7 +57,7 @@ public final class CacheUsernameDownloadSettingsCredentials {
     /**
      * Get the bindPassword property: The Bind password to be used in the secure LDAP connection. This value is stored
      * encrypted and not returned on response.
-     *
+     * 
      * @return the bindPassword value.
      */
     public String bindPassword() {
@@ -63,7 +67,7 @@ public final class CacheUsernameDownloadSettingsCredentials {
     /**
      * Set the bindPassword property: The Bind password to be used in the secure LDAP connection. This value is stored
      * encrypted and not returned on response.
-     *
+     * 
      * @param bindPassword the bindPassword value to set.
      * @return the CacheUsernameDownloadSettingsCredentials object itself.
      */
@@ -74,7 +78,7 @@ public final class CacheUsernameDownloadSettingsCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

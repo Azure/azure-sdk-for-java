@@ -10,7 +10,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ExecutionStatus
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Response for the backup request. */
+/**
+ * Response for the backup request.
+ */
 @Fluent
 public final class LtrBackupOperationResponseProperties {
     /*
@@ -32,8 +34,7 @@ public final class LtrBackupOperationResponseProperties {
     private String backupName;
 
     /*
-     * Metadata to be stored in RP. Store everything that will be required to perform a successful restore using this
-     * Recovery point. e.g. Versions, DataFormat etc
+     * Metadata to be stored in RP. Store everything that will be required to perform a successful restore using this Recovery point. e.g. Versions, DataFormat etc
      */
     @JsonProperty(value = "backupMetadata")
     private String backupMetadata;
@@ -74,13 +75,15 @@ public final class LtrBackupOperationResponseProperties {
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
-    /** Creates an instance of LtrBackupOperationResponseProperties class. */
+    /**
+     * Creates an instance of LtrBackupOperationResponseProperties class.
+     */
     public LtrBackupOperationResponseProperties() {
     }
 
     /**
      * Get the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @return the datasourceSizeInBytes value.
      */
     public Long datasourceSizeInBytes() {
@@ -89,7 +92,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @param datasourceSizeInBytes the datasourceSizeInBytes value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -100,7 +103,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @return the dataTransferredInBytes value.
      */
     public Long dataTransferredInBytes() {
@@ -109,7 +112,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @param dataTransferredInBytes the dataTransferredInBytes value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -120,7 +123,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the backupName property: Name of Backup operation.
-     *
+     * 
      * @return the backupName value.
      */
     public String backupName() {
@@ -129,7 +132,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the backupName property: Name of Backup operation.
-     *
+     * 
      * @param backupName the backupName value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -141,7 +144,7 @@ public final class LtrBackupOperationResponseProperties {
     /**
      * Get the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
      * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
-     *
+     * 
      * @return the backupMetadata value.
      */
     public String backupMetadata() {
@@ -151,7 +154,7 @@ public final class LtrBackupOperationResponseProperties {
     /**
      * Set the backupMetadata property: Metadata to be stored in RP. Store everything that will be required to perform a
      * successful restore using this Recovery point. e.g. Versions, DataFormat etc.
-     *
+     * 
      * @param backupMetadata the backupMetadata value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -162,7 +165,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the status property: Service-set extensible enum indicating the status of operation.
-     *
+     * 
      * @return the status value.
      */
     public ExecutionStatus status() {
@@ -171,7 +174,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the status property: Service-set extensible enum indicating the status of operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -182,7 +185,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the startTime property: Start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -191,7 +194,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the startTime property: Start time of the operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -202,7 +205,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the endTime property: End time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -211,7 +214,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the endTime property: End time of the operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -222,7 +225,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the percentComplete property: PercentageCompleted.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Double percentComplete() {
@@ -231,7 +234,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Set the percentComplete property: PercentageCompleted.
-     *
+     * 
      * @param percentComplete the percentComplete value to set.
      * @return the LtrBackupOperationResponseProperties object itself.
      */
@@ -242,7 +245,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the errorCode property: The error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -251,7 +254,7 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Get the errorMessage property: The error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -260,21 +263,19 @@ public final class LtrBackupOperationResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model LtrBackupOperationResponseProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model LtrBackupOperationResponseProperties"));
         }
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startTime in model LtrBackupOperationResponseProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startTime in model LtrBackupOperationResponseProperties"));
         }
     }
 

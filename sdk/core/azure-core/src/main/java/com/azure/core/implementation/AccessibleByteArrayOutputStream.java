@@ -40,19 +40,19 @@ public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
     }
 
     // Commenting out as this isn't used but may be added back in the future.
-//    /**
-//     * Returns the internal {@code byte[]} without copying.
-//     * <p>
-//     * This will be the full {@code byte[]}, so if writing required it to be resized to 8192 bytes but only 6000 bytes
-//     * were written the final 2192 bytes will be undefined data. If this is used in an API where a {@code byte[]} is
-//     * accepted you must use the range based overload with {@link #count()}, if a range based overload isn't available
-//     * use {@link #toByteArray()} which will copy the range of bytes written.
-//     *
-//     * @return A direct reference to the internal {@code byte[]} where data is being written.
-//     */
-//    public byte[] toByteArrayUnsafe() {
-//        return buf;
-//    }
+    // /**
+    // * Returns the internal {@code byte[]} without copying.
+    // * <p>
+    // * This will be the full {@code byte[]}, so if writing required it to be resized to 8192 bytes but only 6000 bytes
+    // * were written the final 2192 bytes will be undefined data. If this is used in an API where a {@code byte[]} is
+    // * accepted you must use the range based overload with {@link #count()}, if a range based overload isn't available
+    // * use {@link #toByteArray()} which will copy the range of bytes written.
+    // *
+    // * @return A direct reference to the internal {@code byte[]} where data is being written.
+    // */
+    // public byte[] toByteArrayUnsafe() {
+    // return buf;
+    // }
 
     /**
      * Returns a {@link ByteBuffer} representation of the content written to this stream.
@@ -99,5 +99,9 @@ public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
      */
     public String bomAwareToString(String contentType) {
         return ImplUtils.bomAwareToString(buf, 0, count, contentType);
+    }
+
+    @Override
+    public void close() {
     }
 }

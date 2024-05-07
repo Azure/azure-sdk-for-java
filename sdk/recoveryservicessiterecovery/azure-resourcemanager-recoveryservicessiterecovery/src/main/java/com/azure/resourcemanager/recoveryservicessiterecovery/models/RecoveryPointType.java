@@ -13,18 +13,24 @@ import java.util.Collection;
  * provided by RecoveryPointId will be used. In the other two cases, recovery point id will be ignored.
  */
 public final class RecoveryPointType extends ExpandableStringEnum<RecoveryPointType> {
-    /** Static value LatestTime for RecoveryPointType. */
+    /**
+     * Static value LatestTime for RecoveryPointType.
+     */
     public static final RecoveryPointType LATEST_TIME = fromString("LatestTime");
 
-    /** Static value LatestTag for RecoveryPointType. */
+    /**
+     * Static value LatestTag for RecoveryPointType.
+     */
     public static final RecoveryPointType LATEST_TAG = fromString("LatestTag");
 
-    /** Static value Custom for RecoveryPointType. */
+    /**
+     * Static value Custom for RecoveryPointType.
+     */
     public static final RecoveryPointType CUSTOM = fromString("Custom");
 
     /**
      * Creates a new instance of RecoveryPointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +39,7 @@ public final class RecoveryPointType extends ExpandableStringEnum<RecoveryPointT
 
     /**
      * Creates or finds a RecoveryPointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecoveryPointType.
      */
@@ -44,7 +50,7 @@ public final class RecoveryPointType extends ExpandableStringEnum<RecoveryPointT
 
     /**
      * Gets known RecoveryPointType values.
-     *
+     * 
      * @return known RecoveryPointType values.
      */
     public static Collection<RecoveryPointType> values() {

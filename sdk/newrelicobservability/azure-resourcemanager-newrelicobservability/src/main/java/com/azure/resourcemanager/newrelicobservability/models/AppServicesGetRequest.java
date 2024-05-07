@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Request of a app services get Operation. */
+/**
+ * Request of a app services get Operation.
+ */
 @Fluent
 public final class AppServicesGetRequest {
     /*
@@ -24,13 +26,15 @@ public final class AppServicesGetRequest {
     @JsonProperty(value = "userEmail", required = true)
     private String userEmail;
 
-    /** Creates an instance of AppServicesGetRequest class. */
+    /**
+     * Creates an instance of AppServicesGetRequest class.
+     */
     public AppServicesGetRequest() {
     }
 
     /**
      * Get the azureResourceIds property: Azure resource IDs.
-     *
+     * 
      * @return the azureResourceIds value.
      */
     public List<String> azureResourceIds() {
@@ -39,7 +43,7 @@ public final class AppServicesGetRequest {
 
     /**
      * Set the azureResourceIds property: Azure resource IDs.
-     *
+     * 
      * @param azureResourceIds the azureResourceIds value to set.
      * @return the AppServicesGetRequest object itself.
      */
@@ -50,7 +54,7 @@ public final class AppServicesGetRequest {
 
     /**
      * Get the userEmail property: User Email.
-     *
+     * 
      * @return the userEmail value.
      */
     public String userEmail() {
@@ -59,7 +63,7 @@ public final class AppServicesGetRequest {
 
     /**
      * Set the userEmail property: User Email.
-     *
+     * 
      * @param userEmail the userEmail value to set.
      * @return the AppServicesGetRequest object itself.
      */
@@ -70,14 +74,13 @@ public final class AppServicesGetRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userEmail() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property userEmail in model AppServicesGetRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property userEmail in model AppServicesGetRequest"));
         }
     }
 

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Sku capability. */
+/**
+ * Sku capability.
+ */
 @Immutable
 public final class ServerSkuCapability extends CapabilityBase {
     /*
@@ -47,13 +49,15 @@ public final class ServerSkuCapability extends CapabilityBase {
     @JsonProperty(value = "supportedHaMode", access = JsonProperty.Access.WRITE_ONLY)
     private List<HaMode> supportedHaMode;
 
-    /** Creates an instance of ServerSkuCapability class. */
+    /**
+     * Creates an instance of ServerSkuCapability class.
+     */
     public ServerSkuCapability() {
     }
 
     /**
      * Get the name property: Sku name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +66,7 @@ public final class ServerSkuCapability extends CapabilityBase {
 
     /**
      * Get the vCores property: Supported vCores.
-     *
+     * 
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -71,7 +75,7 @@ public final class ServerSkuCapability extends CapabilityBase {
 
     /**
      * Get the supportedIops property: Supported IOPS.
-     *
+     * 
      * @return the supportedIops value.
      */
     public Integer supportedIops() {
@@ -80,7 +84,7 @@ public final class ServerSkuCapability extends CapabilityBase {
 
     /**
      * Get the supportedMemoryPerVcoreMb property: Supported memory per vCore in MB.
-     *
+     * 
      * @return the supportedMemoryPerVcoreMb value.
      */
     public Long supportedMemoryPerVcoreMb() {
@@ -89,7 +93,7 @@ public final class ServerSkuCapability extends CapabilityBase {
 
     /**
      * Get the supportedZones property: List of supported Availability Zones. E.g. "1", "2", "3".
-     *
+     * 
      * @return the supportedZones value.
      */
     public List<String> supportedZones() {
@@ -98,7 +102,7 @@ public final class ServerSkuCapability extends CapabilityBase {
 
     /**
      * Get the supportedHaMode property: Supported high availability mode.
-     *
+     * 
      * @return the supportedHaMode value.
      */
     public List<HaMode> supportedHaMode() {
@@ -107,7 +111,7 @@ public final class ServerSkuCapability extends CapabilityBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

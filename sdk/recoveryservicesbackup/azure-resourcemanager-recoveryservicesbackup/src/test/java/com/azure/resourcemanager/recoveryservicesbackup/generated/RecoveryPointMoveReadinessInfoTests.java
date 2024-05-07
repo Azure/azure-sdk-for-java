@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPointMoveReadinessInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPointMoveReadinessInfo model =
-            BinaryData
-                .fromString("{\"isReadyForMove\":false,\"additionalInfo\":\"cf\"}")
+        RecoveryPointMoveReadinessInfo model
+            = BinaryData.fromString("{\"isReadyForMove\":true,\"additionalInfo\":\"nwsdtutnwlduyc\"}")
                 .toObject(RecoveryPointMoveReadinessInfo.class);
-        Assertions.assertEquals(false, model.isReadyForMove());
-        Assertions.assertEquals("cf", model.additionalInfo());
+        Assertions.assertEquals(true, model.isReadyForMove());
+        Assertions.assertEquals("nwsdtutnwlduyc", model.additionalInfo());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointMoveReadinessInfo model =
-            new RecoveryPointMoveReadinessInfo().withIsReadyForMove(false).withAdditionalInfo("cf");
+        RecoveryPointMoveReadinessInfo model
+            = new RecoveryPointMoveReadinessInfo().withIsReadyForMove(true).withAdditionalInfo("nwsdtutnwlduyc");
         model = BinaryData.fromObject(model).toObject(RecoveryPointMoveReadinessInfo.class);
-        Assertions.assertEquals(false, model.isReadyForMove());
-        Assertions.assertEquals("cf", model.additionalInfo());
+        Assertions.assertEquals(true, model.isReadyForMove());
+        Assertions.assertEquals("nwsdtutnwlduyc", model.additionalInfo());
     }
 }

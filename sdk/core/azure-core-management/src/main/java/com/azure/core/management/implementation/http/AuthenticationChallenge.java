@@ -41,4 +41,3 @@ public class AuthenticationChallenge {
         return scheme;
     }
 }
-

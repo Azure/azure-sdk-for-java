@@ -12,16 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SparkConfigurationParametrizationReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkConfigurationParametrizationReference model
-            = BinaryData.fromString("{\"type\":\"SparkConfigurationReference\",\"referenceName\":\"datadd\"}")
-                .toObject(SparkConfigurationParametrizationReference.class);
+        SparkConfigurationParametrizationReference model = BinaryData
+            .fromString("{\"type\":\"SparkConfigurationReference\",\"referenceName\":\"datansqtrtcacdomz\"}")
+            .toObject(SparkConfigurationParametrizationReference.class);
         Assertions.assertEquals(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SparkConfigurationParametrizationReference model = new SparkConfigurationParametrizationReference()
-            .withType(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE).withReferenceName("datadd");
+            .withType(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE)
+            .withReferenceName("datansqtrtcacdomz");
         model = BinaryData.fromObject(model).toObject(SparkConfigurationParametrizationReference.class);
         Assertions.assertEquals(SparkConfigurationReferenceType.SPARK_CONFIGURATION_REFERENCE, model.type());
     }

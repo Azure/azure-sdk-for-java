@@ -33,24 +33,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpointConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateEndpointConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateEndpointConnectionsClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    PrivateEndpointConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateEndpointConnectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,56 +65,44 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface PrivateEndpointConnectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<PrivateEndpointConnectionResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> put(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> put(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @BodyParam("application/json") PrivateEndpointConnectionResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Private Endpoint Connection. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -120,13 +112,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private Endpoint Connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName) {
+    private Mono<Response<PrivateEndpointConnectionResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, String privateEndpointConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -136,37 +126,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            privateEndpointConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), privateEndpointConnectionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get Private Endpoint Connection. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -177,13 +153,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private Endpoint Connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName, Context context) {
+    private Mono<Response<PrivateEndpointConnectionResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, String privateEndpointConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -193,34 +167,22 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                privateEndpointConnectionName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), privateEndpointConnectionName, accept, context);
     }
 
     /**
      * Get Private Endpoint Connection. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -230,15 +192,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private Endpoint Connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionResourceInner> getAsync(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName) {
+    private Mono<PrivateEndpointConnectionResourceInner> getAsync(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName) {
         return getWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Private Endpoint Connection. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -249,14 +211,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private Endpoint Connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName, Context context) {
+    public Response<PrivateEndpointConnectionResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName, context).block();
     }
 
     /**
      * Get Private Endpoint Connection. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -266,14 +228,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private Endpoint Connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionResourceInner get(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName) {
+    public PrivateEndpointConnectionResourceInner get(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName) {
         return getWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, Context.NONE).getValue();
     }
 
     /**
      * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -282,19 +244,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private Endpoint Connection Response Properties along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionResourceInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -304,16 +261,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -322,25 +275,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .put(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            privateEndpointConnectionName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.put(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), privateEndpointConnectionName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -350,20 +293,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private Endpoint Connection Response Properties along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionResourceInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -373,16 +310,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -391,22 +324,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .put(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                privateEndpointConnectionName,
-                parameters,
-                accept,
-                context);
+        return service.put(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), privateEndpointConnectionName, parameters, accept, context);
     }
 
     /**
      * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -418,26 +342,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionResourceInner>, PrivateEndpointConnectionResourceInner>
-        beginPutAsync(
-            String vaultName,
-            String resourceGroupName,
-            String privateEndpointConnectionName,
+        beginPutAsync(String vaultName, String resourceGroupName, String privateEndpointConnectionName,
             PrivateEndpointConnectionResourceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            putWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters);
-        return this
-            .client
-            .<PrivateEndpointConnectionResourceInner, PrivateEndpointConnectionResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateEndpointConnectionResourceInner.class,
-                PrivateEndpointConnectionResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = putWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters);
+        return this.client.<PrivateEndpointConnectionResourceInner, PrivateEndpointConnectionResourceInner>getLroResult(
+            mono, this.client.getHttpPipeline(), PrivateEndpointConnectionResourceInner.class,
+            PrivateEndpointConnectionResourceInner.class, this.client.getContext());
     }
 
     /**
      * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -450,28 +366,19 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionResourceInner>, PrivateEndpointConnectionResourceInner>
-        beginPutAsync(
-            String vaultName,
-            String resourceGroupName,
-            String privateEndpointConnectionName,
-            PrivateEndpointConnectionResourceInner parameters,
-            Context context) {
+        beginPutAsync(String vaultName, String resourceGroupName, String privateEndpointConnectionName,
+            PrivateEndpointConnectionResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            putWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, context);
-        return this
-            .client
-            .<PrivateEndpointConnectionResourceInner, PrivateEndpointConnectionResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateEndpointConnectionResourceInner.class,
-                PrivateEndpointConnectionResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = putWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, context);
+        return this.client.<PrivateEndpointConnectionResourceInner, PrivateEndpointConnectionResourceInner>getLroResult(
+            mono, this.client.getHttpPipeline(), PrivateEndpointConnectionResourceInner.class,
+            PrivateEndpointConnectionResourceInner.class, context);
     }
 
     /**
      * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -483,19 +390,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionResourceInner>, PrivateEndpointConnectionResourceInner>
-        beginPut(
-            String vaultName,
-            String resourceGroupName,
-            String privateEndpointConnectionName,
+        beginPut(String vaultName, String resourceGroupName, String privateEndpointConnectionName,
             PrivateEndpointConnectionResourceInner parameters) {
-        return this
-            .beginPutAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters)
+        return this.beginPutAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -508,20 +411,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionResourceInner>, PrivateEndpointConnectionResourceInner>
-        beginPut(
-            String vaultName,
-            String resourceGroupName,
-            String privateEndpointConnectionName,
-            PrivateEndpointConnectionResourceInner parameters,
-            Context context) {
-        return this
-            .beginPutAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, context)
+        beginPut(String vaultName, String resourceGroupName, String privateEndpointConnectionName,
+            PrivateEndpointConnectionResourceInner parameters, Context context) {
+        return this.beginPutAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -532,19 +430,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private Endpoint Connection Response Properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionResourceInner> putAsync(
-        String vaultName,
-        String resourceGroupName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionResourceInner parameters) {
-        return beginPutAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters)
-            .last()
+    private Mono<PrivateEndpointConnectionResourceInner> putAsync(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner parameters) {
+        return beginPutAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -556,20 +450,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private Endpoint Connection Response Properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionResourceInner> putAsync(
-        String vaultName,
-        String resourceGroupName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionResourceInner parameters,
-        Context context) {
-        return beginPutAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, context)
-            .last()
+    private Mono<PrivateEndpointConnectionResourceInner> putAsync(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner parameters, Context context) {
+        return beginPutAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -580,17 +469,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private Endpoint Connection Response Properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionResourceInner put(
-        String vaultName,
-        String resourceGroupName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionResourceInner parameters) {
+    public PrivateEndpointConnectionResourceInner put(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner parameters) {
         return putAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters).block();
     }
 
     /**
      * Approve or Reject Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -602,18 +488,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private Endpoint Connection Response Properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionResourceInner put(
-        String vaultName,
-        String resourceGroupName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionResourceInner parameters,
-        Context context) {
+    public PrivateEndpointConnectionResourceInner put(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionResourceInner parameters, Context context) {
         return putAsync(vaultName, resourceGroupName, privateEndpointConnectionName, parameters, context).block();
     }
 
     /**
      * Delete Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -623,13 +505,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -639,37 +519,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            privateEndpointConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), privateEndpointConnectionName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -680,13 +546,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -696,34 +560,22 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                privateEndpointConnectionName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), privateEndpointConnectionName, accept, context);
     }
 
     /**
      * Delete Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -733,19 +585,17 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -756,19 +606,18 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -778,14 +627,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName) {
         return this.beginDeleteAsync(vaultName, resourceGroupName, privateEndpointConnectionName).getSyncPoller();
     }
 
     /**
      * Delete Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -796,16 +645,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName, Context context) {
-        return this
-            .beginDeleteAsync(vaultName, resourceGroupName, privateEndpointConnectionName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String vaultName, String resourceGroupName,
+        String privateEndpointConnectionName, Context context) {
+        return this.beginDeleteAsync(vaultName, resourceGroupName, privateEndpointConnectionName, context)
             .getSyncPoller();
     }
 
     /**
      * Delete Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -816,14 +664,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String vaultName, String resourceGroupName, String privateEndpointConnectionName) {
-        return beginDeleteAsync(vaultName, resourceGroupName, privateEndpointConnectionName)
-            .last()
+        return beginDeleteAsync(vaultName, resourceGroupName, privateEndpointConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -834,16 +681,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(vaultName, resourceGroupName, privateEndpointConnectionName, context)
-            .last()
+    private Mono<Void> deleteAsync(String vaultName, String resourceGroupName, String privateEndpointConnectionName,
+        Context context) {
+        return beginDeleteAsync(vaultName, resourceGroupName, privateEndpointConnectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -858,7 +704,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Delete Private Endpoint requests. This call is made by Backup Admin.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -868,8 +714,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName, Context context) {
+    public void delete(String vaultName, String resourceGroupName, String privateEndpointConnectionName,
+        Context context) {
         deleteAsync(vaultName, resourceGroupName, privateEndpointConnectionName, context).block();
     }
 }

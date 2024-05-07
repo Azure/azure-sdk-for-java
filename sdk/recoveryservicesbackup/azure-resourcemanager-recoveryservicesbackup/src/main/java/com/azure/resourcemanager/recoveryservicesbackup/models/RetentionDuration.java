@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Retention duration. */
+/**
+ * Retention duration.
+ */
 @Fluent
 public final class RetentionDuration {
     /*
@@ -23,14 +25,17 @@ public final class RetentionDuration {
     @JsonProperty(value = "durationType")
     private RetentionDurationType durationType;
 
-    /** Creates an instance of RetentionDuration class. */
+    /**
+     * Creates an instance of RetentionDuration class.
+     */
     public RetentionDuration() {
     }
 
     /**
-     * Get the count property: Count of duration types. Retention duration is obtained by the counting the duration type
-     * Count times. For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
-     *
+     * Get the count property: Count of duration types. Retention duration is obtained by the counting the duration
+     * type Count times.
+     * For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -38,9 +43,10 @@ public final class RetentionDuration {
     }
 
     /**
-     * Set the count property: Count of duration types. Retention duration is obtained by the counting the duration type
-     * Count times. For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
-     *
+     * Set the count property: Count of duration types. Retention duration is obtained by the counting the duration
+     * type Count times.
+     * For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
+     * 
      * @param count the count value to set.
      * @return the RetentionDuration object itself.
      */
@@ -51,7 +57,7 @@ public final class RetentionDuration {
 
     /**
      * Get the durationType property: Retention duration type of retention policy.
-     *
+     * 
      * @return the durationType value.
      */
     public RetentionDurationType durationType() {
@@ -60,7 +66,7 @@ public final class RetentionDuration {
 
     /**
      * Set the durationType property: Retention duration type of retention policy.
-     *
+     * 
      * @param durationType the durationType value to set.
      * @return the RetentionDuration object itself.
      */
@@ -71,7 +77,7 @@ public final class RetentionDuration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

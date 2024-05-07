@@ -11,16 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PricingDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PricingDetail model = BinaryData.fromString("{\"id\":\"c\",\"value\":\"fwdsj\"}").toObject(PricingDetail.class);
-        Assertions.assertEquals("c", model.id());
-        Assertions.assertEquals("fwdsj", model.value());
+        PricingDetail model
+            = BinaryData.fromString("{\"id\":\"wab\",\"value\":\"tshhszhedp\"}").toObject(PricingDetail.class);
+        Assertions.assertEquals("wab", model.id());
+        Assertions.assertEquals("tshhszhedp", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PricingDetail model = new PricingDetail().withId("c").withValue("fwdsj");
+        PricingDetail model = new PricingDetail().withId("wab").withValue("tshhszhedp");
         model = BinaryData.fromObject(model).toObject(PricingDetail.class);
-        Assertions.assertEquals("c", model.id());
-        Assertions.assertEquals("fwdsj", model.value());
+        Assertions.assertEquals("wab", model.id());
+        Assertions.assertEquals("tshhszhedp", model.value());
     }
 }

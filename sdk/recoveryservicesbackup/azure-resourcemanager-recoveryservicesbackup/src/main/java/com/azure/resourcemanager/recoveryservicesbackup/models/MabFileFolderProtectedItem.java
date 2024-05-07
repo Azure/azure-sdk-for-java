@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** MAB workload-specific backup item. */
+/**
+ * MAB workload-specific backup item.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
 @JsonTypeName("MabFileFolderProtectedItem")
 @Fluent
@@ -58,13 +60,15 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
     @JsonProperty(value = "extendedInfo")
     private MabFileFolderProtectedItemExtendedInfo extendedInfo;
 
-    /** Creates an instance of MabFileFolderProtectedItem class. */
+    /**
+     * Creates an instance of MabFileFolderProtectedItem class.
+     */
     public MabFileFolderProtectedItem() {
     }
 
     /**
      * Get the friendlyName property: Friendly name of this backup item.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -73,7 +77,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the friendlyName property: Friendly name of this backup item.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -84,7 +88,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the computerName property: Name of the computer associated with this backup item.
-     *
+     * 
      * @return the computerName value.
      */
     public String computerName() {
@@ -93,7 +97,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the computerName property: Name of the computer associated with this backup item.
-     *
+     * 
      * @param computerName the computerName value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -104,7 +108,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the lastBackupStatus property: Status of last backup operation.
-     *
+     * 
      * @return the lastBackupStatus value.
      */
     public String lastBackupStatus() {
@@ -113,7 +117,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the lastBackupStatus property: Status of last backup operation.
-     *
+     * 
      * @param lastBackupStatus the lastBackupStatus value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -124,7 +128,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the lastBackupTime property: Timestamp of the last backup operation on this backup item.
-     *
+     * 
      * @return the lastBackupTime value.
      */
     public OffsetDateTime lastBackupTime() {
@@ -133,7 +137,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the lastBackupTime property: Timestamp of the last backup operation on this backup item.
-     *
+     * 
      * @param lastBackupTime the lastBackupTime value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -144,7 +148,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the protectionState property: Protected, ProtectionStopped, IRPending or ProtectionError.
-     *
+     * 
      * @return the protectionState value.
      */
     public String protectionState() {
@@ -153,7 +157,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the protectionState property: Protected, ProtectionStopped, IRPending or ProtectionError.
-     *
+     * 
      * @param protectionState the protectionState value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -164,7 +168,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the deferredDeleteSyncTimeInUtc property: Sync time for deferred deletion in UTC.
-     *
+     * 
      * @return the deferredDeleteSyncTimeInUtc value.
      */
     public Long deferredDeleteSyncTimeInUtc() {
@@ -173,7 +177,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the deferredDeleteSyncTimeInUtc property: Sync time for deferred deletion in UTC.
-     *
+     * 
      * @param deferredDeleteSyncTimeInUtc the deferredDeleteSyncTimeInUtc value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -184,7 +188,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Get the extendedInfo property: Additional information with this backup item.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public MabFileFolderProtectedItemExtendedInfo extendedInfo() {
@@ -193,7 +197,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Set the extendedInfo property: Additional information with this backup item.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the MabFileFolderProtectedItem object itself.
      */
@@ -202,105 +206,135 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withLastRecoveryPoint(OffsetDateTime lastRecoveryPoint) {
         super.withLastRecoveryPoint(lastRecoveryPoint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withBackupSetName(String backupSetName) {
         super.withBackupSetName(backupSetName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withCreateMode(CreateMode createMode) {
         super.withCreateMode(createMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withDeferredDeleteTimeInUtc(OffsetDateTime deferredDeleteTimeInUtc) {
         super.withDeferredDeleteTimeInUtc(deferredDeleteTimeInUtc);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withIsScheduledForDeferredDelete(Boolean isScheduledForDeferredDelete) {
         super.withIsScheduledForDeferredDelete(isScheduledForDeferredDelete);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withDeferredDeleteTimeRemaining(String deferredDeleteTimeRemaining) {
         super.withDeferredDeleteTimeRemaining(deferredDeleteTimeRemaining);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withIsDeferredDeleteScheduleUpcoming(Boolean isDeferredDeleteScheduleUpcoming) {
         super.withIsDeferredDeleteScheduleUpcoming(isDeferredDeleteScheduleUpcoming);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
         super.withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MabFileFolderProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
         super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
@@ -309,7 +343,7 @@ public final class MabFileFolderProtectedItem extends ProtectedItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

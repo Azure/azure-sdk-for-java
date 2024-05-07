@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Model that represents the a list of branches and branch statuses. */
+/**
+ * Model that represents the a list of branches and branch statuses.
+ */
 @Immutable
 public final class StepStatus {
     /*
@@ -35,13 +37,15 @@ public final class StepStatus {
     @JsonProperty(value = "branches", access = JsonProperty.Access.WRITE_ONLY)
     private List<BranchStatus> branches;
 
-    /** Creates an instance of StepStatus class. */
+    /**
+     * Creates an instance of StepStatus class.
+     */
     public StepStatus() {
     }
 
     /**
      * Get the stepName property: The name of the step.
-     *
+     * 
      * @return the stepName value.
      */
     public String stepName() {
@@ -50,7 +54,7 @@ public final class StepStatus {
 
     /**
      * Get the stepId property: The id of the step.
-     *
+     * 
      * @return the stepId value.
      */
     public String stepId() {
@@ -59,7 +63,7 @@ public final class StepStatus {
 
     /**
      * Get the status property: The value of the status of the step.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -68,7 +72,7 @@ public final class StepStatus {
 
     /**
      * Get the branches property: The array of branches.
-     *
+     * 
      * @return the branches value.
      */
     public List<BranchStatus> branches() {
@@ -77,7 +81,7 @@ public final class StepStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

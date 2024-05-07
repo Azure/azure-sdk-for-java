@@ -6,25 +6,27 @@ package com.azure.resourcemanager.newrelicobservability.models;
 
 import com.azure.resourcemanager.newrelicobservability.fluent.models.TagRuleUpdateInner;
 
-/** An immutable client-side representation of TagRuleUpdate. */
+/**
+ * An immutable client-side representation of TagRuleUpdate.
+ */
 public interface TagRuleUpdate {
     /**
      * Gets the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @return the logRules value.
      */
     LogRules logRules();
 
     /**
      * Gets the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @return the metricRules value.
      */
     MetricRules metricRules();
 
     /**
      * Gets the inner com.azure.resourcemanager.newrelicobservability.fluent.models.TagRuleUpdateInner object.
-     *
+     * 
      * @return the inner object.
      */
     TagRuleUpdateInner innerModel();

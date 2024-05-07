@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** IaaS VM specific backup protection intent item. */
+/**
+ * IaaS VM specific backup protection intent item.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectionIntentItemType")
 @JsonTypeName("AzureResourceItem")
 @Fluent
@@ -20,13 +22,15 @@ public final class AzureResourceProtectionIntent extends ProtectionIntent {
     @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
-    /** Creates an instance of AzureResourceProtectionIntent class. */
+    /**
+     * Creates an instance of AzureResourceProtectionIntent class.
+     */
     public AzureResourceProtectionIntent() {
     }
 
     /**
      * Get the friendlyName property: Friendly name of the VM represented by this backup item.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -35,7 +39,7 @@ public final class AzureResourceProtectionIntent extends ProtectionIntent {
 
     /**
      * Set the friendlyName property: Friendly name of the VM represented by this backup item.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the AzureResourceProtectionIntent object itself.
      */
@@ -44,35 +48,45 @@ public final class AzureResourceProtectionIntent extends ProtectionIntent {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureResourceProtectionIntent withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureResourceProtectionIntent withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureResourceProtectionIntent withItemId(String itemId) {
         super.withItemId(itemId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureResourceProtectionIntent withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureResourceProtectionIntent withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -81,7 +95,7 @@ public final class AzureResourceProtectionIntent extends ProtectionIntent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

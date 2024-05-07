@@ -59,8 +59,8 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
     }
 
     /**
-     * The interface defining all the services for HealthcareApisManagementClientIotConnectorFhirDestinations to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for HealthcareApisManagementClientIotConnectorFhirDestinations to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "HealthcareApisManage")
@@ -427,8 +427,10 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
     public SyncPoller<PollResult<IotFhirDestinationInner>, IotFhirDestinationInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName,
         IotFhirDestinationInner iotFhirDestination) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName,
-            iotFhirDestination).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName,
+                iotFhirDestination)
+            .getSyncPoller();
     }
 
     /**
@@ -449,8 +451,10 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
     public SyncPoller<PollResult<IotFhirDestinationInner>, IotFhirDestinationInner> beginCreateOrUpdate(
         String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName,
         IotFhirDestinationInner iotFhirDestination, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName,
-            iotFhirDestination, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName,
+                iotFhirDestination, context)
+            .getSyncPoller();
     }
 
     /**

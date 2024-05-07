@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Update policy input. */
+/**
+ * Update policy input.
+ */
 @Fluent
 public final class UpdatePolicyInput {
     /*
@@ -16,13 +18,15 @@ public final class UpdatePolicyInput {
     @JsonProperty(value = "properties")
     private UpdatePolicyInputProperties properties;
 
-    /** Creates an instance of UpdatePolicyInput class. */
+    /**
+     * Creates an instance of UpdatePolicyInput class.
+     */
     public UpdatePolicyInput() {
     }
 
     /**
      * Get the properties property: The ReplicationProviderSettings.
-     *
+     * 
      * @return the properties value.
      */
     public UpdatePolicyInputProperties properties() {
@@ -31,7 +35,7 @@ public final class UpdatePolicyInput {
 
     /**
      * Set the properties property: The ReplicationProviderSettings.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdatePolicyInput object itself.
      */
@@ -42,7 +46,7 @@ public final class UpdatePolicyInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

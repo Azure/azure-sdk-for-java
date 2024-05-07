@@ -10,8 +10,13 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.models.TestProxyRequestMatcher.TestProxyRequestMatcherType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -20,12 +25,9 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
-import java.util.function.Function;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class CallAutomationLiveTestBase extends TestBase {
+public class CallAutomationLiveTestBase extends TestProxyTestBase {
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_STATIC_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
@@ -58,18 +60,8 @@ public class CallAutomationLiveTestBase extends TestBase {
     protected static final String PHONE_USER_1 = Configuration.getGlobalConfiguration()
         .get("TARGET_PHONE_NUMBER", "+16471234567");
     protected static final String MEDIA_SOURCE = Configuration.getGlobalConfiguration()
-        .get("ACS_MEDIA_SOURCE", "https://acstestapp1.azurewebsites.net/audio/bot-hold-music-2.wav");
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-        = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("value")
-        .add("rawId")
-        .add("id")
-        .add("callbackUri")
-        .add("botAppId")
-        .add("ivrContext");
-    protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
-        Pattern.CASE_INSENSITIVE);
+        .get("ACS_MEDIA_SOURCE", "https://contoso.com/music.wav");
+    protected static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
 
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder()
@@ -77,15 +69,14 @@ public class CallAutomationLiveTestBase extends TestBase {
             .httpClient(getHttpClientOrUsePlayback(httpClient));
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+        addTestProxyTestSanitizersAndMatchers(interceptorManager);
+
         return builder;
     }
 
     protected CallAutomationClientBuilder getCallAutomationClientUsingConnectionString(HttpClient httpClient) {
-
         CallAutomationClientBuilder builder;
         if (COMMUNICATION_CUSTOM_ENDPOINT_ENABLED) {
             builder = new CallAutomationClientBuilder()
@@ -99,10 +90,10 @@ public class CallAutomationLiveTestBase extends TestBase {
         }
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+        addTestProxyTestSanitizersAndMatchers(interceptorManager);
+
         return builder;
     }
 
@@ -115,10 +106,10 @@ public class CallAutomationLiveTestBase extends TestBase {
             .httpClient(getHttpClientOrUsePlayback(httpClient));
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+        addTestProxyTestSanitizersAndMatchers(interceptorManager);
+
         return builder;
     }
 
@@ -131,10 +122,10 @@ public class CallAutomationLiveTestBase extends TestBase {
             .httpClient(getHttpClientOrUsePlayback(httpClient));
 
         if (getTestMode() == TestMode.RECORD) {
-            List<Function<String, String>> redactors = new ArrayList<>();
-            redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data)));
-            builder.addPolicy(interceptorManager.getRecordPolicy(redactors));
+            builder.addPolicy(interceptorManager.getRecordPolicy());
         }
+        addTestProxyTestSanitizersAndMatchers(interceptorManager);
+
         return builder;
     }
 
@@ -142,19 +133,8 @@ public class CallAutomationLiveTestBase extends TestBase {
         return next.process()
             .flatMap(httpResponse -> {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
-
-                /* Should sanitize printed response url */
-                System.out.println("Chain-ID header for " + testName + " request "
-                    + bufferedResponse.getRequest().getUrl()
-                    + ": " + bufferedResponse.getHeaderValue("X-Microsoft-Skype-Chain-ID"));
                 return Mono.just(bufferedResponse);
             });
-    }
-
-    protected void waitForOperationCompletion(int milliSeconds) throws InterruptedException {
-        if (getTestMode() != TestMode.PLAYBACK) {
-            Thread.sleep(milliSeconds);
-        }
     }
 
     static class FakeCredentials implements TokenCredential {
@@ -172,5 +152,42 @@ public class CallAutomationLiveTestBase extends TestBase {
             }
         }
         return content;
+    }
+
+    protected void addTestProxyTestSanitizersAndMatchers(InterceptorManager interceptorManager) {
+
+        if (interceptorManager.isLiveMode()) {
+            return;
+        }
+
+        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+
+        customSanitizers.add(new TestProxySanitizer("Authorization", null, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("x-ms-client-request-id", null, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("x-ms-content-sha256", null, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("x-ms-hmac-string-to-sign-base64", null, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("MS-CV", null, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("Request-Contex", null, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("Strict-Transport-Security", null, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("X-Azure-Ref", null, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("x-ms-client-request-id", null, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("Repeatability-First-Sent", null, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("Repeatability-Request-ID", null, "REDACTED", TestProxySanitizerType.HEADER));
+        customSanitizers.add(new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..rawId", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..callbackUri", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..incomingCallContext", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..message", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..mediaSubscriptionId", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..dataSubscriptionId", null, "REDACTED", TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
+
+        interceptorManager.addSanitizers(customSanitizers);
+
+        if (interceptorManager.isPlaybackMode()) {
+            List<TestProxyRequestMatcher> customMatcher = new ArrayList<>();
+            customMatcher.add(new TestProxyRequestMatcher(TestProxyRequestMatcherType.BODILESS));
+            interceptorManager.addMatchers(customMatcher);
+        }
     }
 }

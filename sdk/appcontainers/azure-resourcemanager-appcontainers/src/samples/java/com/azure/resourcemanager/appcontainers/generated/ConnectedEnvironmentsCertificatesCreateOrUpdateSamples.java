@@ -6,22 +6,22 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.resourcemanager.appcontainers.models.CertificateProperties;
 
-/** Samples for ConnectedEnvironmentsCertificates CreateOrUpdate. */
+/**
+ * Samples for ConnectedEnvironmentsCertificates CreateOrUpdate.
+ */
 public final class ConnectedEnvironmentsCertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/stable/2023-05-01/examples/ConnectedEnvironmentsCertificate_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2023-11-02-preview/examples/
+     * ConnectedEnvironmentsCertificate_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Certificate.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void createOrUpdateCertificate(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager
-            .connectedEnvironmentsCertificates()
-            .define("certificate-firendly-name")
-            .withRegion("East US")
+    public static void
+        createOrUpdateCertificate(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.connectedEnvironmentsCertificates().define("certificate-firendly-name").withRegion("East US")
             .withExistingConnectedEnvironment("examplerg", "testcontainerenv")
             .withProperties(
                 new CertificateProperties().withPassword("fakeTokenPlaceholder").withValue("Y2VydA==".getBytes()))

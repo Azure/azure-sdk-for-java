@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that includes an array of Azure Spring Apps SKU and a possible link for next set. */
+/**
+ * Object that includes an array of Azure Spring Apps SKU and a possible link for next set.
+ */
 @Fluent
 public final class ResourceSkuCollection {
     /*
@@ -25,8 +27,14 @@ public final class ResourceSkuCollection {
     private String nextLink;
 
     /**
+     * Creates an instance of ResourceSkuCollection class.
+     */
+    public ResourceSkuCollection() {
+    }
+
+    /**
      * Get the value property: Collection of resource SKU.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceSku> value() {
@@ -35,7 +43,7 @@ public final class ResourceSkuCollection {
 
     /**
      * Set the value property: Collection of resource SKU.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceSkuCollection object itself.
      */
@@ -45,9 +53,9 @@ public final class ResourceSkuCollection {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,9 +63,9 @@ public final class ResourceSkuCollection {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ResourceSkuCollection object itself.
      */
@@ -68,7 +76,7 @@ public final class ResourceSkuCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

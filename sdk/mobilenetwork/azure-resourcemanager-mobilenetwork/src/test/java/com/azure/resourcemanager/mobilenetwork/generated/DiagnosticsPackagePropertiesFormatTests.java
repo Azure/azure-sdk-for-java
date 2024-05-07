@@ -10,10 +10,9 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.DiagnosticsPackageP
 public final class DiagnosticsPackagePropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticsPackagePropertiesFormat model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Canceled\",\"status\":\"Error\",\"reason\":\"ijcoejctb\"}")
-                .toObject(DiagnosticsPackagePropertiesFormat.class);
+        DiagnosticsPackagePropertiesFormat model = BinaryData
+            .fromString("{\"provisioningState\":\"Canceled\",\"status\":\"Error\",\"reason\":\"ijcoejctb\"}")
+            .toObject(DiagnosticsPackagePropertiesFormat.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Appliance details of the migration item. */
+/**
+ * Appliance details of the migration item.
+ */
 @Immutable
 public final class ApplianceMonitoringDetails {
     /*
@@ -47,13 +49,15 @@ public final class ApplianceMonitoringDetails {
     @JsonProperty(value = "networkBandwidth", access = JsonProperty.Access.WRITE_ONLY)
     private ApplianceResourceDetails networkBandwidth;
 
-    /** Creates an instance of ApplianceMonitoringDetails class. */
+    /**
+     * Creates an instance of ApplianceMonitoringDetails class.
+     */
     public ApplianceMonitoringDetails() {
     }
 
     /**
      * Get the cpuDetails property: The appliance CPU details.
-     *
+     * 
      * @return the cpuDetails value.
      */
     public ApplianceResourceDetails cpuDetails() {
@@ -62,7 +66,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Get the ramDetails property: The appliance RAM details.
-     *
+     * 
      * @return the ramDetails value.
      */
     public ApplianceResourceDetails ramDetails() {
@@ -71,7 +75,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Get the datastoreSnapshot property: The appliance datastore snapshot details.
-     *
+     * 
      * @return the datastoreSnapshot value.
      */
     public List<DataStoreUtilizationDetails> datastoreSnapshot() {
@@ -80,7 +84,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Get the disksReplicationDetails property: The disk replication details.
-     *
+     * 
      * @return the disksReplicationDetails value.
      */
     public ApplianceResourceDetails disksReplicationDetails() {
@@ -89,7 +93,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Get the esxiNfcBuffer property: The ESXi NFC buffer details.
-     *
+     * 
      * @return the esxiNfcBuffer value.
      */
     public ApplianceResourceDetails esxiNfcBuffer() {
@@ -98,7 +102,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Get the networkBandwidth property: The appliance network bandwidth details.
-     *
+     * 
      * @return the networkBandwidth value.
      */
     public ApplianceResourceDetails networkBandwidth() {
@@ -107,7 +111,7 @@ public final class ApplianceMonitoringDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

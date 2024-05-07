@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the RequestScheme condition for the delivery rule. */
+/**
+ * Defines the RequestScheme condition for the delivery rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("RequestScheme")
 @Fluent
@@ -21,13 +23,15 @@ public final class DeliveryRuleRequestSchemeCondition extends DeliveryRuleCondit
     @JsonProperty(value = "parameters", required = true)
     private RequestSchemeMatchConditionParameters parameters;
 
-    /** Creates an instance of DeliveryRuleRequestSchemeCondition class. */
+    /**
+     * Creates an instance of DeliveryRuleRequestSchemeCondition class.
+     */
     public DeliveryRuleRequestSchemeCondition() {
     }
 
     /**
      * Get the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @return the parameters value.
      */
     public RequestSchemeMatchConditionParameters parameters() {
@@ -36,7 +40,7 @@ public final class DeliveryRuleRequestSchemeCondition extends DeliveryRuleCondit
 
     /**
      * Set the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRuleRequestSchemeCondition object itself.
      */
@@ -47,17 +51,15 @@ public final class DeliveryRuleRequestSchemeCondition extends DeliveryRuleCondit
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRuleRequestSchemeCondition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model DeliveryRuleRequestSchemeCondition"));
         } else {
             parameters().validate();
         }

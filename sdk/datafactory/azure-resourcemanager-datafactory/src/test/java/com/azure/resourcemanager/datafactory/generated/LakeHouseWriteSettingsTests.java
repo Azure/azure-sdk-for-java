@@ -6,19 +6,26 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.LakeHouseWriteSettings;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
+import java.util.Arrays;
 
 public final class LakeHouseWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"LakeHouseWriteSettings\",\"maxConcurrentConnections\":\"dataolgelsgnenjtxu\",\"disableMetricsCollection\":\"datadmrqa\",\"copyBehavior\":\"databyjahbzb\",\"\":{\"rlazcgwn\":\"dataacbwmvphmjyzice\"}}")
+            "{\"type\":\"kwwdkkvdevdvkey\",\"maxConcurrentConnections\":\"datajchd\",\"disableMetricsCollection\":\"dataxeiluexvmlg\",\"copyBehavior\":\"datapsqpfxjwta\",\"metadata\":[{\"name\":\"datagu\",\"value\":\"datadyxrjjdjiki\"},{\"name\":\"datazubgddk\",\"value\":\"datavq\"},{\"name\":\"datauq\",\"value\":\"datalwnxryyqtjcrpax\"},{\"name\":\"datalfxse\",\"value\":\"datad\"}],\"\":{\"zhdciuxotb\":\"dataldmxfqftywbba\"}}")
             .toObject(LakeHouseWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("dataolgelsgnenjtxu")
-            .withDisableMetricsCollection("datadmrqa").withCopyBehavior("databyjahbzb");
+        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("datajchd")
+            .withDisableMetricsCollection("dataxeiluexvmlg")
+            .withCopyBehavior("datapsqpfxjwta")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datagu").withValue("datadyxrjjdjiki"),
+                new MetadataItem().withName("datazubgddk").withValue("datavq"),
+                new MetadataItem().withName("datauq").withValue("datalwnxryyqtjcrpax"),
+                new MetadataItem().withName("datalfxse").withValue("datad")));
         model = BinaryData.fromObject(model).toObject(LakeHouseWriteSettings.class);
     }
 }

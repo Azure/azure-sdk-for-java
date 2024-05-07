@@ -53,8 +53,8 @@ public final class XmlMapperFactory {
             Class<?> fromXmlParser = Class.forName(FROM_XML_PARSER, true, thisClassLoader);
             Class<?> toXmlGenerator = Class.forName(TO_XML_GENERATOR, true, thisClassLoader);
 
-            createXmlMapperBuilder = ReflectionUtils.getMethodInvoker(xmlMapper, xmlMapper.getDeclaredMethod("builder"),
-                false);
+            createXmlMapperBuilder
+                = ReflectionUtils.getMethodInvoker(xmlMapper, xmlMapper.getDeclaredMethod("builder"), false);
             defaultUseWrapper = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
                 xmlMapperBuilder.getDeclaredMethod("defaultUseWrapper", boolean.class), false);
 
@@ -108,13 +108,13 @@ public final class XmlMapperFactory {
             enableEmptyElementAsNull.invokeWithArguments(xmlMapperBuilder, emptyElementAsNull);
 
             xmlMapper = xmlMapperBuilder.build();
-        }  catch (Exception exception) {
+        } catch (Exception exception) {
             if (exception instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) exception);
             }
 
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.",
-                exception));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.", exception));
         }
 
         if (useJackson212 && jackson212IsSafe) {

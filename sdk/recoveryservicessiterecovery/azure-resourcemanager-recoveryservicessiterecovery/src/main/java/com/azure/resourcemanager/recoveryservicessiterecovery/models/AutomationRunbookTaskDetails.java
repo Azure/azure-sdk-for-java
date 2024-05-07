@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** This class represents the task details for an automation runbook. */
+/**
+ * This class represents the task details for an automation runbook.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("AutomationRunbookTaskDetails")
 @Fluent
@@ -68,13 +70,15 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
     @JsonProperty(value = "isPrimarySideScript")
     private Boolean isPrimarySideScript;
 
-    /** Creates an instance of AutomationRunbookTaskDetails class. */
+    /**
+     * Creates an instance of AutomationRunbookTaskDetails class.
+     */
     public AutomationRunbookTaskDetails() {
     }
 
     /**
      * Get the name property: The recovery plan task name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -83,7 +87,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the name property: The recovery plan task name.
-     *
+     * 
      * @param name the name value to set.
      * @return the AutomationRunbookTaskDetails object itself.
      */
@@ -94,7 +98,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the cloudServiceName property: The cloud service of the automation runbook account.
-     *
+     * 
      * @return the cloudServiceName value.
      */
     public String cloudServiceName() {
@@ -103,7 +107,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the cloudServiceName property: The cloud service of the automation runbook account.
-     *
+     * 
      * @param cloudServiceName the cloudServiceName value to set.
      * @return the AutomationRunbookTaskDetails object itself.
      */
@@ -114,7 +118,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the subscriptionId property: The subscription Id of the automation runbook account.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -123,7 +127,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the subscriptionId property: The subscription Id of the automation runbook account.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the AutomationRunbookTaskDetails object itself.
      */
@@ -134,7 +138,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the accountName property: The automation account name of the runbook.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -143,7 +147,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the accountName property: The automation account name of the runbook.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the AutomationRunbookTaskDetails object itself.
      */
@@ -154,7 +158,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the runbookId property: The runbook Id.
-     *
+     * 
      * @return the runbookId value.
      */
     public String runbookId() {
@@ -163,7 +167,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the runbookId property: The runbook Id.
-     *
+     * 
      * @param runbookId the runbookId value to set.
      * @return the AutomationRunbookTaskDetails object itself.
      */
@@ -174,7 +178,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the runbookName property: The runbook name.
-     *
+     * 
      * @return the runbookName value.
      */
     public String runbookName() {
@@ -183,7 +187,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the runbookName property: The runbook name.
-     *
+     * 
      * @param runbookName the runbookName value to set.
      * @return the AutomationRunbookTaskDetails object itself.
      */
@@ -194,7 +198,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the jobId property: The job Id of the runbook execution.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -203,7 +207,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the jobId property: The job Id of the runbook execution.
-     *
+     * 
      * @param jobId the jobId value to set.
      * @return the AutomationRunbookTaskDetails object itself.
      */
@@ -214,7 +218,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the jobOutput property: The execution output of the runbook.
-     *
+     * 
      * @return the jobOutput value.
      */
     public String jobOutput() {
@@ -223,7 +227,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the jobOutput property: The execution output of the runbook.
-     *
+     * 
      * @param jobOutput the jobOutput value to set.
      * @return the AutomationRunbookTaskDetails object itself.
      */
@@ -234,7 +238,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the isPrimarySideScript property: A value indicating whether it is a primary side script or not.
-     *
+     * 
      * @return the isPrimarySideScript value.
      */
     public Boolean isPrimarySideScript() {
@@ -243,7 +247,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the isPrimarySideScript property: A value indicating whether it is a primary side script or not.
-     *
+     * 
      * @param isPrimarySideScript the isPrimarySideScript value to set.
      * @return the AutomationRunbookTaskDetails object itself.
      */
@@ -254,7 +258,7 @@ public final class AutomationRunbookTaskDetails extends TaskTypeDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a reference to key vault key. */
+/**
+ * Describes a reference to key vault key.
+ */
 @Fluent
 public final class KeyVaultKeyReference {
     /*
@@ -23,13 +25,15 @@ public final class KeyVaultKeyReference {
     @JsonProperty(value = "sourceVault", required = true)
     private KeyVaultKeyReferenceSourceVault sourceVault;
 
-    /** Creates an instance of KeyVaultKeyReference class. */
+    /**
+     * Creates an instance of KeyVaultKeyReference class.
+     */
     public KeyVaultKeyReference() {
     }
 
     /**
      * Get the keyUrl property: The URL referencing a key encryption key in key vault.
-     *
+     * 
      * @return the keyUrl value.
      */
     public String keyUrl() {
@@ -38,7 +42,7 @@ public final class KeyVaultKeyReference {
 
     /**
      * Set the keyUrl property: The URL referencing a key encryption key in key vault.
-     *
+     * 
      * @param keyUrl the keyUrl value to set.
      * @return the KeyVaultKeyReference object itself.
      */
@@ -49,7 +53,7 @@ public final class KeyVaultKeyReference {
 
     /**
      * Get the sourceVault property: Describes a resource Id to source key vault.
-     *
+     * 
      * @return the sourceVault value.
      */
     public KeyVaultKeyReferenceSourceVault sourceVault() {
@@ -58,7 +62,7 @@ public final class KeyVaultKeyReference {
 
     /**
      * Set the sourceVault property: Describes a resource Id to source key vault.
-     *
+     * 
      * @param sourceVault the sourceVault value to set.
      * @return the KeyVaultKeyReference object itself.
      */
@@ -69,20 +73,17 @@ public final class KeyVaultKeyReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyUrl in model KeyVaultKeyReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyUrl in model KeyVaultKeyReference"));
         }
         if (sourceVault() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceVault in model KeyVaultKeyReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sourceVault in model KeyVaultKeyReference"));
         } else {
             sourceVault().validate();
         }

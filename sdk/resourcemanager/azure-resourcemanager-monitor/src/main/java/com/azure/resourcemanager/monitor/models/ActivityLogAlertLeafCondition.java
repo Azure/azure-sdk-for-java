@@ -9,32 +9,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * An Activity Log Alert rule condition that is met when all its member conditions are met. Each condition can be of one
- * of the following types: __Important__: Each type has its unique subset of properties. Properties from different types
- * CANNOT exist in one condition. * __Leaf Condition -__ must contain 'field' and either 'equals' or 'containsAny'.
- * _Please note, 'anyOf' should __not__ be set in a Leaf Condition._ * __AnyOf Condition -__ must contain __only__
- * 'anyOf' (which is an array of Leaf Conditions). _Please note, 'field', 'equals' and 'containsAny' should __not__ be
- * set in an AnyOf Condition._.
+ * An Activity Log Alert rule condition that is met when all its member conditions are met.
+ * Each condition can be of one of the following types:
+ * __Important__: Each type has its unique subset of properties. Properties from different types CANNOT exist in one
+ * condition.
+ * * __Leaf Condition -__ must contain 'field' and either 'equals' or 'containsAny'.
+ * _Please note, 'anyOf' should __not__ be set in a Leaf Condition._
+ * * __AnyOf Condition -__ must contain __only__ 'anyOf' (which is an array of Leaf Conditions).
+ * _Please note, 'field', 'equals' and 'containsAny' should __not__ be set in an AnyOf Condition._.
  */
 @Fluent
 public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition {
     /*
      * An Activity Log Alert rule 'anyOf' condition.
-     *
+     * 
      * An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
      */
     @JsonProperty(value = "anyOf")
     private List<AlertRuleLeafCondition> anyOf;
 
-    /** Creates an instance of ActivityLogAlertLeafCondition class. */
+    /**
+     * Creates an instance of ActivityLogAlertLeafCondition class.
+     */
     public ActivityLogAlertLeafCondition() {
     }
 
     /**
      * Get the anyOf property: An Activity Log Alert rule 'anyOf' condition.
-     *
-     * <p>An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
-     *
+     * 
+     * An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
+     * 
      * @return the anyOf value.
      */
     public List<AlertRuleLeafCondition> anyOf() {
@@ -43,9 +47,9 @@ public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition 
 
     /**
      * Set the anyOf property: An Activity Log Alert rule 'anyOf' condition.
-     *
-     * <p>An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
-     *
+     * 
+     * An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
+     * 
      * @param anyOf the anyOf value to set.
      * @return the ActivityLogAlertLeafCondition object itself.
      */
@@ -54,21 +58,27 @@ public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActivityLogAlertLeafCondition withField(String field) {
         super.withField(field);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActivityLogAlertLeafCondition withEquals(String equals) {
         super.withEquals(equals);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActivityLogAlertLeafCondition withContainsAny(List<String> containsAny) {
         super.withContainsAny(containsAny);
@@ -77,7 +87,7 @@ public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

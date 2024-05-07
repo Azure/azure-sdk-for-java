@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** Generic distribution object. */
+/**
+ * Generic distribution object.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -23,8 +25,7 @@ import java.util.Map;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ManagedImage", value = ImageTemplateManagedImageDistributor.class),
     @JsonSubTypes.Type(name = "SharedImage", value = ImageTemplateSharedImageDistributor.class),
-    @JsonSubTypes.Type(name = "VHD", value = ImageTemplateVhdDistributor.class)
-})
+    @JsonSubTypes.Type(name = "VHD", value = ImageTemplateVhdDistributor.class) })
 @Fluent
 public class ImageTemplateDistributor {
     /*
@@ -40,13 +41,15 @@ public class ImageTemplateDistributor {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> artifactTags;
 
-    /** Creates an instance of ImageTemplateDistributor class. */
+    /**
+     * Creates an instance of ImageTemplateDistributor class.
+     */
     public ImageTemplateDistributor() {
     }
 
     /**
      * Get the runOutputName property: The name to be used for the associated RunOutput.
-     *
+     * 
      * @return the runOutputName value.
      */
     public String runOutputName() {
@@ -55,7 +58,7 @@ public class ImageTemplateDistributor {
 
     /**
      * Set the runOutputName property: The name to be used for the associated RunOutput.
-     *
+     * 
      * @param runOutputName the runOutputName value to set.
      * @return the ImageTemplateDistributor object itself.
      */
@@ -67,7 +70,7 @@ public class ImageTemplateDistributor {
     /**
      * Get the artifactTags property: Tags that will be applied to the artifact once it has been created/updated by the
      * distributor.
-     *
+     * 
      * @return the artifactTags value.
      */
     public Map<String, String> artifactTags() {
@@ -77,7 +80,7 @@ public class ImageTemplateDistributor {
     /**
      * Set the artifactTags property: Tags that will be applied to the artifact once it has been created/updated by the
      * distributor.
-     *
+     * 
      * @param artifactTags the artifactTags value to set.
      * @return the ImageTemplateDistributor object itself.
      */
@@ -88,15 +91,13 @@ public class ImageTemplateDistributor {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (runOutputName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property runOutputName in model ImageTemplateDistributor"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property runOutputName in model ImageTemplateDistributor"));
         }
     }
 

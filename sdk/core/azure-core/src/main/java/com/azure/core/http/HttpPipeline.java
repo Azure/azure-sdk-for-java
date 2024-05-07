@@ -13,18 +13,26 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * The HTTP pipeline that HTTP requests and responses will flow through.
- * <p>
- * The HTTP pipeline may apply a set of {@link HttpPipelinePolicy HttpPipelinePolicies} to the request before it is
- * sent and on the response as it is being returned.
+ * <p>The HTTP pipeline through which HTTP requests and responses flow.</p>
+ *
+ * <p>This class encapsulates the HTTP pipeline that applies a set of {@link HttpPipelinePolicy HttpPipelinePolicies}
+ * to the request before it is sent and on the response as it is being returned.</p>
+ *
+ * <p>It provides methods to get the policy at a specific index in the pipeline, get the count of policies in the
+ * pipeline, get the associated {@link HttpClient}, and send the HTTP request through the pipeline.</p>
+ *
+ * <p>This class is useful when you want to send an HTTP request and apply a set of policies to the request and
+ * response.</p>
  *
  * @see HttpPipelinePolicy
+ * @see HttpClient
  */
 public final class HttpPipeline {
     private final HttpClient httpClient;
     private final HttpPipelinePolicy[] pipelinePolicies;
 
     private final Tracer tracer;
+
     /**
      * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through {@link
      * HttpPipeline#send(HttpPipelineCallContext)} and it's response.
@@ -77,6 +85,7 @@ public final class HttpPipeline {
     public Tracer getTracer() {
         return tracer;
     }
+
     /**
      * Wraps the {@code request} in a context and sends it through pipeline.
      *
@@ -100,7 +109,6 @@ public final class HttpPipeline {
         return this.send(new HttpPipelineCallContext(request, data));
     }
 
-
     /**
      * Sends the context (containing an HTTP request) through pipeline.
      *
@@ -111,8 +119,7 @@ public final class HttpPipeline {
     public Mono<HttpResponse> send(HttpPipelineCallContext context) {
         // Return deferred to mono for complete lazy behaviour.
         return Mono.defer(() -> {
-            HttpPipelineNextPolicy next =
-                new HttpPipelineNextPolicy(new HttpPipelineCallState(this, context));
+            HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, context));
             return next.process();
         });
     }

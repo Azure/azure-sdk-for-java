@@ -15,6 +15,9 @@ import com.azure.resourcemanager.healthcareapis.models.FhirServiceKind;
 import com.azure.resourcemanager.healthcareapis.models.ImplementationGuidesConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityIdentity;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityType;
+import com.azure.resourcemanager.healthcareapis.models.SmartDataActions;
+import com.azure.resourcemanager.healthcareapis.models.SmartIdentityProviderApplication;
+import com.azure.resourcemanager.healthcareapis.models.SmartIdentityProviderConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.UserAssignedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,9 +28,7 @@ import java.util.Map;
  */
 public final class FhirServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/fhirservices/
-     * FhirServices_Create.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/fhirservices/FhirServices_Create.json
      */
     /**
      * Sample code: Create or update a Fhir Service.
@@ -36,7 +37,10 @@ public final class FhirServicesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateAFhirService(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.fhirServices().define("fhirservice1").withExistingWorkspace("testRG", "workspace1").withRegion("westus")
+        manager.fhirServices()
+            .define("fhirservice1")
+            .withExistingWorkspace("testRG", "workspace1")
+            .withRegion("westus")
             .withTags(mapOf("additionalProp1", "string", "additionalProp2", "string", "additionalProp3", "string"))
             .withKind(FhirServiceKind.FHIR_R4)
             .withIdentity(new ServiceManagedIdentityIdentity().withType(ServiceManagedIdentityType.USER_ASSIGNED)
@@ -44,17 +48,29 @@ public final class FhirServicesCreateOrUpdateSamples {
                     "/subscriptions/subid/resourcegroups/testRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-mi",
                     new UserAssignedIdentity())))
             .withAcrConfiguration(new FhirServiceAcrConfiguration().withLoginServers(Arrays.asList("test1.azurecr.io")))
-            .withAuthenticationConfiguration(new FhirServiceAuthenticationConfiguration()
-                .withAuthority("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc")
-                .withAudience("https://azurehealthcareapis.com").withSmartProxyEnabled(true))
-            .withCorsConfiguration(
-                new FhirServiceCorsConfiguration().withOrigins(Arrays.asList("*")).withHeaders(Arrays.asList("*"))
-                    .withMethods(Arrays.asList("DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT")).withMaxAge(1440)
-                    .withAllowCredentials(false))
+            .withAuthenticationConfiguration(
+                new FhirServiceAuthenticationConfiguration()
+                    .withAuthority("https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc")
+                    .withAudience("https://azurehealthcareapis.com")
+                    .withSmartProxyEnabled(true)
+                    .withSmartIdentityProviders(
+                        Arrays.asList(new SmartIdentityProviderConfiguration()
+                            .withAuthority("https://login.b2clogin.com/11111111-1111-1111-1111-111111111111/v2.0")
+                            .withApplications(Arrays.asList(new SmartIdentityProviderApplication()
+                                .withClientId("22222222-2222-2222-2222-222222222222")
+                                .withAudience("22222222-2222-2222-2222-222222222222")
+                                .withAllowedDataActions(Arrays.asList(SmartDataActions.READ)))))))
+            .withCorsConfiguration(new FhirServiceCorsConfiguration().withOrigins(Arrays.asList("*"))
+                .withHeaders(Arrays.asList("*"))
+                .withMethods(Arrays.asList("DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"))
+                .withMaxAge(1440)
+                .withAllowCredentials(false))
             .withExportConfiguration(
                 new FhirServiceExportConfiguration().withStorageAccountName("existingStorageAccount"))
-            .withImportConfiguration(new FhirServiceImportConfiguration()
-                .withIntegrationDataStore("existingStorageAccount").withInitialImportMode(false).withEnabled(false))
+            .withImportConfiguration(
+                new FhirServiceImportConfiguration().withIntegrationDataStore("existingStorageAccount")
+                    .withInitialImportMode(false)
+                    .withEnabled(false))
             .withImplementationGuidesConfiguration(new ImplementationGuidesConfiguration().withUsCoreMissingData(false))
             .withEncryption(new Encryption().withCustomerManagedKeyEncryption(
                 new EncryptionCustomerManagedKeyEncryption().withKeyEncryptionKeyUrl("fakeTokenPlaceholder")))

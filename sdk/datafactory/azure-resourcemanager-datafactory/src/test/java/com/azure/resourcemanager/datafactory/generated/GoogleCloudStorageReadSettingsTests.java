@@ -11,19 +11,25 @@ public final class GoogleCloudStorageReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleCloudStorageReadSettings model = BinaryData.fromString(
-            "{\"type\":\"GoogleCloudStorageReadSettings\",\"recursive\":\"dataibyzr\",\"wildcardFolderPath\":\"dataehrdld\",\"wildcardFileName\":\"datacjjhjnpa\",\"prefix\":\"datazfy\",\"fileListPath\":\"datagklywdlxmyoqmam\",\"enablePartitionDiscovery\":\"datacqqtqzwntnly\",\"partitionRootPath\":\"databmdwiaxsucfo\",\"deleteFilesAfterCompletion\":\"datacufiphnroizzzkn\",\"modifiedDatetimeStart\":\"datafsoayatqkdz\",\"modifiedDatetimeEnd\":\"datapldzkvbebdjsao\",\"maxConcurrentConnections\":\"datadpjjkox\",\"disableMetricsCollection\":\"datacjdooyx\",\"\":{\"zdjhqq\":\"datazo\",\"aarrrgjnqkuca\":\"databwidsbdftbxruuu\"}}")
+            "{\"type\":\"qlrt\",\"recursive\":\"dataiovhj\",\"wildcardFolderPath\":\"datafol\",\"wildcardFileName\":\"datar\",\"prefix\":\"dataahvoir\",\"fileListPath\":\"dataxqnzss\",\"enablePartitionDiscovery\":\"dataldtqykzmwdoqre\",\"partitionRootPath\":\"datatrnqxi\",\"deleteFilesAfterCompletion\":\"dataozryoxmfrxfxyc\",\"modifiedDatetimeStart\":\"dataalvchfumlf\",\"modifiedDatetimeEnd\":\"datalzxxkokipklfwnhf\",\"maxConcurrentConnections\":\"dataswq\",\"disableMetricsCollection\":\"datavljitbnhglrvlaro\",\"\":{\"abgsdxtwqqukgo\":\"datamucr\",\"ksltunrwxsqvx\":\"datalvjgsk\",\"y\":\"dataupccfwqisou\",\"etctjh\":\"dataxzjehdklvqtmzoci\"}}")
             .toObject(GoogleCloudStorageReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GoogleCloudStorageReadSettings model
-            = new GoogleCloudStorageReadSettings().withMaxConcurrentConnections("datadpjjkox")
-                .withDisableMetricsCollection("datacjdooyx").withRecursive("dataibyzr")
-                .withWildcardFolderPath("dataehrdld").withWildcardFileName("datacjjhjnpa").withPrefix("datazfy")
-                .withFileListPath("datagklywdlxmyoqmam").withEnablePartitionDiscovery("datacqqtqzwntnly")
-                .withPartitionRootPath("databmdwiaxsucfo").withDeleteFilesAfterCompletion("datacufiphnroizzzkn")
-                .withModifiedDatetimeStart("datafsoayatqkdz").withModifiedDatetimeEnd("datapldzkvbebdjsao");
+            = new GoogleCloudStorageReadSettings().withMaxConcurrentConnections("dataswq")
+                .withDisableMetricsCollection("datavljitbnhglrvlaro")
+                .withRecursive("dataiovhj")
+                .withWildcardFolderPath("datafol")
+                .withWildcardFileName("datar")
+                .withPrefix("dataahvoir")
+                .withFileListPath("dataxqnzss")
+                .withEnablePartitionDiscovery("dataldtqykzmwdoqre")
+                .withPartitionRootPath("datatrnqxi")
+                .withDeleteFilesAfterCompletion("dataozryoxmfrxfxyc")
+                .withModifiedDatetimeStart("dataalvchfumlf")
+                .withModifiedDatetimeEnd("datalzxxkokipklfwnhf");
         model = BinaryData.fromObject(model).toObject(GoogleCloudStorageReadSettings.class);
     }
 }

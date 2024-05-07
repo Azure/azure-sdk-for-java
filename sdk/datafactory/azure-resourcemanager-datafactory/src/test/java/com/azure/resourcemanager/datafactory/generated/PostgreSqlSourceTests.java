@@ -11,16 +11,19 @@ public final class PostgreSqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PostgreSqlSource model = BinaryData.fromString(
-            "{\"type\":\"PostgreSqlSource\",\"query\":\"dataz\",\"queryTimeout\":\"datanniarjezj\",\"additionalColumns\":\"dataxiqfoqwesqykqfs\",\"sourceRetryCount\":\"datalsaipshhet\",\"sourceRetryWait\":\"datawmzgvnojgmobkali\",\"maxConcurrentConnections\":\"dataikkehpdssvlubd\",\"disableMetricsCollection\":\"dataowxsxbxd\",\"\":{\"tghmtb\":\"dataxurcekcqmjqqau\",\"shlhe\":\"datafkcnkghkrbi\"}}")
+            "{\"type\":\"aeu\",\"query\":\"datanfbms\",\"queryTimeout\":\"dataerbdd\",\"additionalColumns\":\"datangdctmjz\",\"sourceRetryCount\":\"datagvheqzlqevas\",\"sourceRetryWait\":\"datagoodfh\",\"maxConcurrentConnections\":\"datauegdynyddp\",\"disableMetricsCollection\":\"dataizlzxht\",\"\":{\"znhol\":\"datalgm\",\"okuykrvxmobn\":\"dataflsjwawlkqmznkcw\"}}")
             .toObject(PostgreSqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PostgreSqlSource model
-            = new PostgreSqlSource().withSourceRetryCount("datalsaipshhet").withSourceRetryWait("datawmzgvnojgmobkali")
-                .withMaxConcurrentConnections("dataikkehpdssvlubd").withDisableMetricsCollection("dataowxsxbxd")
-                .withQueryTimeout("datanniarjezj").withAdditionalColumns("dataxiqfoqwesqykqfs").withQuery("dataz");
+        PostgreSqlSource model = new PostgreSqlSource().withSourceRetryCount("datagvheqzlqevas")
+            .withSourceRetryWait("datagoodfh")
+            .withMaxConcurrentConnections("datauegdynyddp")
+            .withDisableMetricsCollection("dataizlzxht")
+            .withQueryTimeout("dataerbdd")
+            .withAdditionalColumns("datangdctmjz")
+            .withQuery("datanfbms");
         model = BinaryData.fromObject(model).toObject(PostgreSqlSource.class);
     }
 }

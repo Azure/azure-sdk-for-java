@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Details of the resource that was assessed. */
+/**
+ * Details of the resource that was assessed.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -18,17 +20,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ResourceDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Azure", value = AzureResourceDetails.class),
-    @JsonSubTypes.Type(name = "OnPremise", value = OnPremiseResourceDetails.class)
-})
+    @JsonSubTypes.Type(name = "OnPremise", value = OnPremiseResourceDetails.class) })
 @Immutable
 public class ResourceDetails {
-    /** Creates an instance of ResourceDetails class. */
+    /**
+     * Creates an instance of ResourceDetails class.
+     */
     public ResourceDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -30,7 +30,7 @@ by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/ins
 <dependency>
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-  <version>1.0.0-beta.2</version>
+  <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -38,6 +38,12 @@ by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/ins
 #### Required native image build configuration
 
 [Instruction][azure_native] for Spring Boot native image applications.
+
+### Enable OpenTelemetry features
+
+All the features described in the [OpenTelemetry Spring Boot starter][otel_spring_starter] documentation work with Azure Monitor OpenTelemetry Distro / Application Insights in Spring Boot native image Java application.
+
+You have just to replace the `opentelemetry-spring-boot-starter` dependency by the `spring-cloud-azure-starter-monitor` one.
 
 ### Azure Monitor configuration
 
@@ -56,12 +62,8 @@ You can then configure the connection string in two different ways:
 
 The [Application Map](https://learn.microsoft.com/azure/azure-monitor/app/app-map?tabs=net#set-or-override-cloud-role-name) uses the cloud role name to identify components on the map.
 
-You can set the cloud role name with the `spring.application.name` or `otel.springboot.resource.attributes.service.name` property.
+You can set the cloud role name with the `spring.application.name` property. You have other options to set the cloud role role: see how to set the service name in the [OpenTelemetry documentation](https://opentelemetry.io/docs/languages/java/automatic/spring-boot/).
 
-### Configure the instrumentation
-
-The Spring starter will capture HTTP requests by default. You can find on [this page][otel_spring_starter_instrumentation] how to configure additional instrumentations (JDBC, logging, ...).
-    
 ### Build your Spring native application
 At this step, you can build your Spring Boot native image application and start it:
 

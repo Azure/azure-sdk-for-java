@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ProtectionModeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectionMode model =
-            BinaryData
-                .fromString("{\"exe\":\"Audit\",\"msi\":\"None\",\"script\":\"Enforce\",\"executable\":\"None\"}")
-                .toObject(ProtectionMode.class);
-        Assertions.assertEquals(EnforcementMode.AUDIT, model.exe());
+        ProtectionMode model = BinaryData
+            .fromString("{\"exe\":\"Enforce\",\"msi\":\"None\",\"script\":\"Enforce\",\"executable\":\"None\"}")
+            .toObject(ProtectionMode.class);
+        Assertions.assertEquals(EnforcementMode.ENFORCE, model.exe());
         Assertions.assertEquals(EnforcementMode.NONE, model.msi());
         Assertions.assertEquals(EnforcementMode.ENFORCE, model.script());
         Assertions.assertEquals(EnforcementMode.NONE, model.executable());
@@ -24,14 +23,10 @@ public final class ProtectionModeTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionMode model =
-            new ProtectionMode()
-                .withExe(EnforcementMode.AUDIT)
-                .withMsi(EnforcementMode.NONE)
-                .withScript(EnforcementMode.ENFORCE)
-                .withExecutable(EnforcementMode.NONE);
+        ProtectionMode model = new ProtectionMode().withExe(EnforcementMode.ENFORCE).withMsi(EnforcementMode.NONE)
+            .withScript(EnforcementMode.ENFORCE).withExecutable(EnforcementMode.NONE);
         model = BinaryData.fromObject(model).toObject(ProtectionMode.class);
-        Assertions.assertEquals(EnforcementMode.AUDIT, model.exe());
+        Assertions.assertEquals(EnforcementMode.ENFORCE, model.exe());
         Assertions.assertEquals(EnforcementMode.NONE, model.msi());
         Assertions.assertEquals(EnforcementMode.ENFORCE, model.script());
         Assertions.assertEquals(EnforcementMode.NONE, model.executable());

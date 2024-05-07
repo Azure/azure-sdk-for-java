@@ -10,7 +10,9 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.VMInfoInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response of a list VM Host Operation. */
+/**
+ * Response of a list VM Host Operation.
+ */
 @Fluent
 public final class VMHostsListResponse {
     /*
@@ -25,13 +27,15 @@ public final class VMHostsListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VMHostsListResponse class. */
+    /**
+     * Creates an instance of VMHostsListResponse class.
+     */
     public VMHostsListResponse() {
     }
 
     /**
      * Get the value property: The VMInfo items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<VMInfoInner> value() {
@@ -40,7 +44,7 @@ public final class VMHostsListResponse {
 
     /**
      * Set the value property: The VMInfo items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the VMHostsListResponse object itself.
      */
@@ -51,7 +55,7 @@ public final class VMHostsListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class VMHostsListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VMHostsListResponse object itself.
      */
@@ -71,14 +75,13 @@ public final class VMHostsListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model VMHostsListResponse"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model VMHostsListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

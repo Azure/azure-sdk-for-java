@@ -32,11 +32,16 @@ import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SUBSCRIBER_ID_KEY;
 
+/**
+ * Represents a processor that manages a single AMQP channel. This processor will track the state of the channel and
+ * will request a new channel when the current channel is closed.
+ *
+ * @param <T> The type of AMQP channel.
+ */
 public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>, CoreSubscriber<T>, Disposable {
     @SuppressWarnings("rawtypes")
-    private static final AtomicReferenceFieldUpdater<AmqpChannelProcessor, Subscription> UPSTREAM =
-        AtomicReferenceFieldUpdater.newUpdater(AmqpChannelProcessor.class, Subscription.class,
-            "upstream");
+    private static final AtomicReferenceFieldUpdater<AmqpChannelProcessor, Subscription> UPSTREAM
+        = AtomicReferenceFieldUpdater.newUpdater(AmqpChannelProcessor.class, Subscription.class, "upstream");
 
     private static final String TRY_COUNT_KEY = "tryCount";
 
@@ -59,13 +64,20 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     private volatile Disposable retrySubscription;
 
     /**
+     * Creates an instance of {@link AmqpChannelProcessor}.
+     *
+     * @param fullyQualifiedNamespace The fully qualified namespace for the AMQP connection.
+     * @param entityPath The entity path for the AMQP connection.
+     * @param endpointStatesFunction The function that returns the endpoint states for the AMQP connection.
+     * @param retryPolicy The retry policy for the AMQP connection.
+     * @param logger The logger to use for this processor.
      * @deprecated Use constructor overload that does not take {@link ClientLogger}
      */
     @Deprecated
     public AmqpChannelProcessor(String fullyQualifiedNamespace, String entityPath,
         Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy, ClientLogger logger) {
-        this.endpointStatesFunction = Objects.requireNonNull(endpointStatesFunction,
-            "'endpointStates' cannot be null.");
+        this.endpointStatesFunction
+            = Objects.requireNonNull(endpointStatesFunction, "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         Map<String, Object> loggingContext = new HashMap<>(1);
         loggingContext.put(ENTITY_PATH_KEY, Objects.requireNonNull(entityPath, "'entityPath' cannot be null."));
@@ -73,12 +85,23 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }
 
-    public AmqpChannelProcessor(String fullyQualifiedNamespace, Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy, Map<String, Object> loggingContext) {
-        this.endpointStatesFunction = Objects.requireNonNull(endpointStatesFunction,
-            "'endpointStates' cannot be null.");
+    /**
+     * Creates an instance of {@link AmqpChannelProcessor}.
+     *
+     * @param fullyQualifiedNamespace The fully qualified namespace for the AMQP connection.
+     * @param endpointStatesFunction The function that returns the endpoint states for the AMQP connection.
+     * @param retryPolicy The retry policy for the AMQP connection.
+     * @param loggingContext Additional context to add to the logging scope.
+     */
+    public AmqpChannelProcessor(String fullyQualifiedNamespace,
+        Function<T, Flux<AmqpEndpointState>> endpointStatesFunction, AmqpRetryPolicy retryPolicy,
+        Map<String, Object> loggingContext) {
+        this.endpointStatesFunction
+            = Objects.requireNonNull(endpointStatesFunction, "'endpointStates' cannot be null.");
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
 
-        this.logger = new ClientLogger(getClass(), Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
+        this.logger
+            = new ClientLogger(getClass(), Objects.requireNonNull(loggingContext, "'loggingContext' cannot be null."));
         this.errorContext = new AmqpErrorContext(fullyQualifiedNamespace);
     }
 
@@ -110,27 +133,24 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             final ConcurrentLinkedDeque<ChannelSubscriber<T>> currentSubscribers = subscribers;
             currentSubscribers.forEach(subscription -> subscription.onNext(amqpChannel));
 
-            connectionSubscription = endpointStatesFunction.apply(amqpChannel).subscribe(
-                state -> {
-                    // Connection was successfully opened, we can reset the retry interval.
-                    if (state == AmqpEndpointState.ACTIVE) {
-                        retryAttempts.set(0);
-                        logger.info("Channel is now active.");
-                    }
-                },
-                error -> {
+            connectionSubscription = endpointStatesFunction.apply(amqpChannel).subscribe(state -> {
+                // Connection was successfully opened, we can reset the retry interval.
+                if (state == AmqpEndpointState.ACTIVE) {
+                    retryAttempts.set(0);
+                    logger.info("Channel is now active.");
+                }
+            }, error -> {
+                setAndClearChannel();
+                onError(error);
+            }, () -> {
+                if (isDisposed()) {
+                    logger.info("Channel is disposed.");
+                } else {
+                    logger.info("Channel is closed. Requesting upstream.");
                     setAndClearChannel();
-                    onError(error);
-                },
-                () -> {
-                    if (isDisposed()) {
-                        logger.info("Channel is disposed.");
-                    } else {
-                        logger.info("Channel is closed. Requesting upstream.");
-                        setAndClearChannel();
-                        requestUpstream();
-                    }
-                });
+                    requestUpstream();
+                }
+            });
         }
 
         close(oldChannel);
@@ -156,8 +176,7 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             return;
         }
 
-        final int attemptsMade = retryAttempts.incrementAndGet();
-        final int tryCount = attemptsMade - 1;
+        final int attemptsMade = retryAttempts.getAndIncrement();
         final int attempts;
         final Duration retryInterval;
 
@@ -196,27 +215,25 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             }
 
             logger.atInfo()
-                .addKeyValue(TRY_COUNT_KEY, tryCount)
+                .addKeyValue(TRY_COUNT_KEY, attemptsMade)
                 .addKeyValue(INTERVAL_KEY, retryInterval.toMillis())
                 .log("Transient error occurred. Retrying.", throwable);
 
             retrySubscription = Mono.delay(retryInterval).subscribe(i -> {
                 if (isDisposed()) {
                     logger.atInfo()
-                        .addKeyValue(TRY_COUNT_KEY, tryCount)
+                        .addKeyValue(TRY_COUNT_KEY, attemptsMade)
                         .log("Not requesting from upstream. Processor is disposed.");
                 } else {
-                    logger.atInfo()
-                        .addKeyValue(TRY_COUNT_KEY, tryCount)
-                        .log("Requesting from upstream.");
+                    logger.atInfo().addKeyValue(TRY_COUNT_KEY, attemptsMade).log("Requesting from upstream.");
 
                     requestUpstream();
                     isRetryPending.set(false);
                 }
             });
         } else {
-            logger.atWarning()
-                .addKeyValue(TRY_COUNT_KEY, tryCount)
+            logger.atError()
+                .addKeyValue(TRY_COUNT_KEY, attemptsMade)
                 .log("Retry attempts exhausted or exception was not retriable.", throwable);
 
             lastError = throwable;
@@ -250,7 +267,9 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
                 actual.onSubscribe(Operators.emptySubscription());
                 actual.onError(lastError);
             } else {
-                Operators.error(actual, logger.logExceptionAsError(new IllegalStateException("Cannot subscribe. Processor is already terminated.")));
+                IllegalStateException error
+                    = new IllegalStateException("Cannot subscribe. Processor is already terminated.");
+                Operators.error(actual, logger.logExceptionAsWarning(error));
             }
 
             return;
@@ -385,18 +404,14 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
             }
 
             // most subscribers never get here and will be completed immediately after they are created.
-            processor.logger.atVerbose()
-                .addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
-                .log("Added subscriber.");
+            processor.logger.atVerbose().addKeyValue(SUBSCRIBER_ID_KEY, subscriberId).log("Added subscriber.");
         }
 
         @Override
         public void cancel() {
             processor.subscribers.remove(this);
             super.cancel();
-            processor.logger.atVerbose()
-                .addKeyValue(SUBSCRIBER_ID_KEY, subscriberId)
-                .log("Canceled subscriber");
+            processor.logger.atVerbose().addKeyValue(SUBSCRIBER_ID_KEY, subscriberId).log("Canceled subscriber");
         }
 
         @Override

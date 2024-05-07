@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of vulnerability assessment scan results. */
+/**
+ * A list of vulnerability assessment scan results.
+ */
 @Fluent
 public final class ScanResultsInner {
     /*
@@ -17,13 +19,15 @@ public final class ScanResultsInner {
     @JsonProperty(value = "value")
     private List<ScanResultInner> value;
 
-    /** Creates an instance of ScanResultsInner class. */
+    /**
+     * Creates an instance of ScanResultsInner class.
+     */
     public ScanResultsInner() {
     }
 
     /**
      * Get the value property: List of vulnerability assessment scan results.
-     *
+     * 
      * @return the value value.
      */
     public List<ScanResultInner> value() {
@@ -32,7 +36,7 @@ public final class ScanResultsInner {
 
     /**
      * Set the value property: List of vulnerability assessment scan results.
-     *
+     * 
      * @param value the value value to set.
      * @return the ScanResultsInner object itself.
      */
@@ -43,7 +47,7 @@ public final class ScanResultsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

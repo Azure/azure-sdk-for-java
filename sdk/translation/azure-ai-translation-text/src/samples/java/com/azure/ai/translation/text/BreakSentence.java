@@ -28,8 +28,8 @@ public class BreakSentence {
                 .region(region)
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
-		
-		// BEGIN: getTextTranslationSentenceBoundaries
+
+        // BEGIN: getTextTranslationSentenceBoundaries
         String sourceLanguage = "zh-Hans";
         String sourceScript = "Latn";
         List<InputTextItem> content = new ArrayList<>();
@@ -40,6 +40,6 @@ public class BreakSentence {
         for (BreakSentenceItem breakSentence : breakSentences) {
             System.out.println("The detected sentence boundaries: " + breakSentence.getSentLen());
         }
-		// END: getTextTranslationSentenceBoundaries
+        // END: getTextTranslationSentenceBoundaries
     }
 }

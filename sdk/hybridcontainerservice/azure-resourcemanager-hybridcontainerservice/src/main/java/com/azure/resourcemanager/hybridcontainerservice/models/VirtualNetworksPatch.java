@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /**
- * The virtualNetworks resource patch definition.
+ * The Virtual Network resource patch definition.
  */
 @Fluent
 public final class VirtualNetworksPatch {

@@ -87,22 +87,14 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createWithResponse(resourceGroupName, workspaceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+            .createWithResponse(resourceGroupName, workspaceName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public Workspace create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createWithResponse(resourceGroupName, workspaceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+            .createWithResponse(resourceGroupName, workspaceName, this.innerModel(), context).getValue();
         return this;
     }
 
@@ -118,59 +110,41 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .updateWithResponse(resourceGroupName, workspaceName, updateWorkspace, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+            .updateWithResponse(resourceGroupName, workspaceName, updateWorkspace, Context.NONE).getValue();
         return this;
     }
 
     public Workspace apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .updateWithResponse(resourceGroupName, workspaceName, updateWorkspace, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+            .updateWithResponse(resourceGroupName, workspaceName, updateWorkspace, context).getValue();
         return this;
     }
 
-    WorkspaceImpl(
-        WorkspaceInner innerObject,
+    WorkspaceImpl(WorkspaceInner innerObject,
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
     }
 
     public Workspace refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
         return this;
     }
 
     public Workspace refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context).getValue();
         return this;
     }
 
-    public Response<UrlToken> generateUploadUrlWithResponse(
-        GenerateUploadUrlRequest generateUploadUrl, Context context) {
-        return serviceManager
-            .workspaces()
-            .generateUploadUrlWithResponse(resourceGroupName, workspaceName, generateUploadUrl, context);
+    public Response<UrlToken> generateUploadUrlWithResponse(GenerateUploadUrlRequest generateUploadUrl,
+        Context context) {
+        return serviceManager.workspaces().generateUploadUrlWithResponse(resourceGroupName, workspaceName,
+            generateUploadUrl, context);
     }
 
     public UrlToken generateUploadUrl(GenerateUploadUrlRequest generateUploadUrl) {

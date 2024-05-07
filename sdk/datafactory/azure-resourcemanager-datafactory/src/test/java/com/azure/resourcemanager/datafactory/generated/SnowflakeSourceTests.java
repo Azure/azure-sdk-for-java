@@ -14,20 +14,21 @@ public final class SnowflakeSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnowflakeSource model = BinaryData.fromString(
-            "{\"type\":\"SnowflakeSource\",\"query\":\"dataxsgwdxoxjlvvvzp\",\"exportSettings\":{\"type\":\"SnowflakeExportCopyCommand\",\"additionalCopyOptions\":{\"mb\":\"datayintgkveogeld\",\"iwuux\":\"datakbiibobkxiujaagf\",\"egm\":\"datawmzmsiv\",\"jptk\":\"datafzbrha\"},\"additionalFormatOptions\":{\"ievcttszca\":\"dataspz\",\"tsdeequovanaglwa\":\"datayxyoyjasqdhbftt\",\"oamqxw\":\"datasfbmbtcefqkuxgyu\",\"objledjxblob\":\"datauslxyt\"},\"\":{\"hzgj\":\"datapdi\",\"rhbql\":\"dataeomctbgoccypx\"}},\"sourceRetryCount\":\"datauflfzawkkzexhbp\",\"sourceRetryWait\":\"dataqfbjpclboiojpjn\",\"maxConcurrentConnections\":\"datawyhxzythxzrvjfsm\",\"disableMetricsCollection\":\"datadhhwfrm\",\"\":{\"ct\":\"datakefdgfexa\",\"mdievkmr\":\"datacpszdnccouuq\",\"mdxcwx\":\"dataohoyiheheimuq\"}}")
+            "{\"type\":\"tjjewezcknp\",\"query\":\"datartldijgrbi\",\"exportSettings\":{\"type\":\"natbecuh\",\"additionalCopyOptions\":{\"wgbajmgctwamj\":\"datajtw\",\"pedmkxtdy\":\"datawvmugistnyzmhh\",\"m\":\"datazgfqtgf\",\"jsrcqpxaajt\":\"datacvblrvkqxhk\"},\"additionalFormatOptions\":{\"azmxssbv\":\"dataqtuztzmubxngs\"},\"\":{\"aousj\":\"datakkewg\"}},\"sourceRetryCount\":\"datavahqjdi\",\"sourceRetryWait\":\"dataoldwahe\",\"maxConcurrentConnections\":\"datadicxolmm\",\"disableMetricsCollection\":\"datad\",\"\":{\"vogrripopzyde\":\"dataoiwbmjqvmpzc\",\"rgwy\":\"datapwwkdmsnezdumjqd\",\"sveaerg\":\"databqmelmqkbepie\",\"ksknst\":\"datajbrnlbfnuppw\"}}")
             .toObject(SnowflakeSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeSource model = new SnowflakeSource().withSourceRetryCount("datauflfzawkkzexhbp")
-            .withSourceRetryWait("dataqfbjpclboiojpjn").withMaxConcurrentConnections("datawyhxzythxzrvjfsm")
-            .withDisableMetricsCollection("datadhhwfrm").withQuery("dataxsgwdxoxjlvvvzp")
+        SnowflakeSource model = new SnowflakeSource().withSourceRetryCount("datavahqjdi")
+            .withSourceRetryWait("dataoldwahe")
+            .withMaxConcurrentConnections("datadicxolmm")
+            .withDisableMetricsCollection("datad")
+            .withQuery("datartldijgrbi")
             .withExportSettings(new SnowflakeExportCopyCommand()
-                .withAdditionalCopyOptions(mapOf("mb", "datayintgkveogeld", "iwuux", "datakbiibobkxiujaagf", "egm",
-                    "datawmzmsiv", "jptk", "datafzbrha"))
-                .withAdditionalFormatOptions(mapOf("ievcttszca", "dataspz", "tsdeequovanaglwa", "datayxyoyjasqdhbftt",
-                    "oamqxw", "datasfbmbtcefqkuxgyu", "objledjxblob", "datauslxyt")));
+                .withAdditionalCopyOptions(mapOf("wgbajmgctwamj", "datajtw", "pedmkxtdy", "datawvmugistnyzmhh", "m",
+                    "datazgfqtgf", "jsrcqpxaajt", "datacvblrvkqxhk"))
+                .withAdditionalFormatOptions(mapOf("azmxssbv", "dataqtuztzmubxngs")));
         model = BinaryData.fromObject(model).toObject(SnowflakeSource.class);
     }
 

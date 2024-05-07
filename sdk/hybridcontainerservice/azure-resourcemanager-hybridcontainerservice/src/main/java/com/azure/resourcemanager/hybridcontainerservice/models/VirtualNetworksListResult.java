@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * The VirtualNetworksListResult model.
+ * A list of virtual network resources.
  */
 @Fluent
 public final class VirtualNetworksListResult {

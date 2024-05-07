@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.fluent.models.NetworkWatcherInner;
 public final class NetworkWatchersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkWatcherCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkWatcherCreate.json
      */
     /**
      * Sample code: Create network watcher.

@@ -1,5 +1,6 @@
 # Default Assets restore directory
 .assets
+test-proxy.log
 
 *.class
 

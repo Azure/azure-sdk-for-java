@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SignalingConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SignalingConfiguration model =
-            BinaryData
-                .fromString("{\"nasReroute\":{\"macroMmeGroupId\":1468269047}}")
-                .toObject(SignalingConfiguration.class);
-        Assertions.assertEquals(1468269047, model.nasReroute().macroMmeGroupId());
+        SignalingConfiguration model = BinaryData.fromString("{\"nasReroute\":{\"macroMmeGroupId\":1178618137}}")
+            .toObject(SignalingConfiguration.class);
+        Assertions.assertEquals(1178618137, model.nasReroute().macroMmeGroupId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalingConfiguration model =
-            new SignalingConfiguration().withNasReroute(new NasRerouteConfiguration().withMacroMmeGroupId(1468269047));
+        SignalingConfiguration model = new SignalingConfiguration()
+            .withNasReroute(new NasRerouteConfiguration().withMacroMmeGroupId(1178618137));
         model = BinaryData.fromObject(model).toObject(SignalingConfiguration.class);
-        Assertions.assertEquals(1468269047, model.nasReroute().macroMmeGroupId());
+        Assertions.assertEquals(1178618137, model.nasReroute().macroMmeGroupId());
     }
 }

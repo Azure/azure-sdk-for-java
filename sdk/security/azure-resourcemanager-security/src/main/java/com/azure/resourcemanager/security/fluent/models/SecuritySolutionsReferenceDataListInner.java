@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.models.SecuritySolutionsReferenceData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SecuritySolutionsReferenceDataList model. */
+/**
+ * The SecuritySolutionsReferenceDataList model.
+ */
 @Fluent
 public final class SecuritySolutionsReferenceDataListInner {
     /*
@@ -18,13 +20,15 @@ public final class SecuritySolutionsReferenceDataListInner {
     @JsonProperty(value = "value")
     private List<SecuritySolutionsReferenceData> value;
 
-    /** Creates an instance of SecuritySolutionsReferenceDataListInner class. */
+    /**
+     * Creates an instance of SecuritySolutionsReferenceDataListInner class.
+     */
     public SecuritySolutionsReferenceDataListInner() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<SecuritySolutionsReferenceData> value() {
@@ -33,7 +37,7 @@ public final class SecuritySolutionsReferenceDataListInner {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecuritySolutionsReferenceDataListInner object itself.
      */
@@ -44,7 +48,7 @@ public final class SecuritySolutionsReferenceDataListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

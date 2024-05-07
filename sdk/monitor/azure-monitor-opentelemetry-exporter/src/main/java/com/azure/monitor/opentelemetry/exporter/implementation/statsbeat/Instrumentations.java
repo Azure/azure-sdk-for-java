@@ -105,6 +105,9 @@ public class Instrumentations {
         INSTRUMENTATION_MAP.put("io.opentelemetry.spring-webflux-5.3", 79);
         INSTRUMENTATION_MAP.put("io.opentelemetry.runtime-telemetry-java8", 80);
         INSTRUMENTATION_MAP.put("io.opentelemetry.runtime-telemetry-java17", 81);
+        INSTRUMENTATION_MAP.put("io.opentelemetry.pekko-http-1.0", 82);
+        // See https://github.com/quarkusio/quarkus/blob/962bae330b65af161731e5b588fc940c8f3ca086/extensions/opentelemetry/runtime/src/main/java/io/quarkus/opentelemetry/runtime/config/build/OTelBuildConfig.java#L22
+        INSTRUMENTATION_MAP.put("io.quarkus.opentelemetry", 83);
     }
 
     // encode BitSet to a long

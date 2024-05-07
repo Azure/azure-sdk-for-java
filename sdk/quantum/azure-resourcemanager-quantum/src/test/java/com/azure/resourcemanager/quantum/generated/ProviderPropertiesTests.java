@@ -19,223 +19,101 @@ import org.junit.jupiter.api.Assertions;
 public final class ProviderPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProviderProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"pwiyig\",\"providerType\":\"pkdwzbai\",\"company\":\"bbaumnyquped\",\"defaultEndpoint\":\"jn\",\"aad\":{\"applicationId\":\"khsmtxpsiebt\",\"tenantId\":\"vpesapskrdqmhjjd\"},\"managedApplication\":{\"publisherId\":\"dwkyzxuu\",\"offerId\":\"ncwscwsvlxoto\"},\"targets\":[{\"id\":\"upqsx\",\"name\":\"micykvceoveilo\",\"description\":\"oty\",\"acceptedDataFormats\":[\"cnjbkcnxdhbt\"],\"acceptedContentEncodings\":[\"h\",\"wpn\"]},{\"id\":\"t\",\"name\":\"nermcl\",\"description\":\"lphox\",\"acceptedDataFormats\":[\"rpabg\",\"epsbjtazqu\"],\"acceptedContentEncodings\":[\"wpmueefj\",\"wfqkquj\",\"dsuyonobgla\",\"cq\"]},{\"id\":\"ccm\",\"name\":\"udxytlmoyrx\",\"description\":\"fudwpznt\",\"acceptedDataFormats\":[\"zhlrqjb\",\"ck\"],\"acceptedContentEncodings\":[\"hrxsbk\",\"vpycanuzbp\",\"kafkuwbcrnwbm\"]},{\"id\":\"hseyvju\",\"name\":\"tslhspkdeem\",\"description\":\"fm\",\"acceptedDataFormats\":[\"kv\",\"melmqkrha\",\"vljua\",\"aquhcdhm\"],\"acceptedContentEncodings\":[\"laexqp\",\"fadmws\",\"crgvxpvgom\",\"lf\"]}],\"skus\":[{\"id\":\"wbnb\",\"name\":\"ldawkzbaliourqha\",\"version\":\"uhashsfwx\",\"description\":\"owzxcu\",\"restrictedAccessUri\":\"cjooxdjebwpucwwf\",\"autoAdd\":false,\"targets\":[\"meue\",\"ivyhzceuojgjrwju\"],\"quotaDimensions\":[{\"id\":\"wmcdytdxwi\",\"scope\":\"nrjawgqwg\",\"period\":\"ni\",\"quota\":5.4993095,\"name\":\"bkpyc\",\"description\":\"lwn\",\"unit\":\"hjdauwhvylwz\",\"unitPlural\":\"dhxujznbmpo\"},{\"id\":\"wpr\",\"scope\":\"lve\",\"period\":\"lupj\",\"quota\":80.70111,\"name\":\"xobbcswsrt\",\"description\":\"iplrbpbewtghfgb\",\"unit\":\"gw\",\"unitPlural\":\"vlvqhjkbegi\"}],\"pricingDetails\":[{\"id\":\"xiebwwaloayqcg\",\"value\":\"tzjuzgwyzmhtxo\"},{\"id\":\"mtsavjcbpwxqp\",\"value\":\"knftguvriuh\"},{\"id\":\"wmdyvxqtay\",\"value\":\"ww\"},{\"id\":\"yqbexrmcqibycno\",\"value\":\"knme\"}]},{\"id\":\"sgzvahapjyzhpv\",\"name\":\"zcjrvxdjzlmwlx\",\"version\":\"ug\",\"description\":\"zovawjvz\",\"restrictedAccessUri\":\"luthn\",\"autoAdd\":false,\"targets\":[\"i\",\"eilpjzuaejxdu\",\"tskzbbtdzumveek\",\"pwo\"],\"quotaDimensions\":[{\"id\":\"fpbsjyofdxl\",\"scope\":\"sd\",\"period\":\"ouwaboekqvkeln\",\"quota\":63.19878,\"name\":\"xwyjsflhhc\",\"description\":\"lnjixisxya\",\"unit\":\"oyaqcslyjpkiid\",\"unitPlural\":\"exznelixhnr\"},{\"id\":\"folhbnxknal\",\"scope\":\"lp\",\"period\":\"gdtpnapnyiro\",\"quota\":27.694834,\"name\":\"igvpgylg\",\"description\":\"itxmedjvcslynqww\",\"unit\":\"wzz\",\"unitPlural\":\"gktrmgucnapkte\"}],\"pricingDetails\":[{\"id\":\"wptfdy\",\"value\":\"fqbuaceopzf\"},{\"id\":\"hhuao\",\"value\":\"pcqeqx\"}]},{\"id\":\"z\",\"name\":\"hzxct\",\"version\":\"gbkdmoizpos\",\"description\":\"grcfb\",\"restrictedAccessUri\":\"rmfqjhhkxbpvj\",\"autoAdd\":false,\"targets\":[\"xjyngudivk\",\"tswb\",\"qzvszjf\",\"uvjfdxxive\"],\"quotaDimensions\":[{\"id\":\"qaqtdoqmcbxvwvxy\",\"scope\":\"qbhsfxobl\",\"period\":\"k\",\"quota\":19.958847,\"name\":\"ewwwfbkrvrnsv\",\"description\":\"q\",\"unit\":\"hxcr\",\"unitPlural\":\"fovasr\"}],\"pricingDetails\":[{\"id\":\"bhsqfsubcgjbirxb\",\"value\":\"bsrfbj\"}]}],\"quotaDimensions\":[{\"id\":\"ssotftpv\",\"scope\":\"bexilzznfqqnv\",\"period\":\"mqtaruoujmkcjh\",\"quota\":83.08001,\"name\":\"jrybnwjewgdrjer\",\"description\":\"aen\",\"unit\":\"eh\",\"unitPlural\":\"doy\"}],\"pricingDimensions\":[{\"id\":\"thnzd\",\"name\":\"sl\"},{\"id\":\"ayqigynduhav\",\"name\":\"lkthu\"}]}")
-                .toObject(ProviderProperties.class);
-        Assertions.assertEquals("upqsx", model.targets().get(0).id());
-        Assertions.assertEquals("micykvceoveilo", model.targets().get(0).name());
-        Assertions.assertEquals("oty", model.targets().get(0).description());
-        Assertions.assertEquals("cnjbkcnxdhbt", model.targets().get(0).acceptedDataFormats().get(0));
-        Assertions.assertEquals("h", model.targets().get(0).acceptedContentEncodings().get(0));
-        Assertions.assertEquals("wbnb", model.skus().get(0).id());
-        Assertions.assertEquals("ldawkzbaliourqha", model.skus().get(0).name());
-        Assertions.assertEquals("uhashsfwx", model.skus().get(0).version());
-        Assertions.assertEquals("owzxcu", model.skus().get(0).description());
-        Assertions.assertEquals("cjooxdjebwpucwwf", model.skus().get(0).restrictedAccessUri());
+        ProviderProperties model = BinaryData.fromString(
+            "{\"description\":\"ebwpucwwfvo\",\"providerType\":\"vmeueci\",\"company\":\"hzceuojgjrwjue\",\"defaultEndpoint\":\"twm\",\"aad\":{\"applicationId\":\"tdx\",\"tenantId\":\"txnrjaw\"},\"managedApplication\":{\"publisherId\":\"gxhnisk\",\"offerId\":\"bkpyc\"},\"targets\":[{\"id\":\"ndnhj\",\"name\":\"uwhvylwzbtdhxujz\",\"description\":\"mpowuwpr\",\"acceptedDataFormats\":[\"veual\"],\"acceptedContentEncodings\":[\"mkh\"]}],\"skus\":[{\"id\":\"bcswsrt\",\"name\":\"iplrbpbewtghfgb\",\"version\":\"gw\",\"description\":\"vlvqhjkbegi\",\"restrictedAccessUri\":\"nmxiebwwaloayqc\",\"autoAdd\":false,\"targets\":[\"j\",\"zg\"],\"quotaDimensions\":[{\"id\":\"htxongmtsavjc\",\"scope\":\"wxqpsrknftguvri\",\"period\":\"prwmdyvxqt\",\"quota\":42.644672,\"name\":\"ww\",\"description\":\"yqbexrmcqibycno\",\"unit\":\"knme\",\"unitPlural\":\"sgzvahapjyzhpv\"}],\"pricingDetails\":[{\"id\":\"j\",\"value\":\"xdjzlmwlxk\"},{\"id\":\"gfhzovawjvzunlut\",\"value\":\"n\"},{\"id\":\"nxipeil\",\"value\":\"zuaejxd\"},{\"id\":\"tskzbbtdzumveek\",\"value\":\"wozuhkf\"}]}],\"quotaDimensions\":[{\"id\":\"yofd\",\"scope\":\"uusdttouwa\",\"period\":\"ekqvkeln\",\"quota\":63.19878,\"name\":\"xwyjsflhhc\",\"description\":\"lnjixisxya\",\"unit\":\"oyaqcslyjpkiid\",\"unitPlural\":\"exznelixhnr\"},{\"id\":\"folhbnxknal\",\"scope\":\"lp\",\"period\":\"gdtpnapnyiro\",\"quota\":27.694834,\"name\":\"igvpgylg\",\"description\":\"itxmedjvcslynqww\",\"unit\":\"wzz\",\"unitPlural\":\"gktrmgucnapkte\"}],\"pricingDimensions\":[{\"id\":\"wptfdy\",\"name\":\"fqbuaceopzf\"},{\"id\":\"hhuao\",\"name\":\"pcqeqx\"}]}")
+            .toObject(ProviderProperties.class);
+        Assertions.assertEquals("ndnhj", model.targets().get(0).id());
+        Assertions.assertEquals("uwhvylwzbtdhxujz", model.targets().get(0).name());
+        Assertions.assertEquals("mpowuwpr", model.targets().get(0).description());
+        Assertions.assertEquals("veual", model.targets().get(0).acceptedDataFormats().get(0));
+        Assertions.assertEquals("mkh", model.targets().get(0).acceptedContentEncodings().get(0));
+        Assertions.assertEquals("bcswsrt", model.skus().get(0).id());
+        Assertions.assertEquals("iplrbpbewtghfgb", model.skus().get(0).name());
+        Assertions.assertEquals("gw", model.skus().get(0).version());
+        Assertions.assertEquals("vlvqhjkbegi", model.skus().get(0).description());
+        Assertions.assertEquals("nmxiebwwaloayqc", model.skus().get(0).restrictedAccessUri());
         Assertions.assertEquals(false, model.skus().get(0).autoAdd());
-        Assertions.assertEquals("meue", model.skus().get(0).targets().get(0));
-        Assertions.assertEquals("wmcdytdxwi", model.skus().get(0).quotaDimensions().get(0).id());
-        Assertions.assertEquals("nrjawgqwg", model.skus().get(0).quotaDimensions().get(0).scope());
-        Assertions.assertEquals("ni", model.skus().get(0).quotaDimensions().get(0).period());
-        Assertions.assertEquals(5.4993095F, model.skus().get(0).quotaDimensions().get(0).quota());
-        Assertions.assertEquals("bkpyc", model.skus().get(0).quotaDimensions().get(0).name());
-        Assertions.assertEquals("lwn", model.skus().get(0).quotaDimensions().get(0).description());
-        Assertions.assertEquals("hjdauwhvylwz", model.skus().get(0).quotaDimensions().get(0).unit());
-        Assertions.assertEquals("dhxujznbmpo", model.skus().get(0).quotaDimensions().get(0).unitPlural());
-        Assertions.assertEquals("xiebwwaloayqcg", model.skus().get(0).pricingDetails().get(0).id());
-        Assertions.assertEquals("tzjuzgwyzmhtxo", model.skus().get(0).pricingDetails().get(0).value());
-        Assertions.assertEquals("ssotftpv", model.quotaDimensions().get(0).id());
-        Assertions.assertEquals("bexilzznfqqnv", model.quotaDimensions().get(0).scope());
-        Assertions.assertEquals("mqtaruoujmkcjh", model.quotaDimensions().get(0).period());
-        Assertions.assertEquals(83.08001F, model.quotaDimensions().get(0).quota());
-        Assertions.assertEquals("jrybnwjewgdrjer", model.quotaDimensions().get(0).name());
-        Assertions.assertEquals("aen", model.quotaDimensions().get(0).description());
-        Assertions.assertEquals("eh", model.quotaDimensions().get(0).unit());
-        Assertions.assertEquals("doy", model.quotaDimensions().get(0).unitPlural());
-        Assertions.assertEquals("thnzd", model.pricingDimensions().get(0).id());
-        Assertions.assertEquals("sl", model.pricingDimensions().get(0).name());
+        Assertions.assertEquals("j", model.skus().get(0).targets().get(0));
+        Assertions.assertEquals("htxongmtsavjc", model.skus().get(0).quotaDimensions().get(0).id());
+        Assertions.assertEquals("wxqpsrknftguvri", model.skus().get(0).quotaDimensions().get(0).scope());
+        Assertions.assertEquals("prwmdyvxqt", model.skus().get(0).quotaDimensions().get(0).period());
+        Assertions.assertEquals(42.644672F, model.skus().get(0).quotaDimensions().get(0).quota());
+        Assertions.assertEquals("ww", model.skus().get(0).quotaDimensions().get(0).name());
+        Assertions.assertEquals("yqbexrmcqibycno", model.skus().get(0).quotaDimensions().get(0).description());
+        Assertions.assertEquals("knme", model.skus().get(0).quotaDimensions().get(0).unit());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.skus().get(0).quotaDimensions().get(0).unitPlural());
+        Assertions.assertEquals("j", model.skus().get(0).pricingDetails().get(0).id());
+        Assertions.assertEquals("xdjzlmwlxk", model.skus().get(0).pricingDetails().get(0).value());
+        Assertions.assertEquals("yofd", model.quotaDimensions().get(0).id());
+        Assertions.assertEquals("uusdttouwa", model.quotaDimensions().get(0).scope());
+        Assertions.assertEquals("ekqvkeln", model.quotaDimensions().get(0).period());
+        Assertions.assertEquals(63.19878F, model.quotaDimensions().get(0).quota());
+        Assertions.assertEquals("xwyjsflhhc", model.quotaDimensions().get(0).name());
+        Assertions.assertEquals("lnjixisxya", model.quotaDimensions().get(0).description());
+        Assertions.assertEquals("oyaqcslyjpkiid", model.quotaDimensions().get(0).unit());
+        Assertions.assertEquals("exznelixhnr", model.quotaDimensions().get(0).unitPlural());
+        Assertions.assertEquals("wptfdy", model.pricingDimensions().get(0).id());
+        Assertions.assertEquals("fqbuaceopzf", model.pricingDimensions().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProviderProperties model =
-            new ProviderProperties()
-                .withAad(new ProviderPropertiesAad())
-                .withManagedApplication(new ProviderPropertiesManagedApplication())
-                .withTargets(
-                    Arrays
-                        .asList(
-                            new TargetDescription()
-                                .withId("upqsx")
-                                .withName("micykvceoveilo")
-                                .withDescription("oty")
-                                .withAcceptedDataFormats(Arrays.asList("cnjbkcnxdhbt"))
-                                .withAcceptedContentEncodings(Arrays.asList("h", "wpn")),
-                            new TargetDescription()
-                                .withId("t")
-                                .withName("nermcl")
-                                .withDescription("lphox")
-                                .withAcceptedDataFormats(Arrays.asList("rpabg", "epsbjtazqu"))
-                                .withAcceptedContentEncodings(
-                                    Arrays.asList("wpmueefj", "wfqkquj", "dsuyonobgla", "cq")),
-                            new TargetDescription()
-                                .withId("ccm")
-                                .withName("udxytlmoyrx")
-                                .withDescription("fudwpznt")
-                                .withAcceptedDataFormats(Arrays.asList("zhlrqjb", "ck"))
-                                .withAcceptedContentEncodings(Arrays.asList("hrxsbk", "vpycanuzbp", "kafkuwbcrnwbm")),
-                            new TargetDescription()
-                                .withId("hseyvju")
-                                .withName("tslhspkdeem")
-                                .withDescription("fm")
-                                .withAcceptedDataFormats(Arrays.asList("kv", "melmqkrha", "vljua", "aquhcdhm"))
-                                .withAcceptedContentEncodings(Arrays.asList("laexqp", "fadmws", "crgvxpvgom", "lf"))))
-                .withSkus(
-                    Arrays
-                        .asList(
-                            new SkuDescription()
-                                .withId("wbnb")
-                                .withName("ldawkzbaliourqha")
-                                .withVersion("uhashsfwx")
-                                .withDescription("owzxcu")
-                                .withRestrictedAccessUri("cjooxdjebwpucwwf")
-                                .withAutoAdd(false)
-                                .withTargets(Arrays.asList("meue", "ivyhzceuojgjrwju"))
-                                .withQuotaDimensions(
-                                    Arrays
-                                        .asList(
-                                            new QuotaDimension()
-                                                .withId("wmcdytdxwi")
-                                                .withScope("nrjawgqwg")
-                                                .withPeriod("ni")
-                                                .withQuota(5.4993095F)
-                                                .withName("bkpyc")
-                                                .withDescription("lwn")
-                                                .withUnit("hjdauwhvylwz")
-                                                .withUnitPlural("dhxujznbmpo"),
-                                            new QuotaDimension()
-                                                .withId("wpr")
-                                                .withScope("lve")
-                                                .withPeriod("lupj")
-                                                .withQuota(80.70111F)
-                                                .withName("xobbcswsrt")
-                                                .withDescription("iplrbpbewtghfgb")
-                                                .withUnit("gw")
-                                                .withUnitPlural("vlvqhjkbegi")))
-                                .withPricingDetails(
-                                    Arrays
-                                        .asList(
-                                            new PricingDetail().withId("xiebwwaloayqcg").withValue("tzjuzgwyzmhtxo"),
-                                            new PricingDetail().withId("mtsavjcbpwxqp").withValue("knftguvriuh"),
-                                            new PricingDetail().withId("wmdyvxqtay").withValue("ww"),
-                                            new PricingDetail().withId("yqbexrmcqibycno").withValue("knme"))),
-                            new SkuDescription()
-                                .withId("sgzvahapjyzhpv")
-                                .withName("zcjrvxdjzlmwlx")
-                                .withVersion("ug")
-                                .withDescription("zovawjvz")
-                                .withRestrictedAccessUri("luthn")
-                                .withAutoAdd(false)
-                                .withTargets(Arrays.asList("i", "eilpjzuaejxdu", "tskzbbtdzumveek", "pwo"))
-                                .withQuotaDimensions(
-                                    Arrays
-                                        .asList(
-                                            new QuotaDimension()
-                                                .withId("fpbsjyofdxl")
-                                                .withScope("sd")
-                                                .withPeriod("ouwaboekqvkeln")
-                                                .withQuota(63.19878F)
-                                                .withName("xwyjsflhhc")
-                                                .withDescription("lnjixisxya")
-                                                .withUnit("oyaqcslyjpkiid")
-                                                .withUnitPlural("exznelixhnr"),
-                                            new QuotaDimension()
-                                                .withId("folhbnxknal")
-                                                .withScope("lp")
-                                                .withPeriod("gdtpnapnyiro")
-                                                .withQuota(27.694834F)
-                                                .withName("igvpgylg")
-                                                .withDescription("itxmedjvcslynqww")
-                                                .withUnit("wzz")
-                                                .withUnitPlural("gktrmgucnapkte")))
-                                .withPricingDetails(
-                                    Arrays
-                                        .asList(
-                                            new PricingDetail().withId("wptfdy").withValue("fqbuaceopzf"),
-                                            new PricingDetail().withId("hhuao").withValue("pcqeqx"))),
-                            new SkuDescription()
-                                .withId("z")
-                                .withName("hzxct")
-                                .withVersion("gbkdmoizpos")
-                                .withDescription("grcfb")
-                                .withRestrictedAccessUri("rmfqjhhkxbpvj")
-                                .withAutoAdd(false)
-                                .withTargets(Arrays.asList("xjyngudivk", "tswb", "qzvszjf", "uvjfdxxive"))
-                                .withQuotaDimensions(
-                                    Arrays
-                                        .asList(
-                                            new QuotaDimension()
-                                                .withId("qaqtdoqmcbxvwvxy")
-                                                .withScope("qbhsfxobl")
-                                                .withPeriod("k")
-                                                .withQuota(19.958847F)
-                                                .withName("ewwwfbkrvrnsv")
-                                                .withDescription("q")
-                                                .withUnit("hxcr")
-                                                .withUnitPlural("fovasr")))
-                                .withPricingDetails(
-                                    Arrays.asList(new PricingDetail().withId("bhsqfsubcgjbirxb").withValue("bsrfbj")))))
-                .withQuotaDimensions(
-                    Arrays
-                        .asList(
-                            new QuotaDimension()
-                                .withId("ssotftpv")
-                                .withScope("bexilzznfqqnv")
-                                .withPeriod("mqtaruoujmkcjh")
-                                .withQuota(83.08001F)
-                                .withName("jrybnwjewgdrjer")
-                                .withDescription("aen")
-                                .withUnit("eh")
-                                .withUnitPlural("doy")))
-                .withPricingDimensions(
-                    Arrays
-                        .asList(
-                            new PricingDimension().withId("thnzd").withName("sl"),
-                            new PricingDimension().withId("ayqigynduhav").withName("lkthu")));
+        ProviderProperties model = new ProviderProperties().withAad(new ProviderPropertiesAad())
+            .withManagedApplication(new ProviderPropertiesManagedApplication())
+            .withTargets(Arrays.asList(new TargetDescription().withId("ndnhj").withName("uwhvylwzbtdhxujz")
+                .withDescription("mpowuwpr").withAcceptedDataFormats(Arrays.asList("veual"))
+                .withAcceptedContentEncodings(Arrays.asList("mkh"))))
+            .withSkus(Arrays.asList(new SkuDescription().withId("bcswsrt").withName("iplrbpbewtghfgb").withVersion("gw")
+                .withDescription("vlvqhjkbegi").withRestrictedAccessUri("nmxiebwwaloayqc").withAutoAdd(false)
+                .withTargets(Arrays.asList("j", "zg"))
+                .withQuotaDimensions(Arrays.asList(new QuotaDimension().withId("htxongmtsavjc")
+                    .withScope("wxqpsrknftguvri").withPeriod("prwmdyvxqt").withQuota(42.644672F).withName("ww")
+                    .withDescription("yqbexrmcqibycno").withUnit("knme").withUnitPlural("sgzvahapjyzhpv")))
+                .withPricingDetails(Arrays.asList(new PricingDetail().withId("j").withValue("xdjzlmwlxk"),
+                    new PricingDetail().withId("gfhzovawjvzunlut").withValue("n"),
+                    new PricingDetail().withId("nxipeil").withValue("zuaejxd"),
+                    new PricingDetail().withId("tskzbbtdzumveek").withValue("wozuhkf")))))
+            .withQuotaDimensions(Arrays.asList(
+                new QuotaDimension().withId("yofd").withScope("uusdttouwa").withPeriod("ekqvkeln").withQuota(63.19878F)
+                    .withName("xwyjsflhhc").withDescription("lnjixisxya").withUnit("oyaqcslyjpkiid")
+                    .withUnitPlural("exznelixhnr"),
+                new QuotaDimension().withId("folhbnxknal").withScope("lp").withPeriod("gdtpnapnyiro")
+                    .withQuota(27.694834F).withName("igvpgylg").withDescription("itxmedjvcslynqww").withUnit("wzz")
+                    .withUnitPlural("gktrmgucnapkte")))
+            .withPricingDimensions(Arrays.asList(new PricingDimension().withId("wptfdy").withName("fqbuaceopzf"),
+                new PricingDimension().withId("hhuao").withName("pcqeqx")));
         model = BinaryData.fromObject(model).toObject(ProviderProperties.class);
-        Assertions.assertEquals("upqsx", model.targets().get(0).id());
-        Assertions.assertEquals("micykvceoveilo", model.targets().get(0).name());
-        Assertions.assertEquals("oty", model.targets().get(0).description());
-        Assertions.assertEquals("cnjbkcnxdhbt", model.targets().get(0).acceptedDataFormats().get(0));
-        Assertions.assertEquals("h", model.targets().get(0).acceptedContentEncodings().get(0));
-        Assertions.assertEquals("wbnb", model.skus().get(0).id());
-        Assertions.assertEquals("ldawkzbaliourqha", model.skus().get(0).name());
-        Assertions.assertEquals("uhashsfwx", model.skus().get(0).version());
-        Assertions.assertEquals("owzxcu", model.skus().get(0).description());
-        Assertions.assertEquals("cjooxdjebwpucwwf", model.skus().get(0).restrictedAccessUri());
+        Assertions.assertEquals("ndnhj", model.targets().get(0).id());
+        Assertions.assertEquals("uwhvylwzbtdhxujz", model.targets().get(0).name());
+        Assertions.assertEquals("mpowuwpr", model.targets().get(0).description());
+        Assertions.assertEquals("veual", model.targets().get(0).acceptedDataFormats().get(0));
+        Assertions.assertEquals("mkh", model.targets().get(0).acceptedContentEncodings().get(0));
+        Assertions.assertEquals("bcswsrt", model.skus().get(0).id());
+        Assertions.assertEquals("iplrbpbewtghfgb", model.skus().get(0).name());
+        Assertions.assertEquals("gw", model.skus().get(0).version());
+        Assertions.assertEquals("vlvqhjkbegi", model.skus().get(0).description());
+        Assertions.assertEquals("nmxiebwwaloayqc", model.skus().get(0).restrictedAccessUri());
         Assertions.assertEquals(false, model.skus().get(0).autoAdd());
-        Assertions.assertEquals("meue", model.skus().get(0).targets().get(0));
-        Assertions.assertEquals("wmcdytdxwi", model.skus().get(0).quotaDimensions().get(0).id());
-        Assertions.assertEquals("nrjawgqwg", model.skus().get(0).quotaDimensions().get(0).scope());
-        Assertions.assertEquals("ni", model.skus().get(0).quotaDimensions().get(0).period());
-        Assertions.assertEquals(5.4993095F, model.skus().get(0).quotaDimensions().get(0).quota());
-        Assertions.assertEquals("bkpyc", model.skus().get(0).quotaDimensions().get(0).name());
-        Assertions.assertEquals("lwn", model.skus().get(0).quotaDimensions().get(0).description());
-        Assertions.assertEquals("hjdauwhvylwz", model.skus().get(0).quotaDimensions().get(0).unit());
-        Assertions.assertEquals("dhxujznbmpo", model.skus().get(0).quotaDimensions().get(0).unitPlural());
-        Assertions.assertEquals("xiebwwaloayqcg", model.skus().get(0).pricingDetails().get(0).id());
-        Assertions.assertEquals("tzjuzgwyzmhtxo", model.skus().get(0).pricingDetails().get(0).value());
-        Assertions.assertEquals("ssotftpv", model.quotaDimensions().get(0).id());
-        Assertions.assertEquals("bexilzznfqqnv", model.quotaDimensions().get(0).scope());
-        Assertions.assertEquals("mqtaruoujmkcjh", model.quotaDimensions().get(0).period());
-        Assertions.assertEquals(83.08001F, model.quotaDimensions().get(0).quota());
-        Assertions.assertEquals("jrybnwjewgdrjer", model.quotaDimensions().get(0).name());
-        Assertions.assertEquals("aen", model.quotaDimensions().get(0).description());
-        Assertions.assertEquals("eh", model.quotaDimensions().get(0).unit());
-        Assertions.assertEquals("doy", model.quotaDimensions().get(0).unitPlural());
-        Assertions.assertEquals("thnzd", model.pricingDimensions().get(0).id());
-        Assertions.assertEquals("sl", model.pricingDimensions().get(0).name());
+        Assertions.assertEquals("j", model.skus().get(0).targets().get(0));
+        Assertions.assertEquals("htxongmtsavjc", model.skus().get(0).quotaDimensions().get(0).id());
+        Assertions.assertEquals("wxqpsrknftguvri", model.skus().get(0).quotaDimensions().get(0).scope());
+        Assertions.assertEquals("prwmdyvxqt", model.skus().get(0).quotaDimensions().get(0).period());
+        Assertions.assertEquals(42.644672F, model.skus().get(0).quotaDimensions().get(0).quota());
+        Assertions.assertEquals("ww", model.skus().get(0).quotaDimensions().get(0).name());
+        Assertions.assertEquals("yqbexrmcqibycno", model.skus().get(0).quotaDimensions().get(0).description());
+        Assertions.assertEquals("knme", model.skus().get(0).quotaDimensions().get(0).unit());
+        Assertions.assertEquals("sgzvahapjyzhpv", model.skus().get(0).quotaDimensions().get(0).unitPlural());
+        Assertions.assertEquals("j", model.skus().get(0).pricingDetails().get(0).id());
+        Assertions.assertEquals("xdjzlmwlxk", model.skus().get(0).pricingDetails().get(0).value());
+        Assertions.assertEquals("yofd", model.quotaDimensions().get(0).id());
+        Assertions.assertEquals("uusdttouwa", model.quotaDimensions().get(0).scope());
+        Assertions.assertEquals("ekqvkeln", model.quotaDimensions().get(0).period());
+        Assertions.assertEquals(63.19878F, model.quotaDimensions().get(0).quota());
+        Assertions.assertEquals("xwyjsflhhc", model.quotaDimensions().get(0).name());
+        Assertions.assertEquals("lnjixisxya", model.quotaDimensions().get(0).description());
+        Assertions.assertEquals("oyaqcslyjpkiid", model.quotaDimensions().get(0).unit());
+        Assertions.assertEquals("exznelixhnr", model.quotaDimensions().get(0).unitPlural());
+        Assertions.assertEquals("wptfdy", model.pricingDimensions().get(0).id());
+        Assertions.assertEquals("fqbuaceopzf", model.pricingDimensions().get(0).name());
     }
 }

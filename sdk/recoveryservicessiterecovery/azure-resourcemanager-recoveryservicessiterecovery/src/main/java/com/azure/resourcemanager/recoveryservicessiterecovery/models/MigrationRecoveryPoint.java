@@ -6,39 +6,41 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.MigrationRecoveryPointInner;
 
-/** An immutable client-side representation of MigrationRecoveryPoint. */
+/**
+ * An immutable client-side representation of MigrationRecoveryPoint.
+ */
 public interface MigrationRecoveryPoint {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Recovery point properties.
-     *
+     * 
      * @return the properties value.
      */
     MigrationRecoveryPointProperties properties();
 
     /**
      * Gets the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     String location();
@@ -46,7 +48,7 @@ public interface MigrationRecoveryPoint {
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.MigrationRecoveryPointInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     MigrationRecoveryPointInner innerModel();

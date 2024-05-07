@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The network rule set for a container registry. */
+/**
+ * The network rule set for a container registry.
+ */
 @Fluent
 public final class NetworkRuleSet {
     /*
@@ -24,13 +26,15 @@ public final class NetworkRuleSet {
     @JsonProperty(value = "ipRules")
     private List<IpRule> ipRules;
 
-    /** Creates an instance of NetworkRuleSet class. */
+    /**
+     * Creates an instance of NetworkRuleSet class.
+     */
     public NetworkRuleSet() {
     }
 
     /**
      * Get the defaultAction property: The default action of allow or deny when no other rules match.
-     *
+     * 
      * @return the defaultAction value.
      */
     public DefaultAction defaultAction() {
@@ -39,7 +43,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the defaultAction property: The default action of allow or deny when no other rules match.
-     *
+     * 
      * @param defaultAction the defaultAction value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkRuleSet {
 
     /**
      * Get the ipRules property: The IP ACL rules.
-     *
+     * 
      * @return the ipRules value.
      */
     public List<IpRule> ipRules() {
@@ -59,7 +63,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the ipRules property: The IP ACL rules.
-     *
+     * 
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -70,14 +74,13 @@ public final class NetworkRuleSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (defaultAction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property defaultAction in model NetworkRuleSet"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property defaultAction in model NetworkRuleSet"));
         }
         if (ipRules() != null) {
             ipRules().forEach(e -> e.validate());

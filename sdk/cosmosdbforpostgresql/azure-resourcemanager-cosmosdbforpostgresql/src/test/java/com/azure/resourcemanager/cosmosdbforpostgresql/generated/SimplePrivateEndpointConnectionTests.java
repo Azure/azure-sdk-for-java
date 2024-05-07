@@ -15,37 +15,29 @@ import org.junit.jupiter.api.Assertions;
 public final class SimplePrivateEndpointConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SimplePrivateEndpointConnection model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"privateEndpoint\":{\"id\":\"pazlobcufpdz\"},\"groupIds\":[\"t\",\"qqjnqgl\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"foooj\",\"actionsRequired\":\"ifsqesaagdfmg\"}},\"id\":\"lhjxr\",\"name\":\"f\",\"type\":\"wmrvktsizntocipa\"}")
-                .toObject(SimplePrivateEndpointConnection.class);
+        SimplePrivateEndpointConnection model = BinaryData.fromString(
+            "{\"properties\":{\"privateEndpoint\":{\"id\":\"pazlobcufpdz\"},\"groupIds\":[\"t\",\"qqjnqgl\"],\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"foooj\",\"actionsRequired\":\"ifsqesaagdfmg\"}},\"id\":\"lhjxr\",\"name\":\"f\",\"type\":\"wmrvktsizntocipa\"}")
+            .toObject(SimplePrivateEndpointConnection.class);
         Assertions.assertEquals("pazlobcufpdz", model.privateEndpoint().id());
         Assertions.assertEquals("t", model.groupIds().get(0));
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.PENDING, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+            model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("foooj", model.privateLinkServiceConnectionState().description());
         Assertions.assertEquals("ifsqesaagdfmg", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SimplePrivateEndpointConnection model =
-            new SimplePrivateEndpointConnection()
-                .withPrivateEndpoint(new PrivateEndpointProperty().withId("pazlobcufpdz"))
-                .withGroupIds(Arrays.asList("t", "qqjnqgl"))
-                .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                        .withDescription("foooj")
-                        .withActionsRequired("ifsqesaagdfmg"));
+        SimplePrivateEndpointConnection model = new SimplePrivateEndpointConnection()
+            .withPrivateEndpoint(new PrivateEndpointProperty().withId("pazlobcufpdz"))
+            .withGroupIds(Arrays.asList("t", "qqjnqgl")).withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                    .withDescription("foooj").withActionsRequired("ifsqesaagdfmg"));
         model = BinaryData.fromObject(model).toObject(SimplePrivateEndpointConnection.class);
         Assertions.assertEquals("pazlobcufpdz", model.privateEndpoint().id());
         Assertions.assertEquals("t", model.groupIds().get(0));
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.PENDING, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+            model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("foooj", model.privateLinkServiceConnectionState().description());
         Assertions.assertEquals("ifsqesaagdfmg", model.privateLinkServiceConnectionState().actionsRequired());
     }

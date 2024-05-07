@@ -224,6 +224,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -439,6 +444,16 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfileWebAppRouting",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -500,6 +515,16 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.containerservice.models.IstioPluginCertificateAuthority",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.containerservice.models.ManagedClusterCostAnalysis",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

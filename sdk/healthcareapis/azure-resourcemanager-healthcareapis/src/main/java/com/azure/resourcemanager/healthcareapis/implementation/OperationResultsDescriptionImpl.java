@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.healthcareapis.implementation;
 
 import com.azure.resourcemanager.healthcareapis.fluent.models.OperationResultsDescriptionInner;
-import com.azure.resourcemanager.healthcareapis.models.OperationResultStatus;
 import com.azure.resourcemanager.healthcareapis.models.OperationResultsDescription;
+import com.azure.resourcemanager.healthcareapis.models.OperationResultStatus;
 
 public final class OperationResultsDescriptionImpl implements OperationResultsDescription {
     private OperationResultsDescriptionInner innerObject;

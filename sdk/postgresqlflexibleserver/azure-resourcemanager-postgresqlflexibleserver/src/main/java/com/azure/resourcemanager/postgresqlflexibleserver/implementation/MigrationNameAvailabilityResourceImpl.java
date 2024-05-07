@@ -13,8 +13,7 @@ public final class MigrationNameAvailabilityResourceImpl implements MigrationNam
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    MigrationNameAvailabilityResourceImpl(
-        MigrationNameAvailabilityResourceInner innerObject,
+    MigrationNameAvailabilityResourceImpl(MigrationNameAvailabilityResourceInner innerObject,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

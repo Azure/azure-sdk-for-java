@@ -6,166 +6,70 @@ package com.azure.resourcemanager.hdinsight.containers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterComponentsItem;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterVersionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** Available cluster version. */
+/**
+ * Available cluster version.
+ */
 @Fluent
 public final class ClusterVersionInner extends ProxyResource {
     /*
      * Cluster version properties.
      */
     @JsonProperty(value = "properties")
-    private ClusterVersionProperties innerProperties;
+    private ClusterVersionProperties properties;
 
-    /** Creates an instance of ClusterVersionInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of ClusterVersionInner class.
+     */
     public ClusterVersionInner() {
     }
 
     /**
-     * Get the innerProperties property: Cluster version properties.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: Cluster version properties.
+     * 
+     * @return the properties value.
      */
-    private ClusterVersionProperties innerProperties() {
-        return this.innerProperties;
+    public ClusterVersionProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the clusterType property: The type of cluster.
-     *
-     * @return the clusterType value.
-     */
-    public String clusterType() {
-        return this.innerProperties() == null ? null : this.innerProperties().clusterType();
-    }
-
-    /**
-     * Set the clusterType property: The type of cluster.
-     *
-     * @param clusterType the clusterType value to set.
+     * Set the properties property: Cluster version properties.
+     * 
+     * @param properties the properties value to set.
      * @return the ClusterVersionInner object itself.
      */
-    public ClusterVersionInner withClusterType(String clusterType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterVersionProperties();
-        }
-        this.innerProperties().withClusterType(clusterType);
+    public ClusterVersionInner withProperties(ClusterVersionProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the clusterVersion property: Version with three part.
-     *
-     * @return the clusterVersion value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String clusterVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().clusterVersion();
-    }
-
-    /**
-     * Set the clusterVersion property: Version with three part.
-     *
-     * @param clusterVersion the clusterVersion value to set.
-     * @return the ClusterVersionInner object itself.
-     */
-    public ClusterVersionInner withClusterVersion(String clusterVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterVersionProperties();
-        }
-        this.innerProperties().withClusterVersion(clusterVersion);
-        return this;
-    }
-
-    /**
-     * Get the ossVersion property: Version with three part.
-     *
-     * @return the ossVersion value.
-     */
-    public String ossVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().ossVersion();
-    }
-
-    /**
-     * Set the ossVersion property: Version with three part.
-     *
-     * @param ossVersion the ossVersion value to set.
-     * @return the ClusterVersionInner object itself.
-     */
-    public ClusterVersionInner withOssVersion(String ossVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterVersionProperties();
-        }
-        this.innerProperties().withOssVersion(ossVersion);
-        return this;
-    }
-
-    /**
-     * Get the clusterPoolVersion property: The two part cluster pool version. If the cluster version is before cluster
-     * pool version on-board, the return value will be empty string.
-     *
-     * @return the clusterPoolVersion value.
-     */
-    public String clusterPoolVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().clusterPoolVersion();
-    }
-
-    /**
-     * Set the clusterPoolVersion property: The two part cluster pool version. If the cluster version is before cluster
-     * pool version on-board, the return value will be empty string.
-     *
-     * @param clusterPoolVersion the clusterPoolVersion value to set.
-     * @return the ClusterVersionInner object itself.
-     */
-    public ClusterVersionInner withClusterPoolVersion(String clusterPoolVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterVersionProperties();
-        }
-        this.innerProperties().withClusterPoolVersion(clusterPoolVersion);
-        return this;
-    }
-
-    /**
-     * Get the isPreview property: Indicate if this version is in preview or not.
-     *
-     * @return the isPreview value.
-     */
-    public Boolean isPreview() {
-        return this.innerProperties() == null ? null : this.innerProperties().isPreview();
-    }
-
-    /**
-     * Set the isPreview property: Indicate if this version is in preview or not.
-     *
-     * @param isPreview the isPreview value to set.
-     * @return the ClusterVersionInner object itself.
-     */
-    public ClusterVersionInner withIsPreview(Boolean isPreview) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterVersionProperties();
-        }
-        this.innerProperties().withIsPreview(isPreview);
-        return this;
-    }
-
-    /**
-     * Get the components property: Component list of this cluster type and version.
-     *
-     * @return the components value.
-     */
-    public List<ClusterComponentsItem> components() {
-        return this.innerProperties() == null ? null : this.innerProperties().components();
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

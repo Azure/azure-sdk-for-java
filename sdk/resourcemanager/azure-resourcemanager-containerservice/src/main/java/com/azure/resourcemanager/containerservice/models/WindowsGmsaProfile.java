@@ -7,12 +7,14 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Windows gMSA Profile in the managed cluster. */
+/**
+ * Windows gMSA Profile in the managed cluster.
+ */
 @Fluent
 public final class WindowsGmsaProfile {
     /*
      * Whether to enable Windows gMSA.
-     *
+     * 
      * Specifies whether to enable Windows gMSA in the managed cluster.
      */
     @JsonProperty(value = "enabled")
@@ -32,15 +34,17 @@ public final class WindowsGmsaProfile {
     @JsonProperty(value = "rootDomainName")
     private String rootDomainName;
 
-    /** Creates an instance of WindowsGmsaProfile class. */
+    /**
+     * Creates an instance of WindowsGmsaProfile class.
+     */
     public WindowsGmsaProfile() {
     }
 
     /**
      * Get the enabled property: Whether to enable Windows gMSA.
-     *
-     * <p>Specifies whether to enable Windows gMSA in the managed cluster.
-     *
+     * 
+     * Specifies whether to enable Windows gMSA in the managed cluster.
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -49,9 +53,9 @@ public final class WindowsGmsaProfile {
 
     /**
      * Set the enabled property: Whether to enable Windows gMSA.
-     *
-     * <p>Specifies whether to enable Windows gMSA in the managed cluster.
-     *
+     * 
+     * Specifies whether to enable Windows gMSA in the managed cluster.
+     * 
      * @param enabled the enabled value to set.
      * @return the WindowsGmsaProfile object itself.
      */
@@ -63,7 +67,7 @@ public final class WindowsGmsaProfile {
     /**
      * Get the dnsServer property: Specifies the DNS server for Windows gMSA. &lt;br&gt;&lt;br&gt; Set it to empty if
      * you have configured the DNS server in the vnet which is used to create the managed cluster.
-     *
+     * 
      * @return the dnsServer value.
      */
     public String dnsServer() {
@@ -73,7 +77,7 @@ public final class WindowsGmsaProfile {
     /**
      * Set the dnsServer property: Specifies the DNS server for Windows gMSA. &lt;br&gt;&lt;br&gt; Set it to empty if
      * you have configured the DNS server in the vnet which is used to create the managed cluster.
-     *
+     * 
      * @param dnsServer the dnsServer value to set.
      * @return the WindowsGmsaProfile object itself.
      */
@@ -85,7 +89,7 @@ public final class WindowsGmsaProfile {
     /**
      * Get the rootDomainName property: Specifies the root domain name for Windows gMSA. &lt;br&gt;&lt;br&gt; Set it to
      * empty if you have configured the DNS server in the vnet which is used to create the managed cluster.
-     *
+     * 
      * @return the rootDomainName value.
      */
     public String rootDomainName() {
@@ -95,7 +99,7 @@ public final class WindowsGmsaProfile {
     /**
      * Set the rootDomainName property: Specifies the root domain name for Windows gMSA. &lt;br&gt;&lt;br&gt; Set it to
      * empty if you have configured the DNS server in the vnet which is used to create the managed cluster.
-     *
+     * 
      * @param rootDomainName the rootDomainName value to set.
      * @return the WindowsGmsaProfile object itself.
      */
@@ -106,7 +110,7 @@ public final class WindowsGmsaProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ProblemClassifications. */
+/**
+ * Resource collection API of ProblemClassifications.
+ */
 public interface ProblemClassifications {
     /**
      * Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
      * and problem classifications obtained programmatically. This practice ensures that you always have the most recent
      * set of service and problem classification Ids.
-     *
+     * 
      * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -27,7 +29,7 @@ public interface ProblemClassifications {
      * Lists all the problem classifications (categories) available for a specific Azure service. Always use the service
      * and problem classifications obtained programmatically. This practice ensures that you always have the most recent
      * set of service and problem classification Ids.
-     *
+     * 
      * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -39,7 +41,7 @@ public interface ProblemClassifications {
 
     /**
      * Get problem classification details for a specific Azure service.
-     *
+     * 
      * @param serviceName Name of the Azure service available for support.
      * @param problemClassificationName Name of problem classification.
      * @param context The context to associate with this operation.
@@ -48,12 +50,12 @@ public interface ProblemClassifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return problem classification details for a specific Azure service along with {@link Response}.
      */
-    Response<ProblemClassification> getWithResponse(
-        String serviceName, String problemClassificationName, Context context);
+    Response<ProblemClassification> getWithResponse(String serviceName, String problemClassificationName,
+        Context context);
 
     /**
      * Get problem classification details for a specific Azure service.
-     *
+     * 
      * @param serviceName Name of the Azure service available for support.
      * @param problemClassificationName Name of problem classification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

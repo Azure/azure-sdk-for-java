@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.ProtectableItemInner;
 
-/** An instance of this class provides access to all the operations defined in ReplicationProtectableItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationProtectableItemsClient.
+ */
 public interface ReplicationProtectableItemsClient {
     /**
      * Gets the list of protectable items.
-     *
-     * <p>Lists the protectable items in a protection container.
-     *
+     * 
+     * Lists the protectable items in a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -28,14 +30,14 @@ public interface ReplicationProtectableItemsClient {
      * @return protectable item collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName);
+    PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName);
 
     /**
      * Gets the list of protectable items.
-     *
-     * <p>Lists the protectable items in a protection container.
-     *
+     * 
+     * Lists the protectable items in a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -50,21 +52,15 @@ public interface ReplicationProtectableItemsClient {
      * @return protectable item collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String filter,
-        String take,
-        String skipToken,
-        Context context);
+    PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName, String filter, String take,
+        String skipToken, Context context);
 
     /**
      * Gets the details of a protectable item.
-     *
-     * <p>The operation to get the details of a protectable item.
-     *
+     * 
+     * The operation to get the details of a protectable item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -77,19 +73,14 @@ public interface ReplicationProtectableItemsClient {
      * @return replication protected item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectableItemInner> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String protectableItemName,
-        Context context);
+    Response<ProtectableItemInner> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String protectableItemName, Context context);
 
     /**
      * Gets the details of a protectable item.
-     *
-     * <p>The operation to get the details of a protectable item.
-     *
+     * 
+     * The operation to get the details of a protectable item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -101,10 +92,6 @@ public interface ReplicationProtectableItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectableItemInner get(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String protectableItemName);
+    ProtectableItemInner get(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String protectableItemName);
 }

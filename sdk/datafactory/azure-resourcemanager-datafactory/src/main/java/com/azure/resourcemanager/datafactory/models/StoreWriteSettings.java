@@ -10,19 +10,17 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Connector write settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = StoreWriteSettings.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = StoreWriteSettings.class, visible = true)
 @JsonTypeName("StoreWriteSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SftpWriteSettings", value = SftpWriteSettings.class),
@@ -35,15 +33,20 @@ import java.util.Map;
 @Fluent
 public class StoreWriteSettings {
     /*
-     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
-     * integer).
+     * The write setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
+    /*
+     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
 
     /*
-     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType
-     * boolean).
+     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "disableMetricsCollection")
     private Object disableMetricsCollection;
@@ -55,6 +58,12 @@ public class StoreWriteSettings {
     private Object copyBehavior;
 
     /*
+     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType array of objects).
+     */
+    @JsonProperty(value = "metadata")
+    private List<MetadataItem> metadata;
+
+    /*
      * Connector write settings.
      */
     @JsonIgnore
@@ -64,6 +73,16 @@ public class StoreWriteSettings {
      * Creates an instance of StoreWriteSettings class.
      */
     public StoreWriteSettings() {
+        this.type = "StoreWriteSettings";
+    }
+
+    /**
+     * Get the type property: The write setting type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -131,6 +150,28 @@ public class StoreWriteSettings {
     }
 
     /**
+     * Get the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
+     * Expression with resultType array of objects).
+     * 
+     * @return the metadata value.
+     */
+    public List<MetadataItem> metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: Specify the custom metadata to be added to sink data. Type: array of objects (or
+     * Expression with resultType array of objects).
+     * 
+     * @param metadata the metadata value to set.
+     * @return the StoreWriteSettings object itself.
+     */
+    public StoreWriteSettings withMetadata(List<MetadataItem> metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
      * Get the additionalProperties property: Connector write settings.
      * 
      * @return the additionalProperties value.
@@ -165,5 +206,8 @@ public class StoreWriteSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (metadata() != null) {
+            metadata().forEach(e -> e.validate());
+        }
     }
 }

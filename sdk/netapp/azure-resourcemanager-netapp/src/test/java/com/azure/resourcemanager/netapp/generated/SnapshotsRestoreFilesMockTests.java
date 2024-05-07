@@ -47,9 +47,8 @@ public final class SnapshotsRestoreFilesMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.snapshots().restoreFiles(
-            "vzidsxwaab", "mifrygznmma", "ri", "kzobgopxlhsln", "lxieixynllxecwcr", new SnapshotRestoreFiles()
-                .withFilePaths(Arrays.asList("phslhcawjutifdw", "mvi", "orq")).withDestinationPath("ttzhra"),
+        manager.snapshots().restoreFiles("enlsvxeizzgwkln", "rmffeyc", "ckt", "iymerteeammxqi", "kk",
+            new SnapshotRestoreFiles().withFilePaths(Arrays.asList("ddrtkgdojb", "xv")).withDestinationPath("refdee"),
             com.azure.core.util.Context.NONE);
 
     }

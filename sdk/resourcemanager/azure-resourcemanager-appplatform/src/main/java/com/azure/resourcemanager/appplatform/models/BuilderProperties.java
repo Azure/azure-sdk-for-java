@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** KPack Builder properties payload. */
+/**
+ * KPack Builder properties payload.
+ */
 @Fluent
 public final class BuilderProperties {
     /*
@@ -30,8 +32,14 @@ public final class BuilderProperties {
     private List<BuildpacksGroupProperties> buildpackGroups;
 
     /**
+     * Creates an instance of BuilderProperties class.
+     */
+    public BuilderProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Builder provision status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public BuilderProvisioningState provisioningState() {
@@ -40,7 +48,7 @@ public final class BuilderProperties {
 
     /**
      * Get the stack property: Builder cluster stack property.
-     *
+     * 
      * @return the stack value.
      */
     public StackProperties stack() {
@@ -49,7 +57,7 @@ public final class BuilderProperties {
 
     /**
      * Set the stack property: Builder cluster stack property.
-     *
+     * 
      * @param stack the stack value to set.
      * @return the BuilderProperties object itself.
      */
@@ -60,7 +68,7 @@ public final class BuilderProperties {
 
     /**
      * Get the buildpackGroups property: Builder buildpack groups.
-     *
+     * 
      * @return the buildpackGroups value.
      */
     public List<BuildpacksGroupProperties> buildpackGroups() {
@@ -69,7 +77,7 @@ public final class BuilderProperties {
 
     /**
      * Set the buildpackGroups property: Builder buildpack groups.
-     *
+     * 
      * @param buildpackGroups the buildpackGroups value to set.
      * @return the BuilderProperties object itself.
      */
@@ -80,7 +88,7 @@ public final class BuilderProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,38 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Alert Simulator supported bundles. */
+/**
+ * Alert Simulator supported bundles.
+ */
 public final class BundleType extends ExpandableStringEnum<BundleType> {
-    /** Static value AppServices for BundleType. */
+    /**
+     * Static value AppServices for BundleType.
+     */
     public static final BundleType APP_SERVICES = fromString("AppServices");
 
-    /** Static value DNS for BundleType. */
+    /**
+     * Static value DNS for BundleType.
+     */
     public static final BundleType DNS = fromString("DNS");
 
-    /** Static value KeyVaults for BundleType. */
+    /**
+     * Static value KeyVaults for BundleType.
+     */
     public static final BundleType KEY_VAULTS = fromString("KeyVaults");
 
-    /** Static value KubernetesService for BundleType. */
+    /**
+     * Static value KubernetesService for BundleType.
+     */
     public static final BundleType KUBERNETES_SERVICE = fromString("KubernetesService");
 
-    /** Static value ResourceManager for BundleType. */
+    /**
+     * Static value ResourceManager for BundleType.
+     */
     public static final BundleType RESOURCE_MANAGER = fromString("ResourceManager");
 
-    /** Static value SqlServers for BundleType. */
+    /**
+     * Static value SqlServers for BundleType.
+     */
     public static final BundleType SQL_SERVERS = fromString("SqlServers");
 
-    /** Static value StorageAccounts for BundleType. */
+    /**
+     * Static value StorageAccounts for BundleType.
+     */
     public static final BundleType STORAGE_ACCOUNTS = fromString("StorageAccounts");
 
-    /** Static value VirtualMachines for BundleType. */
+    /**
+     * Static value VirtualMachines for BundleType.
+     */
     public static final BundleType VIRTUAL_MACHINES = fromString("VirtualMachines");
 
-    /** Static value CosmosDbs for BundleType. */
+    /**
+     * Static value CosmosDbs for BundleType.
+     */
     public static final BundleType COSMOS_DBS = fromString("CosmosDbs");
 
     /**
      * Creates a new instance of BundleType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +68,7 @@ public final class BundleType extends ExpandableStringEnum<BundleType> {
 
     /**
      * Creates or finds a BundleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BundleType.
      */
@@ -59,7 +79,7 @@ public final class BundleType extends ExpandableStringEnum<BundleType> {
 
     /**
      * Gets known BundleType values.
-     *
+     * 
      * @return known BundleType values.
      */
     public static Collection<BundleType> values() {

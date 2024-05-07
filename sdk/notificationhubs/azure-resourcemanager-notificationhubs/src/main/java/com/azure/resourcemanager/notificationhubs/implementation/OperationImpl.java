@@ -7,14 +7,15 @@ package com.azure.resourcemanager.notificationhubs.implementation;
 import com.azure.resourcemanager.notificationhubs.fluent.models.OperationInner;
 import com.azure.resourcemanager.notificationhubs.models.Operation;
 import com.azure.resourcemanager.notificationhubs.models.OperationDisplay;
+import com.azure.resourcemanager.notificationhubs.models.OperationProperties;
 
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
 
     private final com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager;
 
-    OperationImpl(
-        OperationInner innerObject, com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
+    OperationImpl(OperationInner innerObject,
+        com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -25,6 +26,14 @@ public final class OperationImpl implements Operation {
 
     public OperationDisplay display() {
         return this.innerModel().display();
+    }
+
+    public OperationProperties properties() {
+        return this.innerModel().properties();
+    }
+
+    public Boolean isDataAction() {
+        return this.innerModel().isDataAction();
     }
 
     public OperationInner innerModel() {

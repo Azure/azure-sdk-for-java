@@ -79,6 +79,8 @@ public interface AmqpSendLink extends AmqpLink {
 
     /**
      * Gets the context for this AMQP send link.
+     *
+     * @return The context for this AMQP send link.
      */
     AmqpErrorContext getErrorContext();
 }

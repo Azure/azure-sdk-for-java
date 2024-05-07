@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolAvailableVersi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of available agent pool versions. */
+/**
+ * The list of available agent pool versions.
+ */
 @Fluent
 public final class AgentPoolAvailableVersionsProperties {
     /*
@@ -18,13 +20,15 @@ public final class AgentPoolAvailableVersionsProperties {
     @JsonProperty(value = "agentPoolVersions")
     private List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions;
 
-    /** Creates an instance of AgentPoolAvailableVersionsProperties class. */
+    /**
+     * Creates an instance of AgentPoolAvailableVersionsProperties class.
+     */
     public AgentPoolAvailableVersionsProperties() {
     }
 
     /**
      * Get the agentPoolVersions property: List of versions available for agent pool.
-     *
+     * 
      * @return the agentPoolVersions value.
      */
     public List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions() {
@@ -33,19 +37,19 @@ public final class AgentPoolAvailableVersionsProperties {
 
     /**
      * Set the agentPoolVersions property: List of versions available for agent pool.
-     *
+     * 
      * @param agentPoolVersions the agentPoolVersions value to set.
      * @return the AgentPoolAvailableVersionsProperties object itself.
      */
-    public AgentPoolAvailableVersionsProperties withAgentPoolVersions(
-        List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions) {
+    public AgentPoolAvailableVersionsProperties
+        withAgentPoolVersions(List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions) {
         this.agentPoolVersions = agentPoolVersions;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

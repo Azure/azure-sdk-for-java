@@ -32,50 +32,34 @@ public final class SimsBulkDeleteMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"hwtbbaedorvvm\",\"name\":\"loyg\",\"status\":\"dgwumgxdgdhp\",\"resourceId\":\"gdexjd\",\"startTime\":\"2021-02-07T21:21:29Z\",\"endTime\":\"2020-12-20T10:31:54Z\",\"percentComplete\":95.73648016931433,\"properties\":\"datammwllc\"}";
+        String responseStr
+            = "{\"id\":\"i\",\"name\":\"rpiwrqofulo\",\"status\":\"mjnlexwhcb\",\"resourceId\":\"ibkeph\",\"startTime\":\"2021-05-19T15:44:44Z\",\"endTime\":\"2021-01-05T02:55:46Z\",\"percentComplete\":3.1507250902145123,\"properties\":\"dataoyin\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AsyncOperationStatus response =
-            manager
-                .sims()
-                .bulkDelete(
-                    "atvfuzkaftj",
-                    "vru",
-                    new SimDeleteList().withSims(Arrays.asList("igsyeipqdsmjt", "rqgdgkkil", "plkcsm")),
-                    com.azure.core.util.Context.NONE);
+        AsyncOperationStatus response = manager.sims().bulkDelete("ucygvo", "vyuns",
+            new SimDeleteList().withSims(Arrays.asList("lghieegjlgvvpase", "sgb", "xantuygdhg")),
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hwtbbaedorvvm", response.id());
-        Assertions.assertEquals("loyg", response.name());
-        Assertions.assertEquals("dgwumgxdgdhp", response.status());
-        Assertions.assertEquals("gdexjd", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T21:21:29Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-20T10:31:54Z"), response.endTime());
-        Assertions.assertEquals(95.73648016931433D, response.percentComplete());
+        Assertions.assertEquals("i", response.id());
+        Assertions.assertEquals("rpiwrqofulo", response.name());
+        Assertions.assertEquals("mjnlexwhcb", response.status());
+        Assertions.assertEquals("ibkeph", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T15:44:44Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T02:55:46Z"), response.endTime());
+        Assertions.assertEquals(3.1507250902145123D, response.percentComplete());
     }
 }

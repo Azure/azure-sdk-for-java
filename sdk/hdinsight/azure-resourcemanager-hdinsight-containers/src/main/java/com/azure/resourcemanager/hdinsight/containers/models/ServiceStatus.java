@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the status of a service of a HDInsight on aks cluster. */
+/**
+ * Describes the status of a service of a HDInsight on AKS cluster.
+ */
 @Fluent
 public final class ServiceStatus {
     /*
@@ -29,13 +31,15 @@ public final class ServiceStatus {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of ServiceStatus class. */
+    /**
+     * Creates an instance of ServiceStatus class.
+     */
     public ServiceStatus() {
     }
 
     /**
      * Get the kind property: Kind of the service. E.g. "Zookeeper".
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -44,7 +48,7 @@ public final class ServiceStatus {
 
     /**
      * Set the kind property: Kind of the service. E.g. "Zookeeper".
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ServiceStatus object itself.
      */
@@ -56,7 +60,7 @@ public final class ServiceStatus {
     /**
      * Get the ready property: Indicates if the service is ready / healthy. Values can be "true", "false", "unknown" or
      * anything else.
-     *
+     * 
      * @return the ready value.
      */
     public String ready() {
@@ -66,7 +70,7 @@ public final class ServiceStatus {
     /**
      * Set the ready property: Indicates if the service is ready / healthy. Values can be "true", "false", "unknown" or
      * anything else.
-     *
+     * 
      * @param ready the ready value to set.
      * @return the ServiceStatus object itself.
      */
@@ -77,7 +81,7 @@ public final class ServiceStatus {
 
     /**
      * Get the message property: A message describing the error if any.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -86,7 +90,7 @@ public final class ServiceStatus {
 
     /**
      * Set the message property: A message describing the error if any.
-     *
+     * 
      * @param message the message value to set.
      * @return the ServiceStatus object itself.
      */
@@ -97,19 +101,17 @@ public final class ServiceStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (kind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property kind in model ServiceStatus"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property kind in model ServiceStatus"));
         }
         if (ready() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ready in model ServiceStatus"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ready in model ServiceStatus"));
         }
     }
 

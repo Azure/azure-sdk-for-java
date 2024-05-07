@@ -8,93 +8,121 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Data Protection Manager (DPM) specific backup engine. */
+/**
+ * Data Protection Manager (DPM) specific backup engine.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupEngineType")
 @JsonTypeName("DpmBackupEngine")
 @Fluent
 public final class DpmBackupEngine extends BackupEngineBase {
-    /** Creates an instance of DpmBackupEngine class. */
+    /**
+     * Creates an instance of DpmBackupEngine class.
+     */
     public DpmBackupEngine() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withRegistrationStatus(String registrationStatus) {
         super.withRegistrationStatus(registrationStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withBackupEngineState(String backupEngineState) {
         super.withBackupEngineState(backupEngineState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withCanReRegister(Boolean canReRegister) {
         super.withCanReRegister(canReRegister);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withBackupEngineId(String backupEngineId) {
         super.withBackupEngineId(backupEngineId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withDpmVersion(String dpmVersion) {
         super.withDpmVersion(dpmVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withAzureBackupAgentVersion(String azureBackupAgentVersion) {
         super.withAzureBackupAgentVersion(azureBackupAgentVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withIsAzureBackupAgentUpgradeAvailable(Boolean isAzureBackupAgentUpgradeAvailable) {
         super.withIsAzureBackupAgentUpgradeAvailable(isAzureBackupAgentUpgradeAvailable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withIsDpmUpgradeAvailable(Boolean isDpmUpgradeAvailable) {
         super.withIsDpmUpgradeAvailable(isDpmUpgradeAvailable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmBackupEngine withExtendedInfo(BackupEngineExtendedInfo extendedInfo) {
         super.withExtendedInfo(extendedInfo);
@@ -103,7 +131,7 @@ public final class DpmBackupEngine extends BackupEngineBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

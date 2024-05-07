@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.SecuritySolutionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SecuritySolutionList model. */
+/**
+ * The SecuritySolutionList model.
+ */
 @Fluent
 public final class SecuritySolutionList {
     /*
@@ -24,13 +26,15 @@ public final class SecuritySolutionList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SecuritySolutionList class. */
+    /**
+     * Creates an instance of SecuritySolutionList class.
+     */
     public SecuritySolutionList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<SecuritySolutionInner> value() {
@@ -39,7 +43,7 @@ public final class SecuritySolutionList {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecuritySolutionList object itself.
      */
@@ -50,7 +54,7 @@ public final class SecuritySolutionList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SecuritySolutionList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

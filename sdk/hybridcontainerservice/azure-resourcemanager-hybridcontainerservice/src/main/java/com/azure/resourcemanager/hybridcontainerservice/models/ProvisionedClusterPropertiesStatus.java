@@ -9,27 +9,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * HybridAKSClusterStatus defines the observed state of HybridAKSCluster.
+ * The observed status of the provisioned cluster.
  */
 @Fluent
 public final class ProvisionedClusterPropertiesStatus {
     /*
-     * Status of the control plane components
+     * The detailed status of the provisioned cluster components including addons.
      */
     @JsonProperty(value = "controlPlaneStatus")
     private List<AddonStatusProfile> controlPlaneStatus;
 
     /*
-     * ErrorMessage - Error messages during creation of cluster
+     * The current state of the provisioned cluster.
+     */
+    @JsonProperty(value = "currentState", access = JsonProperty.Access.WRITE_ONLY)
+    private ResourceProvisioningState currentState;
+
+    /*
+     * Error messages during a provisioned cluster operation or steady state.
      */
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
-
-    /*
-     * Contains Provisioning errors
-     */
-    @JsonProperty(value = "operationStatus")
-    private ProvisionedClusterPropertiesStatusOperationStatus operationStatus;
 
     /**
      * Creates an instance of ProvisionedClusterPropertiesStatus class.
@@ -38,7 +38,7 @@ public final class ProvisionedClusterPropertiesStatus {
     }
 
     /**
-     * Get the controlPlaneStatus property: Status of the control plane components.
+     * Get the controlPlaneStatus property: The detailed status of the provisioned cluster components including addons.
      * 
      * @return the controlPlaneStatus value.
      */
@@ -47,7 +47,7 @@ public final class ProvisionedClusterPropertiesStatus {
     }
 
     /**
-     * Set the controlPlaneStatus property: Status of the control plane components.
+     * Set the controlPlaneStatus property: The detailed status of the provisioned cluster components including addons.
      * 
      * @param controlPlaneStatus the controlPlaneStatus value to set.
      * @return the ProvisionedClusterPropertiesStatus object itself.
@@ -58,7 +58,16 @@ public final class ProvisionedClusterPropertiesStatus {
     }
 
     /**
-     * Get the errorMessage property: ErrorMessage - Error messages during creation of cluster.
+     * Get the currentState property: The current state of the provisioned cluster.
+     * 
+     * @return the currentState value.
+     */
+    public ResourceProvisioningState currentState() {
+        return this.currentState;
+    }
+
+    /**
+     * Get the errorMessage property: Error messages during a provisioned cluster operation or steady state.
      * 
      * @return the errorMessage value.
      */
@@ -67,34 +76,13 @@ public final class ProvisionedClusterPropertiesStatus {
     }
 
     /**
-     * Set the errorMessage property: ErrorMessage - Error messages during creation of cluster.
+     * Set the errorMessage property: Error messages during a provisioned cluster operation or steady state.
      * 
      * @param errorMessage the errorMessage value to set.
      * @return the ProvisionedClusterPropertiesStatus object itself.
      */
     public ProvisionedClusterPropertiesStatus withErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
-        return this;
-    }
-
-    /**
-     * Get the operationStatus property: Contains Provisioning errors.
-     * 
-     * @return the operationStatus value.
-     */
-    public ProvisionedClusterPropertiesStatusOperationStatus operationStatus() {
-        return this.operationStatus;
-    }
-
-    /**
-     * Set the operationStatus property: Contains Provisioning errors.
-     * 
-     * @param operationStatus the operationStatus value to set.
-     * @return the ProvisionedClusterPropertiesStatus object itself.
-     */
-    public ProvisionedClusterPropertiesStatus
-        withOperationStatus(ProvisionedClusterPropertiesStatusOperationStatus operationStatus) {
-        this.operationStatus = operationStatus;
         return this;
     }
 
@@ -106,9 +94,6 @@ public final class ProvisionedClusterPropertiesStatus {
     public void validate() {
         if (controlPlaneStatus() != null) {
             controlPlaneStatus().forEach(e -> e.validate());
-        }
-        if (operationStatus() != null) {
-            operationStatus().validate();
         }
     }
 }

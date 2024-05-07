@@ -81,8 +81,8 @@ public final class ProtectedItemResourceImpl
 
     private String protectedItemName;
 
-    public ProtectedItemResourceImpl withExistingProtectionContainer(
-        String vaultName, String resourceGroupName, String fabricName, String containerName) {
+    public ProtectedItemResourceImpl withExistingProtectionContainer(String vaultName, String resourceGroupName,
+        String fabricName, String containerName) {
         this.vaultName = vaultName;
         this.resourceGroupName = resourceGroupName;
         this.fabricName = fabricName;
@@ -91,41 +91,20 @@ public final class ProtectedItemResourceImpl
     }
 
     public ProtectedItemResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectedItems()
-                .createOrUpdateWithResponse(
-                    vaultName,
-                    resourceGroupName,
-                    fabricName,
-                    containerName,
-                    protectedItemName,
-                    this.innerModel(),
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectedItems().createOrUpdateWithResponse(vaultName,
+            resourceGroupName, fabricName, containerName, protectedItemName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProtectedItemResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectedItems()
-                .createOrUpdateWithResponse(
-                    vaultName,
-                    resourceGroupName,
-                    fabricName,
-                    containerName,
-                    protectedItemName,
-                    this.innerModel(),
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectedItems().createOrUpdateWithResponse(vaultName,
+            resourceGroupName, fabricName, containerName, protectedItemName, this.innerModel(), context).getValue();
         return this;
     }
 
-    ProtectedItemResourceImpl(
-        String name, com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
+    ProtectedItemResourceImpl(String name,
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = new ProtectedItemResourceInner();
         this.serviceManager = serviceManager;
         this.protectedItemName = name;
@@ -136,78 +115,40 @@ public final class ProtectedItemResourceImpl
     }
 
     public ProtectedItemResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectedItems()
-                .createOrUpdateWithResponse(
-                    vaultName,
-                    resourceGroupName,
-                    fabricName,
-                    containerName,
-                    protectedItemName,
-                    this.innerModel(),
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectedItems().createOrUpdateWithResponse(vaultName,
+            resourceGroupName, fabricName, containerName, protectedItemName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProtectedItemResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectedItems()
-                .createOrUpdateWithResponse(
-                    vaultName,
-                    resourceGroupName,
-                    fabricName,
-                    containerName,
-                    protectedItemName,
-                    this.innerModel(),
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectedItems().createOrUpdateWithResponse(vaultName,
+            resourceGroupName, fabricName, containerName, protectedItemName, this.innerModel(), context).getValue();
         return this;
     }
 
-    ProtectedItemResourceImpl(
-        ProtectedItemResourceInner innerObject,
+    ProtectedItemResourceImpl(ProtectedItemResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fabricName = Utils.getValueFromIdByName(innerObject.id(), "backupFabrics");
-        this.containerName = Utils.getValueFromIdByName(innerObject.id(), "protectionContainers");
-        this.protectedItemName = Utils.getValueFromIdByName(innerObject.id(), "protectedItems");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.fabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupFabrics");
+        this.containerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "protectionContainers");
+        this.protectedItemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "protectedItems");
     }
 
     public ProtectedItemResource refresh() {
         String localFilter = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectedItems()
-                .getWithResponse(
-                    vaultName,
-                    resourceGroupName,
-                    fabricName,
-                    containerName,
-                    protectedItemName,
-                    localFilter,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectedItems().getWithResponse(vaultName,
+            resourceGroupName, fabricName, containerName, protectedItemName, localFilter, Context.NONE).getValue();
         return this;
     }
 
     public ProtectedItemResource refresh(Context context) {
         String localFilter = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectedItems()
-                .getWithResponse(
-                    vaultName, resourceGroupName, fabricName, containerName, protectedItemName, localFilter, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectedItems().getWithResponse(vaultName,
+            resourceGroupName, fabricName, containerName, protectedItemName, localFilter, context).getValue();
         return this;
     }
 

@@ -8,59 +8,93 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of workload this item represents. */
+/**
+ * Type of workload this item represents.
+ */
 public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
-    /** Static value Invalid for DataSourceType. */
+    /**
+     * Static value Invalid for DataSourceType.
+     */
     public static final DataSourceType INVALID = fromString("Invalid");
 
-    /** Static value VM for DataSourceType. */
+    /**
+     * Static value VM for DataSourceType.
+     */
     public static final DataSourceType VM = fromString("VM");
 
-    /** Static value FileFolder for DataSourceType. */
+    /**
+     * Static value FileFolder for DataSourceType.
+     */
     public static final DataSourceType FILE_FOLDER = fromString("FileFolder");
 
-    /** Static value AzureSqlDb for DataSourceType. */
+    /**
+     * Static value AzureSqlDb for DataSourceType.
+     */
     public static final DataSourceType AZURE_SQL_DB = fromString("AzureSqlDb");
 
-    /** Static value SQLDB for DataSourceType. */
+    /**
+     * Static value SQLDB for DataSourceType.
+     */
     public static final DataSourceType SQLDB = fromString("SQLDB");
 
-    /** Static value Exchange for DataSourceType. */
+    /**
+     * Static value Exchange for DataSourceType.
+     */
     public static final DataSourceType EXCHANGE = fromString("Exchange");
 
-    /** Static value Sharepoint for DataSourceType. */
+    /**
+     * Static value Sharepoint for DataSourceType.
+     */
     public static final DataSourceType SHAREPOINT = fromString("Sharepoint");
 
-    /** Static value VMwareVM for DataSourceType. */
+    /**
+     * Static value VMwareVM for DataSourceType.
+     */
     public static final DataSourceType VMWARE_VM = fromString("VMwareVM");
 
-    /** Static value SystemState for DataSourceType. */
+    /**
+     * Static value SystemState for DataSourceType.
+     */
     public static final DataSourceType SYSTEM_STATE = fromString("SystemState");
 
-    /** Static value Client for DataSourceType. */
+    /**
+     * Static value Client for DataSourceType.
+     */
     public static final DataSourceType CLIENT = fromString("Client");
 
-    /** Static value GenericDataSource for DataSourceType. */
+    /**
+     * Static value GenericDataSource for DataSourceType.
+     */
     public static final DataSourceType GENERIC_DATA_SOURCE = fromString("GenericDataSource");
 
-    /** Static value SQLDataBase for DataSourceType. */
+    /**
+     * Static value SQLDataBase for DataSourceType.
+     */
     public static final DataSourceType SQLDATA_BASE = fromString("SQLDataBase");
 
-    /** Static value AzureFileShare for DataSourceType. */
+    /**
+     * Static value AzureFileShare for DataSourceType.
+     */
     public static final DataSourceType AZURE_FILE_SHARE = fromString("AzureFileShare");
 
-    /** Static value SAPHanaDatabase for DataSourceType. */
+    /**
+     * Static value SAPHanaDatabase for DataSourceType.
+     */
     public static final DataSourceType SAPHANA_DATABASE = fromString("SAPHanaDatabase");
 
-    /** Static value SAPAseDatabase for DataSourceType. */
+    /**
+     * Static value SAPAseDatabase for DataSourceType.
+     */
     public static final DataSourceType SAPASE_DATABASE = fromString("SAPAseDatabase");
 
-    /** Static value SAPHanaDBInstance for DataSourceType. */
+    /**
+     * Static value SAPHanaDBInstance for DataSourceType.
+     */
     public static final DataSourceType SAPHANA_DBINSTANCE = fromString("SAPHanaDBInstance");
 
     /**
      * Creates a new instance of DataSourceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -69,7 +103,7 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
 
     /**
      * Creates or finds a DataSourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataSourceType.
      */
@@ -80,7 +114,7 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
 
     /**
      * Gets known DataSourceType values.
-     *
+     * 
      * @return known DataSourceType values.
      */
     public static Collection<DataSourceType> values() {

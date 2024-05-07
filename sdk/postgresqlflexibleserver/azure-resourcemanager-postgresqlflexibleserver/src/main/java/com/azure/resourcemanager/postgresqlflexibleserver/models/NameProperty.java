@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Name property for quota usage. */
+/**
+ * Name property for quota usage.
+ */
 @Fluent
 public final class NameProperty {
     /*
@@ -22,13 +24,15 @@ public final class NameProperty {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of NameProperty class. */
+    /**
+     * Creates an instance of NameProperty class.
+     */
     public NameProperty() {
     }
 
     /**
      * Get the value property: Name value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +41,7 @@ public final class NameProperty {
 
     /**
      * Set the value property: Name value.
-     *
+     * 
      * @param value the value value to set.
      * @return the NameProperty object itself.
      */
@@ -48,7 +52,7 @@ public final class NameProperty {
 
     /**
      * Get the localizedValue property: Localized name.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -57,7 +61,7 @@ public final class NameProperty {
 
     /**
      * Set the localizedValue property: Localized name.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the NameProperty object itself.
      */
@@ -68,7 +72,7 @@ public final class NameProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

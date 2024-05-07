@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The machine supportability of Enforce feature. */
+/**
+ * The machine supportability of Enforce feature.
+ */
 public final class EnforcementSupport extends ExpandableStringEnum<EnforcementSupport> {
-    /** Static value Supported for EnforcementSupport. */
+    /**
+     * Static value Supported for EnforcementSupport.
+     */
     public static final EnforcementSupport SUPPORTED = fromString("Supported");
 
-    /** Static value NotSupported for EnforcementSupport. */
+    /**
+     * Static value NotSupported for EnforcementSupport.
+     */
     public static final EnforcementSupport NOT_SUPPORTED = fromString("NotSupported");
 
-    /** Static value Unknown for EnforcementSupport. */
+    /**
+     * Static value Unknown for EnforcementSupport.
+     */
     public static final EnforcementSupport UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of EnforcementSupport value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class EnforcementSupport extends ExpandableStringEnum<EnforcementSu
 
     /**
      * Creates or finds a EnforcementSupport from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnforcementSupport.
      */
@@ -41,7 +49,7 @@ public final class EnforcementSupport extends ExpandableStringEnum<EnforcementSu
 
     /**
      * Gets known EnforcementSupport values.
-     *
+     * 
      * @return known EnforcementSupport values.
      */
     public static Collection<EnforcementSupport> values() {

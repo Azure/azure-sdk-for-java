@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionContainerResourceInner;
 
-/** An instance of this class provides access to all the operations defined in DeletedProtectionContainersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeletedProtectionContainersClient.
+ */
 public interface DeletedProtectionContainersClient {
     /**
      * Lists the soft deleted containers registered to Recovery Services Vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface DeletedProtectionContainersClient {
 
     /**
      * Lists the soft deleted containers registered to Recovery Services Vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param vaultName The name of the recovery services vault.
      * @param filter OData filter options.
@@ -38,6 +40,6 @@ public interface DeletedProtectionContainersClient {
      * @return list of ProtectionContainer resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProtectionContainerResourceInner> list(
-        String resourceGroupName, String vaultName, String filter, Context context);
+    PagedIterable<ProtectionContainerResourceInner> list(String resourceGroupName, String vaultName, String filter,
+        Context context);
 }

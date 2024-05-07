@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.AsyncOperationStatusInner;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCaptureInner;
 
-/** An instance of this class provides access to all the operations defined in PacketCapturesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PacketCapturesClient.
+ */
 public interface PacketCapturesClient {
     /**
      * Creates or updates a packet capture.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -29,15 +31,12 @@ public interface PacketCapturesClient {
      * @return the {@link SyncPoller} for polling of packet capture session resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PacketCaptureInner>, PacketCaptureInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCaptureName,
-        PacketCaptureInner parameters);
+    SyncPoller<PollResult<PacketCaptureInner>, PacketCaptureInner> beginCreateOrUpdate(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCaptureName, PacketCaptureInner parameters);
 
     /**
      * Creates or updates a packet capture.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -49,16 +48,12 @@ public interface PacketCapturesClient {
      * @return the {@link SyncPoller} for polling of packet capture session resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PacketCaptureInner>, PacketCaptureInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCaptureName,
-        PacketCaptureInner parameters,
-        Context context);
+    SyncPoller<PollResult<PacketCaptureInner>, PacketCaptureInner> beginCreateOrUpdate(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCaptureName, PacketCaptureInner parameters, Context context);
 
     /**
      * Creates or updates a packet capture.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -69,15 +64,12 @@ public interface PacketCapturesClient {
      * @return packet capture session resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PacketCaptureInner createOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCaptureName,
-        PacketCaptureInner parameters);
+    PacketCaptureInner createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCaptureName, PacketCaptureInner parameters);
 
     /**
      * Creates or updates a packet capture.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -89,16 +81,12 @@ public interface PacketCapturesClient {
      * @return packet capture session resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PacketCaptureInner createOrUpdate(
-        String resourceGroupName,
-        String packetCoreControlPlaneName,
-        String packetCaptureName,
-        PacketCaptureInner parameters,
-        Context context);
+    PacketCaptureInner createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCaptureName, PacketCaptureInner parameters, Context context);
 
     /**
      * Gets information about the specified packet capture session.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -109,12 +97,12 @@ public interface PacketCapturesClient {
      * @return information about the specified packet capture session along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PacketCaptureInner> getWithResponse(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName, Context context);
+    Response<PacketCaptureInner> getWithResponse(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCaptureName, Context context);
 
     /**
      * Gets information about the specified packet capture session.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -128,7 +116,7 @@ public interface PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -138,12 +126,12 @@ public interface PacketCapturesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCaptureName);
 
     /**
      * Deletes the specified packet capture.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -154,12 +142,12 @@ public interface PacketCapturesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCaptureName, Context context);
 
     /**
      * Deletes the specified packet capture.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -172,7 +160,7 @@ public interface PacketCapturesClient {
 
     /**
      * Deletes the specified packet capture.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -186,7 +174,7 @@ public interface PacketCapturesClient {
 
     /**
      * Stop a packet capture session.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -196,12 +184,12 @@ public interface PacketCapturesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginStop(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName);
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginStop(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCaptureName);
 
     /**
      * Stop a packet capture session.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -212,12 +200,12 @@ public interface PacketCapturesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginStop(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName, Context context);
+    SyncPoller<PollResult<AsyncOperationStatusInner>, AsyncOperationStatusInner> beginStop(String resourceGroupName,
+        String packetCoreControlPlaneName, String packetCaptureName, Context context);
 
     /**
      * Stop a packet capture session.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -227,12 +215,12 @@ public interface PacketCapturesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AsyncOperationStatusInner stop(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName);
+    AsyncOperationStatusInner stop(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCaptureName);
 
     /**
      * Stop a packet capture session.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -243,12 +231,12 @@ public interface PacketCapturesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AsyncOperationStatusInner stop(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName, Context context);
+    AsyncOperationStatusInner stop(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCaptureName, Context context);
 
     /**
      * Lists all the packet capture sessions under a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,12 +245,12 @@ public interface PacketCapturesClient {
      * @return response for packet capture API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PacketCaptureInner> listByPacketCoreControlPlane(
-        String resourceGroupName, String packetCoreControlPlaneName);
+    PagedIterable<PacketCaptureInner> listByPacketCoreControlPlane(String resourceGroupName,
+        String packetCoreControlPlaneName);
 
     /**
      * Lists all the packet capture sessions under a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -272,6 +260,6 @@ public interface PacketCapturesClient {
      * @return response for packet capture API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PacketCaptureInner> listByPacketCoreControlPlane(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context);
+    PagedIterable<PacketCaptureInner> listByPacketCoreControlPlane(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context);
 }

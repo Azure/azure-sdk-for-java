@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Service Level Agreement details for a support ticket. */
+/**
+ * Service Level Agreement details for a support ticket.
+ */
 @Immutable
 public final class ServiceLevelAgreement {
     /*
@@ -29,13 +31,15 @@ public final class ServiceLevelAgreement {
     @JsonProperty(value = "slaMinutes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer slaMinutes;
 
-    /** Creates an instance of ServiceLevelAgreement class. */
+    /**
+     * Creates an instance of ServiceLevelAgreement class.
+     */
     public ServiceLevelAgreement() {
     }
 
     /**
      * Get the startTime property: Time in UTC (ISO 8601 format) when the service level agreement starts.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -44,7 +48,7 @@ public final class ServiceLevelAgreement {
 
     /**
      * Get the expirationTime property: Time in UTC (ISO 8601 format) when the service level agreement expires.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -53,7 +57,7 @@ public final class ServiceLevelAgreement {
 
     /**
      * Get the slaMinutes property: Service Level Agreement in minutes.
-     *
+     * 
      * @return the slaMinutes value.
      */
     public Integer slaMinutes() {
@@ -62,7 +66,7 @@ public final class ServiceLevelAgreement {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

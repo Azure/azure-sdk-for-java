@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedClusterPoolUpgradeProfileUpgradesItem model. */
+/**
+ * The ManagedClusterPoolUpgradeProfileUpgradesItem model.
+ */
 @Fluent
 public final class ManagedClusterPoolUpgradeProfileUpgradesItem {
     /*
@@ -22,13 +24,15 @@ public final class ManagedClusterPoolUpgradeProfileUpgradesItem {
     @JsonProperty(value = "isPreview")
     private Boolean isPreview;
 
-    /** Creates an instance of ManagedClusterPoolUpgradeProfileUpgradesItem class. */
+    /**
+     * Creates an instance of ManagedClusterPoolUpgradeProfileUpgradesItem class.
+     */
     public ManagedClusterPoolUpgradeProfileUpgradesItem() {
     }
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -37,7 +41,7 @@ public final class ManagedClusterPoolUpgradeProfileUpgradesItem {
 
     /**
      * Set the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterPoolUpgradeProfileUpgradesItem object itself.
      */
@@ -48,7 +52,7 @@ public final class ManagedClusterPoolUpgradeProfileUpgradesItem {
 
     /**
      * Get the isPreview property: Whether the Kubernetes version is currently in preview.
-     *
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -57,7 +61,7 @@ public final class ManagedClusterPoolUpgradeProfileUpgradesItem {
 
     /**
      * Set the isPreview property: Whether the Kubernetes version is currently in preview.
-     *
+     * 
      * @param isPreview the isPreview value to set.
      * @return the ManagedClusterPoolUpgradeProfileUpgradesItem object itself.
      */
@@ -68,7 +72,7 @@ public final class ManagedClusterPoolUpgradeProfileUpgradesItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

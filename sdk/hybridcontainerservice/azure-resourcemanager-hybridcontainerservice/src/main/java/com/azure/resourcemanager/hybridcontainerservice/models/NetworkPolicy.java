@@ -9,19 +9,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'calico', 'flannel'.
- * Default is 'calico'.
+ * Network policy used for building Kubernetes network. Possible values include: 'calico'.
  */
 public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
     /**
      * Static value calico for NetworkPolicy.
      */
     public static final NetworkPolicy CALICO = fromString("calico");
-
-    /**
-     * Static value flannel for NetworkPolicy.
-     */
-    public static final NetworkPolicy FLANNEL = fromString("flannel");
 
     /**
      * Creates a new instance of NetworkPolicy value.

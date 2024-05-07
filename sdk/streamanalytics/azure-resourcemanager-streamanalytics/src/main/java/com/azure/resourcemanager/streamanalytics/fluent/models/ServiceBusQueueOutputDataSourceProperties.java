@@ -5,45 +5,45 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.ServiceBusDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties that are associated with a Service Bus Queue output. */
+/**
+ * The properties that are associated with a Service Bus Queue output.
+ */
 @Fluent
 public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceBusQueueOutputDataSourceProperties.class);
-
     /*
-     * The name of the Service Bus Queue. Required on PUT (CreateOrReplace)
-     * requests.
+     * The name of the Service Bus Queue. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "queueName")
     private String queueName;
 
     /*
-     * A string array of the names of output columns to be attached to Service
-     * Bus messages as custom properties.
+     * A string array of the names of output columns to be attached to Service Bus messages as custom properties.
      */
     @JsonProperty(value = "propertyColumns")
     private List<String> propertyColumns;
 
     /*
-     * The system properties associated with the Service Bus Queue. The
-     * following system properties are supported: ReplyToSessionId,
-     * ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey,
-     * SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label,
-     * ScheduledEnqueueTimeUtc.
+     * The system properties associated with the Service Bus Queue. The following system properties are supported:
+     * ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey, SessionId,
+     * ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
      */
     @JsonProperty(value = "systemPropertyColumns")
     private Object systemPropertyColumns;
 
     /**
+     * Creates an instance of ServiceBusQueueOutputDataSourceProperties class.
+     */
+    public ServiceBusQueueOutputDataSourceProperties() {
+    }
+
+    /**
      * Get the queueName property: The name of the Service Bus Queue. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the queueName value.
      */
     public String queueName() {
@@ -52,7 +52,7 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
 
     /**
      * Set the queueName property: The name of the Service Bus Queue. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param queueName the queueName value to set.
      * @return the ServiceBusQueueOutputDataSourceProperties object itself.
      */
@@ -64,7 +64,7 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
     /**
      * Get the propertyColumns property: A string array of the names of output columns to be attached to Service Bus
      * messages as custom properties.
-     *
+     * 
      * @return the propertyColumns value.
      */
     public List<String> propertyColumns() {
@@ -74,7 +74,7 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
     /**
      * Set the propertyColumns property: A string array of the names of output columns to be attached to Service Bus
      * messages as custom properties.
-     *
+     * 
      * @param propertyColumns the propertyColumns value to set.
      * @return the ServiceBusQueueOutputDataSourceProperties object itself.
      */
@@ -85,9 +85,9 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
 
     /**
      * Get the systemPropertyColumns property: The system properties associated with the Service Bus Queue. The
-     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
-     * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
-     *
+     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId,
+     * TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
+     * 
      * @return the systemPropertyColumns value.
      */
     public Object systemPropertyColumns() {
@@ -96,9 +96,9 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
 
     /**
      * Set the systemPropertyColumns property: The system properties associated with the Service Bus Queue. The
-     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
-     * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
-     *
+     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId,
+     * TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
+     * 
      * @param systemPropertyColumns the systemPropertyColumns value to set.
      * @return the ServiceBusQueueOutputDataSourceProperties object itself.
      */
@@ -107,28 +107,36 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBusQueueOutputDataSourceProperties withServiceBusNamespace(String serviceBusNamespace) {
         super.withServiceBusNamespace(serviceBusNamespace);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBusQueueOutputDataSourceProperties withSharedAccessPolicyName(String sharedAccessPolicyName) {
         super.withSharedAccessPolicyName(sharedAccessPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBusQueueOutputDataSourceProperties withSharedAccessPolicyKey(String sharedAccessPolicyKey) {
         super.withSharedAccessPolicyKey(sharedAccessPolicyKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceBusQueueOutputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
         super.withAuthenticationMode(authenticationMode);
@@ -137,7 +145,7 @@ public final class ServiceBusQueueOutputDataSourceProperties extends ServiceBusD
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

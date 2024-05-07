@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"value\":\"wjzrnfygxgisp\",\"currentValue\":\"vtz\",\"description\":\"ufubl\",\"documentationLink\":\"fxqeof\",\"defaultValue\":\"e\",\"dataType\":\"hqjbasvmsmj\",\"allowedValues\":\"lngsntnbybkzgcwr\",\"source\":\"user-override\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"}")
-                .toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("wjzrnfygxgisp", model.value());
-        Assertions.assertEquals("vtz", model.currentValue());
-        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.source());
+        ConfigurationProperties model = BinaryData.fromString(
+            "{\"value\":\"gou\",\"currentValue\":\"ndlik\",\"description\":\"qkgfgibma\",\"documentationLink\":\"akeqs\",\"defaultValue\":\"yb\",\"dataType\":\"qedqytbciqfoufl\",\"allowedValues\":\"nkzsmodmglou\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"False\"}")
+            .toObject(ConfigurationProperties.class);
+        Assertions.assertEquals("gou", model.value());
+        Assertions.assertEquals("ndlik", model.currentValue());
+        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationProperties model =
-            new ConfigurationProperties()
-                .withValue("wjzrnfygxgisp")
-                .withCurrentValue("vtz")
-                .withSource(ConfigurationSource.USER_OVERRIDE);
+        ConfigurationProperties model = new ConfigurationProperties().withValue("gou")
+            .withCurrentValue("ndlik")
+            .withSource(ConfigurationSource.SYSTEM_DEFAULT);
         model = BinaryData.fromObject(model).toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("wjzrnfygxgisp", model.value());
-        Assertions.assertEquals("vtz", model.currentValue());
-        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, model.source());
+        Assertions.assertEquals("gou", model.value());
+        Assertions.assertEquals("ndlik", model.currentValue());
+        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
     }
 }

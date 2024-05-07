@@ -4,7 +4,7 @@
 
 package com.azure.ai.documentintelligence;
 
-import com.azure.ai.documentintelligence.implementation.DocumentAnalysisClientImpl;
+import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceClientImpl;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
@@ -23,94 +23,58 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Initializes a new instance of the asynchronous DocumentAnalysisClient type.
+ * Initializes a new instance of the asynchronous DocumentIntelligenceClient type.
  */
 @ServiceClient(builder = DocumentIntelligenceClientBuilder.class, isAsync = true)
 public final class DocumentIntelligenceAsyncClient {
     @Generated
-    private final DocumentAnalysisClientImpl serviceClient;
+    private final DocumentIntelligenceClientImpl serviceClient;
 
     /**
-     * Initializes an instance of DocumentAnalysisAsyncClient class.
-     *
+     * Initializes an instance of DocumentIntelligenceAsyncClient class.
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
-    DocumentIntelligenceAsyncClient(DocumentAnalysisClientImpl serviceClient) {
+    DocumentIntelligenceAsyncClient(DocumentIntelligenceClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
      * Analyzes document with document model.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>pages</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>List of 1-based page numbers to analyze. Ex. "1-3,5,7-9"</td>
-     * </tr>
-     * <tr>
-     * <td>locale</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Locale hint for text recognition and document analysis. Value may contain only
-     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>features</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of optional analysis features. In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>queryFields</td>
-     * <td>List&lt;String&gt;</td>
-     * <td>No</td>
-     * <td>List of additional fields to extract. Ex. "NumberOfGuests,StoreNumber". In the form of "," separated
-     * string.</td>
-     * </tr>
-     * <tr>
-     * <td>outputContentFormat</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Format of the analyze result top-level content. Allowed values: "text", "markdown".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>pages</td><td>String</td><td>No</td><td>List of 1-based page numbers to analyze. Ex.
+     * "1-3,5,7-9"</td></tr>
+     * <tr><td>locale</td><td>String</td><td>No</td><td>Locale hint for text recognition and document analysis. Value
+     * may contain only
+     * the language code (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").</td></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>features</td><td>List&lt;String&gt;</td><td>No</td><td>List of optional analysis features. In the form of
+     * "," separated string.</td></tr>
+     * <tr><td>queryFields</td><td>List&lt;String&gt;</td><td>No</td><td>List of additional fields to extract. Ex.
+     * "NumberOfGuests,StoreNumber". In the form of "," separated string.</td></tr>
+     * <tr><td>outputContentFormat</td><td>String</td><td>No</td><td>Format of the analyze result top-level content.
+     * Allowed values: "text", "markdown".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -127,42 +91,25 @@ public final class DocumentIntelligenceAsyncClient {
 
     /**
      * Classifies document with document classifier.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>stringIndexType</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Method used to compute string offset and length. Allowed values: "textElements", "unicodeCodePoint",
-     * "utf16CodeUnit".</td>
-     * </tr>
-     * <tr>
-     * <td>split</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Document splitting mode. Allowed values: "auto", "none", "perPage".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>stringIndexType</td><td>String</td><td>No</td><td>Method used to compute string offset and length.
+     * Allowed values: "textElements", "unicodeCodePoint", "utf16CodeUnit".</td></tr>
+     * <tr><td>split</td><td>String</td><td>No</td><td>Document splitting mode. Allowed values: "auto", "none",
+     * "perPage".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -181,7 +128,7 @@ public final class DocumentIntelligenceAsyncClient {
 
     /**
      * Analyzes document with document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only
@@ -217,12 +164,17 @@ public final class DocumentIntelligenceAsyncClient {
         }
         if (features != null) {
             requestOptions.addQueryParam("features",
-                JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(features, CollectionFormat.CSV),
+                features.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
                 false);
         }
         if (queryFields != null) {
-            requestOptions.addQueryParam("queryFields", queryFields.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(",")), false);
+            requestOptions.addQueryParam("queryFields",
+                queryFields.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
         }
         if (outputContentFormat != null) {
             requestOptions.addQueryParam("outputContentFormat", outputContentFormat.toString(), false);
@@ -235,7 +187,7 @@ public final class DocumentIntelligenceAsyncClient {
 
     /**
      * Analyzes document with document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -255,7 +207,7 @@ public final class DocumentIntelligenceAsyncClient {
 
     /**
      * Classifies document with document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param stringIndexType Method used to compute string offset and length.
@@ -286,7 +238,7 @@ public final class DocumentIntelligenceAsyncClient {
 
     /**
      * Classifies document with document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.security.models.JitNetworkAccessPolicyVirtualMa
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JitNetworkAccessPolicy model. */
+/**
+ * The JitNetworkAccessPolicy model.
+ */
 @Fluent
 public final class JitNetworkAccessPolicyInner extends ProxyResource {
     /*
@@ -32,13 +34,15 @@ public final class JitNetworkAccessPolicyInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of JitNetworkAccessPolicyInner class. */
+    /**
+     * Creates an instance of JitNetworkAccessPolicyInner class.
+     */
     public JitNetworkAccessPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JitNetworkAccessPolicyProperties innerProperties() {
@@ -47,7 +51,7 @@ public final class JitNetworkAccessPolicyInner extends ProxyResource {
 
     /**
      * Get the kind property: Kind of the resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -56,7 +60,7 @@ public final class JitNetworkAccessPolicyInner extends ProxyResource {
 
     /**
      * Set the kind property: Kind of the resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the JitNetworkAccessPolicyInner object itself.
      */
@@ -67,7 +71,7 @@ public final class JitNetworkAccessPolicyInner extends ProxyResource {
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -76,7 +80,7 @@ public final class JitNetworkAccessPolicyInner extends ProxyResource {
 
     /**
      * Get the virtualMachines property: Configurations for Microsoft.Compute/virtualMachines resource type.
-     *
+     * 
      * @return the virtualMachines value.
      */
     public List<JitNetworkAccessPolicyVirtualMachine> virtualMachines() {
@@ -85,7 +89,7 @@ public final class JitNetworkAccessPolicyInner extends ProxyResource {
 
     /**
      * Set the virtualMachines property: Configurations for Microsoft.Compute/virtualMachines resource type.
-     *
+     * 
      * @param virtualMachines the virtualMachines value to set.
      * @return the JitNetworkAccessPolicyInner object itself.
      */
@@ -99,7 +103,7 @@ public final class JitNetworkAccessPolicyInner extends ProxyResource {
 
     /**
      * Get the requests property: The requests property.
-     *
+     * 
      * @return the requests value.
      */
     public List<JitNetworkAccessRequestInner> requests() {
@@ -108,7 +112,7 @@ public final class JitNetworkAccessPolicyInner extends ProxyResource {
 
     /**
      * Set the requests property: The requests property.
-     *
+     * 
      * @param requests the requests value to set.
      * @return the JitNetworkAccessPolicyInner object itself.
      */
@@ -122,7 +126,7 @@ public final class JitNetworkAccessPolicyInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Gets the provisioning state of the Just-in-Time policy.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -131,15 +135,13 @@ public final class JitNetworkAccessPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model JitNetworkAccessPolicyInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model JitNetworkAccessPolicyInner"));
         } else {
             innerProperties().validate();
         }

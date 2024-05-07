@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Replication provider specific settings. */
+/**
+ * Replication provider specific settings.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -26,17 +28,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2ReplicationDetails.class),
     @JsonSubTypes.Type(name = "InMageRcmFailback", value = InMageRcmFailbackReplicationDetails.class),
     @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmReplicationDetails.class),
-    @JsonSubTypes.Type(name = "InMage", value = InMageReplicationDetails.class)
-})
+    @JsonSubTypes.Type(name = "InMage", value = InMageReplicationDetails.class) })
 @Immutable
 public class ReplicationProviderSpecificSettings {
-    /** Creates an instance of ReplicationProviderSpecificSettings class. */
+    /**
+     * Creates an instance of ReplicationProviderSpecificSettings class.
+     */
     public ReplicationProviderSpecificSettings() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -26,8 +26,7 @@ public final class Probe {
     private boolean disableProbe;
 
     /*
-     * Number of seconds after the App Instance has started before probes are
-     * initiated. More info:
+     * Number of seconds after the App Instance has started before probes are initiated. More info:
      * https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
      */
     @JsonProperty(value = "initialDelaySeconds")
@@ -46,23 +45,27 @@ public final class Probe {
     private Integer timeoutSeconds;
 
     /*
-     * Minimum consecutive failures for the probe to be considered failed after
-     * having succeeded. Minimum value is 1.
+     * Minimum consecutive failures for the probe to be considered failed after having succeeded. Minimum value is 1.
      */
     @JsonProperty(value = "failureThreshold")
     private Integer failureThreshold;
 
     /*
-     * Minimum consecutive successes for the probe to be considered successful
-     * after having failed. Must be 1 for liveness and startup. Minimum value
-     * is 1.
+     * Minimum consecutive successes for the probe to be considered successful after having failed. Must be 1 for
+     * liveness and startup. Minimum value is 1.
      */
     @JsonProperty(value = "successThreshold")
     private Integer successThreshold;
 
     /**
+     * Creates an instance of Probe class.
+     */
+    public Probe() {
+    }
+
+    /**
      * Get the probeAction property: The action of the probe.
-     *
+     * 
      * @return the probeAction value.
      */
     public ProbeAction probeAction() {
@@ -71,7 +74,7 @@ public final class Probe {
 
     /**
      * Set the probeAction property: The action of the probe.
-     *
+     * 
      * @param probeAction the probeAction value to set.
      * @return the Probe object itself.
      */
@@ -82,7 +85,7 @@ public final class Probe {
 
     /**
      * Get the disableProbe property: Indicate whether the probe is disabled.
-     *
+     * 
      * @return the disableProbe value.
      */
     public boolean disableProbe() {
@@ -91,7 +94,7 @@ public final class Probe {
 
     /**
      * Set the disableProbe property: Indicate whether the probe is disabled.
-     *
+     * 
      * @param disableProbe the disableProbe value to set.
      * @return the Probe object itself.
      */
@@ -103,7 +106,7 @@ public final class Probe {
     /**
      * Get the initialDelaySeconds property: Number of seconds after the App Instance has started before probes are
      * initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
-     *
+     * 
      * @return the initialDelaySeconds value.
      */
     public Integer initialDelaySeconds() {
@@ -113,7 +116,7 @@ public final class Probe {
     /**
      * Set the initialDelaySeconds property: Number of seconds after the App Instance has started before probes are
      * initiated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes.
-     *
+     * 
      * @param initialDelaySeconds the initialDelaySeconds value to set.
      * @return the Probe object itself.
      */
@@ -124,7 +127,7 @@ public final class Probe {
 
     /**
      * Get the periodSeconds property: How often (in seconds) to perform the probe. Minimum value is 1.
-     *
+     * 
      * @return the periodSeconds value.
      */
     public Integer periodSeconds() {
@@ -133,7 +136,7 @@ public final class Probe {
 
     /**
      * Set the periodSeconds property: How often (in seconds) to perform the probe. Minimum value is 1.
-     *
+     * 
      * @param periodSeconds the periodSeconds value to set.
      * @return the Probe object itself.
      */
@@ -144,7 +147,7 @@ public final class Probe {
 
     /**
      * Get the timeoutSeconds property: Number of seconds after which the probe times out. Minimum value is 1.
-     *
+     * 
      * @return the timeoutSeconds value.
      */
     public Integer timeoutSeconds() {
@@ -153,7 +156,7 @@ public final class Probe {
 
     /**
      * Set the timeoutSeconds property: Number of seconds after which the probe times out. Minimum value is 1.
-     *
+     * 
      * @param timeoutSeconds the timeoutSeconds value to set.
      * @return the Probe object itself.
      */
@@ -165,7 +168,7 @@ public final class Probe {
     /**
      * Get the failureThreshold property: Minimum consecutive failures for the probe to be considered failed after
      * having succeeded. Minimum value is 1.
-     *
+     * 
      * @return the failureThreshold value.
      */
     public Integer failureThreshold() {
@@ -175,7 +178,7 @@ public final class Probe {
     /**
      * Set the failureThreshold property: Minimum consecutive failures for the probe to be considered failed after
      * having succeeded. Minimum value is 1.
-     *
+     * 
      * @param failureThreshold the failureThreshold value to set.
      * @return the Probe object itself.
      */
@@ -187,7 +190,7 @@ public final class Probe {
     /**
      * Get the successThreshold property: Minimum consecutive successes for the probe to be considered successful after
      * having failed. Must be 1 for liveness and startup. Minimum value is 1.
-     *
+     * 
      * @return the successThreshold value.
      */
     public Integer successThreshold() {
@@ -197,7 +200,7 @@ public final class Probe {
     /**
      * Set the successThreshold property: Minimum consecutive successes for the probe to be considered successful after
      * having failed. Must be 1 for liveness and startup. Minimum value is 1.
-     *
+     * 
      * @param successThreshold the successThreshold value to set.
      * @return the Probe object itself.
      */
@@ -208,7 +211,7 @@ public final class Probe {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

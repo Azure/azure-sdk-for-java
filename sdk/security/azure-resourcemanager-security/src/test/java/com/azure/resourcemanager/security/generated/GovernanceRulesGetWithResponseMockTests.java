@@ -33,53 +33,39 @@ public final class GovernanceRulesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"tenantId\":\"j\",\"displayName\":\"n\",\"description\":\"dtjva\",\"remediationTimeframe\":\"yznm\",\"isGracePeriod\":false,\"rulePriority\":1496636288,\"isDisabled\":false,\"ruleType\":\"ServiceNow\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"gytoxuwhtt\",\"zqsa\"],\"conditionSets\":[\"dataebg\",\"datazplusdekpdzzms\",\"datagpgvokyejidbdq\"],\"includeMemberScopes\":true,\"ownerSource\":{\"type\":\"ByTag\",\"value\":\"cwztlvvws\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":true},\"metadata\":{\"createdBy\":\"repwpwfkcaux\",\"createdOn\":\"2021-07-16T09:20:09Z\",\"updatedBy\":\"cpfpdofuckcl\",\"updatedOn\":\"2021-10-21T16:06:31Z\"}},\"id\":\"luevsolzwilfng\",\"name\":\"jfsqeb\",\"type\":\"uxjxhfxf\"}";
+        String responseStr
+            = "{\"properties\":{\"tenantId\":\"bajadknm\",\"displayName\":\"tbdoprwkampy\",\"description\":\"pbldz\",\"remediationTimeframe\":\"udrcycm\",\"isGracePeriod\":true,\"rulePriority\":591345317,\"isDisabled\":false,\"ruleType\":\"Integrated\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"hqkn\"],\"conditionSets\":[\"datakmnbzko\",\"dataaiildcpud\",\"datahquxsyjofpgv\",\"datadrobujnjgy\"],\"includeMemberScopes\":true,\"ownerSource\":{\"type\":\"ByTag\",\"value\":\"igidulln\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":true},\"metadata\":{\"createdBy\":\"hnytsl\",\"createdOn\":\"2021-11-06T10:08:06Z\",\"updatedBy\":\"uqzng\",\"updatedOn\":\"2021-06-08T10:23:45Z\"}},\"id\":\"kyqzjsdkpvnr\",\"name\":\"zwpf\",\"type\":\"xsfybntmveho\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GovernanceRule response =
-            manager
-                .governanceRules()
-                .getWithResponse("gsevmdm", "enlrstgf", com.azure.core.util.Context.NONE)
-                .getValue();
+        GovernanceRule response = manager.governanceRules()
+            .getWithResponse("w", "zpddarcbcdwhs", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("n", response.displayName());
-        Assertions.assertEquals("dtjva", response.description());
-        Assertions.assertEquals("yznm", response.remediationTimeframe());
-        Assertions.assertEquals(false, response.isGracePeriod());
-        Assertions.assertEquals(1496636288, response.rulePriority());
+        Assertions.assertEquals("tbdoprwkampy", response.displayName());
+        Assertions.assertEquals("pbldz", response.description());
+        Assertions.assertEquals("udrcycm", response.remediationTimeframe());
+        Assertions.assertEquals(true, response.isGracePeriod());
+        Assertions.assertEquals(591345317, response.rulePriority());
         Assertions.assertEquals(false, response.isDisabled());
-        Assertions.assertEquals(GovernanceRuleType.SERVICE_NOW, response.ruleType());
+        Assertions.assertEquals(GovernanceRuleType.INTEGRATED, response.ruleType());
         Assertions.assertEquals(GovernanceRuleSourceResourceType.ASSESSMENTS, response.sourceResourceType());
-        Assertions.assertEquals("gytoxuwhtt", response.excludedScopes().get(0));
+        Assertions.assertEquals("hqkn", response.excludedScopes().get(0));
         Assertions.assertEquals(true, response.includeMemberScopes());
         Assertions.assertEquals(GovernanceRuleOwnerSourceType.BY_TAG, response.ownerSource().type());
-        Assertions.assertEquals("cwztlvvws", response.ownerSource().value());
+        Assertions.assertEquals("igidulln", response.ownerSource().value());
         Assertions.assertEquals(false, response.governanceEmailNotification().disableManagerEmailNotification());
         Assertions.assertEquals(true, response.governanceEmailNotification().disableOwnerEmailNotification());
     }

@@ -14,6 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicy;
+import com.azure.resourcemanager.security.models.Protocol;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,38 +32,40 @@ public final class JitNetworkAccessPoliciesListByRegionMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"kzidgzwdyd\"},\"kind\":\"isvpztdivykpxkqe\",\"location\":\"pjfojiunrls\",\"id\":\"xuknsykdtoi\",\"name\":\"oancdrco\",\"type\":\"nvxuldxonckb\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"virtualMachines\":[{\"id\":\"ah\",\"ports\":[{\"number\":1065426937,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"zo\"},{\"number\":1684820400,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"aeprevcjukfal\"},{\"number\":1598163157,\"protocol\":\"UDP\",\"maxRequestAccessDuration\":\"ec\"},{\"number\":350112818,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"yvqbeqp\"}],\"publicIpAddress\":\"nusnylfhicr\"},{\"id\":\"riybfbydr\",\"ports\":[{\"number\":276345064,\"protocol\":\"TCP\",\"maxRequestAccessDuration\":\"b\"},{\"number\":427409012,\"protocol\":\"*\",\"maxRequestAccessDuration\":\"nqocybrhxgiknrlu\"}],\"publicIpAddress\":\"eiqb\"}],\"requests\":[{\"virtualMachines\":[{\"id\":\"feamz\",\"ports\":[]}],\"startTimeUtc\":\"2021-10-06T10:04:42Z\",\"requestor\":\"xdgpksgo\",\"justification\":\"unvnjqldrqq\"},{\"virtualMachines\":[{\"id\":\"ugusqlx\",\"ports\":[]},{\"id\":\"xedthfwlnvqac\",\"ports\":[]},{\"id\":\"yfi\",\"ports\":[]},{\"id\":\"blnlmpuyypaggpai\",\"ports\":[]}],\"startTimeUtc\":\"2021-10-13T06:07:50Z\",\"requestor\":\"e\",\"justification\":\"wloqrmgdhymi\"}],\"provisioningState\":\"lxtywukhj\"},\"kind\":\"pllitx\",\"location\":\"gkw\",\"id\":\"yoy\",\"name\":\"qoivxcodw\",\"type\":\"woytcachhsizfuew\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<JitNetworkAccessPolicy> response =
-            manager.jitNetworkAccessPolicies().listByRegion("nzvajbvbnkrdem", com.azure.core.util.Context.NONE);
+        PagedIterable<JitNetworkAccessPolicy> response
+            = manager.jitNetworkAccessPolicies().listByRegion("efwlenitv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("isvpztdivykpxkqe", response.iterator().next().kind());
+        Assertions.assertEquals("pllitx", response.iterator().next().kind());
+        Assertions.assertEquals("ah", response.iterator().next().virtualMachines().get(0).id());
+        Assertions.assertEquals(1065426937,
+            response.iterator().next().virtualMachines().get(0).ports().get(0).number());
+        Assertions.assertEquals(Protocol.TCP,
+            response.iterator().next().virtualMachines().get(0).ports().get(0).protocol());
+        Assertions.assertEquals("zo",
+            response.iterator().next().virtualMachines().get(0).ports().get(0).maxRequestAccessDuration());
+        Assertions.assertEquals("nusnylfhicr", response.iterator().next().virtualMachines().get(0).publicIpAddress());
+        Assertions.assertEquals("feamz", response.iterator().next().requests().get(0).virtualMachines().get(0).id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T10:04:42Z"),
+            response.iterator().next().requests().get(0).startTimeUtc());
+        Assertions.assertEquals("xdgpksgo", response.iterator().next().requests().get(0).requestor());
+        Assertions.assertEquals("unvnjqldrqq", response.iterator().next().requests().get(0).justification());
     }
 }

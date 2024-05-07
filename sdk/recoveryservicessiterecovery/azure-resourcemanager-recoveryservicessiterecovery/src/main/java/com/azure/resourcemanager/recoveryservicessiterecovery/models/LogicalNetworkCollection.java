@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Logi
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of logical networks. */
+/**
+ * List of logical networks.
+ */
 @Fluent
 public final class LogicalNetworkCollection {
     /*
@@ -24,13 +26,15 @@ public final class LogicalNetworkCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LogicalNetworkCollection class. */
+    /**
+     * Creates an instance of LogicalNetworkCollection class.
+     */
     public LogicalNetworkCollection() {
     }
 
     /**
      * Get the value property: The Logical Networks list details.
-     *
+     * 
      * @return the value value.
      */
     public List<LogicalNetworkInner> value() {
@@ -39,7 +43,7 @@ public final class LogicalNetworkCollection {
 
     /**
      * Set the value property: The Logical Networks list details.
-     *
+     * 
      * @param value the value value to set.
      * @return the LogicalNetworkCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class LogicalNetworkCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class LogicalNetworkCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LogicalNetworkCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class LogicalNetworkCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

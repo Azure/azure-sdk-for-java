@@ -19,35 +19,35 @@ public final class DocumentDbCollectionDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DocumentDbCollectionDataset model = BinaryData.fromString(
-            "{\"type\":\"DocumentDbCollection\",\"typeProperties\":{\"collectionName\":\"datawxdowum\"},\"description\":\"ukrcdiohcl\",\"structure\":\"datadnhfknebwedd\",\"schema\":\"datayzcwy\",\"linkedServiceName\":{\"referenceName\":\"smkaqldqab\",\"parameters\":{\"qbqxfbbigcfd\":\"datap\",\"bmjyyrqaedwovoc\":\"dataofxn\",\"ayokrwfmihw\":\"datatjgo\"}},\"parameters\":{\"vothmkhjaoz\":{\"type\":\"Array\",\"defaultValue\":\"datadbfobdc\"},\"rhjvszfqbokndwpp\":{\"type\":\"Bool\",\"defaultValue\":\"datafcnjhbpoelhscmy\"},\"lynzlyvap\":{\"type\":\"SecureString\",\"defaultValue\":\"dataojoevzzufytdx\"},\"lcuhaizi\":{\"type\":\"Bool\",\"defaultValue\":\"databuoggtdl\"}},\"annotations\":[\"dataylzeohlpsftq\",\"datarvmhvbvvcpwt\",\"datasuspnhmzy\"],\"folder\":{\"name\":\"etevrntfknwacy\"},\"\":{\"atvcsxr\":\"dataotctkhfhf\",\"cubleh\":\"datahnmizhvprhqq\"}}")
+            "{\"type\":\"cffrx\",\"typeProperties\":{\"collectionName\":\"dataivdfwgqjh\"},\"description\":\"ezkhzp\",\"structure\":\"dataqissen\",\"schema\":\"datarusyzai\",\"linkedServiceName\":{\"referenceName\":\"npsjnpc\",\"parameters\":{\"lvvmnbkxja\":\"dataujyduonbdawsao\",\"xqkdyqjvzvcgrds\":\"datasbbdddwokqxai\",\"hvzf\":\"datazesfkqqx\",\"wukokgoojj\":\"databrouszxac\"}},\"parameters\":{\"unhgbtzvxxvsbcuu\":{\"type\":\"String\",\"defaultValue\":\"databc\"},\"urqmw\":{\"type\":\"Array\",\"defaultValue\":\"datafnkcnihkswxm\"},\"svnkxmyt\":{\"type\":\"Object\",\"defaultValue\":\"datapntumotahb\"}},\"annotations\":[\"dataedr\"],\"folder\":{\"name\":\"gc\"},\"\":{\"zzmiemqyft\":\"datarhkv\",\"mghpakbqyh\":\"datapqoswgfqv\",\"jm\":\"datasornfbmeqagkn\"}}")
             .toObject(DocumentDbCollectionDataset.class);
-        Assertions.assertEquals("ukrcdiohcl", model.description());
-        Assertions.assertEquals("smkaqldqab", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vothmkhjaoz").type());
-        Assertions.assertEquals("etevrntfknwacy", model.folder().name());
+        Assertions.assertEquals("ezkhzp", model.description());
+        Assertions.assertEquals("npsjnpc", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("unhgbtzvxxvsbcuu").type());
+        Assertions.assertEquals("gc", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DocumentDbCollectionDataset model = new DocumentDbCollectionDataset().withDescription("ukrcdiohcl")
-            .withStructure("datadnhfknebwedd").withSchema("datayzcwy")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("smkaqldqab").withParameters(
-                mapOf("qbqxfbbigcfd", "datap", "bmjyyrqaedwovoc", "dataofxn", "ayokrwfmihw", "datatjgo")))
-            .withParameters(mapOf("vothmkhjaoz",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datadbfobdc"),
-                "rhjvszfqbokndwpp",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datafcnjhbpoelhscmy"),
-                "lynzlyvap",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                    .withDefaultValue("dataojoevzzufytdx"),
-                "lcuhaizi", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("databuoggtdl")))
-            .withAnnotations(Arrays.asList("dataylzeohlpsftq", "datarvmhvbvvcpwt", "datasuspnhmzy"))
-            .withFolder(new DatasetFolder().withName("etevrntfknwacy")).withCollectionName("datawxdowum");
+        DocumentDbCollectionDataset model = new DocumentDbCollectionDataset().withDescription("ezkhzp")
+            .withStructure("dataqissen")
+            .withSchema("datarusyzai")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("npsjnpc")
+                .withParameters(mapOf("lvvmnbkxja", "dataujyduonbdawsao", "xqkdyqjvzvcgrds", "datasbbdddwokqxai",
+                    "hvzf", "datazesfkqqx", "wukokgoojj", "databrouszxac")))
+            .withParameters(mapOf("unhgbtzvxxvsbcuu",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("databc"), "urqmw",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datafnkcnihkswxm"),
+                "svnkxmyt",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datapntumotahb")))
+            .withAnnotations(Arrays.asList("dataedr"))
+            .withFolder(new DatasetFolder().withName("gc"))
+            .withCollectionName("dataivdfwgqjh");
         model = BinaryData.fromObject(model).toObject(DocumentDbCollectionDataset.class);
-        Assertions.assertEquals("ukrcdiohcl", model.description());
-        Assertions.assertEquals("smkaqldqab", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vothmkhjaoz").type());
-        Assertions.assertEquals("etevrntfknwacy", model.folder().name());
+        Assertions.assertEquals("ezkhzp", model.description());
+        Assertions.assertEquals("npsjnpc", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("unhgbtzvxxvsbcuu").type());
+        Assertions.assertEquals("gc", model.folder().name());
     }
 
     // Use "Map.of" if available

@@ -15,8 +15,7 @@ public final class JobResourceImpl implements JobResource {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    JobResourceImpl(
-        JobResourceInner innerObject,
+    JobResourceImpl(JobResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

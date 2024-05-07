@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.ComplianceResultInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of compliance results response. */
+/**
+ * List of compliance results response.
+ */
 @Fluent
 public final class ComplianceResultList {
     /*
@@ -25,13 +27,15 @@ public final class ComplianceResultList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ComplianceResultList class. */
+    /**
+     * Creates an instance of ComplianceResultList class.
+     */
     public ComplianceResultList() {
     }
 
     /**
      * Get the value property: List of compliance results.
-     *
+     * 
      * @return the value value.
      */
     public List<ComplianceResultInner> value() {
@@ -40,7 +44,7 @@ public final class ComplianceResultList {
 
     /**
      * Set the value property: List of compliance results.
-     *
+     * 
      * @param value the value value to set.
      * @return the ComplianceResultList object itself.
      */
@@ -51,7 +55,7 @@ public final class ComplianceResultList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class ComplianceResultList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ComplianceResultList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ComplianceResultList"));
         } else {
             value().forEach(e -> e.validate());
         }

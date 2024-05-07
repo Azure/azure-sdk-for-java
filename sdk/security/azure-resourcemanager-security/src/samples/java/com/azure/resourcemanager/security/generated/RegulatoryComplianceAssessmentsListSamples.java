@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for RegulatoryComplianceAssessments List. */
+/**
+ * Samples for RegulatoryComplianceAssessments List.
+ */
 public final class RegulatoryComplianceAssessmentsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/RegulatoryCompliance/getRegulatoryComplianceAssessmentList_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/preview/2019-01-01-preview/examples/
+     * RegulatoryCompliance/getRegulatoryComplianceAssessmentList_example.json
      */
     /**
      * Sample code: Get all assessments mapped to selected regulatory compliance control.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getAllAssessmentsMappedToSelectedRegulatoryComplianceControl(

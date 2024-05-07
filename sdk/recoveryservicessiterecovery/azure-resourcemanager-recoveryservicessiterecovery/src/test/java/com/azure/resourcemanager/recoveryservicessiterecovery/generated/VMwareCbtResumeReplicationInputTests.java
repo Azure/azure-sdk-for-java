@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class VMwareCbtResumeReplicationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareCbtResumeReplicationInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"VMwareCbt\",\"deleteMigrationResources\":\"ebsnz\"}")
+        VMwareCbtResumeReplicationInput model
+            = BinaryData.fromString("{\"instanceType\":\"VMwareCbt\",\"deleteMigrationResources\":\"ebsnz\"}")
                 .toObject(VMwareCbtResumeReplicationInput.class);
         Assertions.assertEquals("ebsnz", model.deleteMigrationResources());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtResumeReplicationInput model =
-            new VMwareCbtResumeReplicationInput().withDeleteMigrationResources("ebsnz");
+        VMwareCbtResumeReplicationInput model
+            = new VMwareCbtResumeReplicationInput().withDeleteMigrationResources("ebsnz");
         model = BinaryData.fromObject(model).toObject(VMwareCbtResumeReplicationInput.class);
         Assertions.assertEquals("ebsnz", model.deleteMigrationResources());
     }

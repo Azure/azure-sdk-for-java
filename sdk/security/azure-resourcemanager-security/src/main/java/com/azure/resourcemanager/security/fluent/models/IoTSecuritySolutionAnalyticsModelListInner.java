@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Security analytics of your IoT Security solution. */
+/**
+ * List of Security analytics of your IoT Security solution.
+ */
 @Fluent
 public final class IoTSecuritySolutionAnalyticsModelListInner {
     /*
@@ -24,13 +26,15 @@ public final class IoTSecuritySolutionAnalyticsModelListInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of IoTSecuritySolutionAnalyticsModelListInner class. */
+    /**
+     * Creates an instance of IoTSecuritySolutionAnalyticsModelListInner class.
+     */
     public IoTSecuritySolutionAnalyticsModelListInner() {
     }
 
     /**
      * Get the value property: List of Security analytics of your IoT Security solution.
-     *
+     * 
      * @return the value value.
      */
     public List<IoTSecuritySolutionAnalyticsModelInner> value() {
@@ -39,7 +43,7 @@ public final class IoTSecuritySolutionAnalyticsModelListInner {
 
     /**
      * Set the value property: List of Security analytics of your IoT Security solution.
-     *
+     * 
      * @param value the value value to set.
      * @return the IoTSecuritySolutionAnalyticsModelListInner object itself.
      */
@@ -50,7 +54,7 @@ public final class IoTSecuritySolutionAnalyticsModelListInner {
 
     /**
      * Get the nextLink property: When there is too much alert data for one page, use this URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,15 +63,13 @@ public final class IoTSecuritySolutionAnalyticsModelListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model IoTSecuritySolutionAnalyticsModelListInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model IoTSecuritySolutionAnalyticsModelListInner"));
         } else {
             value().forEach(e -> e.validate());
         }

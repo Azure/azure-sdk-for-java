@@ -1360,7 +1360,7 @@ public final class EasmClient {
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
             updateAssetsWithResponse(filter, BinaryData.fromObject(assetUpdateData), requestOptions).getValue())
-                .toObject(Task.class);
+            .toObject(Task.class);
     }
 
     /**
@@ -1418,7 +1418,7 @@ public final class EasmClient {
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
             validateDataConnectionWithResponse(BinaryData.fromObject(dataConnectionData), requestOptions).getValue())
-                .toObject(ValidateResult.class);
+            .toObject(ValidateResult.class);
     }
 
     /**
@@ -1558,7 +1558,8 @@ public final class EasmClient {
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
             createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(discoGroupData), requestOptions)
-                .getValue()).toObject(DiscoGroup.class);
+                .getValue())
+            .toObject(DiscoGroup.class);
     }
 
     private BinaryData cleanUp(BinaryData input) {
@@ -1678,7 +1679,7 @@ public final class EasmClient {
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
             getSnapshotWithResponse(BinaryData.fromObject(reportAssetSnapshotRequest), requestOptions).getValue())
-                .toObject(ReportAssetSnapshotResult.class);
+            .toObject(ReportAssetSnapshotResult.class);
     }
 
     /**
@@ -1700,7 +1701,7 @@ public final class EasmClient {
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
             getSummaryWithResponse(BinaryData.fromObject(reportAssetSummaryRequest), requestOptions).getValue())
-                .toObject(ReportAssetSummaryResult.class);
+            .toObject(ReportAssetSummaryResult.class);
     }
 
     /**
@@ -1759,7 +1760,8 @@ public final class EasmClient {
         RequestOptions requestOptions = new RequestOptions();
         return cleanUp(
             createOrReplaceSavedFilterWithResponse(filterName, BinaryData.fromObject(savedFilterData), requestOptions)
-                .getValue()).toObject(SavedFilter.class);
+                .getValue())
+            .toObject(SavedFilter.class);
     }
 
     /**

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Provider specific input for unpairing operations. */
+/**
+ * Provider specific input for unpairing operations.
+ */
 @Fluent
 public final class ReplicationProviderContainerUnmappingInput {
     /*
@@ -16,13 +18,15 @@ public final class ReplicationProviderContainerUnmappingInput {
     @JsonProperty(value = "instanceType")
     private String instanceType;
 
-    /** Creates an instance of ReplicationProviderContainerUnmappingInput class. */
+    /**
+     * Creates an instance of ReplicationProviderContainerUnmappingInput class.
+     */
     public ReplicationProviderContainerUnmappingInput() {
     }
 
     /**
      * Get the instanceType property: The class type.
-     *
+     * 
      * @return the instanceType value.
      */
     public String instanceType() {
@@ -31,7 +35,7 @@ public final class ReplicationProviderContainerUnmappingInput {
 
     /**
      * Set the instanceType property: The class type.
-     *
+     * 
      * @param instanceType the instanceType value to set.
      * @return the ReplicationProviderContainerUnmappingInput object itself.
      */
@@ -42,7 +46,7 @@ public final class ReplicationProviderContainerUnmappingInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

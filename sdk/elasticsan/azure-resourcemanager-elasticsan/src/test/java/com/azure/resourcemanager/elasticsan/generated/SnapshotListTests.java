@@ -14,26 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SnapshotListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SnapshotList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"pnapnyiropuh\"},\"provisioningState\":\"Failed\",\"sourceVolumeSizeGiB\":4966559091411252474,\"volumeName\":\"lgqg\"},\"id\":\"xmedjvcsly\",\"name\":\"qwwncw\",\"type\":\"zhxgktrmgucn\"},{\"properties\":{\"creationData\":{\"sourceId\":\"pkteo\"},\"provisioningState\":\"Canceled\",\"sourceVolumeSizeGiB\":1844084205627831294,\"volumeName\":\"d\"},\"id\":\"pfqbuaceopzf\",\"name\":\"rhhuaopppcqeqx\",\"type\":\"lzdahzxctobgbkdm\"},{\"properties\":{\"creationData\":{\"sourceId\":\"izpost\"},\"provisioningState\":\"Canceled\",\"sourceVolumeSizeGiB\":4576666657495905639,\"volumeName\":\"nrmfqjhhk\"},\"id\":\"pvjymjhxxjyng\",\"name\":\"divkrt\",\"type\":\"wbxqzvszjfau\"},{\"properties\":{\"creationData\":{\"sourceId\":\"j\"},\"provisioningState\":\"Canceled\",\"sourceVolumeSizeGiB\":8265803148006565496,\"volumeName\":\"tvtc\"},\"id\":\"qtdo\",\"name\":\"mcbxvwvxysl\",\"type\":\"bhsfxob\"}],\"nextLink\":\"tkblmpewww\"}")
-                .toObject(SnapshotList.class);
+        SnapshotList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"pnapnyiropuh\"},\"provisioningState\":\"Failed\",\"sourceVolumeSizeGiB\":4966559091411252474,\"volumeName\":\"lgqg\"},\"id\":\"xmedjvcsly\",\"name\":\"qwwncw\",\"type\":\"zhxgktrmgucn\"},{\"properties\":{\"creationData\":{\"sourceId\":\"pkteo\"},\"provisioningState\":\"Canceled\",\"sourceVolumeSizeGiB\":1844084205627831294,\"volumeName\":\"d\"},\"id\":\"pfqbuaceopzf\",\"name\":\"rhhuaopppcqeqx\",\"type\":\"lzdahzxctobgbkdm\"},{\"properties\":{\"creationData\":{\"sourceId\":\"izpost\"},\"provisioningState\":\"Canceled\",\"sourceVolumeSizeGiB\":4576666657495905639,\"volumeName\":\"nrmfqjhhk\"},\"id\":\"pvjymjhxxjyng\",\"name\":\"divkrt\",\"type\":\"wbxqzvszjfau\"},{\"properties\":{\"creationData\":{\"sourceId\":\"j\"},\"provisioningState\":\"Canceled\",\"sourceVolumeSizeGiB\":8265803148006565496,\"volumeName\":\"tvtc\"},\"id\":\"qtdo\",\"name\":\"mcbxvwvxysl\",\"type\":\"bhsfxob\"}],\"nextLink\":\"tkblmpewww\"}")
+            .toObject(SnapshotList.class);
         Assertions.assertEquals("pnapnyiropuh", model.value().get(0).creationData().sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnapshotList model =
-            new SnapshotList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SnapshotInner()
-                                .withCreationData(new SnapshotCreationData().withSourceId("pnapnyiropuh")),
-                            new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("pkteo")),
-                            new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("izpost")),
-                            new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("j"))));
+        SnapshotList model = new SnapshotList().withValue(
+            Arrays.asList(new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("pnapnyiropuh")),
+                new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("pkteo")),
+                new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("izpost")),
+                new SnapshotInner().withCreationData(new SnapshotCreationData().withSourceId("j"))));
         model = BinaryData.fromObject(model).toObject(SnapshotList.class);
         Assertions.assertEquals("pnapnyiropuh", model.value().get(0).creationData().sourceId());
     }

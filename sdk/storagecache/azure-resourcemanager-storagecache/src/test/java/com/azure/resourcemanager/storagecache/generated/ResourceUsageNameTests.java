@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceUsageNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceUsageName model =
-            BinaryData
-                .fromString("{\"value\":\"nehmpvecx\",\"localizedValue\":\"debfqkkrbmpukgri\"}")
+        ResourceUsageName model
+            = BinaryData.fromString("{\"value\":\"debfqkkrbmpukgri\",\"localizedValue\":\"lzlfbxzpuz\"}")
                 .toObject(ResourceUsageName.class);
-        Assertions.assertEquals("nehmpvecx", model.value());
-        Assertions.assertEquals("debfqkkrbmpukgri", model.localizedValue());
+        Assertions.assertEquals("debfqkkrbmpukgri", model.value());
+        Assertions.assertEquals("lzlfbxzpuz", model.localizedValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceUsageName model = new ResourceUsageName().withValue("nehmpvecx").withLocalizedValue("debfqkkrbmpukgri");
+        ResourceUsageName model
+            = new ResourceUsageName().withValue("debfqkkrbmpukgri").withLocalizedValue("lzlfbxzpuz");
         model = BinaryData.fromObject(model).toObject(ResourceUsageName.class);
-        Assertions.assertEquals("nehmpvecx", model.value());
-        Assertions.assertEquals("debfqkkrbmpukgri", model.localizedValue());
+        Assertions.assertEquals("debfqkkrbmpukgri", model.value());
+        Assertions.assertEquals("lzlfbxzpuz", model.localizedValue());
     }
 }

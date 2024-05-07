@@ -35,100 +35,87 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesBackupClientResourceProviders to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesBackupClientResourceProviders to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/operationStatus/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/operationStatus/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusInner>> getOperationStatus(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<OperationStatusInner>> getOperationStatus(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/prepareDataMove")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> bmsPrepareDataMove(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") PrepareDataMoveRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/prepareDataMove")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/triggerDataMove")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> bmsPrepareDataMove(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> bmsTriggerDataMove(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PrepareDataMoveRequest parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TriggerDataMoveRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/triggerDataMove")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/move")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> bmsTriggerDataMove(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<Flux<ByteBuffer>>> moveRecoveryPoint(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") TriggerDataMoveRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/move")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> moveRecoveryPoint(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("containerName") String containerName,
-            @PathParam("protectedItemName") String protectedItemName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("containerName") String containerName, @PathParam("protectedItemName") String protectedItemName,
             @PathParam("recoveryPointId") String recoveryPointId,
-            @BodyParam("application/json") MoveRPAcrossTiersRequest parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MoveRPAcrossTiersRequest parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Fetches operation status for data move operation on vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.
@@ -138,13 +125,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getOperationStatusWithResponseAsync(
-        String vaultName, String resourceGroupName, String operationId) {
+    private Mono<Response<OperationStatusInner>> getOperationStatusWithResponseAsync(String vaultName,
+        String resourceGroupName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -154,34 +139,22 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getOperationStatus(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.getOperationStatus(this.client.getEndpoint(), this.client.getApiVersion(),
+                vaultName, resourceGroupName, this.client.getSubscriptionId(), operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Fetches operation status for data move operation on vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.
@@ -192,13 +165,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getOperationStatusWithResponseAsync(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
+    private Mono<Response<OperationStatusInner>> getOperationStatusWithResponseAsync(String vaultName,
+        String resourceGroupName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -208,31 +179,21 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getOperationStatus(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                operationId,
-                accept,
-                context);
+        return service.getOperationStatus(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+            resourceGroupName, this.client.getSubscriptionId(), operationId, accept, context);
     }
 
     /**
      * Fetches operation status for data move operation on vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.
@@ -242,15 +203,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> getOperationStatusAsync(
-        String vaultName, String resourceGroupName, String operationId) {
+    private Mono<OperationStatusInner> getOperationStatusAsync(String vaultName, String resourceGroupName,
+        String operationId) {
         return getOperationStatusWithResponseAsync(vaultName, resourceGroupName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Fetches operation status for data move operation on vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.
@@ -261,14 +222,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusInner> getOperationStatusWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
+    public Response<OperationStatusInner> getOperationStatusWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context) {
         return getOperationStatusWithResponseAsync(vaultName, resourceGroupName, operationId, context).block();
     }
 
     /**
      * Fetches operation status for data move operation on vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.
@@ -284,7 +245,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -294,13 +255,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> bmsPrepareDataMoveWithResponseAsync(
-        String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> bmsPrepareDataMoveWithResponseAsync(String vaultName,
+        String resourceGroupName, PrepareDataMoveRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -310,10 +269,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -322,24 +279,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .bmsPrepareDataMove(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.bmsPrepareDataMove(this.client.getEndpoint(), this.client.getApiVersion(),
+                vaultName, resourceGroupName, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -350,13 +297,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> bmsPrepareDataMoveWithResponseAsync(
-        String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> bmsPrepareDataMoveWithResponseAsync(String vaultName,
+        String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -366,10 +311,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -378,21 +321,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .bmsPrepareDataMove(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.bmsPrepareDataMove(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+            resourceGroupName, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -402,19 +337,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginBmsPrepareDataMoveAsync(
-        String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            bmsPrepareDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginBmsPrepareDataMoveAsync(String vaultName, String resourceGroupName,
+        PrepareDataMoveRequest parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = bmsPrepareDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -425,19 +358,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginBmsPrepareDataMoveAsync(
-        String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginBmsPrepareDataMoveAsync(String vaultName, String resourceGroupName,
+        PrepareDataMoveRequest parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            bmsPrepareDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = bmsPrepareDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -447,14 +379,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
-        String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(String vaultName, String resourceGroupName,
+        PrepareDataMoveRequest parameters) {
         return this.beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -465,14 +397,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(
-        String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginBmsPrepareDataMove(String vaultName, String resourceGroupName,
+        PrepareDataMoveRequest parameters, Context context) {
         return this.beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -482,16 +414,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> bmsPrepareDataMoveAsync(
-        String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters) {
-        return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters)
-            .last()
+    private Mono<Void> bmsPrepareDataMoveAsync(String vaultName, String resourceGroupName,
+        PrepareDataMoveRequest parameters) {
+        return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -502,16 +433,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> bmsPrepareDataMoveAsync(
-        String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
-        return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters, context)
-            .last()
+    private Mono<Void> bmsPrepareDataMoveAsync(String vaultName, String resourceGroupName,
+        PrepareDataMoveRequest parameters, Context context) {
+        return beginBmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -526,7 +456,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Prepares source vault for Data Move operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Prepare data move request.
@@ -536,14 +466,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void bmsPrepareDataMove(
-        String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters, Context context) {
+    public void bmsPrepareDataMove(String vaultName, String resourceGroupName, PrepareDataMoveRequest parameters,
+        Context context) {
         bmsPrepareDataMoveAsync(vaultName, resourceGroupName, parameters, context).block();
     }
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -553,13 +483,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> bmsTriggerDataMoveWithResponseAsync(
-        String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> bmsTriggerDataMoveWithResponseAsync(String vaultName,
+        String resourceGroupName, TriggerDataMoveRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -569,10 +497,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -581,24 +507,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .bmsTriggerDataMove(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.bmsTriggerDataMove(this.client.getEndpoint(), this.client.getApiVersion(),
+                vaultName, resourceGroupName, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -609,13 +525,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> bmsTriggerDataMoveWithResponseAsync(
-        String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> bmsTriggerDataMoveWithResponseAsync(String vaultName,
+        String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -625,10 +539,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -637,21 +549,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .bmsTriggerDataMove(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.bmsTriggerDataMove(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+            resourceGroupName, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -661,19 +565,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginBmsTriggerDataMoveAsync(
-        String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            bmsTriggerDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginBmsTriggerDataMoveAsync(String vaultName, String resourceGroupName,
+        TriggerDataMoveRequest parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = bmsTriggerDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -684,19 +586,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginBmsTriggerDataMoveAsync(
-        String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginBmsTriggerDataMoveAsync(String vaultName, String resourceGroupName,
+        TriggerDataMoveRequest parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            bmsTriggerDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = bmsTriggerDataMoveWithResponseAsync(vaultName, resourceGroupName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -706,14 +607,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
-        String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
+    public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(String vaultName, String resourceGroupName,
+        TriggerDataMoveRequest parameters) {
         return this.beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -724,14 +625,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(
-        String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginBmsTriggerDataMove(String vaultName, String resourceGroupName,
+        TriggerDataMoveRequest parameters, Context context) {
         return this.beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -741,16 +642,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> bmsTriggerDataMoveAsync(
-        String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters) {
-        return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters)
-            .last()
+    private Mono<Void> bmsTriggerDataMoveAsync(String vaultName, String resourceGroupName,
+        TriggerDataMoveRequest parameters) {
+        return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -761,16 +661,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> bmsTriggerDataMoveAsync(
-        String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
-        return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters, context)
-            .last()
+    private Mono<Void> bmsTriggerDataMoveAsync(String vaultName, String resourceGroupName,
+        TriggerDataMoveRequest parameters, Context context) {
+        return beginBmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -785,7 +684,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Triggers Data Move Operation on target vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Trigger data move request.
@@ -795,14 +694,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void bmsTriggerDataMove(
-        String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters, Context context) {
+    public void bmsTriggerDataMove(String vaultName, String resourceGroupName, TriggerDataMoveRequest parameters,
+        Context context) {
         bmsTriggerDataMoveAsync(vaultName, resourceGroupName, parameters, context).block();
     }
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -816,19 +715,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> moveRecoveryPointWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> moveRecoveryPointWithResponseAsync(String vaultName,
+        String resourceGroupName, String fabricName, String containerName, String protectedItemName,
+        String recoveryPointId, MoveRPAcrossTiersRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -838,10 +730,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -864,28 +754,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .moveRecoveryPoint(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            containerName,
-                            protectedItemName,
-                            recoveryPointId,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.moveRecoveryPoint(this.client.getEndpoint(), this.client.getApiVersion(),
+                vaultName, resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName,
+                protectedItemName, recoveryPointId, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -900,20 +777,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> moveRecoveryPointWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> moveRecoveryPointWithResponseAsync(String vaultName,
+        String resourceGroupName, String fabricName, String containerName, String protectedItemName,
+        String recoveryPointId, MoveRPAcrossTiersRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -923,10 +792,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -949,25 +816,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .moveRecoveryPoint(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                accept,
-                context);
+        return service.moveRecoveryPoint(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+            resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, accept, context);
     }
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -981,32 +837,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginMoveRecoveryPointAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
+    private PollerFlux<PollResult<Void>, Void> beginMoveRecoveryPointAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         MoveRPAcrossTiersRequest parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            moveRecoveryPointWithResponseAsync(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = moveRecoveryPointWithResponseAsync(vaultName, resourceGroupName,
+            fabricName, containerName, protectedItemName, recoveryPointId, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -1021,34 +863,19 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginMoveRecoveryPointAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginMoveRecoveryPointAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        MoveRPAcrossTiersRequest parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            moveRecoveryPointWithResponseAsync(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = moveRecoveryPointWithResponseAsync(vaultName, resourceGroupName,
+            fabricName, containerName, protectedItemName, recoveryPointId, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -1062,23 +889,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
+    public SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         MoveRPAcrossTiersRequest parameters) {
-        return this
-            .beginMoveRecoveryPointAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .getSyncPoller();
+        return this.beginMoveRecoveryPointAsync(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, recoveryPointId, parameters).getSyncPoller();
     }
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -1093,31 +913,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters,
-        Context context) {
-        return this
-            .beginMoveRecoveryPointAsync(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginMoveRecoveryPoint(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        MoveRPAcrossTiersRequest parameters, Context context) {
+        return this.beginMoveRecoveryPointAsync(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, recoveryPointId, parameters, context).getSyncPoller();
     }
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -1131,23 +936,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> moveRecoveryPointAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters) {
-        return beginMoveRecoveryPointAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> moveRecoveryPointAsync(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters) {
+        return beginMoveRecoveryPointAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -1162,31 +959,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> moveRecoveryPointAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters,
+    private Mono<Void> moveRecoveryPointAsync(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters,
         Context context) {
-        return beginMoveRecoveryPointAsync(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginMoveRecoveryPointAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -1199,22 +981,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void moveRecoveryPoint(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters) {
-        moveRecoveryPointAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId, parameters)
-            .block();
+    public void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters) {
+        moveRecoveryPointAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters).block();
     }
 
     /**
      * Move recovery point from one datastore to another store.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -1228,24 +1003,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void moveRecoveryPoint(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        MoveRPAcrossTiersRequest parameters,
-        Context context) {
-        moveRecoveryPointAsync(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context)
-            .block();
+    public void moveRecoveryPoint(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, MoveRPAcrossTiersRequest parameters, Context context) {
+        moveRecoveryPointAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, context).block();
     }
 }

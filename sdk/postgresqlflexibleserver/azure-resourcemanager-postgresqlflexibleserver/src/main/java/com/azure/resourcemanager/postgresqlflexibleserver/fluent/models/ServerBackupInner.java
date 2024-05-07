@@ -11,7 +11,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Origin;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Server backup properties. */
+/**
+ * Server backup properties.
+ */
 @Fluent
 public final class ServerBackupInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class ServerBackupInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ServerBackupInner class. */
+    /**
+     * Creates an instance of ServerBackupInner class.
+     */
     public ServerBackupInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a server backup.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerBackupProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class ServerBackupInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,7 +54,7 @@ public final class ServerBackupInner extends ProxyResource {
 
     /**
      * Get the backupType property: Backup type.
-     *
+     * 
      * @return the backupType value.
      */
     public Origin backupType() {
@@ -59,7 +63,7 @@ public final class ServerBackupInner extends ProxyResource {
 
     /**
      * Set the backupType property: Backup type.
-     *
+     * 
      * @param backupType the backupType value to set.
      * @return the ServerBackupInner object itself.
      */
@@ -73,7 +77,7 @@ public final class ServerBackupInner extends ProxyResource {
 
     /**
      * Get the completedTime property: Backup completed time (ISO8601 format).
-     *
+     * 
      * @return the completedTime value.
      */
     public OffsetDateTime completedTime() {
@@ -82,7 +86,7 @@ public final class ServerBackupInner extends ProxyResource {
 
     /**
      * Set the completedTime property: Backup completed time (ISO8601 format).
-     *
+     * 
      * @param completedTime the completedTime value to set.
      * @return the ServerBackupInner object itself.
      */
@@ -96,7 +100,7 @@ public final class ServerBackupInner extends ProxyResource {
 
     /**
      * Get the source property: Backup source.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -105,7 +109,7 @@ public final class ServerBackupInner extends ProxyResource {
 
     /**
      * Set the source property: Backup source.
-     *
+     * 
      * @param source the source value to set.
      * @return the ServerBackupInner object itself.
      */
@@ -119,7 +123,7 @@ public final class ServerBackupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

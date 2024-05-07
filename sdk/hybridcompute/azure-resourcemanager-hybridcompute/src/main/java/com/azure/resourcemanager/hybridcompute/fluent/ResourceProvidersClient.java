@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionUpgrade;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -25,12 +27,12 @@ public interface ResourceProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpgradeExtensions(
-        String resourceGroupName, String machineName, MachineExtensionUpgrade extensionUpgradeParameters);
+    SyncPoller<PollResult<Void>, Void> beginUpgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters);
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -41,15 +43,12 @@ public interface ResourceProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpgradeExtensions(
-        String resourceGroupName,
-        String machineName,
-        MachineExtensionUpgrade extensionUpgradeParameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginUpgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters, Context context);
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -58,12 +57,12 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void upgradeExtensions(
-        String resourceGroupName, String machineName, MachineExtensionUpgrade extensionUpgradeParameters);
+    void upgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters);
 
     /**
      * The operation to Upgrade Machine Extensions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
      * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
@@ -73,9 +72,6 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void upgradeExtensions(
-        String resourceGroupName,
-        String machineName,
-        MachineExtensionUpgrade extensionUpgradeParameters,
-        Context context);
+    void upgradeExtensions(String resourceGroupName, String machineName,
+        MachineExtensionUpgrade extensionUpgradeParameters, Context context);
 }

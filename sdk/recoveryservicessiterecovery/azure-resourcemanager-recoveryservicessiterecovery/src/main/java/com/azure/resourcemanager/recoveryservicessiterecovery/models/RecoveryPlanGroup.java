@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Recovery plan group details. */
+/**
+ * Recovery plan group details.
+ */
 @Fluent
 public final class RecoveryPlanGroup {
     /*
@@ -36,13 +38,15 @@ public final class RecoveryPlanGroup {
     @JsonProperty(value = "endGroupActions")
     private List<RecoveryPlanAction> endGroupActions;
 
-    /** Creates an instance of RecoveryPlanGroup class. */
+    /**
+     * Creates an instance of RecoveryPlanGroup class.
+     */
     public RecoveryPlanGroup() {
     }
 
     /**
      * Get the groupType property: The group type.
-     *
+     * 
      * @return the groupType value.
      */
     public RecoveryPlanGroupType groupType() {
@@ -51,7 +55,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Set the groupType property: The group type.
-     *
+     * 
      * @param groupType the groupType value to set.
      * @return the RecoveryPlanGroup object itself.
      */
@@ -62,7 +66,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Get the replicationProtectedItems property: The list of protected items.
-     *
+     * 
      * @return the replicationProtectedItems value.
      */
     public List<RecoveryPlanProtectedItem> replicationProtectedItems() {
@@ -71,7 +75,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Set the replicationProtectedItems property: The list of protected items.
-     *
+     * 
      * @param replicationProtectedItems the replicationProtectedItems value to set.
      * @return the RecoveryPlanGroup object itself.
      */
@@ -82,7 +86,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Get the startGroupActions property: The start group actions.
-     *
+     * 
      * @return the startGroupActions value.
      */
     public List<RecoveryPlanAction> startGroupActions() {
@@ -91,7 +95,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Set the startGroupActions property: The start group actions.
-     *
+     * 
      * @param startGroupActions the startGroupActions value to set.
      * @return the RecoveryPlanGroup object itself.
      */
@@ -102,7 +106,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Get the endGroupActions property: The end group actions.
-     *
+     * 
      * @return the endGroupActions value.
      */
     public List<RecoveryPlanAction> endGroupActions() {
@@ -111,7 +115,7 @@ public final class RecoveryPlanGroup {
 
     /**
      * Set the endGroupActions property: The end group actions.
-     *
+     * 
      * @param endGroupActions the endGroupActions value to set.
      * @return the RecoveryPlanGroup object itself.
      */
@@ -122,14 +126,13 @@ public final class RecoveryPlanGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (groupType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property groupType in model RecoveryPlanGroup"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property groupType in model RecoveryPlanGroup"));
         }
         if (replicationProtectedItems() != null) {
             replicationProtectedItems().forEach(e -> e.validate());

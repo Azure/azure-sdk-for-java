@@ -301,7 +301,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return instrumentation.getTracer().traceMono(connectionProcessor.flatMap(connection -> connection.getManagementNode())
+        return instrumentation.getTracer().traceMono(connectionProcessor.getManagementNodeWithRetries()
                 .flatMap(EventHubManagementNode::getEventHubProperties),
             "EventHubs.getEventHubProperties");
     }
@@ -334,8 +334,8 @@ public class EventHubConsumerAsyncClient implements Closeable {
             return monoError(LOGGER, new IllegalArgumentException("'partitionId' cannot be an empty string."));
         }
 
-        return instrumentation.getTracer().traceMono(connectionProcessor.flatMap(connection -> connection.getManagementNode())
-                .flatMap(node -> node.getPartitionProperties(partitionId)),
+        return instrumentation.getTracer().traceMono(
+            connectionProcessor.getManagementNodeWithRetries().flatMap(node -> node.getPartitionProperties(partitionId)),
             "EventHubs.getPartitionProperties");
     }
 

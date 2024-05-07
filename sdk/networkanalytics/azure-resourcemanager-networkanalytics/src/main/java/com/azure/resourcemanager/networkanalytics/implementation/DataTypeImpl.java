@@ -105,9 +105,9 @@ public final class DataTypeImpl implements DataType, DataType.Definition, DataTy
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dataProductName = Utils.getValueFromIdByName(innerObject.id(), "dataProducts");
-        this.dataTypeName = Utils.getValueFromIdByName(innerObject.id(), "dataTypes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dataProductName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataProducts");
+        this.dataTypeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataTypes");
     }
 
     public DataType refresh() {

@@ -128,6 +128,10 @@ public final class Region {
      * UK West (Europe)
      */
     public static final Region UK_WEST = new Region("ukwest", "UK West");
+    /**
+     * Italy North (Europe)
+     */
+    public static final Region ITALY_NORTH = new Region("italynorth", "Italy North");
     /*
      * Azure Cloud - Asia
      */
@@ -363,13 +367,15 @@ public final class Region {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
         if (!(obj instanceof Region)) {
             return false;
-        } else if (obj == this) {
-            return true;
-        } else {
-            Region rhs = (Region) obj;
-            return this.name.equalsIgnoreCase(rhs.name);
         }
+
+        Region rhs = (Region) obj;
+        return this.name.equalsIgnoreCase(rhs.name);
     }
 }

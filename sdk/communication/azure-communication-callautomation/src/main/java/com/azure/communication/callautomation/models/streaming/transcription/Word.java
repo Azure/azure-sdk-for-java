@@ -22,6 +22,12 @@ public class Word {
     @JsonProperty(value = "offset")
     private long offset;
 
+    /*
+     * Duration in ticks. 1 tick = 100 nanoseconds.
+     */
+    @JsonProperty(value = "duration")
+    private long duration;
+
     /**
      * Get the text property.
      *
@@ -38,5 +44,14 @@ public class Word {
      */
     public long getOffset() {
         return offset;
+    }
+
+      /**
+     * Get the duration property.
+     *
+     * @return the duration value.
+     */
+    public long getDuration() {
+        return duration;
     }
 }

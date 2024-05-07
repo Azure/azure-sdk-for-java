@@ -5,30 +5,33 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The properties that are associated with an input containing stream data. */
+/**
+ * The properties that are associated with an input containing stream data.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Stream")
 @Fluent
 public final class StreamInputProperties extends InputProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamInputProperties.class);
-
     /*
-     * Describes an input data source that contains stream data. Required on
-     * PUT (CreateOrReplace) requests.
+     * Describes an input data source that contains stream data. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "datasource")
     private StreamInputDataSource datasource;
 
     /**
+     * Creates an instance of StreamInputProperties class.
+     */
+    public StreamInputProperties() {
+    }
+
+    /**
      * Get the datasource property: Describes an input data source that contains stream data. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @return the datasource value.
      */
     public StreamInputDataSource datasource() {
@@ -38,7 +41,7 @@ public final class StreamInputProperties extends InputProperties {
     /**
      * Set the datasource property: Describes an input data source that contains stream data. Required on PUT
      * (CreateOrReplace) requests.
-     *
+     * 
      * @param datasource the datasource value to set.
      * @return the StreamInputProperties object itself.
      */
@@ -47,21 +50,27 @@ public final class StreamInputProperties extends InputProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StreamInputProperties withSerialization(Serialization serialization) {
         super.withSerialization(serialization);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StreamInputProperties withCompression(Compression compression) {
         super.withCompression(compression);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StreamInputProperties withPartitionKey(String partitionKey) {
         super.withPartitionKey(partitionKey);
@@ -69,8 +78,17 @@ public final class StreamInputProperties extends InputProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StreamInputProperties withWatermarkSettings(InputWatermarkProperties watermarkSettings) {
+        super.withWatermarkSettings(watermarkSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

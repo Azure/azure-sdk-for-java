@@ -19,14 +19,8 @@ public final class StartHoldMusicRequestInternal {
     /*
      * Prompt to play while in hold.
      */
-    @JsonProperty(value = "playSourceInfo", required = true)
+    @JsonProperty(value = "playSourceInfo")
     private PlaySourceInternal playSourceInfo;
-
-    /*
-     * If the prompt will be looped or not.
-     */
-    @JsonProperty(value = "loop")
-    private Boolean loop;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request
@@ -34,6 +28,15 @@ public final class StartHoldMusicRequestInternal {
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
+
+    /*
+     * Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     */
+    @JsonProperty(value = "operationCallbackUri")
+    private String operationCallbackUri;
 
     /**
      * Get the targetParticipant property: Participant to be held from the call.
@@ -76,26 +79,6 @@ public final class StartHoldMusicRequestInternal {
     }
 
     /**
-     * Get the loop property: If the prompt will be looped or not.
-     *
-     * @return the loop value.
-     */
-    public Boolean isLoop() {
-        return this.loop;
-    }
-
-    /**
-     * Set the loop property: If the prompt will be looped or not.
-     *
-     * @param loop the loop value to set.
-     * @return the StartHoldMusicRequestInternal object itself.
-     */
-    public StartHoldMusicRequestInternal setLoop(Boolean loop) {
-        this.loop = loop;
-        return this;
-    }
-
-    /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
      *
@@ -114,6 +97,30 @@ public final class StartHoldMusicRequestInternal {
      */
     public StartHoldMusicRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
+     * @return the operationCallbackUri value.
+     */
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
+    }
+
+    /**
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
+     * @param operationCallbackUri the operationCallbackUri value to set.
+     * @return the StartHoldMusicRequestInternal object itself.
+     */
+    public StartHoldMusicRequestInternal setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
         return this;
     }
 }

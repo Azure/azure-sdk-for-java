@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.confluent {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.confluent;
     exports com.azure.resourcemanager.confluent.fluent;
     exports com.azure.resourcemanager.confluent.fluent.models;
     exports com.azure.resourcemanager.confluent.models;
-
     opens com.azure.resourcemanager.confluent.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.confluent.models to com.azure.core, com.fasterxml.jackson.databind;
 }

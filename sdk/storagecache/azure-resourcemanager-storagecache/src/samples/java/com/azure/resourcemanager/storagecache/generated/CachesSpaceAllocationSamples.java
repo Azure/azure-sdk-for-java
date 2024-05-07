@@ -7,27 +7,25 @@ package com.azure.resourcemanager.storagecache.generated;
 import com.azure.resourcemanager.storagecache.models.StorageTargetSpaceAllocation;
 import java.util.Arrays;
 
-/** Samples for Caches SpaceAllocation. */
+/**
+ * Samples for Caches SpaceAllocation.
+ */
 public final class CachesSpaceAllocationSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/SpaceAllocation_Post.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
+     * SpaceAllocation_Post.json
      */
     /**
      * Sample code: SpaceAllocation_Post.
-     *
+     * 
      * @param manager Entry point to StorageCacheManager.
      */
     public static void spaceAllocationPost(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        manager
-            .caches()
-            .spaceAllocation(
-                "scgroup",
-                "sc1",
-                Arrays
-                    .asList(
-                        new StorageTargetSpaceAllocation().withName("st1").withAllocationPercentage(25),
-                        new StorageTargetSpaceAllocation().withName("st2").withAllocationPercentage(50),
-                        new StorageTargetSpaceAllocation().withName("st3").withAllocationPercentage(25)),
-                com.azure.core.util.Context.NONE);
+        manager.caches().spaceAllocation("scgroup", "sc1",
+            Arrays.asList(new StorageTargetSpaceAllocation().withName("st1").withAllocationPercentage(25),
+                new StorageTargetSpaceAllocation().withName("st2").withAllocationPercentage(50),
+                new StorageTargetSpaceAllocation().withName("st3").withAllocationPercentage(25)),
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -40,35 +40,32 @@ public class CredentialsTests {
 
     @SyncAsyncTest
     public void basicCredentialsTest() throws Exception {
-        BasicAuthenticationCredential credentials = new BasicAuthenticationCredential("user",
-                "fakeKeyPlaceholder");
+        BasicAuthenticationCredential credentials = new BasicAuthenticationCredential("user", "fakeKeyPlaceholder");
 
-        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
             String headerValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             Assertions.assertTrue(headerValue != null && headerValue.startsWith("Basic ") && headerValue.length() > 6);
             return next.process();
         };
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
             .policies((context, next) -> credentials.getToken(new TokenRequestContext().addScopes("scope./default"))
                 .flatMap(token -> {
-                    context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, "Basic " + token.getToken());
+                    context.getHttpRequest()
+                        .getHeaders()
+                        .set(HttpHeaderName.AUTHORIZATION, "Basic " + token.getToken());
                     return next.process();
                 }), auditorPolicy)
             .build();
 
-        SyncAsyncExtension.execute(
-            () -> sendRequestSync(pipeline),
-            () -> sendRequest(pipeline)
-        );
+        SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
     }
 
     @SyncAsyncTest
     public void tokenCredentialTest() throws Exception {
         TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
 
-        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
             String headerValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             Assertions.assertEquals("Bearer this_is_a_token", headerValue);
             return next.process();
@@ -80,48 +77,43 @@ public class CredentialsTests {
             }
         };
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient)
             .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
             .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, createUrl("https://localhost"));
-        SyncAsyncExtension.execute(
-            () -> pipeline.sendSync(request, Context.NONE),
-            () -> pipeline.send(request).block()
-        );
+        SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE),
+            () -> pipeline.send(request).block());
     }
+
     @SyncAsyncTest
     public void tokenCredentialHttpSchemeTest() {
         TokenCredential credentials = request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX));
 
-        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
             String headerValue = context.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
             Assertions.assertEquals("Bearer this_is_a_token", headerValue);
             return next.process();
         };
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-                .httpClient(new NoOpHttpClient())
-                .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
-                .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
+            .policies(new BearerTokenAuthenticationPolicy(credentials, "scope./default"), auditorPolicy)
+            .build();
 
-        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> SyncAsyncExtension.execute(
-            () -> sendRequestSync(pipeline),
-            () -> sendRequest(pipeline)
-        ));
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class,
+            () -> SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline)));
 
         Assertions.assertEquals("token credentials require a URL using the HTTPS protocol scheme", thrown.getMessage());
     }
 
     @ParameterizedTest
-    @CsvSource(
-        {   "test_signature,https://localhost,https://localhost?test_signature",
-            "?test_signature,https://localhost,https://localhost?test_signature",
-            "test_signature,https://localhost?,https://localhost?test_signature",
-            "?test_signature,https://localhost?,https://localhost?test_signature",
-            "test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature",
-            "?test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature"})
+    @CsvSource({
+        "test_signature,https://localhost,https://localhost?test_signature",
+        "?test_signature,https://localhost,https://localhost?test_signature",
+        "test_signature,https://localhost?,https://localhost?test_signature",
+        "?test_signature,https://localhost?,https://localhost?test_signature",
+        "test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature",
+        "?test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature" })
     public void sasCredentialsTest(String signature, String url, String expectedUrl) throws Exception {
         AzureSasCredential credential = new AzureSasCredential(signature);
 
@@ -131,23 +123,22 @@ public class CredentialsTests {
             return next.process();
         };
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
             .policies(new AzureSasCredentialPolicy(credential), auditorPolicy)
             .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET,  createUrl(url));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, createUrl(url));
         pipeline.send(request).block();
     }
 
     @ParameterizedTest
-    @CsvSource(
-        {   "test_signature,https://localhost,https://localhost?test_signature",
-            "?test_signature,https://localhost,https://localhost?test_signature",
-            "test_signature,https://localhost?,https://localhost?test_signature",
-            "?test_signature,https://localhost?,https://localhost?test_signature",
-            "test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature",
-            "?test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature"})
+    @CsvSource({
+        "test_signature,https://localhost,https://localhost?test_signature",
+        "?test_signature,https://localhost,https://localhost?test_signature",
+        "test_signature,https://localhost?,https://localhost?test_signature",
+        "?test_signature,https://localhost?,https://localhost?test_signature",
+        "test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature",
+        "?test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature" })
     public void sasCredentialsTestSync(String signature, String url, String expectedUrl) throws Exception {
         AzureSasCredential credential = new AzureSasCredential(signature);
 
@@ -157,8 +148,7 @@ public class CredentialsTests {
             return next.process();
         };
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
             .policies(new AzureSasCredentialPolicy(credential), auditorPolicy)
             .build();
 
@@ -170,57 +160,49 @@ public class CredentialsTests {
     public void sasCredentialsRequireHTTPSSchemeTest() {
         AzureSasCredential credential = new AzureSasCredential("foo");
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
             .policies(new AzureSasCredentialPolicy(credential))
             .build();
 
-        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class, () -> SyncAsyncExtension.execute(
-            () -> sendRequestSync(pipeline),
-            () -> sendRequest(pipeline)
-        ));
+        RuntimeException thrown = Assertions.assertThrows(RuntimeException.class,
+            () -> SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline)));
 
-        Assertions.assertEquals("Shared access signature credentials require HTTPS to prevent leaking the shared access signature.", thrown.getMessage());
+        Assertions.assertEquals(
+            "Shared access signature credentials require HTTPS to prevent leaking the shared access signature.",
+            thrown.getMessage());
     }
 
     @SyncAsyncTest
     public void sasCredentialsDoNotRequireHTTPSchemeTest() throws Exception {
         AzureSasCredential credential = new AzureSasCredential("foo");
 
-        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
+        HttpPipelinePolicy auditorPolicy = (context, next) -> {
             String actualUrl = context.getHttpRequest().getUrl().toString();
             Assertions.assertEquals("http://localhost?foo", actualUrl);
             return next.process();
         };
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
             .policies(new AzureSasCredentialPolicy(credential, false), auditorPolicy)
             .build();
 
-        SyncAsyncExtension.execute(
-            () -> sendRequestSync(pipeline),
-            () -> sendRequest(pipeline)
-        );
+        SyncAsyncExtension.execute(() -> sendRequestSync(pipeline), () -> sendRequest(pipeline));
     }
 
     static class InvalidInputsArgumentProvider implements ArgumentsProvider {
 
-        InvalidInputsArgumentProvider() { }
+        InvalidInputsArgumentProvider() {
+        }
 
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
-            return Stream.of(
-                Arguments.of(null, null, NullPointerException.class),
-                Arguments.of("", null, NullPointerException.class),
-                Arguments.of(null, "", NullPointerException.class),
+            return Stream.of(Arguments.of(null, null, NullPointerException.class),
+                Arguments.of("", null, NullPointerException.class), Arguments.of(null, "", NullPointerException.class),
                 Arguments.of("", "", IllegalArgumentException.class),
                 Arguments.of("DummyName", "", IllegalArgumentException.class),
-                Arguments.of("", "DummyValue", IllegalArgumentException.class)
-            );
+                Arguments.of("", "DummyValue", IllegalArgumentException.class));
         }
     }
-
 
     @ParameterizedTest
     @ArgumentsSource(InvalidInputsArgumentProvider.class)
@@ -233,8 +215,7 @@ public class CredentialsTests {
     @ParameterizedTest
     @ArgumentsSource(InvalidInputsArgumentProvider.class)
     public void namedKeyCredentialsInvalidArgumentUpdateTest(String name, String key, Class<Exception> excepionType) {
-        AzureNamedKeyCredential azureNamedKeyCredential =
-            new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_VALUE);
+        AzureNamedKeyCredential azureNamedKeyCredential = new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_VALUE);
 
         Assertions.assertThrows(excepionType, () -> {
             azureNamedKeyCredential.update(name, key);
@@ -243,8 +224,7 @@ public class CredentialsTests {
 
     @Test
     public void namedKeyCredentialValueTest() {
-        AzureNamedKeyCredential azureNamedKeyCredential =
-            new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_VALUE);
+        AzureNamedKeyCredential azureNamedKeyCredential = new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_VALUE);
 
         Assertions.assertEquals(DUMMY_NAME, azureNamedKeyCredential.getAzureNamedKey().getName());
         Assertions.assertEquals(DUMMY_VALUE, azureNamedKeyCredential.getAzureNamedKey().getKey());
@@ -252,8 +232,7 @@ public class CredentialsTests {
 
     @Test
     public void namedKeyCredentialUpdateTest() {
-        AzureNamedKeyCredential azureNamedKeyCredential =
-            new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_NAME);
+        AzureNamedKeyCredential azureNamedKeyCredential = new AzureNamedKeyCredential(DUMMY_NAME, DUMMY_NAME);
 
         String expectedName = "New-Name";
         String expectedValue = "NewValue";

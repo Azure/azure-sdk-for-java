@@ -99,8 +99,7 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     }
 
     @Override
-    public <A> void read(ByteBuffer dst, long position, A attachment,
-        CompletionHandler<Integer, ? super A> handler) {
+    public <A> void read(ByteBuffer dst, long position, A attachment, CompletionHandler<Integer, ? super A> handler) {
         if (mode != Mode.READ) {
             return;
         }
@@ -150,8 +149,7 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     }
 
     @Override
-    public <A> void write(ByteBuffer src, long position, A attachment,
-        CompletionHandler<Integer, ? super A> handler) {
+    public <A> void write(ByteBuffer src, long position, A attachment, CompletionHandler<Integer, ? super A> handler) {
         if (mode == Mode.WRITE) {
             WRITER.schedule(() -> handler.completed(writeInternal(src, position), attachment), 1,
                 TimeUnit.MICROSECONDS);
@@ -182,8 +180,6 @@ public class MockAsynchronousFileChannel extends AsynchronousFileChannel {
     }
 
     private enum Mode {
-        NOOP,
-        READ,
-        WRITE
+        NOOP, READ, WRITE
     }
 }

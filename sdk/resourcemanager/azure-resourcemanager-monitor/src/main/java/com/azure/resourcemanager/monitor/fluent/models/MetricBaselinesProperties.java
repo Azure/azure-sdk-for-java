@@ -11,19 +11,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/** The response to a metric baselines query. */
+/**
+ * The response to a metric baselines query.
+ */
 @Fluent
 public final class MetricBaselinesProperties {
     /*
      * The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
-     * '/'.  This may be adjusted in the future and returned back from what was originally requested.
+     * '/'. This may be adjusted in the future and returned back from what was originally requested.
      */
     @JsonProperty(value = "timespan", required = true)
     private String timespan;
 
     /*
-     * The interval (window size) for which the metric data was returned in.  This may be adjusted in the future and
-     * returned back from what was originally requested.  This is not present if a metadata request was made.
+     * The interval (window size) for which the metric data was returned in. This may be adjusted in the future and
+     * returned back from what was originally requested. This is not present if a metadata request was made.
      */
     @JsonProperty(value = "interval", required = true)
     private Duration interval;
@@ -40,7 +42,9 @@ public final class MetricBaselinesProperties {
     @JsonProperty(value = "baselines", required = true)
     private List<TimeSeriesBaseline> baselines;
 
-    /** Creates an instance of MetricBaselinesProperties class. */
+    /**
+     * Creates an instance of MetricBaselinesProperties class.
+     */
     public MetricBaselinesProperties() {
     }
 
@@ -48,7 +52,7 @@ public final class MetricBaselinesProperties {
      * Get the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
      * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
      * requested.
-     *
+     * 
      * @return the timespan value.
      */
     public String timespan() {
@@ -59,7 +63,7 @@ public final class MetricBaselinesProperties {
      * Set the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
      * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
      * requested.
-     *
+     * 
      * @param timespan the timespan value to set.
      * @return the MetricBaselinesProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class MetricBaselinesProperties {
      * Get the interval property: The interval (window size) for which the metric data was returned in. This may be
      * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
      * request was made.
-     *
+     * 
      * @return the interval value.
      */
     public Duration interval() {
@@ -83,7 +87,7 @@ public final class MetricBaselinesProperties {
      * Set the interval property: The interval (window size) for which the metric data was returned in. This may be
      * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
      * request was made.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the MetricBaselinesProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class MetricBaselinesProperties {
 
     /**
      * Get the namespace property: The namespace of the metrics been queried.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -103,7 +107,7 @@ public final class MetricBaselinesProperties {
 
     /**
      * Set the namespace property: The namespace of the metrics been queried.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the MetricBaselinesProperties object itself.
      */
@@ -114,7 +118,7 @@ public final class MetricBaselinesProperties {
 
     /**
      * Get the baselines property: The baseline for each time series that was queried.
-     *
+     * 
      * @return the baselines value.
      */
     public List<TimeSeriesBaseline> baselines() {
@@ -123,7 +127,7 @@ public final class MetricBaselinesProperties {
 
     /**
      * Set the baselines property: The baseline for each time series that was queried.
-     *
+     * 
      * @param baselines the baselines value to set.
      * @return the MetricBaselinesProperties object itself.
      */
@@ -134,27 +138,21 @@ public final class MetricBaselinesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (timespan() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property timespan in model MetricBaselinesProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property timespan in model MetricBaselinesProperties"));
         }
         if (interval() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property interval in model MetricBaselinesProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property interval in model MetricBaselinesProperties"));
         }
         if (baselines() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property baselines in model MetricBaselinesProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property baselines in model MetricBaselinesProperties"));
         } else {
             baselines().forEach(e -> e.validate());
         }

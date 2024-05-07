@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Vendor reference. */
+/**
+ * Vendor reference.
+ */
 @Immutable
 public final class VendorReference {
     /*
@@ -22,13 +24,15 @@ public final class VendorReference {
     @JsonProperty(value = "link", access = JsonProperty.Access.WRITE_ONLY)
     private String link;
 
-    /** Creates an instance of VendorReference class. */
+    /**
+     * Creates an instance of VendorReference class.
+     */
     public VendorReference() {
     }
 
     /**
      * Get the title property: Link title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -37,7 +41,7 @@ public final class VendorReference {
 
     /**
      * Get the link property: Link url.
-     *
+     * 
      * @return the link value.
      */
     public String link() {
@@ -46,7 +50,7 @@ public final class VendorReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

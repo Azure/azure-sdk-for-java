@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** configuration for the servers offering subPlan. */
+/**
+ * configuration for the servers offering subPlan.
+ */
 @Fluent
 public final class DefenderForServersGcpOfferingSubPlan {
     /*
@@ -16,13 +18,15 @@ public final class DefenderForServersGcpOfferingSubPlan {
     @JsonProperty(value = "type")
     private SubPlan type;
 
-    /** Creates an instance of DefenderForServersGcpOfferingSubPlan class. */
+    /**
+     * Creates an instance of DefenderForServersGcpOfferingSubPlan class.
+     */
     public DefenderForServersGcpOfferingSubPlan() {
     }
 
     /**
      * Get the type property: The available sub plans.
-     *
+     * 
      * @return the type value.
      */
     public SubPlan type() {
@@ -31,7 +35,7 @@ public final class DefenderForServersGcpOfferingSubPlan {
 
     /**
      * Set the type property: The available sub plans.
-     *
+     * 
      * @param type the type value to set.
      * @return the DefenderForServersGcpOfferingSubPlan object itself.
      */
@@ -42,7 +46,7 @@ public final class DefenderForServersGcpOfferingSubPlan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

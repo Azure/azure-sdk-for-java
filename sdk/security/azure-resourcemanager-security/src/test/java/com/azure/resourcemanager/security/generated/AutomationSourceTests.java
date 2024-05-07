@@ -7,31 +7,55 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.AutomationRuleSet;
 import com.azure.resourcemanager.security.models.AutomationSource;
+import com.azure.resourcemanager.security.models.AutomationTriggeringRule;
 import com.azure.resourcemanager.security.models.EventSource;
+import com.azure.resourcemanager.security.models.Operator;
+import com.azure.resourcemanager.security.models.PropertyType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AutomationSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationSource model =
-            BinaryData
-                .fromString("{\"eventSource\":\"SubAssessmentsSnapshot\",\"ruleSets\":[{\"rules\":[]},{\"rules\":[]}]}")
-                .toObject(AutomationSource.class);
-        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS_SNAPSHOT, model.eventSource());
+        AutomationSource model = BinaryData.fromString(
+            "{\"eventSource\":\"SecureScoresSnapshot\",\"ruleSets\":[{\"rules\":[{\"propertyJPath\":\"c\",\"propertyType\":\"Boolean\",\"expectedValue\":\"qwwncw\",\"operator\":\"GreaterThanOrEqualTo\"}]},{\"rules\":[{\"propertyJPath\":\"trmgucnapkte\",\"propertyType\":\"Integer\",\"expectedValue\":\"wptfdy\",\"operator\":\"Contains\"},{\"propertyJPath\":\"b\",\"propertyType\":\"Boolean\",\"expectedValue\":\"op\",\"operator\":\"Contains\"},{\"propertyJPath\":\"hhuao\",\"propertyType\":\"Integer\",\"expectedValue\":\"qeqxo\",\"operator\":\"LesserThan\"},{\"propertyJPath\":\"hzxct\",\"propertyType\":\"Number\",\"expectedValue\":\"kdmoi\",\"operator\":\"StartsWith\"}]},{\"rules\":[{\"propertyJPath\":\"grcfb\",\"propertyType\":\"Boolean\",\"expectedValue\":\"fqjhhkxbpvjymj\",\"operator\":\"LesserThan\"},{\"propertyJPath\":\"yngudivk\",\"propertyType\":\"Integer\",\"expectedValue\":\"bxqz\",\"operator\":\"GreaterThanOrEqualTo\"},{\"propertyJPath\":\"fauvjfdxx\",\"propertyType\":\"String\",\"expectedValue\":\"vtcqaqtdo\",\"operator\":\"LesserThanOrEqualTo\"}]}]}")
+            .toObject(AutomationSource.class);
+        Assertions.assertEquals(EventSource.SECURE_SCORES_SNAPSHOT, model.eventSource());
+        Assertions.assertEquals("c", model.ruleSets().get(0).rules().get(0).propertyJPath());
+        Assertions.assertEquals(PropertyType.BOOLEAN, model.ruleSets().get(0).rules().get(0).propertyType());
+        Assertions.assertEquals("qwwncw", model.ruleSets().get(0).rules().get(0).expectedValue());
+        Assertions.assertEquals(Operator.GREATER_THAN_OR_EQUAL_TO, model.ruleSets().get(0).rules().get(0).operator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationSource model =
-            new AutomationSource()
-                .withEventSource(EventSource.SUB_ASSESSMENTS_SNAPSHOT)
-                .withRuleSets(
-                    Arrays
-                        .asList(
-                            new AutomationRuleSet().withRules(Arrays.asList()),
-                            new AutomationRuleSet().withRules(Arrays.asList())));
+        AutomationSource model = new AutomationSource().withEventSource(EventSource.SECURE_SCORES_SNAPSHOT)
+            .withRuleSets(Arrays.asList(
+                new AutomationRuleSet().withRules(Arrays
+                    .asList(new AutomationTriggeringRule().withPropertyJPath("c").withPropertyType(PropertyType.BOOLEAN)
+                        .withExpectedValue("qwwncw").withOperator(Operator.GREATER_THAN_OR_EQUAL_TO))),
+                new AutomationRuleSet().withRules(Arrays.asList(
+                    new AutomationTriggeringRule().withPropertyJPath("trmgucnapkte")
+                        .withPropertyType(PropertyType.INTEGER).withExpectedValue("wptfdy")
+                        .withOperator(Operator.CONTAINS),
+                    new AutomationTriggeringRule().withPropertyJPath("b").withPropertyType(PropertyType.BOOLEAN)
+                        .withExpectedValue("op").withOperator(Operator.CONTAINS),
+                    new AutomationTriggeringRule().withPropertyJPath("hhuao").withPropertyType(PropertyType.INTEGER)
+                        .withExpectedValue("qeqxo").withOperator(Operator.LESSER_THAN),
+                    new AutomationTriggeringRule().withPropertyJPath("hzxct").withPropertyType(PropertyType.NUMBER)
+                        .withExpectedValue("kdmoi").withOperator(Operator.STARTS_WITH))),
+                new AutomationRuleSet().withRules(Arrays.asList(
+                    new AutomationTriggeringRule().withPropertyJPath("grcfb").withPropertyType(PropertyType.BOOLEAN)
+                        .withExpectedValue("fqjhhkxbpvjymj").withOperator(Operator.LESSER_THAN),
+                    new AutomationTriggeringRule().withPropertyJPath("yngudivk").withPropertyType(PropertyType.INTEGER)
+                        .withExpectedValue("bxqz").withOperator(Operator.GREATER_THAN_OR_EQUAL_TO),
+                    new AutomationTriggeringRule().withPropertyJPath("fauvjfdxx").withPropertyType(PropertyType.STRING)
+                        .withExpectedValue("vtcqaqtdo").withOperator(Operator.LESSER_THAN_OR_EQUAL_TO)))));
         model = BinaryData.fromObject(model).toObject(AutomationSource.class);
-        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS_SNAPSHOT, model.eventSource());
+        Assertions.assertEquals(EventSource.SECURE_SCORES_SNAPSHOT, model.eventSource());
+        Assertions.assertEquals("c", model.ruleSets().get(0).rules().get(0).propertyJPath());
+        Assertions.assertEquals(PropertyType.BOOLEAN, model.ruleSets().get(0).rules().get(0).propertyType());
+        Assertions.assertEquals("qwwncw", model.ruleSets().get(0).rules().get(0).expectedValue());
+        Assertions.assertEquals(Operator.GREATER_THAN_OR_EQUAL_TO, model.ruleSets().get(0).rules().get(0).operator());
     }
 }

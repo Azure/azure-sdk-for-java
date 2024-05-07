@@ -6,8 +6,11 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** Configuration properties that define the mutable settings of a Container App SourceControl. */
+/**
+ * Configuration properties that define the mutable settings of a Container App SourceControl.
+ */
 @Fluent
 public final class GithubActionConfiguration {
     /*
@@ -64,13 +67,21 @@ public final class GithubActionConfiguration {
     @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
-    /** Creates an instance of GithubActionConfiguration class. */
+    /*
+     * List of environment variables to be passed to the build.
+     */
+    @JsonProperty(value = "buildEnvironmentVariables")
+    private List<EnvironmentVariable> buildEnvironmentVariables;
+
+    /**
+     * Creates an instance of GithubActionConfiguration class.
+     */
     public GithubActionConfiguration() {
     }
 
     /**
      * Get the registryInfo property: Registry configurations.
-     *
+     * 
      * @return the registryInfo value.
      */
     public RegistryInfo registryInfo() {
@@ -79,7 +90,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Set the registryInfo property: Registry configurations.
-     *
+     * 
      * @param registryInfo the registryInfo value to set.
      * @return the GithubActionConfiguration object itself.
      */
@@ -90,7 +101,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Get the azureCredentials property: AzureCredentials configurations.
-     *
+     * 
      * @return the azureCredentials value.
      */
     public AzureCredentials azureCredentials() {
@@ -99,7 +110,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Set the azureCredentials property: AzureCredentials configurations.
-     *
+     * 
      * @param azureCredentials the azureCredentials value to set.
      * @return the GithubActionConfiguration object itself.
      */
@@ -110,7 +121,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Get the contextPath property: Context path.
-     *
+     * 
      * @return the contextPath value.
      */
     public String contextPath() {
@@ -119,7 +130,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Set the contextPath property: Context path.
-     *
+     * 
      * @param contextPath the contextPath value to set.
      * @return the GithubActionConfiguration object itself.
      */
@@ -130,7 +141,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Get the githubPersonalAccessToken property: One time Github PAT to configure github environment.
-     *
+     * 
      * @return the githubPersonalAccessToken value.
      */
     public String githubPersonalAccessToken() {
@@ -139,7 +150,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Set the githubPersonalAccessToken property: One time Github PAT to configure github environment.
-     *
+     * 
      * @param githubPersonalAccessToken the githubPersonalAccessToken value to set.
      * @return the GithubActionConfiguration object itself.
      */
@@ -150,7 +161,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Get the image property: Image name.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -159,7 +170,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Set the image property: Image name.
-     *
+     * 
      * @param image the image value to set.
      * @return the GithubActionConfiguration object itself.
      */
@@ -170,7 +181,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Get the publishType property: Code or Image.
-     *
+     * 
      * @return the publishType value.
      */
     public String publishType() {
@@ -179,7 +190,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Set the publishType property: Code or Image.
-     *
+     * 
      * @param publishType the publishType value to set.
      * @return the GithubActionConfiguration object itself.
      */
@@ -190,7 +201,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Get the os property: Operation system.
-     *
+     * 
      * @return the os value.
      */
     public String os() {
@@ -199,7 +210,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Set the os property: Operation system.
-     *
+     * 
      * @param os the os value to set.
      * @return the GithubActionConfiguration object itself.
      */
@@ -210,7 +221,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Get the runtimeStack property: Runtime stack.
-     *
+     * 
      * @return the runtimeStack value.
      */
     public String runtimeStack() {
@@ -219,7 +230,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Set the runtimeStack property: Runtime stack.
-     *
+     * 
      * @param runtimeStack the runtimeStack value to set.
      * @return the GithubActionConfiguration object itself.
      */
@@ -230,7 +241,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Get the runtimeVersion property: Runtime version.
-     *
+     * 
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -239,7 +250,7 @@ public final class GithubActionConfiguration {
 
     /**
      * Set the runtimeVersion property: Runtime version.
-     *
+     * 
      * @param runtimeVersion the runtimeVersion value to set.
      * @return the GithubActionConfiguration object itself.
      */
@@ -249,8 +260,29 @@ public final class GithubActionConfiguration {
     }
 
     /**
+     * Get the buildEnvironmentVariables property: List of environment variables to be passed to the build.
+     * 
+     * @return the buildEnvironmentVariables value.
+     */
+    public List<EnvironmentVariable> buildEnvironmentVariables() {
+        return this.buildEnvironmentVariables;
+    }
+
+    /**
+     * Set the buildEnvironmentVariables property: List of environment variables to be passed to the build.
+     * 
+     * @param buildEnvironmentVariables the buildEnvironmentVariables value to set.
+     * @return the GithubActionConfiguration object itself.
+     */
+    public GithubActionConfiguration
+        withBuildEnvironmentVariables(List<EnvironmentVariable> buildEnvironmentVariables) {
+        this.buildEnvironmentVariables = buildEnvironmentVariables;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -259,6 +291,9 @@ public final class GithubActionConfiguration {
         }
         if (azureCredentials() != null) {
             azureCredentials().validate();
+        }
+        if (buildEnvironmentVariables() != null) {
+            buildEnvironmentVariables().forEach(e -> e.validate());
         }
     }
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
 public final class VirtualMachinesCaptureSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Capture_MinimumSet_Gen.json
      */
     /**
@@ -29,7 +29,7 @@ public final class VirtualMachinesCaptureSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Capture_MaximumSet_Gen.json
      */
     /**

@@ -8,12 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * HybridAKSNetworkStatus defines the observed state of HybridAKSNetwork.
+ * Status of the virtual network resource.
  */
 @Fluent
 public final class VirtualNetworkPropertiesStatus {
     /*
-     * Contains Provisioning errors
+     * The detailed status of the long running operation.
      */
     @JsonProperty(value = "operationStatus")
     private VirtualNetworkPropertiesStatusOperationStatus operationStatus;
@@ -25,7 +25,7 @@ public final class VirtualNetworkPropertiesStatus {
     }
 
     /**
-     * Get the operationStatus property: Contains Provisioning errors.
+     * Get the operationStatus property: The detailed status of the long running operation.
      * 
      * @return the operationStatus value.
      */
@@ -34,7 +34,7 @@ public final class VirtualNetworkPropertiesStatus {
     }
 
     /**
-     * Set the operationStatus property: Contains Provisioning errors.
+     * Set the operationStatus property: The detailed status of the long running operation.
      * 
      * @param operationStatus the operationStatus value to set.
      * @return the VirtualNetworkPropertiesStatus object itself.

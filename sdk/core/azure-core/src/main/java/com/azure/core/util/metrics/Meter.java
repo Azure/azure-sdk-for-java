@@ -12,12 +12,14 @@ import java.util.Map;
  * instruments that represent individual metrics such as number of active connections or
  * HTTP call latency.
  *
- * Choose instrument kind based on OpenTelemetry guidelines: https://opentelemetry.io/docs/reference/specification/metrics/api/#counter-creation
+ * Choose instrument kind based on OpenTelemetry guidelines:
+ * https://opentelemetry.io/docs/reference/specification/metrics/api/#counter-creation
  *
- * This class is intended to be used by Azure client libraries and provides abstraction over different metrics implementations.
+ * This class is intended to be used by Azure client libraries and provides abstraction over different metrics
+ * implementations.
  * Application developers should use metrics implementations such as OpenTelemetry or Micrometer directly.
  *
- *  <!-- src_embed com.azure.core.util.metrics.Meter.doubleHistogram -->
+ * <!-- src_embed com.azure.core.util.metrics.Meter.doubleHistogram -->
  * <pre>
  *
  * &#47;&#47; Meter and instruments should be created along with service client instance and retained for the client
@@ -41,7 +43,7 @@ import java.util.Map;
  *     amqpLinkDuration.record&#40;Instant.now&#40;&#41;.toEpochMilli&#40;&#41; - start.toEpochMilli&#40;&#41;, attributes, currentContext&#41;;
  * &#125;
  * </pre>
- *  <!-- end com.azure.core.util.metrics.Meter.doubleHistogram -->
+ * <!-- end com.azure.core.util.metrics.Meter.doubleHistogram -->
  */
 public interface Meter extends AutoCloseable {
     /**

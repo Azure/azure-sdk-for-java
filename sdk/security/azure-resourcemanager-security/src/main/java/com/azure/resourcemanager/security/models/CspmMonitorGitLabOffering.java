@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The CSPM (Cloud security posture management) monitoring for gitlab offering. */
+/**
+ * The CSPM (Cloud security posture management) monitoring for gitlab offering.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
 @JsonTypeName("CspmMonitorGitLab")
 @Immutable
 public final class CspmMonitorGitLabOffering extends CloudOffering {
-    /** Creates an instance of CspmMonitorGitLabOffering class. */
+    /**
+     * Creates an instance of CspmMonitorGitLabOffering class.
+     */
     public CspmMonitorGitLabOffering() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

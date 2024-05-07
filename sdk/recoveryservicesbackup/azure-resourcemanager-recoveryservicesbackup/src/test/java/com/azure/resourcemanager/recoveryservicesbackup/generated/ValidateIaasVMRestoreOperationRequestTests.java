@@ -11,17 +11,15 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateIaasVMRes
 public final class ValidateIaasVMRestoreOperationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidateIaasVMRestoreOperationRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"ValidateIaasVMRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\"}}")
-                .toObject(ValidateIaasVMRestoreOperationRequest.class);
+        ValidateIaasVMRestoreOperationRequest model = BinaryData.fromString(
+            "{\"objectType\":\"ValidateIaasVMRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\"}}")
+            .toObject(ValidateIaasVMRestoreOperationRequest.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidateIaasVMRestoreOperationRequest model =
-            new ValidateIaasVMRestoreOperationRequest().withRestoreRequest(new RestoreRequest());
+        ValidateIaasVMRestoreOperationRequest model
+            = new ValidateIaasVMRestoreOperationRequest().withRestoreRequest(new RestoreRequest());
         model = BinaryData.fromObject(model).toObject(ValidateIaasVMRestoreOperationRequest.class);
     }
 }

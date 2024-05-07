@@ -1,3 +1,11 @@
+parameters:
+  - name: Artifacts
+    type: object
+    default:
+      - name: azure-core
+        groupId: com.azure
+        safeName: azurecore
+
 jobs:
   - job: 'Linting'
 
@@ -5,9 +13,12 @@ jobs:
 
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
+      - name: ArtifactsJson
+        value: '${{ convertToJson(parameters.Artifacts) }}'
 
     pool:
-      name: azsdk-pool-mms-ubuntu-2004-general
+      name: $(LINUXPOOL)
 
     steps:
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
@@ -39,10 +50,6 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
-          Artifacts:
-            - name: azure-core
-              groupId: com.azure
-              safeName: azurecore
           JobType: 'linting'
 
       # The only time generate_from_source_pom.py should be used to set the SparseCheckoutDirectories
@@ -53,7 +60,7 @@ jobs:
         displayName: 'Generate FromSource POM and directories for sparse checkout'
         inputs:
           scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--set-skip-linting-projects SkipLintingProjects --project-list $(ProjectList)'
+          arguments: '--set-skip-linting-projects SkipLintingProjects --artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -78,7 +85,7 @@ jobs:
         inputs:
           mavenPomFile: ClientFromSourcePom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip=true -Djacoco.skip=true '
+          options: '$(DefaultOptions) -T 2C -DskipTests -Dgpg.skip -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dcheckstyle.skip -Dspotbugs.skip -Drevapi.skip=true -Djacoco.skip=true -Dshade.skip=true'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
@@ -105,24 +112,23 @@ jobs:
       - task: PowerShell@2
         inputs:
           filePath: $(System.DefaultWorkingDirectory)/eng/pipelines/scripts/Get-Linting-Reports.ps1
-          arguments: -OutputDirectory $(Build.ArtifactStagingDirectory)/linting-reports
+          arguments: -StagingDirectory $(Build.ArtifactStagingDirectory)
           pwsh: true
           workingDirectory: $(Pipeline.Workspace)
         displayName: 'Generate Linting Reports'
         condition: and(always(), ne(variables['LintingGoals'], ''))
 
-      - publish: $(Build.ArtifactStagingDirectory)/linting-reports.zip
-        displayName: 'Publish Linting Reports'
-        artifact: linting-reports-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-        condition: and(always(), ne(variables['LintingGoals'], ''))
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+        parameters:
+          ArtifactName: linting-report
+          ArtifactPath: '$(Build.ArtifactStagingDirectory)/troubleshooting/linting-report.zip'
+          CustomCondition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
 
       - pwsh: |
-          if ((Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/linting-reports -Directory | Measure-Object).Count -gt 0) {
-            Write-Host "Linting errors have been found, download the 'linting-reports.zip' artifact to see what was found."
-            exit 1
-          }
+          Write-Host "Linting errors have been found, download the 'linting-report.zip' artifact to see what was found."
+          exit 1
         displayName: 'Fail Pipeline if Linting Reports Exist'
-        condition: and(succeeded(), ne(variables['LintingGoals'], ''))
+        condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
 
       - task: PowerShell@2
         displayName: Clean up maven local cache

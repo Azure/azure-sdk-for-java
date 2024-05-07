@@ -15,7 +15,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * header collection. In that case each of the entries in the argument's map will be individual header values that use
  * the value of this annotation as a prefix to their key/header name.
  *
- * <p><strong>Example 1:</strong></p>
+ * <p>
+ * <strong>Example 1:</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.HeaderParam.class1 -->
  * <pre>
@@ -29,7 +31,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </pre>
  * <!-- end com.azure.core.annotation.HeaderParam.class1 -->
  *
- * <p><strong>Example 2:</strong></p>
+ * <p>
+ * <strong>Example 2:</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.HeaderParam.class2 -->
  * <pre>
@@ -42,7 +46,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </pre>
  * <!-- end com.azure.core.annotation.HeaderParam.class2 -->
  *
- * <p><strong>Example 3:</strong></p>
+ * <p>
+ * <strong>Example 3:</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.HeaderParam.class3 -->
  * <pre>
@@ -54,7 +60,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * </pre>
  * <!-- end com.azure.core.annotation.HeaderParam.class3 -->
  *
- * <p><strong>Example 4:</strong></p>
+ * <p>
+ * <strong>Example 4:</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.HeaderParam.class4 -->
  * <pre>

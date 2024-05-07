@@ -19,34 +19,37 @@ public final class PhoenixObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PhoenixObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"PhoenixObject\",\"typeProperties\":{\"tableName\":\"datawdxgyypm\",\"table\":\"datazlmln\",\"schema\":\"datacatkuhs\"},\"description\":\"gdkvviilyeshoxf\",\"structure\":\"datajdmu\",\"schema\":\"datausx\",\"linkedServiceName\":{\"referenceName\":\"ugozwplxzgzumnot\",\"parameters\":{\"giq\":\"datakkbyg\",\"izonzsur\":\"datawyshybbnhtt\",\"asfzhzzcarc\":\"dataco\",\"nhwsgns\":\"datauoxyipdthjf\"}},\"parameters\":{\"fbbach\":{\"type\":\"Array\",\"defaultValue\":\"datalfchnufssjg\"},\"kbuxlepghcnuqhq\":{\"type\":\"Array\",\"defaultValue\":\"datazzunfnbphceei\"},\"fscl\":{\"type\":\"String\",\"defaultValue\":\"datawt\"}},\"annotations\":[\"datagygn\",\"databfytnhdnihuzzjuz\",\"datawgbzdtorbi\",\"datanyfzdpxct\"],\"folder\":{\"name\":\"rxdtej\"},\"\":{\"pjhltylyuud\":\"datazrlwtidcnzalgmp\"}}")
+            "{\"type\":\"eenlqtqyvlfb\",\"typeProperties\":{\"tableName\":\"datauepaco\",\"table\":\"dataohex\",\"schema\":\"datagukfkbsycbdymb\"},\"description\":\"vqdvfjdsqephtosh\",\"structure\":\"dataua\",\"schema\":\"datawgujrcn\",\"linkedServiceName\":{\"referenceName\":\"a\",\"parameters\":{\"jwyyeomiflrvfeow\":\"datayqoizfyasyddqbws\",\"znwwu\":\"datatshwfrhhasabva\",\"bwtpwbjlpfwuq\":\"datakbpgci\",\"mpnxg\":\"datarpdgitenyuksli\"}},\"parameters\":{\"xej\":{\"type\":\"Bool\",\"defaultValue\":\"datalanchqotmmxl\"},\"psbeqieiux\":{\"type\":\"SecureString\",\"defaultValue\":\"datajzbjwvtuekbbypqs\"}},\"annotations\":[\"datawndalnjjh\",\"datagkjjpcpi\"],\"folder\":{\"name\":\"yxvtajfjatoid\"},\"\":{\"zanaqvengnpuelr\":\"dataurdgc\",\"jt\":\"dataanbrpkocuxfbage\",\"xmdboefnhx\":\"dataltckiwxggfagi\"}}")
             .toObject(PhoenixObjectDataset.class);
-        Assertions.assertEquals("gdkvviilyeshoxf", model.description());
-        Assertions.assertEquals("ugozwplxzgzumnot", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("fbbach").type());
-        Assertions.assertEquals("rxdtej", model.folder().name());
+        Assertions.assertEquals("vqdvfjdsqephtosh", model.description());
+        Assertions.assertEquals("a", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("xej").type());
+        Assertions.assertEquals("yxvtajfjatoid", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PhoenixObjectDataset model = new PhoenixObjectDataset().withDescription("gdkvviilyeshoxf")
-            .withStructure("datajdmu").withSchema("datausx")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ugozwplxzgzumnot")
-                .withParameters(mapOf("giq", "datakkbyg", "izonzsur", "datawyshybbnhtt", "asfzhzzcarc", "dataco",
-                    "nhwsgns", "datauoxyipdthjf")))
-            .withParameters(mapOf("fbbach",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datalfchnufssjg"),
-                "kbuxlepghcnuqhq",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datazzunfnbphceei"),
-                "fscl", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datawt")))
-            .withAnnotations(Arrays.asList("datagygn", "databfytnhdnihuzzjuz", "datawgbzdtorbi", "datanyfzdpxct"))
-            .withFolder(new DatasetFolder().withName("rxdtej")).withTableName("datawdxgyypm").withTable("datazlmln")
-            .withSchemaTypePropertiesSchema("datacatkuhs");
+        PhoenixObjectDataset model = new PhoenixObjectDataset().withDescription("vqdvfjdsqephtosh")
+            .withStructure("dataua")
+            .withSchema("datawgujrcn")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("a")
+                .withParameters(mapOf("jwyyeomiflrvfeow", "datayqoizfyasyddqbws", "znwwu", "datatshwfrhhasabva",
+                    "bwtpwbjlpfwuq", "datakbpgci", "mpnxg", "datarpdgitenyuksli")))
+            .withParameters(mapOf("xej",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datalanchqotmmxl"),
+                "psbeqieiux",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
+                    .withDefaultValue("datajzbjwvtuekbbypqs")))
+            .withAnnotations(Arrays.asList("datawndalnjjh", "datagkjjpcpi"))
+            .withFolder(new DatasetFolder().withName("yxvtajfjatoid"))
+            .withTableName("datauepaco")
+            .withTable("dataohex")
+            .withSchemaTypePropertiesSchema("datagukfkbsycbdymb");
         model = BinaryData.fromObject(model).toObject(PhoenixObjectDataset.class);
-        Assertions.assertEquals("gdkvviilyeshoxf", model.description());
-        Assertions.assertEquals("ugozwplxzgzumnot", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("fbbach").type());
-        Assertions.assertEquals("rxdtej", model.folder().name());
+        Assertions.assertEquals("vqdvfjdsqephtosh", model.description());
+        Assertions.assertEquals("a", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("xej").type());
+        Assertions.assertEquals("yxvtajfjatoid", model.folder().name());
     }
 
     // Use "Map.of" if available

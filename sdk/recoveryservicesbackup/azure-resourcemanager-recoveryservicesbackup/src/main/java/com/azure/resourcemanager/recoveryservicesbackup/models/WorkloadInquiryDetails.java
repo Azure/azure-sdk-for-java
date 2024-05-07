@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of an inquired protectable item. */
+/**
+ * Details of an inquired protectable item.
+ */
 @Fluent
 public final class WorkloadInquiryDetails {
     /*
@@ -28,13 +30,15 @@ public final class WorkloadInquiryDetails {
     @JsonProperty(value = "inquiryValidation")
     private InquiryValidation inquiryValidation;
 
-    /** Creates an instance of WorkloadInquiryDetails class. */
+    /**
+     * Creates an instance of WorkloadInquiryDetails class.
+     */
     public WorkloadInquiryDetails() {
     }
 
     /**
      * Get the type property: Type of the Workload such as SQL, Oracle etc.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -43,7 +47,7 @@ public final class WorkloadInquiryDetails {
 
     /**
      * Set the type property: Type of the Workload such as SQL, Oracle etc.
-     *
+     * 
      * @param type the type value to set.
      * @return the WorkloadInquiryDetails object itself.
      */
@@ -54,7 +58,7 @@ public final class WorkloadInquiryDetails {
 
     /**
      * Get the itemCount property: Contains the protectable item Count inside this Container.
-     *
+     * 
      * @return the itemCount value.
      */
     public Long itemCount() {
@@ -63,7 +67,7 @@ public final class WorkloadInquiryDetails {
 
     /**
      * Set the itemCount property: Contains the protectable item Count inside this Container.
-     *
+     * 
      * @param itemCount the itemCount value to set.
      * @return the WorkloadInquiryDetails object itself.
      */
@@ -74,7 +78,7 @@ public final class WorkloadInquiryDetails {
 
     /**
      * Get the inquiryValidation property: Inquiry validation such as permissions and other backup validations.
-     *
+     * 
      * @return the inquiryValidation value.
      */
     public InquiryValidation inquiryValidation() {
@@ -83,7 +87,7 @@ public final class WorkloadInquiryDetails {
 
     /**
      * Set the inquiryValidation property: Inquiry validation such as permissions and other backup validations.
-     *
+     * 
      * @param inquiryValidation the inquiryValidation value to set.
      * @return the WorkloadInquiryDetails object itself.
      */
@@ -94,7 +98,7 @@ public final class WorkloadInquiryDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

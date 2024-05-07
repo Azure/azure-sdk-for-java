@@ -13,23 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SimpleRetentionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SimpleRetentionPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"retentionPolicyType\":\"SimpleRetentionPolicy\",\"retentionDuration\":{\"count\":1699550993,\"durationType\":\"Years\"}}")
-                .toObject(SimpleRetentionPolicy.class);
-        Assertions.assertEquals(1699550993, model.retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.YEARS, model.retentionDuration().durationType());
+        SimpleRetentionPolicy model = BinaryData.fromString(
+            "{\"retentionPolicyType\":\"SimpleRetentionPolicy\",\"retentionDuration\":{\"count\":1612379087,\"durationType\":\"Months\"}}")
+            .toObject(SimpleRetentionPolicy.class);
+        Assertions.assertEquals(1612379087, model.retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.MONTHS, model.retentionDuration().durationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SimpleRetentionPolicy model =
-            new SimpleRetentionPolicy()
-                .withRetentionDuration(
-                    new RetentionDuration().withCount(1699550993).withDurationType(RetentionDurationType.YEARS));
+        SimpleRetentionPolicy model = new SimpleRetentionPolicy().withRetentionDuration(
+            new RetentionDuration().withCount(1612379087).withDurationType(RetentionDurationType.MONTHS));
         model = BinaryData.fromObject(model).toObject(SimpleRetentionPolicy.class);
-        Assertions.assertEquals(1699550993, model.retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.YEARS, model.retentionDuration().durationType());
+        Assertions.assertEquals(1612379087, model.retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.MONTHS, model.retentionDuration().durationType());
     }
 }

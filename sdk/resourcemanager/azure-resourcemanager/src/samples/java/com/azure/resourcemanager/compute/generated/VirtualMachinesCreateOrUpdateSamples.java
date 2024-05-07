@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.generated;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
+import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ApplicationProfile;
 import com.azure.resourcemanager.compute.models.BootDiagnostics;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -22,6 +23,7 @@ import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetParameters;
 import com.azure.resourcemanager.compute.models.DomainNameLabelScopeTypes;
 import com.azure.resourcemanager.compute.models.EncryptionIdentity;
+import com.azure.resourcemanager.compute.models.EventGridAndResourceGraph;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
 import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.LinuxConfiguration;
@@ -47,6 +49,8 @@ import com.azure.resourcemanager.compute.models.PublicIpAddressSkuName;
 import com.azure.resourcemanager.compute.models.PublicIpAddressSkuTier;
 import com.azure.resourcemanager.compute.models.PublicIpAllocationMethod;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
+import com.azure.resourcemanager.compute.models.ScheduledEventsAdditionalPublishingTargets;
+import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
 import com.azure.resourcemanager.compute.models.ScheduledEventsProfile;
 import com.azure.resourcemanager.compute.models.SecurityEncryptionTypes;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
@@ -57,6 +61,8 @@ import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.TerminateNotificationProfile;
 import com.azure.resourcemanager.compute.models.UefiSettings;
+import com.azure.resourcemanager.compute.models.UserInitiatedReboot;
+import com.azure.resourcemanager.compute.models.UserInitiatedRedeploy;
 import com.azure.resourcemanager.compute.models.VMDiskSecurityProfile;
 import com.azure.resourcemanager.compute.models.VMGalleryApplication;
 import com.azure.resourcemanager.compute.models.VMSizeProperties;
@@ -83,138 +89,7 @@ import java.util.Map;
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
-     */
-    /**
-     * Sample code: Create a VM from a shared gallery image.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVMFromASharedGalleryImage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withSharedGalleryImageId(
-                        "/SharedGalleries/sharedGalleryName/Images/sharedGalleryImageName/Versions/sharedGalleryImageVersionName"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithVMSizeProperties.json
-     */
-    /**
-     * Sample code: Create a VM with VM Size Properties.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVMWithVMSizeProperties(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D4_V3)
-                    .withVmSizeProperties(new VMSizeProperties().withVCpusAvailable(1).withVCpusPerCore(1)))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withDiagnosticsProfile(new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
-                    .withEnabled(true).withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net")))
-                .withUserData("U29tZSBDdXN0b20gRGF0YQ=="),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
-     */
-    /**
-     * Sample code: Create a platform-image vm with unmanaged os and data disks.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        createAPlatformImageVmWithUnmanagedOsAndDataDisks(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines()
-            .createOrUpdate("myResourceGroup", "{vm-name}", new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withVhd(new VirtualHardDisk().withUri(
-                        "http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk.vhd"))
-                        .withCaching(CachingTypes.READ_WRITE).withCreateOption(DiskCreateOptionTypes.FROM_IMAGE))
-                    .withDataDisks(Arrays.asList(new DataDisk().withLun(0).withVhd(new VirtualHardDisk().withUri(
-                        "http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk0.vhd"))
-                        .withCreateOption(DiskCreateOptionTypes.EMPTY).withDiskSizeGB(1023),
-                        new DataDisk().withLun(1).withVhd(new VirtualHardDisk().withUri(
-                            "http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk1.vhd"))
-                            .withCreateOption(DiskCreateOptionTypes.EMPTY).withDiskSizeGB(1023))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-                null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
-     */
-    /**
-     * Sample code: Create a Linux vm with a patch settings patchMode and assessmentMode set to AutomaticByPlatform.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createALinuxVmWithAPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
-                        .withSku("16.04-LTS").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder")
-                    .withLinuxConfiguration(new LinuxConfiguration().withProvisionVMAgent(true).withPatchSettings(
-                        new LinuxPatchSettings().withPatchMode(LinuxVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
-                            .withAssessmentMode(LinuxPatchAssessmentMode.AUTOMATIC_BY_PLATFORM))))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
      */
     /**
@@ -248,74 +123,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
-     */
-    /**
-     * Sample code: Create a VM with securityType ConfidentialVM with NonPersistedTPM securityEncryptionType.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVMWithSecurityTypeConfidentialVMWithNonPersistedTPMSecurityEncryptionType(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(
-                    new HardwareProfile().withVmSize(VirtualMachineSizeTypes.fromString("Standard_DC2es_v5")))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("UbuntuServer")
-                        .withOffer("2022-datacenter-cvm").withSku("linux-cvm").withVersion("17763.2183.2109130127"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_ONLY)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS)
-                                .withSecurityProfile(new VMDiskSecurityProfile()
-                                    .withSecurityEncryptionType(SecurityEncryptionTypes.NON_PERSISTED_TPM)))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withSecurityProfile(new SecurityProfile()
-                    .withUefiSettings(new UefiSettings().withSecureBootEnabled(false).withVTpmEnabled(true))
-                    .withSecurityType(SecurityTypes.CONFIDENTIAL_VM)),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
-     */
-    /**
-     * Sample code: Create a vm with a marketplace image plan.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVmWithAMarketplaceImagePlan(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withPlan(new Plan().withName("windows2016").withPublisher("microsoft-ads")
-                    .withProduct("windows-data-science-vm"))
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("microsoft-ads")
-                        .withOffer("windows-data-science-vm").withSku("windows2016").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
      */
     /**
@@ -348,7 +156,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithEncryptionIdentity.json
      */
     /**
@@ -384,7 +192,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
      */
     /**
@@ -418,40 +226,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
-     */
-    /**
-     * Sample code: Create a Windows vm with a patch setting assessmentMode of ImageDefault.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAWindowsVmWithAPatchSettingAssessmentModeOfImageDefault(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder")
-                    .withWindowsConfiguration(new WindowsConfiguration().withProvisionVMAgent(true)
-                        .withEnableAutomaticUpdates(true).withPatchSettings(
-                            new PatchSettings().withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT))))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
      */
     /**
@@ -480,7 +255,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
      */
     /**
@@ -514,7 +289,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
      */
     /**
@@ -546,75 +321,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/
-     * VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
-     */
-    /**
-     * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByPlatform and enableHotpatching set
-     * to true.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndEnableHotpatchingSetToTrue(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder")
-                    .withWindowsConfiguration(new WindowsConfiguration().withProvisionVMAgent(true)
-                        .withEnableAutomaticUpdates(true)
-                        .withPatchSettings(new PatchSettings()
-                            .withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM).withEnableHotpatching(true))))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
-     */
-    /**
-     * Sample code: Create a vm with an extensions time budget.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVmWithAnExtensionsTimeBudget(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withDiagnosticsProfile(new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
-                    .withEnabled(true).withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net")))
-                .withExtensionsTimeBudget("PT30M"),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
      */
     /**
@@ -645,7 +352,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
      */
     /**
@@ -678,7 +385,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
      */
     /**
@@ -709,75 +416,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
-     */
-    /**
-     * Sample code: Create a vm with empty data disks.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVmWithEmptyDataDisks(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS)))
-                    .withDataDisks(Arrays.asList(
-                        new DataDisk().withLun(0).withCreateOption(DiskCreateOptionTypes.EMPTY).withDiskSizeGB(1023),
-                        new DataDisk().withLun(1).withCreateOption(DiskCreateOptionTypes.EMPTY).withDiskSizeGB(1023))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
-     */
-    /**
-     * Sample code: Create a VM with securityType ConfidentialVM with Platform Managed Keys.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVMWithSecurityTypeConfidentialVMWithPlatformManagedKeys(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(
-                    new HardwareProfile().withVmSize(VirtualMachineSizeTypes.fromString("Standard_DC2as_v5")))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("2019-datacenter-cvm").withSku("windows-cvm").withVersion("17763.2183.2109130127"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_ONLY)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS)
-                                .withSecurityProfile(new VMDiskSecurityProfile()
-                                    .withSecurityEncryptionType(SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE)))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withSecurityProfile(new SecurityProfile()
-                    .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
-                    .withSecurityType(SecurityTypes.CONFIDENTIAL_VM)),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
      */
     /**
@@ -816,21 +455,27 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
      */
     /**
-     * Sample code: Create a vm from a custom image.
+     * Sample code: Create a vm with ephemeral os disk provisioning in Nvme disk using placement property.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createAVmFromACustomImage(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void createAVmWithEphemeralOsDiskProvisioningInNvmeDiskUsingPlacementProperty(
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
             new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile().withImageReference(new ImageReference().withId(
-                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/{existing-custom-image-name}"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                .withPlan(new Plan().withName("windows2016").withPublisher("microsoft-ads")
+                    .withProduct("windows-data-science-vm"))
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_DS1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("microsoft-ads")
+                        .withOffer("windows-data-science-vm").withSku("windows2016").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_ONLY)
+                        .withDiffDiskSettings(new DiffDiskSettings().withOption(DiffDiskOptions.LOCAL)
+                            .withPlacement(DiffDiskPlacement.NVME_DISK))
                         .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
                             new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
                 .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
@@ -844,111 +489,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
-     */
-    /**
-     * Sample code: Create a VM with HibernationEnabled.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVMWithHibernationEnabled(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup",
-            "{vm-name}",
-            new VirtualMachineInner().withLocation("eastus2euap")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2019-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("vmOSdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withAdditionalCapabilities(new AdditionalCapabilities().withHibernationEnabled(true))
-                .withOsProfile(new OSProfile().withComputerName("{vm-name}").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withDiagnosticsProfile(new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
-                    .withEnabled(true).withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net"))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
-     */
-    /**
-     * Sample code: Create a VM with Uefi Settings of secureBoot and vTPM.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        createAVMWithUefiSettingsOfSecureBootAndVTPM(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference()
-                        .withPublisher("MicrosoftWindowsServer").withOffer("windowsserver-gen2preview-preview")
-                        .withSku("windows10-tvm").withVersion("18363.592.2001092016"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_ONLY)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withSecurityProfile(new SecurityProfile()
-                    .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
-                    .withSecurityType(SecurityTypes.TRUSTED_LAUNCH)),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
-     */
-    /**
-     * Sample code: Create a vm with Application Profile.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVmWithApplicationProfile(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("{image_publisher}")
-                        .withOffer("{image_offer}").withSku("{image_sku}").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withApplicationProfile(new ApplicationProfile().withGalleryApplications(Arrays.asList(
-                    new VMGalleryApplication().withTags("myTag1").withOrder(1).withPackageReferenceId(
-                        "/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdb/resourceGroups/myresourceGroupName2/providers/Microsoft.Compute/galleries/myGallery1/applications/MyApplication1/versions/1.0")
-                        .withConfigurationReference(
-                            "https://mystorageaccount.blob.core.windows.net/configurations/settings.config")
-                        .withTreatFailureAsDeploymentFailure(false).withEnableAutomaticUpgrade(false),
-                    new VMGalleryApplication().withPackageReferenceId(
-                        "/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdg/resourceGroups/myresourceGroupName3/providers/Microsoft.Compute/galleries/myGallery2/applications/MyApplication2/versions/1.1")))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
      */
     /**
@@ -974,7 +515,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
      */
     /**
@@ -1003,82 +544,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfigurationDnsSettings.json
-     */
-    /**
-     * Sample code: Create a VM with network interface configuration with public ip address dns settings.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVMWithNetworkInterfaceConfigurationWithPublicIpAddressDnsSettings(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE)
-                        .withNetworkInterfaceConfigurations(
-                            Arrays.asList(new VirtualMachineNetworkInterfaceConfiguration()
-                                .withName("{nic-config-name}").withPrimary(true).withDeleteOption(DeleteOptions.DELETE)
-                                .withIpConfigurations(Arrays.asList(new VirtualMachineNetworkInterfaceIpConfiguration()
-                                    .withName("{ip-config-name}").withPrimary(true)
-                                    .withPublicIpAddressConfiguration(new VirtualMachinePublicIpAddressConfiguration()
-                                        .withName("{publicIP-config-name}")
-                                        .withSku(new PublicIpAddressSku().withName(PublicIpAddressSkuName.BASIC)
-                                            .withTier(PublicIpAddressSkuTier.GLOBAL))
-                                        .withDeleteOption(DeleteOptions.DETACH)
-                                        .withDnsSettings(new VirtualMachinePublicIpAddressDnsSettingsConfiguration()
-                                            .withDomainNameLabel("aaaaa")
-                                            .withDomainNameLabelScope(DomainNameLabelScopeTypes.TENANT_REUSE))
-                                        .withPublicIpAllocationMethod(PublicIpAllocationMethod.STATIC))))))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
-     */
-    /**
-     * Sample code: Create a vm in a Virtual Machine Scale Set with customer assigned platformFaultDomain.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVmInAVirtualMachineScaleSetWithCustomerAssignedPlatformFaultDomain(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withVirtualMachineScaleSet(new SubResource().withId(
-                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{existing-flex-vmss-name-with-platformFaultDomainCount-greater-than-1}"))
-                .withPlatformFaultDomain(1),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
      */
     /**
@@ -1090,6 +556,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
         azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
             new VirtualMachineInner().withLocation("westus")
                 .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withScheduledEventsPolicy(new ScheduledEventsPolicy()
+                    .withUserInitiatedRedeploy(new UserInitiatedRedeploy().withAutomaticallyApprove(true))
+                    .withUserInitiatedReboot(new UserInitiatedReboot().withAutomaticallyApprove(true))
+                    .withScheduledEventsAdditionalPublishingTargets(new ScheduledEventsAdditionalPublishingTargets()
+                        .withEventGridAndResourceGraph(new EventGridAndResourceGraph().withEnable(true))))
                 .withStorageProfile(new StorageProfile()
                     .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
                         .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
@@ -1114,99 +585,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
-     */
-    /**
-     * Sample code: Create a vm with boot diagnostics.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVmWithBootDiagnostics(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withDiagnosticsProfile(new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
-                    .withEnabled(true).withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net"))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
-     */
-    /**
-     * Sample code: Create a vm with ssh authentication.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVmWithSshAuthentication(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("{image_publisher}")
-                        .withOffer("{image_offer}").withSku("{image_sku}").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(true)
-                        .withSsh(new SshConfiguration().withPublicKeys(
-                            Arrays.asList(new SshPublicKey().withPath("/home/{your-username}/.ssh/authorized_keys")
-                                .withKeyData("fakeTokenPlaceholder"))))))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
-     */
-    /**
-     * Sample code: Create a VM from a community gallery image.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVMFromACommunityGalleryImage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withCommunityGalleryImageId(
-                        "/CommunityGalleries/galleryPublicName/Images/communityGalleryImageName/Versions/communityGalleryImageVersionName"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
      */
     /**
@@ -1240,7 +619,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
      */
     /**
@@ -1272,169 +651,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithUserData.json
-     */
-    /**
-     * Sample code: Create a VM with UserData.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVMWithUserData(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup",
-            "{vm-name}",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("vmOSdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("{vm-name}").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withDiagnosticsProfile(new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
-                    .withEnabled(true).withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net")))
-                .withUserData("RXhhbXBsZSBVc2VyRGF0YQ=="),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
-     */
-    /**
-     * Sample code: Create a vm from a generalized shared image.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVmFromAGeneralizedSharedImage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile().withImageReference(new ImageReference().withId(
-                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/mySharedGallery/images/mySharedImage"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
-     */
-    /**
-     * Sample code: Create a Linux vm with a patch setting patchMode of AutomaticByPlatform and
-     * AutomaticByPlatformSettings.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createALinuxVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
-                        .withSku("16.04-LTS").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder")
-                    .withLinuxConfiguration(new LinuxConfiguration().withProvisionVMAgent(true).withPatchSettings(
-                        new LinuxPatchSettings().withPatchMode(LinuxVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
-                            .withAssessmentMode(LinuxPatchAssessmentMode.AUTOMATIC_BY_PLATFORM)
-                            .withAutomaticByPlatformSettings(new LinuxVMGuestPatchAutomaticByPlatformSettings()
-                                .withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER)
-                                .withBypassPlatformSafetyChecksOnUserSchedule(true)))))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
-     */
-    /**
-     * Sample code: Create a Windows vm with a patch setting patchMode of Manual.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        createAWindowsVmWithAPatchSettingPatchModeOfManual(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder").withWindowsConfiguration(
-                        new WindowsConfiguration().withProvisionVMAgent(true).withEnableAutomaticUpdates(true)
-                            .withPatchSettings(new PatchSettings().withPatchMode(WindowsVMGuestPatchMode.MANUAL))))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithProxyAgentSettings.json
-     */
-    /**
-     * Sample code: Create a VM with ProxyAgent Settings of enabled and mode.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        createAVMWithProxyAgentSettingsOfEnabledAndMode(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2019-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_ONLY)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withSecurityProfile(new SecurityProfile()
-                    .withProxyAgentSettings(new ProxyAgentSettings().withEnabled(true).withMode(Mode.ENFORCE))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
      */
     /**
@@ -1473,70 +690,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
-     */
-    /**
-     * Sample code: Create a Linux vm with a patch setting patchMode of ImageDefault.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void
-        createALinuxVmWithAPatchSettingPatchModeOfImageDefault(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
-                        .withSku("16.04-LTS").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder")
-                    .withLinuxConfiguration(new LinuxConfiguration().withProvisionVMAgent(true).withPatchSettings(
-                        new LinuxPatchSettings().withPatchMode(LinuxVMGuestPatchMode.IMAGE_DEFAULT))))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true)))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
-     * virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
-     */
-    /**
-     * Sample code: Create a vm with managed boot diagnostics.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void createAVmWithManagedBootDiagnostics(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
-            new VirtualMachineInner().withLocation("westus")
-                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
-                .withStorageProfile(new StorageProfile()
-                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
-                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
-                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
-                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
-                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
-                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
-                    .withAdminPassword("fakeTokenPlaceholder"))
-                .withNetworkProfile(
-                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
-                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
-                        .withPrimary(true))))
-                .withDiagnosticsProfile(
-                    new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics().withEnabled(true))),
-            null, null, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
      */
     /**
@@ -1581,7 +735,7 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
      */
     /**
@@ -1593,6 +747,11 @@ public final class VirtualMachinesCreateOrUpdateSamples {
         azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
             new VirtualMachineInner().withLocation("westus")
                 .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D4_V3))
+                .withScheduledEventsPolicy(new ScheduledEventsPolicy()
+                    .withUserInitiatedRedeploy(new UserInitiatedRedeploy().withAutomaticallyApprove(true))
+                    .withUserInitiatedReboot(new UserInitiatedReboot().withAutomaticallyApprove(true))
+                    .withScheduledEventsAdditionalPublishingTargets(new ScheduledEventsAdditionalPublishingTargets()
+                        .withEventGridAndResourceGraph(new EventGridAndResourceGraph().withEnable(true))))
                 .withStorageProfile(new StorageProfile()
                     .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
                         .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
@@ -1614,7 +773,938 @@ public final class VirtualMachinesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
+     */
+    /**
+     * Sample code: Create a VM from a shared gallery image.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVMFromASharedGalleryImage(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withSharedGalleryImageId(
+                        "/SharedGalleries/sharedGalleryName/Images/sharedGalleryImageName/Versions/sharedGalleryImageVersionName"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithVMSizeProperties.json
+     */
+    /**
+     * Sample code: Create a VM with VM Size Properties.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVMWithVMSizeProperties(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D4_V3)
+                    .withVmSizeProperties(new VMSizeProperties().withVCpusAvailable(1).withVCpusPerCore(1)))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withDiagnosticsProfile(new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
+                    .withEnabled(true).withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net")))
+                .withUserData("U29tZSBDdXN0b20gRGF0YQ=="),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
+     */
+    /**
+     * Sample code: Create a platform-image vm with unmanaged os and data disks.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createAPlatformImageVmWithUnmanagedOsAndDataDisks(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines()
+            .createOrUpdate("myResourceGroup", "{vm-name}", new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withVhd(new VirtualHardDisk().withUri(
+                        "http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk.vhd"))
+                        .withCaching(CachingTypes.READ_WRITE).withCreateOption(DiskCreateOptionTypes.FROM_IMAGE))
+                    .withDataDisks(Arrays.asList(new DataDisk().withLun(0).withVhd(new VirtualHardDisk().withUri(
+                        "http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk0.vhd"))
+                        .withCreateOption(DiskCreateOptionTypes.EMPTY).withDiskSizeGB(1023),
+                        new DataDisk().withLun(1).withVhd(new VirtualHardDisk().withUri(
+                            "http://{existing-storage-account-name}.blob.core.windows.net/{existing-container-name}/myDisk1.vhd"))
+                            .withCreateOption(DiskCreateOptionTypes.EMPTY).withDiskSizeGB(1023))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+                null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
+     */
+    /**
+     * Sample code: Create a Linux vm with a patch settings patchMode and assessmentMode set to AutomaticByPlatform.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createALinuxVmWithAPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
+                        .withSku("16.04-LTS").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder")
+                    .withLinuxConfiguration(new LinuxConfiguration().withProvisionVMAgent(true).withPatchSettings(
+                        new LinuxPatchSettings().withPatchMode(LinuxVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
+                            .withAssessmentMode(LinuxPatchAssessmentMode.AUTOMATIC_BY_PLATFORM))))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
+     */
+    /**
+     * Sample code: Create a VM with securityType ConfidentialVM with NonPersistedTPM securityEncryptionType.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVMWithSecurityTypeConfidentialVMWithNonPersistedTPMSecurityEncryptionType(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(
+                    new HardwareProfile().withVmSize(VirtualMachineSizeTypes.fromString("Standard_DC2es_v5")))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("UbuntuServer")
+                        .withOffer("2022-datacenter-cvm").withSku("linux-cvm").withVersion("17763.2183.2109130127"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_ONLY)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS)
+                                .withSecurityProfile(new VMDiskSecurityProfile()
+                                    .withSecurityEncryptionType(SecurityEncryptionTypes.NON_PERSISTED_TPM)))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withSecurityProfile(new SecurityProfile()
+                    .withUefiSettings(new UefiSettings().withSecureBootEnabled(false).withVTpmEnabled(true))
+                    .withSecurityType(SecurityTypes.CONFIDENTIAL_VM)),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
+     */
+    /**
+     * Sample code: Create a vm with a marketplace image plan.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVmWithAMarketplaceImagePlan(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withPlan(new Plan().withName("windows2016").withPublisher("microsoft-ads")
+                    .withProduct("windows-data-science-vm"))
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("microsoft-ads")
+                        .withOffer("windows-data-science-vm").withSku("windows2016").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
+     */
+    /**
+     * Sample code: Create a Windows vm with a patch setting assessmentMode of ImageDefault.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAWindowsVmWithAPatchSettingAssessmentModeOfImageDefault(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder")
+                    .withWindowsConfiguration(new WindowsConfiguration().withProvisionVMAgent(true)
+                        .withEnableAutomaticUpdates(true).withPatchSettings(
+                            new PatchSettings().withAssessmentMode(WindowsPatchAssessmentMode.IMAGE_DEFAULT))))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/
+     * VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
+     */
+    /**
+     * Sample code: Create a Windows vm with a patch setting patchMode of AutomaticByPlatform and enableHotpatching set
+     * to true.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAWindowsVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndEnableHotpatchingSetToTrue(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder")
+                    .withWindowsConfiguration(new WindowsConfiguration().withProvisionVMAgent(true)
+                        .withEnableAutomaticUpdates(true)
+                        .withPatchSettings(new PatchSettings()
+                            .withPatchMode(WindowsVMGuestPatchMode.AUTOMATIC_BY_PLATFORM).withEnableHotpatching(true))))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
+     */
+    /**
+     * Sample code: Create a vm with an extensions time budget.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVmWithAnExtensionsTimeBudget(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withDiagnosticsProfile(new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
+                    .withEnabled(true).withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net")))
+                .withExtensionsTimeBudget("PT30M"),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
+     */
+    /**
+     * Sample code: Create a vm with empty data disks.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVmWithEmptyDataDisks(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS)))
+                    .withDataDisks(Arrays.asList(
+                        new DataDisk().withLun(0).withCreateOption(DiskCreateOptionTypes.EMPTY).withDiskSizeGB(1023),
+                        new DataDisk().withLun(1).withCreateOption(DiskCreateOptionTypes.EMPTY).withDiskSizeGB(1023))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
+     */
+    /**
+     * Sample code: Create a VM with securityType ConfidentialVM with Platform Managed Keys.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVMWithSecurityTypeConfidentialVMWithPlatformManagedKeys(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(
+                    new HardwareProfile().withVmSize(VirtualMachineSizeTypes.fromString("Standard_DC2as_v5")))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("2019-datacenter-cvm").withSku("windows-cvm").withVersion("17763.2183.2109130127"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_ONLY)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS)
+                                .withSecurityProfile(new VMDiskSecurityProfile()
+                                    .withSecurityEncryptionType(SecurityEncryptionTypes.DISK_WITH_VMGUEST_STATE)))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withSecurityProfile(new SecurityProfile()
+                    .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
+                    .withSecurityType(SecurityTypes.CONFIDENTIAL_VM)),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithDataDisksFromSourceResource.json
+     */
+    /**
+     * Sample code: Create a vm with data disks using 'Copy' and 'Restore' options.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createAVmWithDataDisksUsingCopyAndRestoreOptions(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS)))
+                    .withDataDisks(Arrays.asList(new DataDisk().withLun(0).withCreateOption(DiskCreateOptionTypes.COPY)
+                        .withDiskSizeGB(1023)
+                        .withSourceResource(new ApiEntityReference().withId(
+                            "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/snapshots/{existing-snapshot-name}")),
+                        new DataDisk().withLun(1).withCreateOption(DiskCreateOptionTypes.COPY).withDiskSizeGB(1023)
+                            .withSourceResource(new ApiEntityReference().withId(
+                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/{existing-disk-name}")),
+                        new DataDisk().withLun(2).withCreateOption(DiskCreateOptionTypes.RESTORE).withDiskSizeGB(1023)
+                            .withSourceResource(new ApiEntityReference().withId(
+                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/restorePointCollections/{existing-rpc-name}/restorePoints/{existing-rp-name}/diskRestorePoints/{existing-disk-restore-point-name}")))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
+     */
+    /**
+     * Sample code: Create a vm from a custom image.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVmFromACustomImage(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile().withImageReference(new ImageReference().withId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/images/{existing-custom-image-name}"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
+     */
+    /**
+     * Sample code: Create a VM with HibernationEnabled.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVMWithHibernationEnabled(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup",
+            "{vm-name}",
+            new VirtualMachineInner().withLocation("eastus2euap")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2019-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("vmOSdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withAdditionalCapabilities(new AdditionalCapabilities().withHibernationEnabled(true))
+                .withOsProfile(new OSProfile().withComputerName("{vm-name}").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withDiagnosticsProfile(new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
+                    .withEnabled(true).withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net"))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
+     */
+    /**
+     * Sample code: Create a VM with Uefi Settings of secureBoot and vTPM.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createAVMWithUefiSettingsOfSecureBootAndVTPM(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference()
+                        .withPublisher("MicrosoftWindowsServer").withOffer("windowsserver-gen2preview-preview")
+                        .withSku("windows10-tvm").withVersion("18363.592.2001092016"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_ONLY)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withSecurityProfile(new SecurityProfile()
+                    .withUefiSettings(new UefiSettings().withSecureBootEnabled(true).withVTpmEnabled(true))
+                    .withSecurityType(SecurityTypes.TRUSTED_LAUNCH)),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
+     */
+    /**
+     * Sample code: Create a vm with Application Profile.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVmWithApplicationProfile(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("{image_publisher}")
+                        .withOffer("{image_offer}").withSku("{image_sku}").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withApplicationProfile(new ApplicationProfile().withGalleryApplications(Arrays.asList(
+                    new VMGalleryApplication().withTags("myTag1").withOrder(1).withPackageReferenceId(
+                        "/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdb/resourceGroups/myresourceGroupName2/providers/Microsoft.Compute/galleries/myGallery1/applications/MyApplication1/versions/1.0")
+                        .withConfigurationReference(
+                            "https://mystorageaccount.blob.core.windows.net/configurations/settings.config")
+                        .withTreatFailureAsDeploymentFailure(false).withEnableAutomaticUpgrade(false),
+                    new VMGalleryApplication().withPackageReferenceId(
+                        "/subscriptions/32c17a9e-aa7b-4ba5-a45b-e324116b6fdg/resourceGroups/myresourceGroupName3/providers/Microsoft.Compute/galleries/myGallery2/applications/MyApplication2/versions/1.1")))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfigurationDnsSettings.json
+     */
+    /**
+     * Sample code: Create a VM with network interface configuration with public ip address dns settings.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVMWithNetworkInterfaceConfigurationWithPublicIpAddressDnsSettings(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkApiVersion(NetworkApiVersion.TWO_ZERO_TWO_ZERO_ONE_ONE_ZERO_ONE)
+                        .withNetworkInterfaceConfigurations(
+                            Arrays.asList(new VirtualMachineNetworkInterfaceConfiguration()
+                                .withName("{nic-config-name}").withPrimary(true).withDeleteOption(DeleteOptions.DELETE)
+                                .withIpConfigurations(Arrays.asList(new VirtualMachineNetworkInterfaceIpConfiguration()
+                                    .withName("{ip-config-name}").withPrimary(true)
+                                    .withPublicIpAddressConfiguration(new VirtualMachinePublicIpAddressConfiguration()
+                                        .withName("{publicIP-config-name}")
+                                        .withSku(new PublicIpAddressSku().withName(PublicIpAddressSkuName.BASIC)
+                                            .withTier(PublicIpAddressSkuTier.GLOBAL))
+                                        .withDeleteOption(DeleteOptions.DETACH)
+                                        .withDnsSettings(new VirtualMachinePublicIpAddressDnsSettingsConfiguration()
+                                            .withDomainNameLabel("aaaaa")
+                                            .withDomainNameLabelScope(DomainNameLabelScopeTypes.TENANT_REUSE))
+                                        .withPublicIpAllocationMethod(PublicIpAllocationMethod.STATIC))))))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
+     */
+    /**
+     * Sample code: Create a vm in a Virtual Machine Scale Set with customer assigned platformFaultDomain.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVmInAVirtualMachineScaleSetWithCustomerAssignedPlatformFaultDomain(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withVirtualMachineScaleSet(new SubResource().withId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{existing-flex-vmss-name-with-platformFaultDomainCount-greater-than-1}"))
+                .withPlatformFaultDomain(1),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
+     */
+    /**
+     * Sample code: Create a vm with boot diagnostics.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVmWithBootDiagnostics(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withDiagnosticsProfile(new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
+                    .withEnabled(true).withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net"))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
+     */
+    /**
+     * Sample code: Create a vm with ssh authentication.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVmWithSshAuthentication(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("{image_publisher}")
+                        .withOffer("{image_offer}").withSku("{image_sku}").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withLinuxConfiguration(new LinuxConfiguration().withDisablePasswordAuthentication(true)
+                        .withSsh(new SshConfiguration().withPublicKeys(
+                            Arrays.asList(new SshPublicKey().withPath("/home/{your-username}/.ssh/authorized_keys")
+                                .withKeyData("fakeTokenPlaceholder"))))))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
+     */
+    /**
+     * Sample code: Create a VM from a community gallery image.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVMFromACommunityGalleryImage(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withCommunityGalleryImageId(
+                        "/CommunityGalleries/galleryPublicName/Images/communityGalleryImageName/Versions/communityGalleryImageVersionName"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithUserData.json
+     */
+    /**
+     * Sample code: Create a VM with UserData.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVMWithUserData(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup",
+            "{vm-name}",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("vmOSdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("{vm-name}").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withDiagnosticsProfile(new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics()
+                    .withEnabled(true).withStorageUri("http://{existing-storage-account-name}.blob.core.windows.net")))
+                .withUserData("RXhhbXBsZSBVc2VyRGF0YQ=="),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
+     */
+    /**
+     * Sample code: Create a vm from a generalized shared image.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVmFromAGeneralizedSharedImage(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile().withImageReference(new ImageReference().withId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/mySharedGallery/images/mySharedImage"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
+     */
+    /**
+     * Sample code: Create a Linux vm with a patch setting patchMode of AutomaticByPlatform and
+     * AutomaticByPlatformSettings.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createALinuxVmWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
+                        .withSku("16.04-LTS").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder")
+                    .withLinuxConfiguration(new LinuxConfiguration().withProvisionVMAgent(true).withPatchSettings(
+                        new LinuxPatchSettings().withPatchMode(LinuxVMGuestPatchMode.AUTOMATIC_BY_PLATFORM)
+                            .withAssessmentMode(LinuxPatchAssessmentMode.AUTOMATIC_BY_PLATFORM)
+                            .withAutomaticByPlatformSettings(new LinuxVMGuestPatchAutomaticByPlatformSettings()
+                                .withRebootSetting(LinuxVMGuestPatchAutomaticByPlatformRebootSetting.NEVER)
+                                .withBypassPlatformSafetyChecksOnUserSchedule(true)))))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
+     */
+    /**
+     * Sample code: Create a Windows vm with a patch setting patchMode of Manual.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createAWindowsVmWithAPatchSettingPatchModeOfManual(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder").withWindowsConfiguration(
+                        new WindowsConfiguration().withProvisionVMAgent(true).withEnableAutomaticUpdates(true)
+                            .withPatchSettings(new PatchSettings().withPatchMode(WindowsVMGuestPatchMode.MANUAL))))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithProxyAgentSettings.json
+     */
+    /**
+     * Sample code: Create a VM with ProxyAgent Settings of enabled and mode.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createAVMWithProxyAgentSettingsOfEnabledAndMode(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2019-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_ONLY)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_SSD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withSecurityProfile(new SecurityProfile()
+                    .withProxyAgentSettings(new ProxyAgentSettings().withEnabled(true).withMode(Mode.ENFORCE))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
+     */
+    /**
+     * Sample code: Create a Linux vm with a patch setting patchMode of ImageDefault.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createALinuxVmWithAPatchSettingPatchModeOfImageDefault(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D2S_V3))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
+                        .withSku("16.04-LTS").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.PREMIUM_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder")
+                    .withLinuxConfiguration(new LinuxConfiguration().withProvisionVMAgent(true).withPatchSettings(
+                        new LinuxPatchSettings().withPatchMode(LinuxVMGuestPatchMode.IMAGE_DEFAULT))))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true)))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
+     */
+    /**
+     * Sample code: Create a vm with managed boot diagnostics.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createAVmWithManagedBootDiagnostics(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines().manager().serviceClient().getVirtualMachines().createOrUpdate("myResourceGroup", "myVM",
+            new VirtualMachineInner().withLocation("westus")
+                .withHardwareProfile(new HardwareProfile().withVmSize(VirtualMachineSizeTypes.STANDARD_D1_V2))
+                .withStorageProfile(new StorageProfile()
+                    .withImageReference(new ImageReference().withPublisher("MicrosoftWindowsServer")
+                        .withOffer("WindowsServer").withSku("2016-Datacenter").withVersion("latest"))
+                    .withOsDisk(new OSDisk().withName("myVMosdisk").withCaching(CachingTypes.READ_WRITE)
+                        .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE).withManagedDisk(
+                            new ManagedDiskParameters().withStorageAccountType(StorageAccountTypes.STANDARD_LRS))))
+                .withOsProfile(new OSProfile().withComputerName("myVM").withAdminUsername("{your-username}")
+                    .withAdminPassword("fakeTokenPlaceholder"))
+                .withNetworkProfile(
+                    new NetworkProfile().withNetworkInterfaces(Arrays.asList(new NetworkInterfaceReference().withId(
+                        "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}")
+                        .withPrimary(true))))
+                .withDiagnosticsProfile(
+                    new DiagnosticsProfile().withBootDiagnostics(new BootDiagnostics().withEnabled(true))),
+            null, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
      * virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
      */
     /**

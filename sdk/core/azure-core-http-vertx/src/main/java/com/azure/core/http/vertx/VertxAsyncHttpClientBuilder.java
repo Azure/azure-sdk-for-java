@@ -173,22 +173,9 @@ public class VertxAsyncHttpClientBuilder {
     public HttpClient build() {
         Vertx configuredVertx = this.vertx;
         if (configuredVertx == null) {
-            ServiceLoader<VertxProvider> vertxProviders = ServiceLoader.load(VertxProvider.class,
-                VertxProvider.class.getClassLoader());
-            Iterator<VertxProvider> iterator = vertxProviders.iterator();
-            if (iterator.hasNext()) {
-                VertxProvider provider = iterator.next();
-                configuredVertx = provider.createVertx();
-                LOGGER.verbose("Using {} as the VertxProvider.", provider.getClass().getName());
-
-                while (iterator.hasNext()) {
-                    VertxProvider ignoredProvider = iterator.next();
-                    LOGGER.warning("Multiple VertxProviders were found on the classpath, ignoring {}.",
-                        ignoredProvider.getClass().getName());
-                }
-            } else {
-                configuredVertx = DefaultVertx.DEFAULT_VERTX.getVertx();
-            }
+            ServiceLoader<VertxProvider> vertxProviders
+                = ServiceLoader.load(VertxProvider.class, VertxProvider.class.getClassLoader());
+            configuredVertx = getVertx(vertxProviders.iterator());
         }
 
         if (this.httpClientOptions == null) {
@@ -214,9 +201,8 @@ public class VertxAsyncHttpClientBuilder {
 
             this.httpClientOptions.setIdleTimeout((int) this.idleTimeout.getSeconds());
 
-            Configuration buildConfiguration = (this.configuration == null)
-                ? Configuration.getGlobalConfiguration()
-                : configuration;
+            Configuration buildConfiguration
+                = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
             ProxyOptions buildProxyOptions = (this.proxyOptions == null)
                 ? ProxyOptions.fromConfiguration(buildConfiguration, true)
@@ -264,6 +250,25 @@ public class VertxAsyncHttpClientBuilder {
         return new VertxAsyncHttpClient(client, configuredVertx);
     }
 
+    static Vertx getVertx(Iterator<VertxProvider> iterator) {
+        Vertx configuredVertx;
+        if (iterator.hasNext()) {
+            VertxProvider provider = iterator.next();
+            configuredVertx = provider.createVertx();
+            LOGGER.verbose("Using {} as the VertxProvider.", provider.getClass().getName());
+
+            while (iterator.hasNext()) {
+                VertxProvider ignoredProvider = iterator.next();
+                LOGGER.warning("Multiple VertxProviders were found on the classpath, ignoring {}.",
+                    ignoredProvider.getClass().getName());
+            }
+        } else {
+            configuredVertx = DefaultVertx.DEFAULT_VERTX.getVertx();
+        }
+
+        return configuredVertx;
+    }
+
     /**
      * Reverses non-proxy host string sanitization applied by {@link ProxyOptions}.
      * <p>
@@ -273,11 +278,9 @@ public class VertxAsyncHttpClientBuilder {
      * @return String array of desanitized proxy host strings
      */
     private String[] desanitizedNonProxyHosts(String nonProxyHosts) {
-        String desanitzedNonProxyHosts = NON_PROXY_HOST_DESANITIZE.matcher(nonProxyHosts)
-            .replaceAll("");
+        String desanitzedNonProxyHosts = NON_PROXY_HOST_DESANITIZE.matcher(nonProxyHosts).replaceAll("");
 
-        desanitzedNonProxyHosts = NON_PROXY_HOST_DOT_STAR.matcher(desanitzedNonProxyHosts)
-            .replaceAll("*");
+        desanitzedNonProxyHosts = NON_PROXY_HOST_DOT_STAR.matcher(desanitzedNonProxyHosts).replaceAll("*");
 
         return NON_PROXY_HOSTS_SPLIT.split(desanitzedNonProxyHosts);
     }

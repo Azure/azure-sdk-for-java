@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class FailoverProcessServerRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FailoverProcessServerRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"containerName\":\"l\",\"sourceProcessServerId\":\"u\",\"targetProcessServerId\":\"krlkhbzhfepg\",\"vmsToMigrate\":[\"e\"],\"updateType\":\"locx\"}")
-                .toObject(FailoverProcessServerRequestProperties.class);
+        FailoverProcessServerRequestProperties model = BinaryData.fromString(
+            "{\"containerName\":\"l\",\"sourceProcessServerId\":\"u\",\"targetProcessServerId\":\"krlkhbzhfepg\",\"vmsToMigrate\":[\"e\"],\"updateType\":\"locx\"}")
+            .toObject(FailoverProcessServerRequestProperties.class);
         Assertions.assertEquals("l", model.containerName());
         Assertions.assertEquals("u", model.sourceProcessServerId());
         Assertions.assertEquals("krlkhbzhfepg", model.targetProcessServerId());
@@ -26,13 +24,9 @@ public final class FailoverProcessServerRequestPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FailoverProcessServerRequestProperties model =
-            new FailoverProcessServerRequestProperties()
-                .withContainerName("l")
-                .withSourceProcessServerId("u")
-                .withTargetProcessServerId("krlkhbzhfepg")
-                .withVmsToMigrate(Arrays.asList("e"))
-                .withUpdateType("locx");
+        FailoverProcessServerRequestProperties model
+            = new FailoverProcessServerRequestProperties().withContainerName("l").withSourceProcessServerId("u")
+                .withTargetProcessServerId("krlkhbzhfepg").withVmsToMigrate(Arrays.asList("e")).withUpdateType("locx");
         model = BinaryData.fromObject(model).toObject(FailoverProcessServerRequestProperties.class);
         Assertions.assertEquals("l", model.containerName());
         Assertions.assertEquals("u", model.sourceProcessServerId());

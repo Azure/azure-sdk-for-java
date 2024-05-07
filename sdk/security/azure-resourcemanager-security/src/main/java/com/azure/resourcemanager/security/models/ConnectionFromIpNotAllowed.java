@@ -9,23 +9,31 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Inbound connection from an ip that isn't allowed. Allow list consists of ipv4 or ipv6 range in CIDR notation. */
+/**
+ * Inbound connection from an ip that isn't allowed. Allow list consists of ipv4 or ipv6 range in CIDR notation.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
 @JsonTypeName("ConnectionFromIpNotAllowed")
 @Fluent
 public final class ConnectionFromIpNotAllowed extends AllowlistCustomAlertRule {
-    /** Creates an instance of ConnectionFromIpNotAllowed class. */
+    /**
+     * Creates an instance of ConnectionFromIpNotAllowed class.
+     */
     public ConnectionFromIpNotAllowed() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionFromIpNotAllowed withAllowlistValues(List<String> allowlistValues) {
         super.withAllowlistValues(allowlistValues);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectionFromIpNotAllowed withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -34,7 +42,7 @@ public final class ConnectionFromIpNotAllowed extends AllowlistCustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

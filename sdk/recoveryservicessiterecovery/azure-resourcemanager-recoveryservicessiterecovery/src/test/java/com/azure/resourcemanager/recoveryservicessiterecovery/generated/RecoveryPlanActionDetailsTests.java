@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPla
 public final class RecoveryPlanActionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanActionDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"RecoveryPlanActionDetails\"}")
-                .toObject(RecoveryPlanActionDetails.class);
+        RecoveryPlanActionDetails model = BinaryData.fromString("{\"instanceType\":\"RecoveryPlanActionDetails\"}")
+            .toObject(RecoveryPlanActionDetails.class);
     }
 
     @org.junit.jupiter.api.Test

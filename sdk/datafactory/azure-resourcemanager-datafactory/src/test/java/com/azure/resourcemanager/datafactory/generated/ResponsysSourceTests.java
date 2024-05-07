@@ -11,15 +11,19 @@ public final class ResponsysSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResponsysSource model = BinaryData.fromString(
-            "{\"type\":\"ResponsysSource\",\"query\":\"dataiaakgdk\",\"queryTimeout\":\"datamhvwgc\",\"additionalColumns\":\"datapbdkqwgooma\",\"sourceRetryCount\":\"dataaxno\",\"sourceRetryWait\":\"datajfvj\",\"maxConcurrentConnections\":\"dataec\",\"disableMetricsCollection\":\"dataoxjzttalsnmxvsrv\",\"\":{\"ztmdybxeh\":\"dataxl\",\"hf\":\"datakqogtnflaxsp\",\"ocrr\":\"datakqijmyqosrsf\"}}")
+            "{\"type\":\"cabsmrfx\",\"query\":\"datarxl\",\"queryTimeout\":\"dataiirneop\",\"additionalColumns\":\"databhcfswpda\",\"sourceRetryCount\":\"datagvzgwvmhbiziij\",\"sourceRetryWait\":\"dataeexdboat\",\"maxConcurrentConnections\":\"datafy\",\"disableMetricsCollection\":\"datafeqrn\",\"\":{\"caraxorqjboyng\":\"dataqyagfxaco\",\"aptwmawypkpbmi\":\"dataogqvwchynrdt\"}}")
             .toObject(ResponsysSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResponsysSource model = new ResponsysSource().withSourceRetryCount("dataaxno").withSourceRetryWait("datajfvj")
-            .withMaxConcurrentConnections("dataec").withDisableMetricsCollection("dataoxjzttalsnmxvsrv")
-            .withQueryTimeout("datamhvwgc").withAdditionalColumns("datapbdkqwgooma").withQuery("dataiaakgdk");
+        ResponsysSource model = new ResponsysSource().withSourceRetryCount("datagvzgwvmhbiziij")
+            .withSourceRetryWait("dataeexdboat")
+            .withMaxConcurrentConnections("datafy")
+            .withDisableMetricsCollection("datafeqrn")
+            .withQueryTimeout("dataiirneop")
+            .withAdditionalColumns("databhcfswpda")
+            .withQuery("datarxl");
         model = BinaryData.fromObject(model).toObject(ResponsysSource.class);
     }
 }

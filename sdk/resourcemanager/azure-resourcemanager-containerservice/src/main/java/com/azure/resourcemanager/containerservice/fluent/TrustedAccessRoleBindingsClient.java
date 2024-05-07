@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TrustedAccessRoleBindingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TrustedAccessRoleBindingsClient.
+ */
 public interface TrustedAccessRoleBindingsClient {
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +37,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +50,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * List trusted access role bindings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -62,7 +64,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -72,12 +74,12 @@ public interface TrustedAccessRoleBindingsClient {
      * @return a trusted access role binding along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TrustedAccessRoleBindingInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName);
+    Mono<Response<TrustedAccessRoleBindingInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName);
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -87,12 +89,12 @@ public interface TrustedAccessRoleBindingsClient {
      * @return a trusted access role binding on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TrustedAccessRoleBindingInner> getAsync(
-        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName);
+    Mono<TrustedAccessRoleBindingInner> getAsync(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName);
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -103,12 +105,12 @@ public interface TrustedAccessRoleBindingsClient {
      * @return a trusted access role binding along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TrustedAccessRoleBindingInner> getWithResponse(
-        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName, Context context);
+    Response<TrustedAccessRoleBindingInner> getWithResponse(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName, Context context);
 
     /**
      * Get a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -118,12 +120,12 @@ public interface TrustedAccessRoleBindingsClient {
      * @return a trusted access role binding.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TrustedAccessRoleBindingInner get(
-        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName);
+    TrustedAccessRoleBindingInner get(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName);
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -132,18 +134,15 @@ public interface TrustedAccessRoleBindingsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines binding between a resource and role along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String trustedAccessRoleBindingName,
-        TrustedAccessRoleBindingInner trustedAccessRoleBinding);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName, TrustedAccessRoleBindingInner trustedAccessRoleBinding);
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -155,14 +154,12 @@ public interface TrustedAccessRoleBindingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<TrustedAccessRoleBindingInner>, TrustedAccessRoleBindingInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String trustedAccessRoleBindingName,
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
         TrustedAccessRoleBindingInner trustedAccessRoleBinding);
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -174,14 +171,12 @@ public interface TrustedAccessRoleBindingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TrustedAccessRoleBindingInner>, TrustedAccessRoleBindingInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String trustedAccessRoleBindingName,
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
         TrustedAccessRoleBindingInner trustedAccessRoleBinding);
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -194,15 +189,12 @@ public interface TrustedAccessRoleBindingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TrustedAccessRoleBindingInner>, TrustedAccessRoleBindingInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String trustedAccessRoleBindingName,
-        TrustedAccessRoleBindingInner trustedAccessRoleBinding,
-        Context context);
+        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName,
+        TrustedAccessRoleBindingInner trustedAccessRoleBinding, Context context);
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -213,15 +205,12 @@ public interface TrustedAccessRoleBindingsClient {
      * @return defines binding between a resource and role on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TrustedAccessRoleBindingInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String trustedAccessRoleBindingName,
-        TrustedAccessRoleBindingInner trustedAccessRoleBinding);
+    Mono<TrustedAccessRoleBindingInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName, TrustedAccessRoleBindingInner trustedAccessRoleBinding);
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -232,15 +221,12 @@ public interface TrustedAccessRoleBindingsClient {
      * @return defines binding between a resource and role.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TrustedAccessRoleBindingInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String trustedAccessRoleBindingName,
-        TrustedAccessRoleBindingInner trustedAccessRoleBinding);
+    TrustedAccessRoleBindingInner createOrUpdate(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName, TrustedAccessRoleBindingInner trustedAccessRoleBinding);
 
     /**
      * Create or update a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -252,16 +238,12 @@ public interface TrustedAccessRoleBindingsClient {
      * @return defines binding between a resource and role.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TrustedAccessRoleBindingInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String trustedAccessRoleBindingName,
-        TrustedAccessRoleBindingInner trustedAccessRoleBinding,
-        Context context);
+    TrustedAccessRoleBindingInner createOrUpdate(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName, TrustedAccessRoleBindingInner trustedAccessRoleBinding, Context context);
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -271,12 +253,12 @@ public interface TrustedAccessRoleBindingsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName);
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -286,12 +268,12 @@ public interface TrustedAccessRoleBindingsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName);
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -301,12 +283,12 @@ public interface TrustedAccessRoleBindingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName);
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -317,12 +299,12 @@ public interface TrustedAccessRoleBindingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, String trustedAccessRoleBindingName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
+        String trustedAccessRoleBindingName, Context context);
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -336,7 +318,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.
@@ -349,7 +331,7 @@ public interface TrustedAccessRoleBindingsClient {
 
     /**
      * Delete a trusted access role binding.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param trustedAccessRoleBindingName The name of trusted access role binding.

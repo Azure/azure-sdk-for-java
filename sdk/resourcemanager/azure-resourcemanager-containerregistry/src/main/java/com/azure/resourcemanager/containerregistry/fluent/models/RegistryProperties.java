@@ -17,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The properties of a container registry. */
+/**
+ * The properties of a container registry.
+ */
 @Fluent
 public final class RegistryProperties {
     /*
@@ -104,13 +106,15 @@ public final class RegistryProperties {
     @JsonProperty(value = "zoneRedundancy")
     private ZoneRedundancy zoneRedundancy;
 
-    /** Creates an instance of RegistryProperties class. */
+    /**
+     * Creates an instance of RegistryProperties class.
+     */
     public RegistryProperties() {
     }
 
     /**
      * Get the loginServer property: The URL that can be used to log into the container registry.
-     *
+     * 
      * @return the loginServer value.
      */
     public String loginServer() {
@@ -119,7 +123,7 @@ public final class RegistryProperties {
 
     /**
      * Get the creationDate property: The creation date of the container registry in ISO8601 format.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -129,7 +133,7 @@ public final class RegistryProperties {
     /**
      * Get the provisioningState property: The provisioning state of the container registry at the time the operation
      * was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -138,7 +142,7 @@ public final class RegistryProperties {
 
     /**
      * Get the status property: The status of the container registry at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -147,7 +151,7 @@ public final class RegistryProperties {
 
     /**
      * Get the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @return the adminUserEnabled value.
      */
     public Boolean adminUserEnabled() {
@@ -156,7 +160,7 @@ public final class RegistryProperties {
 
     /**
      * Set the adminUserEnabled property: The value that indicates whether the admin user is enabled.
-     *
+     * 
      * @param adminUserEnabled the adminUserEnabled value to set.
      * @return the RegistryProperties object itself.
      */
@@ -167,7 +171,7 @@ public final class RegistryProperties {
 
     /**
      * Get the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -176,7 +180,7 @@ public final class RegistryProperties {
 
     /**
      * Set the networkRuleSet property: The network rule set for a container registry.
-     *
+     * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the RegistryProperties object itself.
      */
@@ -187,7 +191,7 @@ public final class RegistryProperties {
 
     /**
      * Get the policies property: The policies for a container registry.
-     *
+     * 
      * @return the policies value.
      */
     public Policies policies() {
@@ -196,7 +200,7 @@ public final class RegistryProperties {
 
     /**
      * Set the policies property: The policies for a container registry.
-     *
+     * 
      * @param policies the policies value to set.
      * @return the RegistryProperties object itself.
      */
@@ -207,7 +211,7 @@ public final class RegistryProperties {
 
     /**
      * Get the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperty encryption() {
@@ -216,7 +220,7 @@ public final class RegistryProperties {
 
     /**
      * Set the encryption property: The encryption settings of container registry.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the RegistryProperties object itself.
      */
@@ -227,7 +231,7 @@ public final class RegistryProperties {
 
     /**
      * Get the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @return the dataEndpointEnabled value.
      */
     public Boolean dataEndpointEnabled() {
@@ -236,7 +240,7 @@ public final class RegistryProperties {
 
     /**
      * Set the dataEndpointEnabled property: Enable a single data endpoint per region for serving data.
-     *
+     * 
      * @param dataEndpointEnabled the dataEndpointEnabled value to set.
      * @return the RegistryProperties object itself.
      */
@@ -246,8 +250,9 @@ public final class RegistryProperties {
     }
 
     /**
-     * Get the dataEndpointHostNames property: List of host names that will serve data when dataEndpointEnabled is true.
-     *
+     * Get the dataEndpointHostNames property: List of host names that will serve data when dataEndpointEnabled is
+     * true.
+     * 
      * @return the dataEndpointHostNames value.
      */
     public List<String> dataEndpointHostNames() {
@@ -256,7 +261,7 @@ public final class RegistryProperties {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections for a container registry.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -264,8 +269,9 @@ public final class RegistryProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * Get the publicNetworkAccess property: Whether or not public network access is allowed for the container
+     * registry.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -273,8 +279,9 @@ public final class RegistryProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container registry.
-     *
+     * Set the publicNetworkAccess property: Whether or not public network access is allowed for the container
+     * registry.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the RegistryProperties object itself.
      */
@@ -284,9 +291,9 @@ public final class RegistryProperties {
     }
 
     /**
-     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
-     * registry.
-     *
+     * Get the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
+     * restricted registry.
+     * 
      * @return the networkRuleBypassOptions value.
      */
     public NetworkRuleBypassOptions networkRuleBypassOptions() {
@@ -294,9 +301,9 @@ public final class RegistryProperties {
     }
 
     /**
-     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network restricted
-     * registry.
-     *
+     * Set the networkRuleBypassOptions property: Whether to allow trusted Azure services to access a network
+     * restricted registry.
+     * 
      * @param networkRuleBypassOptions the networkRuleBypassOptions value to set.
      * @return the RegistryProperties object itself.
      */
@@ -307,7 +314,7 @@ public final class RegistryProperties {
 
     /**
      * Get the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
-     *
+     * 
      * @return the zoneRedundancy value.
      */
     public ZoneRedundancy zoneRedundancy() {
@@ -316,7 +323,7 @@ public final class RegistryProperties {
 
     /**
      * Set the zoneRedundancy property: Whether or not zone redundancy is enabled for this container registry.
-     *
+     * 
      * @param zoneRedundancy the zoneRedundancy value to set.
      * @return the RegistryProperties object itself.
      */
@@ -327,7 +334,7 @@ public final class RegistryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

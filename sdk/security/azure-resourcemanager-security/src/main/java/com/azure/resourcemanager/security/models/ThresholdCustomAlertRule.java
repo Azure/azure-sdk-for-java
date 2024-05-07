@@ -10,14 +10,16 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A custom alert rule that checks if a value (depends on the custom alert type) is within the given range. */
+/**
+ * A custom alert rule that checks if a value (depends on the custom alert type) is within the given range.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "ruleType",
     defaultImpl = ThresholdCustomAlertRule.class)
 @JsonTypeName("ThresholdCustomAlertRule")
-@JsonSubTypes({@JsonSubTypes.Type(name = "TimeWindowCustomAlertRule", value = TimeWindowCustomAlertRule.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "TimeWindowCustomAlertRule", value = TimeWindowCustomAlertRule.class) })
 @Fluent
 public class ThresholdCustomAlertRule extends CustomAlertRule {
     /*
@@ -32,13 +34,15 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
     @JsonProperty(value = "maxThreshold", required = true)
     private int maxThreshold;
 
-    /** Creates an instance of ThresholdCustomAlertRule class. */
+    /**
+     * Creates an instance of ThresholdCustomAlertRule class.
+     */
     public ThresholdCustomAlertRule() {
     }
 
     /**
      * Get the minThreshold property: The minimum threshold.
-     *
+     * 
      * @return the minThreshold value.
      */
     public int minThreshold() {
@@ -47,7 +51,7 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
 
     /**
      * Set the minThreshold property: The minimum threshold.
-     *
+     * 
      * @param minThreshold the minThreshold value to set.
      * @return the ThresholdCustomAlertRule object itself.
      */
@@ -58,7 +62,7 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
 
     /**
      * Get the maxThreshold property: The maximum threshold.
-     *
+     * 
      * @return the maxThreshold value.
      */
     public int maxThreshold() {
@@ -67,7 +71,7 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
 
     /**
      * Set the maxThreshold property: The maximum threshold.
-     *
+     * 
      * @param maxThreshold the maxThreshold value to set.
      * @return the ThresholdCustomAlertRule object itself.
      */
@@ -76,7 +80,9 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThresholdCustomAlertRule withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -85,7 +91,7 @@ public class ThresholdCustomAlertRule extends CustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -35,22 +35,28 @@ import com.azure.resourcemanager.security.models.SecurityAssessment;
 import com.azure.resourcemanager.security.models.SecurityAssessmentList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AssessmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AssessmentsClient.
+ */
 public final class AssessmentsClientImpl implements AssessmentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AssessmentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of AssessmentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AssessmentsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy.create(AssessmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AssessmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,84 +67,67 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAssess")
     public interface AssessmentsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Security/assessments")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityAssessmentList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SecurityAssessmentList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityAssessmentResponseInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SecurityAssessmentResponseInner>> get(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
-            @PathParam("assessmentName") String assessmentName,
-            @QueryParam("$expand") ExpandEnum expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("assessmentName") String assessmentName, @QueryParam("$expand") ExpandEnum expand,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityAssessmentResponseInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SecurityAssessmentResponseInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
             @PathParam("assessmentName") String assessmentName,
-            @BodyParam("application/json") SecurityAssessment assessment,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SecurityAssessment assessment, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/{resourceId}/providers/Microsoft.Security/assessments/{assessmentName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
-            @PathParam("assessmentName") String assessmentName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("assessmentName") String assessmentName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityAssessmentList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SecurityAssessmentList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get security assessments on all your scanned resources inside a scope.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security assessments on all your scanned resources inside a scope along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityAssessmentResponseInner>> listSinglePageAsync(String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -147,37 +136,28 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, scope, accept, context))
-            .<PagedResponse<SecurityAssessmentResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SecurityAssessmentResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get security assessments on all your scanned resources inside a scope.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security assessments on all your scanned resources inside a scope along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityAssessmentResponseInner>> listSinglePageAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -185,29 +165,21 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, scope, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, scope, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get security assessments on all your scanned resources inside a scope.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope as paginated response with {@link
-     *     PagedFlux}.
+     * @return security assessments on all your scanned resources inside a scope as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityAssessmentResponseInner> listAsync(String scope) {
@@ -216,32 +188,32 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
 
     /**
      * Get security assessments on all your scanned resources inside a scope.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope as paginated response with {@link
-     *     PagedFlux}.
+     * @return security assessments on all your scanned resources inside a scope as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityAssessmentResponseInner> listAsync(String scope, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(scope, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(scope, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get security assessments on all your scanned resources inside a scope.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return security assessments on all your scanned resources inside a scope as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityAssessmentResponseInner> list(String scope) {
@@ -250,15 +222,15 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
 
     /**
      * Get security assessments on all your scanned resources inside a scope.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return security assessments on all your scanned resources inside a scope as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityAssessmentResponseInner> list(String scope, Context context) {
@@ -267,7 +239,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
 
     /**
      * Get a security assessment on your scanned resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param expand OData expand. Optional.
@@ -275,16 +247,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a security assessment on your scanned resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityAssessmentResponseInner>> getWithResponseAsync(
-        String resourceId, String assessmentName, ExpandEnum expand) {
+    private Mono<Response<SecurityAssessmentResponseInner>> getWithResponseAsync(String resourceId,
+        String assessmentName, ExpandEnum expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -295,17 +265,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(), apiVersion, resourceId, assessmentName, expand, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, resourceId, assessmentName,
+                expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a security assessment on your scanned resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param expand OData expand. Optional.
@@ -314,16 +281,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a security assessment on your scanned resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityAssessmentResponseInner>> getWithResponseAsync(
-        String resourceId, String assessmentName, ExpandEnum expand, Context context) {
+    private Mono<Response<SecurityAssessmentResponseInner>> getWithResponseAsync(String resourceId,
+        String assessmentName, ExpandEnum expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -339,7 +304,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
 
     /**
      * Get a security assessment on your scanned resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -356,7 +321,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
 
     /**
      * Get a security assessment on your scanned resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param expand OData expand. Optional.
@@ -367,14 +332,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      * @return a security assessment on your scanned resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityAssessmentResponseInner> getWithResponse(
-        String resourceId, String assessmentName, ExpandEnum expand, Context context) {
+    public Response<SecurityAssessmentResponseInner> getWithResponse(String resourceId, String assessmentName,
+        ExpandEnum expand, Context context) {
         return getWithResponseAsync(resourceId, assessmentName, expand, context).block();
     }
 
     /**
      * Get a security assessment on your scanned resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -391,7 +356,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
     /**
      * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param assessment Calculated assessment on a pre-defined assessment metadata.
@@ -399,16 +364,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security assessment on a resource - response format along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityAssessmentResponseInner>> createOrUpdateWithResponseAsync(
-        String resourceId, String assessmentName, SecurityAssessment assessment) {
+    private Mono<Response<SecurityAssessmentResponseInner>> createOrUpdateWithResponseAsync(String resourceId,
+        String assessmentName, SecurityAssessment assessment) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -424,24 +387,15 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            resourceId,
-                            assessmentName,
-                            assessment,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion, resourceId,
+                assessmentName, assessment, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param assessment Calculated assessment on a pre-defined assessment metadata.
@@ -450,16 +404,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security assessment on a resource - response format along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityAssessmentResponseInner>> createOrUpdateWithResponseAsync(
-        String resourceId, String assessmentName, SecurityAssessment assessment, Context context) {
+    private Mono<Response<SecurityAssessmentResponseInner>> createOrUpdateWithResponseAsync(String resourceId,
+        String assessmentName, SecurityAssessment assessment, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -475,15 +427,14 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(), apiVersion, resourceId, assessmentName, assessment, accept, context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, resourceId, assessmentName, assessment,
+            accept, context);
     }
 
     /**
      * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param assessment Calculated assessment on a pre-defined assessment metadata.
@@ -493,8 +444,8 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      * @return security assessment on a resource - response format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SecurityAssessmentResponseInner> createOrUpdateAsync(
-        String resourceId, String assessmentName, SecurityAssessment assessment) {
+    private Mono<SecurityAssessmentResponseInner> createOrUpdateAsync(String resourceId, String assessmentName,
+        SecurityAssessment assessment) {
         return createOrUpdateWithResponseAsync(resourceId, assessmentName, assessment)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -502,7 +453,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
     /**
      * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param assessment Calculated assessment on a pre-defined assessment metadata.
@@ -513,15 +464,15 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      * @return security assessment on a resource - response format along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityAssessmentResponseInner> createOrUpdateWithResponse(
-        String resourceId, String assessmentName, SecurityAssessment assessment, Context context) {
+    public Response<SecurityAssessmentResponseInner> createOrUpdateWithResponse(String resourceId,
+        String assessmentName, SecurityAssessment assessment, Context context) {
         return createOrUpdateWithResponseAsync(resourceId, assessmentName, assessment, context).block();
     }
 
     /**
      * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param assessment Calculated assessment on a pre-defined assessment metadata.
@@ -531,15 +482,15 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
      * @return security assessment on a resource - response format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityAssessmentResponseInner createOrUpdate(
-        String resourceId, String assessmentName, SecurityAssessment assessment) {
+    public SecurityAssessmentResponseInner createOrUpdate(String resourceId, String assessmentName,
+        SecurityAssessment assessment) {
         return createOrUpdateWithResponse(resourceId, assessmentName, assessment, Context.NONE).getValue();
     }
 
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -550,10 +501,8 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceId, String assessmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -564,16 +513,15 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.delete(this.client.getEndpoint(), apiVersion, resourceId, assessmentName, accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion, resourceId, assessmentName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
@@ -585,10 +533,8 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceId, String assessmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceId == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
@@ -605,7 +551,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -621,7 +567,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
@@ -638,7 +584,7 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -652,14 +598,15 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return page of a security assessments list along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return page of a security assessments list along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityAssessmentResponseInner>> listNextSinglePageAsync(String nextLink) {
@@ -667,62 +614,43 @@ public final class AssessmentsClientImpl implements AssessmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SecurityAssessmentResponseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SecurityAssessmentResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return page of a security assessments list along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return page of a security assessments list along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SecurityAssessmentResponseInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SecurityAssessmentResponseInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Spring Cloud Gateway properties payload. */
+/**
+ * Spring Cloud Gateway properties payload.
+ */
 @Fluent
 public final class GatewayProperties {
     /*
@@ -54,6 +56,24 @@ public final class GatewayProperties {
     private GatewayCorsProperties corsProperties;
 
     /*
+     * Client-Certification Authentication.
+     */
+    @JsonProperty(value = "clientAuth")
+    private GatewayPropertiesClientAuth clientAuth;
+
+    /*
+     * Collection of ApmReferences in service level
+     */
+    @JsonProperty(value = "apms")
+    private List<ApmReference> apms;
+
+    /*
+     * Environment variables of Spring Cloud Gateway
+     */
+    @JsonProperty(value = "environmentVariables")
+    private GatewayPropertiesEnvironmentVariables environmentVariables;
+
+    /*
      * The requested resource quantity for required CPU and Memory.
      */
     @JsonProperty(value = "resourceRequests")
@@ -72,8 +92,14 @@ public final class GatewayProperties {
     private GatewayOperatorProperties operatorProperties;
 
     /**
+     * Creates an instance of GatewayProperties class.
+     */
+    public GatewayProperties() {
+    }
+
+    /**
      * Get the provisioningState property: State of the Spring Cloud Gateway.
-     *
+     * 
      * @return the provisioningState value.
      */
     public GatewayProvisioningState provisioningState() {
@@ -82,7 +108,7 @@ public final class GatewayProperties {
 
     /**
      * Get the publicProperty property: Indicates whether the Spring Cloud Gateway exposes endpoint.
-     *
+     * 
      * @return the publicProperty value.
      */
     public Boolean publicProperty() {
@@ -91,7 +117,7 @@ public final class GatewayProperties {
 
     /**
      * Set the publicProperty property: Indicates whether the Spring Cloud Gateway exposes endpoint.
-     *
+     * 
      * @param publicProperty the publicProperty value to set.
      * @return the GatewayProperties object itself.
      */
@@ -102,7 +128,7 @@ public final class GatewayProperties {
 
     /**
      * Get the url property: URL of the Spring Cloud Gateway, exposed when 'public' is true.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -111,7 +137,7 @@ public final class GatewayProperties {
 
     /**
      * Get the httpsOnly property: Indicate if only https is allowed.
-     *
+     * 
      * @return the httpsOnly value.
      */
     public Boolean httpsOnly() {
@@ -120,7 +146,7 @@ public final class GatewayProperties {
 
     /**
      * Set the httpsOnly property: Indicate if only https is allowed.
-     *
+     * 
      * @param httpsOnly the httpsOnly value to set.
      * @return the GatewayProperties object itself.
      */
@@ -131,7 +157,7 @@ public final class GatewayProperties {
 
     /**
      * Get the ssoProperties property: Single sign-on related configuration.
-     *
+     * 
      * @return the ssoProperties value.
      */
     public SsoProperties ssoProperties() {
@@ -140,7 +166,7 @@ public final class GatewayProperties {
 
     /**
      * Set the ssoProperties property: Single sign-on related configuration.
-     *
+     * 
      * @param ssoProperties the ssoProperties value to set.
      * @return the GatewayProperties object itself.
      */
@@ -151,7 +177,7 @@ public final class GatewayProperties {
 
     /**
      * Get the apiMetadataProperties property: API metadata property for Spring Cloud Gateway.
-     *
+     * 
      * @return the apiMetadataProperties value.
      */
     public GatewayApiMetadataProperties apiMetadataProperties() {
@@ -160,7 +186,7 @@ public final class GatewayProperties {
 
     /**
      * Set the apiMetadataProperties property: API metadata property for Spring Cloud Gateway.
-     *
+     * 
      * @param apiMetadataProperties the apiMetadataProperties value to set.
      * @return the GatewayProperties object itself.
      */
@@ -171,7 +197,7 @@ public final class GatewayProperties {
 
     /**
      * Get the corsProperties property: Cross-Origin Resource Sharing property.
-     *
+     * 
      * @return the corsProperties value.
      */
     public GatewayCorsProperties corsProperties() {
@@ -180,7 +206,7 @@ public final class GatewayProperties {
 
     /**
      * Set the corsProperties property: Cross-Origin Resource Sharing property.
-     *
+     * 
      * @param corsProperties the corsProperties value to set.
      * @return the GatewayProperties object itself.
      */
@@ -190,8 +216,68 @@ public final class GatewayProperties {
     }
 
     /**
+     * Get the clientAuth property: Client-Certification Authentication.
+     * 
+     * @return the clientAuth value.
+     */
+    public GatewayPropertiesClientAuth clientAuth() {
+        return this.clientAuth;
+    }
+
+    /**
+     * Set the clientAuth property: Client-Certification Authentication.
+     * 
+     * @param clientAuth the clientAuth value to set.
+     * @return the GatewayProperties object itself.
+     */
+    public GatewayProperties withClientAuth(GatewayPropertiesClientAuth clientAuth) {
+        this.clientAuth = clientAuth;
+        return this;
+    }
+
+    /**
+     * Get the apms property: Collection of ApmReferences in service level.
+     * 
+     * @return the apms value.
+     */
+    public List<ApmReference> apms() {
+        return this.apms;
+    }
+
+    /**
+     * Set the apms property: Collection of ApmReferences in service level.
+     * 
+     * @param apms the apms value to set.
+     * @return the GatewayProperties object itself.
+     */
+    public GatewayProperties withApms(List<ApmReference> apms) {
+        this.apms = apms;
+        return this;
+    }
+
+    /**
+     * Get the environmentVariables property: Environment variables of Spring Cloud Gateway.
+     * 
+     * @return the environmentVariables value.
+     */
+    public GatewayPropertiesEnvironmentVariables environmentVariables() {
+        return this.environmentVariables;
+    }
+
+    /**
+     * Set the environmentVariables property: Environment variables of Spring Cloud Gateway.
+     * 
+     * @param environmentVariables the environmentVariables value to set.
+     * @return the GatewayProperties object itself.
+     */
+    public GatewayProperties withEnvironmentVariables(GatewayPropertiesEnvironmentVariables environmentVariables) {
+        this.environmentVariables = environmentVariables;
+        return this;
+    }
+
+    /**
      * Get the resourceRequests property: The requested resource quantity for required CPU and Memory.
-     *
+     * 
      * @return the resourceRequests value.
      */
     public GatewayResourceRequests resourceRequests() {
@@ -200,7 +286,7 @@ public final class GatewayProperties {
 
     /**
      * Set the resourceRequests property: The requested resource quantity for required CPU and Memory.
-     *
+     * 
      * @param resourceRequests the resourceRequests value to set.
      * @return the GatewayProperties object itself.
      */
@@ -211,7 +297,7 @@ public final class GatewayProperties {
 
     /**
      * Get the instances property: Collection of instances belong to Spring Cloud Gateway.
-     *
+     * 
      * @return the instances value.
      */
     public List<GatewayInstance> instances() {
@@ -220,7 +306,7 @@ public final class GatewayProperties {
 
     /**
      * Get the operatorProperties property: Properties of the Spring Cloud Gateway Operator.
-     *
+     * 
      * @return the operatorProperties value.
      */
     public GatewayOperatorProperties operatorProperties() {
@@ -229,7 +315,7 @@ public final class GatewayProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -241,6 +327,15 @@ public final class GatewayProperties {
         }
         if (corsProperties() != null) {
             corsProperties().validate();
+        }
+        if (clientAuth() != null) {
+            clientAuth().validate();
+        }
+        if (apms() != null) {
+            apms().forEach(e -> e.validate());
+        }
+        if (environmentVariables() != null) {
+            environmentVariables().validate();
         }
         if (resourceRequests() != null) {
             resourceRequests().validate();

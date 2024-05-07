@@ -6,7 +6,6 @@ package com.azure.resourcemanager.redisenterprise.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
@@ -18,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Describes the RedisEnterprise cluster. */
+/**
+ * Describes the RedisEnterprise cluster.
+ */
 @Fluent
 public final class ClusterInner extends Resource {
     /*
@@ -41,25 +42,21 @@ public final class ClusterInner extends Resource {
 
     /*
      * RedisEnterprise cluster properties
-     *
+     * 
      * Other properties of the cluster.
      */
     @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
 
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+    /**
+     * Creates an instance of ClusterInner class.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /** Creates an instance of ClusterInner class. */
     public ClusterInner() {
     }
 
     /**
      * Get the sku property: The SKU to create, which affects price, performance, and features.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -68,7 +65,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the sku property: The SKU to create, which affects price, performance, and features.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ClusterInner object itself.
      */
@@ -79,7 +76,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the zones property: The Availability Zones where this cluster will be deployed.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -88,7 +85,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the zones property: The Availability Zones where this cluster will be deployed.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ClusterInner object itself.
      */
@@ -99,7 +96,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -108,7 +105,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ClusterInner object itself.
      */
@@ -119,9 +116,9 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the innerProperties property: RedisEnterprise cluster properties
-     *
-     * <p>Other properties of the cluster.
-     *
+     * 
+     * Other properties of the cluster.
+     * 
      * @return the innerProperties value.
      */
     private ClusterProperties innerProperties() {
@@ -129,22 +126,17 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
+     * {@inheritDoc}
      */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public ClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -153,7 +145,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
-     *
+     * 
      * @return the minimumTlsVersion value.
      */
     public TlsVersion minimumTlsVersion() {
@@ -162,7 +154,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
-     *
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the ClusterInner object itself.
      */
@@ -176,7 +168,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the encryption property: Encryption-at-rest configuration for the cluster.
-     *
+     * 
      * @return the encryption value.
      */
     public ClusterPropertiesEncryption encryption() {
@@ -185,7 +177,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the encryption property: Encryption-at-rest configuration for the cluster.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the ClusterInner object itself.
      */
@@ -199,7 +191,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the hostname property: DNS name of the cluster endpoint.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -208,7 +200,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the provisioningState property: Current provisioning status of the cluster.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -217,7 +209,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the resourceState property: Current resource status of the cluster.
-     *
+     * 
      * @return the resourceState value.
      */
     public ResourceState resourceState() {
@@ -226,7 +218,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the redisVersion property: Version of redis the cluster supports, e.g. '6'.
-     *
+     * 
      * @return the redisVersion value.
      */
     public String redisVersion() {
@@ -236,7 +228,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the specified
      * RedisEnterprise cluster.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -245,14 +237,13 @@ public final class ClusterInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model ClusterInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model ClusterInner"));
         } else {
             sku().validate();
         }

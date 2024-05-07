@@ -7,16 +7,28 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Self referenced tumbling window trigger dependency.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SelfDependencyTumblingWindowTriggerReference.class,
+    visible = true)
 @JsonTypeName("SelfDependencyTumblingWindowTriggerReference")
 @Fluent
 public final class SelfDependencyTumblingWindowTriggerReference extends DependencyReference {
+    /*
+     * The type of dependency reference.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SelfDependencyTumblingWindowTriggerReference";
+
     /*
      * Timespan applied to the start time of a tumbling window when evaluating dependency.
      */
@@ -24,8 +36,7 @@ public final class SelfDependencyTumblingWindowTriggerReference extends Dependen
     private String offset;
 
     /*
-     * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be
-     * used.
+     * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be used.
      */
     @JsonProperty(value = "size")
     private String size;
@@ -34,6 +45,16 @@ public final class SelfDependencyTumblingWindowTriggerReference extends Dependen
      * Creates an instance of SelfDependencyTumblingWindowTriggerReference class.
      */
     public SelfDependencyTumblingWindowTriggerReference() {
+    }
+
+    /**
+     * Get the type property: The type of dependency reference.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -87,8 +108,9 @@ public final class SelfDependencyTumblingWindowTriggerReference extends Dependen
     public void validate() {
         super.validate();
         if (offset() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property offset in model SelfDependencyTumblingWindowTriggerReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property offset in model SelfDependencyTumblingWindowTriggerReference"));
         }
     }
 

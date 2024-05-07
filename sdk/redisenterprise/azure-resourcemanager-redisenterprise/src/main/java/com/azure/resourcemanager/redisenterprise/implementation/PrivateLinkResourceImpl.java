@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.redisenterprise.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.redisenterprise.models.PrivateLinkResource;
 import java.util.Collections;
@@ -15,8 +14,7 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
 
     private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
-    PrivateLinkResourceImpl(
-        PrivateLinkResourceInner innerObject,
+    PrivateLinkResourceImpl(PrivateLinkResourceInner innerObject,
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -32,10 +30,6 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public String groupId() {

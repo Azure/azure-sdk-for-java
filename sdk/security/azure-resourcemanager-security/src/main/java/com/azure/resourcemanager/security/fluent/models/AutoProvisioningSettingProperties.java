@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.AutoProvision;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** describes properties of an auto provisioning setting. */
+/**
+ * describes properties of an auto provisioning setting.
+ */
 @Fluent
 public final class AutoProvisioningSettingProperties {
     /*
@@ -18,13 +20,15 @@ public final class AutoProvisioningSettingProperties {
     @JsonProperty(value = "autoProvision", required = true)
     private AutoProvision autoProvision;
 
-    /** Creates an instance of AutoProvisioningSettingProperties class. */
+    /**
+     * Creates an instance of AutoProvisioningSettingProperties class.
+     */
     public AutoProvisioningSettingProperties() {
     }
 
     /**
      * Get the autoProvision property: Describes what kind of security agent provisioning action to take.
-     *
+     * 
      * @return the autoProvision value.
      */
     public AutoProvision autoProvision() {
@@ -33,7 +37,7 @@ public final class AutoProvisioningSettingProperties {
 
     /**
      * Set the autoProvision property: Describes what kind of security agent provisioning action to take.
-     *
+     * 
      * @param autoProvision the autoProvision value to set.
      * @return the AutoProvisioningSettingProperties object itself.
      */
@@ -44,15 +48,13 @@ public final class AutoProvisioningSettingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (autoProvision() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property autoProvision in model AutoProvisioningSettingProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property autoProvision in model AutoProvisioningSettingProperties"));
         }
     }
 

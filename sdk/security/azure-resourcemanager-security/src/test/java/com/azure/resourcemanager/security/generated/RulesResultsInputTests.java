@@ -14,42 +14,27 @@ import org.junit.jupiter.api.Assertions;
 public final class RulesResultsInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RulesResultsInput model =
-            BinaryData
-                .fromString(
-                    "{\"latestScan\":false,\"results\":{\"z\":[[\"fbojxjmcsmyqwix\",\"cp\"],[\"kwywzwofalic\",\"duoiqt\",\"mt\"],[\"sknxrwzawnvsbcf\",\"zagxnvhycvdi\",\"wrzregzgyufu\"],[\"wpwerye\"]],\"hnhjtfvpndpmi\":[[\"meottawj\",\"osxw\"]],\"yyshtuwgmevua\":[[\"nwynudq\"],[\"zsauzp\"],[\"xee\",\"uxiqhzlraymezxl\",\"kihmxrfdsajredn\"]]}}")
-                .toObject(RulesResultsInput.class);
+        RulesResultsInput model = BinaryData.fromString(
+            "{\"latestScan\":false,\"results\":{\"mmqtgqqqxhr\":[[\"iml\"],[\"ljxkcgxxlx\",\"ffgcvizqz\"],[\"l\",\"w\",\"youpfgfbkj\"],[\"dyhgkfminsg\",\"wzf\",\"tsttktlahbq\",\"ctxtgzukxi\"]],\"kqqfk\":[[\"xcpjuisavokqdzf\",\"azivjlfrqttbajl\",\"atnwxyiopi\"]]}}")
+            .toObject(RulesResultsInput.class);
         Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("fbojxjmcsmyqwix", model.results().get("z").get(0).get(0));
+        Assertions.assertEquals("iml", model.results().get("mmqtgqqqxhr").get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulesResultsInput model =
-            new RulesResultsInput()
-                .withLatestScan(false)
-                .withResults(
-                    mapOf(
-                        "z",
-                        Arrays
-                            .asList(
-                                Arrays.asList("fbojxjmcsmyqwix", "cp"),
-                                Arrays.asList("kwywzwofalic", "duoiqt", "mt"),
-                                Arrays.asList("sknxrwzawnvsbcf", "zagxnvhycvdi", "wrzregzgyufu"),
-                                Arrays.asList("wpwerye")),
-                        "hnhjtfvpndpmi",
-                        Arrays.asList(Arrays.asList("meottawj", "osxw")),
-                        "yyshtuwgmevua",
-                        Arrays
-                            .asList(
-                                Arrays.asList("nwynudq"),
-                                Arrays.asList("zsauzp"),
-                                Arrays.asList("xee", "uxiqhzlraymezxl", "kihmxrfdsajredn"))));
+        RulesResultsInput model = new RulesResultsInput().withLatestScan(false)
+            .withResults(mapOf("mmqtgqqqxhr",
+                Arrays.asList(Arrays.asList("iml"), Arrays.asList("ljxkcgxxlx", "ffgcvizqz"),
+                    Arrays.asList("l", "w", "youpfgfbkj"),
+                    Arrays.asList("dyhgkfminsg", "wzf", "tsttktlahbq", "ctxtgzukxi")),
+                "kqqfk", Arrays.asList(Arrays.asList("xcpjuisavokqdzf", "azivjlfrqttbajl", "atnwxyiopi"))));
         model = BinaryData.fromObject(model).toObject(RulesResultsInput.class);
         Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("fbojxjmcsmyqwix", model.results().get("z").get(0).get(0));
+        Assertions.assertEquals("iml", model.results().get("mmqtgqqqxhr").get(0).get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

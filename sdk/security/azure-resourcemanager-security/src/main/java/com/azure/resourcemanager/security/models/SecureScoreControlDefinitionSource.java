@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The type of the security control (For example, BuiltIn). */
+/**
+ * The type of the security control (For example, BuiltIn).
+ */
 @Fluent
 public final class SecureScoreControlDefinitionSource {
     /*
@@ -16,13 +18,15 @@ public final class SecureScoreControlDefinitionSource {
     @JsonProperty(value = "sourceType")
     private ControlType sourceType;
 
-    /** Creates an instance of SecureScoreControlDefinitionSource class. */
+    /**
+     * Creates an instance of SecureScoreControlDefinitionSource class.
+     */
     public SecureScoreControlDefinitionSource() {
     }
 
     /**
      * Get the sourceType property: The type of security control (for example, BuiltIn).
-     *
+     * 
      * @return the sourceType value.
      */
     public ControlType sourceType() {
@@ -31,7 +35,7 @@ public final class SecureScoreControlDefinitionSource {
 
     /**
      * Set the sourceType property: The type of security control (for example, BuiltIn).
-     *
+     * 
      * @param sourceType the sourceType value to set.
      * @return the SecureScoreControlDefinitionSource object itself.
      */
@@ -42,7 +46,7 @@ public final class SecureScoreControlDefinitionSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

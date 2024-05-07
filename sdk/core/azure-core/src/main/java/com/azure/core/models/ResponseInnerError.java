@@ -3,7 +3,6 @@
 
 package com.azure.core.models;
 
-
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,7 +12,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.IOException;
 
 /**
- * The inner error of a {@link ResponseError}.
+ * <p>Represents the inner error details of a {@link ResponseError}.</p>
+ *
+ * <p>This class encapsulates the details of an inner error in a {@link ResponseError}, including the error code
+ * and a nested inner error. It provides methods to access and modify these properties.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the inner error details to JSON,
+ * and a {@link #fromJson(JsonReader)} method to deserialize the inner error details from JSON.</p>
+ *
+ * @see ResponseError
+ * @see JsonSerializable
+ * @see JsonReader
+ * @see JsonWriter
  */
 final class ResponseInnerError implements JsonSerializable<ResponseInnerError> {
 

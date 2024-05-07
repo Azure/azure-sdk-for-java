@@ -12,18 +12,20 @@ public final class AvroWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvroWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AvroWriteSettings\",\"recordName\":\"gadrvxbcye\",\"recordNamespace\":\"jbcbrtiqpj\",\"maxRowsPerFile\":\"datakamhdqluicrqxqj\",\"fileNamePrefix\":\"dataosmlhcppfgtns\",\"\":{\"mfhde\":\"datahztnjpkpmdlt\",\"xpebsxcnhq\":\"dataliaaiqyxlro\",\"rdamyumr\":\"datacbtyor\",\"ygj\":\"databbaxnym\"}}")
+            "{\"type\":\"jva\",\"recordName\":\"mktpykoicpk\",\"recordNamespace\":\"mqfdtbaobjaof\",\"maxRowsPerFile\":\"datavhhrgvkuuikr\",\"fileNamePrefix\":\"dataelrwsjvdxe\",\"\":{\"fm\":\"datagfvygrfyyknxua\",\"kt\":\"dataynlcimjmurocryfu\"}}")
             .toObject(AvroWriteSettings.class);
-        Assertions.assertEquals("gadrvxbcye", model.recordName());
-        Assertions.assertEquals("jbcbrtiqpj", model.recordNamespace());
+        Assertions.assertEquals("mktpykoicpk", model.recordName());
+        Assertions.assertEquals("mqfdtbaobjaof", model.recordNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvroWriteSettings model = new AvroWriteSettings().withRecordName("gadrvxbcye").withRecordNamespace("jbcbrtiqpj")
-            .withMaxRowsPerFile("datakamhdqluicrqxqj").withFileNamePrefix("dataosmlhcppfgtns");
+        AvroWriteSettings model = new AvroWriteSettings().withRecordName("mktpykoicpk")
+            .withRecordNamespace("mqfdtbaobjaof")
+            .withMaxRowsPerFile("datavhhrgvkuuikr")
+            .withFileNamePrefix("dataelrwsjvdxe");
         model = BinaryData.fromObject(model).toObject(AvroWriteSettings.class);
-        Assertions.assertEquals("gadrvxbcye", model.recordName());
-        Assertions.assertEquals("jbcbrtiqpj", model.recordNamespace());
+        Assertions.assertEquals("mktpykoicpk", model.recordName());
+        Assertions.assertEquals("mqfdtbaobjaof", model.recordNamespace());
     }
 }

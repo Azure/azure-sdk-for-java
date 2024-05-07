@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configures where to store the OMS agent data for workspaces under a scope. */
+/**
+ * Configures where to store the OMS agent data for workspaces under a scope.
+ */
 @Fluent
 public final class WorkspaceSettingInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class WorkspaceSettingInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private WorkspaceSettingProperties innerProperties;
 
-    /** Creates an instance of WorkspaceSettingInner class. */
+    /**
+     * Creates an instance of WorkspaceSettingInner class.
+     */
     public WorkspaceSettingInner() {
     }
 
     /**
      * Get the innerProperties property: Workspace setting data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkspaceSettingProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class WorkspaceSettingInner extends ProxyResource {
 
     /**
      * Get the workspaceId property: The full Azure ID of the workspace to save the data in.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -41,7 +45,7 @@ public final class WorkspaceSettingInner extends ProxyResource {
 
     /**
      * Set the workspaceId property: The full Azure ID of the workspace to save the data in.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the WorkspaceSettingInner object itself.
      */
@@ -54,9 +58,9 @@ public final class WorkspaceSettingInner extends ProxyResource {
     }
 
     /**
-     * Get the scope property: All the VMs in this scope will send their security data to the mentioned workspace unless
-     * overridden by a setting with more specific scope.
-     *
+     * Get the scope property: All the VMs in this scope will send their security data to the mentioned workspace
+     * unless overridden by a setting with more specific scope.
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -64,9 +68,9 @@ public final class WorkspaceSettingInner extends ProxyResource {
     }
 
     /**
-     * Set the scope property: All the VMs in this scope will send their security data to the mentioned workspace unless
-     * overridden by a setting with more specific scope.
-     *
+     * Set the scope property: All the VMs in this scope will send their security data to the mentioned workspace
+     * unless overridden by a setting with more specific scope.
+     * 
      * @param scope the scope value to set.
      * @return the WorkspaceSettingInner object itself.
      */
@@ -80,7 +84,7 @@ public final class WorkspaceSettingInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterInsta
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The instance view of a HDInsight Cluster. */
+/**
+ * The instance view of a HDInsight Cluster.
+ */
 @Fluent
 public final class ClusterInstanceViewsResult {
     /*
@@ -24,13 +26,15 @@ public final class ClusterInstanceViewsResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ClusterInstanceViewsResult class. */
+    /**
+     * Creates an instance of ClusterInstanceViewsResult class.
+     */
     public ClusterInstanceViewsResult() {
     }
 
     /**
      * Get the value property: Cluster instance view array.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterInstanceViewResultInner> value() {
@@ -39,7 +43,7 @@ public final class ClusterInstanceViewsResult {
 
     /**
      * Set the value property: Cluster instance view array.
-     *
+     * 
      * @param value the value value to set.
      * @return the ClusterInstanceViewsResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ClusterInstanceViewsResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ClusterInstanceViewsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

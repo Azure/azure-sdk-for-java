@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A2A unprotected disk details. */
+/**
+ * A2A unprotected disk details.
+ */
 @Fluent
 public final class A2AUnprotectedDiskDetails {
     /*
@@ -22,13 +24,15 @@ public final class A2AUnprotectedDiskDetails {
     @JsonProperty(value = "diskAutoProtectionStatus")
     private AutoProtectionOfDataDisk diskAutoProtectionStatus;
 
-    /** Creates an instance of A2AUnprotectedDiskDetails class. */
+    /**
+     * Creates an instance of A2AUnprotectedDiskDetails class.
+     */
     public A2AUnprotectedDiskDetails() {
     }
 
     /**
      * Get the diskLunId property: The source lun Id for the data disk.
-     *
+     * 
      * @return the diskLunId value.
      */
     public Integer diskLunId() {
@@ -37,7 +41,7 @@ public final class A2AUnprotectedDiskDetails {
 
     /**
      * Set the diskLunId property: The source lun Id for the data disk.
-     *
+     * 
      * @param diskLunId the diskLunId value to set.
      * @return the A2AUnprotectedDiskDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class A2AUnprotectedDiskDetails {
 
     /**
      * Get the diskAutoProtectionStatus property: A value indicating whether the disk auto protection is enabled.
-     *
+     * 
      * @return the diskAutoProtectionStatus value.
      */
     public AutoProtectionOfDataDisk diskAutoProtectionStatus() {
@@ -57,7 +61,7 @@ public final class A2AUnprotectedDiskDetails {
 
     /**
      * Set the diskAutoProtectionStatus property: A value indicating whether the disk auto protection is enabled.
-     *
+     * 
      * @param diskAutoProtectionStatus the diskAutoProtectionStatus value to set.
      * @return the A2AUnprotectedDiskDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class A2AUnprotectedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

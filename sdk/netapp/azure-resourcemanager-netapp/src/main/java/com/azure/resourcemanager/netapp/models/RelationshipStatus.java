@@ -23,6 +23,16 @@ public final class RelationshipStatus extends ExpandableStringEnum<RelationshipS
     public static final RelationshipStatus TRANSFERRING = fromString("Transferring");
 
     /**
+     * Static value Failed for RelationshipStatus.
+     */
+    public static final RelationshipStatus FAILED = fromString("Failed");
+
+    /**
+     * Static value Unknown for RelationshipStatus.
+     */
+    public static final RelationshipStatus UNKNOWN = fromString("Unknown");
+
+    /**
      * Creates a new instance of RelationshipStatus value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

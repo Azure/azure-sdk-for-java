@@ -18,8 +18,12 @@ import java.util.function.Supplier;
  * operate on individual items. When processing the response by page, each response will contain the items in the page
  * as well as the request details like status code and headers.
  *
- * <p><strong>Process each item in Flux</strong></p>
- * <p>To process one item at a time, simply subscribe to this Flux.</p>
+ * <p>
+ * <strong>Process each item in Flux</strong>
+ * </p>
+ * <p>
+ * To process one item at a time, simply subscribe to this Flux.
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.items -->
  * <pre>
  * pagedFluxBase
@@ -30,8 +34,12 @@ import java.util.function.Supplier;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedfluxbase.items -->
  *
- * <p><strong>Process one page at a time</strong></p>
- * <p>To process one page at a time, starting from the beginning, use {@link #byPage() byPage()} method.</p>
+ * <p>
+ * <strong>Process one page at a time</strong>
+ * </p>
+ * <p>
+ * To process one page at a time, starting from the beginning, use {@link #byPage() byPage()} method.
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.pages -->
  * <pre>
  * pagedFluxBase
@@ -44,9 +52,13 @@ import java.util.function.Supplier;
  * </pre>
  * <!-- end com.azure.core.http.rest.pagedfluxbase.pages -->
  *
- * <p><strong>Process items starting from a continuation token</strong></p>
- * <p>To process items one page at a time starting from any page associated with a continuation token, use
- * {@link #byPage(String)}.</p>
+ * <p>
+ * <strong>Process items starting from a continuation token</strong>
+ * </p>
+ * <p>
+ * To process items one page at a time starting from any page associated with a continuation token, use
+ * {@link #byPage(String)}.
+ * </p>
  * <!-- src_embed com.azure.core.http.rest.pagedfluxbase.pagesWithContinuationToken -->
  * <pre>
  * String continuationToken = getContinuationToken&#40;&#41;;

@@ -9,37 +9,49 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
-/** Number of cloud to device messages (AMQP protocol) is not in allowed range. */
+/**
+ * Number of cloud to device messages (AMQP protocol) is not in allowed range.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
 @JsonTypeName("AmqpC2DMessagesNotInAllowedRange")
 @Fluent
 public final class AmqpC2DMessagesNotInAllowedRange extends TimeWindowCustomAlertRule {
-    /** Creates an instance of AmqpC2DMessagesNotInAllowedRange class. */
+    /**
+     * Creates an instance of AmqpC2DMessagesNotInAllowedRange class.
+     */
     public AmqpC2DMessagesNotInAllowedRange() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmqpC2DMessagesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {
         super.withTimeWindowSize(timeWindowSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmqpC2DMessagesNotInAllowedRange withMinThreshold(int minThreshold) {
         super.withMinThreshold(minThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmqpC2DMessagesNotInAllowedRange withMaxThreshold(int maxThreshold) {
         super.withMaxThreshold(maxThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmqpC2DMessagesNotInAllowedRange withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -48,7 +60,7 @@ public final class AmqpC2DMessagesNotInAllowedRange extends TimeWindowCustomAler
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

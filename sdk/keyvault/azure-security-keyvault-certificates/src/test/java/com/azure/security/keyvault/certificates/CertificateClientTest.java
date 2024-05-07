@@ -9,6 +9,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
@@ -68,6 +70,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CertificateClientTest extends CertificateClientTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateClientTest.class);
+
     private CertificateClient certificateClient;
 
     @Override
@@ -861,8 +865,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy importedCertificate =
                 certificateClient.importCertificate(importCertificateOptions);
 
-            assertTrue(toHexString(importedCertificate.getProperties().getX509Thumbprint())
-                .equalsIgnoreCase("db1497bc2c82b365c5c7c73f611513ee117790a9"));
+            assertTrue("db1497bc2c82b365c5c7c73f611513ee117790a9"
+                .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
             // Load the CER part into X509Certificate object
@@ -975,7 +979,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             }
         }
 
-        System.err.printf("Deleted Key %s was not purged \n", certificateName);
+        LOGGER.log(LogLevel.VERBOSE, () -> "Deleted Certificate " + certificateName + " was not purged");
     }
 
 }

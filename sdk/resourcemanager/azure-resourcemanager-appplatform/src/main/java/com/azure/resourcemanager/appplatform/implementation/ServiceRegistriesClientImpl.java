@@ -37,22 +37,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServiceRegistriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServiceRegistriesClient.
+ */
 public final class ServiceRegistriesClientImpl implements ServiceRegistriesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServiceRegistriesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppPlatformManagementClientImpl client;
 
     /**
      * Initializes an instance of ServiceRegistriesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServiceRegistriesClientImpl(AppPlatformManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ServiceRegistriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ServiceRegistriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,108 +68,78 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface ServiceRegistriesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/serviceRegistries/{serviceRegistryName}")
-        @ExpectedResponses({200})
+    public interface ServiceRegistriesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceRegistryResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("serviceRegistryName") String serviceRegistryName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ServiceRegistryResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("serviceRegistryName") String serviceRegistryName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/serviceRegistries/{serviceRegistryName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("serviceRegistryName") String serviceRegistryName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("serviceRegistryName") String serviceRegistryName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/serviceRegistries/{serviceRegistryName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("serviceRegistryName") String serviceRegistryName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("serviceRegistryName") String serviceRegistryName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/serviceRegistries")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceRegistryResourceCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ServiceRegistryResourceCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceRegistryResourceCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the Service Registry and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Service Registry and its properties along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Service Registry and its properties along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServiceRegistryResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName) {
+    public Mono<Response<ServiceRegistryResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String serviceRegistryName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -178,49 +154,35 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            serviceRegistryName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, serviceRegistryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the Service Registry and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Service Registry and its properties along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Service Registry and its properties along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceRegistryResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
+    private Mono<Response<ServiceRegistryResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String serviceRegistryName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -235,23 +197,15 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                serviceRegistryName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, serviceRegistryName, accept, context);
     }
 
     /**
      * Get the Service Registry and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -260,34 +214,17 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return the Service Registry and its properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceRegistryResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName) {
+    public Mono<ServiceRegistryResourceInner> getAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName) {
         return getWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the Service Registry and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param serviceRegistryName The name of Service Registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Service Registry and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceRegistryResourceInner get(String resourceGroupName, String serviceName, String serviceRegistryName) {
-        return getAsync(resourceGroupName, serviceName, serviceRegistryName).block();
-    }
-
-    /**
-     * Get the Service Registry and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -297,16 +234,33 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return the Service Registry and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceRegistryResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
+    public Response<ServiceRegistryResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String serviceRegistryName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName, context).block();
     }
 
     /**
-     * Create the default Service Registry or update the existing Service Registry.
-     *
+     * Get the Service Registry and its properties.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param serviceRegistryName The name of Service Registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Service Registry and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceRegistryResourceInner get(String resourceGroupName, String serviceName, String serviceRegistryName) {
+        return getWithResponse(resourceGroupName, serviceName, serviceRegistryName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create the default Service Registry or update the existing Service Registry.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,19 +269,15 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return service Registry resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String serviceRegistryName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -342,26 +292,16 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            serviceRegistryName,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, serviceRegistryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -371,19 +311,15 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return service Registry resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String serviceRegistryName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -398,23 +334,15 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                serviceRegistryName,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serviceName, serviceRegistryName, accept, context);
     }
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,25 +351,20 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return the {@link PollerFlux} for polling of service Registry resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName);
-        return this
-            .client
-            .<ServiceRegistryResourceInner, ServiceRegistryResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServiceRegistryResourceInner.class,
-                ServiceRegistryResourceInner.class,
-                this.client.getContext());
+    public PollerFlux<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String serviceRegistryName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName);
+        return this.client.<ServiceRegistryResourceInner, ServiceRegistryResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServiceRegistryResourceInner.class, ServiceRegistryResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -454,23 +377,18 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
     private PollerFlux<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName, context);
-        return this
-            .client
-            .<ServiceRegistryResourceInner, ServiceRegistryResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServiceRegistryResourceInner.class,
-                ServiceRegistryResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName, context);
+        return this.client.<ServiceRegistryResourceInner, ServiceRegistryResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServiceRegistryResourceInner.class, ServiceRegistryResourceInner.class,
+            context);
     }
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -479,16 +397,16 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return the {@link SyncPoller} for polling of service Registry resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, String serviceRegistryName) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName).getSyncPoller();
+    public SyncPoller<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String serviceName, String serviceRegistryName) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName).getSyncPoller();
     }
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -498,16 +416,17 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return the {@link SyncPoller} for polling of service Registry resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName, context).getSyncPoller();
+    public SyncPoller<PollResult<ServiceRegistryResourceInner>, ServiceRegistryResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName, context)
+            .getSyncPoller();
     }
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -516,18 +435,17 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return service Registry resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServiceRegistryResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName)
-            .last()
+    public Mono<ServiceRegistryResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -537,18 +455,17 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return service Registry resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServiceRegistryResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName, context)
-            .last()
+    private Mono<ServiceRegistryResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -557,16 +474,16 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return service Registry resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceRegistryResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String serviceRegistryName) {
+    public ServiceRegistryResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String serviceRegistryName) {
         return createOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName).block();
     }
 
     /**
      * Create the default Service Registry or update the existing Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -576,16 +493,16 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return service Registry resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceRegistryResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
+    public ServiceRegistryResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String serviceRegistryName, Context context) {
         return createOrUpdateAsync(resourceGroupName, serviceName, serviceRegistryName, context).block();
     }
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -594,19 +511,15 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -621,26 +534,16 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            serviceRegistryName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, serviceRegistryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -650,19 +553,15 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -677,23 +576,15 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                serviceRegistryName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, serviceRegistryName, accept, context);
     }
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -702,21 +593,19 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -726,21 +615,20 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String serviceRegistryName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serviceName, serviceRegistryName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -749,16 +637,16 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String serviceRegistryName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String serviceRegistryName) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName).getSyncPoller();
     }
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -768,16 +656,16 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String serviceRegistryName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName, context).getSyncPoller();
     }
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -787,16 +675,15 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String serviceRegistryName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -806,18 +693,17 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String serviceRegistryName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String serviceRegistryName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, serviceName, serviceRegistryName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -831,9 +717,9 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
 
     /**
      * Disable the default Service Registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param serviceRegistryName The name of Service Registry.
      * @param context The context to associate with this operation.
@@ -848,30 +734,26 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Service Registry resources and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceRegistryResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName) {
+    private Mono<PagedResponse<ServiceRegistryResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -882,56 +764,36 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            accept,
-                            context))
-            .<PagedResponse<ServiceRegistryResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, accept, context))
+            .<PagedResponse<ServiceRegistryResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Service Registry resources and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceRegistryResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, Context context) {
+    private Mono<PagedResponse<ServiceRegistryResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -943,75 +805,61 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Service Registry resources and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ServiceRegistryResourceInner> listAsync(String resourceGroupName, String serviceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Service Registry resources and a possible link for next set as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServiceRegistryResourceInner> listAsync(
-        String resourceGroupName, String serviceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, context),
+    private PagedFlux<ServiceRegistryResourceInner> listAsync(String resourceGroupName, String serviceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Service Registry resources and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceRegistryResourceInner> list(String resourceGroupName, String serviceName) {
@@ -1020,32 +868,34 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
 
     /**
      * Handles requests to list all resources in a Service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Service Registry resources and a possible link for next set as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServiceRegistryResourceInner> list(
-        String resourceGroupName, String serviceName, Context context) {
+    public PagedIterable<ServiceRegistryResourceInner> list(String resourceGroupName, String serviceName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Service Registry resources and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceRegistryResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1053,61 +903,43 @@ public final class ServiceRegistriesClientImpl implements ServiceRegistriesClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServiceRegistryResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ServiceRegistryResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Service Registry resources and a possible link for next set along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceRegistryResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ServiceRegistryResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

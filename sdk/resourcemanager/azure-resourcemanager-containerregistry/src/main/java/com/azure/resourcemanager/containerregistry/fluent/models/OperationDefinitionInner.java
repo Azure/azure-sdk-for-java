@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.models.OperationDisplayDefini
 import com.azure.resourcemanager.containerregistry.models.OperationServiceSpecificationDefinition;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The definition of a container registry operation. */
+/**
+ * The definition of a container registry operation.
+ */
 @Fluent
 public final class OperationDefinitionInner {
     /*
@@ -44,13 +46,15 @@ public final class OperationDefinitionInner {
     @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
-    /** Creates an instance of OperationDefinitionInner class. */
+    /**
+     * Creates an instance of OperationDefinitionInner class.
+     */
     public OperationDefinitionInner() {
     }
 
     /**
      * Get the origin property: The origin information of the container registry operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -59,7 +63,7 @@ public final class OperationDefinitionInner {
 
     /**
      * Set the origin property: The origin information of the container registry operation.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationDefinitionInner object itself.
      */
@@ -70,7 +74,7 @@ public final class OperationDefinitionInner {
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -79,7 +83,7 @@ public final class OperationDefinitionInner {
 
     /**
      * Set the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationDefinitionInner object itself.
      */
@@ -90,7 +94,7 @@ public final class OperationDefinitionInner {
 
     /**
      * Get the display property: The display information for the container registry operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplayDefinition display() {
@@ -99,7 +103,7 @@ public final class OperationDefinitionInner {
 
     /**
      * Set the display property: The display information for the container registry operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationDefinitionInner object itself.
      */
@@ -110,7 +114,7 @@ public final class OperationDefinitionInner {
 
     /**
      * Get the innerProperties property: The properties information for the container registry operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OperationPropertiesDefinition innerProperties() {
@@ -118,9 +122,10 @@ public final class OperationDefinitionInner {
     }
 
     /**
-     * Get the isDataAction property: This property indicates if the operation is an action or a data action ref:
+     * Get the isDataAction property: This property indicates if the operation is an action or a data action
+     * ref:
      * https://docs.microsoft.com/en-us/azure/role-based-access-control/role-definitions#management-and-data-operations.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -128,9 +133,10 @@ public final class OperationDefinitionInner {
     }
 
     /**
-     * Set the isDataAction property: This property indicates if the operation is an action or a data action ref:
+     * Set the isDataAction property: This property indicates if the operation is an action or a data action
+     * ref:
      * https://docs.microsoft.com/en-us/azure/role-based-access-control/role-definitions#management-and-data-operations.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationDefinitionInner object itself.
      */
@@ -141,7 +147,7 @@ public final class OperationDefinitionInner {
 
     /**
      * Get the serviceSpecification property: The definition of Azure Monitoring service.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public OperationServiceSpecificationDefinition serviceSpecification() {
@@ -150,12 +156,12 @@ public final class OperationDefinitionInner {
 
     /**
      * Set the serviceSpecification property: The definition of Azure Monitoring service.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationDefinitionInner object itself.
      */
-    public OperationDefinitionInner withServiceSpecification(
-        OperationServiceSpecificationDefinition serviceSpecification) {
+    public OperationDefinitionInner
+        withServiceSpecification(OperationServiceSpecificationDefinition serviceSpecification) {
         if (this.innerProperties() == null) {
             this.innerProperties = new OperationPropertiesDefinition();
         }
@@ -165,7 +171,7 @@ public final class OperationDefinitionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

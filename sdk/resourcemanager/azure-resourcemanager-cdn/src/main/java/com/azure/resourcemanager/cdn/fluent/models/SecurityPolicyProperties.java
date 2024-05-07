@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cdn.models.AfdStateProperties;
 import com.azure.resourcemanager.cdn.models.SecurityPolicyPropertiesParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The json object that contains properties required to create a security policy. */
+/**
+ * The json object that contains properties required to create a security policy.
+ */
 @Fluent
 public final class SecurityPolicyProperties extends AfdStateProperties {
     /*
@@ -24,13 +26,15 @@ public final class SecurityPolicyProperties extends AfdStateProperties {
     @JsonProperty(value = "parameters")
     private SecurityPolicyPropertiesParameters parameters;
 
-    /** Creates an instance of SecurityPolicyProperties class. */
+    /**
+     * Creates an instance of SecurityPolicyProperties class.
+     */
     public SecurityPolicyProperties() {
     }
 
     /**
      * Get the profileName property: The name of the profile which holds the security policy.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -39,7 +43,7 @@ public final class SecurityPolicyProperties extends AfdStateProperties {
 
     /**
      * Get the parameters property: object which contains security policy parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public SecurityPolicyPropertiesParameters parameters() {
@@ -48,7 +52,7 @@ public final class SecurityPolicyProperties extends AfdStateProperties {
 
     /**
      * Set the parameters property: object which contains security policy parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the SecurityPolicyProperties object itself.
      */
@@ -59,7 +63,7 @@ public final class SecurityPolicyProperties extends AfdStateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

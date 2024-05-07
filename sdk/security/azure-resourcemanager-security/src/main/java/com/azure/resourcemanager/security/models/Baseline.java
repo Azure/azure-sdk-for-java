@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Baseline details. */
+/**
+ * Baseline details.
+ */
 @Fluent
 public final class Baseline {
     /*
@@ -24,13 +26,15 @@ public final class Baseline {
     @JsonProperty(value = "updatedTime")
     private OffsetDateTime updatedTime;
 
-    /** Creates an instance of Baseline class. */
+    /**
+     * Creates an instance of Baseline class.
+     */
     public Baseline() {
     }
 
     /**
      * Get the expectedResults property: Expected results.
-     *
+     * 
      * @return the expectedResults value.
      */
     public List<List<String>> expectedResults() {
@@ -39,7 +43,7 @@ public final class Baseline {
 
     /**
      * Set the expectedResults property: Expected results.
-     *
+     * 
      * @param expectedResults the expectedResults value to set.
      * @return the Baseline object itself.
      */
@@ -50,7 +54,7 @@ public final class Baseline {
 
     /**
      * Get the updatedTime property: Baseline update time (UTC).
-     *
+     * 
      * @return the updatedTime value.
      */
     public OffsetDateTime updatedTime() {
@@ -59,7 +63,7 @@ public final class Baseline {
 
     /**
      * Set the updatedTime property: Baseline update time (UTC).
-     *
+     * 
      * @param updatedTime the updatedTime value to set.
      * @return the Baseline object itself.
      */
@@ -70,7 +74,7 @@ public final class Baseline {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

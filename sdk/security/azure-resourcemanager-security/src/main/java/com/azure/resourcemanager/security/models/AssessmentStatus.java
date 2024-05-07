@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The result of the assessment. */
+/**
+ * The result of the assessment.
+ */
 @Fluent
 public class AssessmentStatus {
     /*
@@ -29,13 +31,15 @@ public class AssessmentStatus {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of AssessmentStatus class. */
+    /**
+     * Creates an instance of AssessmentStatus class.
+     */
     public AssessmentStatus() {
     }
 
     /**
      * Get the code property: Programmatic code for the status of the assessment.
-     *
+     * 
      * @return the code value.
      */
     public AssessmentStatusCode code() {
@@ -44,7 +48,7 @@ public class AssessmentStatus {
 
     /**
      * Set the code property: Programmatic code for the status of the assessment.
-     *
+     * 
      * @param code the code value to set.
      * @return the AssessmentStatus object itself.
      */
@@ -55,7 +59,7 @@ public class AssessmentStatus {
 
     /**
      * Get the cause property: Programmatic code for the cause of the assessment status.
-     *
+     * 
      * @return the cause value.
      */
     public String cause() {
@@ -64,7 +68,7 @@ public class AssessmentStatus {
 
     /**
      * Set the cause property: Programmatic code for the cause of the assessment status.
-     *
+     * 
      * @param cause the cause value to set.
      * @return the AssessmentStatus object itself.
      */
@@ -75,7 +79,7 @@ public class AssessmentStatus {
 
     /**
      * Get the description property: Human readable description of the assessment status.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -84,7 +88,7 @@ public class AssessmentStatus {
 
     /**
      * Set the description property: Human readable description of the assessment status.
-     *
+     * 
      * @param description the description value to set.
      * @return the AssessmentStatus object itself.
      */
@@ -95,14 +99,13 @@ public class AssessmentStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (code() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property code in model AssessmentStatus"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property code in model AssessmentStatus"));
         }
     }
 

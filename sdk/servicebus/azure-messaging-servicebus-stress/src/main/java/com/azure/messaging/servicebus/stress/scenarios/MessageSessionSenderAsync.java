@@ -27,7 +27,6 @@ import static com.azure.messaging.servicebus.stress.util.TestUtils.getSenderBuil
  */
 @Component("MessageSessionSender")
 public class MessageSessionSenderAsync extends ServiceBusScenario {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageSessionSenderAsync.class);
 
     @Value("${SEND_SESSIONS:8}")
     private int sessionsToSend;
@@ -55,7 +54,7 @@ public class MessageSessionSenderAsync extends ServiceBusScenario {
                 rateLimiter.acquire()
                     .then(client.sendMessage(msg)
                         .onErrorResume(t -> true, t -> {
-                            recordError("send error", t, "send");
+                            telemetryHelper.recordError(t, "send");
                             return Mono.empty();
                         })
                         .doFinally(i -> rateLimiter.release()))

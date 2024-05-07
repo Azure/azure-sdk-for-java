@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Storage type. */
+/**
+ * Storage type.
+ */
 public final class StorageType extends ExpandableStringEnum<StorageType> {
-    /** Static value Invalid for StorageType. */
+    /**
+     * Static value Invalid for StorageType.
+     */
     public static final StorageType INVALID = fromString("Invalid");
 
-    /** Static value GeoRedundant for StorageType. */
+    /**
+     * Static value GeoRedundant for StorageType.
+     */
     public static final StorageType GEO_REDUNDANT = fromString("GeoRedundant");
 
-    /** Static value LocallyRedundant for StorageType. */
+    /**
+     * Static value LocallyRedundant for StorageType.
+     */
     public static final StorageType LOCALLY_REDUNDANT = fromString("LocallyRedundant");
 
-    /** Static value ZoneRedundant for StorageType. */
+    /**
+     * Static value ZoneRedundant for StorageType.
+     */
     public static final StorageType ZONE_REDUNDANT = fromString("ZoneRedundant");
 
-    /** Static value ReadAccessGeoZoneRedundant for StorageType. */
+    /**
+     * Static value ReadAccessGeoZoneRedundant for StorageType.
+     */
     public static final StorageType READ_ACCESS_GEO_ZONE_REDUNDANT = fromString("ReadAccessGeoZoneRedundant");
 
     /**
      * Creates a new instance of StorageType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
 
     /**
      * Creates or finds a StorageType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageType.
      */
@@ -47,7 +59,7 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
 
     /**
      * Gets known StorageType values.
-     *
+     * 
      * @return known StorageType values.
      */
     public static Collection<StorageType> values() {

@@ -31,44 +31,30 @@ public final class SecurityConnectorsGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"hierarchyIdentifier\":\"j\",\"hierarchyIdentifierTrialEndDate\":\"2021-02-19T19:03:45Z\",\"environmentName\":\"GitLab\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"fcjis\",\"tags\":{\"ampqocl\":\"dbxotfb\"},\"id\":\"nnmxynlsuqbwzstr\",\"name\":\"tgvpatr\",\"type\":\"jjktfin\"}";
+        String responseStr
+            = "{\"properties\":{\"hierarchyIdentifier\":\"vpvdfmo\",\"hierarchyIdentifierTrialEndDate\":\"2021-10-23T20:24:44Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"osq\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"f\",\"tags\":{\"zuakk\":\"pjmsbzzjsnyfowy\",\"r\":\"ubeqkitt\",\"sezr\":\"lhxsoanguhbnho\",\"pdtyzp\":\"neg\"},\"id\":\"litw\",\"name\":\"ejm\",\"type\":\"em\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecurityConnector response =
-            manager
-                .securityConnectors()
-                .getByResourceGroupWithResponse("rrxyxwjezbfqpl", "yuekdcpvuftrsvjm", com.azure.core.util.Context.NONE)
-                .getValue();
+        SecurityConnector response = manager.securityConnectors()
+            .getByResourceGroupWithResponse("a", "dblk", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("fcjis", response.location());
-        Assertions.assertEquals("dbxotfb", response.tags().get("ampqocl"));
-        Assertions.assertEquals("j", response.hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GIT_LAB, response.environmentName());
+        Assertions.assertEquals("f", response.location());
+        Assertions.assertEquals("pjmsbzzjsnyfowy", response.tags().get("zuakk"));
+        Assertions.assertEquals("vpvdfmo", response.hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GITHUB, response.environmentName());
     }
 }

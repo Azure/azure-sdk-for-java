@@ -9,14 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Uploaded Java source code binary for a deployment. */
+/**
+ * Uploaded Java source code binary for a deployment.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Source")
 @Fluent
 public final class SourceUploadedUserSourceInfo extends UploadedUserSourceInfo {
     /*
-     * Selector for the artifact to be used for the deployment for multi-module
-     * projects. This should be
+     * Selector for the artifact to be used for the deployment for multi-module projects. This should be
      * the relative path to the target module/project.
      */
     @JsonProperty(value = "artifactSelector")
@@ -29,9 +30,16 @@ public final class SourceUploadedUserSourceInfo extends UploadedUserSourceInfo {
     private String runtimeVersion;
 
     /**
+     * Creates an instance of SourceUploadedUserSourceInfo class.
+     */
+    public SourceUploadedUserSourceInfo() {
+    }
+
+    /**
      * Get the artifactSelector property: Selector for the artifact to be used for the deployment for multi-module
-     * projects. This should be the relative path to the target module/project.
-     *
+     * projects. This should be
+     * the relative path to the target module/project.
+     * 
      * @return the artifactSelector value.
      */
     public String artifactSelector() {
@@ -40,8 +48,9 @@ public final class SourceUploadedUserSourceInfo extends UploadedUserSourceInfo {
 
     /**
      * Set the artifactSelector property: Selector for the artifact to be used for the deployment for multi-module
-     * projects. This should be the relative path to the target module/project.
-     *
+     * projects. This should be
+     * the relative path to the target module/project.
+     * 
      * @param artifactSelector the artifactSelector value to set.
      * @return the SourceUploadedUserSourceInfo object itself.
      */
@@ -52,7 +61,7 @@ public final class SourceUploadedUserSourceInfo extends UploadedUserSourceInfo {
 
     /**
      * Get the runtimeVersion property: Runtime version of the source file.
-     *
+     * 
      * @return the runtimeVersion value.
      */
     public String runtimeVersion() {
@@ -61,7 +70,7 @@ public final class SourceUploadedUserSourceInfo extends UploadedUserSourceInfo {
 
     /**
      * Set the runtimeVersion property: Runtime version of the source file.
-     *
+     * 
      * @param runtimeVersion the runtimeVersion value to set.
      * @return the SourceUploadedUserSourceInfo object itself.
      */
@@ -70,14 +79,18 @@ public final class SourceUploadedUserSourceInfo extends UploadedUserSourceInfo {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SourceUploadedUserSourceInfo withRelativePath(String relativePath) {
         super.withRelativePath(relativePath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SourceUploadedUserSourceInfo withVersion(String version) {
         super.withVersion(version);
@@ -86,7 +99,7 @@ public final class SourceUploadedUserSourceInfo extends UploadedUserSourceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

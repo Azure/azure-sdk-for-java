@@ -17,8 +17,7 @@ public final class AdaptiveApplicationControlGroupsImpl implements AdaptiveAppli
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    AdaptiveApplicationControlGroupsImpl(
-        AdaptiveApplicationControlGroupsInner innerObject,
+    AdaptiveApplicationControlGroupsImpl(AdaptiveApplicationControlGroupsInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class AdaptiveApplicationControlGroupsImpl implements AdaptiveAppli
     public List<AdaptiveApplicationControlGroup> value() {
         List<AdaptiveApplicationControlGroupInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new AdaptiveApplicationControlGroupImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new AdaptiveApplicationControlGroupImpl(inner1, this.manager()))
+                    .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

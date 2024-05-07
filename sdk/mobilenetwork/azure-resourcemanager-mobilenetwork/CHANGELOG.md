@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,105 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2024-03-19)
+
+- Azure Resource Manager MobileNetwork client library for Java. This package contains Microsoft Azure SDK for MobileNetwork Management SDK. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2024-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.GlobalRanNodeId` was added
+
+* `models.UeInformations` was added
+
+* `models.HomeNetworkPrivateKeysProvisioning` was added
+
+* `models.UeIpAddress` was added
+
+* `models.PublicLandMobileNetworkHomeNetworkPublicKeys` was added
+
+* `models.UeInfo` was added
+
+* `models.RatType` was added
+
+* `models.AmfId` was added
+
+* `models.HomeNetworkPublicKey` was added
+
+* `models.ExtendedUeInfoProperties` was added
+
+* `models.UeInfo4GProperties` was added
+
+* `models.UeUsageSetting` was added
+
+* `models.UeSessionInfo5G` was added
+
+* `models.MmeId` was added
+
+* `models.UeSessionInfo4G` was added
+
+* `models.Guti5G` was added
+
+* `models.GNbId` was added
+
+* `models.ExtendedUeInformations` was added
+
+* `models.Guti4G` was added
+
+* `models.UeConnectionInfo5G` was added
+
+* `models.UeInfoList` was added
+
+* `models.UeInfo4G` was added
+
+* `models.UeConnectionInfo4G` was added
+
+* `models.UeInfo5G` was added
+
+* `models.UeQosFlow` was added
+
+* `models.UeState` was added
+
+* `models.UeInfo5GProperties` was added
+
+* `models.PublicLandMobileNetwork` was added
+
+* `models.PdnType` was added
+
+* `models.UeInfoPropertiesFormat` was added
+
+* `models.ExtendedUeInfo` was added
+
+* `models.HomeNetworkPrivateKeysProvisioningState` was added
+
+* `models.UeLocationInfo` was added
+
+* `models.RrcEstablishmentCause` was added
+
+* `models.DnnIpPair` was added
+
+#### `models.PacketCoreControlPlane` was modified
+
+* `homeNetworkPrivateKeysProvisioning()` was added
+
+#### `models.MobileNetwork$Definition` was modified
+
+* `withPublicLandMobileNetworks(java.util.List)` was added
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.MobileNetwork$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.MobileNetwork` was modified
+
+* `publicLandMobileNetworks()` was added
+* `identity()` was added
+
+#### `MobileNetworkManager` was modified
+
+* `ueInformations()` was added
+* `extendedUeInformations()` was added
 
 ## 1.0.0 (2023-11-15)
 

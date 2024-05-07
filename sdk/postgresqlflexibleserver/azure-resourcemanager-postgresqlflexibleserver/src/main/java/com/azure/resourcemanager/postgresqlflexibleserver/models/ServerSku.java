@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sku information related properties of a server. */
+/**
+ * Sku information related properties of a server.
+ */
 @Fluent
 public final class ServerSku {
     /*
@@ -22,13 +24,15 @@ public final class ServerSku {
     @JsonProperty(value = "tier")
     private SkuTier tier;
 
-    /** Creates an instance of ServerSku class. */
+    /**
+     * Creates an instance of ServerSku class.
+     */
     public ServerSku() {
     }
 
     /**
      * Get the name property: The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class ServerSku {
 
     /**
      * Set the name property: The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
-     *
+     * 
      * @param name the name value to set.
      * @return the ServerSku object itself.
      */
@@ -48,7 +52,7 @@ public final class ServerSku {
 
     /**
      * Get the tier property: The tier of the particular SKU, e.g. Burstable.
-     *
+     * 
      * @return the tier value.
      */
     public SkuTier tier() {
@@ -57,7 +61,7 @@ public final class ServerSku {
 
     /**
      * Set the tier property: The tier of the particular SKU, e.g. Burstable.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the ServerSku object itself.
      */
@@ -68,7 +72,7 @@ public final class ServerSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

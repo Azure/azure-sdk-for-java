@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
-import org.apache.spark.sql.connector.metric.{CustomMetric, CustomSumMetric}
+import org.apache.spark.sql.connector.metric.CustomMetric
 import org.apache.spark.sql.connector.write.streaming.StreamingWrite
 import org.apache.spark.sql.connector.write.{BatchWrite, Write, WriteBuilder}
 import org.apache.spark.sql.types.StructType
@@ -50,21 +50,9 @@ private class ItemsWriterBuilder
 
     private[this] val supportedCosmosMetrics: Array[CustomMetric] = {
       Array(
-        new CustomSumMetric {
-          override def name(): String = CosmosConstants.MetricNames.BytesWritten
-
-          override def description(): String = CosmosConstants.MetricNames.BytesWritten
-        },
-        new CustomSumMetric {
-          override def name(): String = CosmosConstants.MetricNames.RecordsWritten
-
-          override def description(): String = CosmosConstants.MetricNames.RecordsWritten
-        },
-        new CustomSumMetric {
-          override def name(): String = CosmosConstants.MetricNames.TotalRequestCharge
-
-          override def description(): String = CosmosConstants.MetricNames.TotalRequestCharge
-        }
+        new CosmosBytesWrittenMetric(),
+        new CosmosRecordsWrittenMetric(),
+        new TotalRequestChargeMetric()
       )
     }
 

@@ -20,22 +20,18 @@ public final class JobDetailsImpl implements JobDetails {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public JobDetailsImpl(
-        JobDetailsClient innerClient,
+    public JobDetailsImpl(JobDetailsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<JobResource> getWithResponse(
-        String vaultName, String resourceGroupName, String jobName, Context context) {
-        Response<JobResourceInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, jobName, context);
+    public Response<JobResource> getWithResponse(String vaultName, String resourceGroupName, String jobName,
+        Context context) {
+        Response<JobResourceInner> inner
+            = this.serviceClient().getWithResponse(vaultName, resourceGroupName, jobName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JobResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

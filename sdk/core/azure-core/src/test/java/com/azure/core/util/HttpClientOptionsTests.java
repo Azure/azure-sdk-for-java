@@ -72,29 +72,25 @@ public class HttpClientOptionsTests {
         Function<HttpClientOptions, Duration> getWriteTimeout = HttpClientOptions::getWriteTimeout;
 
         BiFunction<HttpClientOptions, Duration, HttpClientOptions> responseTimeout = HttpClientOptions::responseTimeout;
-        BiFunction<HttpClientOptions, Duration, HttpClientOptions> setResponseTimeout =
-            HttpClientOptions::setResponseTimeout;
+        BiFunction<HttpClientOptions, Duration, HttpClientOptions> setResponseTimeout
+            = HttpClientOptions::setResponseTimeout;
         Function<HttpClientOptions, Duration> getResponseTimeout = HttpClientOptions::getResponseTimeout;
 
         BiFunction<HttpClientOptions, Duration, HttpClientOptions> readTimeout = HttpClientOptions::readTimeout;
         BiFunction<HttpClientOptions, Duration, HttpClientOptions> setReadTimeout = HttpClientOptions::setReadTimeout;
         Function<HttpClientOptions, Duration> getReadTimeout = HttpClientOptions::getReadTimeout;
 
-        BiFunction<HttpClientOptions, Duration, HttpClientOptions> setConnectionIdleTimeout =
-            HttpClientOptions::setConnectionIdleTimeout;
+        BiFunction<HttpClientOptions, Duration, HttpClientOptions> setConnectionIdleTimeout
+            = HttpClientOptions::setConnectionIdleTimeout;
         Function<HttpClientOptions, Duration> getConnectionIdleTimeout = HttpClientOptions::getConnectionIdleTimeout;
 
-        return Stream.of(
-            Arguments.of(setWriteTimeout, getWriteTimeout),
+        return Stream.of(Arguments.of(setWriteTimeout, getWriteTimeout),
 
-            Arguments.of(responseTimeout, getResponseTimeout),
-            Arguments.of(setResponseTimeout, getResponseTimeout),
+            Arguments.of(responseTimeout, getResponseTimeout), Arguments.of(setResponseTimeout, getResponseTimeout),
 
-            Arguments.of(readTimeout, getReadTimeout),
-            Arguments.of(setReadTimeout, getReadTimeout),
+            Arguments.of(readTimeout, getReadTimeout), Arguments.of(setReadTimeout, getReadTimeout),
 
-            Arguments.of(setConnectionIdleTimeout, getConnectionIdleTimeout)
-        );
+            Arguments.of(setConnectionIdleTimeout, getConnectionIdleTimeout));
     }
 
     @Test

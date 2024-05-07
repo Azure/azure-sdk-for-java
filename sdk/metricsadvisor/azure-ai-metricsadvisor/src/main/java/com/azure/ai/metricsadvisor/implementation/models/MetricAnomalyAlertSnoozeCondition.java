@@ -10,7 +10,6 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * The MetricAnomalyAlertSnoozeCondition model.
@@ -102,7 +101,7 @@ public final class MetricAnomalyAlertSnoozeCondition implements JsonSerializable
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("autoSnooze", this.autoSnooze);
-        jsonWriter.writeStringField("snoozeScope", Objects.toString(this.snoozeScope, null));
+        jsonWriter.writeStringField("snoozeScope", this.snoozeScope == null ? null : this.snoozeScope.toString());
         jsonWriter.writeBooleanField("onlyForSuccessive", this.onlyForSuccessive);
         return jsonWriter.writeEndObject();
     }

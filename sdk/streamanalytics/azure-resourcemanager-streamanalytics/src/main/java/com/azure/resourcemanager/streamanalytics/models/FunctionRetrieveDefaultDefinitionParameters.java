@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Parameters used to specify the type of function to retrieve the default definition for. */
+/**
+ * Parameters used to specify the type of function to retrieve the default definition for.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,18 +21,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "Microsoft.MachineLearning/WebService",
-        value = AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters.class),
+        value = AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters.class),
+    @JsonSubTypes.Type(
+        name = "Microsoft.MachineLearningServices",
+        value = AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionParameters.class),
     @JsonSubTypes.Type(
         name = "Microsoft.StreamAnalytics/JavascriptUdf",
-        value = JavaScriptFunctionRetrieveDefaultDefinitionParameters.class)
-})
+        value = JavaScriptFunctionRetrieveDefaultDefinitionParameters.class),
+    @JsonSubTypes.Type(
+        name = "Microsoft.StreamAnalytics/CLRUdf",
+        value = CSharpFunctionRetrieveDefaultDefinitionParameters.class) })
 @Immutable
 public class FunctionRetrieveDefaultDefinitionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionRetrieveDefaultDefinitionParameters.class);
+    /**
+     * Creates an instance of FunctionRetrieveDefaultDefinitionParameters class.
+     */
+    public FunctionRetrieveDefaultDefinitionParameters() {
+    }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

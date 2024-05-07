@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The properties of updating a task step. */
+/**
+ * The properties of updating a task step.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileTask")
 @Fluent
@@ -33,13 +35,15 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
     @JsonProperty(value = "values")
     private List<SetValue> values;
 
-    /** Creates an instance of FileTaskStepUpdateParameters class. */
+    /**
+     * Creates an instance of FileTaskStepUpdateParameters class.
+     */
     public FileTaskStepUpdateParameters() {
     }
 
     /**
      * Get the taskFilePath property: The task template/definition file path relative to the source context.
-     *
+     * 
      * @return the taskFilePath value.
      */
     public String taskFilePath() {
@@ -48,7 +52,7 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
 
     /**
      * Set the taskFilePath property: The task template/definition file path relative to the source context.
-     *
+     * 
      * @param taskFilePath the taskFilePath value to set.
      * @return the FileTaskStepUpdateParameters object itself.
      */
@@ -59,7 +63,7 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
 
     /**
      * Get the valuesFilePath property: The values/parameters file path relative to the source context.
-     *
+     * 
      * @return the valuesFilePath value.
      */
     public String valuesFilePath() {
@@ -68,7 +72,7 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
 
     /**
      * Set the valuesFilePath property: The values/parameters file path relative to the source context.
-     *
+     * 
      * @param valuesFilePath the valuesFilePath value to set.
      * @return the FileTaskStepUpdateParameters object itself.
      */
@@ -79,7 +83,7 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
 
     /**
      * Get the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @return the values value.
      */
     public List<SetValue> values() {
@@ -88,7 +92,7 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
 
     /**
      * Set the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @param values the values value to set.
      * @return the FileTaskStepUpdateParameters object itself.
      */
@@ -97,14 +101,18 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileTaskStepUpdateParameters withContextPath(String contextPath) {
         super.withContextPath(contextPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileTaskStepUpdateParameters withContextAccessToken(String contextAccessToken) {
         super.withContextAccessToken(contextAccessToken);
@@ -113,7 +121,7 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

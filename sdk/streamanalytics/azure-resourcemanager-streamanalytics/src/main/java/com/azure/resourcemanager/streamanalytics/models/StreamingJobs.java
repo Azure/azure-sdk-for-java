@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of StreamingJobs. */
+/**
+ * Resource collection API of StreamingJobs.
+ */
 public interface StreamingJobs {
     /**
      * Deletes a streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface StreamingJobs {
 
     /**
      * Deletes a streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param context The context to associate with this operation.
@@ -35,7 +37,24 @@ public interface StreamingJobs {
 
     /**
      * Gets details about the specified streaming job.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param expand The $expand OData query parameter. This is a comma-separated list of additional streaming job
+     * properties to include in the response, beyond the default set returned when this parameter is absent. The default
+     * set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and 'functions'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the specified streaming job.
+     */
+    Response<StreamingJob> getByResourceGroupWithResponse(String resourceGroupName, String jobName, String expand,
+        Context context);
+
+    /**
+     * Gets details about the specified streaming job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,89 +65,57 @@ public interface StreamingJobs {
     StreamingJob getByResourceGroup(String resourceGroupName, String jobName);
 
     /**
-     * Gets details about the specified streaming job.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param expand The $expand OData query parameter. This is a comma-separated list of additional streaming job
-     *     properties to include in the response, beyond the default set returned when this parameter is absent. The
-     *     default set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and
-     *     'functions'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified streaming job.
-     */
-    Response<StreamingJob> getByResourceGroupWithResponse(
-        String resourceGroupName, String jobName, String expand, Context context);
-
-    /**
      * Lists all of the streaming jobs in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of streaming jobs.
+     * @return object containing a list of streaming jobs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StreamingJob> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all of the streaming jobs in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param expand The $expand OData query parameter. This is a comma-separated list of additional streaming job
-     *     properties to include in the response, beyond the default set returned when this parameter is absent. The
-     *     default set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and
-     *     'functions'.
+     * properties to include in the response, beyond the default set returned when this parameter is absent. The default
+     * set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and 'functions'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of streaming jobs.
+     * @return object containing a list of streaming jobs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StreamingJob> listByResourceGroup(String resourceGroupName, String expand, Context context);
 
     /**
      * Lists all of the streaming jobs in the given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of streaming jobs.
+     * @return object containing a list of streaming jobs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StreamingJob> list();
 
     /**
      * Lists all of the streaming jobs in the given subscription.
-     *
+     * 
      * @param expand The $expand OData query parameter. This is a comma-separated list of additional streaming job
-     *     properties to include in the response, beyond the default set returned when this parameter is absent. The
-     *     default set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and
-     *     'functions'.
+     * properties to include in the response, beyond the default set returned when this parameter is absent. The default
+     * set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and 'functions'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of streaming jobs.
+     * @return object containing a list of streaming jobs as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StreamingJob> list(String expand, Context context);
 
     /**
      * Starts a streaming job. Once a job is started it will start processing input events and produce output.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param startJobParameters Parameters applicable to a start streaming job operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void start(String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters);
-
-    /**
-     * Starts a streaming job. Once a job is started it will start processing input events and produce output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +126,7 @@ public interface StreamingJobs {
 
     /**
      * Starts a streaming job. Once a job is started it will start processing input events and produce output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param startJobParameters Parameters applicable to a start streaming job operation.
@@ -148,13 +135,13 @@ public interface StreamingJobs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void start(
-        String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters, Context context);
+    void start(String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters,
+        Context context);
 
     /**
      * Stops a running streaming job. This will cause a running streaming job to stop processing input events and
      * producing output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,7 +153,7 @@ public interface StreamingJobs {
     /**
      * Stops a running streaming job. This will cause a running streaming job to stop processing input events and
      * producing output.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param context The context to associate with this operation.
@@ -178,19 +165,7 @@ public interface StreamingJobs {
 
     /**
      * Scales a streaming job when the job is running.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void scale(String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters);
-
-    /**
-     * Scales a streaming job when the job is running.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,7 +176,7 @@ public interface StreamingJobs {
 
     /**
      * Scales a streaming job when the job is running.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param scaleJobParameters Parameters applicable to a scale streaming job operation.
@@ -210,12 +185,12 @@ public interface StreamingJobs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void scale(
-        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context);
+    void scale(String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters,
+        Context context);
 
     /**
      * Gets details about the specified streaming job.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -226,12 +201,11 @@ public interface StreamingJobs {
 
     /**
      * Gets details about the specified streaming job.
-     *
+     * 
      * @param id the resource ID.
      * @param expand The $expand OData query parameter. This is a comma-separated list of additional streaming job
-     *     properties to include in the response, beyond the default set returned when this parameter is absent. The
-     *     default set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and
-     *     'functions'.
+     * properties to include in the response, beyond the default set returned when this parameter is absent. The default
+     * set is all streaming job properties other than 'inputs', 'transformation', 'outputs', and 'functions'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -242,7 +216,7 @@ public interface StreamingJobs {
 
     /**
      * Deletes a streaming job.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -252,7 +226,7 @@ public interface StreamingJobs {
 
     /**
      * Deletes a streaming job.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -263,7 +237,7 @@ public interface StreamingJobs {
 
     /**
      * Begins definition for a new StreamingJob resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new StreamingJob definition.
      */

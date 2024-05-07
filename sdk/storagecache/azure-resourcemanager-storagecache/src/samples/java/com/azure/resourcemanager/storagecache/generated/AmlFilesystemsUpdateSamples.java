@@ -6,6 +6,8 @@ package com.azure.resourcemanager.storagecache.generated;
 
 import com.azure.resourcemanager.storagecache.models.AmlFilesystem;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemEncryptionSettings;
+import com.azure.resourcemanager.storagecache.models.AmlFilesystemRootSquashSettings;
+import com.azure.resourcemanager.storagecache.models.AmlFilesystemSquashMode;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemUpdatePropertiesMaintenanceWindow;
 import com.azure.resourcemanager.storagecache.models.KeyVaultKeyReference;
 import com.azure.resourcemanager.storagecache.models.KeyVaultKeyReferenceSourceVault;
@@ -13,41 +15,36 @@ import com.azure.resourcemanager.storagecache.models.MaintenanceDayOfWeekType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AmlFilesystems Update. */
+/**
+ * Samples for AmlFilesystems Update.
+ */
 public final class AmlFilesystemsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_Update.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
+     * amlFilesystems_Update.json
      */
     /**
      * Sample code: amlFilesystems_Update.
-     *
+     * 
      * @param manager Entry point to StorageCacheManager.
      */
     public static void amlFilesystemsUpdate(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        AmlFilesystem resource =
-            manager
-                .amlFilesystems()
-                .getByResourceGroupWithResponse("scgroup", "fs1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withTags(mapOf("Dept", "ContosoAds"))
-            .withEncryptionSettings(
-                new AmlFilesystemEncryptionSettings()
-                    .withKeyEncryptionKey(
-                        new KeyVaultKeyReference()
-                            .withKeyUrl("fakeTokenPlaceholder")
-                            .withSourceVault(
-                                new KeyVaultKeyReferenceSourceVault()
-                                    .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"))))
-            .withMaintenanceWindow(
-                new AmlFilesystemUpdatePropertiesMaintenanceWindow()
-                    .withDayOfWeek(MaintenanceDayOfWeekType.FRIDAY)
-                    .withTimeOfDayUtc("22:00"))
+        AmlFilesystem resource = manager.amlFilesystems()
+            .getByResourceGroupWithResponse("scgroup", "fs1", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withTags(mapOf("Dept", "ContosoAds")).withEncryptionSettings(
+            new AmlFilesystemEncryptionSettings().withKeyEncryptionKey(new KeyVaultKeyReference()
+                .withKeyUrl("fakeTokenPlaceholder")
+                .withSourceVault(new KeyVaultKeyReferenceSourceVault().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"))))
+            .withMaintenanceWindow(new AmlFilesystemUpdatePropertiesMaintenanceWindow()
+                .withDayOfWeek(MaintenanceDayOfWeekType.FRIDAY).withTimeOfDayUtc("22:00"))
+            .withRootSquashSettings(new AmlFilesystemRootSquashSettings().withMode(AmlFilesystemSquashMode.ALL)
+                .withNoSquashNidLists("10.0.0.[5-6]@tcp;10.0.1.2@tcp").withSquashUid(99L).withSquashGid(99L))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Hyper V VM network details. */
+/**
+ * Hyper V VM network details.
+ */
 @Fluent
 public final class VMNicDetails {
     /*
@@ -125,13 +127,15 @@ public final class VMNicDetails {
     @JsonProperty(value = "targetNicName")
     private String targetNicName;
 
-    /** Creates an instance of VMNicDetails class. */
+    /**
+     * Creates an instance of VMNicDetails class.
+     */
     public VMNicDetails() {
     }
 
     /**
      * Get the nicId property: The nic Id.
-     *
+     * 
      * @return the nicId value.
      */
     public String nicId() {
@@ -140,7 +144,7 @@ public final class VMNicDetails {
 
     /**
      * Set the nicId property: The nic Id.
-     *
+     * 
      * @param nicId the nicId value to set.
      * @return the VMNicDetails object itself.
      */
@@ -151,7 +155,7 @@ public final class VMNicDetails {
 
     /**
      * Get the replicaNicId property: The replica nic Id.
-     *
+     * 
      * @return the replicaNicId value.
      */
     public String replicaNicId() {
@@ -160,7 +164,7 @@ public final class VMNicDetails {
 
     /**
      * Set the replicaNicId property: The replica nic Id.
-     *
+     * 
      * @param replicaNicId the replicaNicId value to set.
      * @return the VMNicDetails object itself.
      */
@@ -171,7 +175,7 @@ public final class VMNicDetails {
 
     /**
      * Get the sourceNicArmId property: The source nic ARM Id.
-     *
+     * 
      * @return the sourceNicArmId value.
      */
     public String sourceNicArmId() {
@@ -180,7 +184,7 @@ public final class VMNicDetails {
 
     /**
      * Set the sourceNicArmId property: The source nic ARM Id.
-     *
+     * 
      * @param sourceNicArmId the sourceNicArmId value to set.
      * @return the VMNicDetails object itself.
      */
@@ -191,7 +195,7 @@ public final class VMNicDetails {
 
     /**
      * Get the vMNetworkName property: VM network name.
-     *
+     * 
      * @return the vMNetworkName value.
      */
     public String vMNetworkName() {
@@ -200,7 +204,7 @@ public final class VMNicDetails {
 
     /**
      * Set the vMNetworkName property: VM network name.
-     *
+     * 
      * @param vMNetworkName the vMNetworkName value to set.
      * @return the VMNicDetails object itself.
      */
@@ -211,7 +215,7 @@ public final class VMNicDetails {
 
     /**
      * Get the recoveryVMNetworkId property: Recovery VM network Id.
-     *
+     * 
      * @return the recoveryVMNetworkId value.
      */
     public String recoveryVMNetworkId() {
@@ -220,7 +224,7 @@ public final class VMNicDetails {
 
     /**
      * Set the recoveryVMNetworkId property: Recovery VM network Id.
-     *
+     * 
      * @param recoveryVMNetworkId the recoveryVMNetworkId value to set.
      * @return the VMNicDetails object itself.
      */
@@ -231,7 +235,7 @@ public final class VMNicDetails {
 
     /**
      * Get the ipConfigs property: The IP configurations of the NIC.
-     *
+     * 
      * @return the ipConfigs value.
      */
     public List<IpConfigDetails> ipConfigs() {
@@ -240,7 +244,7 @@ public final class VMNicDetails {
 
     /**
      * Set the ipConfigs property: The IP configurations of the NIC.
-     *
+     * 
      * @param ipConfigs the ipConfigs value to set.
      * @return the VMNicDetails object itself.
      */
@@ -251,7 +255,7 @@ public final class VMNicDetails {
 
     /**
      * Get the selectionType property: Selection type for failover.
-     *
+     * 
      * @return the selectionType value.
      */
     public String selectionType() {
@@ -260,7 +264,7 @@ public final class VMNicDetails {
 
     /**
      * Set the selectionType property: Selection type for failover.
-     *
+     * 
      * @param selectionType the selectionType value to set.
      * @return the VMNicDetails object itself.
      */
@@ -271,7 +275,7 @@ public final class VMNicDetails {
 
     /**
      * Get the recoveryNetworkSecurityGroupId property: The id of the NSG associated with the NIC.
-     *
+     * 
      * @return the recoveryNetworkSecurityGroupId value.
      */
     public String recoveryNetworkSecurityGroupId() {
@@ -280,7 +284,7 @@ public final class VMNicDetails {
 
     /**
      * Set the recoveryNetworkSecurityGroupId property: The id of the NSG associated with the NIC.
-     *
+     * 
      * @param recoveryNetworkSecurityGroupId the recoveryNetworkSecurityGroupId value to set.
      * @return the VMNicDetails object itself.
      */
@@ -292,7 +296,7 @@ public final class VMNicDetails {
     /**
      * Get the enableAcceleratedNetworkingOnRecovery property: A value indicating whether the NIC has accelerated
      * networking enabled.
-     *
+     * 
      * @return the enableAcceleratedNetworkingOnRecovery value.
      */
     public Boolean enableAcceleratedNetworkingOnRecovery() {
@@ -302,7 +306,7 @@ public final class VMNicDetails {
     /**
      * Set the enableAcceleratedNetworkingOnRecovery property: A value indicating whether the NIC has accelerated
      * networking enabled.
-     *
+     * 
      * @param enableAcceleratedNetworkingOnRecovery the enableAcceleratedNetworkingOnRecovery value to set.
      * @return the VMNicDetails object itself.
      */
@@ -313,7 +317,7 @@ public final class VMNicDetails {
 
     /**
      * Get the tfoVMNetworkId property: The network to be used by NIC during test failover.
-     *
+     * 
      * @return the tfoVMNetworkId value.
      */
     public String tfoVMNetworkId() {
@@ -322,7 +326,7 @@ public final class VMNicDetails {
 
     /**
      * Set the tfoVMNetworkId property: The network to be used by NIC during test failover.
-     *
+     * 
      * @param tfoVMNetworkId the tfoVMNetworkId value to set.
      * @return the VMNicDetails object itself.
      */
@@ -333,7 +337,7 @@ public final class VMNicDetails {
 
     /**
      * Get the tfoNetworkSecurityGroupId property: The NSG to be used by NIC during test failover.
-     *
+     * 
      * @return the tfoNetworkSecurityGroupId value.
      */
     public String tfoNetworkSecurityGroupId() {
@@ -342,7 +346,7 @@ public final class VMNicDetails {
 
     /**
      * Set the tfoNetworkSecurityGroupId property: The NSG to be used by NIC during test failover.
-     *
+     * 
      * @param tfoNetworkSecurityGroupId the tfoNetworkSecurityGroupId value to set.
      * @return the VMNicDetails object itself.
      */
@@ -353,7 +357,7 @@ public final class VMNicDetails {
 
     /**
      * Get the enableAcceleratedNetworkingOnTfo property: Whether the TFO NIC has accelerated networking enabled.
-     *
+     * 
      * @return the enableAcceleratedNetworkingOnTfo value.
      */
     public Boolean enableAcceleratedNetworkingOnTfo() {
@@ -362,7 +366,7 @@ public final class VMNicDetails {
 
     /**
      * Set the enableAcceleratedNetworkingOnTfo property: Whether the TFO NIC has accelerated networking enabled.
-     *
+     * 
      * @param enableAcceleratedNetworkingOnTfo the enableAcceleratedNetworkingOnTfo value to set.
      * @return the VMNicDetails object itself.
      */
@@ -373,7 +377,7 @@ public final class VMNicDetails {
 
     /**
      * Get the recoveryNicName property: The name of the NIC to be used when creating target NICs.
-     *
+     * 
      * @return the recoveryNicName value.
      */
     public String recoveryNicName() {
@@ -382,7 +386,7 @@ public final class VMNicDetails {
 
     /**
      * Set the recoveryNicName property: The name of the NIC to be used when creating target NICs.
-     *
+     * 
      * @param recoveryNicName the recoveryNicName value to set.
      * @return the VMNicDetails object itself.
      */
@@ -394,7 +398,7 @@ public final class VMNicDetails {
     /**
      * Get the recoveryNicResourceGroupName property: The resource group of the NIC to be used when creating target
      * NICs.
-     *
+     * 
      * @return the recoveryNicResourceGroupName value.
      */
     public String recoveryNicResourceGroupName() {
@@ -404,7 +408,7 @@ public final class VMNicDetails {
     /**
      * Set the recoveryNicResourceGroupName property: The resource group of the NIC to be used when creating target
      * NICs.
-     *
+     * 
      * @param recoveryNicResourceGroupName the recoveryNicResourceGroupName value to set.
      * @return the VMNicDetails object itself.
      */
@@ -416,7 +420,7 @@ public final class VMNicDetails {
     /**
      * Get the reuseExistingNic property: A value indicating whether an existing NIC is allowed to be reused during
      * failover subject to availability.
-     *
+     * 
      * @return the reuseExistingNic value.
      */
     public Boolean reuseExistingNic() {
@@ -426,7 +430,7 @@ public final class VMNicDetails {
     /**
      * Set the reuseExistingNic property: A value indicating whether an existing NIC is allowed to be reused during
      * failover subject to availability.
-     *
+     * 
      * @param reuseExistingNic the reuseExistingNic value to set.
      * @return the VMNicDetails object itself.
      */
@@ -437,7 +441,7 @@ public final class VMNicDetails {
 
     /**
      * Get the tfoRecoveryNicName property: The name of the NIC to be used when creating target NICs in TFO.
-     *
+     * 
      * @return the tfoRecoveryNicName value.
      */
     public String tfoRecoveryNicName() {
@@ -446,7 +450,7 @@ public final class VMNicDetails {
 
     /**
      * Set the tfoRecoveryNicName property: The name of the NIC to be used when creating target NICs in TFO.
-     *
+     * 
      * @param tfoRecoveryNicName the tfoRecoveryNicName value to set.
      * @return the VMNicDetails object itself.
      */
@@ -458,7 +462,7 @@ public final class VMNicDetails {
     /**
      * Get the tfoRecoveryNicResourceGroupName property: The resource group of the NIC to be used when creating target
      * NICs in TFO.
-     *
+     * 
      * @return the tfoRecoveryNicResourceGroupName value.
      */
     public String tfoRecoveryNicResourceGroupName() {
@@ -468,7 +472,7 @@ public final class VMNicDetails {
     /**
      * Set the tfoRecoveryNicResourceGroupName property: The resource group of the NIC to be used when creating target
      * NICs in TFO.
-     *
+     * 
      * @param tfoRecoveryNicResourceGroupName the tfoRecoveryNicResourceGroupName value to set.
      * @return the VMNicDetails object itself.
      */
@@ -480,7 +484,7 @@ public final class VMNicDetails {
     /**
      * Get the tfoReuseExistingNic property: A value indicating whether an existing NIC is allowed to be reused during
      * test failover subject to availability.
-     *
+     * 
      * @return the tfoReuseExistingNic value.
      */
     public Boolean tfoReuseExistingNic() {
@@ -490,7 +494,7 @@ public final class VMNicDetails {
     /**
      * Set the tfoReuseExistingNic property: A value indicating whether an existing NIC is allowed to be reused during
      * test failover subject to availability.
-     *
+     * 
      * @param tfoReuseExistingNic the tfoReuseExistingNic value to set.
      * @return the VMNicDetails object itself.
      */
@@ -501,7 +505,7 @@ public final class VMNicDetails {
 
     /**
      * Get the targetNicName property: Target NIC name.
-     *
+     * 
      * @return the targetNicName value.
      */
     public String targetNicName() {
@@ -510,7 +514,7 @@ public final class VMNicDetails {
 
     /**
      * Set the targetNicName property: Target NIC name.
-     *
+     * 
      * @param targetNicName the targetNicName value to set.
      * @return the VMNicDetails object itself.
      */
@@ -521,7 +525,7 @@ public final class VMNicDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

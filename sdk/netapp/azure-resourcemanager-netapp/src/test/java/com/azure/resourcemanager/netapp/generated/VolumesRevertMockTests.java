@@ -46,8 +46,8 @@ public final class VolumesRevertMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.volumes().revert("n", "ypuuwwltvuqjctze", "keifzzhmkdasv", "lyhb",
-            new VolumeRevert().withSnapshotId("udchxgsrboldforo"), com.azure.core.util.Context.NONE);
+        manager.volumes().revert("hlfkqojpy", "vgtrdcnifmzzs", "ymbrnysuxmpraf", "g",
+            new VolumeRevert().withSnapshotId("hocxvdfffwafqrou"), com.azure.core.util.Context.NONE);
 
     }
 }

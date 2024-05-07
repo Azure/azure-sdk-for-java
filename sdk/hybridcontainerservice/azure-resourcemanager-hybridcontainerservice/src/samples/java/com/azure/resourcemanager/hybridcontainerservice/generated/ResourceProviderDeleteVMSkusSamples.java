@@ -10,8 +10,8 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 public final class ResourceProviderDeleteVMSkusSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2023-11-15-preview/examples/
-     * DeleteVmSkus.json
+     * specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/DeleteVmSkus
+     * .json
      */
     /**
      * Sample code: DeleteVMSkus.

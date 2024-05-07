@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request to update the mobility service on a protected item. */
+/**
+ * Request to update the mobility service on a protected item.
+ */
 @Fluent
 public final class UpdateMobilityServiceRequest {
     /*
@@ -16,13 +18,15 @@ public final class UpdateMobilityServiceRequest {
     @JsonProperty(value = "properties")
     private UpdateMobilityServiceRequestProperties properties;
 
-    /** Creates an instance of UpdateMobilityServiceRequest class. */
+    /**
+     * Creates an instance of UpdateMobilityServiceRequest class.
+     */
     public UpdateMobilityServiceRequest() {
     }
 
     /**
      * Get the properties property: The properties of the update mobility service request.
-     *
+     * 
      * @return the properties value.
      */
     public UpdateMobilityServiceRequestProperties properties() {
@@ -31,7 +35,7 @@ public final class UpdateMobilityServiceRequest {
 
     /**
      * Set the properties property: The properties of the update mobility service request.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdateMobilityServiceRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class UpdateMobilityServiceRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** configuration for Microsoft Defender for Server VM scanning. */
+/**
+ * configuration for Microsoft Defender for Server VM scanning.
+ */
 @Fluent
 public final class DefenderForServersAwsOfferingVmScannersConfiguration {
     /*
@@ -31,13 +33,15 @@ public final class DefenderForServersAwsOfferingVmScannersConfiguration {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> exclusionTags;
 
-    /** Creates an instance of DefenderForServersAwsOfferingVmScannersConfiguration class. */
+    /**
+     * Creates an instance of DefenderForServersAwsOfferingVmScannersConfiguration class.
+     */
     public DefenderForServersAwsOfferingVmScannersConfiguration() {
     }
 
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @return the cloudRoleArn value.
      */
     public String cloudRoleArn() {
@@ -46,7 +50,7 @@ public final class DefenderForServersAwsOfferingVmScannersConfiguration {
 
     /**
      * Set the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the DefenderForServersAwsOfferingVmScannersConfiguration object itself.
      */
@@ -57,7 +61,7 @@ public final class DefenderForServersAwsOfferingVmScannersConfiguration {
 
     /**
      * Get the scanningMode property: The scanning mode for the VM scan.
-     *
+     * 
      * @return the scanningMode value.
      */
     public ScanningMode scanningMode() {
@@ -66,7 +70,7 @@ public final class DefenderForServersAwsOfferingVmScannersConfiguration {
 
     /**
      * Set the scanningMode property: The scanning mode for the VM scan.
-     *
+     * 
      * @param scanningMode the scanningMode value to set.
      * @return the DefenderForServersAwsOfferingVmScannersConfiguration object itself.
      */
@@ -77,7 +81,7 @@ public final class DefenderForServersAwsOfferingVmScannersConfiguration {
 
     /**
      * Get the exclusionTags property: VM tags that indicates that VM should not be scanned.
-     *
+     * 
      * @return the exclusionTags value.
      */
     public Map<String, String> exclusionTags() {
@@ -86,7 +90,7 @@ public final class DefenderForServersAwsOfferingVmScannersConfiguration {
 
     /**
      * Set the exclusionTags property: VM tags that indicates that VM should not be scanned.
-     *
+     * 
      * @param exclusionTags the exclusionTags value to set.
      * @return the DefenderForServersAwsOfferingVmScannersConfiguration object itself.
      */
@@ -97,7 +101,7 @@ public final class DefenderForServersAwsOfferingVmScannersConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

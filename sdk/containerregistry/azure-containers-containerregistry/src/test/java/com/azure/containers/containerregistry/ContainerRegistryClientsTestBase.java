@@ -132,7 +132,7 @@ public class ContainerRegistryClientsTestBase extends TestProxyTestBase {
             .endpoint(getEndpoint(endpoint))
             .repositoryName(repositoryName)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.HEADERS)
                 .addAllowedHeaderName("Docker-Content-Digest")
                 .addAllowedHeaderName("Range")
                 .addAllowedHeaderName("Location")

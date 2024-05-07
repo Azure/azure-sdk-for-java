@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageAzureV2ReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageAzureV2ReprotectInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageAzureV2\",\"masterTargetId\":\"sqsqkpdmioyjpnml\",\"processServerId\":\"qcpszp\",\"storageAccountId\":\"vqdvrdmvxyrxdhg\",\"runAsAccountId\":\"oj\",\"policyId\":\"aotcgbzxmbtp\",\"logStorageAccountId\":\"foioyidoxzn\",\"disksToInclude\":[\"dtmuuvd\",\"wsxmrszb\"]}")
-                .toObject(InMageAzureV2ReprotectInput.class);
+        InMageAzureV2ReprotectInput model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageAzureV2\",\"masterTargetId\":\"sqsqkpdmioyjpnml\",\"processServerId\":\"qcpszp\",\"storageAccountId\":\"vqdvrdmvxyrxdhg\",\"runAsAccountId\":\"oj\",\"policyId\":\"aotcgbzxmbtp\",\"logStorageAccountId\":\"foioyidoxzn\",\"disksToInclude\":[\"dtmuuvd\",\"wsxmrszb\"]}")
+            .toObject(InMageAzureV2ReprotectInput.class);
         Assertions.assertEquals("sqsqkpdmioyjpnml", model.masterTargetId());
         Assertions.assertEquals("qcpszp", model.processServerId());
         Assertions.assertEquals("vqdvrdmvxyrxdhg", model.storageAccountId());
@@ -28,15 +26,10 @@ public final class InMageAzureV2ReprotectInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2ReprotectInput model =
-            new InMageAzureV2ReprotectInput()
-                .withMasterTargetId("sqsqkpdmioyjpnml")
-                .withProcessServerId("qcpszp")
-                .withStorageAccountId("vqdvrdmvxyrxdhg")
-                .withRunAsAccountId("oj")
-                .withPolicyId("aotcgbzxmbtp")
-                .withLogStorageAccountId("foioyidoxzn")
-                .withDisksToInclude(Arrays.asList("dtmuuvd", "wsxmrszb"));
+        InMageAzureV2ReprotectInput model
+            = new InMageAzureV2ReprotectInput().withMasterTargetId("sqsqkpdmioyjpnml").withProcessServerId("qcpszp")
+                .withStorageAccountId("vqdvrdmvxyrxdhg").withRunAsAccountId("oj").withPolicyId("aotcgbzxmbtp")
+                .withLogStorageAccountId("foioyidoxzn").withDisksToInclude(Arrays.asList("dtmuuvd", "wsxmrszb"));
         model = BinaryData.fromObject(model).toObject(InMageAzureV2ReprotectInput.class);
         Assertions.assertEquals("sqsqkpdmioyjpnml", model.masterTargetId());
         Assertions.assertEquals("qcpszp", model.processServerId());

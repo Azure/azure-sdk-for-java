@@ -14,71 +14,57 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuDescription model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"ets\",\"name\":\"szhedplvw\",\"version\":\"ubmwmbesld\",\"description\":\"wwtppj\",\"restrictedAccessUri\":\"cxogaokonzm\",\"autoAdd\":true,\"targets\":[\"mkqzeqqkdltfzxmh\",\"v\"],\"quotaDimensions\":[{\"id\":\"eodkwobda\",\"scope\":\"tibqdxbxwakb\",\"period\":\"qxn\",\"quota\":52.112804,\"name\":\"gxhuriplbp\",\"description\":\"xunkbebxmubyynt\",\"unit\":\"rbqtkoie\",\"unitPlural\":\"eotg\"}],\"pricingDetails\":[{\"id\":\"tmuwlauwzi\",\"value\":\"bm\"}]}")
-                .toObject(SkuDescription.class);
-        Assertions.assertEquals("ets", model.id());
-        Assertions.assertEquals("szhedplvw", model.name());
-        Assertions.assertEquals("ubmwmbesld", model.version());
-        Assertions.assertEquals("wwtppj", model.description());
-        Assertions.assertEquals("cxogaokonzm", model.restrictedAccessUri());
-        Assertions.assertEquals(true, model.autoAdd());
-        Assertions.assertEquals("mkqzeqqkdltfzxmh", model.targets().get(0));
-        Assertions.assertEquals("eodkwobda", model.quotaDimensions().get(0).id());
-        Assertions.assertEquals("tibqdxbxwakb", model.quotaDimensions().get(0).scope());
-        Assertions.assertEquals("qxn", model.quotaDimensions().get(0).period());
-        Assertions.assertEquals(52.112804F, model.quotaDimensions().get(0).quota());
-        Assertions.assertEquals("gxhuriplbp", model.quotaDimensions().get(0).name());
-        Assertions.assertEquals("xunkbebxmubyynt", model.quotaDimensions().get(0).description());
-        Assertions.assertEquals("rbqtkoie", model.quotaDimensions().get(0).unit());
-        Assertions.assertEquals("eotg", model.quotaDimensions().get(0).unitPlural());
-        Assertions.assertEquals("tmuwlauwzi", model.pricingDetails().get(0).id());
-        Assertions.assertEquals("bm", model.pricingDetails().get(0).value());
+        SkuDescription model = BinaryData.fromString(
+            "{\"id\":\"mcbxvwvxysl\",\"name\":\"hsfxoblytkb\",\"version\":\"pe\",\"description\":\"wfbkrvrns\",\"restrictedAccessUri\":\"hqjohxcrsbfova\",\"autoAdd\":false,\"targets\":[\"wbhsqfsub\"],\"quotaDimensions\":[{\"id\":\"irx\",\"scope\":\"ybsrfbjfdtwss\",\"period\":\"ftpvjzbexil\",\"quota\":45.3637,\"name\":\"qqnvwpmq\",\"description\":\"ruoujmk\",\"unit\":\"hwqytj\",\"unitPlural\":\"bnw\"}],\"pricingDetails\":[{\"id\":\"drjervnaenqpehin\",\"value\":\"ygmi\"},{\"id\":\"hnzdndslgnayqi\",\"value\":\"nduhavhqlkthum\"},{\"id\":\"olbgycduiertgccy\",\"value\":\"aolps\"},{\"id\":\"qlfmmdnbb\",\"value\":\"zpswiydmc\"}]}")
+            .toObject(SkuDescription.class);
+        Assertions.assertEquals("mcbxvwvxysl", model.id());
+        Assertions.assertEquals("hsfxoblytkb", model.name());
+        Assertions.assertEquals("pe", model.version());
+        Assertions.assertEquals("wfbkrvrns", model.description());
+        Assertions.assertEquals("hqjohxcrsbfova", model.restrictedAccessUri());
+        Assertions.assertEquals(false, model.autoAdd());
+        Assertions.assertEquals("wbhsqfsub", model.targets().get(0));
+        Assertions.assertEquals("irx", model.quotaDimensions().get(0).id());
+        Assertions.assertEquals("ybsrfbjfdtwss", model.quotaDimensions().get(0).scope());
+        Assertions.assertEquals("ftpvjzbexil", model.quotaDimensions().get(0).period());
+        Assertions.assertEquals(45.3637F, model.quotaDimensions().get(0).quota());
+        Assertions.assertEquals("qqnvwpmq", model.quotaDimensions().get(0).name());
+        Assertions.assertEquals("ruoujmk", model.quotaDimensions().get(0).description());
+        Assertions.assertEquals("hwqytj", model.quotaDimensions().get(0).unit());
+        Assertions.assertEquals("bnw", model.quotaDimensions().get(0).unitPlural());
+        Assertions.assertEquals("drjervnaenqpehin", model.pricingDetails().get(0).id());
+        Assertions.assertEquals("ygmi", model.pricingDetails().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuDescription model =
-            new SkuDescription()
-                .withId("ets")
-                .withName("szhedplvw")
-                .withVersion("ubmwmbesld")
-                .withDescription("wwtppj")
-                .withRestrictedAccessUri("cxogaokonzm")
-                .withAutoAdd(true)
-                .withTargets(Arrays.asList("mkqzeqqkdltfzxmh", "v"))
-                .withQuotaDimensions(
-                    Arrays
-                        .asList(
-                            new QuotaDimension()
-                                .withId("eodkwobda")
-                                .withScope("tibqdxbxwakb")
-                                .withPeriod("qxn")
-                                .withQuota(52.112804F)
-                                .withName("gxhuriplbp")
-                                .withDescription("xunkbebxmubyynt")
-                                .withUnit("rbqtkoie")
-                                .withUnitPlural("eotg")))
-                .withPricingDetails(Arrays.asList(new PricingDetail().withId("tmuwlauwzi").withValue("bm")));
+        SkuDescription model = new SkuDescription().withId("mcbxvwvxysl").withName("hsfxoblytkb").withVersion("pe")
+            .withDescription("wfbkrvrns").withRestrictedAccessUri("hqjohxcrsbfova").withAutoAdd(false)
+            .withTargets(Arrays.asList("wbhsqfsub"))
+            .withQuotaDimensions(Arrays.asList(new QuotaDimension().withId("irx").withScope("ybsrfbjfdtwss")
+                .withPeriod("ftpvjzbexil").withQuota(45.3637F).withName("qqnvwpmq").withDescription("ruoujmk")
+                .withUnit("hwqytj").withUnitPlural("bnw")))
+            .withPricingDetails(Arrays.asList(new PricingDetail().withId("drjervnaenqpehin").withValue("ygmi"),
+                new PricingDetail().withId("hnzdndslgnayqi").withValue("nduhavhqlkthum"),
+                new PricingDetail().withId("olbgycduiertgccy").withValue("aolps"),
+                new PricingDetail().withId("qlfmmdnbb").withValue("zpswiydmc")));
         model = BinaryData.fromObject(model).toObject(SkuDescription.class);
-        Assertions.assertEquals("ets", model.id());
-        Assertions.assertEquals("szhedplvw", model.name());
-        Assertions.assertEquals("ubmwmbesld", model.version());
-        Assertions.assertEquals("wwtppj", model.description());
-        Assertions.assertEquals("cxogaokonzm", model.restrictedAccessUri());
-        Assertions.assertEquals(true, model.autoAdd());
-        Assertions.assertEquals("mkqzeqqkdltfzxmh", model.targets().get(0));
-        Assertions.assertEquals("eodkwobda", model.quotaDimensions().get(0).id());
-        Assertions.assertEquals("tibqdxbxwakb", model.quotaDimensions().get(0).scope());
-        Assertions.assertEquals("qxn", model.quotaDimensions().get(0).period());
-        Assertions.assertEquals(52.112804F, model.quotaDimensions().get(0).quota());
-        Assertions.assertEquals("gxhuriplbp", model.quotaDimensions().get(0).name());
-        Assertions.assertEquals("xunkbebxmubyynt", model.quotaDimensions().get(0).description());
-        Assertions.assertEquals("rbqtkoie", model.quotaDimensions().get(0).unit());
-        Assertions.assertEquals("eotg", model.quotaDimensions().get(0).unitPlural());
-        Assertions.assertEquals("tmuwlauwzi", model.pricingDetails().get(0).id());
-        Assertions.assertEquals("bm", model.pricingDetails().get(0).value());
+        Assertions.assertEquals("mcbxvwvxysl", model.id());
+        Assertions.assertEquals("hsfxoblytkb", model.name());
+        Assertions.assertEquals("pe", model.version());
+        Assertions.assertEquals("wfbkrvrns", model.description());
+        Assertions.assertEquals("hqjohxcrsbfova", model.restrictedAccessUri());
+        Assertions.assertEquals(false, model.autoAdd());
+        Assertions.assertEquals("wbhsqfsub", model.targets().get(0));
+        Assertions.assertEquals("irx", model.quotaDimensions().get(0).id());
+        Assertions.assertEquals("ybsrfbjfdtwss", model.quotaDimensions().get(0).scope());
+        Assertions.assertEquals("ftpvjzbexil", model.quotaDimensions().get(0).period());
+        Assertions.assertEquals(45.3637F, model.quotaDimensions().get(0).quota());
+        Assertions.assertEquals("qqnvwpmq", model.quotaDimensions().get(0).name());
+        Assertions.assertEquals("ruoujmk", model.quotaDimensions().get(0).description());
+        Assertions.assertEquals("hwqytj", model.quotaDimensions().get(0).unit());
+        Assertions.assertEquals("bnw", model.quotaDimensions().get(0).unitPlural());
+        Assertions.assertEquals("drjervnaenqpehin", model.pricingDetails().get(0).id());
+        Assertions.assertEquals("ygmi", model.pricingDetails().get(0).value());
     }
 }

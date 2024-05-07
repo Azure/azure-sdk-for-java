@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.WorkloadPr
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of WorkloadProtectableItem resources. */
+/**
+ * List of WorkloadProtectableItem resources.
+ */
 @Fluent
 public final class WorkloadProtectableItemResourceList extends ResourceList {
     /*
@@ -18,13 +20,15 @@ public final class WorkloadProtectableItemResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<WorkloadProtectableItemResourceInner> value;
 
-    /** Creates an instance of WorkloadProtectableItemResourceList class. */
+    /**
+     * Creates an instance of WorkloadProtectableItemResourceList class.
+     */
     public WorkloadProtectableItemResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkloadProtectableItemResourceInner> value() {
@@ -33,7 +37,7 @@ public final class WorkloadProtectableItemResourceList extends ResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkloadProtectableItemResourceList object itself.
      */
@@ -42,7 +46,9 @@ public final class WorkloadProtectableItemResourceList extends ResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkloadProtectableItemResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -51,7 +57,7 @@ public final class WorkloadProtectableItemResourceList extends ResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

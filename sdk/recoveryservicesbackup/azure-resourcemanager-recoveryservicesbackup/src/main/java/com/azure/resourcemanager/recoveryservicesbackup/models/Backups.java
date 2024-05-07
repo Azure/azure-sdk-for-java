@@ -7,12 +7,14 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Backups. */
+/**
+ * Resource collection API of Backups.
+ */
 public interface Backups {
     /**
      * Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
      * operation, call GetProtectedItemOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -25,19 +27,13 @@ public interface Backups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> triggerWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        BackupRequestResource parameters,
-        Context context);
+    Response<Void> triggerWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, BackupRequestResource parameters, Context context);
 
     /**
      * Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
      * operation, call GetProtectedItemOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -48,11 +44,6 @@ public interface Backups {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        BackupRequestResource parameters);
+    void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, BackupRequestResource parameters);
 }

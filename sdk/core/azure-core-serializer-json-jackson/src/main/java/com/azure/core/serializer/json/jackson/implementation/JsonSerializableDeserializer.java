@@ -14,6 +14,9 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 
 import java.io.IOException;
 
+/**
+ * Implementation of Jackson's {@link JsonDeserializer} that is capable of handling {@link JsonSerializable} types.
+ */
 public class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializable<?>> {
     private static final ClientLogger LOGGER = new ClientLogger(JsonSerializableDeserializer.class);
 
@@ -38,8 +41,8 @@ public class JsonSerializableDeserializer extends JsonDeserializer<JsonSerializa
     @Override
     public JsonSerializable<?> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         try {
-            return jsonSerializableType.cast(readJson.invokeWithArguments(
-                new JacksonJsonReader(p, null, null, false, null)));
+            return jsonSerializableType
+                .cast(readJson.invokeWithArguments(new JacksonJsonReader(p, null, null, false, null)));
         } catch (Exception exception) {
             if (exception instanceof IOException) {
                 throw (IOException) exception;

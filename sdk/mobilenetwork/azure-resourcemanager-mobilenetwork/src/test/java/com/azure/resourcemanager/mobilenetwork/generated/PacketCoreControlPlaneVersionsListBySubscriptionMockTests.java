@@ -35,49 +35,37 @@ public final class PacketCoreControlPlaneVersionsListBySubscriptionMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"nqbpi\",\"maximumPlatformSoftwareVersion\":\"qltgrd\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"ihwuhvctafsrbxrb\",\"maximumPlatformSoftwareVersion\":\"li\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"qagnepzwakl\",\"maximumPlatformSoftwareVersion\":\"sbq\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"}]},\"id\":\"rxaomzisglrrcze\",\"name\":\"k\",\"type\":\"hltnjadhqoawjq\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"platforms\":[{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"okkhminq\",\"maximumPlatformSoftwareVersion\":\"mczngn\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"NotObsolete\"},{\"platformType\":\"AKS-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"vudb\",\"maximumPlatformSoftwareVersion\":\"aqdtvqecrqctmxxd\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"},{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Active\",\"minimumPlatformSoftwareVersion\":\"xzvtzna\",\"maximumPlatformSoftwareVersion\":\"bannovvoxczytp\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\"}]},\"id\":\"oevytlyokr\",\"name\":\"rouuxvnsasbcry\",\"type\":\"o\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PacketCoreControlPlaneVersion> response =
-            manager.packetCoreControlPlaneVersions().listBySubscription(com.azure.core.util.Context.NONE);
+        PagedIterable<PacketCoreControlPlaneVersion> response
+            = manager.packetCoreControlPlaneVersions().listBySubscription(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PlatformType.AKS_HCI, response.iterator().next().platforms().get(0).platformType());
-        Assertions
-            .assertEquals(VersionState.VALIDATION_FAILED, response.iterator().next().platforms().get(0).versionState());
-        Assertions
-            .assertEquals("nqbpi", response.iterator().next().platforms().get(0).minimumPlatformSoftwareVersion());
-        Assertions
-            .assertEquals("qltgrd", response.iterator().next().platforms().get(0).maximumPlatformSoftwareVersion());
-        Assertions
-            .assertEquals(
-                RecommendedVersion.RECOMMENDED, response.iterator().next().platforms().get(0).recommendedVersion());
-        Assertions
-            .assertEquals(ObsoleteVersion.OBSOLETE, response.iterator().next().platforms().get(0).obsoleteVersion());
+        Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI,
+            response.iterator().next().platforms().get(0).platformType());
+        Assertions.assertEquals(VersionState.PREVIEW, response.iterator().next().platforms().get(0).versionState());
+        Assertions.assertEquals("okkhminq",
+            response.iterator().next().platforms().get(0).minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("mczngn",
+            response.iterator().next().platforms().get(0).maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(RecommendedVersion.RECOMMENDED,
+            response.iterator().next().platforms().get(0).recommendedVersion());
+        Assertions.assertEquals(ObsoleteVersion.NOT_OBSOLETE,
+            response.iterator().next().platforms().get(0).obsoleteVersion());
     }
 }

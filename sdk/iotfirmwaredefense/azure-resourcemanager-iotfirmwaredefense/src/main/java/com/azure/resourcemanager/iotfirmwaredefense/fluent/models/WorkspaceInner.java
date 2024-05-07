@@ -11,7 +11,9 @@ import com.azure.resourcemanager.iotfirmwaredefense.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Firmware analysis workspace. */
+/**
+ * Firmware analysis workspace.
+ */
 @Fluent
 public final class WorkspaceInner extends Resource {
     /*
@@ -26,13 +28,15 @@ public final class WorkspaceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of WorkspaceInner class. */
+    /**
+     * Creates an instance of WorkspaceInner class.
+     */
     public WorkspaceInner() {
     }
 
     /**
      * Get the innerProperties property: Workspace properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkspaceProperties innerProperties() {
@@ -41,21 +45,25 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkspaceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkspaceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -64,7 +72,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -73,7 +81,7 @@ public final class WorkspaceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

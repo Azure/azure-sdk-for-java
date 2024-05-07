@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The location info. */
+/**
+ * The location info.
+ */
 @Immutable
 public final class SkuLocationInfo {
     /*
@@ -23,13 +25,15 @@ public final class SkuLocationInfo {
     @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> zones;
 
-    /** Creates an instance of SkuLocationInfo class. */
+    /**
+     * Creates an instance of SkuLocationInfo class.
+     */
     public SkuLocationInfo() {
     }
 
     /**
      * Get the location property: The location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -38,7 +42,7 @@ public final class SkuLocationInfo {
 
     /**
      * Get the zones property: The zones.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -47,7 +51,7 @@ public final class SkuLocationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

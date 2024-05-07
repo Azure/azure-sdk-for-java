@@ -29,22 +29,28 @@ import com.azure.resourcemanager.monitor.fluent.models.LocalizableStringInner;
 import com.azure.resourcemanager.monitor.models.EventCategoryCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EventCategoriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EventCategoriesClient.
+ */
 public final class EventCategoriesClientImpl implements EventCategoriesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EventCategoriesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MonitorClientImpl client;
 
     /**
      * Initializes an instance of EventCategoriesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EventCategoriesClientImpl(MonitorClientImpl client) {
-        this.service =
-            RestProxy.create(EventCategoriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EventCategoriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,86 +61,73 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
     @Host("{$host}")
     @ServiceInterface(name = "MonitorClientEventCa")
     public interface EventCategoriesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Insights/eventcategories")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventCategoryCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EventCategoryCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
      * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
-     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocalizableStringInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
-            .<PagedResponse<LocalizableStringInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
+            .<PagedResponse<LocalizableStringInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
      * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
-     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocalizableStringInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String apiVersion = "2015-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+        return service.list(this.client.getEndpoint(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Get the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
      * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
-     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
-     *     response with {@link PagedFlux}.
+     * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LocalizableStringInner> listAsync() {
@@ -144,14 +137,14 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
     /**
      * Get the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
      * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
-     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
-     *     response with {@link PagedFlux}.
+     * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LocalizableStringInner> listAsync(Context context) {
@@ -161,12 +154,12 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
     /**
      * Get the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
      * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
-     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
-     *     response with {@link PagedIterable}.
+     * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalizableStringInner> list() {
@@ -176,14 +169,14 @@ public final class EventCategoriesClientImpl implements EventCategoriesClient {
     /**
      * Get the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
      * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of available event categories supported in the Activity Logs Service.&lt;br&gt;The current list
-     *     includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
-     *     response with {@link PagedIterable}.
+     * includes the following: Administrative, Security, ServiceHealth, Alert, Recommendation, Policy as paginated
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocalizableStringInner> list(Context context) {

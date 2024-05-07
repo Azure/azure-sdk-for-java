@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Supported types of migration request include Validate, Migrate and ValidateAndMigrate. */
+/**
+ * Supported types of migration request include Validate, Migrate and ValidateAndMigrate.
+ */
 public final class MigrationOption extends ExpandableStringEnum<MigrationOption> {
-    /** Static value Validate for MigrationOption. */
+    /**
+     * Static value Validate for MigrationOption.
+     */
     public static final MigrationOption VALIDATE = fromString("Validate");
 
-    /** Static value Migrate for MigrationOption. */
+    /**
+     * Static value Migrate for MigrationOption.
+     */
     public static final MigrationOption MIGRATE = fromString("Migrate");
 
-    /** Static value ValidateAndMigrate for MigrationOption. */
+    /**
+     * Static value ValidateAndMigrate for MigrationOption.
+     */
     public static final MigrationOption VALIDATE_AND_MIGRATE = fromString("ValidateAndMigrate");
 
     /**
      * Creates a new instance of MigrationOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class MigrationOption extends ExpandableStringEnum<MigrationOption>
 
     /**
      * Creates or finds a MigrationOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationOption.
      */
@@ -41,7 +49,7 @@ public final class MigrationOption extends ExpandableStringEnum<MigrationOption>
 
     /**
      * Gets known MigrationOption values.
-     *
+     * 
      * @return known MigrationOption values.
      */
     public static Collection<MigrationOption> values() {

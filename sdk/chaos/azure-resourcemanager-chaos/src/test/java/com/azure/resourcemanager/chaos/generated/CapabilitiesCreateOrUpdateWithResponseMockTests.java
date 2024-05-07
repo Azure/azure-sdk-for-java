@@ -30,47 +30,26 @@ public final class CapabilitiesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"publisher\":\"fxzsjabibsyst\",\"targetType\":\"fsdjpvkvp\",\"description\":\"xbkzbzkdvncj\",\"parametersSchema\":\"udurgkakmokz\",\"urn\":\"jk\"},\"id\":\"ffhmouwqlgzr\",\"name\":\"zeeyebi\",\"type\":\"ikayuhqlbjbsybb\"}";
+        String responseStr
+            = "{\"properties\":{\"publisher\":\"kpzi\",\"targetType\":\"j\",\"description\":\"nlfzxiavrmbz\",\"parametersSchema\":\"okixrjqcir\",\"urn\":\"pfrlazsz\"},\"id\":\"nwoiind\",\"name\":\"pwp\",\"type\":\"ylwbtlhflsjcdhsz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ChaosManager manager =
-            ChaosManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Capability response =
-            manager
-                .capabilities()
-                .createOrUpdateWithResponse(
-                    "h",
-                    "hfwpracstwit",
-                    "khevxccedc",
-                    "nmdyodnwzxl",
-                    "jc",
-                    "nhltiugcxn",
-                    new CapabilityInner(),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        Capability response = manager.capabilities().createOrUpdateWithResponse("sjabibs", "stawfsdjpvkv", "bjxbkzbzk",
+            "vncjabudurgk", "kmokz", "jjklff", new CapabilityInner(), com.azure.core.util.Context.NONE).getValue();
+
     }
 }

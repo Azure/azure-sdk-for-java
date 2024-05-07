@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForServersAwsOfferingArcAutoProvisioningConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForServersAwsOfferingArcAutoProvisioningConfiguration model =
-            BinaryData
-                .fromString("{\"proxy\":\"loozrvt\",\"privateLinkScope\":\"cmufunlcpxxv\"}")
+        DefenderForServersAwsOfferingArcAutoProvisioningConfiguration model
+            = BinaryData.fromString("{\"proxy\":\"nllaslkskh\",\"privateLinkScope\":\"jpv\"}")
                 .toObject(DefenderForServersAwsOfferingArcAutoProvisioningConfiguration.class);
-        Assertions.assertEquals("loozrvt", model.proxy());
-        Assertions.assertEquals("cmufunlcpxxv", model.privateLinkScope());
+        Assertions.assertEquals("nllaslkskh", model.proxy());
+        Assertions.assertEquals("jpv", model.privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersAwsOfferingArcAutoProvisioningConfiguration model =
-            new DefenderForServersAwsOfferingArcAutoProvisioningConfiguration()
-                .withProxy("loozrvt")
-                .withPrivateLinkScope("cmufunlcpxxv");
-        model =
-            BinaryData.fromObject(model).toObject(DefenderForServersAwsOfferingArcAutoProvisioningConfiguration.class);
-        Assertions.assertEquals("loozrvt", model.proxy());
-        Assertions.assertEquals("cmufunlcpxxv", model.privateLinkScope());
+        DefenderForServersAwsOfferingArcAutoProvisioningConfiguration model
+            = new DefenderForServersAwsOfferingArcAutoProvisioningConfiguration().withProxy("nllaslkskh")
+                .withPrivateLinkScope("jpv");
+        model = BinaryData.fromObject(model)
+            .toObject(DefenderForServersAwsOfferingArcAutoProvisioningConfiguration.class);
+        Assertions.assertEquals("nllaslkskh", model.proxy());
+        Assertions.assertEquals("jpv", model.privateLinkScope());
     }
 }

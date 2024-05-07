@@ -31,40 +31,29 @@ public final class ApplicationOperationsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"nmpaklwzlweepr\",\"description\":\"jzltkaszfjs\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"databduxapgrcq\",\"databmvrdjomlnwsbv\",\"datadls\",\"datalxkqesdfeds\"]},\"id\":\"gzancoinmphy\",\"name\":\"cqidkltvdhqnufbx\",\"type\":\"e\"}";
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"wfpucwnbcgqe\",\"description\":\"zjvbxqcbgoarx\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataciagvkdlhu\"]},\"id\":\"u\",\"name\":\"lbjo\",\"type\":\"fmjfexulv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Application response =
-            manager.applicationOperations().getWithResponse("wrqkza", com.azure.core.util.Context.NONE).getValue();
+        Application response = manager.applicationOperations()
+            .getWithResponse("nbwhiieyoz", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("nmpaklwzlweepr", response.displayName());
-        Assertions.assertEquals("jzltkaszfjs", response.description());
+        Assertions.assertEquals("wfpucwnbcgqe", response.displayName());
+        Assertions.assertEquals("zjvbxqcbgoarx", response.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, response.sourceResourceType());
     }
 }

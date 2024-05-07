@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Log policy schedule. */
+/**
+ * Log policy schedule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "schedulePolicyType")
 @JsonTypeName("LogSchedulePolicy")
 @Fluent
@@ -20,13 +22,15 @@ public final class LogSchedulePolicy extends SchedulePolicy {
     @JsonProperty(value = "scheduleFrequencyInMins")
     private Integer scheduleFrequencyInMins;
 
-    /** Creates an instance of LogSchedulePolicy class. */
+    /**
+     * Creates an instance of LogSchedulePolicy class.
+     */
     public LogSchedulePolicy() {
     }
 
     /**
      * Get the scheduleFrequencyInMins property: Frequency of the log schedule operation of this policy in minutes.
-     *
+     * 
      * @return the scheduleFrequencyInMins value.
      */
     public Integer scheduleFrequencyInMins() {
@@ -35,7 +39,7 @@ public final class LogSchedulePolicy extends SchedulePolicy {
 
     /**
      * Set the scheduleFrequencyInMins property: Frequency of the log schedule operation of this policy in minutes.
-     *
+     * 
      * @param scheduleFrequencyInMins the scheduleFrequencyInMins value to set.
      * @return the LogSchedulePolicy object itself.
      */
@@ -46,7 +50,7 @@ public final class LogSchedulePolicy extends SchedulePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

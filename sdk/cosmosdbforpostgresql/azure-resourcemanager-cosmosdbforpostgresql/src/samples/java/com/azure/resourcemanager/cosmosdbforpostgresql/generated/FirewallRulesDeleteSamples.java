@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
-/** Samples for FirewallRules Delete. */
+/**
+ * Samples for FirewallRules Delete.
+ */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/FirewallRuleDelete.json
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * FirewallRuleDelete.json
      */
     /**
      * Sample code: Delete the firewall rule of the cluster.
-     *
+     * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */
     public static void deleteTheFirewallRuleOfTheCluster(

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
+import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
@@ -278,5 +279,50 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
         Assertions.assertEquals(cosmosDBAccount.writableReplications().size(), 1);
         Assertions.assertEquals(cosmosDBAccount.readableReplications().size(), 2);
         Assertions.assertEquals(cosmosDBAccount.defaultConsistencyLevel(), DefaultConsistencyLevel.EVENTUAL);
+    }
+
+    @Test
+    public void canCreateCosmosDBAccountWithDisablePublicNetworkAccess() {
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
+
+        CosmosDBAccount cosmosDBAccount =
+            cosmosManager
+                .databaseAccounts()
+                .define(cosmosDbAccountName)
+                .withRegion(Region.US_WEST_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withDataModelAzureTable()
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_WEST)
+                .withTag("tag1", "value1")
+                .disablePublicNetworkAccess()
+                .create();
+
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, cosmosDBAccount.publicNetworkAccess());
+    }
+
+    @Test
+    public void canUpdatePublicNetworkAccess() {
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
+
+        CosmosDBAccount cosmosDBAccount =
+            cosmosManager
+                .databaseAccounts()
+                .define(cosmosDbAccountName)
+                .withRegion(Region.US_WEST_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withDataModelAzureTable()
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_WEST)
+                .withTag("tag1", "value1")
+                .create();
+
+        cosmosDBAccount.update().disablePublicNetworkAccess().apply();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, cosmosDBAccount.publicNetworkAccess());
+
+        cosmosDBAccount.update().enablePublicNetworkAccess().apply();
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, cosmosDBAccount.publicNetworkAccess());
     }
 }

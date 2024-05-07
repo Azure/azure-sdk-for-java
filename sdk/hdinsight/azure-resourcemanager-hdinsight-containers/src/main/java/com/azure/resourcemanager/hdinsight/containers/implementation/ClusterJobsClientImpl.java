@@ -37,22 +37,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ClusterJobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClusterJobsClient.
+ */
 public final class ClusterJobsClientImpl implements ClusterJobsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ClusterJobsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HDInsightContainersManagementClientImpl client;
 
     /**
      * Initializes an instance of ClusterJobsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ClusterJobsClientImpl(HDInsightContainersManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ClusterJobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ClusterJobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,51 +69,38 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
     @Host("{$host}")
     @ServiceInterface(name = "HDInsightContainersM")
     public interface ClusterJobsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}/clusters/{clusterName}/runJob")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}/clusters/{clusterName}/runJob")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> runJob(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> runJob(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("clusterPoolName") String clusterPoolName,
-            @PathParam("clusterName") String clusterName,
-            @BodyParam("application/json") ClusterJobInner clusterJob,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("clusterPoolName") String clusterPoolName, @PathParam("clusterName") String clusterName,
+            @BodyParam("application/json") ClusterJobInner clusterJob, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}/clusters/{clusterName}/jobs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusterpools/{clusterPoolName}/clusters/{clusterName}/jobs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterJobList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ClusterJobList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("clusterPoolName") String clusterPoolName,
-            @PathParam("clusterName") String clusterName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("clusterPoolName") String clusterPoolName, @PathParam("clusterName") String clusterName,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ClusterJobList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ClusterJobList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Operations on jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -118,19 +111,15 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return cluster job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> runJobWithResponseAsync(
-        String resourceGroupName, String clusterPoolName, String clusterName, ClusterJobInner clusterJob) {
+    private Mono<Response<Flux<ByteBuffer>>> runJobWithResponseAsync(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterJobInner clusterJob) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -151,24 +140,14 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .runJob(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            clusterPoolName,
-                            clusterName,
-                            clusterJob,
-                            accept,
-                            context))
+                context -> service.runJob(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    this.client.getApiVersion(), clusterPoolName, clusterName, clusterJob, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Operations on jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -180,23 +159,15 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return cluster job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> runJobWithResponseAsync(
-        String resourceGroupName,
-        String clusterPoolName,
-        String clusterName,
-        ClusterJobInner clusterJob,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> runJobWithResponseAsync(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterJobInner clusterJob, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -216,22 +187,13 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .runJob(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                clusterPoolName,
-                clusterName,
-                clusterJob,
-                accept,
-                context);
+        return service.runJob(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), clusterPoolName, clusterName, clusterJob, accept, context);
     }
 
     /**
      * Operations on jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -242,23 +204,17 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return the {@link PollerFlux} for polling of cluster job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterJobInner>, ClusterJobInner> beginRunJobAsync(
-        String resourceGroupName, String clusterPoolName, String clusterName, ClusterJobInner clusterJob) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            runJobWithResponseAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob);
-        return this
-            .client
-            .<ClusterJobInner, ClusterJobInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ClusterJobInner.class,
-                ClusterJobInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ClusterJobInner>, ClusterJobInner> beginRunJobAsync(String resourceGroupName,
+        String clusterPoolName, String clusterName, ClusterJobInner clusterJob) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = runJobWithResponseAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob);
+        return this.client.<ClusterJobInner, ClusterJobInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterJobInner.class, ClusterJobInner.class, this.client.getContext());
     }
 
     /**
      * Operations on jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -270,24 +226,18 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return the {@link PollerFlux} for polling of cluster job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ClusterJobInner>, ClusterJobInner> beginRunJobAsync(
-        String resourceGroupName,
-        String clusterPoolName,
-        String clusterName,
-        ClusterJobInner clusterJob,
-        Context context) {
+    private PollerFlux<PollResult<ClusterJobInner>, ClusterJobInner> beginRunJobAsync(String resourceGroupName,
+        String clusterPoolName, String clusterName, ClusterJobInner clusterJob, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            runJobWithResponseAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob, context);
-        return this
-            .client
-            .<ClusterJobInner, ClusterJobInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ClusterJobInner.class, ClusterJobInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = runJobWithResponseAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob, context);
+        return this.client.<ClusterJobInner, ClusterJobInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ClusterJobInner.class, ClusterJobInner.class, context);
     }
 
     /**
      * Operations on jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -298,14 +248,14 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return the {@link SyncPoller} for polling of cluster job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterJobInner>, ClusterJobInner> beginRunJob(
-        String resourceGroupName, String clusterPoolName, String clusterName, ClusterJobInner clusterJob) {
+    public SyncPoller<PollResult<ClusterJobInner>, ClusterJobInner> beginRunJob(String resourceGroupName,
+        String clusterPoolName, String clusterName, ClusterJobInner clusterJob) {
         return this.beginRunJobAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob).getSyncPoller();
     }
 
     /**
      * Operations on jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -317,20 +267,15 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return the {@link SyncPoller} for polling of cluster job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ClusterJobInner>, ClusterJobInner> beginRunJob(
-        String resourceGroupName,
-        String clusterPoolName,
-        String clusterName,
-        ClusterJobInner clusterJob,
-        Context context) {
-        return this
-            .beginRunJobAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob, context)
+    public SyncPoller<PollResult<ClusterJobInner>, ClusterJobInner> beginRunJob(String resourceGroupName,
+        String clusterPoolName, String clusterName, ClusterJobInner clusterJob, Context context) {
+        return this.beginRunJobAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob, context)
             .getSyncPoller();
     }
 
     /**
      * Operations on jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -341,16 +286,15 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return cluster job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterJobInner> runJobAsync(
-        String resourceGroupName, String clusterPoolName, String clusterName, ClusterJobInner clusterJob) {
-        return beginRunJobAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob)
-            .last()
+    private Mono<ClusterJobInner> runJobAsync(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterJobInner clusterJob) {
+        return beginRunJobAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Operations on jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -362,20 +306,15 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return cluster job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ClusterJobInner> runJobAsync(
-        String resourceGroupName,
-        String clusterPoolName,
-        String clusterName,
-        ClusterJobInner clusterJob,
-        Context context) {
-        return beginRunJobAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob, context)
-            .last()
+    private Mono<ClusterJobInner> runJobAsync(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterJobInner clusterJob, Context context) {
+        return beginRunJobAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Operations on jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -386,14 +325,14 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return cluster job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterJobInner runJob(
-        String resourceGroupName, String clusterPoolName, String clusterName, ClusterJobInner clusterJob) {
+    public ClusterJobInner runJob(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterJobInner clusterJob) {
         return runJobAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob).block();
     }
 
     /**
      * Operations on jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -405,41 +344,35 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return cluster job.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ClusterJobInner runJob(
-        String resourceGroupName,
-        String clusterPoolName,
-        String clusterName,
-        ClusterJobInner clusterJob,
-        Context context) {
+    public ClusterJobInner runJob(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterJobInner clusterJob, Context context) {
         return runJobAsync(resourceGroupName, clusterPoolName, clusterName, clusterJob, context).block();
     }
 
     /**
      * Get jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
+     * @param filter The system query option to filter job returned in the response. Allowed value is 'jobName eq
+     * {jobName}' or 'jarName eq {jarName}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return jobs of HDInsight on AKS cluster along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return jobs of HDInsight on AKS cluster along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ClusterJobInner>> listSinglePageAsync(
-        String resourceGroupName, String clusterPoolName, String clusterName) {
+    private Mono<PagedResponse<ClusterJobInner>> listSinglePageAsync(String resourceGroupName, String clusterPoolName,
+        String clusterName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -454,57 +387,38 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            clusterPoolName,
-                            clusterName,
-                            accept,
-                            context))
-            .<PagedResponse<ClusterJobInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), clusterPoolName, clusterName, filter, accept, context))
+            .<PagedResponse<ClusterJobInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
+     * @param filter The system query option to filter job returned in the response. Allowed value is 'jobName eq
+     * {jobName}' or 'jarName eq {jarName}'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return jobs of HDInsight on AKS cluster along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return jobs of HDInsight on AKS cluster along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ClusterJobInner>> listSinglePageAsync(
-        String resourceGroupName, String clusterPoolName, String clusterName, Context context) {
+    private Mono<PagedResponse<ClusterJobInner>> listSinglePageAsync(String resourceGroupName, String clusterPoolName,
+        String clusterName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -520,29 +434,35 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                clusterPoolName,
-                clusterName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), clusterPoolName, clusterName, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get jobs of HDInsight on AKS cluster.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param filter The system query option to filter job returned in the response. Allowed value is 'jobName eq
+     * {jobName}' or 'jarName eq {jarName}'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return jobs of HDInsight on AKS cluster as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ClusterJobInner> listAsync(String resourceGroupName, String clusterPoolName, String clusterName,
+        String filter) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterPoolName, clusterName, filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get jobs of HDInsight on AKS cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -553,17 +473,19 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ClusterJobInner> listAsync(String resourceGroupName, String clusterPoolName, String clusterName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, clusterPoolName, clusterName),
+        final String filter = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterPoolName, clusterName, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
+     * @param filter The system query option to filter job returned in the response. Allowed value is 'jobName eq
+     * {jobName}' or 'jarName eq {jarName}'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -571,16 +493,16 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return jobs of HDInsight on AKS cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ClusterJobInner> listAsync(
-        String resourceGroupName, String clusterPoolName, String clusterName, Context context) {
+    private PagedFlux<ClusterJobInner> listAsync(String resourceGroupName, String clusterPoolName, String clusterName,
+        String filter, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, clusterPoolName, clusterName, context),
+            () -> listSinglePageAsync(resourceGroupName, clusterPoolName, clusterName, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -591,15 +513,18 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterJobInner> list(String resourceGroupName, String clusterPoolName, String clusterName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, clusterPoolName, clusterName));
+        final String filter = null;
+        return new PagedIterable<>(listAsync(resourceGroupName, clusterPoolName, clusterName, filter));
     }
 
     /**
      * Get jobs of HDInsight on AKS cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
+     * @param filter The system query option to filter job returned in the response. Allowed value is 'jobName eq
+     * {jobName}' or 'jarName eq {jarName}'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -607,16 +532,17 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
      * @return jobs of HDInsight on AKS cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ClusterJobInner> list(
-        String resourceGroupName, String clusterPoolName, String clusterName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, clusterPoolName, clusterName, context));
+    public PagedIterable<ClusterJobInner> list(String resourceGroupName, String clusterPoolName, String clusterName,
+        String filter, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, clusterPoolName, clusterName, filter, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -628,31 +554,22 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ClusterJobInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ClusterJobInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -665,23 +582,13 @@ public final class ClusterJobsClientImpl implements ClusterJobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

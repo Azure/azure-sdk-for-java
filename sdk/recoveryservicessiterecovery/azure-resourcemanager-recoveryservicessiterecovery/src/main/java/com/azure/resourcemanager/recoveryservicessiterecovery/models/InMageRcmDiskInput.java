@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** InMageRcm disk input. */
+/**
+ * InMageRcm disk input.
+ */
 @Fluent
 public final class InMageRcmDiskInput {
     /*
@@ -35,13 +37,15 @@ public final class InMageRcmDiskInput {
     @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
-    /** Creates an instance of InMageRcmDiskInput class. */
+    /**
+     * Creates an instance of InMageRcmDiskInput class.
+     */
     public InMageRcmDiskInput() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -50,7 +54,7 @@ public final class InMageRcmDiskInput {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the InMageRcmDiskInput object itself.
      */
@@ -61,7 +65,7 @@ public final class InMageRcmDiskInput {
 
     /**
      * Get the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -70,7 +74,7 @@ public final class InMageRcmDiskInput {
 
     /**
      * Set the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @param logStorageAccountId the logStorageAccountId value to set.
      * @return the InMageRcmDiskInput object itself.
      */
@@ -81,7 +85,7 @@ public final class InMageRcmDiskInput {
 
     /**
      * Get the diskType property: The disk type.
-     *
+     * 
      * @return the diskType value.
      */
     public DiskAccountType diskType() {
@@ -90,7 +94,7 @@ public final class InMageRcmDiskInput {
 
     /**
      * Set the diskType property: The disk type.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the InMageRcmDiskInput object itself.
      */
@@ -101,7 +105,7 @@ public final class InMageRcmDiskInput {
 
     /**
      * Get the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -110,7 +114,7 @@ public final class InMageRcmDiskInput {
 
     /**
      * Set the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the InMageRcmDiskInput object itself.
      */
@@ -121,25 +125,21 @@ public final class InMageRcmDiskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property diskId in model InMageRcmDiskInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property diskId in model InMageRcmDiskInput"));
         }
         if (logStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property logStorageAccountId in model InMageRcmDiskInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property logStorageAccountId in model InMageRcmDiskInput"));
         }
         if (diskType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property diskType in model InMageRcmDiskInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property diskType in model InMageRcmDiskInput"));
         }
     }
 

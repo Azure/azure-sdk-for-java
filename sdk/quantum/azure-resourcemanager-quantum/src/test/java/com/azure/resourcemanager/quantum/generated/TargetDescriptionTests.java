@@ -12,32 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class TargetDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetDescription model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"glzpswiydm\",\"name\":\"yhz\",\"description\":\"ss\",\"acceptedDataFormats\":[\"zmnvdfznudaod\",\"xzb\",\"cblylpstdbhhxsr\"],\"acceptedContentEncodings\":[\"ucerscdntnevfi\",\"jmygtdsslswtmwer\",\"ofz\",\"yqsemwa\"]}")
-                .toObject(TargetDescription.class);
-        Assertions.assertEquals("glzpswiydm", model.id());
-        Assertions.assertEquals("yhz", model.name());
-        Assertions.assertEquals("ss", model.description());
-        Assertions.assertEquals("zmnvdfznudaod", model.acceptedDataFormats().get(0));
-        Assertions.assertEquals("ucerscdntnevfi", model.acceptedContentEncodings().get(0));
+        TargetDescription model = BinaryData.fromString(
+            "{\"id\":\"rmfqjhhkxbpvj\",\"name\":\"jhxxjyn\",\"description\":\"divkrt\",\"acceptedDataFormats\":[\"xqzvszjfa\"],\"acceptedContentEncodings\":[\"fdxxivetvtcqaqtd\"]}")
+            .toObject(TargetDescription.class);
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.id());
+        Assertions.assertEquals("jhxxjyn", model.name());
+        Assertions.assertEquals("divkrt", model.description());
+        Assertions.assertEquals("xqzvszjfa", model.acceptedDataFormats().get(0));
+        Assertions.assertEquals("fdxxivetvtcqaqtd", model.acceptedContentEncodings().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetDescription model =
-            new TargetDescription()
-                .withId("glzpswiydm")
-                .withName("yhz")
-                .withDescription("ss")
-                .withAcceptedDataFormats(Arrays.asList("zmnvdfznudaod", "xzb", "cblylpstdbhhxsr"))
-                .withAcceptedContentEncodings(Arrays.asList("ucerscdntnevfi", "jmygtdsslswtmwer", "ofz", "yqsemwa"));
+        TargetDescription model = new TargetDescription().withId("rmfqjhhkxbpvj").withName("jhxxjyn")
+            .withDescription("divkrt").withAcceptedDataFormats(Arrays.asList("xqzvszjfa"))
+            .withAcceptedContentEncodings(Arrays.asList("fdxxivetvtcqaqtd"));
         model = BinaryData.fromObject(model).toObject(TargetDescription.class);
-        Assertions.assertEquals("glzpswiydm", model.id());
-        Assertions.assertEquals("yhz", model.name());
-        Assertions.assertEquals("ss", model.description());
-        Assertions.assertEquals("zmnvdfznudaod", model.acceptedDataFormats().get(0));
-        Assertions.assertEquals("ucerscdntnevfi", model.acceptedContentEncodings().get(0));
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.id());
+        Assertions.assertEquals("jhxxjyn", model.name());
+        Assertions.assertEquals("divkrt", model.description());
+        Assertions.assertEquals("xqzvszjfa", model.acceptedDataFormats().get(0));
+        Assertions.assertEquals("fdxxivetvtcqaqtd", model.acceptedContentEncodings().get(0));
     }
 }

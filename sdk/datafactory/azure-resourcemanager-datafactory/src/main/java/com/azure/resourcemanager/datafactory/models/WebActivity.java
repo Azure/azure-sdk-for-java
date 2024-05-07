@@ -8,17 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.WebActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Web activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = WebActivity.class, visible = true)
 @JsonTypeName("WebActivity")
 @Fluent
 public final class WebActivity extends ExecutionActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "WebActivity";
+
     /*
      * Web activity properties.
      */
@@ -29,6 +38,16 @@ public final class WebActivity extends ExecutionActivity {
      * Creates an instance of WebActivity class.
      */
     public WebActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -136,8 +155,7 @@ public final class WebActivity extends ExecutionActivity {
     }
 
     /**
-     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
+     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
      * 
      * @return the url value.
      */
@@ -146,8 +164,7 @@ public final class WebActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
+     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
      * 
      * @param url the url value to set.
      * @return the WebActivity object itself.
@@ -167,7 +184,7 @@ public final class WebActivity extends ExecutionActivity {
      * 
      * @return the headers value.
      */
-    public Object headers() {
+    public Map<String, Object> headers() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().headers();
     }
 
@@ -179,7 +196,7 @@ public final class WebActivity extends ExecutionActivity {
      * @param headers the headers value to set.
      * @return the WebActivity object itself.
      */
-    public WebActivity withHeaders(Object headers) {
+    public WebActivity withHeaders(Map<String, Object> headers) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new WebActivityTypeProperties();
         }
@@ -255,6 +272,60 @@ public final class WebActivity extends ExecutionActivity {
             this.innerTypeProperties = new WebActivityTypeProperties();
         }
         this.innerTypeProperties().withDisableCertValidation(disableCertValidation);
+        return this;
+    }
+
+    /**
+     * Get the httpRequestTimeout property: Timeout for the HTTP request to get a response. Format is in TimeSpan
+     * (hh:mm:ss). This value is the timeout to get a response, not the activity timeout. The default value is 00:01:00
+     * (1 minute). The range is from 1 to 10 minutes.
+     * 
+     * @return the httpRequestTimeout value.
+     */
+    public Object httpRequestTimeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().httpRequestTimeout();
+    }
+
+    /**
+     * Set the httpRequestTimeout property: Timeout for the HTTP request to get a response. Format is in TimeSpan
+     * (hh:mm:ss). This value is the timeout to get a response, not the activity timeout. The default value is 00:01:00
+     * (1 minute). The range is from 1 to 10 minutes.
+     * 
+     * @param httpRequestTimeout the httpRequestTimeout value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withHttpRequestTimeout(Object httpRequestTimeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withHttpRequestTimeout(httpRequestTimeout);
+        return this;
+    }
+
+    /**
+     * Get the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a HTTP
+     * 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set false
+     * then continues to invoke HTTP GET call on location given in http response headers.
+     * 
+     * @return the turnOffAsync value.
+     */
+    public Boolean turnOffAsync() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().turnOffAsync();
+    }
+
+    /**
+     * Set the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a HTTP
+     * 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set false
+     * then continues to invoke HTTP GET call on location given in http response headers.
+     * 
+     * @param turnOffAsync the turnOffAsync value to set.
+     * @return the WebActivity object itself.
+     */
+    public WebActivity withTurnOffAsync(Boolean turnOffAsync) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new WebActivityTypeProperties();
+        }
+        this.innerTypeProperties().withTurnOffAsync(turnOffAsync);
         return this;
     }
 
@@ -336,8 +407,9 @@ public final class WebActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerTypeProperties in model WebActivity"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property innerTypeProperties in model WebActivity"));
         } else {
             innerTypeProperties().validate();
         }

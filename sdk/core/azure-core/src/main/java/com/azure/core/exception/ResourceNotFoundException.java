@@ -6,7 +6,18 @@ package com.azure.core.exception;
 import com.azure.core.http.HttpResponse;
 
 /**
- * An error response, typically triggered by a 412 response (for update) or 404 (for get/post)
+ * <p>The {@code ResourceNotFoundException} represents an exception thrown when an HTTP request attempts to access a
+ * resource that does not exist.</p>
+ *
+ * <p>This exception is typically thrown when the service responds with a status code of 4XX,
+ * typically 404 Not Found.</p>
+ *
+ * <p>This class also provides methods to get the {@link HttpResponse} that was received when the exception occurred and
+ * the deserialized HTTP response value.</p>
+ *
+ * @see com.azure.core.exception
+ * @see com.azure.core.exception.HttpResponseException
+ * @see com.azure.core.http.HttpResponse
  */
 public class ResourceNotFoundException extends HttpResponseException {
 
@@ -30,7 +41,6 @@ public class ResourceNotFoundException extends HttpResponseException {
     public ResourceNotFoundException(final String message, final HttpResponse response, final Object value) {
         super(message, response, value);
     }
-
 
     /**
      * Initializes a new instance of the ResourceNotFoundException class.

@@ -3,7 +3,6 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosException
-import com.azure.cosmos.implementation.guava25.base.Throwables
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait

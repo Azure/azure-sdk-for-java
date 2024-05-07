@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Configuration options and list of validations to be performed on the resulting image. */
+/**
+ * Configuration options and list of validations to be performed on the resulting image.
+ */
 @Fluent
 public final class ImageTemplatePropertiesValidate {
     /*
@@ -34,17 +36,19 @@ public final class ImageTemplatePropertiesValidate {
     @JsonProperty(value = "inVMValidations")
     private List<ImageTemplateInVMValidator> inVMValidations;
 
-    /** Creates an instance of ImageTemplatePropertiesValidate class. */
+    /**
+     * Creates an instance of ImageTemplatePropertiesValidate class.
+     */
     public ImageTemplatePropertiesValidate() {
     }
 
     /**
-     * Get the continueDistributeOnFailure property: If validation fails and this field is set to false, output image(s)
-     * will not be distributed. This is the default behavior. If validation fails and this field is set to true, output
-     * image(s) will still be distributed. Please use this option with caution as it may result in bad images being
-     * distributed for use. In either case (true or false), the end to end image run will be reported as having failed
-     * in case of a validation failure. [Note: This field has no effect if validation succeeds.].
-     *
+     * Get the continueDistributeOnFailure property: If validation fails and this field is set to false, output
+     * image(s) will not be distributed. This is the default behavior. If validation fails and this field is set to
+     * true, output image(s) will still be distributed. Please use this option with caution as it may result in bad
+     * images being distributed for use. In either case (true or false), the end to end image run will be reported as
+     * having failed in case of a validation failure. [Note: This field has no effect if validation succeeds.].
+     * 
      * @return the continueDistributeOnFailure value.
      */
     public Boolean continueDistributeOnFailure() {
@@ -52,12 +56,12 @@ public final class ImageTemplatePropertiesValidate {
     }
 
     /**
-     * Set the continueDistributeOnFailure property: If validation fails and this field is set to false, output image(s)
-     * will not be distributed. This is the default behavior. If validation fails and this field is set to true, output
-     * image(s) will still be distributed. Please use this option with caution as it may result in bad images being
-     * distributed for use. In either case (true or false), the end to end image run will be reported as having failed
-     * in case of a validation failure. [Note: This field has no effect if validation succeeds.].
-     *
+     * Set the continueDistributeOnFailure property: If validation fails and this field is set to false, output
+     * image(s) will not be distributed. This is the default behavior. If validation fails and this field is set to
+     * true, output image(s) will still be distributed. Please use this option with caution as it may result in bad
+     * images being distributed for use. In either case (true or false), the end to end image run will be reported as
+     * having failed in case of a validation failure. [Note: This field has no effect if validation succeeds.].
+     * 
      * @param continueDistributeOnFailure the continueDistributeOnFailure value to set.
      * @return the ImageTemplatePropertiesValidate object itself.
      */
@@ -69,7 +73,7 @@ public final class ImageTemplatePropertiesValidate {
     /**
      * Get the sourceValidationOnly property: If this field is set to true, the image specified in the 'source' section
      * will directly be validated. No separate build will be run to generate and then validate a customized image.
-     *
+     * 
      * @return the sourceValidationOnly value.
      */
     public Boolean sourceValidationOnly() {
@@ -79,7 +83,7 @@ public final class ImageTemplatePropertiesValidate {
     /**
      * Set the sourceValidationOnly property: If this field is set to true, the image specified in the 'source' section
      * will directly be validated. No separate build will be run to generate and then validate a customized image.
-     *
+     * 
      * @param sourceValidationOnly the sourceValidationOnly value to set.
      * @return the ImageTemplatePropertiesValidate object itself.
      */
@@ -90,7 +94,7 @@ public final class ImageTemplatePropertiesValidate {
 
     /**
      * Get the inVMValidations property: List of validations to be performed.
-     *
+     * 
      * @return the inVMValidations value.
      */
     public List<ImageTemplateInVMValidator> inVMValidations() {
@@ -99,7 +103,7 @@ public final class ImageTemplatePropertiesValidate {
 
     /**
      * Set the inVMValidations property: List of validations to be performed.
-     *
+     * 
      * @param inVMValidations the inVMValidations value to set.
      * @return the ImageTemplatePropertiesValidate object itself.
      */
@@ -110,7 +114,7 @@ public final class ImageTemplatePropertiesValidate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

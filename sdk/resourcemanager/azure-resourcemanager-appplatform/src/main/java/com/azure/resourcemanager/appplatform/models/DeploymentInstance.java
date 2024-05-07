@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deployment instance payload. */
+/**
+ * Deployment instance payload.
+ */
 @Immutable
 public final class DeploymentInstance {
     /*
@@ -47,8 +49,14 @@ public final class DeploymentInstance {
     private String zone;
 
     /**
+     * Creates an instance of DeploymentInstance class.
+     */
+    public DeploymentInstance() {
+    }
+
+    /**
      * Get the name property: Name of the deployment instance.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +65,7 @@ public final class DeploymentInstance {
 
     /**
      * Get the status property: Status of the deployment instance.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -66,7 +74,7 @@ public final class DeploymentInstance {
 
     /**
      * Get the reason property: Failed reason of the deployment instance.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -75,7 +83,7 @@ public final class DeploymentInstance {
 
     /**
      * Get the discoveryStatus property: Discovery status of the deployment instance.
-     *
+     * 
      * @return the discoveryStatus value.
      */
     public String discoveryStatus() {
@@ -84,7 +92,7 @@ public final class DeploymentInstance {
 
     /**
      * Get the startTime property: Start time of the deployment instance.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -93,7 +101,7 @@ public final class DeploymentInstance {
 
     /**
      * Get the zone property: Availability zone information of the deployment instance.
-     *
+     * 
      * @return the zone value.
      */
     public String zone() {
@@ -102,7 +110,7 @@ public final class DeploymentInstance {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

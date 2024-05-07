@@ -8,40 +8,44 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cross-Origin Resource Sharing property. */
+/**
+ * Cross-Origin Resource Sharing property.
+ */
 @Fluent
 public final class GatewayCorsProperties {
     /*
-     * Allowed origins to make cross-site requests. The special value `*`
-     * allows all domains.
+     * Allowed origins to make cross-site requests. The special value `*` allows all domains.
      */
     @JsonProperty(value = "allowedOrigins")
     private List<String> allowedOrigins;
 
     /*
-     * Allowed HTTP methods on cross-site requests. The special value `*`
-     * allows all methods. If not set, `GET` and `HEAD` are allowed by default.
+     * Allowed origin patterns to make cross-site requests.
+     */
+    @JsonProperty(value = "allowedOriginPatterns")
+    private List<String> allowedOriginPatterns;
+
+    /*
+     * Allowed HTTP methods on cross-site requests. The special value `*` allows all methods. If not set, `GET` and
+     * `HEAD` are allowed by default.
      */
     @JsonProperty(value = "allowedMethods")
     private List<String> allowedMethods;
 
     /*
-     * Allowed headers in cross-site requests. The special value `*` allows
-     * actual requests to send any header.
+     * Allowed headers in cross-site requests. The special value `*` allows actual requests to send any header.
      */
     @JsonProperty(value = "allowedHeaders")
     private List<String> allowedHeaders;
 
     /*
-     * How long, in seconds, the response from a pre-flight request can be
-     * cached by clients.
+     * How long, in seconds, the response from a pre-flight request can be cached by clients.
      */
     @JsonProperty(value = "maxAge")
     private Integer maxAge;
 
     /*
-     * Whether user credentials are supported on cross-site requests. Valid
-     * values: `true`, `false`.
+     * Whether user credentials are supported on cross-site requests. Valid values: `true`, `false`.
      */
     @JsonProperty(value = "allowCredentials")
     private Boolean allowCredentials;
@@ -53,9 +57,15 @@ public final class GatewayCorsProperties {
     private List<String> exposedHeaders;
 
     /**
+     * Creates an instance of GatewayCorsProperties class.
+     */
+    public GatewayCorsProperties() {
+    }
+
+    /**
      * Get the allowedOrigins property: Allowed origins to make cross-site requests. The special value `*` allows all
      * domains.
-     *
+     * 
      * @return the allowedOrigins value.
      */
     public List<String> allowedOrigins() {
@@ -65,7 +75,7 @@ public final class GatewayCorsProperties {
     /**
      * Set the allowedOrigins property: Allowed origins to make cross-site requests. The special value `*` allows all
      * domains.
-     *
+     * 
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the GatewayCorsProperties object itself.
      */
@@ -75,9 +85,29 @@ public final class GatewayCorsProperties {
     }
 
     /**
+     * Get the allowedOriginPatterns property: Allowed origin patterns to make cross-site requests.
+     * 
+     * @return the allowedOriginPatterns value.
+     */
+    public List<String> allowedOriginPatterns() {
+        return this.allowedOriginPatterns;
+    }
+
+    /**
+     * Set the allowedOriginPatterns property: Allowed origin patterns to make cross-site requests.
+     * 
+     * @param allowedOriginPatterns the allowedOriginPatterns value to set.
+     * @return the GatewayCorsProperties object itself.
+     */
+    public GatewayCorsProperties withAllowedOriginPatterns(List<String> allowedOriginPatterns) {
+        this.allowedOriginPatterns = allowedOriginPatterns;
+        return this;
+    }
+
+    /**
      * Get the allowedMethods property: Allowed HTTP methods on cross-site requests. The special value `*` allows all
      * methods. If not set, `GET` and `HEAD` are allowed by default.
-     *
+     * 
      * @return the allowedMethods value.
      */
     public List<String> allowedMethods() {
@@ -87,7 +117,7 @@ public final class GatewayCorsProperties {
     /**
      * Set the allowedMethods property: Allowed HTTP methods on cross-site requests. The special value `*` allows all
      * methods. If not set, `GET` and `HEAD` are allowed by default.
-     *
+     * 
      * @param allowedMethods the allowedMethods value to set.
      * @return the GatewayCorsProperties object itself.
      */
@@ -99,7 +129,7 @@ public final class GatewayCorsProperties {
     /**
      * Get the allowedHeaders property: Allowed headers in cross-site requests. The special value `*` allows actual
      * requests to send any header.
-     *
+     * 
      * @return the allowedHeaders value.
      */
     public List<String> allowedHeaders() {
@@ -109,7 +139,7 @@ public final class GatewayCorsProperties {
     /**
      * Set the allowedHeaders property: Allowed headers in cross-site requests. The special value `*` allows actual
      * requests to send any header.
-     *
+     * 
      * @param allowedHeaders the allowedHeaders value to set.
      * @return the GatewayCorsProperties object itself.
      */
@@ -120,7 +150,7 @@ public final class GatewayCorsProperties {
 
     /**
      * Get the maxAge property: How long, in seconds, the response from a pre-flight request can be cached by clients.
-     *
+     * 
      * @return the maxAge value.
      */
     public Integer maxAge() {
@@ -129,7 +159,7 @@ public final class GatewayCorsProperties {
 
     /**
      * Set the maxAge property: How long, in seconds, the response from a pre-flight request can be cached by clients.
-     *
+     * 
      * @param maxAge the maxAge value to set.
      * @return the GatewayCorsProperties object itself.
      */
@@ -141,7 +171,7 @@ public final class GatewayCorsProperties {
     /**
      * Get the allowCredentials property: Whether user credentials are supported on cross-site requests. Valid values:
      * `true`, `false`.
-     *
+     * 
      * @return the allowCredentials value.
      */
     public Boolean allowCredentials() {
@@ -151,7 +181,7 @@ public final class GatewayCorsProperties {
     /**
      * Set the allowCredentials property: Whether user credentials are supported on cross-site requests. Valid values:
      * `true`, `false`.
-     *
+     * 
      * @param allowCredentials the allowCredentials value to set.
      * @return the GatewayCorsProperties object itself.
      */
@@ -162,7 +192,7 @@ public final class GatewayCorsProperties {
 
     /**
      * Get the exposedHeaders property: HTTP response headers to expose for cross-site requests.
-     *
+     * 
      * @return the exposedHeaders value.
      */
     public List<String> exposedHeaders() {
@@ -171,7 +201,7 @@ public final class GatewayCorsProperties {
 
     /**
      * Set the exposedHeaders property: HTTP response headers to expose for cross-site requests.
-     *
+     * 
      * @param exposedHeaders the exposedHeaders value to set.
      * @return the GatewayCorsProperties object itself.
      */
@@ -182,7 +212,7 @@ public final class GatewayCorsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

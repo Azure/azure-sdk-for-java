@@ -11,16 +11,19 @@ public final class HubspotSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HubspotSource model = BinaryData.fromString(
-            "{\"type\":\"HubspotSource\",\"query\":\"datazbhmyhjg\",\"queryTimeout\":\"datayernckggwiquka\",\"additionalColumns\":\"dataokeolzizfbunzm\",\"sourceRetryCount\":\"datafttmjomuwl\",\"sourceRetryWait\":\"datajwkpznsfbi\",\"maxConcurrentConnections\":\"datafzgpvdlx\",\"disableMetricsCollection\":\"dataotclcuxzllnwmgqc\",\"\":{\"dguuvgavvzvdfy\":\"datajequoxmpgfspwhf\",\"m\":\"dataqzx\"}}")
+            "{\"type\":\"xpnzpuknfpgg\",\"query\":\"datakniqoqyrcpsjea\",\"queryTimeout\":\"dataluchbfrta\",\"additionalColumns\":\"datasddy\",\"sourceRetryCount\":\"dataxsyufexivhjyxa\",\"sourceRetryWait\":\"datatkqofr\",\"maxConcurrentConnections\":\"dataccqjenzloxazy\",\"disableMetricsCollection\":\"datajbvqaey\",\"\":{\"wliitaieledmiup\":\"databdwflx\"}}")
             .toObject(HubspotSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HubspotSource model = new HubspotSource().withSourceRetryCount("datafttmjomuwl")
-            .withSourceRetryWait("datajwkpznsfbi").withMaxConcurrentConnections("datafzgpvdlx")
-            .withDisableMetricsCollection("dataotclcuxzllnwmgqc").withQueryTimeout("datayernckggwiquka")
-            .withAdditionalColumns("dataokeolzizfbunzm").withQuery("datazbhmyhjg");
+        HubspotSource model = new HubspotSource().withSourceRetryCount("dataxsyufexivhjyxa")
+            .withSourceRetryWait("datatkqofr")
+            .withMaxConcurrentConnections("dataccqjenzloxazy")
+            .withDisableMetricsCollection("datajbvqaey")
+            .withQueryTimeout("dataluchbfrta")
+            .withAdditionalColumns("datasddy")
+            .withQuery("datakniqoqyrcpsjea");
         model = BinaryData.fromObject(model).toObject(HubspotSource.class);
     }
 }

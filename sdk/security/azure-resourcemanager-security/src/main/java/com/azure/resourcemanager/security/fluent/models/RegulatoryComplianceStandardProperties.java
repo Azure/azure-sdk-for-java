@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.models.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Regulatory compliance standard data. */
+/**
+ * Regulatory compliance standard data.
+ */
 @Fluent
 public final class RegulatoryComplianceStandardProperties {
     /*
@@ -42,13 +44,15 @@ public final class RegulatoryComplianceStandardProperties {
     @JsonProperty(value = "unsupportedControls", access = JsonProperty.Access.WRITE_ONLY)
     private Integer unsupportedControls;
 
-    /** Creates an instance of RegulatoryComplianceStandardProperties class. */
+    /**
+     * Creates an instance of RegulatoryComplianceStandardProperties class.
+     */
     public RegulatoryComplianceStandardProperties() {
     }
 
     /**
      * Get the state property: Aggregative state based on the standard's supported controls states.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -57,7 +61,7 @@ public final class RegulatoryComplianceStandardProperties {
 
     /**
      * Set the state property: Aggregative state based on the standard's supported controls states.
-     *
+     * 
      * @param state the state value to set.
      * @return the RegulatoryComplianceStandardProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class RegulatoryComplianceStandardProperties {
     /**
      * Get the passedControls property: The number of supported regulatory compliance controls of the given standard
      * with a passed state.
-     *
+     * 
      * @return the passedControls value.
      */
     public Integer passedControls() {
@@ -79,7 +83,7 @@ public final class RegulatoryComplianceStandardProperties {
     /**
      * Get the failedControls property: The number of supported regulatory compliance controls of the given standard
      * with a failed state.
-     *
+     * 
      * @return the failedControls value.
      */
     public Integer failedControls() {
@@ -89,7 +93,7 @@ public final class RegulatoryComplianceStandardProperties {
     /**
      * Get the skippedControls property: The number of supported regulatory compliance controls of the given standard
      * with a skipped state.
-     *
+     * 
      * @return the skippedControls value.
      */
     public Integer skippedControls() {
@@ -99,7 +103,7 @@ public final class RegulatoryComplianceStandardProperties {
     /**
      * Get the unsupportedControls property: The number of regulatory compliance controls of the given standard which
      * are unsupported by automated assessments.
-     *
+     * 
      * @return the unsupportedControls value.
      */
     public Integer unsupportedControls() {
@@ -108,7 +112,7 @@ public final class RegulatoryComplianceStandardProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

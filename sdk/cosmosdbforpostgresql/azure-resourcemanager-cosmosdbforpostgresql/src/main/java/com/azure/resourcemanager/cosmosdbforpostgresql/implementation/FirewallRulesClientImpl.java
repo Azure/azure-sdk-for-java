@@ -38,96 +38,82 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FirewallRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FirewallRulesClient.
+ */
 public final class FirewallRulesClientImpl implements FirewallRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FirewallRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CosmosDBForPostgreSqlImpl client;
 
     /**
      * Initializes an instance of FirewallRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FirewallRulesClientImpl(CosmosDBForPostgreSqlImpl client) {
-        this.service =
-            RestProxy.create(FirewallRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FirewallRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CosmosDBForPostgreSqlFirewallRules to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for CosmosDBForPostgreSqlFirewallRules to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBForPostgreSq")
     public interface FirewallRulesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/firewallRules/{firewallRuleName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/firewallRules/{firewallRuleName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
             @PathParam("firewallRuleName") String firewallRuleName,
-            @BodyParam("application/json") FirewallRuleInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FirewallRuleInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/firewallRules/{firewallRuleName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/firewallRules/{firewallRuleName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("firewallRuleName") String firewallRuleName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/firewallRules/{firewallRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/firewallRules/{firewallRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FirewallRuleInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("firewallRuleName") String firewallRuleName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<FirewallRuleInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("firewallRuleName") String firewallRuleName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/firewallRules")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/serverGroupsv2/{clusterName}/firewallRules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FirewallRuleListResult>> listByCluster(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FirewallRuleListResult>> listByCluster(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -138,19 +124,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return represents a cluster firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String clusterName, String firewallRuleName, FirewallRuleInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String firewallRuleName, FirewallRuleInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -170,25 +152,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            firewallRuleName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, firewallRuleName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -200,23 +172,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return represents a cluster firewall rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String firewallRuleName,
-        FirewallRuleInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String firewallRuleName, FirewallRuleInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -236,22 +200,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                firewallRuleName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, clusterName, firewallRuleName, parameters, accept,
+            context);
     }
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -264,21 +220,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String clusterName, String firewallRuleName, FirewallRuleInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, firewallRuleName, parameters);
-        return this
-            .client
-            .<FirewallRuleInner, FirewallRuleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FirewallRuleInner.class,
-                FirewallRuleInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, clusterName, firewallRuleName, parameters);
+        return this.client.<FirewallRuleInner, FirewallRuleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FirewallRuleInner.class, FirewallRuleInner.class, this.client.getContext());
     }
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -291,23 +241,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String firewallRuleName,
-        FirewallRuleInner parameters,
+        String resourceGroupName, String clusterName, String firewallRuleName, FirewallRuleInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, firewallRuleName, parameters, context);
-        return this
-            .client
-            .<FirewallRuleInner, FirewallRuleInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FirewallRuleInner.class, FirewallRuleInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, clusterName, firewallRuleName, parameters, context);
+        return this.client.<FirewallRuleInner, FirewallRuleInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FirewallRuleInner.class, FirewallRuleInner.class, context);
     }
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -318,16 +263,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of represents a cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, String firewallRuleName, FirewallRuleInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, firewallRuleName, parameters)
+    public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String firewallRuleName, FirewallRuleInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, clusterName, firewallRuleName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -339,20 +283,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of represents a cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String firewallRuleName,
-        FirewallRuleInner parameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, firewallRuleName, parameters, context)
+    public SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String firewallRuleName, FirewallRuleInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, clusterName, firewallRuleName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -363,16 +302,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return represents a cluster firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FirewallRuleInner> createOrUpdateAsync(
-        String resourceGroupName, String clusterName, String firewallRuleName, FirewallRuleInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, firewallRuleName, parameters)
-            .last()
+    private Mono<FirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String firewallRuleName, FirewallRuleInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, firewallRuleName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -384,20 +322,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return represents a cluster firewall rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FirewallRuleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String firewallRuleName,
-        FirewallRuleInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, firewallRuleName, parameters, context)
-            .last()
+    private Mono<FirewallRuleInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String firewallRuleName, FirewallRuleInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, firewallRuleName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -408,14 +341,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return represents a cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FirewallRuleInner createOrUpdate(
-        String resourceGroupName, String clusterName, String firewallRuleName, FirewallRuleInner parameters) {
+    public FirewallRuleInner createOrUpdate(String resourceGroupName, String clusterName, String firewallRuleName,
+        FirewallRuleInner parameters) {
         return createOrUpdateAsync(resourceGroupName, clusterName, firewallRuleName, parameters).block();
     }
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -427,18 +360,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return represents a cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FirewallRuleInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String firewallRuleName,
-        FirewallRuleInner parameters,
-        Context context) {
+    public FirewallRuleInner createOrUpdate(String resourceGroupName, String clusterName, String firewallRuleName,
+        FirewallRuleInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, clusterName, firewallRuleName, parameters, context).block();
     }
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -448,19 +377,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String firewallRuleName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String firewallRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -475,24 +400,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            firewallRuleName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, firewallRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -503,19 +418,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String firewallRuleName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String firewallRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -530,21 +441,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                firewallRuleName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, firewallRuleName, accept, context);
     }
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -554,19 +457,17 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String firewallRuleName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, firewallRuleName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String firewallRuleName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, firewallRuleName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -577,19 +478,18 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String firewallRuleName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String firewallRuleName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, firewallRuleName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, firewallRuleName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -599,14 +499,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String firewallRuleName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String firewallRuleName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, firewallRuleName).getSyncPoller();
     }
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -617,14 +517,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String firewallRuleName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String firewallRuleName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, firewallRuleName, context).getSyncPoller();
     }
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -635,14 +535,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String firewallRuleName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, firewallRuleName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, firewallRuleName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -653,16 +552,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String firewallRuleName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, firewallRuleName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String firewallRuleName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterName, firewallRuleName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -677,7 +575,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -693,30 +591,26 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Gets information about a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a cluster firewall rule along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about a cluster firewall rule along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FirewallRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String firewallRuleName) {
+    private Mono<Response<FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String firewallRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -731,24 +625,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            firewallRuleName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, firewallRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -756,23 +640,19 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a cluster firewall rule along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about a cluster firewall rule along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FirewallRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String firewallRuleName, Context context) {
+    private Mono<Response<FirewallRuleInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String firewallRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -787,21 +667,13 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                firewallRuleName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, clusterName, firewallRuleName, accept, context);
     }
 
     /**
      * Gets information about a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -818,7 +690,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Gets information about a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -829,14 +701,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return information about a cluster firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FirewallRuleInner> getWithResponse(
-        String resourceGroupName, String clusterName, String firewallRuleName, Context context) {
+    public Response<FirewallRuleInner> getWithResponse(String resourceGroupName, String clusterName,
+        String firewallRuleName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, firewallRuleName, context).block();
     }
 
     /**
      * Gets information about a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -852,7 +724,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Lists all the firewall rules on cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -861,19 +733,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return a list of firewall rules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FirewallRuleInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<PagedResponse<FirewallRuleInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -884,27 +752,16 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByCluster(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            accept,
-                            context))
-            .<PagedResponse<FirewallRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByCluster(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context))
+            .<PagedResponse<FirewallRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the firewall rules on cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -914,19 +771,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return a list of firewall rules along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FirewallRuleInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<PagedResponse<FirewallRuleInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -938,23 +791,15 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCluster(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByCluster(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists all the firewall rules on cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -969,7 +814,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Lists all the firewall rules on cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -979,14 +824,14 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return a list of firewall rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FirewallRuleInner> listByClusterAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private PagedFlux<FirewallRuleInner> listByClusterAsync(String resourceGroupName, String clusterName,
+        Context context) {
         return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context));
     }
 
     /**
      * Lists all the firewall rules on cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1001,7 +846,7 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
 
     /**
      * Lists all the firewall rules on cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -1011,8 +856,8 @@ public final class FirewallRulesClientImpl implements FirewallRulesClient {
      * @return a list of firewall rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FirewallRuleInner> listByCluster(
-        String resourceGroupName, String clusterName, Context context) {
+    public PagedIterable<FirewallRuleInner> listByCluster(String resourceGroupName, String clusterName,
+        Context context) {
         return new PagedIterable<>(listByClusterAsync(resourceGroupName, clusterName, context));
     }
 }

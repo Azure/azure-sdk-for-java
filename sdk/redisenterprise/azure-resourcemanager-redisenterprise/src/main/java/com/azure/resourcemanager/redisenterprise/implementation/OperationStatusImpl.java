@@ -13,8 +13,7 @@ public final class OperationStatusImpl implements OperationStatus {
 
     private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
-    OperationStatusImpl(
-        OperationStatusInner innerObject,
+    OperationStatusImpl(OperationStatusInner innerObject,
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

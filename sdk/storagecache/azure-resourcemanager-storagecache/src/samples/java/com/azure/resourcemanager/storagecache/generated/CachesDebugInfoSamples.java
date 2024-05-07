@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-/** Samples for Caches DebugInfo. */
+/**
+ * Samples for Caches DebugInfo.
+ */
 public final class CachesDebugInfoSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/Caches_DebugInfo.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
+     * Caches_DebugInfo.json
      */
     /**
      * Sample code: Caches_DebugInfo.
-     *
+     * 
      * @param manager Entry point to StorageCacheManager.
      */
     public static void cachesDebugInfo(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {

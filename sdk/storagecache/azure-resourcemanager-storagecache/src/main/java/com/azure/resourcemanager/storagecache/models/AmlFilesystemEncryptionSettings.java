@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AML file system encryption settings. */
+/**
+ * AML file system encryption settings.
+ */
 @Fluent
 public final class AmlFilesystemEncryptionSettings {
     /*
@@ -16,13 +18,15 @@ public final class AmlFilesystemEncryptionSettings {
     @JsonProperty(value = "keyEncryptionKey")
     private KeyVaultKeyReference keyEncryptionKey;
 
-    /** Creates an instance of AmlFilesystemEncryptionSettings class. */
+    /**
+     * Creates an instance of AmlFilesystemEncryptionSettings class.
+     */
     public AmlFilesystemEncryptionSettings() {
     }
 
     /**
      * Get the keyEncryptionKey property: Specifies the location of the encryption key in Key Vault.
-     *
+     * 
      * @return the keyEncryptionKey value.
      */
     public KeyVaultKeyReference keyEncryptionKey() {
@@ -31,7 +35,7 @@ public final class AmlFilesystemEncryptionSettings {
 
     /**
      * Set the keyEncryptionKey property: Specifies the location of the encryption key in Key Vault.
-     *
+     * 
      * @param keyEncryptionKey the keyEncryptionKey value to set.
      * @return the AmlFilesystemEncryptionSettings object itself.
      */
@@ -42,7 +46,7 @@ public final class AmlFilesystemEncryptionSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

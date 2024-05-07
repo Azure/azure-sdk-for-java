@@ -11,16 +11,20 @@ public final class SalesforceServiceCloudSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceServiceCloudSource model = BinaryData.fromString(
-            "{\"type\":\"SalesforceServiceCloudSource\",\"query\":\"dataktalobxl\",\"readBehavior\":\"datajthmibqgld\",\"additionalColumns\":\"datatkalp\",\"sourceRetryCount\":\"datanny\",\"sourceRetryWait\":\"datajea\",\"maxConcurrentConnections\":\"datalewlwbxufq\",\"disableMetricsCollection\":\"datakkvij\",\"\":{\"ld\":\"dataqvodzowdqvq\"}}")
+            "{\"type\":\"egcg\",\"query\":\"datasz\",\"readBehavior\":\"datauqbuvpbeswgkre\",\"additionalColumns\":\"datapufkcamzcbzgikl\",\"sourceRetryCount\":\"datadpbsieymmcbikte\",\"sourceRetryWait\":\"datavqtcesvcsbyimyg\",\"maxConcurrentConnections\":\"dataduz\",\"disableMetricsCollection\":\"datanbzqweohml\",\"\":{\"tmhaerhxds\":\"dataxadmauanxzr\",\"welicrxbbqmoguy\":\"datakbrkhjj\",\"dxljjzdbzk\":\"datamselwszqveak\"}}")
             .toObject(SalesforceServiceCloudSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SalesforceServiceCloudSource model
-            = new SalesforceServiceCloudSource().withSourceRetryCount("datanny").withSourceRetryWait("datajea")
-                .withMaxConcurrentConnections("datalewlwbxufq").withDisableMetricsCollection("datakkvij")
-                .withQuery("dataktalobxl").withReadBehavior("datajthmibqgld").withAdditionalColumns("datatkalp");
+            = new SalesforceServiceCloudSource().withSourceRetryCount("datadpbsieymmcbikte")
+                .withSourceRetryWait("datavqtcesvcsbyimyg")
+                .withMaxConcurrentConnections("dataduz")
+                .withDisableMetricsCollection("datanbzqweohml")
+                .withQuery("datasz")
+                .withReadBehavior("datauqbuvpbeswgkre")
+                .withAdditionalColumns("datapufkcamzcbzgikl");
         model = BinaryData.fromObject(model).toObject(SalesforceServiceCloudSource.class);
     }
 }

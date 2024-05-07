@@ -9,37 +9,49 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
-/** Number of unauthorized operations is not in allowed range. */
+/**
+ * Number of unauthorized operations is not in allowed range.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
 @JsonTypeName("UnauthorizedOperationsNotInAllowedRange")
 @Fluent
 public final class UnauthorizedOperationsNotInAllowedRange extends TimeWindowCustomAlertRule {
-    /** Creates an instance of UnauthorizedOperationsNotInAllowedRange class. */
+    /**
+     * Creates an instance of UnauthorizedOperationsNotInAllowedRange class.
+     */
     public UnauthorizedOperationsNotInAllowedRange() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UnauthorizedOperationsNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {
         super.withTimeWindowSize(timeWindowSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UnauthorizedOperationsNotInAllowedRange withMinThreshold(int minThreshold) {
         super.withMinThreshold(minThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UnauthorizedOperationsNotInAllowedRange withMaxThreshold(int maxThreshold) {
         super.withMaxThreshold(maxThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UnauthorizedOperationsNotInAllowedRange withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -48,7 +60,7 @@ public final class UnauthorizedOperationsNotInAllowedRange extends TimeWindowCus
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

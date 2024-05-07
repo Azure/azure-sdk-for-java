@@ -35,6 +35,8 @@ public final class SasIpRange {
     }
 
     /**
+     * Gets the minimum IP address of the range.
+     *
      * @return the minimum IP address of the range
      */
     public String getIpMin() {
@@ -53,6 +55,8 @@ public final class SasIpRange {
     }
 
     /**
+     * Gets the maximum IP address of the range.
+     *
      * @return the maximum IP address of the range
      */
     public String getIpMax() {

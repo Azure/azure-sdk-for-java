@@ -9,7 +9,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.DelegatedSubnet
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Virtual network subnet usage data. */
+/**
+ * Virtual network subnet usage data.
+ */
 @Immutable
 public final class VirtualNetworkSubnetUsageResultInner {
     /*
@@ -30,13 +32,15 @@ public final class VirtualNetworkSubnetUsageResultInner {
     @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
-    /** Creates an instance of VirtualNetworkSubnetUsageResultInner class. */
+    /**
+     * Creates an instance of VirtualNetworkSubnetUsageResultInner class.
+     */
     public VirtualNetworkSubnetUsageResultInner() {
     }
 
     /**
      * Get the delegatedSubnetsUsage property: The delegatedSubnetsUsage property.
-     *
+     * 
      * @return the delegatedSubnetsUsage value.
      */
     public List<DelegatedSubnetUsage> delegatedSubnetsUsage() {
@@ -45,7 +49,7 @@ public final class VirtualNetworkSubnetUsageResultInner {
 
     /**
      * Get the location property: location of the delegated subnet usage.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -54,7 +58,7 @@ public final class VirtualNetworkSubnetUsageResultInner {
 
     /**
      * Get the subscriptionId property: subscriptionId of the delegated subnet usage.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -63,7 +67,7 @@ public final class VirtualNetworkSubnetUsageResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,17 +7,25 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Build service resource properties payload. */
+/**
+ * Build service resource properties payload.
+ */
 @Fluent
 public final class BuildServiceProperties {
     /*
+     * The resource id of the container registry used in this build service.
+     */
+    @JsonProperty(value = "containerRegistry")
+    private String containerRegistry;
+
+    /*
      * The installed KPack version in this build service.
      */
-    @JsonProperty(value = "kPackVersion")
+    @JsonProperty(value = "kPackVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kPackVersion;
 
     /*
-     * Provisioning state of the KPack build result
+     * Provisioning state of the KPack build service
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private BuildServiceProvisioningState provisioningState;
@@ -29,8 +37,34 @@ public final class BuildServiceProperties {
     private BuildServicePropertiesResourceRequests resourceRequests;
 
     /**
+     * Creates an instance of BuildServiceProperties class.
+     */
+    public BuildServiceProperties() {
+    }
+
+    /**
+     * Get the containerRegistry property: The resource id of the container registry used in this build service.
+     * 
+     * @return the containerRegistry value.
+     */
+    public String containerRegistry() {
+        return this.containerRegistry;
+    }
+
+    /**
+     * Set the containerRegistry property: The resource id of the container registry used in this build service.
+     * 
+     * @param containerRegistry the containerRegistry value to set.
+     * @return the BuildServiceProperties object itself.
+     */
+    public BuildServiceProperties withContainerRegistry(String containerRegistry) {
+        this.containerRegistry = containerRegistry;
+        return this;
+    }
+
+    /**
      * Get the kPackVersion property: The installed KPack version in this build service.
-     *
+     * 
      * @return the kPackVersion value.
      */
     public String kPackVersion() {
@@ -38,19 +72,8 @@ public final class BuildServiceProperties {
     }
 
     /**
-     * Set the kPackVersion property: The installed KPack version in this build service.
-     *
-     * @param kPackVersion the kPackVersion value to set.
-     * @return the BuildServiceProperties object itself.
-     */
-    public BuildServiceProperties withKPackVersion(String kPackVersion) {
-        this.kPackVersion = kPackVersion;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the KPack build result.
-     *
+     * Get the provisioningState property: Provisioning state of the KPack build service.
+     * 
      * @return the provisioningState value.
      */
     public BuildServiceProvisioningState provisioningState() {
@@ -59,7 +82,7 @@ public final class BuildServiceProperties {
 
     /**
      * Get the resourceRequests property: The runtime resource configuration of this build service.
-     *
+     * 
      * @return the resourceRequests value.
      */
     public BuildServicePropertiesResourceRequests resourceRequests() {
@@ -68,7 +91,7 @@ public final class BuildServiceProperties {
 
     /**
      * Set the resourceRequests property: The runtime resource configuration of this build service.
-     *
+     * 
      * @param resourceRequests the resourceRequests value to set.
      * @return the BuildServiceProperties object itself.
      */
@@ -79,7 +102,7 @@ public final class BuildServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

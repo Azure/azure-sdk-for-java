@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JitNetworkAccessPortRule model. */
+/**
+ * The JitNetworkAccessPortRule model.
+ */
 @Fluent
 public final class JitNetworkAccessPortRule {
     /*
@@ -43,13 +45,15 @@ public final class JitNetworkAccessPortRule {
     @JsonProperty(value = "maxRequestAccessDuration", required = true)
     private String maxRequestAccessDuration;
 
-    /** Creates an instance of JitNetworkAccessPortRule class. */
+    /**
+     * Creates an instance of JitNetworkAccessPortRule class.
+     */
     public JitNetworkAccessPortRule() {
     }
 
     /**
      * Get the number property: The number property.
-     *
+     * 
      * @return the number value.
      */
     public int number() {
@@ -58,7 +62,7 @@ public final class JitNetworkAccessPortRule {
 
     /**
      * Set the number property: The number property.
-     *
+     * 
      * @param number the number value to set.
      * @return the JitNetworkAccessPortRule object itself.
      */
@@ -69,7 +73,7 @@ public final class JitNetworkAccessPortRule {
 
     /**
      * Get the protocol property: The protocol property.
-     *
+     * 
      * @return the protocol value.
      */
     public Protocol protocol() {
@@ -78,7 +82,7 @@ public final class JitNetworkAccessPortRule {
 
     /**
      * Set the protocol property: The protocol property.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the JitNetworkAccessPortRule object itself.
      */
@@ -90,7 +94,7 @@ public final class JitNetworkAccessPortRule {
     /**
      * Get the allowedSourceAddressPrefix property: Mutually exclusive with the "allowedSourceAddressPrefixes"
      * parameter. Should be an IP address or CIDR, for example "192.168.0.3" or "192.168.0.0/16".
-     *
+     * 
      * @return the allowedSourceAddressPrefix value.
      */
     public String allowedSourceAddressPrefix() {
@@ -100,7 +104,7 @@ public final class JitNetworkAccessPortRule {
     /**
      * Set the allowedSourceAddressPrefix property: Mutually exclusive with the "allowedSourceAddressPrefixes"
      * parameter. Should be an IP address or CIDR, for example "192.168.0.3" or "192.168.0.0/16".
-     *
+     * 
      * @param allowedSourceAddressPrefix the allowedSourceAddressPrefix value to set.
      * @return the JitNetworkAccessPortRule object itself.
      */
@@ -112,7 +116,7 @@ public final class JitNetworkAccessPortRule {
     /**
      * Get the allowedSourceAddressPrefixes property: Mutually exclusive with the "allowedSourceAddressPrefix"
      * parameter.
-     *
+     * 
      * @return the allowedSourceAddressPrefixes value.
      */
     public List<String> allowedSourceAddressPrefixes() {
@@ -122,7 +126,7 @@ public final class JitNetworkAccessPortRule {
     /**
      * Set the allowedSourceAddressPrefixes property: Mutually exclusive with the "allowedSourceAddressPrefix"
      * parameter.
-     *
+     * 
      * @param allowedSourceAddressPrefixes the allowedSourceAddressPrefixes value to set.
      * @return the JitNetworkAccessPortRule object itself.
      */
@@ -134,7 +138,7 @@ public final class JitNetworkAccessPortRule {
     /**
      * Get the maxRequestAccessDuration property: Maximum duration requests can be made for. In ISO 8601 duration
      * format. Minimum 5 minutes, maximum 1 day.
-     *
+     * 
      * @return the maxRequestAccessDuration value.
      */
     public String maxRequestAccessDuration() {
@@ -144,7 +148,7 @@ public final class JitNetworkAccessPortRule {
     /**
      * Set the maxRequestAccessDuration property: Maximum duration requests can be made for. In ISO 8601 duration
      * format. Minimum 5 minutes, maximum 1 day.
-     *
+     * 
      * @param maxRequestAccessDuration the maxRequestAccessDuration value to set.
      * @return the JitNetworkAccessPortRule object itself.
      */
@@ -155,21 +159,17 @@ public final class JitNetworkAccessPortRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (protocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocol in model JitNetworkAccessPortRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property protocol in model JitNetworkAccessPortRule"));
         }
         if (maxRequestAccessDuration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property maxRequestAccessDuration in model JitNetworkAccessPortRule"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property maxRequestAccessDuration in model JitNetworkAccessPortRule"));
         }
     }
 

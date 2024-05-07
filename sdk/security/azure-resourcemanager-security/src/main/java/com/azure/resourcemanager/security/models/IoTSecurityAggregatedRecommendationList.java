@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedRec
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of IoT Security solution aggregated recommendations. */
+/**
+ * List of IoT Security solution aggregated recommendations.
+ */
 @Fluent
 public final class IoTSecurityAggregatedRecommendationList {
     /*
@@ -25,13 +27,15 @@ public final class IoTSecurityAggregatedRecommendationList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of IoTSecurityAggregatedRecommendationList class. */
+    /**
+     * Creates an instance of IoTSecurityAggregatedRecommendationList class.
+     */
     public IoTSecurityAggregatedRecommendationList() {
     }
 
     /**
      * Get the value property: List of aggregated recommendations data.
-     *
+     * 
      * @return the value value.
      */
     public List<IoTSecurityAggregatedRecommendationInner> value() {
@@ -40,7 +44,7 @@ public final class IoTSecurityAggregatedRecommendationList {
 
     /**
      * Set the value property: List of aggregated recommendations data.
-     *
+     * 
      * @param value the value value to set.
      * @return the IoTSecurityAggregatedRecommendationList object itself.
      */
@@ -51,7 +55,7 @@ public final class IoTSecurityAggregatedRecommendationList {
 
     /**
      * Get the nextLink property: When there is too much alert data for one page, use this URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class IoTSecurityAggregatedRecommendationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model IoTSecurityAggregatedRecommendationList"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model IoTSecurityAggregatedRecommendationList"));
         } else {
             value().forEach(e -> e.validate());
         }

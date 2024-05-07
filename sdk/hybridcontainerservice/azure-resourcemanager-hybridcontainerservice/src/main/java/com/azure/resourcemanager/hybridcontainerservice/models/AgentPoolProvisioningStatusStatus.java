@@ -9,21 +9,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Defines the observed state of the agent pool.
+ * The observed status of the agent pool.
  */
 @Fluent
 public final class AgentPoolProvisioningStatusStatus {
     /*
-     * ErrorMessage - Error messages during creation of agent pool
+     * The current state of the agent pool.
+     */
+    @JsonProperty(value = "currentState", access = JsonProperty.Access.WRITE_ONLY)
+    private ResourceProvisioningState currentState;
+
+    /*
+     * Error messages during an agent pool operation or steady state.
      */
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
-
-    /*
-     * Contains Provisioning errors
-     */
-    @JsonProperty(value = "operationStatus")
-    private AgentPoolProvisioningStatusOperationStatus operationStatus;
 
     /*
      * The readyReplicas property.
@@ -38,7 +38,16 @@ public final class AgentPoolProvisioningStatusStatus {
     }
 
     /**
-     * Get the errorMessage property: ErrorMessage - Error messages during creation of agent pool.
+     * Get the currentState property: The current state of the agent pool.
+     * 
+     * @return the currentState value.
+     */
+    public ResourceProvisioningState currentState() {
+        return this.currentState;
+    }
+
+    /**
+     * Get the errorMessage property: Error messages during an agent pool operation or steady state.
      * 
      * @return the errorMessage value.
      */
@@ -47,34 +56,13 @@ public final class AgentPoolProvisioningStatusStatus {
     }
 
     /**
-     * Set the errorMessage property: ErrorMessage - Error messages during creation of agent pool.
+     * Set the errorMessage property: Error messages during an agent pool operation or steady state.
      * 
      * @param errorMessage the errorMessage value to set.
      * @return the AgentPoolProvisioningStatusStatus object itself.
      */
     public AgentPoolProvisioningStatusStatus withErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
-        return this;
-    }
-
-    /**
-     * Get the operationStatus property: Contains Provisioning errors.
-     * 
-     * @return the operationStatus value.
-     */
-    public AgentPoolProvisioningStatusOperationStatus operationStatus() {
-        return this.operationStatus;
-    }
-
-    /**
-     * Set the operationStatus property: Contains Provisioning errors.
-     * 
-     * @param operationStatus the operationStatus value to set.
-     * @return the AgentPoolProvisioningStatusStatus object itself.
-     */
-    public AgentPoolProvisioningStatusStatus
-        withOperationStatus(AgentPoolProvisioningStatusOperationStatus operationStatus) {
-        this.operationStatus = operationStatus;
         return this;
     }
 
@@ -104,9 +92,6 @@ public final class AgentPoolProvisioningStatusStatus {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (operationStatus() != null) {
-            operationStatus().validate();
-        }
         if (readyReplicas() != null) {
             readyReplicas().forEach(e -> e.validate());
         }

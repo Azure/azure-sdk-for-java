@@ -17,8 +17,7 @@ public final class GetPrivateDnsZoneSuffixesImpl implements GetPrivateDnsZoneSuf
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public GetPrivateDnsZoneSuffixesImpl(
-        GetPrivateDnsZoneSuffixesClient innerClient,
+    public GetPrivateDnsZoneSuffixesImpl(GetPrivateDnsZoneSuffixesClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

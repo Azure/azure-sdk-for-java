@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Discover protectable item properties. */
+/**
+ * Discover protectable item properties.
+ */
 @Fluent
 public final class DiscoverProtectableItemRequestProperties {
     /*
@@ -28,13 +30,15 @@ public final class DiscoverProtectableItemRequestProperties {
     @JsonProperty(value = "osType")
     private String osType;
 
-    /** Creates an instance of DiscoverProtectableItemRequestProperties class. */
+    /**
+     * Creates an instance of DiscoverProtectableItemRequestProperties class.
+     */
     public DiscoverProtectableItemRequestProperties() {
     }
 
     /**
      * Get the friendlyName property: The friendly name of the physical machine.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -43,7 +47,7 @@ public final class DiscoverProtectableItemRequestProperties {
 
     /**
      * Set the friendlyName property: The friendly name of the physical machine.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the DiscoverProtectableItemRequestProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class DiscoverProtectableItemRequestProperties {
 
     /**
      * Get the ipAddress property: The IP address of the physical machine to be discovered.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -63,7 +67,7 @@ public final class DiscoverProtectableItemRequestProperties {
 
     /**
      * Set the ipAddress property: The IP address of the physical machine to be discovered.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the DiscoverProtectableItemRequestProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class DiscoverProtectableItemRequestProperties {
 
     /**
      * Get the osType property: The OS type on the physical machine.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -83,7 +87,7 @@ public final class DiscoverProtectableItemRequestProperties {
 
     /**
      * Set the osType property: The OS type on the physical machine.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the DiscoverProtectableItemRequestProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class DiscoverProtectableItemRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

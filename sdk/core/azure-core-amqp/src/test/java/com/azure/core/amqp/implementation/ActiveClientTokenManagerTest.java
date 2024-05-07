@@ -90,9 +90,7 @@ class ActiveClientTokenManagerTest {
         tokenManager.authorize().then(Mono.fromRunnable(tokenManager::close)).block();
 
         // Act & Assert
-        StepVerifier.create(tokenManager.authorize())
-            .expectError(AzureException.class)
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(tokenManager.authorize()).expectError(AzureException.class).verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -107,10 +105,17 @@ class ActiveClientTokenManagerTest {
         AtomicInteger authorizationCalls = new AtomicInteger();
         ClaimsBasedSecurityNode cbsNode = new MockClaimsBasedSecurityNode(() -> {
             switch (authorizationCalls.getAndIncrement()) {
-                case 0: return getNextExpiration(DEFAULT_DURATION);
-                case 1: return Mono.error(error);
-                case 2: return getNextExpiration(DEFAULT_DURATION);
-                default: return Mono.error(new IllegalStateException("Too many authorization requests"));
+                case 0:
+                    return getNextExpiration(DEFAULT_DURATION);
+
+                case 1:
+                    return Mono.error(error);
+
+                case 2:
+                    return getNextExpiration(DEFAULT_DURATION);
+
+                default:
+                    return Mono.error(new IllegalStateException("Too many authorization requests"));
             }
         });
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
@@ -140,10 +145,17 @@ class ActiveClientTokenManagerTest {
         AtomicInteger authorizationCalls = new AtomicInteger();
         ClaimsBasedSecurityNode cbsNode = new MockClaimsBasedSecurityNode(() -> {
             switch (authorizationCalls.getAndIncrement()) {
-                case 0: return getNextExpiration(DEFAULT_DURATION);
-                case 1: return Mono.error(error);
-                case 2: return getNextExpiration(DEFAULT_DURATION);
-                default: return Mono.error(new IllegalStateException("Too many authorization requests"));
+                case 0:
+                    return getNextExpiration(DEFAULT_DURATION);
+
+                case 1:
+                    return Mono.error(error);
+
+                case 2:
+                    return getNextExpiration(DEFAULT_DURATION);
+
+                default:
+                    return Mono.error(new IllegalStateException("Too many authorization requests"));
             }
         });
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);

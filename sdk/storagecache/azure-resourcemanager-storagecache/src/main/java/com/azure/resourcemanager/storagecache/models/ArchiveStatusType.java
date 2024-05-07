@@ -8,35 +8,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of the archive operation. */
+/**
+ * The state of the archive operation.
+ */
 public final class ArchiveStatusType extends ExpandableStringEnum<ArchiveStatusType> {
-    /** Static value NotConfigured for ArchiveStatusType. */
+    /**
+     * Static value NotConfigured for ArchiveStatusType.
+     */
     public static final ArchiveStatusType NOT_CONFIGURED = fromString("NotConfigured");
 
-    /** Static value Idle for ArchiveStatusType. */
+    /**
+     * Static value Idle for ArchiveStatusType.
+     */
     public static final ArchiveStatusType IDLE = fromString("Idle");
 
-    /** Static value InProgress for ArchiveStatusType. */
+    /**
+     * Static value InProgress for ArchiveStatusType.
+     */
     public static final ArchiveStatusType IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Canceled for ArchiveStatusType. */
+    /**
+     * Static value Canceled for ArchiveStatusType.
+     */
     public static final ArchiveStatusType CANCELED = fromString("Canceled");
 
-    /** Static value Completed for ArchiveStatusType. */
+    /**
+     * Static value Completed for ArchiveStatusType.
+     */
     public static final ArchiveStatusType COMPLETED = fromString("Completed");
 
-    /** Static value Failed for ArchiveStatusType. */
+    /**
+     * Static value Failed for ArchiveStatusType.
+     */
     public static final ArchiveStatusType FAILED = fromString("Failed");
 
-    /** Static value Cancelling for ArchiveStatusType. */
+    /**
+     * Static value Cancelling for ArchiveStatusType.
+     */
     public static final ArchiveStatusType CANCELLING = fromString("Cancelling");
 
-    /** Static value FSScanInProgress for ArchiveStatusType. */
+    /**
+     * Static value FSScanInProgress for ArchiveStatusType.
+     */
     public static final ArchiveStatusType FSSCAN_IN_PROGRESS = fromString("FSScanInProgress");
 
     /**
      * Creates a new instance of ArchiveStatusType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +63,7 @@ public final class ArchiveStatusType extends ExpandableStringEnum<ArchiveStatusT
 
     /**
      * Creates or finds a ArchiveStatusType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ArchiveStatusType.
      */
@@ -56,7 +74,7 @@ public final class ArchiveStatusType extends ExpandableStringEnum<ArchiveStatusT
 
     /**
      * Gets known ArchiveStatusType values.
-     *
+     * 
      * @return known ArchiveStatusType values.
      */
     public static Collection<ArchiveStatusType> values() {

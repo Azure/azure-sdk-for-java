@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Identity provider details. */
+/**
+ * Identity provider details.
+ */
 @Fluent
 public final class IdentityProviderDetails {
     /*
@@ -44,14 +46,16 @@ public final class IdentityProviderDetails {
     @JsonProperty(value = "aadAuthority")
     private String aadAuthority;
 
-    /** Creates an instance of IdentityProviderDetails class. */
+    /**
+     * Creates an instance of IdentityProviderDetails class.
+     */
     public IdentityProviderDetails() {
     }
 
     /**
      * Get the tenantId property: The tenant Id for the service principal with which the on-premise management/data
      * plane components would communicate with our Azure services.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -61,7 +65,7 @@ public final class IdentityProviderDetails {
     /**
      * Set the tenantId property: The tenant Id for the service principal with which the on-premise management/data
      * plane components would communicate with our Azure services.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the IdentityProviderDetails object itself.
      */
@@ -73,7 +77,7 @@ public final class IdentityProviderDetails {
     /**
      * Get the applicationId property: The application/client Id for the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -83,7 +87,7 @@ public final class IdentityProviderDetails {
     /**
      * Set the applicationId property: The application/client Id for the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the IdentityProviderDetails object itself.
      */
@@ -93,9 +97,9 @@ public final class IdentityProviderDetails {
     }
 
     /**
-     * Get the objectId property: The object Id of the service principal with which the on-premise management/data plane
-     * components would communicate with our Azure services.
-     *
+     * Get the objectId property: The object Id of the service principal with which the on-premise management/data
+     * plane components would communicate with our Azure services.
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -103,9 +107,9 @@ public final class IdentityProviderDetails {
     }
 
     /**
-     * Set the objectId property: The object Id of the service principal with which the on-premise management/data plane
-     * components would communicate with our Azure services.
-     *
+     * Set the objectId property: The object Id of the service principal with which the on-premise management/data
+     * plane components would communicate with our Azure services.
+     * 
      * @param objectId the objectId value to set.
      * @return the IdentityProviderDetails object itself.
      */
@@ -117,7 +121,7 @@ public final class IdentityProviderDetails {
     /**
      * Get the audience property: The intended Audience of the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @return the audience value.
      */
     public String audience() {
@@ -127,7 +131,7 @@ public final class IdentityProviderDetails {
     /**
      * Set the audience property: The intended Audience of the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @param audience the audience value to set.
      * @return the IdentityProviderDetails object itself.
      */
@@ -138,7 +142,7 @@ public final class IdentityProviderDetails {
 
     /**
      * Get the aadAuthority property: The base authority for Azure Active Directory authentication.
-     *
+     * 
      * @return the aadAuthority value.
      */
     public String aadAuthority() {
@@ -147,7 +151,7 @@ public final class IdentityProviderDetails {
 
     /**
      * Set the aadAuthority property: The base authority for Azure Active Directory authentication.
-     *
+     * 
      * @param aadAuthority the aadAuthority value to set.
      * @return the IdentityProviderDetails object itself.
      */
@@ -158,7 +162,7 @@ public final class IdentityProviderDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

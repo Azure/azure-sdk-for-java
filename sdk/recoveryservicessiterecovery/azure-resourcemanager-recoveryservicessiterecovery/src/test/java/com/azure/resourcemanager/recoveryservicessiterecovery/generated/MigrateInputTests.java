@@ -12,19 +12,16 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrateProv
 public final class MigrateInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"MigrateProviderSpecificInput\"}}}")
-                .toObject(MigrateInput.class);
+        MigrateInput model = BinaryData
+            .fromString(
+                "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"MigrateProviderSpecificInput\"}}}")
+            .toObject(MigrateInput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrateInput model =
-            new MigrateInput()
-                .withProperties(
-                    new MigrateInputProperties().withProviderSpecificDetails(new MigrateProviderSpecificInput()));
+        MigrateInput model = new MigrateInput().withProperties(
+            new MigrateInputProperties().withProviderSpecificDetails(new MigrateProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(MigrateInput.class);
     }
 }

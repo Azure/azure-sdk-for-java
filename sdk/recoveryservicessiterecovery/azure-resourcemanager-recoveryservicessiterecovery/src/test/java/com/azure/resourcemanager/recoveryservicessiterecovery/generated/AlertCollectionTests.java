@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"sendToOwners\":\"n\",\"customEmailAddresses\":[\"ybrk\"],\"locale\":\"dumjgrtfwvuk\"},\"location\":\"audccsnhs\",\"id\":\"cnyejhkryhtnapcz\",\"name\":\"lokjyemkk\",\"type\":\"ni\"}],\"nextLink\":\"oxzjnchgejspod\"}")
-                .toObject(AlertCollection.class);
+        AlertCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"sendToOwners\":\"n\",\"customEmailAddresses\":[\"ybrk\"],\"locale\":\"dumjgrtfwvuk\"},\"location\":\"audccsnhs\",\"id\":\"cnyejhkryhtnapcz\",\"name\":\"lokjyemkk\",\"type\":\"ni\"}],\"nextLink\":\"oxzjnchgejspod\"}")
+            .toObject(AlertCollection.class);
         Assertions.assertEquals("n", model.value().get(0).properties().sendToOwners());
         Assertions.assertEquals("ybrk", model.value().get(0).properties().customEmailAddresses().get(0));
         Assertions.assertEquals("dumjgrtfwvuk", model.value().get(0).properties().locale());
@@ -28,19 +26,11 @@ public final class AlertCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertCollection model =
-            new AlertCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AlertInner()
-                                .withProperties(
-                                    new AlertProperties()
-                                        .withSendToOwners("n")
-                                        .withCustomEmailAddresses(Arrays.asList("ybrk"))
-                                        .withLocale("dumjgrtfwvuk"))
-                                .withLocation("audccsnhs")))
-                .withNextLink("oxzjnchgejspod");
+        AlertCollection model
+            = new AlertCollection().withValue(Arrays.asList(new AlertInner()
+                .withProperties(new AlertProperties().withSendToOwners("n")
+                    .withCustomEmailAddresses(Arrays.asList("ybrk")).withLocale("dumjgrtfwvuk"))
+                .withLocation("audccsnhs"))).withNextLink("oxzjnchgejspod");
         model = BinaryData.fromObject(model).toObject(AlertCollection.class);
         Assertions.assertEquals("n", model.value().get(0).properties().sendToOwners());
         Assertions.assertEquals("ybrk", model.value().get(0).properties().customEmailAddresses().get(0));

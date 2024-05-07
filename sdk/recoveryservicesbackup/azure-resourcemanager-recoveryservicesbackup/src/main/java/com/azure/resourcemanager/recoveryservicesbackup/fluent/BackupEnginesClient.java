@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupEngineBaseResourceInner;
 
-/** An instance of this class provides access to all the operations defined in BackupEnginesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupEnginesClient.
+ */
 public interface BackupEnginesClient {
     /**
      * Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface BackupEnginesClient {
 
     /**
      * Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -40,12 +42,12 @@ public interface BackupEnginesClient {
      * @return list of BackupEngineBase resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BackupEngineBaseResourceInner> list(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context);
+    PagedIterable<BackupEngineBaseResourceInner> list(String vaultName, String resourceGroupName, String filter,
+        String skipToken, Context context);
 
     /**
      * Returns backup management server registered to Recovery Services Vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param backupEngineName Name of the backup management server.
@@ -58,17 +60,12 @@ public interface BackupEnginesClient {
      * @return the base backup engine class along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupEngineBaseResourceInner> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String backupEngineName,
-        String filter,
-        String skipToken,
-        Context context);
+    Response<BackupEngineBaseResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String backupEngineName, String filter, String skipToken, Context context);
 
     /**
      * Returns backup management server registered to Recovery Services Vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param backupEngineName Name of the backup management server.

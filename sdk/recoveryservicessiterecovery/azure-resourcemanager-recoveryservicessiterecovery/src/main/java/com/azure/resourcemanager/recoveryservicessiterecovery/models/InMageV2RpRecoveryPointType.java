@@ -8,24 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The recovery point type. */
+/**
+ * The recovery point type.
+ */
 public final class InMageV2RpRecoveryPointType extends ExpandableStringEnum<InMageV2RpRecoveryPointType> {
-    /** Static value Latest for InMageV2RpRecoveryPointType. */
+    /**
+     * Static value Latest for InMageV2RpRecoveryPointType.
+     */
     public static final InMageV2RpRecoveryPointType LATEST = fromString("Latest");
 
-    /** Static value LatestApplicationConsistent for InMageV2RpRecoveryPointType. */
-    public static final InMageV2RpRecoveryPointType LATEST_APPLICATION_CONSISTENT =
-        fromString("LatestApplicationConsistent");
+    /**
+     * Static value LatestApplicationConsistent for InMageV2RpRecoveryPointType.
+     */
+    public static final InMageV2RpRecoveryPointType LATEST_APPLICATION_CONSISTENT
+        = fromString("LatestApplicationConsistent");
 
-    /** Static value LatestCrashConsistent for InMageV2RpRecoveryPointType. */
+    /**
+     * Static value LatestCrashConsistent for InMageV2RpRecoveryPointType.
+     */
     public static final InMageV2RpRecoveryPointType LATEST_CRASH_CONSISTENT = fromString("LatestCrashConsistent");
 
-    /** Static value LatestProcessed for InMageV2RpRecoveryPointType. */
+    /**
+     * Static value LatestProcessed for InMageV2RpRecoveryPointType.
+     */
     public static final InMageV2RpRecoveryPointType LATEST_PROCESSED = fromString("LatestProcessed");
 
     /**
      * Creates a new instance of InMageV2RpRecoveryPointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +44,7 @@ public final class InMageV2RpRecoveryPointType extends ExpandableStringEnum<InMa
 
     /**
      * Creates or finds a InMageV2RpRecoveryPointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InMageV2RpRecoveryPointType.
      */
@@ -45,7 +55,7 @@ public final class InMageV2RpRecoveryPointType extends ExpandableStringEnum<InMa
 
     /**
      * Gets known InMageV2RpRecoveryPointType values.
-     *
+     * 
      * @return known InMageV2RpRecoveryPointType values.
      */
     public static Collection<InMageV2RpRecoveryPointType> values() {

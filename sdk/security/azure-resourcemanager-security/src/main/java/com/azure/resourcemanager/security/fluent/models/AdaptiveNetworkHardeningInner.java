@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The resource whose properties describes the Adaptive Network Hardening settings for some Azure resource. */
+/**
+ * The resource whose properties describes the Adaptive Network Hardening settings for some Azure resource.
+ */
 @Fluent
 public final class AdaptiveNetworkHardeningInner extends ProxyResource {
     /*
@@ -21,13 +23,15 @@ public final class AdaptiveNetworkHardeningInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AdaptiveNetworkHardeningProperties innerProperties;
 
-    /** Creates an instance of AdaptiveNetworkHardeningInner class. */
+    /**
+     * Creates an instance of AdaptiveNetworkHardeningInner class.
+     */
     public AdaptiveNetworkHardeningInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Adaptive Network Hardening resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AdaptiveNetworkHardeningProperties innerProperties() {
@@ -36,7 +40,7 @@ public final class AdaptiveNetworkHardeningInner extends ProxyResource {
 
     /**
      * Get the rules property: The security rules which are recommended to be effective on the VM.
-     *
+     * 
      * @return the rules value.
      */
     public List<Rule> rules() {
@@ -45,7 +49,7 @@ public final class AdaptiveNetworkHardeningInner extends ProxyResource {
 
     /**
      * Set the rules property: The security rules which are recommended to be effective on the VM.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the AdaptiveNetworkHardeningInner object itself.
      */
@@ -59,7 +63,7 @@ public final class AdaptiveNetworkHardeningInner extends ProxyResource {
 
     /**
      * Get the rulesCalculationTime property: The UTC time on which the rules were calculated.
-     *
+     * 
      * @return the rulesCalculationTime value.
      */
     public OffsetDateTime rulesCalculationTime() {
@@ -68,7 +72,7 @@ public final class AdaptiveNetworkHardeningInner extends ProxyResource {
 
     /**
      * Set the rulesCalculationTime property: The UTC time on which the rules were calculated.
-     *
+     * 
      * @param rulesCalculationTime the rulesCalculationTime value to set.
      * @return the AdaptiveNetworkHardeningInner object itself.
      */
@@ -83,7 +87,7 @@ public final class AdaptiveNetworkHardeningInner extends ProxyResource {
     /**
      * Get the effectiveNetworkSecurityGroups property: The Network Security Groups effective on the network interfaces
      * of the protected resource.
-     *
+     * 
      * @return the effectiveNetworkSecurityGroups value.
      */
     public List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups() {
@@ -93,12 +97,12 @@ public final class AdaptiveNetworkHardeningInner extends ProxyResource {
     /**
      * Set the effectiveNetworkSecurityGroups property: The Network Security Groups effective on the network interfaces
      * of the protected resource.
-     *
+     * 
      * @param effectiveNetworkSecurityGroups the effectiveNetworkSecurityGroups value to set.
      * @return the AdaptiveNetworkHardeningInner object itself.
      */
-    public AdaptiveNetworkHardeningInner withEffectiveNetworkSecurityGroups(
-        List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups) {
+    public AdaptiveNetworkHardeningInner
+        withEffectiveNetworkSecurityGroups(List<EffectiveNetworkSecurityGroups> effectiveNetworkSecurityGroups) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AdaptiveNetworkHardeningProperties();
         }
@@ -108,7 +112,7 @@ public final class AdaptiveNetworkHardeningInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

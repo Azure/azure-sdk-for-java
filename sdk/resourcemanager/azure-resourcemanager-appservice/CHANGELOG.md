@@ -1,14 +1,61 @@
 # Release History
 
-## 2.35.0-beta.1 (Unreleased)
+## 2.39.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Supported disabling public network access in `FunctionApp` via `disablePublicNetworkAccess()`, for private link feature.
+- Supported disabling public network access in `DeploymentSlot` via `disablePublicNetworkAccess()`, for private link feature.
+- Supported disabling public network access in `FunctionDeploymentSlot` via `disablePublicNetworkAccess()`, for private link feature.
+
+## 2.38.0 (2024-04-16)
+
+### Features Added
+
+- Supported disabling public network access in `WebApp` via `disablePublicNetworkAccess()`, for private link feature.
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.36.1 (2024-03-04)
 
 ### Bugs Fixed
 
+- Fixed NullPointerException when updating Function App in Azure Container Apps.
+- Fixed a bug that `withPrivateRegistryImage` doesn't work as expected for Function App in Azure Container Apps.
+
+## 2.36.0 (2024-02-29)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.35.2 (2024-02-05)
+
+### Bugs Fixed
+
+- Fixed a bug that Function App in Azure Container Apps environment doesn't support creating from private container registry image.
+
+## 2.35.1 (2024-01-31)
+
+### Bugs Fixed
+
+- Mitigated backend error when creating Function App in Azure Container Apps environment.
+
+## 2.35.0 (2024-01-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.34.0 (2023-12-22)
 

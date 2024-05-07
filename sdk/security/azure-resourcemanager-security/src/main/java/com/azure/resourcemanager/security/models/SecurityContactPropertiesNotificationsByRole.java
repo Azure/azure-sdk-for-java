@@ -26,16 +26,18 @@ public final class SecurityContactPropertiesNotificationsByRole {
      * roles:
      */
     @JsonProperty(value = "roles")
-    private List<Roles> roles;
+    private List<SecurityContactRole> roles;
 
-    /** Creates an instance of SecurityContactPropertiesNotificationsByRole class. */
+    /**
+     * Creates an instance of SecurityContactPropertiesNotificationsByRole class.
+     */
     public SecurityContactPropertiesNotificationsByRole() {
     }
 
     /**
-     * Get the state property: Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons
-     * with specific RBAC roles on the subscription.
-     *
+     * Get the state property: Defines whether to send email notifications from AMicrosoft Defender for Cloud to
+     * persons with specific RBAC roles on the subscription.
+     * 
      * @return the state value.
      */
     public State state() {
@@ -43,9 +45,9 @@ public final class SecurityContactPropertiesNotificationsByRole {
     }
 
     /**
-     * Set the state property: Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons
-     * with specific RBAC roles on the subscription.
-     *
+     * Set the state property: Defines whether to send email notifications from AMicrosoft Defender for Cloud to
+     * persons with specific RBAC roles on the subscription.
+     * 
      * @param state the state value to set.
      * @return the SecurityContactPropertiesNotificationsByRole object itself.
      */
@@ -57,28 +59,28 @@ public final class SecurityContactPropertiesNotificationsByRole {
     /**
      * Get the roles property: Defines which RBAC roles will get email notifications from Microsoft Defender for Cloud.
      * List of allowed RBAC roles:.
-     *
+     * 
      * @return the roles value.
      */
-    public List<Roles> roles() {
+    public List<SecurityContactRole> roles() {
         return this.roles;
     }
 
     /**
      * Set the roles property: Defines which RBAC roles will get email notifications from Microsoft Defender for Cloud.
      * List of allowed RBAC roles:.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the SecurityContactPropertiesNotificationsByRole object itself.
      */
-    public SecurityContactPropertiesNotificationsByRole withRoles(List<Roles> roles) {
+    public SecurityContactPropertiesNotificationsByRole withRoles(List<SecurityContactRole> roles) {
         this.roles = roles;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

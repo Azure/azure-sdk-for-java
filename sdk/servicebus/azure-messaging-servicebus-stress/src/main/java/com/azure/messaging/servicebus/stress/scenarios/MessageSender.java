@@ -46,7 +46,7 @@ public class MessageSender extends ServiceBusScenario {
                 try {
                     client.sendMessages(createBatchSync(client, messagePayload, batchSize));
                 } catch (Exception ex) {
-                    recordError("send error", ex, "send");
+                    telemetryHelper.recordError(ex, "send");
                 }
             } else {
                 blockingWait(Duration.ofMillis(10));

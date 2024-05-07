@@ -16,25 +16,26 @@ public final class KubernetesVersionProfileListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesVersionProfileList model = BinaryData.fromString(
-            "{\"value\":[{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"crpab\"},\"properties\":{\"provisioningState\":\"Deleting\",\"values\":[{\"version\":\"tazqugxywpmueefj\",\"capabilities\":{},\"isPreview\":true,\"patchVersions\":{\"ujidsuyono\":{}}},{\"version\":\"laocqxtccmg\",\"capabilities\":{},\"isPreview\":false,\"patchVersions\":{\"lmoyrx\":{},\"wfudwpzntxhdzhl\":{}}},{\"version\":\"jbhckfrlhr\",\"capabilities\":{},\"isPreview\":false,\"patchVersions\":{\"pycanuzbpz\":{},\"afkuwb\":{},\"rnwb\":{}}},{\"version\":\"hhseyv\",\"capabilities\":{},\"isPreview\":false,\"patchVersions\":{\"lhspkdee\":{}}}]},\"id\":\"ofmxagkvtmelmqkr\",\"name\":\"ahvljuaha\",\"type\":\"uhcdhm\"},{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"exq\"},\"properties\":{\"provisioningState\":\"Updating\",\"values\":[{\"version\":\"sr\",\"capabilities\":{},\"isPreview\":false,\"patchVersions\":{\"vgomz\":{}}},{\"version\":\"misgwbnb\",\"capabilities\":{},\"isPreview\":true,\"patchVersions\":{\"k\":{}}},{\"version\":\"ali\",\"capabilities\":{},\"isPreview\":true,\"patchVersions\":{\"kauhashsfwxo\":{},\"owzxcu\":{}}},{\"version\":\"cjooxdjebwpucwwf\",\"capabilities\":{},\"isPreview\":true,\"patchVersions\":{\"euecivyhzceuoj\":{}}}]},\"id\":\"rw\",\"name\":\"ueiotwmcdyt\",\"type\":\"x\"}],\"nextLink\":\"txnrjaw\"}")
+            "{\"value\":[{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"iexzfeyue\"},\"properties\":{\"provisioningState\":\"Creating\",\"values\":[{\"version\":\"wbhqwal\",\"isPreview\":true,\"patchVersions\":{\"xaepdkzjancuxr\":{},\"d\":{}}}]},\"id\":\"avxbniwdjswztsdb\",\"name\":\"gnxytxhpzxbz\",\"type\":\"fzab\"},{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"xwtctyqiklbbovpl\"},\"properties\":{\"provisioningState\":\"Updating\",\"values\":[{\"version\":\"u\",\"isPreview\":false,\"patchVersions\":{\"mkfssxqukkfplgm\":{},\"sxnkjzkdeslpvlo\":{},\"wiyighxpkdw\":{}}}]},\"id\":\"aiuebbaumnyqu\",\"name\":\"edeojnabc\",\"type\":\"hsmtxpsiebtfhvp\"}],\"nextLink\":\"apskrdqm\"}")
             .toObject(KubernetesVersionProfileList.class);
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("crpab", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("txnrjaw", model.nextLink());
+        Assertions.assertEquals("iexzfeyue", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("apskrdqm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KubernetesVersionProfileList model = new KubernetesVersionProfileList()
-            .withValue(Arrays.asList(
-                new KubernetesVersionProfileInner().withExtendedLocation(
-                    new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("crpab")),
-                new KubernetesVersionProfileInner().withExtendedLocation(
-                    new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("exq"))))
-            .withNextLink("txnrjaw");
+        KubernetesVersionProfileList model
+            = new KubernetesVersionProfileList()
+                .withValue(Arrays.asList(
+                    new KubernetesVersionProfileInner().withExtendedLocation(
+                        new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("iexzfeyue")),
+                    new KubernetesVersionProfileInner().withExtendedLocation(new ExtendedLocation()
+                        .withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("xwtctyqiklbbovpl"))))
+                .withNextLink("apskrdqm");
         model = BinaryData.fromObject(model).toObject(KubernetesVersionProfileList.class);
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("crpab", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("txnrjaw", model.nextLink());
+        Assertions.assertEquals("iexzfeyue", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("apskrdqm", model.nextLink());
     }
 }

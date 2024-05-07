@@ -14,14 +14,14 @@ public final class ParquetReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParquetReadSettings model = BinaryData.fromString(
-            "{\"type\":\"ParquetReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"qclftpne\":\"dataysbvoliviank\",\"kohnroaqzekgg\":\"datauxpdnlbpnb\"}},\"\":{\"yuofegrz\":\"dataxfspxghwf\"}}")
+            "{\"type\":\"ift\",\"compressionProperties\":{\"type\":\"ofts\",\"\":{\"vjemp\":\"datawusfbrnjvzly\",\"wzntbi\":\"dataubs\",\"fg\":\"datau\"}},\"\":{\"hcfndijz\":\"datapuukpswwutdu\",\"mxtijssytdp\":\"datavckhbu\"}}")
             .toObject(ParquetReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParquetReadSettings model = new ParquetReadSettings().withCompressionProperties(
-            new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings")));
+        ParquetReadSettings model = new ParquetReadSettings()
+            .withCompressionProperties(new CompressionReadSettings().withAdditionalProperties(mapOf("type", "ofts")));
         model = BinaryData.fromObject(model).toObject(ParquetReadSettings.class);
     }
 

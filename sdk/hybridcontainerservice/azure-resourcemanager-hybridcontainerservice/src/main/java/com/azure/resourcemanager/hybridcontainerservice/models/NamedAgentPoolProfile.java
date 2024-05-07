@@ -7,27 +7,35 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Agent pool profile along with a name parameter.
+ * Profile of the default agent pool along with a name parameter.
  */
 @Fluent
-public class NamedAgentPoolProfile extends AgentPoolProfile {
+public final class NamedAgentPoolProfile extends AgentPoolProfile {
     /*
-     * Count - Number of agents to host docker containers. Allowed values must be in the range of 1 to 100 (inclusive).
-     * The default value is 1.
+     * Number of nodes in the agent pool. The default value is 1.
      */
     @JsonProperty(value = "count")
     private Integer count;
 
     /*
-     * VmSize - The size of the agent pool VMs.
+     * The VM sku size of the agent pool node VMs.
      */
     @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
-     * Unique name of the agent pool profile in the context of the subscription and resource group.
+     * Version of Kubernetes in use by the agent pool. This is inherited from the kubernetesVersion of the provisioned
+     * cluster.
+     */
+    @JsonProperty(value = "kubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String kubernetesVersion;
+
+    /*
+     * Unique name of the default agent pool in the context of the provisioned cluster. Default value is
+     * <clusterName>-nodepool1
      */
     @JsonProperty(value = "name")
     private String name;
@@ -39,8 +47,7 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
     }
 
     /**
-     * Get the count property: Count - Number of agents to host docker containers. Allowed values must be in the range
-     * of 1 to 100 (inclusive). The default value is 1.
+     * Get the count property: Number of nodes in the agent pool. The default value is 1.
      * 
      * @return the count value.
      */
@@ -49,8 +56,7 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
     }
 
     /**
-     * Set the count property: Count - Number of agents to host docker containers. Allowed values must be in the range
-     * of 1 to 100 (inclusive). The default value is 1.
+     * Set the count property: Number of nodes in the agent pool. The default value is 1.
      * 
      * @param count the count value to set.
      * @return the NamedAgentPoolProfile object itself.
@@ -61,7 +67,7 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
     }
 
     /**
-     * Get the vmSize property: VmSize - The size of the agent pool VMs.
+     * Get the vmSize property: The VM sku size of the agent pool node VMs.
      * 
      * @return the vmSize value.
      */
@@ -70,7 +76,7 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
     }
 
     /**
-     * Set the vmSize property: VmSize - The size of the agent pool VMs.
+     * Set the vmSize property: The VM sku size of the agent pool node VMs.
      * 
      * @param vmSize the vmSize value to set.
      * @return the NamedAgentPoolProfile object itself.
@@ -81,8 +87,18 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
     }
 
     /**
-     * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * Get the kubernetesVersion property: Version of Kubernetes in use by the agent pool. This is inherited from the
+     * kubernetesVersion of the provisioned cluster.
+     * 
+     * @return the kubernetesVersion value.
+     */
+    public String kubernetesVersion() {
+        return this.kubernetesVersion;
+    }
+
+    /**
+     * Get the name property: Unique name of the default agent pool in the context of the provisioned cluster. Default
+     * value is &lt;clusterName&gt;-nodepool1.
      * 
      * @return the name value.
      */
@@ -91,23 +107,14 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
     }
 
     /**
-     * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
-     * group.
+     * Set the name property: Unique name of the default agent pool in the context of the provisioned cluster. Default
+     * value is &lt;clusterName&gt;-nodepool1.
      * 
      * @param name the name value to set.
      * @return the NamedAgentPoolProfile object itself.
      */
     public NamedAgentPoolProfile withName(String name) {
         this.name = name;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public NamedAgentPoolProfile withAvailabilityZones(List<String> availabilityZones) {
-        super.withAvailabilityZones(availabilityZones);
         return this;
     }
 
@@ -133,8 +140,53 @@ public class NamedAgentPoolProfile extends AgentPoolProfile {
      * {@inheritDoc}
      */
     @Override
-    public NamedAgentPoolProfile withNodeImageVersion(String nodeImageVersion) {
-        super.withNodeImageVersion(nodeImageVersion);
+    public NamedAgentPoolProfile withNodeLabels(Map<String, String> nodeLabels) {
+        super.withNodeLabels(nodeLabels);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NamedAgentPoolProfile withNodeTaints(List<String> nodeTaints) {
+        super.withNodeTaints(nodeTaints);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NamedAgentPoolProfile withMaxCount(Integer maxCount) {
+        super.withMaxCount(maxCount);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NamedAgentPoolProfile withMinCount(Integer minCount) {
+        super.withMinCount(minCount);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NamedAgentPoolProfile withEnableAutoScaling(Boolean enableAutoScaling) {
+        super.withEnableAutoScaling(enableAutoScaling);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public NamedAgentPoolProfile withMaxPods(Integer maxPods) {
+        super.withMaxPods(maxPods);
         return this;
     }
 

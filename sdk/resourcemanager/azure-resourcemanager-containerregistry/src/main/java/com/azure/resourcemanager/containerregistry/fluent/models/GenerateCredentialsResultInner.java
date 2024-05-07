@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.models.TokenPassword;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response from the GenerateCredentials operation. */
+/**
+ * The response from the GenerateCredentials operation.
+ */
 @Fluent
 public final class GenerateCredentialsResultInner {
     /*
@@ -24,13 +26,15 @@ public final class GenerateCredentialsResultInner {
     @JsonProperty(value = "passwords")
     private List<TokenPassword> passwords;
 
-    /** Creates an instance of GenerateCredentialsResultInner class. */
+    /**
+     * Creates an instance of GenerateCredentialsResultInner class.
+     */
     public GenerateCredentialsResultInner() {
     }
 
     /**
      * Get the username property: The username for a container registry.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -39,7 +43,7 @@ public final class GenerateCredentialsResultInner {
 
     /**
      * Set the username property: The username for a container registry.
-     *
+     * 
      * @param username the username value to set.
      * @return the GenerateCredentialsResultInner object itself.
      */
@@ -50,7 +54,7 @@ public final class GenerateCredentialsResultInner {
 
     /**
      * Get the passwords property: The list of passwords for a container registry.
-     *
+     * 
      * @return the passwords value.
      */
     public List<TokenPassword> passwords() {
@@ -59,7 +63,7 @@ public final class GenerateCredentialsResultInner {
 
     /**
      * Set the passwords property: The list of passwords for a container registry.
-     *
+     * 
      * @param passwords the passwords value to set.
      * @return the GenerateCredentialsResultInner object itself.
      */
@@ -70,7 +74,7 @@ public final class GenerateCredentialsResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

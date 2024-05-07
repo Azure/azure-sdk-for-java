@@ -9,7 +9,9 @@ import com.azure.resourcemanager.storagecache.fluent.models.UsageModelInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of cache usage models. */
+/**
+ * A list of cache usage models.
+ */
 @Fluent
 public final class UsageModelsResult {
     /*
@@ -24,13 +26,15 @@ public final class UsageModelsResult {
     @JsonProperty(value = "value")
     private List<UsageModelInner> value;
 
-    /** Creates an instance of UsageModelsResult class. */
+    /**
+     * Creates an instance of UsageModelsResult class.
+     */
     public UsageModelsResult() {
     }
 
     /**
      * Get the nextLink property: The URI to fetch the next page of cache usage models.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +43,7 @@ public final class UsageModelsResult {
 
     /**
      * Set the nextLink property: The URI to fetch the next page of cache usage models.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the UsageModelsResult object itself.
      */
@@ -50,7 +54,7 @@ public final class UsageModelsResult {
 
     /**
      * Get the value property: The list of usage models available for the subscription.
-     *
+     * 
      * @return the value value.
      */
     public List<UsageModelInner> value() {
@@ -59,7 +63,7 @@ public final class UsageModelsResult {
 
     /**
      * Set the value property: The list of usage models available for the subscription.
-     *
+     * 
      * @param value the value value to set.
      * @return the UsageModelsResult object itself.
      */
@@ -70,7 +74,7 @@ public final class UsageModelsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

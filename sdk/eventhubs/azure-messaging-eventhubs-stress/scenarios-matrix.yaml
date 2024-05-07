@@ -1,7 +1,26 @@
 matrix:
-  image:
-    - Dockerfile
   scenarios:
-    send-process:
-      chaos: "false"
+    processor:
       imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      senderTestClass: EventSender
+      sendRate: 38500
+      sendBatchSize: 385
+      sendConcurrency: 15
+      receiverTestClass: EventProcessor
+      processorBatchSize: 128
+      processorInstancesCount: 1
+      processorFailureRatio: 0
+      messageSizeInBytes: 1024
+    forwarder:
+      imageBuildDir: ..\..\..\
+      testDurationMin: 15
+      senderTestClass: EventSender
+      sendRate: 20000
+      sendBatchSize: 50
+      sendConcurrency: 10
+      receiverTestClass: EventForwarder
+      processorBatchSize: 128
+      processorInstancesCount: 2
+      processorFailureRatio: 0.000003125
+      messageSizeInBytes: 1024

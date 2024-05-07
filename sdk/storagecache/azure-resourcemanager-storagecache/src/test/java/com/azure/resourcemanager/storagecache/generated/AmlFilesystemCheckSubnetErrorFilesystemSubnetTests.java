@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AmlFilesystemCheckSubnetErrorFilesystemSubnetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmlFilesystemCheckSubnetErrorFilesystemSubnet model =
-            BinaryData
-                .fromString("{\"status\":\"Invalid\",\"message\":\"pvswjdkirso\"}")
+        AmlFilesystemCheckSubnetErrorFilesystemSubnet model
+            = BinaryData.fromString("{\"status\":\"Ok\",\"message\":\"c\"}")
                 .toObject(AmlFilesystemCheckSubnetErrorFilesystemSubnet.class);
-        Assertions.assertEquals(FilesystemSubnetStatusType.INVALID, model.status());
-        Assertions.assertEquals("pvswjdkirso", model.message());
+        Assertions.assertEquals(FilesystemSubnetStatusType.OK, model.status());
+        Assertions.assertEquals("c", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlFilesystemCheckSubnetErrorFilesystemSubnet model =
-            new AmlFilesystemCheckSubnetErrorFilesystemSubnet()
-                .withStatus(FilesystemSubnetStatusType.INVALID)
-                .withMessage("pvswjdkirso");
+        AmlFilesystemCheckSubnetErrorFilesystemSubnet model = new AmlFilesystemCheckSubnetErrorFilesystemSubnet()
+            .withStatus(FilesystemSubnetStatusType.OK).withMessage("c");
         model = BinaryData.fromObject(model).toObject(AmlFilesystemCheckSubnetErrorFilesystemSubnet.class);
-        Assertions.assertEquals(FilesystemSubnetStatusType.INVALID, model.status());
-        Assertions.assertEquals("pvswjdkirso", model.message());
+        Assertions.assertEquals(FilesystemSubnetStatusType.OK, model.status());
+        Assertions.assertEquals("c", model.message());
     }
 }

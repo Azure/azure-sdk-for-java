@@ -11,7 +11,9 @@ import com.azure.resourcemanager.monitor.models.Context;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The details of the test notification results. */
+/**
+ * The details of the test notification results.
+ */
 @Fluent
 public final class TestNotificationDetailsResponseInner {
     /*
@@ -44,13 +46,15 @@ public final class TestNotificationDetailsResponseInner {
     @JsonProperty(value = "actionDetails")
     private List<ActionDetail> actionDetails;
 
-    /** Creates an instance of TestNotificationDetailsResponseInner class. */
+    /**
+     * Creates an instance of TestNotificationDetailsResponseInner class.
+     */
     public TestNotificationDetailsResponseInner() {
     }
 
     /**
      * Get the context property: The context info.
-     *
+     * 
      * @return the context value.
      */
     public Context context() {
@@ -59,7 +63,7 @@ public final class TestNotificationDetailsResponseInner {
 
     /**
      * Set the context property: The context info.
-     *
+     * 
      * @param context the context value to set.
      * @return the TestNotificationDetailsResponseInner object itself.
      */
@@ -70,7 +74,7 @@ public final class TestNotificationDetailsResponseInner {
 
     /**
      * Get the state property: The overall state.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -79,7 +83,7 @@ public final class TestNotificationDetailsResponseInner {
 
     /**
      * Set the state property: The overall state.
-     *
+     * 
      * @param state the state value to set.
      * @return the TestNotificationDetailsResponseInner object itself.
      */
@@ -90,7 +94,7 @@ public final class TestNotificationDetailsResponseInner {
 
     /**
      * Get the completedTime property: The completed time.
-     *
+     * 
      * @return the completedTime value.
      */
     public String completedTime() {
@@ -99,7 +103,7 @@ public final class TestNotificationDetailsResponseInner {
 
     /**
      * Set the completedTime property: The completed time.
-     *
+     * 
      * @param completedTime the completedTime value to set.
      * @return the TestNotificationDetailsResponseInner object itself.
      */
@@ -110,7 +114,7 @@ public final class TestNotificationDetailsResponseInner {
 
     /**
      * Get the createdTime property: The created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public String createdTime() {
@@ -119,7 +123,7 @@ public final class TestNotificationDetailsResponseInner {
 
     /**
      * Set the createdTime property: The created time.
-     *
+     * 
      * @param createdTime the createdTime value to set.
      * @return the TestNotificationDetailsResponseInner object itself.
      */
@@ -130,7 +134,7 @@ public final class TestNotificationDetailsResponseInner {
 
     /**
      * Get the actionDetails property: The list of action detail.
-     *
+     * 
      * @return the actionDetails value.
      */
     public List<ActionDetail> actionDetails() {
@@ -139,7 +143,7 @@ public final class TestNotificationDetailsResponseInner {
 
     /**
      * Set the actionDetails property: The list of action detail.
-     *
+     * 
      * @param actionDetails the actionDetails value to set.
      * @return the TestNotificationDetailsResponseInner object itself.
      */
@@ -150,7 +154,7 @@ public final class TestNotificationDetailsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -158,10 +162,8 @@ public final class TestNotificationDetailsResponseInner {
             context().validate();
         }
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model TestNotificationDetailsResponseInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property state in model TestNotificationDetailsResponseInner"));
         }
         if (actionDetails() != null) {
             actionDetails().forEach(e -> e.validate());

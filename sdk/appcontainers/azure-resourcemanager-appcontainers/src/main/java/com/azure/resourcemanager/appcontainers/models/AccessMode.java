@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Access mode for storage. */
+/**
+ * Access mode for storage.
+ */
 public final class AccessMode extends ExpandableStringEnum<AccessMode> {
-    /** Static value ReadOnly for AccessMode. */
+    /**
+     * Static value ReadOnly for AccessMode.
+     */
     public static final AccessMode READ_ONLY = fromString("ReadOnly");
 
-    /** Static value ReadWrite for AccessMode. */
+    /**
+     * Static value ReadWrite for AccessMode.
+     */
     public static final AccessMode READ_WRITE = fromString("ReadWrite");
 
     /**
      * Creates a new instance of AccessMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AccessMode extends ExpandableStringEnum<AccessMode> {
 
     /**
      * Creates or finds a AccessMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AccessMode.
      */
@@ -38,7 +44,7 @@ public final class AccessMode extends ExpandableStringEnum<AccessMode> {
 
     /**
      * Gets known AccessMode values.
-     *
+     * 
      * @return known AccessMode values.
      */
     public static Collection<AccessMode> values() {

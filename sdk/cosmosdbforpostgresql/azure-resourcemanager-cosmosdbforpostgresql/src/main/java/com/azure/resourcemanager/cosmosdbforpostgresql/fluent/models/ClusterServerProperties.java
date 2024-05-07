@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerProperties;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a server in cluster. */
+/**
+ * The properties of a server in cluster.
+ */
 @Fluent
 public final class ClusterServerProperties extends ServerProperties {
     /*
@@ -54,13 +56,15 @@ public final class ClusterServerProperties extends ServerProperties {
     @JsonProperty(value = "citusVersion")
     private String citusVersion;
 
-    /** Creates an instance of ClusterServerProperties class. */
+    /**
+     * Creates an instance of ClusterServerProperties class.
+     */
     public ClusterServerProperties() {
     }
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of a server.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -69,7 +73,7 @@ public final class ClusterServerProperties extends ServerProperties {
 
     /**
      * Get the role property: The role of server in the cluster.
-     *
+     * 
      * @return the role value.
      */
     public ServerRole role() {
@@ -78,7 +82,7 @@ public final class ClusterServerProperties extends ServerProperties {
 
     /**
      * Set the role property: The role of server in the cluster.
-     *
+     * 
      * @param role the role value to set.
      * @return the ClusterServerProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class ClusterServerProperties extends ServerProperties {
 
     /**
      * Get the state property: A state of a cluster/server that is visible to user.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -98,7 +102,7 @@ public final class ClusterServerProperties extends ServerProperties {
 
     /**
      * Get the haState property: A state of HA feature for the cluster.
-     *
+     * 
      * @return the haState value.
      */
     public String haState() {
@@ -107,7 +111,7 @@ public final class ClusterServerProperties extends ServerProperties {
 
     /**
      * Get the availabilityZone property: Availability Zone information of the server.
-     *
+     * 
      * @return the availabilityZone value.
      */
     public String availabilityZone() {
@@ -116,7 +120,7 @@ public final class ClusterServerProperties extends ServerProperties {
 
     /**
      * Set the availabilityZone property: Availability Zone information of the server.
-     *
+     * 
      * @param availabilityZone the availabilityZone value to set.
      * @return the ClusterServerProperties object itself.
      */
@@ -127,7 +131,7 @@ public final class ClusterServerProperties extends ServerProperties {
 
     /**
      * Get the postgresqlVersion property: The major PostgreSQL version of server.
-     *
+     * 
      * @return the postgresqlVersion value.
      */
     public String postgresqlVersion() {
@@ -136,7 +140,7 @@ public final class ClusterServerProperties extends ServerProperties {
 
     /**
      * Set the postgresqlVersion property: The major PostgreSQL version of server.
-     *
+     * 
      * @param postgresqlVersion the postgresqlVersion value to set.
      * @return the ClusterServerProperties object itself.
      */
@@ -147,7 +151,7 @@ public final class ClusterServerProperties extends ServerProperties {
 
     /**
      * Get the citusVersion property: The Citus extension version of server.
-     *
+     * 
      * @return the citusVersion value.
      */
     public String citusVersion() {
@@ -156,7 +160,7 @@ public final class ClusterServerProperties extends ServerProperties {
 
     /**
      * Set the citusVersion property: The Citus extension version of server.
-     *
+     * 
      * @param citusVersion the citusVersion value to set.
      * @return the ClusterServerProperties object itself.
      */
@@ -165,28 +169,36 @@ public final class ClusterServerProperties extends ServerProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterServerProperties withServerEdition(String serverEdition) {
         super.withServerEdition(serverEdition);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterServerProperties withStorageQuotaInMb(Integer storageQuotaInMb) {
         super.withStorageQuotaInMb(storageQuotaInMb);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterServerProperties withVCores(Integer vCores) {
         super.withVCores(vCores);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterServerProperties withEnableHa(Boolean enableHa) {
         super.withEnableHa(enableHa);
@@ -195,7 +207,7 @@ public final class ClusterServerProperties extends ServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

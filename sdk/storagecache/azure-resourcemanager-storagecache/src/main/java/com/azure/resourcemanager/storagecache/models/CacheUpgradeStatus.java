@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties describing the software upgrade state of the cache. */
+/**
+ * Properties describing the software upgrade state of the cache.
+ */
 @Immutable
 public final class CacheUpgradeStatus {
     /*
@@ -42,13 +44,15 @@ public final class CacheUpgradeStatus {
     @JsonProperty(value = "pendingFirmwareVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String pendingFirmwareVersion;
 
-    /** Creates an instance of CacheUpgradeStatus class. */
+    /**
+     * Creates an instance of CacheUpgradeStatus class.
+     */
     public CacheUpgradeStatus() {
     }
 
     /**
      * Get the currentFirmwareVersion property: Version string of the firmware currently installed on this cache.
-     *
+     * 
      * @return the currentFirmwareVersion value.
      */
     public String currentFirmwareVersion() {
@@ -59,7 +63,7 @@ public final class CacheUpgradeStatus {
      * Get the firmwareUpdateStatus property: True if there is a firmware update ready to install on this cache. The
      * firmware will automatically be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade
      * operation.
-     *
+     * 
      * @return the firmwareUpdateStatus value.
      */
     public FirmwareStatusType firmwareUpdateStatus() {
@@ -69,7 +73,7 @@ public final class CacheUpgradeStatus {
     /**
      * Get the firmwareUpdateDeadline property: Time at which the pending firmware update will automatically be
      * installed on the cache.
-     *
+     * 
      * @return the firmwareUpdateDeadline value.
      */
     public OffsetDateTime firmwareUpdateDeadline() {
@@ -78,7 +82,7 @@ public final class CacheUpgradeStatus {
 
     /**
      * Get the lastFirmwareUpdate property: Time of the last successful firmware update.
-     *
+     * 
      * @return the lastFirmwareUpdate value.
      */
     public OffsetDateTime lastFirmwareUpdate() {
@@ -88,7 +92,7 @@ public final class CacheUpgradeStatus {
     /**
      * Get the pendingFirmwareVersion property: When firmwareUpdateAvailable is true, this field holds the version
      * string for the update.
-     *
+     * 
      * @return the pendingFirmwareVersion value.
      */
     public String pendingFirmwareVersion() {
@@ -97,7 +101,7 @@ public final class CacheUpgradeStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

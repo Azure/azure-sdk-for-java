@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageDiskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"diskId\":\"kgxqwqueuuylztpz\",\"diskName\":\"zevjykofve\",\"diskSizeInMB\":\"fkhkqtwqlep\",\"diskType\":\"zkca\",\"diskConfiguration\":\"wz\",\"volumeList\":[{\"label\":\"gffjw\",\"name\":\"nrtwz\"},{\"label\":\"qkifmxawostfz\",\"name\":\"hrkmjqncfv\"},{\"label\":\"cnhemvwfnq\",\"name\":\"ypvndrw\"},{\"label\":\"od\",\"name\":\"grssgw\"}]}")
-                .toObject(InMageDiskDetails.class);
+        InMageDiskDetails model = BinaryData.fromString(
+            "{\"diskId\":\"kgxqwqueuuylztpz\",\"diskName\":\"zevjykofve\",\"diskSizeInMB\":\"fkhkqtwqlep\",\"diskType\":\"zkca\",\"diskConfiguration\":\"wz\",\"volumeList\":[{\"label\":\"gffjw\",\"name\":\"nrtwz\"},{\"label\":\"qkifmxawostfz\",\"name\":\"hrkmjqncfv\"},{\"label\":\"cnhemvwfnq\",\"name\":\"ypvndrw\"},{\"label\":\"od\",\"name\":\"grssgw\"}]}")
+            .toObject(InMageDiskDetails.class);
         Assertions.assertEquals("kgxqwqueuuylztpz", model.diskId());
         Assertions.assertEquals("zevjykofve", model.diskName());
         Assertions.assertEquals("fkhkqtwqlep", model.diskSizeInMB());
@@ -29,20 +27,12 @@ public final class InMageDiskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageDiskDetails model =
-            new InMageDiskDetails()
-                .withDiskId("kgxqwqueuuylztpz")
-                .withDiskName("zevjykofve")
-                .withDiskSizeInMB("fkhkqtwqlep")
-                .withDiskType("zkca")
-                .withDiskConfiguration("wz")
-                .withVolumeList(
-                    Arrays
-                        .asList(
-                            new DiskVolumeDetails().withLabel("gffjw").withName("nrtwz"),
-                            new DiskVolumeDetails().withLabel("qkifmxawostfz").withName("hrkmjqncfv"),
-                            new DiskVolumeDetails().withLabel("cnhemvwfnq").withName("ypvndrw"),
-                            new DiskVolumeDetails().withLabel("od").withName("grssgw")));
+        InMageDiskDetails model = new InMageDiskDetails().withDiskId("kgxqwqueuuylztpz").withDiskName("zevjykofve")
+            .withDiskSizeInMB("fkhkqtwqlep").withDiskType("zkca").withDiskConfiguration("wz")
+            .withVolumeList(Arrays.asList(new DiskVolumeDetails().withLabel("gffjw").withName("nrtwz"),
+                new DiskVolumeDetails().withLabel("qkifmxawostfz").withName("hrkmjqncfv"),
+                new DiskVolumeDetails().withLabel("cnhemvwfnq").withName("ypvndrw"),
+                new DiskVolumeDetails().withLabel("od").withName("grssgw")));
         model = BinaryData.fromObject(model).toObject(InMageDiskDetails.class);
         Assertions.assertEquals("kgxqwqueuuylztpz", model.diskId());
         Assertions.assertEquals("zevjykofve", model.diskName());

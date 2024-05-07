@@ -16,7 +16,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStora
 public interface BmsPrepareDataMoveOperationResultsClient {
     /**
      * Fetches Operation Result for Prepare Data Move.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.
@@ -27,12 +27,12 @@ public interface BmsPrepareDataMoveOperationResultsClient {
      * @return operation result response for Vault Storage Config along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultStorageConfigOperationResultResponseInner> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context);
+    Response<VaultStorageConfigOperationResultResponseInner> getWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context);
 
     /**
      * Fetches Operation Result for Prepare Data Move.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId The operationId parameter.

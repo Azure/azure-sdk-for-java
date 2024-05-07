@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Certificate resource specific properties. */
+/**
+ * Certificate resource specific properties.
+ */
 @Fluent
 public final class ManagedCertificateProperties {
     /*
@@ -40,13 +42,15 @@ public final class ManagedCertificateProperties {
     @JsonProperty(value = "validationToken", access = JsonProperty.Access.WRITE_ONLY)
     private String validationToken;
 
-    /** Creates an instance of ManagedCertificateProperties class. */
+    /**
+     * Creates an instance of ManagedCertificateProperties class.
+     */
     public ManagedCertificateProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the certificate.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CertificateProvisioningState provisioningState() {
@@ -55,7 +59,7 @@ public final class ManagedCertificateProperties {
 
     /**
      * Get the subjectName property: Subject name of the certificate.
-     *
+     * 
      * @return the subjectName value.
      */
     public String subjectName() {
@@ -64,7 +68,7 @@ public final class ManagedCertificateProperties {
 
     /**
      * Set the subjectName property: Subject name of the certificate.
-     *
+     * 
      * @param subjectName the subjectName value to set.
      * @return the ManagedCertificateProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class ManagedCertificateProperties {
 
     /**
      * Get the error property: Any error occurred during the certificate provision.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -84,7 +88,7 @@ public final class ManagedCertificateProperties {
 
     /**
      * Get the domainControlValidation property: Selected type of domain control validation for managed certificates.
-     *
+     * 
      * @return the domainControlValidation value.
      */
     public ManagedCertificateDomainControlValidation domainControlValidation() {
@@ -93,12 +97,12 @@ public final class ManagedCertificateProperties {
 
     /**
      * Set the domainControlValidation property: Selected type of domain control validation for managed certificates.
-     *
+     * 
      * @param domainControlValidation the domainControlValidation value to set.
      * @return the ManagedCertificateProperties object itself.
      */
-    public ManagedCertificateProperties withDomainControlValidation(
-        ManagedCertificateDomainControlValidation domainControlValidation) {
+    public ManagedCertificateProperties
+        withDomainControlValidation(ManagedCertificateDomainControlValidation domainControlValidation) {
         this.domainControlValidation = domainControlValidation;
         return this;
     }
@@ -106,7 +110,7 @@ public final class ManagedCertificateProperties {
     /**
      * Get the validationToken property: A TXT token used for DNS TXT domain control validation when issuing this type
      * of managed certificates.
-     *
+     * 
      * @return the validationToken value.
      */
     public String validationToken() {
@@ -115,7 +119,7 @@ public final class ManagedCertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

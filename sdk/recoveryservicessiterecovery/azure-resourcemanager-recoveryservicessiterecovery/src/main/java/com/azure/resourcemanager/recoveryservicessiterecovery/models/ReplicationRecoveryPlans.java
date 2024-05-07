@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationRecoveryPlans. */
+/**
+ * Resource collection API of ReplicationRecoveryPlans.
+ */
 public interface ReplicationRecoveryPlans {
     /**
      * Gets the list of recovery plans.
-     *
-     * <p>Lists the recovery plans in the vault.
-     *
+     * 
+     * Lists the recovery plans in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Gets the list of recovery plans.
-     *
-     * <p>Lists the recovery plans in the vault.
-     *
+     * 
+     * Lists the recovery plans in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -41,9 +43,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Gets the requested recovery plan.
-     *
-     * <p>Gets the details of the recovery plan.
-     *
+     * 
+     * Gets the details of the recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Name of the recovery plan.
@@ -53,14 +55,14 @@ public interface ReplicationRecoveryPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the recovery plan along with {@link Response}.
      */
-    Response<RecoveryPlan> getWithResponse(
-        String resourceName, String resourceGroupName, String recoveryPlanName, Context context);
+    Response<RecoveryPlan> getWithResponse(String resourceName, String resourceGroupName, String recoveryPlanName,
+        Context context);
 
     /**
      * Gets the requested recovery plan.
-     *
-     * <p>Gets the details of the recovery plan.
-     *
+     * 
+     * Gets the details of the recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Name of the recovery plan.
@@ -73,9 +75,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Deletes the specified recovery plan.
-     *
-     * <p>Delete a recovery plan.
-     *
+     * 
+     * Delete a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -87,9 +89,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Deletes the specified recovery plan.
-     *
-     * <p>Delete a recovery plan.
-     *
+     * 
+     * Delete a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -102,9 +104,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Execute cancel failover of the recovery plan.
-     *
-     * <p>The operation to cancel the failover of a recovery plan.
-     *
+     * 
+     * The operation to cancel the failover of a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -117,9 +119,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Execute cancel failover of the recovery plan.
-     *
-     * <p>The operation to cancel the failover of a recovery plan.
-     *
+     * 
+     * The operation to cancel the failover of a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -129,14 +131,14 @@ public interface ReplicationRecoveryPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recovery plan details.
      */
-    RecoveryPlan failoverCancel(
-        String resourceName, String resourceGroupName, String recoveryPlanName, Context context);
+    RecoveryPlan failoverCancel(String resourceName, String resourceGroupName, String recoveryPlanName,
+        Context context);
 
     /**
      * Execute commit failover of the recovery plan.
-     *
-     * <p>The operation to commit the failover of a recovery plan.
-     *
+     * 
+     * The operation to commit the failover of a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -149,9 +151,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Execute commit failover of the recovery plan.
-     *
-     * <p>The operation to commit the failover of a recovery plan.
-     *
+     * 
+     * The operation to commit the failover of a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -161,53 +163,49 @@ public interface ReplicationRecoveryPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recovery plan details.
      */
-    RecoveryPlan failoverCommit(
-        String resourceName, String resourceGroupName, String recoveryPlanName, Context context);
-
-    /**
-     * Execute planned failover of the recovery plan.
-     *
-     * <p>The operation to start the planned failover of a recovery plan.
-     *
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param recoveryPlanName Recovery plan name.
-     * @param input Failover input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery plan details.
-     */
-    RecoveryPlan plannedFailover(
-        String resourceName, String resourceGroupName, String recoveryPlanName, RecoveryPlanPlannedFailoverInput input);
-
-    /**
-     * Execute planned failover of the recovery plan.
-     *
-     * <p>The operation to start the planned failover of a recovery plan.
-     *
-     * @param resourceName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param recoveryPlanName Recovery plan name.
-     * @param input Failover input.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recovery plan details.
-     */
-    RecoveryPlan plannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
-        RecoveryPlanPlannedFailoverInput input,
+    RecoveryPlan failoverCommit(String resourceName, String resourceGroupName, String recoveryPlanName,
         Context context);
 
     /**
+     * Execute planned failover of the recovery plan.
+     * 
+     * The operation to start the planned failover of a recovery plan.
+     * 
+     * @param resourceName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param recoveryPlanName Recovery plan name.
+     * @param input Failover input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recovery plan details.
+     */
+    RecoveryPlan plannedFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanPlannedFailoverInput input);
+
+    /**
+     * Execute planned failover of the recovery plan.
+     * 
+     * The operation to start the planned failover of a recovery plan.
+     * 
+     * @param resourceName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param recoveryPlanName Recovery plan name.
+     * @param input Failover input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return recovery plan details.
+     */
+    RecoveryPlan plannedFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanPlannedFailoverInput input, Context context);
+
+    /**
      * Execute reprotect of the recovery plan.
-     *
-     * <p>The operation to reprotect(reverse replicate) a recovery plan.
-     *
+     * 
+     * The operation to reprotect(reverse replicate) a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -220,9 +218,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Execute reprotect of the recovery plan.
-     *
-     * <p>The operation to reprotect(reverse replicate) a recovery plan.
-     *
+     * 
+     * The operation to reprotect(reverse replicate) a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -236,9 +234,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Execute test failover of the recovery plan.
-     *
-     * <p>The operation to start the test failover of a recovery plan.
-     *
+     * 
+     * The operation to start the test failover of a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -248,14 +246,14 @@ public interface ReplicationRecoveryPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recovery plan details.
      */
-    RecoveryPlan testFailover(
-        String resourceName, String resourceGroupName, String recoveryPlanName, RecoveryPlanTestFailoverInput input);
+    RecoveryPlan testFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanTestFailoverInput input);
 
     /**
      * Execute test failover of the recovery plan.
-     *
-     * <p>The operation to start the test failover of a recovery plan.
-     *
+     * 
+     * The operation to start the test failover of a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -266,18 +264,14 @@ public interface ReplicationRecoveryPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recovery plan details.
      */
-    RecoveryPlan testFailover(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
-        RecoveryPlanTestFailoverInput input,
-        Context context);
+    RecoveryPlan testFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanTestFailoverInput input, Context context);
 
     /**
      * Execute test failover cleanup of the recovery plan.
-     *
-     * <p>The operation to cleanup test failover of a recovery plan.
-     *
+     * 
+     * The operation to cleanup test failover of a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -287,17 +281,14 @@ public interface ReplicationRecoveryPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recovery plan details.
      */
-    RecoveryPlan testFailoverCleanup(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
+    RecoveryPlan testFailoverCleanup(String resourceName, String resourceGroupName, String recoveryPlanName,
         RecoveryPlanTestFailoverCleanupInput input);
 
     /**
      * Execute test failover cleanup of the recovery plan.
-     *
-     * <p>The operation to cleanup test failover of a recovery plan.
-     *
+     * 
+     * The operation to cleanup test failover of a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -308,18 +299,14 @@ public interface ReplicationRecoveryPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recovery plan details.
      */
-    RecoveryPlan testFailoverCleanup(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
-        RecoveryPlanTestFailoverCleanupInput input,
-        Context context);
+    RecoveryPlan testFailoverCleanup(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanTestFailoverCleanupInput input, Context context);
 
     /**
      * Execute unplanned failover of the recovery plan.
-     *
-     * <p>The operation to start the unplanned failover of a recovery plan.
-     *
+     * 
+     * The operation to start the unplanned failover of a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -329,17 +316,14 @@ public interface ReplicationRecoveryPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recovery plan details.
      */
-    RecoveryPlan unplannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
+    RecoveryPlan unplannedFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
         RecoveryPlanUnplannedFailoverInput input);
 
     /**
      * Execute unplanned failover of the recovery plan.
-     *
-     * <p>The operation to start the unplanned failover of a recovery plan.
-     *
+     * 
+     * The operation to start the unplanned failover of a recovery plan.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param recoveryPlanName Recovery plan name.
@@ -350,18 +334,14 @@ public interface ReplicationRecoveryPlans {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recovery plan details.
      */
-    RecoveryPlan unplannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
-        RecoveryPlanUnplannedFailoverInput input,
-        Context context);
+    RecoveryPlan unplannedFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanUnplannedFailoverInput input, Context context);
 
     /**
      * Gets the requested recovery plan.
-     *
-     * <p>Gets the details of the recovery plan.
-     *
+     * 
+     * Gets the details of the recovery plan.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -372,9 +352,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Gets the requested recovery plan.
-     *
-     * <p>Gets the details of the recovery plan.
-     *
+     * 
+     * Gets the details of the recovery plan.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -386,9 +366,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Deletes the specified recovery plan.
-     *
-     * <p>Delete a recovery plan.
-     *
+     * 
+     * Delete a recovery plan.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -398,9 +378,9 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Deletes the specified recovery plan.
-     *
-     * <p>Delete a recovery plan.
-     *
+     * 
+     * Delete a recovery plan.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -411,7 +391,7 @@ public interface ReplicationRecoveryPlans {
 
     /**
      * Begins definition for a new RecoveryPlan resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new RecoveryPlan definition.
      */

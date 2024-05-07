@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-/** Samples for ReplicationProtectionContainers List. */
+/**
+ * Samples for ReplicationProtectionContainers List.
+ */
 public final class ReplicationProtectionContainersListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * /ReplicationProtectionContainers_List.json
      */
     /**
      * Sample code: Gets the list of all protection containers in a vault.
-     *
+     * 
      * @param manager Entry point to SiteRecoveryManager.
      */
     public static void getsTheListOfAllProtectionContainersInAVault(

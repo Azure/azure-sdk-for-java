@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** Azure IaaS VM workload-specific job task details. */
+/**
+ * Azure IaaS VM workload-specific job task details.
+ */
 @Fluent
 public final class AzureIaaSvmJobTaskDetails {
     /*
@@ -61,13 +63,15 @@ public final class AzureIaaSvmJobTaskDetails {
     @JsonProperty(value = "taskExecutionDetails")
     private String taskExecutionDetails;
 
-    /** Creates an instance of AzureIaaSvmJobTaskDetails class. */
+    /**
+     * Creates an instance of AzureIaaSvmJobTaskDetails class.
+     */
     public AzureIaaSvmJobTaskDetails() {
     }
 
     /**
      * Get the taskId property: The task display name.
-     *
+     * 
      * @return the taskId value.
      */
     public String taskId() {
@@ -76,7 +80,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Set the taskId property: The task display name.
-     *
+     * 
      * @param taskId the taskId value to set.
      * @return the AzureIaaSvmJobTaskDetails object itself.
      */
@@ -87,7 +91,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Get the startTime property: The start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -96,7 +100,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Set the startTime property: The start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the AzureIaaSvmJobTaskDetails object itself.
      */
@@ -107,7 +111,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Get the endTime property: The end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -116,7 +120,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Set the endTime property: The end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the AzureIaaSvmJobTaskDetails object itself.
      */
@@ -127,7 +131,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Get the instanceId property: The instanceId.
-     *
+     * 
      * @return the instanceId value.
      */
     public String instanceId() {
@@ -136,7 +140,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Set the instanceId property: The instanceId.
-     *
+     * 
      * @param instanceId the instanceId value to set.
      * @return the AzureIaaSvmJobTaskDetails object itself.
      */
@@ -147,7 +151,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Get the duration property: Time elapsed for task.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -156,7 +160,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Set the duration property: Time elapsed for task.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the AzureIaaSvmJobTaskDetails object itself.
      */
@@ -167,7 +171,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Get the status property: The status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -176,7 +180,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Set the status property: The status.
-     *
+     * 
      * @param status the status value to set.
      * @return the AzureIaaSvmJobTaskDetails object itself.
      */
@@ -187,7 +191,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Get the progressPercentage property: Progress of the task.
-     *
+     * 
      * @return the progressPercentage value.
      */
     public Double progressPercentage() {
@@ -196,7 +200,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Set the progressPercentage property: Progress of the task.
-     *
+     * 
      * @param progressPercentage the progressPercentage value to set.
      * @return the AzureIaaSvmJobTaskDetails object itself.
      */
@@ -206,8 +210,9 @@ public final class AzureIaaSvmJobTaskDetails {
     }
 
     /**
-     * Get the taskExecutionDetails property: Details about execution of the task. eg: number of bytes transferred etc.
-     *
+     * Get the taskExecutionDetails property: Details about execution of the task.
+     * eg: number of bytes transferred etc.
+     * 
      * @return the taskExecutionDetails value.
      */
     public String taskExecutionDetails() {
@@ -215,8 +220,9 @@ public final class AzureIaaSvmJobTaskDetails {
     }
 
     /**
-     * Set the taskExecutionDetails property: Details about execution of the task. eg: number of bytes transferred etc.
-     *
+     * Set the taskExecutionDetails property: Details about execution of the task.
+     * eg: number of bytes transferred etc.
+     * 
      * @param taskExecutionDetails the taskExecutionDetails value to set.
      * @return the AzureIaaSvmJobTaskDetails object itself.
      */
@@ -227,7 +233,7 @@ public final class AzureIaaSvmJobTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Retention schedule format type for monthly retention policy. */
+/**
+ * Retention schedule format type for monthly retention policy.
+ */
 public final class RetentionScheduleFormat extends ExpandableStringEnum<RetentionScheduleFormat> {
-    /** Static value Invalid for RetentionScheduleFormat. */
+    /**
+     * Static value Invalid for RetentionScheduleFormat.
+     */
     public static final RetentionScheduleFormat INVALID = fromString("Invalid");
 
-    /** Static value Daily for RetentionScheduleFormat. */
+    /**
+     * Static value Daily for RetentionScheduleFormat.
+     */
     public static final RetentionScheduleFormat DAILY = fromString("Daily");
 
-    /** Static value Weekly for RetentionScheduleFormat. */
+    /**
+     * Static value Weekly for RetentionScheduleFormat.
+     */
     public static final RetentionScheduleFormat WEEKLY = fromString("Weekly");
 
     /**
      * Creates a new instance of RetentionScheduleFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class RetentionScheduleFormat extends ExpandableStringEnum<Retentio
 
     /**
      * Creates or finds a RetentionScheduleFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RetentionScheduleFormat.
      */
@@ -41,7 +49,7 @@ public final class RetentionScheduleFormat extends ExpandableStringEnum<Retentio
 
     /**
      * Gets known RetentionScheduleFormat values.
-     *
+     * 
      * @return known RetentionScheduleFormat values.
      */
     public static Collection<RetentionScheduleFormat> values() {

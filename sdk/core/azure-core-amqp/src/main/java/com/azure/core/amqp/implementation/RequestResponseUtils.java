@@ -26,11 +26,23 @@ public class RequestResponseUtils {
     private static final String LEGACY_STATUS_DESCRIPTION = "status-description";
     private static final String LEGACY_ERROR_CONDITION = "error-condition";
 
+    /**
+     * Checks if the Message is successful.
+     *
+     * @param message The Message.
+     * @return Whether the response is successful.
+     */
     public static boolean isSuccessful(Message message) {
         final AmqpResponseCode statusCode = getStatusCode(message);
         return isSuccessful(statusCode);
     }
 
+    /**
+     * Checks if the {@link AmqpResponseCode} is successful.
+     *
+     * @param statusCode The status code.
+     * @return Whether the response is successful.
+     */
     public static boolean isSuccessful(AmqpResponseCode statusCode) {
         return statusCode == AmqpResponseCode.OK || statusCode == AmqpResponseCode.ACCEPTED;
     }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.metrics.opentelemetry.OpenTelemetryMetricsOptions.java" />
+
+  <suppress checks="IllegalImport" files="com.azure.core.metrics.opentelemetry.OpenTelemetryAttributes.java" />
+  <suppress checks="IllegalImport" files="com.azure.core.metrics.opentelemetry.OpenTelemetryLongGauge.java" />
+  <suppress checks="IllegalImport" files="com.azure.core.metrics.opentelemetry.OpenTelemetryLongUpDownCounter.java" />
+  <suppress checks="IllegalImport" files="com.azure.core.metrics.opentelemetry.OpenTelemetryMeter.java" />
+  <suppress checks="IllegalImport" files="com.azure.core.metrics.opentelemetry.OpenTelemetryMetricsOptions.java" />
+  <suppress checks="IllegalImport" files="com.azure.core.metrics.opentelemetry.OpenTelemetryUtils.java" />
+
+  <suppress checks="IllegalImport" files="com.azure.core.metrics.opentelemetry.GlobalOpenTelemetryMetricsTests.java" />
+  <suppress checks="IllegalImport" files="com.azure.core.metrics.opentelemetry.MetricsTests.java" />
+  <suppress checks="IllegalImport" files="com.azure.core.metrics.opentelemetry.OpenTelemetryAttributesTests.java" />
+
+  <suppress checks="IllegalImport" files="com.azure.core.metrics.opentelemetry.OpenTelemetryMetricsBenchmark.java" />
+
+  <suppress checks="IllegalImport" files="com.azure.core.metrics.opentelemetry.MetricsJavaDocCodeSnippets.java" />
+</suppressions>

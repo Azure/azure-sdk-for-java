@@ -8,13 +8,16 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.models.AuthPlatform;
+import com.azure.resourcemanager.appcontainers.models.EncryptionSettings;
 import com.azure.resourcemanager.appcontainers.models.GlobalValidation;
 import com.azure.resourcemanager.appcontainers.models.HttpSettings;
 import com.azure.resourcemanager.appcontainers.models.IdentityProviders;
 import com.azure.resourcemanager.appcontainers.models.Login;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration settings for the Azure ContainerApp Service Authentication / Authorization feature. */
+/**
+ * Configuration settings for the Azure ContainerApp Service Authentication / Authorization feature.
+ */
 @Fluent
 public final class AuthConfigInner extends ProxyResource {
     /*
@@ -29,13 +32,15 @@ public final class AuthConfigInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AuthConfigInner class. */
+    /**
+     * Creates an instance of AuthConfigInner class.
+     */
     public AuthConfigInner() {
     }
 
     /**
      * Get the innerProperties property: AuthConfig resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AuthConfigProperties innerProperties() {
@@ -44,7 +49,7 @@ public final class AuthConfigInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -54,7 +59,7 @@ public final class AuthConfigInner extends ProxyResource {
     /**
      * Get the platform property: The configuration settings of the platform of ContainerApp Service
      * Authentication/Authorization.
-     *
+     * 
      * @return the platform value.
      */
     public AuthPlatform platform() {
@@ -64,7 +69,7 @@ public final class AuthConfigInner extends ProxyResource {
     /**
      * Set the platform property: The configuration settings of the platform of ContainerApp Service
      * Authentication/Authorization.
-     *
+     * 
      * @param platform the platform value to set.
      * @return the AuthConfigInner object itself.
      */
@@ -79,7 +84,7 @@ public final class AuthConfigInner extends ProxyResource {
     /**
      * Get the globalValidation property: The configuration settings that determines the validation flow of users using
      * Service Authentication/Authorization.
-     *
+     * 
      * @return the globalValidation value.
      */
     public GlobalValidation globalValidation() {
@@ -89,7 +94,7 @@ public final class AuthConfigInner extends ProxyResource {
     /**
      * Set the globalValidation property: The configuration settings that determines the validation flow of users using
      * Service Authentication/Authorization.
-     *
+     * 
      * @param globalValidation the globalValidation value to set.
      * @return the AuthConfigInner object itself.
      */
@@ -104,7 +109,7 @@ public final class AuthConfigInner extends ProxyResource {
     /**
      * Get the identityProviders property: The configuration settings of each of the identity providers used to
      * configure ContainerApp Service Authentication/Authorization.
-     *
+     * 
      * @return the identityProviders value.
      */
     public IdentityProviders identityProviders() {
@@ -114,7 +119,7 @@ public final class AuthConfigInner extends ProxyResource {
     /**
      * Set the identityProviders property: The configuration settings of each of the identity providers used to
      * configure ContainerApp Service Authentication/Authorization.
-     *
+     * 
      * @param identityProviders the identityProviders value to set.
      * @return the AuthConfigInner object itself.
      */
@@ -129,7 +134,7 @@ public final class AuthConfigInner extends ProxyResource {
     /**
      * Get the login property: The configuration settings of the login flow of users using ContainerApp Service
      * Authentication/Authorization.
-     *
+     * 
      * @return the login value.
      */
     public Login login() {
@@ -139,7 +144,7 @@ public final class AuthConfigInner extends ProxyResource {
     /**
      * Set the login property: The configuration settings of the login flow of users using ContainerApp Service
      * Authentication/Authorization.
-     *
+     * 
      * @param login the login value to set.
      * @return the AuthConfigInner object itself.
      */
@@ -154,7 +159,7 @@ public final class AuthConfigInner extends ProxyResource {
     /**
      * Get the httpSettings property: The configuration settings of the HTTP requests for authentication and
      * authorization requests made against ContainerApp Service Authentication/Authorization.
-     *
+     * 
      * @return the httpSettings value.
      */
     public HttpSettings httpSettings() {
@@ -164,7 +169,7 @@ public final class AuthConfigInner extends ProxyResource {
     /**
      * Set the httpSettings property: The configuration settings of the HTTP requests for authentication and
      * authorization requests made against ContainerApp Service Authentication/Authorization.
-     *
+     * 
      * @param httpSettings the httpSettings value to set.
      * @return the AuthConfigInner object itself.
      */
@@ -177,8 +182,33 @@ public final class AuthConfigInner extends ProxyResource {
     }
 
     /**
+     * Get the encryptionSettings property: The configuration settings of the secrets references of encryption key and
+     * signing key for ContainerApp Service Authentication/Authorization.
+     * 
+     * @return the encryptionSettings value.
+     */
+    public EncryptionSettings encryptionSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryptionSettings();
+    }
+
+    /**
+     * Set the encryptionSettings property: The configuration settings of the secrets references of encryption key and
+     * signing key for ContainerApp Service Authentication/Authorization.
+     * 
+     * @param encryptionSettings the encryptionSettings value to set.
+     * @return the AuthConfigInner object itself.
+     */
+    public AuthConfigInner withEncryptionSettings(EncryptionSettings encryptionSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthConfigProperties();
+        }
+        this.innerProperties().withEncryptionSettings(encryptionSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

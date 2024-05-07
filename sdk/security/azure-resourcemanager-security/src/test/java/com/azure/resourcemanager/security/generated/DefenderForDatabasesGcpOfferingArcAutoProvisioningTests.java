@@ -12,28 +12,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForDatabasesGcpOfferingArcAutoProvisioningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForDatabasesGcpOfferingArcAutoProvisioning model =
-            BinaryData
-                .fromString(
-                    "{\"enabled\":false,\"configuration\":{\"proxy\":\"ztv\",\"privateLinkScope\":\"mwwmjswenaww\"}}")
-                .toObject(DefenderForDatabasesGcpOfferingArcAutoProvisioning.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("ztv", model.configuration().proxy());
-        Assertions.assertEquals("mwwmjswenaww", model.configuration().privateLinkScope());
+        DefenderForDatabasesGcpOfferingArcAutoProvisioning model = BinaryData
+            .fromString("{\"enabled\":true,\"configuration\":{\"proxy\":\"jovf\",\"privateLinkScope\":\"bydhuih\"}}")
+            .toObject(DefenderForDatabasesGcpOfferingArcAutoProvisioning.class);
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("jovf", model.configuration().proxy());
+        Assertions.assertEquals("bydhuih", model.configuration().privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForDatabasesGcpOfferingArcAutoProvisioning model =
-            new DefenderForDatabasesGcpOfferingArcAutoProvisioning()
-                .withEnabled(false)
-                .withConfiguration(
-                    new DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration()
-                        .withProxy("ztv")
-                        .withPrivateLinkScope("mwwmjswenaww"));
+        DefenderForDatabasesGcpOfferingArcAutoProvisioning model
+            = new DefenderForDatabasesGcpOfferingArcAutoProvisioning().withEnabled(true)
+                .withConfiguration(new DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration()
+                    .withProxy("jovf").withPrivateLinkScope("bydhuih"));
         model = BinaryData.fromObject(model).toObject(DefenderForDatabasesGcpOfferingArcAutoProvisioning.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("ztv", model.configuration().proxy());
-        Assertions.assertEquals("mwwmjswenaww", model.configuration().privateLinkScope());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("jovf", model.configuration().proxy());
+        Assertions.assertEquals("bydhuih", model.configuration().privateLinkScope());
     }
 }

@@ -6,20 +6,26 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.AzureDataLakeStoreWriteSettings;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
+import java.util.Arrays;
 
 public final class AzureDataLakeStoreWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataLakeStoreWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureDataLakeStoreWriteSettings\",\"expiryDateTime\":\"datatyavvexjqdjk\",\"maxConcurrentConnections\":\"databge\",\"disableMetricsCollection\":\"dataxjgkrppm\",\"copyBehavior\":\"dataoqtwqciqawhkdkva\",\"\":{\"mj\":\"databdscotidikxm\"}}")
+            "{\"type\":\"gsxkyboysquygokh\",\"expiryDateTime\":\"dataopbabndwcfmzmqmg\",\"maxConcurrentConnections\":\"datatwcyigrhfevxypqu\",\"disableMetricsCollection\":\"dataojyxhhvoowrtcsuc\",\"copyBehavior\":\"dataawyiqzj\",\"metadata\":[{\"name\":\"datajnmpvsbludfbhzu\",\"value\":\"datapfbhihddiiuex\"}],\"\":{\"udmlqpward\":\"dataf\"}}")
             .toObject(AzureDataLakeStoreWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataLakeStoreWriteSettings model = new AzureDataLakeStoreWriteSettings()
-            .withMaxConcurrentConnections("databge").withDisableMetricsCollection("dataxjgkrppm")
-            .withCopyBehavior("dataoqtwqciqawhkdkva").withExpiryDateTime("datatyavvexjqdjk");
+        AzureDataLakeStoreWriteSettings model
+            = new AzureDataLakeStoreWriteSettings().withMaxConcurrentConnections("datatwcyigrhfevxypqu")
+                .withDisableMetricsCollection("dataojyxhhvoowrtcsuc")
+                .withCopyBehavior("dataawyiqzj")
+                .withMetadata(
+                    Arrays.asList(new MetadataItem().withName("datajnmpvsbludfbhzu").withValue("datapfbhihddiiuex")))
+                .withExpiryDateTime("dataopbabndwcfmzmqmg");
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreWriteSettings.class);
     }
 }

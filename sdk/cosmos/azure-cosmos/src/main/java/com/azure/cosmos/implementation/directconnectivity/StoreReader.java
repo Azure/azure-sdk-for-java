@@ -996,10 +996,14 @@ public class StoreReader {
                         /* backendLatencyInMs */ backendLatencyInMs,
                         /* retryAfterInMs */ retryAfterInMs);
             } else {
-                logger.error("Unexpected exception {} received while reading from store.", responseException.getMessage(), responseException);
+                String errorMessage = "Unexpected exception " + responseException.getMessage() + " received while reading from store.";
+                logger.error(errorMessage, responseException);
                 return new StoreResult(
                         /* storeResponse: */ null,
-                        /* exception: */ new InternalServerErrorException(RMResources.InternalServerError, responseException),
+                        /* exception: */ new InternalServerErrorException(
+                                            com.azure.cosmos.implementation.Exceptions.getInternalServerErrorMessage(errorMessage),
+                                            responseException,
+                                            HttpConstants.SubStatusCodes.INVALID_RESULT),
                         /* partitionKeyRangeId: */ (String) null,
                         /* lsn: */ -1,
                         /* quorumAckedLsn: */ -1,

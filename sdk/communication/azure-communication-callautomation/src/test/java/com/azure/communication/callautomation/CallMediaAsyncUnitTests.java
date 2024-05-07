@@ -11,6 +11,7 @@ import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrD
 import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
+import com.azure.communication.callautomation.models.HoldOptions;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognitionChoice;
@@ -91,6 +92,18 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
+    public void playFileToAllWithBargeInWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playFileSource)
+            .setLoop(false)
+            .setInterruptCallMediaOperation(true)
+            .setOperationContext("operationContext");
+        StepVerifier.create(
+                callMedia.playToAllWithResponse(playToAllOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
     public void playTextWithResponseTest() {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
@@ -113,6 +126,18 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
+    public void playTextToAllWithBargeInWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playTextSource)
+            .setLoop(false)
+            .setInterruptCallMediaOperation(true)
+            .setOperationContext("operationContext");
+        StepVerifier.create(
+            callMedia.playToAllWithResponse(playToAllOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
     public void playSsmlWithResponseTest() {
         playOptions = new PlayOptions(playSsmlSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
@@ -122,11 +147,23 @@ public class CallMediaAsyncUnitTests {
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
-
+    
     @Test
     public void playSsmlToAllWithResponseTest() {
         playToAllOptions = new PlayToAllOptions(playSsmlSource)
             .setLoop(false)
+            .setOperationContext("operationContext");
+        StepVerifier.create(
+            callMedia.playToAllWithResponse(playToAllOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void playSsmlToAllWithBargeInWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playSsmlSource)
+            .setLoop(false)
+            .setInterruptCallMediaOperation(true)
             .setOperationContext("operationContext");
         StepVerifier.create(
             callMedia.playToAllWithResponse(playToAllOptions))
@@ -355,6 +392,45 @@ public class CallMediaAsyncUnitTests {
         callMedia = getMockCallMedia(200);
         StepVerifier.create(
                 callMedia.stopHoldMusicWithResponse(
+                    new CommunicationUserIdentifier("id"),
+                    "operationalContext"
+                ))
+            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+    
+    @Test
+    public void holdWithResponseTest() {
+
+        callMedia = getMockCallMedia(200);
+        HoldOptions options = new HoldOptions(
+            new CommunicationUserIdentifier("id"))
+            .setPlaySourceInfo(new TextSource().setText("audio to play"));
+        StepVerifier.create(
+                callMedia.holdWithResponse(options))
+            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void holdWithResponseNoPromptTest() {
+
+        callMedia = getMockCallMedia(200);
+        HoldOptions options = new HoldOptions(
+            new CommunicationUserIdentifier("id"))
+            .setPlaySourceInfo(new TextSource().setText("audio to play"));
+        StepVerifier.create(
+                callMedia.holdWithResponse(options))
+            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void unholdWithResponseTest() {
+
+        callMedia = getMockCallMedia(200);
+        StepVerifier.create(
+                callMedia.unholdWithResponse(
                     new CommunicationUserIdentifier("id"),
                     "operationalContext"
                 ))

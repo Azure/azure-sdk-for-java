@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Properties pertaining to the UnknownTarget. */
+/**
+ * Properties pertaining to the UnknownTarget.
+ */
 @Fluent
 public final class UnknownTarget {
     /*
@@ -19,14 +21,16 @@ public final class UnknownTarget {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> attributes;
 
-    /** Creates an instance of UnknownTarget class. */
+    /**
+     * Creates an instance of UnknownTarget class.
+     */
     public UnknownTarget() {
     }
 
     /**
      * Get the attributes property: Dictionary of string-&gt;string pairs containing information about the Storage
      * Target.
-     *
+     * 
      * @return the attributes value.
      */
     public Map<String, String> attributes() {
@@ -36,7 +40,7 @@ public final class UnknownTarget {
     /**
      * Set the attributes property: Dictionary of string-&gt;string pairs containing information about the Storage
      * Target.
-     *
+     * 
      * @param attributes the attributes value to set.
      * @return the UnknownTarget object itself.
      */
@@ -47,7 +51,7 @@ public final class UnknownTarget {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

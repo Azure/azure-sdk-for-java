@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Property details. */
+/**
+ * Property details.
+ */
 @Fluent
 public final class DiagnosticDataProviderMetadataPropertyBagItem {
     /*
@@ -22,13 +24,15 @@ public final class DiagnosticDataProviderMetadataPropertyBagItem {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of DiagnosticDataProviderMetadataPropertyBagItem class. */
+    /**
+     * Creates an instance of DiagnosticDataProviderMetadataPropertyBagItem class.
+     */
     public DiagnosticDataProviderMetadataPropertyBagItem() {
     }
 
     /**
      * Get the name property: Property name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class DiagnosticDataProviderMetadataPropertyBagItem {
 
     /**
      * Set the name property: Property name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DiagnosticDataProviderMetadataPropertyBagItem object itself.
      */
@@ -48,7 +52,7 @@ public final class DiagnosticDataProviderMetadataPropertyBagItem {
 
     /**
      * Get the value property: Property value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class DiagnosticDataProviderMetadataPropertyBagItem {
 
     /**
      * Set the value property: Property value.
-     *
+     * 
      * @param value the value value to set.
      * @return the DiagnosticDataProviderMetadataPropertyBagItem object itself.
      */
@@ -68,7 +72,7 @@ public final class DiagnosticDataProviderMetadataPropertyBagItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

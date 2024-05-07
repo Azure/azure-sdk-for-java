@@ -15,7 +15,7 @@ public class ListIndexersExample {
     /**
      * This example shows how to list all existing indexers in a Cognitive Search Service.
      * <p>
-     * From the Azure portal, get your Azure Cognitive Search service URL and API key,
+     * From the Azure portal, get your Azure AI Search service URL and API key,
      * and set the values of these environment variables:
      */
 

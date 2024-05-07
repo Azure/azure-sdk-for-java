@@ -31,39 +31,28 @@ public final class UsageModelsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"display\":{\"description\":\"u\"},\"modelName\":\"jmqlgkfb\",\"targetType\":\"doaon\"}]}";
+        String responseStr
+            = "{\"value\":[{\"display\":{\"description\":\"jqppyostronzmy\"},\"modelName\":\"fipns\",\"targetType\":\"mcwaekrrjr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        StorageCacheManager manager =
-            StorageCacheManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        StorageCacheManager manager = StorageCacheManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<UsageModel> response = manager.usageModels().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("u", response.iterator().next().display().description());
-        Assertions.assertEquals("jmqlgkfb", response.iterator().next().modelName());
-        Assertions.assertEquals("doaon", response.iterator().next().targetType());
+        Assertions.assertEquals("jqppyostronzmy", response.iterator().next().display().description());
+        Assertions.assertEquals("fipns", response.iterator().next().modelName());
+        Assertions.assertEquals("mcwaekrrjr", response.iterator().next().targetType());
     }
 }

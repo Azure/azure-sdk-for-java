@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Governance rule execution parameters. */
+/**
+ * Governance rule execution parameters.
+ */
 @Fluent
 public final class ExecuteGovernanceRuleParams {
     /*
@@ -16,13 +18,15 @@ public final class ExecuteGovernanceRuleParams {
     @JsonProperty(value = "override")
     private Boolean override;
 
-    /** Creates an instance of ExecuteGovernanceRuleParams class. */
+    /**
+     * Creates an instance of ExecuteGovernanceRuleParams class.
+     */
     public ExecuteGovernanceRuleParams() {
     }
 
     /**
      * Get the override property: Describe if governance rule should be override.
-     *
+     * 
      * @return the override value.
      */
     public Boolean override() {
@@ -31,7 +35,7 @@ public final class ExecuteGovernanceRuleParams {
 
     /**
      * Set the override property: Describe if governance rule should be override.
-     *
+     * 
      * @param override the override value to set.
      * @return the ExecuteGovernanceRuleParams object itself.
      */
@@ -42,7 +46,7 @@ public final class ExecuteGovernanceRuleParams {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

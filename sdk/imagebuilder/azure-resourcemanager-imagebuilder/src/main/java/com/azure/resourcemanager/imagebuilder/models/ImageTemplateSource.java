@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes a virtual machine image source for building, customizing and distributing. */
+/**
+ * Describes a virtual machine image source for building, customizing and distributing.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "PlatformImage", value = ImageTemplatePlatformImageSource.class),
     @JsonSubTypes.Type(name = "ManagedImage", value = ImageTemplateManagedImageSource.class),
-    @JsonSubTypes.Type(name = "SharedImageVersion", value = ImageTemplateSharedImageVersionSource.class)
-})
+    @JsonSubTypes.Type(name = "SharedImageVersion", value = ImageTemplateSharedImageVersionSource.class) })
 @Immutable
 public class ImageTemplateSource {
-    /** Creates an instance of ImageTemplateSource class. */
+    /**
+     * Creates an instance of ImageTemplateSource class.
+     */
     public ImageTemplateSource() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The Azure event log entries are of type EventData. */
+/**
+ * The Azure event log entries are of type EventData.
+ */
 @Immutable
 public final class EventDataInner {
     /*
@@ -174,13 +176,15 @@ public final class EventDataInner {
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of EventDataInner class. */
+    /**
+     * Creates an instance of EventDataInner class.
+     */
     public EventDataInner() {
     }
 
     /**
      * Get the authorization property: The sender authorization information.
-     *
+     * 
      * @return the authorization value.
      */
     public SenderAuthorization authorization() {
@@ -189,7 +193,7 @@ public final class EventDataInner {
 
     /**
      * Get the claims property: key value pairs to identify ARM permissions.
-     *
+     * 
      * @return the claims value.
      */
     public Map<String, String> claims() {
@@ -199,7 +203,7 @@ public final class EventDataInner {
     /**
      * Get the caller property: the email address of the user who has performed the operation, the UPN claim or SPN
      * claim based on availability.
-     *
+     * 
      * @return the caller value.
      */
     public String caller() {
@@ -208,7 +212,7 @@ public final class EventDataInner {
 
     /**
      * Get the description property: the description of the event.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -218,7 +222,7 @@ public final class EventDataInner {
     /**
      * Get the id property: the Id of this event as required by ARM for RBAC. It contains the EventDataID and a
      * timestamp information.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -227,7 +231,7 @@ public final class EventDataInner {
 
     /**
      * Get the eventDataId property: the event data Id. This is a unique identifier for an event.
-     *
+     * 
      * @return the eventDataId value.
      */
     public String eventDataId() {
@@ -237,7 +241,7 @@ public final class EventDataInner {
     /**
      * Get the correlationId property: the correlation Id, usually a GUID in the string format. The correlation Id is
      * shared among the events that belong to the same uber operation.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -247,7 +251,7 @@ public final class EventDataInner {
     /**
      * Get the eventName property: the event name. This value should not be confused with OperationName. For practical
      * purposes, OperationName might be more appealing to end users.
-     *
+     * 
      * @return the eventName value.
      */
     public LocalizableStringInner eventName() {
@@ -256,7 +260,7 @@ public final class EventDataInner {
 
     /**
      * Get the category property: the event category.
-     *
+     * 
      * @return the category value.
      */
     public LocalizableStringInner category() {
@@ -266,7 +270,7 @@ public final class EventDataInner {
     /**
      * Get the httpRequest property: the HTTP request info. Usually includes the 'clientRequestId', 'clientIpAddress'
      * (IP address of the user who initiated the event) and 'method' (HTTP method e.g. PUT).
-     *
+     * 
      * @return the httpRequest value.
      */
     public HttpRequestInfo httpRequest() {
@@ -275,7 +279,7 @@ public final class EventDataInner {
 
     /**
      * Get the level property: the event level.
-     *
+     * 
      * @return the level value.
      */
     public EventLevel level() {
@@ -284,7 +288,7 @@ public final class EventDataInner {
 
     /**
      * Get the resourceGroupName property: the resource group name of the impacted resource.
-     *
+     * 
      * @return the resourceGroupName value.
      */
     public String resourceGroupName() {
@@ -293,7 +297,7 @@ public final class EventDataInner {
 
     /**
      * Get the resourceProviderName property: the resource provider name of the impacted resource.
-     *
+     * 
      * @return the resourceProviderName value.
      */
     public LocalizableStringInner resourceProviderName() {
@@ -302,7 +306,7 @@ public final class EventDataInner {
 
     /**
      * Get the resourceId property: the resource uri that uniquely identifies the resource that caused this event.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -311,7 +315,7 @@ public final class EventDataInner {
 
     /**
      * Get the resourceType property: the resource type.
-     *
+     * 
      * @return the resourceType value.
      */
     public LocalizableStringInner resourceType() {
@@ -321,7 +325,7 @@ public final class EventDataInner {
     /**
      * Get the operationId property: It is usually a GUID shared among the events corresponding to single operation.
      * This value should not be confused with EventName.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -330,7 +334,7 @@ public final class EventDataInner {
 
     /**
      * Get the operationName property: the operation name.
-     *
+     * 
      * @return the operationName value.
      */
     public LocalizableStringInner operationName() {
@@ -340,7 +344,7 @@ public final class EventDataInner {
     /**
      * Get the properties property: the set of &lt;Key, Value&gt; pairs (usually a Dictionary&lt;String, String&gt;)
      * that includes details about the event.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -350,7 +354,7 @@ public final class EventDataInner {
     /**
      * Get the status property: a string describing the status of the operation. Some typical values are: Started, In
      * progress, Succeeded, Failed, Resolved.
-     *
+     * 
      * @return the status value.
      */
     public LocalizableStringInner status() {
@@ -363,7 +367,7 @@ public final class EventDataInner {
      * (HTTP Status Code: 202), No Content (HTTP Status Code: 204), Bad Request(HTTP Status Code: 400), Not Found (HTTP
      * Status Code: 404), Conflict (HTTP Status Code: 409), Internal Server Error (HTTP Status Code: 500), Service
      * Unavailable (HTTP Status Code:503), Gateway Timeout (HTTP Status Code: 504).
-     *
+     * 
      * @return the subStatus value.
      */
     public LocalizableStringInner subStatus() {
@@ -373,7 +377,7 @@ public final class EventDataInner {
     /**
      * Get the eventTimestamp property: the timestamp of when the event was generated by the Azure service processing
      * the request corresponding the event. It in ISO 8601 format.
-     *
+     * 
      * @return the eventTimestamp value.
      */
     public OffsetDateTime eventTimestamp() {
@@ -381,10 +385,11 @@ public final class EventDataInner {
     }
 
     /**
-     * Get the submissionTimestamp property: the timestamp of when the event became available for querying via this API.
-     * It is in ISO 8601 format. This value should not be confused eventTimestamp. As there might be a delay between the
-     * occurrence time of the event, and the time that the event is submitted to the Azure logging infrastructure.
-     *
+     * Get the submissionTimestamp property: the timestamp of when the event became available for querying via this
+     * API. It is in ISO 8601 format. This value should not be confused eventTimestamp. As there might be a delay
+     * between the occurrence time of the event, and the time that the event is submitted to the Azure logging
+     * infrastructure.
+     * 
      * @return the submissionTimestamp value.
      */
     public OffsetDateTime submissionTimestamp() {
@@ -393,7 +398,7 @@ public final class EventDataInner {
 
     /**
      * Get the subscriptionId property: the Azure subscription Id usually a GUID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -402,7 +407,7 @@ public final class EventDataInner {
 
     /**
      * Get the tenantId property: the Azure tenant Id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -411,7 +416,7 @@ public final class EventDataInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

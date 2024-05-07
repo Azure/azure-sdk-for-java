@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appplatform.fluent.models.OperationDetailInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Available operations of the service. */
+/**
+ * Available operations of the service.
+ */
 @Fluent
 public final class AvailableOperations {
     /*
@@ -26,8 +28,14 @@ public final class AvailableOperations {
     private String nextLink;
 
     /**
+     * Creates an instance of AvailableOperations class.
+     */
+    public AvailableOperations() {
+    }
+
+    /**
      * Get the value property: Collection of available operation details.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationDetailInner> value() {
@@ -36,7 +44,7 @@ public final class AvailableOperations {
 
     /**
      * Set the value property: Collection of available operation details.
-     *
+     * 
      * @param value the value value to set.
      * @return the AvailableOperations object itself.
      */
@@ -46,9 +54,9 @@ public final class AvailableOperations {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +64,9 @@ public final class AvailableOperations {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AvailableOperations object itself.
      */
@@ -69,7 +77,7 @@ public final class AvailableOperations {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

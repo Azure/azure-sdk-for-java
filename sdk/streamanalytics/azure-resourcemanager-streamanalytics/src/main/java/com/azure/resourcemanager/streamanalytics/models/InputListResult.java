@@ -5,17 +5,15 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.InputInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object containing a list of inputs under a streaming job. */
+/**
+ * Object containing a list of inputs under a streaming job.
+ */
 @Immutable
 public final class InputListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InputListResult.class);
-
     /*
      * A list of inputs under a streaming job. Populated by a 'List' operation.
      */
@@ -29,8 +27,14 @@ public final class InputListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of InputListResult class.
+     */
+    public InputListResult() {
+    }
+
+    /**
      * Get the value property: A list of inputs under a streaming job. Populated by a 'List' operation.
-     *
+     * 
      * @return the value value.
      */
     public List<InputInner> value() {
@@ -39,7 +43,7 @@ public final class InputListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class InputListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

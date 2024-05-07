@@ -13,11 +13,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.security.SecurityManager;
-import com.azure.resourcemanager.security.models.ApiCollectionResponse;
+import com.azure.resourcemanager.security.models.ApiCollection;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -31,39 +30,25 @@ public final class ApiCollectionsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"zwhpjlwyxedz\",\"additionalData\":{\"ckewvm\":\"rfo\",\"utxfptofhgnuyw\":\"ifopxfjjtpdyz\"}},\"id\":\"zygvadgaaqwvkgjp\",\"name\":\"tpmpvd\",\"type\":\"ogehluf\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"displayName\":\"bkqqbjcdauc\",\"discoveredVia\":\"mzvgj\",\"baseUrl\":\"uw\",\"numberOfApiEndpoints\":360435000406302696,\"numberOfInactiveApiEndpoints\":7017117870514132396,\"numberOfUnauthenticatedApiEndpoints\":1721967684768353863,\"numberOfExternalApiEndpoints\":3792865781189152914,\"numberOfApiEndpointsWithSensitiveDataExposed\":268039707340643170,\"sensitivityLabel\":\"blmxblcbwvsqpe\"},\"id\":\"vlcbbulepcgi\",\"name\":\"sfilxusyzcn\",\"type\":\"jvipeh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ApiCollectionResponse> response =
-            manager.apiCollections().list("gyedzfzqi", "uqhtdereuno", com.azure.core.util.Context.NONE);
+        PagedIterable<ApiCollection> response = manager.apiCollections().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zwhpjlwyxedz", response.iterator().next().displayName());
-        Assertions.assertEquals("rfo", response.iterator().next().additionalData().get("ckewvm"));
     }
 }

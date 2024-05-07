@@ -13,8 +13,7 @@ public final class TargetComputeSizeImpl implements TargetComputeSize {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    TargetComputeSizeImpl(
-        TargetComputeSizeInner innerObject,
+    TargetComputeSizeImpl(TargetComputeSizeInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

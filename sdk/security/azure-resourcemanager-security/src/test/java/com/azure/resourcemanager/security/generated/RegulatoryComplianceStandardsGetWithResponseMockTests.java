@@ -31,41 +31,27 @@ public final class RegulatoryComplianceStandardsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"state\":\"Passed\",\"passedControls\":1731687538,\"failedControls\":1363649991,\"skippedControls\":453247963,\"unsupportedControls\":1503663605},\"id\":\"lriqbyokvjgbzs\",\"name\":\"e\",\"type\":\"rsltt\"}";
+        String responseStr
+            = "{\"properties\":{\"state\":\"Unsupported\",\"passedControls\":1746202159,\"failedControls\":2056710500,\"skippedControls\":15878740,\"unsupportedControls\":842342124},\"id\":\"ob\",\"name\":\"ewwpsibxov\",\"type\":\"qoqjrkblndy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RegulatoryComplianceStandard response =
-            manager
-                .regulatoryComplianceStandards()
-                .getWithResponse("qwulynkgfcfdru", com.azure.core.util.Context.NONE)
-                .getValue();
+        RegulatoryComplianceStandard response = manager.regulatoryComplianceStandards()
+            .getWithResponse("xrwqfmd", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(State.PASSED, response.state());
+        Assertions.assertEquals(State.UNSUPPORTED, response.state());
     }
 }

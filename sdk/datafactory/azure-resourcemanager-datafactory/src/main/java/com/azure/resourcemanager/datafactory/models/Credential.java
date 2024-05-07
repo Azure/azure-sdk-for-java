@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -20,17 +21,20 @@ import java.util.Map;
  * The Azure Data Factory nested object which contains the information and credential which can be used to connect with
  * related store or compute resource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = Credential.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = Credential.class, visible = true)
 @JsonTypeName("Credential")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ManagedIdentity", value = ManagedIdentityCredential.class),
     @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalCredential.class) })
 @Fluent
 public class Credential {
+    /*
+     * Type of credential.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
     /*
      * Credential description.
      */
@@ -44,8 +48,7 @@ public class Credential {
     private List<Object> annotations;
 
     /*
-     * The Azure Data Factory nested object which contains the information and credential which can be used to connect
-     * with related store or compute resource.
+     * The Azure Data Factory nested object which contains the information and credential which can be used to connect with related store or compute resource.
      */
     @JsonIgnore
     private Map<String, Object> additionalProperties;
@@ -54,6 +57,16 @@ public class Credential {
      * Creates an instance of Credential class.
      */
     public Credential() {
+        this.type = "Credential";
+    }
+
+    /**
+     * Get the type property: Type of credential.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

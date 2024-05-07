@@ -12,38 +12,31 @@ import org.junit.jupiter.api.Assertions;
 public final class SecuritySolutionsReferenceDataPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecuritySolutionsReferenceDataProperties model =
-            BinaryData
-                .fromString(
-                    "{\"securityFamily\":\"Ngfw\",\"alertVendorName\":\"ixtmkzjvkviirhgf\",\"packageInfoUrl\":\"rwsdp\",\"productName\":\"ra\",\"publisher\":\"zvzbglbyv\",\"publisherDisplayName\":\"ctctbrxkjz\",\"template\":\"rgxffmshkw\"}")
-                .toObject(SecuritySolutionsReferenceDataProperties.class);
-        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
-        Assertions.assertEquals("ixtmkzjvkviirhgf", model.alertVendorName());
-        Assertions.assertEquals("rwsdp", model.packageInfoUrl());
-        Assertions.assertEquals("ra", model.productName());
-        Assertions.assertEquals("zvzbglbyv", model.publisher());
-        Assertions.assertEquals("ctctbrxkjz", model.publisherDisplayName());
-        Assertions.assertEquals("rgxffmshkw", model.template());
+        SecuritySolutionsReferenceDataProperties model = BinaryData.fromString(
+            "{\"securityFamily\":\"SaasWaf\",\"alertVendorName\":\"wvor\",\"packageInfoUrl\":\"alkj\",\"productName\":\"bkbdhlltqstqkqs\",\"publisher\":\"gxiynecovagzk\",\"publisherDisplayName\":\"eubanlxunpqcc\",\"template\":\"qiawzl\"}")
+            .toObject(SecuritySolutionsReferenceDataProperties.class);
+        Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
+        Assertions.assertEquals("wvor", model.alertVendorName());
+        Assertions.assertEquals("alkj", model.packageInfoUrl());
+        Assertions.assertEquals("bkbdhlltqstqkqs", model.productName());
+        Assertions.assertEquals("gxiynecovagzk", model.publisher());
+        Assertions.assertEquals("eubanlxunpqcc", model.publisherDisplayName());
+        Assertions.assertEquals("qiawzl", model.template());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecuritySolutionsReferenceDataProperties model =
-            new SecuritySolutionsReferenceDataProperties()
-                .withSecurityFamily(SecurityFamily.NGFW)
-                .withAlertVendorName("ixtmkzjvkviirhgf")
-                .withPackageInfoUrl("rwsdp")
-                .withProductName("ra")
-                .withPublisher("zvzbglbyv")
-                .withPublisherDisplayName("ctctbrxkjz")
-                .withTemplate("rgxffmshkw");
+        SecuritySolutionsReferenceDataProperties model
+            = new SecuritySolutionsReferenceDataProperties().withSecurityFamily(SecurityFamily.SAAS_WAF)
+                .withAlertVendorName("wvor").withPackageInfoUrl("alkj").withProductName("bkbdhlltqstqkqs")
+                .withPublisher("gxiynecovagzk").withPublisherDisplayName("eubanlxunpqcc").withTemplate("qiawzl");
         model = BinaryData.fromObject(model).toObject(SecuritySolutionsReferenceDataProperties.class);
-        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
-        Assertions.assertEquals("ixtmkzjvkviirhgf", model.alertVendorName());
-        Assertions.assertEquals("rwsdp", model.packageInfoUrl());
-        Assertions.assertEquals("ra", model.productName());
-        Assertions.assertEquals("zvzbglbyv", model.publisher());
-        Assertions.assertEquals("ctctbrxkjz", model.publisherDisplayName());
-        Assertions.assertEquals("rgxffmshkw", model.template());
+        Assertions.assertEquals(SecurityFamily.SAAS_WAF, model.securityFamily());
+        Assertions.assertEquals("wvor", model.alertVendorName());
+        Assertions.assertEquals("alkj", model.packageInfoUrl());
+        Assertions.assertEquals("bkbdhlltqstqkqs", model.productName());
+        Assertions.assertEquals("gxiynecovagzk", model.publisher());
+        Assertions.assertEquals("eubanlxunpqcc", model.publisherDisplayName());
+        Assertions.assertEquals("qiawzl", model.template());
     }
 }

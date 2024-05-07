@@ -7,8 +7,10 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.AutomationInner;
 import com.azure.resourcemanager.security.models.AutomationAction;
+import com.azure.resourcemanager.security.models.AutomationRuleSet;
 import com.azure.resourcemanager.security.models.AutomationScope;
 import com.azure.resourcemanager.security.models.AutomationSource;
+import com.azure.resourcemanager.security.models.AutomationTriggeringRule;
 import com.azure.resourcemanager.security.models.EventSource;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,54 +20,47 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"opqgikyzirtxdyux\",\"isEnabled\":true,\"scopes\":[{\"description\":\"sewgioilqukr\",\"scopePath\":\"xtqmieoxor\"},{\"description\":\"ufhyaomtbgh\",\"scopePath\":\"vgrvkffo\"}],\"sources\":[{\"eventSource\":\"Alerts\",\"ruleSets\":[]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]},\"location\":\"bgj\",\"tags\":{\"ovwxnbkfezzxsc\":\"umvfclu\",\"omvzzbtd\":\"hwzdgirujbz\",\"yujviylwdshfssn\":\"qvpn\"},\"id\":\"bgye\",\"name\":\"rymsgaojfmw\",\"type\":\"cotmr\"}")
-                .toObject(AutomationInner.class);
-        Assertions.assertEquals("bgj", model.location());
-        Assertions.assertEquals("umvfclu", model.tags().get("ovwxnbkfezzxsc"));
-        Assertions.assertEquals("opqgikyzirtxdyux", model.description());
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals("sewgioilqukr", model.scopes().get(0).description());
-        Assertions.assertEquals("xtqmieoxor", model.scopes().get(0).scopePath());
-        Assertions.assertEquals(EventSource.ALERTS, model.sources().get(0).eventSource());
+        AutomationInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"wrtz\",\"isEnabled\":false,\"scopes\":[{\"description\":\"zmh\",\"scopePath\":\"ongmtsa\"},{\"description\":\"cbpwxqpsrknft\",\"scopePath\":\"vriuhprwmdyvx\"},{\"description\":\"ayriwwroyqbexrm\",\"scopePath\":\"ibycno\"}],\"sources\":[{\"eventSource\":\"Assessments\",\"ruleSets\":[{\"rules\":[{},{},{},{}]},{\"rules\":[{},{}]},{\"rules\":[{}]}]}],\"actions\":[{\"actionType\":\"AutomationAction\"}]},\"location\":\"pjyzhpv\",\"tags\":{\"gfhzovawjvzunlut\":\"cjrvxdjzlmwlxkv\",\"i\":\"nnprn\",\"tskzbbtdzumveek\":\"eilpjzuaejxdu\",\"uh\":\"pwo\"},\"id\":\"fpbsjyofdxl\",\"name\":\"us\",\"type\":\"ttouwaboekqvkel\"}")
+            .toObject(AutomationInner.class);
+        Assertions.assertEquals("pjyzhpv", model.location());
+        Assertions.assertEquals("cjrvxdjzlmwlxkv", model.tags().get("gfhzovawjvzunlut"));
+        Assertions.assertEquals("wrtz", model.description());
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals("zmh", model.scopes().get(0).description());
+        Assertions.assertEquals("ongmtsa", model.scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.ASSESSMENTS, model.sources().get(0).eventSource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationInner model =
-            new AutomationInner()
-                .withLocation("bgj")
-                .withTags(mapOf("ovwxnbkfezzxsc", "umvfclu", "omvzzbtd", "hwzdgirujbz", "yujviylwdshfssn", "qvpn"))
-                .withDescription("opqgikyzirtxdyux")
-                .withIsEnabled(true)
-                .withScopes(
-                    Arrays
-                        .asList(
-                            new AutomationScope().withDescription("sewgioilqukr").withScopePath("xtqmieoxor"),
-                            new AutomationScope().withDescription("ufhyaomtbgh").withScopePath("vgrvkffo")))
-                .withSources(
-                    Arrays
-                        .asList(
-                            new AutomationSource().withEventSource(EventSource.ALERTS).withRuleSets(Arrays.asList())))
-                .withActions(
-                    Arrays
-                        .asList(
-                            new AutomationAction(),
-                            new AutomationAction(),
-                            new AutomationAction(),
-                            new AutomationAction()));
+        AutomationInner model = new AutomationInner().withLocation("pjyzhpv")
+            .withTags(mapOf("gfhzovawjvzunlut", "cjrvxdjzlmwlxkv", "i", "nnprn", "tskzbbtdzumveek", "eilpjzuaejxdu",
+                "uh", "pwo"))
+            .withDescription("wrtz").withIsEnabled(false)
+            .withScopes(Arrays.asList(new AutomationScope().withDescription("zmh").withScopePath("ongmtsa"),
+                new AutomationScope().withDescription("cbpwxqpsrknft").withScopePath("vriuhprwmdyvx"),
+                new AutomationScope().withDescription("ayriwwroyqbexrm").withScopePath("ibycno")))
+            .withSources(Arrays.asList(new AutomationSource().withEventSource(EventSource.ASSESSMENTS)
+                .withRuleSets(Arrays.asList(
+                    new AutomationRuleSet()
+                        .withRules(Arrays.asList(new AutomationTriggeringRule(), new AutomationTriggeringRule(),
+                            new AutomationTriggeringRule(), new AutomationTriggeringRule())),
+                    new AutomationRuleSet()
+                        .withRules(Arrays.asList(new AutomationTriggeringRule(), new AutomationTriggeringRule())),
+                    new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule()))))))
+            .withActions(Arrays.asList(new AutomationAction()));
         model = BinaryData.fromObject(model).toObject(AutomationInner.class);
-        Assertions.assertEquals("bgj", model.location());
-        Assertions.assertEquals("umvfclu", model.tags().get("ovwxnbkfezzxsc"));
-        Assertions.assertEquals("opqgikyzirtxdyux", model.description());
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals("sewgioilqukr", model.scopes().get(0).description());
-        Assertions.assertEquals("xtqmieoxor", model.scopes().get(0).scopePath());
-        Assertions.assertEquals(EventSource.ALERTS, model.sources().get(0).eventSource());
+        Assertions.assertEquals("pjyzhpv", model.location());
+        Assertions.assertEquals("cjrvxdjzlmwlxkv", model.tags().get("gfhzovawjvzunlut"));
+        Assertions.assertEquals("wrtz", model.description());
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals("zmh", model.scopes().get(0).description());
+        Assertions.assertEquals("ongmtsa", model.scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.ASSESSMENTS, model.sources().get(0).eventSource());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

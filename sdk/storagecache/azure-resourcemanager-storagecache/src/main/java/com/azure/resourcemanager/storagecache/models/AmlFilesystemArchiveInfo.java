@@ -7,23 +7,27 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information required to execute the archive operation. */
+/**
+ * Information required to execute the archive operation.
+ */
 @Fluent
 public final class AmlFilesystemArchiveInfo {
     /*
-     * Lustre file system path to archive relative to the file system root.  Specify '/' to archive all modified data.
+     * Lustre file system path to archive relative to the file system root. Specify '/' to archive all modified data.
      */
     @JsonProperty(value = "filesystemPath")
     private String filesystemPath;
 
-    /** Creates an instance of AmlFilesystemArchiveInfo class. */
+    /**
+     * Creates an instance of AmlFilesystemArchiveInfo class.
+     */
     public AmlFilesystemArchiveInfo() {
     }
 
     /**
-     * Get the filesystemPath property: Lustre file system path to archive relative to the file system root. Specify '/'
-     * to archive all modified data.
-     *
+     * Get the filesystemPath property: Lustre file system path to archive relative to the file system root. Specify
+     * '/' to archive all modified data.
+     * 
      * @return the filesystemPath value.
      */
     public String filesystemPath() {
@@ -31,9 +35,9 @@ public final class AmlFilesystemArchiveInfo {
     }
 
     /**
-     * Set the filesystemPath property: Lustre file system path to archive relative to the file system root. Specify '/'
-     * to archive all modified data.
-     *
+     * Set the filesystemPath property: Lustre file system path to archive relative to the file system root. Specify
+     * '/' to archive all modified data.
+     * 
      * @param filesystemPath the filesystemPath value to set.
      * @return the AmlFilesystemArchiveInfo object itself.
      */
@@ -44,7 +48,7 @@ public final class AmlFilesystemArchiveInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

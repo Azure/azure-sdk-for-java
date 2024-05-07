@@ -15,10 +15,14 @@ import java.util.Objects;
  * This class encapsulates the body of a message. The {@link AmqpMessageBodyType} map to an AMQP specification message
  * body types. Current implementation support {@link AmqpMessageBodyType#DATA DATA} AMQP data type.
  *
- * <p><b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. Get methods not
- * corresponding to the type of the body throws exception.</b></p>
+ * <p>
+ * <b>Client should test for {@link AmqpMessageBodyType} before calling corresponding get method. Get methods not
+ * corresponding to the type of the body throws exception.</b>
+ * </p>
  *
- * <p><strong>How to check for {@link AmqpMessageBodyType}</strong></p>
+ * <p>
+ * <strong>How to check for {@link AmqpMessageBodyType}</strong>
+ * </p>
  * <!-- src_embed com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
  * <pre>
  * Object amqpValue;
@@ -44,10 +48,13 @@ import java.util.Objects;
  * <!-- end com.azure.core.amqp.models.AmqpBodyType.checkBodyType -->
  *
  * @see AmqpMessageBodyType
- * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions" target="_blank">
- *     Amqp primitive data type.</a>
- * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format" target="_blank">
- *     Amqp message format.</a>
+ * @see <a href=
+ * "https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-types-v1.0-os.html#section-primitive-type-definitions"
+ * target="_blank">
+ * Amqp primitive data type.</a>
+ * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#section-message-format"
+ * target="_blank">
+ * Amqp message format.</a>
  *
  */
 public final class AmqpMessageBody {
@@ -192,10 +199,10 @@ public final class AmqpMessageBody {
      */
     public IterableStream<byte[]> getData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "This method can only be called if AMQP Message body type is 'DATA'."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("This method can only be called if AMQP Message body type is 'DATA'."));
         }
-        if (dataList ==  null) {
+        if (dataList == null) {
             dataList = Collections.singletonList(data);
         }
         return new IterableStream<>(dataList);
@@ -239,9 +246,9 @@ public final class AmqpMessageBody {
      */
     public byte[] getFirstData() {
         if (bodyType != AmqpMessageBodyType.DATA) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format(Locale.US, "This method can be called if AMQP Message body type is 'DATA'. "
-                    + "The actual type is [%s].", bodyType)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "This method can be called if AMQP Message body type is 'DATA'. " + "The actual type is [%s].",
+                bodyType)));
         }
         return data;
     }
@@ -288,9 +295,9 @@ public final class AmqpMessageBody {
      */
     public List<Object> getSequence() {
         if (bodyType != AmqpMessageBodyType.SEQUENCE) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format(Locale.US, "This method can be called if AMQP Message body type is 'SEQUENCE'. "
-                    + "The actual type is [%s].", bodyType)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "This method can be called if AMQP Message body type is 'SEQUENCE'. " + "The actual type is [%s].",
+                bodyType)));
         }
 
         return Collections.unmodifiableList(sequence);
@@ -336,9 +343,9 @@ public final class AmqpMessageBody {
      */
     public Object getValue() {
         if (bodyType != AmqpMessageBodyType.VALUE) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format(Locale.US, "This method can be called if AMQP Message body type is 'VALUE'. "
-                    + "The actual type is [%s].", bodyType)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(Locale.US,
+                "This method can be called if AMQP Message body type is 'VALUE'. " + "The actual type is [%s].",
+                bodyType)));
         }
         return value;
     }

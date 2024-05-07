@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TargetComputeSizeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents applicable recovery vm sizes. */
+/**
+ * Represents applicable recovery vm sizes.
+ */
 @Fluent
 public final class TargetComputeSizeInner {
     /*
@@ -35,13 +37,15 @@ public final class TargetComputeSizeInner {
     @JsonProperty(value = "properties")
     private TargetComputeSizeProperties properties;
 
-    /** Creates an instance of TargetComputeSizeInner class. */
+    /**
+     * Creates an instance of TargetComputeSizeInner class.
+     */
     public TargetComputeSizeInner() {
     }
 
     /**
      * Get the id property: The Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Set the id property: The Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the TargetComputeSizeInner object itself.
      */
@@ -61,7 +65,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Get the name property: The name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +74,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Set the name property: The name.
-     *
+     * 
      * @param name the name value to set.
      * @return the TargetComputeSizeInner object itself.
      */
@@ -81,7 +85,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Get the type property: The Type of the object.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -90,7 +94,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Set the type property: The Type of the object.
-     *
+     * 
      * @param type the type value to set.
      * @return the TargetComputeSizeInner object itself.
      */
@@ -101,7 +105,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Get the properties property: The custom data.
-     *
+     * 
      * @return the properties value.
      */
     public TargetComputeSizeProperties properties() {
@@ -110,7 +114,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Set the properties property: The custom data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the TargetComputeSizeInner object itself.
      */
@@ -121,7 +125,7 @@ public final class TargetComputeSizeInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

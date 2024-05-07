@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular metric. */
+/**
+ * Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular metric.
+ */
 @Fluent
 public final class MetricSettings {
     /*
@@ -36,13 +38,15 @@ public final class MetricSettings {
     @JsonProperty(value = "retentionPolicy")
     private RetentionPolicy retentionPolicy;
 
-    /** Creates an instance of MetricSettings class. */
+    /**
+     * Creates an instance of MetricSettings class.
+     */
     public MetricSettings() {
     }
 
     /**
      * Get the timeGrain property: the timegrain of the metric in ISO8601 format.
-     *
+     * 
      * @return the timeGrain value.
      */
     public Duration timeGrain() {
@@ -51,7 +55,7 @@ public final class MetricSettings {
 
     /**
      * Set the timeGrain property: the timegrain of the metric in ISO8601 format.
-     *
+     * 
      * @param timeGrain the timeGrain value to set.
      * @return the MetricSettings object itself.
      */
@@ -64,7 +68,7 @@ public final class MetricSettings {
      * Get the category property: Name of a Diagnostic Metric category for a resource type this setting is applied to.
      * To obtain the list of Diagnostic metric categories for a resource, first perform a GET diagnostic settings
      * operation.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -75,7 +79,7 @@ public final class MetricSettings {
      * Set the category property: Name of a Diagnostic Metric category for a resource type this setting is applied to.
      * To obtain the list of Diagnostic metric categories for a resource, first perform a GET diagnostic settings
      * operation.
-     *
+     * 
      * @param category the category value to set.
      * @return the MetricSettings object itself.
      */
@@ -86,7 +90,7 @@ public final class MetricSettings {
 
     /**
      * Get the enabled property: a value indicating whether this category is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -95,7 +99,7 @@ public final class MetricSettings {
 
     /**
      * Set the enabled property: a value indicating whether this category is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the MetricSettings object itself.
      */
@@ -106,7 +110,7 @@ public final class MetricSettings {
 
     /**
      * Get the retentionPolicy property: the retention policy for this category.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -115,7 +119,7 @@ public final class MetricSettings {
 
     /**
      * Set the retentionPolicy property: the retention policy for this category.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the MetricSettings object itself.
      */
@@ -126,7 +130,7 @@ public final class MetricSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

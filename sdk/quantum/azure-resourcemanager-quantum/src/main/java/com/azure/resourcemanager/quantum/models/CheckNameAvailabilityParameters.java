@@ -7,7 +7,9 @@ package com.azure.resourcemanager.quantum.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of check name availability request body. */
+/**
+ * Details of check name availability request body.
+ */
 @Fluent
 public final class CheckNameAvailabilityParameters {
     /*
@@ -22,13 +24,15 @@ public final class CheckNameAvailabilityParameters {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of CheckNameAvailabilityParameters class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityParameters class.
+     */
     public CheckNameAvailabilityParameters() {
     }
 
     /**
      * Get the name property: Name for checking availability.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class CheckNameAvailabilityParameters {
 
     /**
      * Set the name property: Name for checking availability.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckNameAvailabilityParameters object itself.
      */
@@ -48,7 +52,7 @@ public final class CheckNameAvailabilityParameters {
 
     /**
      * Get the type property: The resource type of Quantum Workspace.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -57,7 +61,7 @@ public final class CheckNameAvailabilityParameters {
 
     /**
      * Set the type property: The resource type of Quantum Workspace.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckNameAvailabilityParameters object itself.
      */
@@ -68,7 +72,7 @@ public final class CheckNameAvailabilityParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,23 +7,39 @@ package com.azure.resourcemanager.datafactory.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureFunctionActivityTypeProperties;
 import com.azure.resourcemanager.datafactory.models.AzureFunctionActivityMethod;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class AzureFunctionActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFunctionActivityTypeProperties model = BinaryData.fromString(
-            "{\"method\":\"DELETE\",\"functionName\":\"datag\",\"headers\":\"dataccccccojnljz\",\"body\":\"dataevmzpoilh\"}")
+            "{\"method\":\"POST\",\"functionName\":\"dataqncddaqq\",\"headers\":{\"rohfv\":\"datayi\",\"nkkztjmqjrh\":\"datagjnexdlsangl\"},\"body\":\"dataqajyrhrywucpdzb\"}")
             .toObject(AzureFunctionActivityTypeProperties.class);
-        Assertions.assertEquals(AzureFunctionActivityMethod.DELETE, model.method());
+        Assertions.assertEquals(AzureFunctionActivityMethod.POST, model.method());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFunctionActivityTypeProperties model
-            = new AzureFunctionActivityTypeProperties().withMethod(AzureFunctionActivityMethod.DELETE)
-                .withFunctionName("datag").withHeaders("dataccccccojnljz").withBody("dataevmzpoilh");
+            = new AzureFunctionActivityTypeProperties().withMethod(AzureFunctionActivityMethod.POST)
+                .withFunctionName("dataqncddaqq")
+                .withHeaders(mapOf("rohfv", "datayi", "nkkztjmqjrh", "datagjnexdlsangl"))
+                .withBody("dataqajyrhrywucpdzb");
         model = BinaryData.fromObject(model).toObject(AzureFunctionActivityTypeProperties.class);
-        Assertions.assertEquals(AzureFunctionActivityMethod.DELETE, model.method());
+        Assertions.assertEquals(AzureFunctionActivityMethod.POST, model.method());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"volumeId\":\"ukgri\",\"creationData\":{\"createSource\":\"None\",\"sourceId\":\"fbxzpuzycisp\"},\"sizeGiB\":1357175486164499901,\"storageTarget\":{\"targetIqn\":\"mgkbrpyydhibn\",\"targetPortalHostname\":\"qkpikadrgvtqagnb\",\"targetPortalPort\":855671205,\"provisioningState\":\"Creating\",\"status\":\"Invalid\"},\"managedBy\":{\"resourceId\":\"ebf\"},\"provisioningState\":\"Succeeded\"}")
-                .toObject(VolumeProperties.class);
+        VolumeProperties model = BinaryData.fromString(
+            "{\"volumeId\":\"ukgri\",\"creationData\":{\"createSource\":\"None\",\"sourceId\":\"fbxzpuzycisp\"},\"sizeGiB\":1357175486164499901,\"storageTarget\":{\"targetIqn\":\"mgkbrpyydhibn\",\"targetPortalHostname\":\"qkpikadrgvtqagnb\",\"targetPortalPort\":855671205,\"provisioningState\":\"Creating\",\"status\":\"Invalid\"},\"managedBy\":{\"resourceId\":\"ebf\"},\"provisioningState\":\"Succeeded\"}")
+            .toObject(VolumeProperties.class);
         Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
         Assertions.assertEquals("fbxzpuzycisp", model.creationData().sourceId());
         Assertions.assertEquals(1357175486164499901L, model.sizeGiB());
@@ -27,12 +25,10 @@ public final class VolumePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeProperties model =
-            new VolumeProperties()
-                .withCreationData(
-                    new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceId("fbxzpuzycisp"))
-                .withSizeGiB(1357175486164499901L)
-                .withManagedBy(new ManagedByInfo().withResourceId("ebf"));
+        VolumeProperties model = new VolumeProperties()
+            .withCreationData(
+                new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceId("fbxzpuzycisp"))
+            .withSizeGiB(1357175486164499901L).withManagedBy(new ManagedByInfo().withResourceId("ebf"));
         model = BinaryData.fromObject(model).toObject(VolumeProperties.class);
         Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
         Assertions.assertEquals("fbxzpuzycisp", model.creationData().sourceId());

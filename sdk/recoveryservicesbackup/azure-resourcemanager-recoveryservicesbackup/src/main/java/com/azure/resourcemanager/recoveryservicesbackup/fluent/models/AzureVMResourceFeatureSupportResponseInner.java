@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SupportStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response for feature support requests for Azure IaasVm. */
+/**
+ * Response for feature support requests for Azure IaasVm.
+ */
 @Fluent
 public final class AzureVMResourceFeatureSupportResponseInner {
     /*
@@ -17,13 +19,15 @@ public final class AzureVMResourceFeatureSupportResponseInner {
     @JsonProperty(value = "supportStatus")
     private SupportStatus supportStatus;
 
-    /** Creates an instance of AzureVMResourceFeatureSupportResponseInner class. */
+    /**
+     * Creates an instance of AzureVMResourceFeatureSupportResponseInner class.
+     */
     public AzureVMResourceFeatureSupportResponseInner() {
     }
 
     /**
      * Get the supportStatus property: Support status of feature.
-     *
+     * 
      * @return the supportStatus value.
      */
     public SupportStatus supportStatus() {
@@ -32,7 +36,7 @@ public final class AzureVMResourceFeatureSupportResponseInner {
 
     /**
      * Set the supportStatus property: Support status of feature.
-     *
+     * 
      * @param supportStatus the supportStatus value to set.
      * @return the AzureVMResourceFeatureSupportResponseInner object itself.
      */
@@ -43,7 +47,7 @@ public final class AzureVMResourceFeatureSupportResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Buildpack properties payload. */
+/**
+ * Buildpack properties payload.
+ */
 @Fluent
 public final class BuildpackProperties {
     /*
@@ -17,8 +19,14 @@ public final class BuildpackProperties {
     private String id;
 
     /**
+     * Creates an instance of BuildpackProperties class.
+     */
+    public BuildpackProperties() {
+    }
+
+    /**
      * Get the id property: Id of the buildpack.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -27,7 +35,7 @@ public final class BuildpackProperties {
 
     /**
      * Set the id property: Id of the buildpack.
-     *
+     * 
      * @param id the id value to set.
      * @return the BuildpackProperties object itself.
      */
@@ -38,7 +46,7 @@ public final class BuildpackProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

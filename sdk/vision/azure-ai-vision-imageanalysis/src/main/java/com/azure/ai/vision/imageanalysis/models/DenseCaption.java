@@ -38,7 +38,7 @@ public final class DenseCaption {
 
     /**
      * Creates an instance of DenseCaption class.
-     * 
+     *
      * @param confidence the confidence value to set.
      * @param text the text value to set.
      * @param boundingBox the boundingBox value to set.
@@ -56,7 +56,7 @@ public final class DenseCaption {
      * Get the confidence property: A score, in the range of 0 to 1 (inclusive), representing the confidence that this
      * description is accurate.
      * Higher values indicating higher confidence.
-     * 
+     *
      * @return the confidence value.
      */
     @Generated
@@ -66,7 +66,7 @@ public final class DenseCaption {
 
     /**
      * Get the text property: The text of the caption.
-     * 
+     *
      * @return the text value.
      */
     @Generated
@@ -76,7 +76,7 @@ public final class DenseCaption {
 
     /**
      * Get the boundingBox property: The image region of which this caption applies.
-     * 
+     *
      * @return the boundingBox value.
      */
     @Generated

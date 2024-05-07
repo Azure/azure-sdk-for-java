@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the target region information. */
+/**
+ * Describes the target region information.
+ */
 @Fluent
 public final class TargetRegion {
     /*
@@ -30,13 +32,15 @@ public final class TargetRegion {
     @JsonProperty(value = "storageAccountType")
     private SharedImageStorageAccountType storageAccountType;
 
-    /** Creates an instance of TargetRegion class. */
+    /**
+     * Creates an instance of TargetRegion class.
+     */
     public TargetRegion() {
     }
 
     /**
      * Get the name property: The name of the region.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -45,7 +49,7 @@ public final class TargetRegion {
 
     /**
      * Set the name property: The name of the region.
-     *
+     * 
      * @param name the name value to set.
      * @return the TargetRegion object itself.
      */
@@ -57,7 +61,7 @@ public final class TargetRegion {
     /**
      * Get the replicaCount property: The number of replicas of the Image Version to be created in this region. Omit to
      * use the default (1).
-     *
+     * 
      * @return the replicaCount value.
      */
     public Integer replicaCount() {
@@ -67,7 +71,7 @@ public final class TargetRegion {
     /**
      * Set the replicaCount property: The number of replicas of the Image Version to be created in this region. Omit to
      * use the default (1).
-     *
+     * 
      * @param replicaCount the replicaCount value to set.
      * @return the TargetRegion object itself.
      */
@@ -79,7 +83,7 @@ public final class TargetRegion {
     /**
      * Get the storageAccountType property: Specifies the storage account type to be used to store the image in this
      * region. Omit to use the default (Standard_LRS).
-     *
+     * 
      * @return the storageAccountType value.
      */
     public SharedImageStorageAccountType storageAccountType() {
@@ -89,7 +93,7 @@ public final class TargetRegion {
     /**
      * Set the storageAccountType property: Specifies the storage account type to be used to store the image in this
      * region. Omit to use the default (Standard_LRS).
-     *
+     * 
      * @param storageAccountType the storageAccountType value to set.
      * @return the TargetRegion object itself.
      */
@@ -100,14 +104,13 @@ public final class TargetRegion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model TargetRegion"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model TargetRegion"));
         }
     }
 

@@ -3,6 +3,7 @@
 
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
@@ -79,6 +80,9 @@ public class SearchIndexCustomizations extends Customization {
         customizeVectorQuery(packageCustomization.getClass("VectorQuery"));
         customizeVectorizedQuery(packageCustomization.getClass("VectorizedQuery"));
         customizeVectorizableTextQuery(packageCustomization.getClass("VectorizableTextQuery"));
+        customizeVectorizableImageUrlQuery(packageCustomization.getClass("VectorizableImageUrlQuery"));
+        customizeVectorizableImageBinaryQuery(packageCustomization.getClass("VectorizableImageBinaryQuery"));
+        customizeSearchScoreThreshold(packageCustomization.getClass("SearchScoreThreshold"));
 
         packageCustomization.getClass("QueryAnswerResult").removeMethod("setAdditionalProperties");
         packageCustomization.getClass("QueryCaptionResult").removeMethod("setAdditionalProperties");
@@ -104,7 +108,7 @@ public class SearchIndexCustomizations extends Customization {
     private void customizeImplementationModelsPackage(PackageCustomization packageCustomization) {
         customizeSearchOptions(packageCustomization.getClass("SearchOptions"));
         customizeIndexAction(packageCustomization.getClass("IndexAction"));
-        customizeSearchError(packageCustomization.getClass("SearchError"));
+        // customizeSearchError(packageCustomization.getClass("SearchError"));
     }
 
     private void customizeSearchOptions(ClassCustomization classCustomization) {
@@ -239,6 +243,39 @@ private void customizeVectorQuery(ClassCustomization classCustomization) {
                 "    return readSearchError(bufferedReader.reset());",
                 "});",
                 "}"
+            )));
+        });
+    }
+
+    private void customizeVectorizableImageUrlQuery(ClassCustomization classCustomization) {
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
+            .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true)))
+            .setBody(StaticJavaParser.parseBlock("{\n" +
+                "        super.setFields(fields);\n" +
+                "        return this;\n" +
+                "    }")));
+    }
+
+    private void customizeVectorizableImageBinaryQuery(ClassCustomization classCustomization) {
+        customizeAst(classCustomization, clazz -> clazz.getMethodsByName("setFields").get(0)
+            .setParameters(new NodeList<>(new Parameter().setType("String").setName("fields").setVarArgs(true)))
+            .setBody(StaticJavaParser.parseBlock("{\n" +
+                "        super.setFields(fields);\n" +
+                "        return this;\n" +
+                "    }")));
+    }
+
+    private void customizeSearchScoreThreshold(ClassCustomization classCustomization) {
+        customizeAst(classCustomization, clazz -> {
+            clazz.getMethodsByName("getValue").get(0).setJavadocComment(StaticJavaParser.parseJavadoc(joinWithNewline(
+                "/**",
+                " * Get the value property: The threshold will filter based on the '@search.score' value. Note this is the",
+                " *",
+                " * `@search.score` returned as part of the search response. The threshold direction will be chosen for higher",
+                " * `@search.score`.",
+                " *",
+                " * @return the value.",
+                " */"
             )));
         });
     }

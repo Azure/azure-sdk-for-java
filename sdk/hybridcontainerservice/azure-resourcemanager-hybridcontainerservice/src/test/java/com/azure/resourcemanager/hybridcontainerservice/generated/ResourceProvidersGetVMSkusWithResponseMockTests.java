@@ -32,7 +32,7 @@ public final class ResourceProvidersGetVMSkusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"qnrojlpijnkrxfrd\"},\"properties\":{\"provisioningState\":\"Deleting\",\"values\":[{\"resourceType\":\"zzronasx\",\"capabilities\":[{},{},{},{}],\"name\":\"zq\",\"tier\":\"hftwesgog\",\"size\":\"honnxkrlgnyhmos\"},{\"resourceType\":\"kkgthr\",\"capabilities\":[{},{},{}],\"name\":\"jbdhqxvc\",\"tier\":\"frpdsofbshrns\",\"size\":\"uswdv\"},{\"resourceType\":\"ybycnunvj\",\"capabilities\":[{}],\"name\":\"f\",\"tier\":\"nopqgikyzirtx\",\"size\":\"uxzejntpsew\"}]},\"id\":\"oi\",\"name\":\"qukrydxt\",\"type\":\"mieoxorgguf\"}";
+            = "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"dphqamv\"},\"properties\":{\"provisioningState\":\"Pending\",\"values\":[{\"resourceType\":\"cvtbv\",\"capabilities\":[{},{},{}],\"name\":\"mtnvyq\",\"tier\":\"tkzwpcnpwzc\",\"size\":\"esgvvsccyaj\"},{\"resourceType\":\"qfhwyg\",\"capabilities\":[{},{},{}],\"name\":\"nk\",\"tier\":\"usemdwzrmuhap\",\"size\":\"qdpsqxqvpsvu\"},{\"resourceType\":\"mgccelvezrypq\",\"capabilities\":[{}],\"name\":\"okerqwkyhkobop\",\"tier\":\"edkowepbqpcrfk\",\"size\":\"ccsnjvcdwxlpq\"},{\"resourceType\":\"ftnkhtj\",\"capabilities\":[{}],\"name\":\"gwfqatmt\",\"tier\":\"tmdvypgikdgs\",\"size\":\"w\"}]},\"id\":\"irryuzhlh\",\"name\":\"joqrvqqaatj\",\"type\":\"nrvgoupmfiibfgg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,10 +49,10 @@ public final class ResourceProvidersGetVMSkusWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        VmSkuProfile response = manager.resourceProviders()
-            .getVMSkusWithResponse("nepttwqmsni", com.azure.core.util.Context.NONE).getValue();
+        VmSkuProfile response
+            = manager.resourceProviders().getVMSkusWithResponse("o", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals("qnrojlpijnkrxfrd", response.extendedLocation().name());
+        Assertions.assertEquals("dphqamv", response.extendedLocation().name());
     }
 }

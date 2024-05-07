@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Settings for cloud authentication management. */
+/**
+ * Settings for cloud authentication management.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,8 +23,7 @@ import java.util.List;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "awsCreds", value = AwsCredsAuthenticationDetailsProperties.class),
     @JsonSubTypes.Type(name = "awsAssumeRole", value = AwAssumeRoleAuthenticationDetailsProperties.class),
-    @JsonSubTypes.Type(name = "gcpCredentials", value = GcpCredentialsDetailsProperties.class)
-})
+    @JsonSubTypes.Type(name = "gcpCredentials", value = GcpCredentialsDetailsProperties.class) })
 @Immutable
 public class AuthenticationDetailsProperties {
     /*
@@ -37,13 +38,15 @@ public class AuthenticationDetailsProperties {
     @JsonProperty(value = "grantedPermissions", access = JsonProperty.Access.WRITE_ONLY)
     private List<PermissionProperty> grantedPermissions;
 
-    /** Creates an instance of AuthenticationDetailsProperties class. */
+    /**
+     * Creates an instance of AuthenticationDetailsProperties class.
+     */
     public AuthenticationDetailsProperties() {
     }
 
     /**
      * Get the authenticationProvisioningState property: State of the multi-cloud connector.
-     *
+     * 
      * @return the authenticationProvisioningState value.
      */
     public AuthenticationProvisioningState authenticationProvisioningState() {
@@ -52,7 +55,7 @@ public class AuthenticationDetailsProperties {
 
     /**
      * Get the grantedPermissions property: The permissions detected in the cloud account.
-     *
+     * 
      * @return the grantedPermissions value.
      */
     public List<PermissionProperty> grantedPermissions() {
@@ -61,7 +64,7 @@ public class AuthenticationDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

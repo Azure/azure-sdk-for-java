@@ -12,9 +12,12 @@ import com.azure.resourcemanager.storagecache.models.AmlFilesystemHealth;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemPropertiesHsm;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemPropertiesMaintenanceWindow;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemProvisioningStateType;
+import com.azure.resourcemanager.storagecache.models.AmlFilesystemRootSquashSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the AML file system. */
+/**
+ * Properties of the AML file system.
+ */
 @Fluent
 public final class AmlFilesystemProperties {
     /*
@@ -72,13 +75,21 @@ public final class AmlFilesystemProperties {
     @JsonProperty(value = "hsm")
     private AmlFilesystemPropertiesHsm hsm;
 
-    /** Creates an instance of AmlFilesystemProperties class. */
+    /*
+     * Specifies root squash settings of the AML file system.
+     */
+    @JsonProperty(value = "rootSquashSettings")
+    private AmlFilesystemRootSquashSettings rootSquashSettings;
+
+    /**
+     * Creates an instance of AmlFilesystemProperties class.
+     */
     public AmlFilesystemProperties() {
     }
 
     /**
      * Get the storageCapacityTiB property: The size of the AML file system, in TiB. This might be rounded up.
-     *
+     * 
      * @return the storageCapacityTiB value.
      */
     public float storageCapacityTiB() {
@@ -87,7 +98,7 @@ public final class AmlFilesystemProperties {
 
     /**
      * Set the storageCapacityTiB property: The size of the AML file system, in TiB. This might be rounded up.
-     *
+     * 
      * @param storageCapacityTiB the storageCapacityTiB value to set.
      * @return the AmlFilesystemProperties object itself.
      */
@@ -98,7 +109,7 @@ public final class AmlFilesystemProperties {
 
     /**
      * Get the health property: Health of the AML file system.
-     *
+     * 
      * @return the health value.
      */
     public AmlFilesystemHealth health() {
@@ -107,7 +118,7 @@ public final class AmlFilesystemProperties {
 
     /**
      * Get the provisioningState property: ARM provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AmlFilesystemProvisioningStateType provisioningState() {
@@ -115,9 +126,9 @@ public final class AmlFilesystemProperties {
     }
 
     /**
-     * Get the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing operations.
-     * This subnet should have at least a /24 subnet mask within the VNET's address space.
-     *
+     * Get the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing
+     * operations. This subnet should have at least a /24 subnet mask within the VNET's address space.
+     * 
      * @return the filesystemSubnet value.
      */
     public String filesystemSubnet() {
@@ -125,9 +136,9 @@ public final class AmlFilesystemProperties {
     }
 
     /**
-     * Set the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing operations.
-     * This subnet should have at least a /24 subnet mask within the VNET's address space.
-     *
+     * Set the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing
+     * operations. This subnet should have at least a /24 subnet mask within the VNET's address space.
+     * 
      * @param filesystemSubnet the filesystemSubnet value to set.
      * @return the AmlFilesystemProperties object itself.
      */
@@ -138,7 +149,7 @@ public final class AmlFilesystemProperties {
 
     /**
      * Get the clientInfo property: Client information for the AML file system.
-     *
+     * 
      * @return the clientInfo value.
      */
     public AmlFilesystemClientInfo clientInfo() {
@@ -148,7 +159,7 @@ public final class AmlFilesystemProperties {
     /**
      * Get the throughputProvisionedMBps property: Throughput provisioned in MB per sec, calculated as
      * storageCapacityTiB * per-unit storage throughput.
-     *
+     * 
      * @return the throughputProvisionedMBps value.
      */
     public Integer throughputProvisionedMBps() {
@@ -157,7 +168,7 @@ public final class AmlFilesystemProperties {
 
     /**
      * Get the encryptionSettings property: Specifies encryption settings of the AML file system.
-     *
+     * 
      * @return the encryptionSettings value.
      */
     public AmlFilesystemEncryptionSettings encryptionSettings() {
@@ -166,7 +177,7 @@ public final class AmlFilesystemProperties {
 
     /**
      * Set the encryptionSettings property: Specifies encryption settings of the AML file system.
-     *
+     * 
      * @param encryptionSettings the encryptionSettings value to set.
      * @return the AmlFilesystemProperties object itself.
      */
@@ -177,7 +188,7 @@ public final class AmlFilesystemProperties {
 
     /**
      * Get the maintenanceWindow property: Start time of a 30-minute weekly maintenance window.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public AmlFilesystemPropertiesMaintenanceWindow maintenanceWindow() {
@@ -186,7 +197,7 @@ public final class AmlFilesystemProperties {
 
     /**
      * Set the maintenanceWindow property: Start time of a 30-minute weekly maintenance window.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the AmlFilesystemProperties object itself.
      */
@@ -197,7 +208,7 @@ public final class AmlFilesystemProperties {
 
     /**
      * Get the hsm property: Hydration and archive settings and status.
-     *
+     * 
      * @return the hsm value.
      */
     public AmlFilesystemPropertiesHsm hsm() {
@@ -206,7 +217,7 @@ public final class AmlFilesystemProperties {
 
     /**
      * Set the hsm property: Hydration and archive settings and status.
-     *
+     * 
      * @param hsm the hsm value to set.
      * @return the AmlFilesystemProperties object itself.
      */
@@ -216,8 +227,28 @@ public final class AmlFilesystemProperties {
     }
 
     /**
+     * Get the rootSquashSettings property: Specifies root squash settings of the AML file system.
+     * 
+     * @return the rootSquashSettings value.
+     */
+    public AmlFilesystemRootSquashSettings rootSquashSettings() {
+        return this.rootSquashSettings;
+    }
+
+    /**
+     * Set the rootSquashSettings property: Specifies root squash settings of the AML file system.
+     * 
+     * @param rootSquashSettings the rootSquashSettings value to set.
+     * @return the AmlFilesystemProperties object itself.
+     */
+    public AmlFilesystemProperties withRootSquashSettings(AmlFilesystemRootSquashSettings rootSquashSettings) {
+        this.rootSquashSettings = rootSquashSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -225,10 +256,8 @@ public final class AmlFilesystemProperties {
             health().validate();
         }
         if (filesystemSubnet() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property filesystemSubnet in model AmlFilesystemProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property filesystemSubnet in model AmlFilesystemProperties"));
         }
         if (clientInfo() != null) {
             clientInfo().validate();
@@ -237,15 +266,16 @@ public final class AmlFilesystemProperties {
             encryptionSettings().validate();
         }
         if (maintenanceWindow() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property maintenanceWindow in model AmlFilesystemProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property maintenanceWindow in model AmlFilesystemProperties"));
         } else {
             maintenanceWindow().validate();
         }
         if (hsm() != null) {
             hsm().validate();
+        }
+        if (rootSquashSettings() != null) {
+            rootSquashSettings().validate();
         }
     }
 

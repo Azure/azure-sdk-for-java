@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2024-03-15)
+
+- Azure Resource Manager Chaos client library for Java. This package contains Microsoft Azure SDK for Chaos Management SDK. Chaos Management Client. Package tag package-2024-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+#### `models.ExperimentUpdate` was modified
+
+* `tags()` was added
+* `withTags(java.util.Map)` was added
+
+#### `models.Experiment$Update` was modified
+
+* `withTags(java.util.Map)` was added
 
 ## 1.0.0 (2023-11-16)
 

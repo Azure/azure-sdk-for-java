@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Details of the sub-assessment. */
+/**
+ * Details of the sub-assessment.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SqlServerVulnerability", value = SqlServerVulnerabilityProperties.class),
     @JsonSubTypes.Type(name = "ContainerRegistryVulnerability", value = ContainerRegistryVulnerabilityProperties.class),
-    @JsonSubTypes.Type(name = "ServerVulnerabilityAssessment", value = ServerVulnerabilityProperties.class)
-})
+    @JsonSubTypes.Type(name = "ServerVulnerabilityAssessment", value = ServerVulnerabilityProperties.class) })
 @Immutable
 public class AdditionalData {
-    /** Creates an instance of AdditionalData class. */
+    /**
+     * Creates an instance of AdditionalData class.
+     */
     public AdditionalData() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

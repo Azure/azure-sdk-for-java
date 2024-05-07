@@ -16,8 +16,7 @@ module com.azure.http.netty {
 
     exports com.azure.core.http.netty;
 
-    provides com.azure.core.http.HttpClientProvider
-        with com.azure.core.http.netty.NettyAsyncHttpClientProvider;
+    provides com.azure.core.http.HttpClientProvider with com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 
     uses com.azure.core.http.HttpClientProvider;
 }

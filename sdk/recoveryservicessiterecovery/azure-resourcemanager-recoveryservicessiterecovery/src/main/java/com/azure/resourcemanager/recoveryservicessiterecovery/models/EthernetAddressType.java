@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The source IP address type. */
+/**
+ * The source IP address type.
+ */
 public final class EthernetAddressType extends ExpandableStringEnum<EthernetAddressType> {
-    /** Static value Dynamic for EthernetAddressType. */
+    /**
+     * Static value Dynamic for EthernetAddressType.
+     */
     public static final EthernetAddressType DYNAMIC = fromString("Dynamic");
 
-    /** Static value Static for EthernetAddressType. */
+    /**
+     * Static value Static for EthernetAddressType.
+     */
     public static final EthernetAddressType STATIC = fromString("Static");
 
     /**
      * Creates a new instance of EthernetAddressType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class EthernetAddressType extends ExpandableStringEnum<EthernetAddr
 
     /**
      * Creates or finds a EthernetAddressType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EthernetAddressType.
      */
@@ -38,7 +44,7 @@ public final class EthernetAddressType extends ExpandableStringEnum<EthernetAddr
 
     /**
      * Gets known EthernetAddressType values.
-     *
+     * 
      * @return known EthernetAddressType values.
      */
     public static Collection<EthernetAddressType> values() {

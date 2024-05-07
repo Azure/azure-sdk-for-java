@@ -14,7 +14,7 @@ import java.util.Map;
 public final class IpAllocationsUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/IpAllocationUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/IpAllocationUpdateTags.json
      */
     /**
      * Sample code: Update virtual network tags.

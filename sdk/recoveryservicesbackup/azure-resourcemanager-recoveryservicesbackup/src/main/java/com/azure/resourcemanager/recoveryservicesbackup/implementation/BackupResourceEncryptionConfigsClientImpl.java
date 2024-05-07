@@ -28,26 +28,28 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupReso
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigResource;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BackupResourceEncryptionConfigsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupResourceEncryptionConfigsClient.
+ */
 public final class BackupResourceEncryptionConfigsClientImpl implements BackupResourceEncryptionConfigsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BackupResourceEncryptionConfigsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of BackupResourceEncryptionConfigsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BackupResourceEncryptionConfigsClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    BackupResourceEncryptionConfigsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(BackupResourceEncryptionConfigsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,39 +60,29 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface BackupResourceEncryptionConfigsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEncryptionConfigs/backupResourceEncryptionConfig")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEncryptionConfigs/backupResourceEncryptionConfig")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupResourceEncryptionConfigExtendedResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<BackupResourceEncryptionConfigExtendedResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEncryptionConfigs/backupResourceEncryptionConfig")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEncryptionConfigs/backupResourceEncryptionConfig")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
+        Mono<Response<Void>> update(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("vaultName") String vaultName, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") BackupResourceEncryptionConfigResource parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Fetches Vault Encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,13 +91,11 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupResourceEncryptionConfigExtendedResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName) {
+    private Mono<Response<BackupResourceEncryptionConfigExtendedResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -115,30 +105,19 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Fetches Vault Encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -148,13 +127,11 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BackupResourceEncryptionConfigExtendedResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, Context context) {
+    private Mono<Response<BackupResourceEncryptionConfigExtendedResourceInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -164,27 +141,18 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Fetches Vault Encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,14 +161,14 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BackupResourceEncryptionConfigExtendedResourceInner> getAsync(
-        String vaultName, String resourceGroupName) {
+    private Mono<BackupResourceEncryptionConfigExtendedResourceInner> getAsync(String vaultName,
+        String resourceGroupName) {
         return getWithResponseAsync(vaultName, resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Fetches Vault Encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -210,14 +178,14 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupResourceEncryptionConfigExtendedResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, Context context) {
+    public Response<BackupResourceEncryptionConfigExtendedResourceInner> getWithResponse(String vaultName,
+        String resourceGroupName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, context).block();
     }
 
     /**
      * Fetches Vault Encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,7 +200,7 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
 
     /**
      * Updates Vault encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault encryption input config request.
@@ -242,13 +210,11 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateWithResponseAsync(
-        String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
+    private Mono<Response<Void>> updateWithResponseAsync(String vaultName, String resourceGroupName,
+        BackupResourceEncryptionConfigResource parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -258,10 +224,8 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -270,24 +234,14 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates Vault encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault encryption input config request.
@@ -298,16 +252,11 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        BackupResourceEncryptionConfigResource parameters,
-        Context context) {
+    private Mono<Response<Void>> updateWithResponseAsync(String vaultName, String resourceGroupName,
+        BackupResourceEncryptionConfigResource parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -317,10 +266,8 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -329,21 +276,13 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates Vault encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault encryption input config request.
@@ -353,14 +292,14 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(
-        String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
+    private Mono<Void> updateAsync(String vaultName, String resourceGroupName,
+        BackupResourceEncryptionConfigResource parameters) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Updates Vault encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault encryption input config request.
@@ -371,17 +310,14 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        BackupResourceEncryptionConfigResource parameters,
-        Context context) {
+    public Response<Void> updateWithResponse(String vaultName, String resourceGroupName,
+        BackupResourceEncryptionConfigResource parameters, Context context) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
     }
 
     /**
      * Updates Vault encryption config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault encryption input config request.

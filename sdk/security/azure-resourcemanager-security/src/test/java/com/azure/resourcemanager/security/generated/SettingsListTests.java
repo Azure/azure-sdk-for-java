@@ -12,16 +12,15 @@ import java.util.Arrays;
 public final class SettingsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SettingsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"kind\":\"Setting\",\"id\":\"sqowxwc\",\"name\":\"mlikytw\",\"type\":\"czcswka\"}],\"nextLink\":\"ejyfdvlvhbwrnfx\"}")
-                .toObject(SettingsList.class);
+        SettingsList model = BinaryData.fromString(
+            "{\"value\":[{\"kind\":\"Setting\",\"id\":\"fibfiplhx\",\"name\":\"nsmy\",\"type\":\"jow\"},{\"kind\":\"Setting\",\"id\":\"yeyzm\",\"name\":\"dsqcmhnxl\",\"type\":\"buwodmachbkv\"},{\"kind\":\"Setting\",\"id\":\"rpbj\",\"name\":\"mvgoqpleh\",\"type\":\"umkz\"},{\"kind\":\"Setting\",\"id\":\"llcz\",\"name\":\"prwnhkgqggoxsst\",\"type\":\"ivrakfrryn\"}],\"nextLink\":\"wmhlymgnukx\"}")
+            .toObject(SettingsList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SettingsList model = new SettingsList().withValue(Arrays.asList(new SettingInner()));
+        SettingsList model = new SettingsList()
+            .withValue(Arrays.asList(new SettingInner(), new SettingInner(), new SettingInner(), new SettingInner()));
         model = BinaryData.fromObject(model).toObject(SettingsList.class);
     }
 }

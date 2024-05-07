@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Config server git properties payload. */
+/**
+ * Config server git properties payload.
+ */
 @Fluent
 public final class ConfigServerProperties {
     /*
@@ -29,8 +31,14 @@ public final class ConfigServerProperties {
     private ConfigServerSettings configServer;
 
     /**
+     * Creates an instance of ConfigServerProperties class.
+     */
+    public ConfigServerProperties() {
+    }
+
+    /**
      * Get the provisioningState property: State of the config server.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ConfigServerState provisioningState() {
@@ -39,7 +47,7 @@ public final class ConfigServerProperties {
 
     /**
      * Get the error property: Error when apply config server settings.
-     *
+     * 
      * @return the error value.
      */
     public Error error() {
@@ -48,7 +56,7 @@ public final class ConfigServerProperties {
 
     /**
      * Set the error property: Error when apply config server settings.
-     *
+     * 
      * @param error the error value to set.
      * @return the ConfigServerProperties object itself.
      */
@@ -59,7 +67,7 @@ public final class ConfigServerProperties {
 
     /**
      * Get the configServer property: Settings of config server.
-     *
+     * 
      * @return the configServer value.
      */
     public ConfigServerSettings configServer() {
@@ -68,7 +76,7 @@ public final class ConfigServerProperties {
 
     /**
      * Set the configServer property: Settings of config server.
-     *
+     * 
      * @param configServer the configServer value to set.
      * @return the ConfigServerProperties object itself.
      */
@@ -79,7 +87,7 @@ public final class ConfigServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

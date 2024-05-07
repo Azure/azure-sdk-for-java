@@ -24,7 +24,7 @@ public final class ObjectsResult {
 
     /**
      * Creates an instance of ObjectsResult class.
-     * 
+     *
      * @param values the values value to set.
      */
     @Generated
@@ -35,7 +35,7 @@ public final class ObjectsResult {
 
     /**
      * Get the values property: A list of physical object detected in an image and their location.
-     * 
+     *
      * @return the values value.
      */
     @Generated

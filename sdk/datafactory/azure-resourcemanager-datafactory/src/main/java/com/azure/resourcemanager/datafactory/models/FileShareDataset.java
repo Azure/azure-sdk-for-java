@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.FileShareDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.Map;
 /**
  * An on-premises file system dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = FileShareDataset.class, visible = true)
 @JsonTypeName("FileShare")
 @Fluent
 public final class FileShareDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "FileShare";
+
     /*
      * On-premises file system dataset properties.
      */
@@ -29,6 +37,16 @@ public final class FileShareDataset extends Dataset {
      * Creates an instance of FileShareDataset class.
      */
     public FileShareDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -104,8 +122,8 @@ public final class FileShareDataset extends Dataset {
     }
 
     /**
-     * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with
-     * resultType string).
+     * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the folderPath value.
      */
@@ -114,8 +132,8 @@ public final class FileShareDataset extends Dataset {
     }
 
     /**
-     * Set the folderPath property: The path of the on-premises file system. Type: string (or Expression with
-     * resultType string).
+     * Set the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
+     * string).
      * 
      * @param folderPath the folderPath value to set.
      * @return the FileShareDataset object itself.

@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -64,6 +66,13 @@ public final class ClientTelemetryMetrics {
     private static final ConcurrentHashMap<MeterRegistry, AtomicLong> registryRefCount = new ConcurrentHashMap<>();
     private static CosmosMeterOptions cpuOptions;
     private static CosmosMeterOptions memoryOptions;
+
+    private static volatile DescendantValidationResult lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
+
+    private static final Object lockObject = new Object();
+    private static final Tag QUERYPLAN_TAG = Tag.of(
+        TagName.RequestOperationType.toString(),
+        ResourceType.DocumentCollection + "/" + OperationType.QueryPlan);
 
     private static String convertStackTraceToString(Throwable throwable)
     {
@@ -148,6 +157,48 @@ public final class ClientTelemetryMetrics {
         );
     }
 
+    private static boolean hasAnyActualMeterRegistry() {
+
+        Instant nowSnapshot = Instant.now();
+        DescendantValidationResult snapshot = lastDescendantValidation;
+        if (nowSnapshot.isBefore(snapshot.getExpiration())) {
+            return snapshot.getResult();
+        }
+
+        synchronized (lockObject) {
+            snapshot = lastDescendantValidation;
+            if (nowSnapshot.isBefore(snapshot.getExpiration())) {
+                return snapshot.getResult();
+            }
+
+            DescendantValidationResult newResult = new DescendantValidationResult(
+                nowSnapshot.plus(10, ChronoUnit.SECONDS),
+                hasAnyActualMeterRegistryCore(compositeRegistry, 1)
+            );
+
+            lastDescendantValidation = newResult;
+            return newResult.getResult();
+        }
+    }
+
+    private static boolean hasAnyActualMeterRegistryCore(CompositeMeterRegistry compositeMeterRegistry, int depth) {
+
+        if (depth > 100) {
+            return true;
+        }
+
+        for (MeterRegistry registry : compositeMeterRegistry.getRegistries()) {
+            if (registry instanceof CompositeMeterRegistry) {
+                if (hasAnyActualMeterRegistryCore((CompositeMeterRegistry)registry, depth + 1)) {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     private static void recordOperation(
         CosmosAsyncClient client,
@@ -168,8 +219,7 @@ public final class ClientTelemetryMetrics {
     ) {
         boolean isClientTelemetryMetricsEnabled = clientAccessor.shouldEnableEmptyPageDiagnostics(client);
 
-        if (compositeRegistry.getRegistries().isEmpty() ||
-            !isClientTelemetryMetricsEnabled) {
+        if (!hasAnyActualMeterRegistry() || !isClientTelemetryMetricsEnabled) {
             return;
         }
 
@@ -236,6 +286,9 @@ public final class ClientTelemetryMetrics {
             // so using most intuitive compromise - last meter options wins
             ClientTelemetryMetrics.cpuOptions = cpuOptions;
             ClientTelemetryMetrics.memoryOptions = memoryOptions;
+
+            // reset the cached flag whether any actual meter registry is available
+            lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
         }
     }
 
@@ -254,6 +307,9 @@ public final class ClientTelemetryMetrics {
             if (ClientTelemetryMetrics.compositeRegistry.getRegistries().isEmpty()) {
                 ClientTelemetryMetrics.compositeRegistry = createFreshRegistry();
             }
+
+            // reset the cached flag whether any actual meter registry is available
+            lastDescendantValidation = new DescendantValidationResult(Instant.MIN, true);
         }
     }
 
@@ -283,20 +339,20 @@ public final class ClientTelemetryMetrics {
         }
 
         if (metricTagNames.contains(TagName.Container)) {
-            String containerTagValue = String.format(
-                "%s/%s/%s",
-                escape(accountTagValue),
-                databaseId != null ? escape(databaseId) : "NONE",
-                containerId != null ? escape(containerId) : "NONE"
-            );
+            String containerTagValue =
+                escape(accountTagValue)
+                + "/"
+                + (databaseId != null ? escape(databaseId) : "NONE")
+                + "/"
+                + (containerId != null ? escape(containerId) : "NONE");
 
             effectiveTags.add(Tag.of(TagName.Container.toString(), containerTagValue));
         }
 
         if (metricTagNames.contains(TagName.Operation)) {
             String operationTagValue = !isPointOperation && !Strings.isNullOrWhiteSpace(operationId)
-                ? String.format("%s/%s/%s", resourceType, operationType, escape(operationId))
-                : String.format("%s/%s", resourceType, operationType);
+                ? resourceType + "/" + operationType + "/" + escape(operationId)
+                : resourceType + "/" + operationType;
 
             effectiveTags.add(Tag.of(TagName.Operation.toString(), operationTagValue));
         }
@@ -448,16 +504,20 @@ public final class ClientTelemetryMetrics {
                         recordStoreResponseStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
-                            requestStatistics.getResponseStatisticsList());
+                            requestStatistics.getResponseStatisticsList(),
+                            actualItemCount);
                         recordStoreResponseStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
-                            requestStatistics.getSupplementalResponseStatisticsList());
+                            requestStatistics.getSupplementalResponseStatisticsList(),
+                            -1);
                         recordGatewayStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
                             requestStatistics.getDuration(),
-                            requestStatistics.getGatewayStatisticsList());
+                            requestStatistics.getGatewayStatisticsList(),
+                            requestStatistics.getRequestPayloadSizeInBytes(),
+                            actualItemCount);
                         recordAddressResolutionStatistics(
                             diagnosticsContext,
                             cosmosAsyncClient,
@@ -636,13 +696,13 @@ public final class ClientTelemetryMetrics {
             if (metricTagNames.contains(TagName.RequestStatusCode)) {
                 effectiveTags.add(Tag.of(
                     TagName.RequestStatusCode.toString(),
-                    String.format("%d/%d", statusCode, subStatusCode)));
+                    statusCode + "/" + subStatusCode));
             }
 
             if (metricTagNames.contains(TagName.RequestOperationType)) {
                 effectiveTags.add(Tag.of(
                     TagName.RequestOperationType.toString(),
-                    String.format("%s/%s", resourceType, operationType)));
+                    resourceType + "/" + operationType));
             }
 
             if (metricTagNames.contains(TagName.RegionName)) {
@@ -700,12 +760,7 @@ public final class ClientTelemetryMetrics {
             List<Tag> effectiveTags = new ArrayList<>();
 
             if (metricTagNames.contains(TagName.RequestOperationType)) {
-                effectiveTags.add(Tag.of(
-                    TagName.RequestOperationType.toString(),
-                    String.format(
-                        "%s/%s",
-                        ResourceType.DocumentCollection,
-                        OperationType.QueryPlan)));
+                effectiveTags.add(QUERYPLAN_TAG);
             }
 
             return Tags.of(effectiveTags);
@@ -823,7 +878,7 @@ public final class ClientTelemetryMetrics {
 
                 Timer eventMeter = Timer
                     .builder(timelineOptions.getMeterName().toString() + "." + escape(event.getName()))
-                    .description(String.format("Request timeline (%s)", event.getName()))
+                    .description("Request timeline (" + event.getName() + ")")
                     .maximumExpectedValue(Duration.ofSeconds(300))
                     .publishPercentiles(timelineOptions.getPercentiles())
                     .publishPercentileHistogram(timelineOptions.isHistogramPublishingEnabled())
@@ -836,7 +891,8 @@ public final class ClientTelemetryMetrics {
         private void recordStoreResponseStatistics(
             CosmosDiagnosticsContext ctx,
             CosmosAsyncClient client,
-            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics) {
+            Collection<ClientSideRequestStatistics.StoreResponseStatistics> storeResponseStatistics,
+            int actualItemCount) {
 
             if (!this.metricCategories.contains(MetricCategory.RequestSummary)) {
                 return;
@@ -933,6 +989,24 @@ public final class ClientTelemetryMetrics {
                     requestCounter.increment();
                 }
 
+                CosmosMeterOptions actualItemCountOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
+
+                if (actualItemCountOptions.isEnabled()
+                    && (!actualItemCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary actualItemCountMeter = DistributionSummary
+                        .builder(actualItemCountOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Rntbd response actual item count")
+                        .maximumExpectedValue(100_000d)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, actualItemCountOptions))
+                        .register(compositeRegistry);
+                    actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 100_000d)));
+                }
+
                 if (this.metricCategories.contains(MetricCategory.RequestDetails)) {
                     recordRequestTimeline(
                         ctx,
@@ -959,7 +1033,9 @@ public final class ClientTelemetryMetrics {
             CosmosDiagnosticsContext ctx,
             CosmosAsyncClient client,
             Duration latency,
-            List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList) {
+            List<ClientSideRequestStatistics.GatewayStatistics> gatewayStatisticsList,
+            int requestPayloadSizeInBytes,
+            int actualItemCount) {
 
             if (gatewayStatisticsList == null
                 || gatewayStatisticsList.size() == 0
@@ -986,6 +1062,13 @@ public final class ClientTelemetryMetrics {
                         null,
                         null,
                         null)
+                );
+
+                recordRequestPayloadSizes(
+                    ctx,
+                    client,
+                    requestPayloadSizeInBytes,
+                    gatewayStats.getResponsePayloadSizeInBytes()
                 );
 
                 CosmosMeterOptions reqOptions = clientAccessor.getMeterOptions(
@@ -1036,6 +1119,24 @@ public final class ClientTelemetryMetrics {
                             .register(compositeRegistry);
                         requestLatencyMeter.record(latency);
                     }
+                }
+
+                CosmosMeterOptions actualItemCountOptions = clientAccessor.getMeterOptions(
+                    client,
+                    CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
+
+                if (actualItemCountOptions.isEnabled()
+                    && (!actualItemCountOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
+                    DistributionSummary actualItemCountMeter = DistributionSummary
+                        .builder(actualItemCountOptions.getMeterName().toString())
+                        .baseUnit("item count")
+                        .description("Gateway response actual item count")
+                        .maximumExpectedValue(100_000d)
+                        .publishPercentiles()
+                        .publishPercentileHistogram(false)
+                        .tags(getEffectiveTags(requestTags, actualItemCountOptions))
+                        .register(compositeRegistry);
+                    actualItemCountMeter.record(Math.max(0, Math.min(actualItemCount, 100_000d)));
                 }
 
                 recordRequestTimeline(
@@ -1288,6 +1389,24 @@ public final class ClientTelemetryMetrics {
             } else {
                 requestRecord.stop();
             }
+        }
+    }
+
+    static class DescendantValidationResult {
+        private final Instant expiration;
+        private final boolean result;
+
+        public DescendantValidationResult(Instant expiration, boolean result) {
+            this.expiration = expiration;
+            this.result = result;
+        }
+
+        public Instant getExpiration() {
+            return this.expiration;
+        }
+
+        public boolean getResult() {
+            return this.result;
         }
     }
 }

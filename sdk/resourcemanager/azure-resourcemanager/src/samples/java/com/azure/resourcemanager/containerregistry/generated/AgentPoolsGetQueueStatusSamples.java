@@ -4,23 +4,22 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-/** Samples for AgentPools GetQueueStatus. */
+/**
+ * Samples for AgentPools GetQueueStatus.
+ */
 public final class AgentPoolsGetQueueStatusSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/AgentPoolsGetQueueStatus.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
+     * AgentPoolsGetQueueStatus.json
      */
     /**
      * Sample code: AgentPools_GetQueueStatus.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void agentPoolsGetQueueStatus(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getAgentPools()
-            .getQueueStatusWithResponse(
-                "myResourceGroup", "myRegistry", "myAgentPool", com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getAgentPools().getQueueStatusWithResponse(
+            "myResourceGroup", "myRegistry", "myAgentPool", com.azure.core.util.Context.NONE);
     }
 }

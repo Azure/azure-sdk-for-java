@@ -11,16 +11,19 @@ public final class AzureBlobFSSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSSource model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobFSSource\",\"treatEmptyAsNull\":\"datax\",\"skipHeaderLineCount\":\"datanrurtnwbjj\",\"recursive\":\"dataupckhfbmdemohlsh\",\"sourceRetryCount\":\"dataaoofltb\",\"sourceRetryWait\":\"datayvmwaejxzkqcm\",\"maxConcurrentConnections\":\"datacf\",\"disableMetricsCollection\":\"dataxyrtqegabsfjrj\",\"\":{\"dibepgfrbijoehh\":\"datascgorv\"}}")
+            "{\"type\":\"tnhi\",\"treatEmptyAsNull\":\"dataoeegal\",\"skipHeaderLineCount\":\"dataqy\",\"recursive\":\"datayzilocn\",\"sourceRetryCount\":\"dataegjvhyvnqbhcl\",\"sourceRetryWait\":\"dataksoqzzyrovvnac\",\"maxConcurrentConnections\":\"datajmhclhcqcjngwmb\",\"disableMetricsCollection\":\"datagsidasovlrj\",\"\":{\"pxxbkxwhsfhe\":\"dataydtjebbacscirzts\"}}")
             .toObject(AzureBlobFSSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSSource model = new AzureBlobFSSource().withSourceRetryCount("dataaoofltb")
-            .withSourceRetryWait("datayvmwaejxzkqcm").withMaxConcurrentConnections("datacf")
-            .withDisableMetricsCollection("dataxyrtqegabsfjrj").withTreatEmptyAsNull("datax")
-            .withSkipHeaderLineCount("datanrurtnwbjj").withRecursive("dataupckhfbmdemohlsh");
+        AzureBlobFSSource model = new AzureBlobFSSource().withSourceRetryCount("dataegjvhyvnqbhcl")
+            .withSourceRetryWait("dataksoqzzyrovvnac")
+            .withMaxConcurrentConnections("datajmhclhcqcjngwmb")
+            .withDisableMetricsCollection("datagsidasovlrj")
+            .withTreatEmptyAsNull("dataoeegal")
+            .withSkipHeaderLineCount("dataqy")
+            .withRecursive("datayzilocn");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSSource.class);
     }
 }

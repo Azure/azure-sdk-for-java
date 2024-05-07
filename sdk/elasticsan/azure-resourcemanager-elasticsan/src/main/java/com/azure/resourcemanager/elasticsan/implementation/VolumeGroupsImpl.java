@@ -21,23 +21,23 @@ public final class VolumeGroupsImpl implements VolumeGroups {
 
     private final com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager;
 
-    public VolumeGroupsImpl(
-        VolumeGroupsClient innerClient, com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager) {
+    public VolumeGroupsImpl(VolumeGroupsClient innerClient,
+        com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<VolumeGroup> listByElasticSan(String resourceGroupName, String elasticSanName) {
-        PagedIterable<VolumeGroupInner> inner =
-            this.serviceClient().listByElasticSan(resourceGroupName, elasticSanName);
-        return Utils.mapPage(inner, inner1 -> new VolumeGroupImpl(inner1, this.manager()));
+        PagedIterable<VolumeGroupInner> inner
+            = this.serviceClient().listByElasticSan(resourceGroupName, elasticSanName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeGroupImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VolumeGroup> listByElasticSan(
-        String resourceGroupName, String elasticSanName, Context context) {
-        PagedIterable<VolumeGroupInner> inner =
-            this.serviceClient().listByElasticSan(resourceGroupName, elasticSanName, context);
-        return Utils.mapPage(inner, inner1 -> new VolumeGroupImpl(inner1, this.manager()));
+    public PagedIterable<VolumeGroup> listByElasticSan(String resourceGroupName, String elasticSanName,
+        Context context) {
+        PagedIterable<VolumeGroupInner> inner
+            = this.serviceClient().listByElasticSan(resourceGroupName, elasticSanName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeGroupImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String elasticSanName, String volumeGroupName) {
@@ -48,15 +48,12 @@ public final class VolumeGroupsImpl implements VolumeGroups {
         this.serviceClient().delete(resourceGroupName, elasticSanName, volumeGroupName, context);
     }
 
-    public Response<VolumeGroup> getWithResponse(
-        String resourceGroupName, String elasticSanName, String volumeGroupName, Context context) {
-        Response<VolumeGroupInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, context);
+    public Response<VolumeGroup> getWithResponse(String resourceGroupName, String elasticSanName,
+        String volumeGroupName, Context context) {
+        Response<VolumeGroupInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VolumeGroupImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -73,105 +70,77 @@ public final class VolumeGroupsImpl implements VolumeGroups {
     }
 
     public VolumeGroup getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String elasticSanName = Utils.getValueFromIdByName(id, "elasticSans");
+        String elasticSanName = ResourceManagerUtils.getValueFromIdByName(id, "elasticSans");
         if (elasticSanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'elasticSans'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'elasticSans'.", id)));
         }
-        String volumeGroupName = Utils.getValueFromIdByName(id, "volumegroups");
+        String volumeGroupName = ResourceManagerUtils.getValueFromIdByName(id, "volumegroups");
         if (volumeGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumegroups'.", id)));
         }
         return this.getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, Context.NONE).getValue();
     }
 
     public Response<VolumeGroup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String elasticSanName = Utils.getValueFromIdByName(id, "elasticSans");
+        String elasticSanName = ResourceManagerUtils.getValueFromIdByName(id, "elasticSans");
         if (elasticSanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'elasticSans'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'elasticSans'.", id)));
         }
-        String volumeGroupName = Utils.getValueFromIdByName(id, "volumegroups");
+        String volumeGroupName = ResourceManagerUtils.getValueFromIdByName(id, "volumegroups");
         if (volumeGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumegroups'.", id)));
         }
         return this.getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String elasticSanName = Utils.getValueFromIdByName(id, "elasticSans");
+        String elasticSanName = ResourceManagerUtils.getValueFromIdByName(id, "elasticSans");
         if (elasticSanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'elasticSans'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'elasticSans'.", id)));
         }
-        String volumeGroupName = Utils.getValueFromIdByName(id, "volumegroups");
+        String volumeGroupName = ResourceManagerUtils.getValueFromIdByName(id, "volumegroups");
         if (volumeGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumegroups'.", id)));
         }
         this.delete(resourceGroupName, elasticSanName, volumeGroupName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String elasticSanName = Utils.getValueFromIdByName(id, "elasticSans");
+        String elasticSanName = ResourceManagerUtils.getValueFromIdByName(id, "elasticSans");
         if (elasticSanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'elasticSans'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'elasticSans'.", id)));
         }
-        String volumeGroupName = Utils.getValueFromIdByName(id, "volumegroups");
+        String volumeGroupName = ResourceManagerUtils.getValueFromIdByName(id, "volumegroups");
         if (volumeGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumegroups'.", id)));
         }
         this.delete(resourceGroupName, elasticSanName, volumeGroupName, context);
     }

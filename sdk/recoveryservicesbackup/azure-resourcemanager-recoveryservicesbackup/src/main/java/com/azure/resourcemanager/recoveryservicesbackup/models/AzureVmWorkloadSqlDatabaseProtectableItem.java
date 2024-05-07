@@ -8,100 +8,130 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure VM workload-specific protectable item representing SQL Database. */
+/**
+ * Azure VM workload-specific protectable item representing SQL Database.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableItemType")
 @JsonTypeName("SQLDataBase")
 @Fluent
 public final class AzureVmWorkloadSqlDatabaseProtectableItem extends AzureVmWorkloadProtectableItem {
-    /** Creates an instance of AzureVmWorkloadSqlDatabaseProtectableItem class. */
+    /**
+     * Creates an instance of AzureVmWorkloadSqlDatabaseProtectableItem class.
+     */
     public AzureVmWorkloadSqlDatabaseProtectableItem() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withParentName(String parentName) {
         super.withParentName(parentName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withParentUniqueName(String parentUniqueName) {
         super.withParentUniqueName(parentUniqueName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withServerName(String serverName) {
         super.withServerName(serverName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withIsAutoProtectable(Boolean isAutoProtectable) {
         super.withIsAutoProtectable(isAutoProtectable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withIsAutoProtected(Boolean isAutoProtected) {
         super.withIsAutoProtected(isAutoProtected);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withSubinquireditemcount(Integer subinquireditemcount) {
         super.withSubinquireditemcount(subinquireditemcount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withSubprotectableitemcount(Integer subprotectableitemcount) {
         super.withSubprotectableitemcount(subprotectableitemcount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withPrebackupvalidation(PreBackupValidation prebackupvalidation) {
         super.withPrebackupvalidation(prebackupvalidation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withIsProtectable(Boolean isProtectable) {
         super.withIsProtectable(isProtectable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withWorkloadType(String workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectableItem withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -110,7 +140,7 @@ public final class AzureVmWorkloadSqlDatabaseProtectableItem extends AzureVmWork
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

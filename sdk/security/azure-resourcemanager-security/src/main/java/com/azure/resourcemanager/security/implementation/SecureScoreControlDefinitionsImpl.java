@@ -19,8 +19,7 @@ public final class SecureScoreControlDefinitionsImpl implements SecureScoreContr
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public SecureScoreControlDefinitionsImpl(
-        SecureScoreControlDefinitionsClient innerClient,
+    public SecureScoreControlDefinitionsImpl(SecureScoreControlDefinitionsClient innerClient,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,22 +27,26 @@ public final class SecureScoreControlDefinitionsImpl implements SecureScoreContr
 
     public PagedIterable<SecureScoreControlDefinitionItem> list() {
         PagedIterable<SecureScoreControlDefinitionItemInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SecureScoreControlDefinitionItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SecureScoreControlDefinitionItemImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SecureScoreControlDefinitionItem> list(Context context) {
         PagedIterable<SecureScoreControlDefinitionItemInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SecureScoreControlDefinitionItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SecureScoreControlDefinitionItemImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SecureScoreControlDefinitionItem> listBySubscription() {
         PagedIterable<SecureScoreControlDefinitionItemInner> inner = this.serviceClient().listBySubscription();
-        return Utils.mapPage(inner, inner1 -> new SecureScoreControlDefinitionItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SecureScoreControlDefinitionItemImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SecureScoreControlDefinitionItem> listBySubscription(Context context) {
         PagedIterable<SecureScoreControlDefinitionItemInner> inner = this.serviceClient().listBySubscription(context);
-        return Utils.mapPage(inner, inner1 -> new SecureScoreControlDefinitionItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SecureScoreControlDefinitionItemImpl(inner1, this.manager()));
     }
 
     private SecureScoreControlDefinitionsClient serviceClient() {

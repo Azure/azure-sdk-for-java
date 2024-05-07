@@ -14,15 +14,15 @@ public final class VirtualNetworksPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworksPatch model
-            = BinaryData.fromString("{\"tags\":{\"jhdgqggebdunyga\":\"khly\"}}").toObject(VirtualNetworksPatch.class);
-        Assertions.assertEquals("khly", model.tags().get("jhdgqggebdunyga"));
+            = BinaryData.fromString("{\"tags\":{\"n\":\"ohfwds\"}}").toObject(VirtualNetworksPatch.class);
+        Assertions.assertEquals("ohfwds", model.tags().get("n"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworksPatch model = new VirtualNetworksPatch().withTags(mapOf("jhdgqggebdunyga", "khly"));
+        VirtualNetworksPatch model = new VirtualNetworksPatch().withTags(mapOf("n", "ohfwds"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworksPatch.class);
-        Assertions.assertEquals("khly", model.tags().get("jhdgqggebdunyga"));
+        Assertions.assertEquals("ohfwds", model.tags().get("n"));
     }
 
     // Use "Map.of" if available

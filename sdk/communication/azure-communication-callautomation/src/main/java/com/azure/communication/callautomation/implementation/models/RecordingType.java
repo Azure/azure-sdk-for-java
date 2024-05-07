@@ -16,6 +16,9 @@ public final class RecordingType extends ExpandableStringEnum<RecordingType> {
     /** Static value teams for RecordingType. */
     public static final RecordingType TEAMS = fromString("teams");
 
+    /** Static value teamsCompliance for RecordingType. */
+    public static final RecordingType TEAMS_COMPLIANCE = fromString("teamsCompliance");
+
     /**
      * Creates or finds a RecordingType from its string representation.
      *

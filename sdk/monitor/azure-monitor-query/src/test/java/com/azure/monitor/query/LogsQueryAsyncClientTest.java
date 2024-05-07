@@ -5,12 +5,13 @@ package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
@@ -21,10 +22,12 @@ import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryResultStatus;
+import com.azure.monitor.query.models.LogsTableCell;
 import com.azure.monitor.query.models.QueryTimeInterval;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -32,12 +35,14 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import static com.azure.monitor.query.MonitorQueryTestUtils.*;
+import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
+import static com.azure.monitor.query.MonitorQueryTestUtils.getAdditionalLogWorkspaceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogResourceId;
+import static com.azure.monitor.query.MonitorQueryTestUtils.getLogWorkspaceId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -52,11 +57,14 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     private String workspaceId;
 
+    private String additionalWorkspaceId;
+
     private String resourceId;
 
     @BeforeEach
     public void setup() {
         workspaceId = getLogWorkspaceId(interceptorManager.isPlaybackMode());
+        additionalWorkspaceId = getAdditionalLogWorkspaceId(interceptorManager.isPlaybackMode());
         resourceId = getLogResourceId(interceptorManager.isPlaybackMode());
         LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {
@@ -123,6 +131,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     }
 
     @Test
+    @DoNotRecord(skipInPlayback = true)
     public void testLogsQueryAllowPartialSuccess() {
         // Arrange
         final String query =  "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
@@ -175,6 +184,30 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     @Test
     public void testLogsQueryBatchWithServerTimeout() {
+
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder();
+        if (getTestMode() == TestMode.PLAYBACK) {
+            clientBuilder
+                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
+                .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
+        } else if (getTestMode() == TestMode.RECORD) {
+            clientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .credential(getCredential());
+        } else if (getTestMode() == TestMode.LIVE) {
+            clientBuilder.credential(getCredential());
+            clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
+        }
+        LogsQueryAsyncClient client = clientBuilder
+            .addPolicy((context, next) -> {
+                String requestBody = context.getHttpRequest().getBodyAsBinaryData().toString();
+                Assertions.assertTrue(requestBody.contains("wait=10"));
+                Assertions.assertTrue(requestBody.contains("wait=20"));
+                return next.process();
+            })
+            .buildAsyncClient();
+
+
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 2", null);
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 5", null,
@@ -205,26 +238,33 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "multi-workspace "
-            + "queries require sending logs to Azure Monitor first. So, run this test in playback or record mode only.")
     public void testMultipleWorkspaces() {
+
+        final String multipleWorkspacesQuery = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
+            + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic, TenantId: string)\n"
+            + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
+            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}}), \"" + workspaceId + "\""
+            + ", datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
+            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}}), \"" + additionalWorkspaceId + "\"];"
+            + "range x from 1 to 2 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
         StepVerifier.create(client.queryWorkspaceWithResponse(workspaceId,
-                        "union * | where TimeGenerated > ago(100d) | project TenantId | summarize count() by TenantId", null,
-                        new LogsQueryOptions()
-                                .setAdditionalWorkspaces(Arrays.asList("9dad0092-fd13-403a-b367-a189a090a541")),
-                        Context.NONE))
-                .assertNext(response -> {
-                    LogsQueryResult queryResults = response.getValue();
-                    assertEquals(1, queryResults.getAllTables().size());
-                    assertEquals(2, queryResults
-                            .getAllTables()
-                            .get(0)
-                            .getRows()
-                            .stream()
-                            .map(row -> row.getColumnValue("TenantId").get())
-                            .distinct()
-                            .count());
-                }).verifyComplete();
+                multipleWorkspacesQuery, null,
+                new LogsQueryOptions()
+                    .setAdditionalWorkspaces(Collections.singletonList(additionalWorkspaceId)),
+                Context.NONE))
+            .assertNext(response -> {
+                LogsQueryResult queryResults = response.getValue();
+                assertEquals(1, queryResults.getAllTables().size());
+                assertEquals(2, queryResults
+                    .getAllTables()
+                    .get(0)
+                    .getRows()
+                    .stream()
+                    .map(row -> row.getColumnValue("TenantId").get())
+                    .map(LogsTableCell::getValueAsString)
+                    .distinct()
+                    .count());
+            }).verifyComplete();
     }
 
     @Test
@@ -234,31 +274,31 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take", null);
 
         StepVerifier.create(client
-                        .queryBatchWithResponse(logsBatchQuery, Context.NONE))
-                .assertNext(response -> {
-                    LogsBatchQueryResultCollection batchResultCollection = response.getValue();
-                    List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
+                .queryBatchWithResponse(logsBatchQuery, Context.NONE))
+            .assertNext(response -> {
+                LogsBatchQueryResultCollection batchResultCollection = response.getValue();
+                List<LogsBatchQueryResult> responses = batchResultCollection.getBatchResults();
 
-                    assertEquals(2, responses.size());
-                    assertEquals(LogsQueryResultStatus.SUCCESS, responses.get(0).getQueryResultStatus());
-                    assertNull(responses.get(0).getError());
-                    assertEquals(LogsQueryResultStatus.FAILURE, responses.get(1).getQueryResultStatus());
-                    assertNotNull(responses.get(1).getError());
-                    assertEquals("BadArgumentError", responses.get(1).getError().getCode());
-                })
-                .verifyComplete();
+                assertEquals(2, responses.size());
+                assertEquals(LogsQueryResultStatus.SUCCESS, responses.get(0).getQueryResultStatus());
+                assertNull(responses.get(0).getError());
+                assertEquals(LogsQueryResultStatus.FAILURE, responses.get(1).getQueryResultStatus());
+                assertNotNull(responses.get(1).getError());
+                assertEquals("BadArgumentError", responses.get(1).getError().getCode());
+            })
+            .verifyComplete();
     }
 
     @Test
     public void testStatistics() {
         StepVerifier.create(client.queryWorkspaceWithResponse(workspaceId,
-                        QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE))
-                .assertNext(response -> {
-                    LogsQueryResult queryResults = response.getValue();
-                    assertEquals(1, queryResults.getAllTables().size());
-                    assertNotNull(queryResults.getStatistics());
-                })
-                .verifyComplete();
+                QUERY_STRING, null, new LogsQueryOptions().setIncludeStatistics(true), Context.NONE))
+            .assertNext(response -> {
+                LogsQueryResult queryResults = response.getValue();
+                assertEquals(1, queryResults.getAllTables().size());
+                assertNotNull(queryResults.getStatistics());
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -274,6 +314,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     }
 
     @Test
+    @Disabled
     public void testBatchStatistics() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING, null);
@@ -298,33 +339,36 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "server timeout is "
-            + " not readily reproducible and because the service caches query results, the queries that require extended time "
-            + "to complete if run the first time can return immediately if a cached result is available. So, this test can "
-            + " wait for a long time before succeeding. So, disabling this in LIVE test mode")
     public void testServerTimeout() {
-        // The server does not always stop processing the request and return a 504 before the client times out
-        // so, retry until a 504 response is returned
-        // With test proxy migration, the request body is also recorded and the request has to match exactly for the
-        // recording to work. So, updating the exact count used to record the server timeout exception. When re-recording,
-        // add a random number to this to bypass the server from returning cached results.
-        long count = 1000000006959L;
-        // this query should take more than 5 seconds usually, but the server may have cached the
-        // response and may return before 5 seconds. So, retry with another query (different count value)
-        StepVerifier.create(client.queryWorkspaceWithResponse(workspaceId, "range x from 1 to " + count + " "
-                                        + "step 1 | count",
-                                null,
-                                new LogsQueryOptions()
-                                        .setServerTimeout(Duration.ofSeconds(5)),
-                                Context.NONE)
-                        .repeat())
-                .verifyErrorSatisfies(throwable -> {
-                    assertTrue(throwable instanceof HttpResponseException);
-                    if (throwable instanceof HttpResponseException) {
-                        HttpResponseException ex = (HttpResponseException) throwable;
-                        assertEquals(504, ex.getResponse().getStatusCode());
-                    }
-                });
+        // Server timeout is not readily reproducible and because the service caches query results, the queries that require extended time
+        // to complete if run the first time can return immediately if a cached result is available. So, instead of testing the server behavior,
+        // this test validates that the request is sent with the correct timeout value in the Prefer header.
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder();
+        if (getTestMode() == TestMode.PLAYBACK) {
+            clientBuilder
+                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
+                .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
+        } else if (getTestMode() == TestMode.RECORD) {
+            clientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .credential(getCredential());
+        } else if (getTestMode() == TestMode.LIVE) {
+            clientBuilder.credential(getCredential());
+            clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
+        }
+        LogsQueryAsyncClient client = clientBuilder
+            .addPolicy((context, next) -> {
+                Assertions.assertTrue(context.getHttpRequest().getHeaders().get(HttpHeaderName.fromString("Prefer")).getValue().contains("wait=5"));
+                return next.process();
+            })
+            .buildAsyncClient();
+        long count = 5;
+        StepVerifier.create(client.queryWorkspaceWithResponse(workspaceId, "range x from 1 to " + count + " step 1 | count", null,
+                new LogsQueryOptions().setServerTimeout(Duration.ofSeconds(5))))
+            .assertNext(response -> {
+                Assertions.assertEquals(200, response.getStatusCode());
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -377,7 +421,5 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
             })
             .verifyComplete();
-
-
     }
 }

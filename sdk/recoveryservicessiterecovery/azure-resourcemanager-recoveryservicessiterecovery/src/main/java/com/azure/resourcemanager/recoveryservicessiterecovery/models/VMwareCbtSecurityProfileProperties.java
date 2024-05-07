@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VMwareCbt security profile input. */
+/**
+ * VMwareCbt security profile input.
+ */
 @Fluent
 public final class VMwareCbtSecurityProfileProperties {
     /*
@@ -40,13 +42,15 @@ public final class VMwareCbtSecurityProfileProperties {
     @JsonProperty(value = "isTargetVmConfidentialEncryptionEnabled")
     private String isTargetVmConfidentialEncryptionEnabled;
 
-    /** Creates an instance of VMwareCbtSecurityProfileProperties class. */
+    /**
+     * Creates an instance of VMwareCbtSecurityProfileProperties class.
+     */
     public VMwareCbtSecurityProfileProperties() {
     }
 
     /**
      * Get the targetVmSecurityType property: The target VM security type.
-     *
+     * 
      * @return the targetVmSecurityType value.
      */
     public SecurityType targetVmSecurityType() {
@@ -55,7 +59,7 @@ public final class VMwareCbtSecurityProfileProperties {
 
     /**
      * Set the targetVmSecurityType property: The target VM security type.
-     *
+     * 
      * @param targetVmSecurityType the targetVmSecurityType value to set.
      * @return the VMwareCbtSecurityProfileProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class VMwareCbtSecurityProfileProperties {
 
     /**
      * Get the isTargetVmSecureBootEnabled property: A value indicating whether secure boot to be enabled.
-     *
+     * 
      * @return the isTargetVmSecureBootEnabled value.
      */
     public String isTargetVmSecureBootEnabled() {
@@ -75,7 +79,7 @@ public final class VMwareCbtSecurityProfileProperties {
 
     /**
      * Set the isTargetVmSecureBootEnabled property: A value indicating whether secure boot to be enabled.
-     *
+     * 
      * @param isTargetVmSecureBootEnabled the isTargetVmSecureBootEnabled value to set.
      * @return the VMwareCbtSecurityProfileProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class VMwareCbtSecurityProfileProperties {
 
     /**
      * Get the isTargetVmTpmEnabled property: A value indicating whether trusted platform module to be enabled.
-     *
+     * 
      * @return the isTargetVmTpmEnabled value.
      */
     public String isTargetVmTpmEnabled() {
@@ -95,7 +99,7 @@ public final class VMwareCbtSecurityProfileProperties {
 
     /**
      * Set the isTargetVmTpmEnabled property: A value indicating whether trusted platform module to be enabled.
-     *
+     * 
      * @param isTargetVmTpmEnabled the isTargetVmTpmEnabled value to set.
      * @return the VMwareCbtSecurityProfileProperties object itself.
      */
@@ -107,7 +111,7 @@ public final class VMwareCbtSecurityProfileProperties {
     /**
      * Get the isTargetVmIntegrityMonitoringEnabled property: A value indicating whether integrity monitoring to be
      * enabled.
-     *
+     * 
      * @return the isTargetVmIntegrityMonitoringEnabled value.
      */
     public String isTargetVmIntegrityMonitoringEnabled() {
@@ -117,12 +121,12 @@ public final class VMwareCbtSecurityProfileProperties {
     /**
      * Set the isTargetVmIntegrityMonitoringEnabled property: A value indicating whether integrity monitoring to be
      * enabled.
-     *
+     * 
      * @param isTargetVmIntegrityMonitoringEnabled the isTargetVmIntegrityMonitoringEnabled value to set.
      * @return the VMwareCbtSecurityProfileProperties object itself.
      */
-    public VMwareCbtSecurityProfileProperties withIsTargetVmIntegrityMonitoringEnabled(
-        String isTargetVmIntegrityMonitoringEnabled) {
+    public VMwareCbtSecurityProfileProperties
+        withIsTargetVmIntegrityMonitoringEnabled(String isTargetVmIntegrityMonitoringEnabled) {
         this.isTargetVmIntegrityMonitoringEnabled = isTargetVmIntegrityMonitoringEnabled;
         return this;
     }
@@ -130,7 +134,7 @@ public final class VMwareCbtSecurityProfileProperties {
     /**
      * Get the isTargetVmConfidentialEncryptionEnabled property: A value indicating whether confidential compute
      * encryption to be enabled.
-     *
+     * 
      * @return the isTargetVmConfidentialEncryptionEnabled value.
      */
     public String isTargetVmConfidentialEncryptionEnabled() {
@@ -140,19 +144,19 @@ public final class VMwareCbtSecurityProfileProperties {
     /**
      * Set the isTargetVmConfidentialEncryptionEnabled property: A value indicating whether confidential compute
      * encryption to be enabled.
-     *
+     * 
      * @param isTargetVmConfidentialEncryptionEnabled the isTargetVmConfidentialEncryptionEnabled value to set.
      * @return the VMwareCbtSecurityProfileProperties object itself.
      */
-    public VMwareCbtSecurityProfileProperties withIsTargetVmConfidentialEncryptionEnabled(
-        String isTargetVmConfidentialEncryptionEnabled) {
+    public VMwareCbtSecurityProfileProperties
+        withIsTargetVmConfidentialEncryptionEnabled(String isTargetVmConfidentialEncryptionEnabled) {
         this.isTargetVmConfidentialEncryptionEnabled = isTargetVmConfidentialEncryptionEnabled;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

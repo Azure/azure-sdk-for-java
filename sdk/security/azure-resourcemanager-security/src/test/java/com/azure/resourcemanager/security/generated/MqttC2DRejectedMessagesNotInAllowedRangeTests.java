@@ -12,29 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class MqttC2DRejectedMessagesNotInAllowedRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MqttC2DRejectedMessagesNotInAllowedRange model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"MqttC2DRejectedMessagesNotInAllowedRange\",\"timeWindowSize\":\"PT88H6M23S\",\"minThreshold\":953823508,\"maxThreshold\":1995489309,\"displayName\":\"dxlwyojbfqz\",\"description\":\"fnjyix\",\"isEnabled\":false}")
-                .toObject(MqttC2DRejectedMessagesNotInAllowedRange.class);
+        MqttC2DRejectedMessagesNotInAllowedRange model = BinaryData.fromString(
+            "{\"ruleType\":\"MqttC2DRejectedMessagesNotInAllowedRange\",\"timeWindowSize\":\"PT216H13M45S\",\"minThreshold\":557567163,\"maxThreshold\":1579268154,\"displayName\":\"zubfo\",\"description\":\"dbgmkfwmjcwte\",\"isEnabled\":false}")
+            .toObject(MqttC2DRejectedMessagesNotInAllowedRange.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(953823508, model.minThreshold());
-        Assertions.assertEquals(1995489309, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT88H6M23S"), model.timeWindowSize());
+        Assertions.assertEquals(557567163, model.minThreshold());
+        Assertions.assertEquals(1579268154, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT216H13M45S"), model.timeWindowSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MqttC2DRejectedMessagesNotInAllowedRange model =
-            new MqttC2DRejectedMessagesNotInAllowedRange()
-                .withIsEnabled(false)
-                .withMinThreshold(953823508)
-                .withMaxThreshold(1995489309)
-                .withTimeWindowSize(Duration.parse("PT88H6M23S"));
+        MqttC2DRejectedMessagesNotInAllowedRange model
+            = new MqttC2DRejectedMessagesNotInAllowedRange().withIsEnabled(false).withMinThreshold(557567163)
+                .withMaxThreshold(1579268154).withTimeWindowSize(Duration.parse("PT216H13M45S"));
         model = BinaryData.fromObject(model).toObject(MqttC2DRejectedMessagesNotInAllowedRange.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(953823508, model.minThreshold());
-        Assertions.assertEquals(1995489309, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT88H6M23S"), model.timeWindowSize());
+        Assertions.assertEquals(557567163, model.minThreshold());
+        Assertions.assertEquals(1579268154, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT216H13M45S"), model.timeWindowSize());
     }
 }

@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** State of the link between the database resources. */
+/**
+ * State of the link between the database resources.
+ */
 public final class LinkState extends ExpandableStringEnum<LinkState> {
-    /** Static value Linked for LinkState. */
+    /**
+     * Static value Linked for LinkState.
+     */
     public static final LinkState LINKED = fromString("Linked");
 
-    /** Static value Linking for LinkState. */
+    /**
+     * Static value Linking for LinkState.
+     */
     public static final LinkState LINKING = fromString("Linking");
 
-    /** Static value Unlinking for LinkState. */
+    /**
+     * Static value Unlinking for LinkState.
+     */
     public static final LinkState UNLINKING = fromString("Unlinking");
 
-    /** Static value LinkFailed for LinkState. */
+    /**
+     * Static value LinkFailed for LinkState.
+     */
     public static final LinkState LINK_FAILED = fromString("LinkFailed");
 
-    /** Static value UnlinkFailed for LinkState. */
+    /**
+     * Static value UnlinkFailed for LinkState.
+     */
     public static final LinkState UNLINK_FAILED = fromString("UnlinkFailed");
 
     /**
      * Creates a new instance of LinkState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class LinkState extends ExpandableStringEnum<LinkState> {
 
     /**
      * Creates or finds a LinkState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LinkState.
      */
@@ -47,7 +59,7 @@ public final class LinkState extends ExpandableStringEnum<LinkState> {
 
     /**
      * Gets known LinkState values.
-     *
+     * 
      * @return known LinkState values.
      */
     public static Collection<LinkState> values() {

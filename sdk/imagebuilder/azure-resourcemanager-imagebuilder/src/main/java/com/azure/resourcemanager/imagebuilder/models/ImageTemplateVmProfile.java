@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the virtual machines used to build and validate images. */
+/**
+ * Describes the virtual machines used to build and validate images.
+ */
 @Fluent
 public final class ImageTemplateVmProfile {
     /*
@@ -38,14 +40,16 @@ public final class ImageTemplateVmProfile {
     @JsonProperty(value = "vnetConfig")
     private VirtualNetworkConfig vnetConfig;
 
-    /** Creates an instance of ImageTemplateVmProfile class. */
+    /**
+     * Creates an instance of ImageTemplateVmProfile class.
+     */
     public ImageTemplateVmProfile() {
     }
 
     /**
-     * Get the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or specify
-     * empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
-     *
+     * Get the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or
+     * specify empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
+     * 
      * @return the vmSize value.
      */
     public String vmSize() {
@@ -53,9 +57,9 @@ public final class ImageTemplateVmProfile {
     }
 
     /**
-     * Set the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or specify
-     * empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
-     *
+     * Set the vmSize property: Size of the virtual machine used to build, customize and capture images. Omit or
+     * specify empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
+     * 
      * @param vmSize the vmSize value to set.
      * @return the ImageTemplateVmProfile object itself.
      */
@@ -66,7 +70,7 @@ public final class ImageTemplateVmProfile {
 
     /**
      * Get the osDiskSizeGB property: Size of the OS disk in GB. Omit or specify 0 to use Azure's default OS disk size.
-     *
+     * 
      * @return the osDiskSizeGB value.
      */
     public Integer osDiskSizeGB() {
@@ -75,7 +79,7 @@ public final class ImageTemplateVmProfile {
 
     /**
      * Set the osDiskSizeGB property: Size of the OS disk in GB. Omit or specify 0 to use Azure's default OS disk size.
-     *
+     * 
      * @param osDiskSizeGB the osDiskSizeGB value to set.
      * @return the ImageTemplateVmProfile object itself.
      */
@@ -85,9 +89,9 @@ public final class ImageTemplateVmProfile {
     }
 
     /**
-     * Get the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to be
-     * configured on the build VM and validation VM. This may include the identity of the image template.
-     *
+     * Get the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to
+     * be configured on the build VM and validation VM. This may include the identity of the image template.
+     * 
      * @return the userAssignedIdentities value.
      */
     public List<String> userAssignedIdentities() {
@@ -95,9 +99,9 @@ public final class ImageTemplateVmProfile {
     }
 
     /**
-     * Set the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to be
-     * configured on the build VM and validation VM. This may include the identity of the image template.
-     *
+     * Set the userAssignedIdentities property: Optional array of resource IDs of user assigned managed identities to
+     * be configured on the build VM and validation VM. This may include the identity of the image template.
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ImageTemplateVmProfile object itself.
      */
@@ -109,7 +113,7 @@ public final class ImageTemplateVmProfile {
     /**
      * Get the vnetConfig property: Optional configuration of the virtual network to use to deploy the build VM and
      * validation VM in. Omit if no specific virtual network needs to be used.
-     *
+     * 
      * @return the vnetConfig value.
      */
     public VirtualNetworkConfig vnetConfig() {
@@ -119,7 +123,7 @@ public final class ImageTemplateVmProfile {
     /**
      * Set the vnetConfig property: Optional configuration of the virtual network to use to deploy the build VM and
      * validation VM in. Omit if no specific virtual network needs to be used.
-     *
+     * 
      * @param vnetConfig the vnetConfig value to set.
      * @return the ImageTemplateVmProfile object itself.
      */
@@ -130,7 +134,7 @@ public final class ImageTemplateVmProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

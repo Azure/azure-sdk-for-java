@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The authorization properties for accessing the source code repository. */
+/**
+ * The authorization properties for accessing the source code repository.
+ */
 @Fluent
 public final class AuthInfoUpdateParameters {
     /*
@@ -40,13 +42,15 @@ public final class AuthInfoUpdateParameters {
     @JsonProperty(value = "expiresIn")
     private Integer expiresIn;
 
-    /** Creates an instance of AuthInfoUpdateParameters class. */
+    /**
+     * Creates an instance of AuthInfoUpdateParameters class.
+     */
     public AuthInfoUpdateParameters() {
     }
 
     /**
      * Get the tokenType property: The type of Auth token.
-     *
+     * 
      * @return the tokenType value.
      */
     public TokenType tokenType() {
@@ -55,7 +59,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Set the tokenType property: The type of Auth token.
-     *
+     * 
      * @param tokenType the tokenType value to set.
      * @return the AuthInfoUpdateParameters object itself.
      */
@@ -66,7 +70,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Get the token property: The access token used to access the source control provider.
-     *
+     * 
      * @return the token value.
      */
     public String token() {
@@ -75,7 +79,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Set the token property: The access token used to access the source control provider.
-     *
+     * 
      * @param token the token value to set.
      * @return the AuthInfoUpdateParameters object itself.
      */
@@ -86,7 +90,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Get the refreshToken property: The refresh token used to refresh the access token.
-     *
+     * 
      * @return the refreshToken value.
      */
     public String refreshToken() {
@@ -95,7 +99,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Set the refreshToken property: The refresh token used to refresh the access token.
-     *
+     * 
      * @param refreshToken the refreshToken value to set.
      * @return the AuthInfoUpdateParameters object itself.
      */
@@ -106,7 +110,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Get the scope property: The scope of the access token.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -115,7 +119,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Set the scope property: The scope of the access token.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the AuthInfoUpdateParameters object itself.
      */
@@ -126,7 +130,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Get the expiresIn property: Time in seconds that the token remains valid.
-     *
+     * 
      * @return the expiresIn value.
      */
     public Integer expiresIn() {
@@ -135,7 +139,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Set the expiresIn property: Time in seconds that the token remains valid.
-     *
+     * 
      * @param expiresIn the expiresIn value to set.
      * @return the AuthInfoUpdateParameters object itself.
      */
@@ -146,7 +150,7 @@ public final class AuthInfoUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

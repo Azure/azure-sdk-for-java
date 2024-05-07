@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Active Directory admin credentials used to join the HPC Cache to a domain. */
+/**
+ * Active Directory admin credentials used to join the HPC Cache to a domain.
+ */
 @Fluent
 public final class CacheActiveDirectorySettingsCredentials {
     /*
@@ -25,14 +27,16 @@ public final class CacheActiveDirectorySettingsCredentials {
     @JsonProperty(value = "password")
     private String password;
 
-    /** Creates an instance of CacheActiveDirectorySettingsCredentials class. */
+    /**
+     * Creates an instance of CacheActiveDirectorySettingsCredentials class.
+     */
     public CacheActiveDirectorySettingsCredentials() {
     }
 
     /**
      * Get the username property: Username of the Active Directory domain administrator. This value is stored encrypted
      * and not returned on response.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -42,7 +46,7 @@ public final class CacheActiveDirectorySettingsCredentials {
     /**
      * Set the username property: Username of the Active Directory domain administrator. This value is stored encrypted
      * and not returned on response.
-     *
+     * 
      * @param username the username value to set.
      * @return the CacheActiveDirectorySettingsCredentials object itself.
      */
@@ -52,9 +56,9 @@ public final class CacheActiveDirectorySettingsCredentials {
     }
 
     /**
-     * Get the password property: Plain text password of the Active Directory domain administrator. This value is stored
-     * encrypted and not returned on response.
-     *
+     * Get the password property: Plain text password of the Active Directory domain administrator. This value is
+     * stored encrypted and not returned on response.
+     * 
      * @return the password value.
      */
     public String password() {
@@ -62,9 +66,9 @@ public final class CacheActiveDirectorySettingsCredentials {
     }
 
     /**
-     * Set the password property: Plain text password of the Active Directory domain administrator. This value is stored
-     * encrypted and not returned on response.
-     *
+     * Set the password property: Plain text password of the Active Directory domain administrator. This value is
+     * stored encrypted and not returned on response.
+     * 
      * @param password the password value to set.
      * @return the CacheActiveDirectorySettingsCredentials object itself.
      */
@@ -75,15 +79,13 @@ public final class CacheActiveDirectorySettingsCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model CacheActiveDirectorySettingsCredentials"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property username in model CacheActiveDirectorySettingsCredentials"));
         }
     }
 

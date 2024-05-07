@@ -8,12 +8,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Devices. */
+/**
+ * Resource collection API of Devices.
+ */
 public interface Devices {
     /**
      * List Device resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used
      * for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -23,13 +25,13 @@ public interface Devices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Device list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Device> listByDeviceGroup(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName);
+    PagedIterable<Device> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName);
 
     /**
      * List Device resources by DeviceGroup. '.default' and '.unassigned' are system defined values and cannot be used
      * for product or device group name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -40,13 +42,13 @@ public interface Devices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Device list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Device> listByDeviceGroup(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, Context context);
+    PagedIterable<Device> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, Context context);
 
     /**
      * Get a Device. Use '.unassigned' or '.default' for the device group and product names when a device does not
      * belong to a device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -58,18 +60,13 @@ public interface Devices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Device along with {@link Response}.
      */
-    Response<Device> getWithResponse(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        Context context);
+    Response<Device> getWithResponse(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName, String deviceName, Context context);
 
     /**
      * Get a Device. Use '.unassigned' or '.default' for the device group and product names when a device does not
      * belong to a device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -80,12 +77,12 @@ public interface Devices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Device.
      */
-    Device get(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, String deviceName);
+    Device get(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deviceName);
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -95,12 +92,12 @@ public interface Devices {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName, String deviceName);
+    void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deviceName);
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -111,18 +108,13 @@ public interface Devices {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        Context context);
+    void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
+        String deviceName, Context context);
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -134,18 +126,14 @@ public interface Devices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return signed device capability image response.
      */
-    SignedCapabilityImageResponse generateCapabilityImage(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
+    SignedCapabilityImageResponse generateCapabilityImage(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName,
         GenerateCapabilityImageRequest generateDeviceCapabilityRequest);
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param productName Name of product.
@@ -158,19 +146,14 @@ public interface Devices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return signed device capability image response.
      */
-    SignedCapabilityImageResponse generateCapabilityImage(
-        String resourceGroupName,
-        String catalogName,
-        String productName,
-        String deviceGroupName,
-        String deviceName,
-        GenerateCapabilityImageRequest generateDeviceCapabilityRequest,
-        Context context);
+    SignedCapabilityImageResponse generateCapabilityImage(String resourceGroupName, String catalogName,
+        String productName, String deviceGroupName, String deviceName,
+        GenerateCapabilityImageRequest generateDeviceCapabilityRequest, Context context);
 
     /**
      * Get a Device. Use '.unassigned' or '.default' for the device group and product names when a device does not
      * belong to a device group and product.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -182,7 +165,7 @@ public interface Devices {
     /**
      * Get a Device. Use '.unassigned' or '.default' for the device group and product names when a device does not
      * belong to a device group and product.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,7 +177,7 @@ public interface Devices {
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -204,7 +187,7 @@ public interface Devices {
 
     /**
      * Delete a Device.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,7 +198,7 @@ public interface Devices {
 
     /**
      * Begins definition for a new Device resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Device definition.
      */

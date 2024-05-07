@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PauseReplicationInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PauseReplicationInputProperties model =
-            BinaryData.fromString("{\"instanceType\":\"qvkelnsm\"}").toObject(PauseReplicationInputProperties.class);
+        PauseReplicationInputProperties model
+            = BinaryData.fromString("{\"instanceType\":\"qvkelnsm\"}").toObject(PauseReplicationInputProperties.class);
         Assertions.assertEquals("qvkelnsm", model.instanceType());
     }
 

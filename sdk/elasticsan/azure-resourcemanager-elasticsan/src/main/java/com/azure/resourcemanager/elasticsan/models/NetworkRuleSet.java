@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A set of rules governing the network accessibility. */
+/**
+ * A set of rules governing the network accessibility.
+ */
 @Fluent
 public final class NetworkRuleSet {
     /*
@@ -17,13 +19,15 @@ public final class NetworkRuleSet {
     @JsonProperty(value = "virtualNetworkRules")
     private List<VirtualNetworkRule> virtualNetworkRules;
 
-    /** Creates an instance of NetworkRuleSet class. */
+    /**
+     * Creates an instance of NetworkRuleSet class.
+     */
     public NetworkRuleSet() {
     }
 
     /**
      * Get the virtualNetworkRules property: The list of virtual network rules.
-     *
+     * 
      * @return the virtualNetworkRules value.
      */
     public List<VirtualNetworkRule> virtualNetworkRules() {
@@ -32,7 +36,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the virtualNetworkRules property: The list of virtual network rules.
-     *
+     * 
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -43,7 +47,7 @@ public final class NetworkRuleSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

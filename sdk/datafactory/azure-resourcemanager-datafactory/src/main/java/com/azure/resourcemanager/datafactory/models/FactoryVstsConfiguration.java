@@ -7,16 +7,28 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Factory's VSTS repo information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = FactoryVstsConfiguration.class,
+    visible = true)
 @JsonTypeName("FactoryVSTSConfiguration")
 @Fluent
 public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
+    /*
+     * Type of repo configuration.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "FactoryVSTSConfiguration";
+
     /*
      * VSTS project name.
      */
@@ -33,6 +45,16 @@ public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
      * Creates an instance of FactoryVstsConfiguration class.
      */
     public FactoryVstsConfiguration() {
+    }
+
+    /**
+     * Get the type property: Type of repo configuration.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -138,8 +160,9 @@ public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
     public void validate() {
         super.validate();
         if (projectName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property projectName in model FactoryVstsConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property projectName in model FactoryVstsConfiguration"));
         }
     }
 

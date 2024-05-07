@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.models.TargetTypeListResult;
 public final class TargetTypeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetTypeListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"vmnpkukghimdblx\",\"properties\":{\"displayName\":\"imfnjhfjx\",\"description\":\"szkkfoqre\",\"propertiesSchema\":\"kzikfjawneaivxwc\",\"resourceTypes\":[\"pcirelsfeaen\",\"abfatkl\",\"dxbjhwuaanozj\"]},\"id\":\"sphyoulpjrvxa\",\"name\":\"l\",\"type\":\"vimjwos\"}],\"nextLink\":\"xitc\"}")
-                .toObject(TargetTypeListResult.class);
+        TargetTypeListResult model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"aeqidbqfatpxll\",\"properties\":{\"displayName\":\"cyjmoadsuvarmy\",\"description\":\"mjsjqb\",\"propertiesSchema\":\"hyxxrwlycoduhpk\",\"resourceTypes\":[\"ymareqnajxqugj\",\"ky\"]},\"id\":\"ubeddg\",\"name\":\"sofwqmzqalkrmnji\",\"type\":\"pxacqqudfn\"}],\"nextLink\":\"xbaaabjyv\"}")
+            .toObject(TargetTypeListResult.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -5,14 +5,14 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The properties that are associated with an input. */
+/**
+ * The properties that are associated with an input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,31 +21,26 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("InputProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Stream", value = StreamInputProperties.class),
-    @JsonSubTypes.Type(name = "Reference", value = ReferenceInputProperties.class)
-})
+    @JsonSubTypes.Type(name = "Reference", value = ReferenceInputProperties.class) })
 @Fluent
 public class InputProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InputProperties.class);
-
     /*
-     * Describes how data from an input is serialized or how data is serialized
-     * when written to an output. Required on PUT (CreateOrReplace) requests.
+     * Describes how data from an input is serialized or how data is serialized when written to an output. Required on
+     * PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "serialization")
     private Serialization serialization;
 
     /*
-     * Describes conditions applicable to the Input, Output, or the job
-     * overall, that warrant customer attention.
+     * Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
      */
     @JsonProperty(value = "diagnostics", access = JsonProperty.Access.WRITE_ONLY)
     private Diagnostics diagnostics;
 
     /*
-     * The current entity tag for the input. This is an opaque string. You can
-     * use it to detect whether the resource has changed between requests. You
-     * can also use it in the If-Match or If-None-Match headers for write
-     * operations for optimistic concurrency.
+     * The current entity tag for the input. This is an opaque string. You can use it to detect whether the resource
+     * has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations
+     * for optimistic concurrency.
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
@@ -57,16 +52,27 @@ public class InputProperties {
     private Compression compression;
 
     /*
-     * partitionKey Describes a key in the input data which is used for
-     * partitioning the input data
+     * partitionKey Describes a key in the input data which is used for partitioning the input data
      */
     @JsonProperty(value = "partitionKey")
     private String partitionKey;
 
+    /*
+     * Settings which determine whether to read watermark events.
+     */
+    @JsonProperty(value = "watermarkSettings")
+    private InputWatermarkProperties watermarkSettings;
+
+    /**
+     * Creates an instance of InputProperties class.
+     */
+    public InputProperties() {
+    }
+
     /**
      * Get the serialization property: Describes how data from an input is serialized or how data is serialized when
      * written to an output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the serialization value.
      */
     public Serialization serialization() {
@@ -76,7 +82,7 @@ public class InputProperties {
     /**
      * Set the serialization property: Describes how data from an input is serialized or how data is serialized when
      * written to an output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param serialization the serialization value to set.
      * @return the InputProperties object itself.
      */
@@ -88,7 +94,7 @@ public class InputProperties {
     /**
      * Get the diagnostics property: Describes conditions applicable to the Input, Output, or the job overall, that
      * warrant customer attention.
-     *
+     * 
      * @return the diagnostics value.
      */
     public Diagnostics diagnostics() {
@@ -99,7 +105,7 @@ public class InputProperties {
      * Get the etag property: The current entity tag for the input. This is an opaque string. You can use it to detect
      * whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers
      * for write operations for optimistic concurrency.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -108,7 +114,7 @@ public class InputProperties {
 
     /**
      * Get the compression property: Describes how input data is compressed.
-     *
+     * 
      * @return the compression value.
      */
     public Compression compression() {
@@ -117,7 +123,7 @@ public class InputProperties {
 
     /**
      * Set the compression property: Describes how input data is compressed.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the InputProperties object itself.
      */
@@ -129,7 +135,7 @@ public class InputProperties {
     /**
      * Get the partitionKey property: partitionKey Describes a key in the input data which is used for partitioning the
      * input data.
-     *
+     * 
      * @return the partitionKey value.
      */
     public String partitionKey() {
@@ -139,7 +145,7 @@ public class InputProperties {
     /**
      * Set the partitionKey property: partitionKey Describes a key in the input data which is used for partitioning the
      * input data.
-     *
+     * 
      * @param partitionKey the partitionKey value to set.
      * @return the InputProperties object itself.
      */
@@ -149,8 +155,28 @@ public class InputProperties {
     }
 
     /**
+     * Get the watermarkSettings property: Settings which determine whether to read watermark events.
+     * 
+     * @return the watermarkSettings value.
+     */
+    public InputWatermarkProperties watermarkSettings() {
+        return this.watermarkSettings;
+    }
+
+    /**
+     * Set the watermarkSettings property: Settings which determine whether to read watermark events.
+     * 
+     * @param watermarkSettings the watermarkSettings value to set.
+     * @return the InputProperties object itself.
+     */
+    public InputProperties withWatermarkSettings(InputWatermarkProperties watermarkSettings) {
+        this.watermarkSettings = watermarkSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -162,6 +188,9 @@ public class InputProperties {
         }
         if (compression() != null) {
             compression().validate();
+        }
+        if (watermarkSettings() != null) {
+            watermarkSettings().validate();
         }
     }
 }

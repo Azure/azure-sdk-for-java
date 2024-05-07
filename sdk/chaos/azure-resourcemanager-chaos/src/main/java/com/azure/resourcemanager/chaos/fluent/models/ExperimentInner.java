@@ -16,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Model that represents a Experiment resource. */
+/**
+ * Model that represents a Experiment resource.
+ */
 @Fluent
 public final class ExperimentInner extends Resource {
     /*
@@ -37,13 +39,15 @@ public final class ExperimentInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private ExperimentProperties innerProperties = new ExperimentProperties();
 
-    /** Creates an instance of ExperimentInner class. */
+    /**
+     * Creates an instance of ExperimentInner class.
+     */
     public ExperimentInner() {
     }
 
     /**
      * Get the systemData property: The system metadata of the experiment resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,7 +56,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the identity property: The identity of the experiment resource.
-     *
+     * 
      * @return the identity value.
      */
     public ResourceIdentity identity() {
@@ -61,7 +65,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Set the identity property: The identity of the experiment resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ExperimentInner object itself.
      */
@@ -72,21 +76,25 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the innerProperties property: The properties of the experiment resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExperimentProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExperimentInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExperimentInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -95,7 +103,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the provisioningState property: Most recent provisioning state for the given experiment resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -104,7 +112,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the steps property: List of steps.
-     *
+     * 
      * @return the steps value.
      */
     public List<ChaosExperimentStep> steps() {
@@ -113,7 +121,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Set the steps property: List of steps.
-     *
+     * 
      * @param steps the steps value to set.
      * @return the ExperimentInner object itself.
      */
@@ -127,7 +135,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Get the selectors property: List of selectors.
-     *
+     * 
      * @return the selectors value.
      */
     public List<ChaosTargetSelector> selectors() {
@@ -136,7 +144,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Set the selectors property: List of selectors.
-     *
+     * 
      * @param selectors the selectors value to set.
      * @return the ExperimentInner object itself.
      */
@@ -150,7 +158,7 @@ public final class ExperimentInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -158,9 +166,8 @@ public final class ExperimentInner extends Resource {
             identity().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model ExperimentInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model ExperimentInner"));
         } else {
             innerProperties().validate();
         }

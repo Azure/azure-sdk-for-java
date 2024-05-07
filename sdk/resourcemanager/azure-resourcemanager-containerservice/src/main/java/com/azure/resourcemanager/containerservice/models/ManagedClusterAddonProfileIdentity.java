@@ -6,28 +6,38 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Information of user assigned identity used by this add-on. */
+/**
+ * Information of user assigned identity used by this add-on.
+ */
 @Fluent
 public final class ManagedClusterAddonProfileIdentity extends UserAssignedIdentity {
-    /** Creates an instance of ManagedClusterAddonProfileIdentity class. */
+    /**
+     * Creates an instance of ManagedClusterAddonProfileIdentity class.
+     */
     public ManagedClusterAddonProfileIdentity() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedClusterAddonProfileIdentity withResourceId(String resourceId) {
         super.withResourceId(resourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedClusterAddonProfileIdentity withClientId(String clientId) {
         super.withClientId(clientId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedClusterAddonProfileIdentity withObjectId(String objectId) {
         super.withObjectId(objectId);
@@ -36,7 +46,7 @@ public final class ManagedClusterAddonProfileIdentity extends UserAssignedIdenti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

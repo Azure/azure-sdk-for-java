@@ -5,24 +5,34 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties that are associated with a SKU. */
+/**
+ * The properties that are associated with a SKU.
+ */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
      * The name of the SKU. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "name")
     private SkuName name;
 
+    /*
+     * The capacity of the SKU.
+     */
+    @JsonProperty(value = "capacity")
+    private Integer capacity;
+
+    /**
+     * Creates an instance of Sku class.
+     */
+    public Sku() {
+    }
+
     /**
      * Get the name property: The name of the SKU. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -31,7 +41,7 @@ public final class Sku {
 
     /**
      * Set the name property: The name of the SKU. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -41,8 +51,28 @@ public final class Sku {
     }
 
     /**
+     * Get the capacity property: The capacity of the SKU.
+     * 
+     * @return the capacity value.
+     */
+    public Integer capacity() {
+        return this.capacity;
+    }
+
+    /**
+     * Set the capacity property: The capacity of the SKU.
+     * 
+     * @param capacity the capacity value to set.
+     * @return the Sku object itself.
+     */
+    public Sku withCapacity(Integer capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

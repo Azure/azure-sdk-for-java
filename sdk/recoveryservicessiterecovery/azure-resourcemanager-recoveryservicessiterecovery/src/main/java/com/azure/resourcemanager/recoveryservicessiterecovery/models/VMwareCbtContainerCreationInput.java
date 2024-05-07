@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** VMwareCbt container creation input. */
+/**
+ * VMwareCbt container creation input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
 @Immutable
 public final class VMwareCbtContainerCreationInput extends ReplicationProviderSpecificContainerCreationInput {
-    /** Creates an instance of VMwareCbtContainerCreationInput class. */
+    /**
+     * Creates an instance of VMwareCbtContainerCreationInput class.
+     */
     public VMwareCbtContainerCreationInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

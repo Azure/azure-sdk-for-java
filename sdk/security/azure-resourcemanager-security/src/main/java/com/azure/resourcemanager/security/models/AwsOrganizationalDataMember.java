@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The AWS organization data for the member account. */
+/**
+ * The AWS organization data for the member account.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "organizationMembershipType")
 @JsonTypeName("Member")
 @Fluent
@@ -20,14 +22,16 @@ public final class AwsOrganizationalDataMember extends AwsOrganizationalData {
     @JsonProperty(value = "parentHierarchyId")
     private String parentHierarchyId;
 
-    /** Creates an instance of AwsOrganizationalDataMember class. */
+    /**
+     * Creates an instance of AwsOrganizationalDataMember class.
+     */
     public AwsOrganizationalDataMember() {
     }
 
     /**
      * Get the parentHierarchyId property: If the multi cloud account is not of membership type organization, this will
      * be the ID of the account's parent.
-     *
+     * 
      * @return the parentHierarchyId value.
      */
     public String parentHierarchyId() {
@@ -37,7 +41,7 @@ public final class AwsOrganizationalDataMember extends AwsOrganizationalData {
     /**
      * Set the parentHierarchyId property: If the multi cloud account is not of membership type organization, this will
      * be the ID of the account's parent.
-     *
+     * 
      * @param parentHierarchyId the parentHierarchyId value to set.
      * @return the AwsOrganizationalDataMember object itself.
      */
@@ -48,7 +52,7 @@ public final class AwsOrganizationalDataMember extends AwsOrganizationalData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

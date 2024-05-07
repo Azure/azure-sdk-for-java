@@ -20,39 +20,28 @@ public final class ProtectionContainerOperationResultsImpl implements Protection
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ProtectionContainerOperationResultsImpl(
-        ProtectionContainerOperationResultsClient innerClient,
+    public ProtectionContainerOperationResultsImpl(ProtectionContainerOperationResultsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ProtectionContainerResource> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String operationId,
-        Context context) {
-        Response<ProtectionContainerResourceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, operationId, context);
+    public Response<ProtectionContainerResource> getWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String operationId, Context context) {
+        Response<ProtectionContainerResourceInner> inner = this.serviceClient().getWithResponse(vaultName,
+            resourceGroupName, fabricName, containerName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProtectionContainerResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ProtectionContainerResource get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String operationId) {
-        ProtectionContainerResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName, operationId);
+    public ProtectionContainerResource get(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String operationId) {
+        ProtectionContainerResourceInner inner
+            = this.serviceClient().get(vaultName, resourceGroupName, fabricName, containerName, operationId);
         if (inner != null) {
             return new ProtectionContainerResourceImpl(inner, this.manager());
         } else {

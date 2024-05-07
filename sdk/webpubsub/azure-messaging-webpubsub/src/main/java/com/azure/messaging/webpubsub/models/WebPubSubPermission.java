@@ -17,6 +17,15 @@ public final class WebPubSubPermission extends ExpandableStringEnum<WebPubSubPer
     public static final WebPubSubPermission JOIN_LEAVE_GROUP = fromString("joinLeaveGroup");
 
     /**
+     * Creates a new instance of WebPubSubPermission value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebPubSubPermission() {
+    }
+
+    /**
      * Creates or finds a WebPubSubPermission from its string representation.
      *
      * @param name a name to look for.
@@ -27,7 +36,11 @@ public final class WebPubSubPermission extends ExpandableStringEnum<WebPubSubPer
         return fromString(name, WebPubSubPermission.class);
     }
 
-    /** @return known WebPubSubPermission values. */
+    /**
+     * Gets known WebPubSubPermission values.
+     *
+     * @return known WebPubSubPermission values.
+     */
     public static Collection<WebPubSubPermission> values() {
         return values(WebPubSubPermission.class);
     }

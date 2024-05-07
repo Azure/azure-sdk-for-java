@@ -15,8 +15,7 @@ public final class SubscriptionQuotasListResultImpl implements SubscriptionQuota
 
     private final com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager;
 
-    SubscriptionQuotasListResultImpl(
-        SubscriptionQuotasListResultInner innerObject,
+    SubscriptionQuotasListResultImpl(SubscriptionQuotasListResultInner innerObject,
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

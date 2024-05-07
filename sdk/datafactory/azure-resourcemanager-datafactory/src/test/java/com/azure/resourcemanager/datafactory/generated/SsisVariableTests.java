@@ -12,29 +12,33 @@ public final class SsisVariableTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SsisVariable model = BinaryData.fromString(
-            "{\"id\":6326328819934825145,\"name\":\"mubplzoepeqlhb\",\"description\":\"syizeqlctpqno\",\"dataType\":\"whgyzwfyfdb\",\"sensitive\":true,\"value\":\"lmikdsqqykgjjsmv\",\"sensitiveValue\":\"yqmlmwjwsmnwbm\"}")
+            "{\"id\":2100467242964547244,\"name\":\"lkkwbdekbvdu\",\"description\":\"kaadnxbssatpi\",\"dataType\":\"rqh\",\"sensitive\":false,\"value\":\"ccfgfvo\",\"sensitiveValue\":\"iyvrexitpz\"}")
             .toObject(SsisVariable.class);
-        Assertions.assertEquals(6326328819934825145L, model.id());
-        Assertions.assertEquals("mubplzoepeqlhb", model.name());
-        Assertions.assertEquals("syizeqlctpqno", model.description());
-        Assertions.assertEquals("whgyzwfyfdb", model.dataType());
-        Assertions.assertEquals(true, model.sensitive());
-        Assertions.assertEquals("lmikdsqqykgjjsmv", model.value());
-        Assertions.assertEquals("yqmlmwjwsmnwbm", model.sensitiveValue());
+        Assertions.assertEquals(2100467242964547244L, model.id());
+        Assertions.assertEquals("lkkwbdekbvdu", model.name());
+        Assertions.assertEquals("kaadnxbssatpi", model.description());
+        Assertions.assertEquals("rqh", model.dataType());
+        Assertions.assertEquals(false, model.sensitive());
+        Assertions.assertEquals("ccfgfvo", model.value());
+        Assertions.assertEquals("iyvrexitpz", model.sensitiveValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisVariable model = new SsisVariable().withId(6326328819934825145L).withName("mubplzoepeqlhb")
-            .withDescription("syizeqlctpqno").withDataType("whgyzwfyfdb").withSensitive(true)
-            .withValue("lmikdsqqykgjjsmv").withSensitiveValue("yqmlmwjwsmnwbm");
+        SsisVariable model = new SsisVariable().withId(2100467242964547244L)
+            .withName("lkkwbdekbvdu")
+            .withDescription("kaadnxbssatpi")
+            .withDataType("rqh")
+            .withSensitive(false)
+            .withValue("ccfgfvo")
+            .withSensitiveValue("iyvrexitpz");
         model = BinaryData.fromObject(model).toObject(SsisVariable.class);
-        Assertions.assertEquals(6326328819934825145L, model.id());
-        Assertions.assertEquals("mubplzoepeqlhb", model.name());
-        Assertions.assertEquals("syizeqlctpqno", model.description());
-        Assertions.assertEquals("whgyzwfyfdb", model.dataType());
-        Assertions.assertEquals(true, model.sensitive());
-        Assertions.assertEquals("lmikdsqqykgjjsmv", model.value());
-        Assertions.assertEquals("yqmlmwjwsmnwbm", model.sensitiveValue());
+        Assertions.assertEquals(2100467242964547244L, model.id());
+        Assertions.assertEquals("lkkwbdekbvdu", model.name());
+        Assertions.assertEquals("kaadnxbssatpi", model.description());
+        Assertions.assertEquals("rqh", model.dataType());
+        Assertions.assertEquals(false, model.sensitive());
+        Assertions.assertEquals("ccfgfvo", model.value());
+        Assertions.assertEquals("iyvrexitpz", model.sensitiveValue());
     }
 }

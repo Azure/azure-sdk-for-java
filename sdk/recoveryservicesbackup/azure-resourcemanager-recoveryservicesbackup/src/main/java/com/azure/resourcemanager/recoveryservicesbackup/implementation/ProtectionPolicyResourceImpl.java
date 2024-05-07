@@ -84,27 +84,21 @@ public final class ProtectionPolicyResourceImpl
     }
 
     public ProtectionPolicyResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionPolicies()
-                .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProtectionPolicyResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionPolicies()
-                .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ProtectionPolicyResourceImpl(
-        String name, com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
+    ProtectionPolicyResourceImpl(String name,
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = new ProtectionPolicyResourceInner();
         this.serviceManager = serviceManager;
         this.policyName = name;
@@ -115,52 +109,37 @@ public final class ProtectionPolicyResourceImpl
     }
 
     public ProtectionPolicyResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionPolicies()
-                .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProtectionPolicyResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionPolicies()
-                .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ProtectionPolicyResourceImpl(
-        ProtectionPolicyResourceInner innerObject,
+    ProtectionPolicyResourceImpl(ProtectionPolicyResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.policyName = Utils.getValueFromIdByName(innerObject.id(), "backupPolicies");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.policyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backupPolicies");
     }
 
     public ProtectionPolicyResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionPolicies()
-                .getWithResponse(vaultName, resourceGroupName, policyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
+            .getWithResponse(vaultName, resourceGroupName, policyName, Context.NONE).getValue();
         return this;
     }
 
     public ProtectionPolicyResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getProtectionPolicies()
-                .getWithResponse(vaultName, resourceGroupName, policyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
+            .getWithResponse(vaultName, resourceGroupName, policyName, context).getValue();
         return this;
     }
 

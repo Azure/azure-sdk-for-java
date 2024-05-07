@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The rule criteria that defines the conditions of the alert rule. */
+/**
+ * The rule criteria that defines the conditions of the alert rule.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -30,22 +32,24 @@ import java.util.Map;
         value = WebtestLocationAvailabilityCriteria.class),
     @JsonSubTypes.Type(
         name = "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
-        value = MetricAlertMultipleResourceMultipleMetricCriteria.class)
-})
+        value = MetricAlertMultipleResourceMultipleMetricCriteria.class) })
 @Fluent
 public class MetricAlertCriteria {
     /*
      * The rule criteria that defines the conditions of the alert rule.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MetricAlertCriteria class. */
+    /**
+     * Creates an instance of MetricAlertCriteria class.
+     */
     public MetricAlertCriteria() {
     }
 
     /**
      * Get the additionalProperties property: The rule criteria that defines the conditions of the alert rule.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -55,7 +59,7 @@ public class MetricAlertCriteria {
 
     /**
      * Set the additionalProperties property: The rule criteria that defines the conditions of the alert rule.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MetricAlertCriteria object itself.
      */
@@ -74,7 +78,7 @@ public class MetricAlertCriteria {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -18,6 +18,7 @@ import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.VectorEncodingFormat;
 import reactor.util.annotation.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -78,10 +79,10 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(GeoPoint.class, SearchFieldDataType.GEOGRAPHY_POINT);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Float.class, SearchFieldDataType.SINGLE);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(float.class, SearchFieldDataType.SINGLE);
-        UNSUPPORTED_TYPES.add(byte.class);
-        UNSUPPORTED_TYPES.add(Byte.class);
-        UNSUPPORTED_TYPES.add(short.class);
-        UNSUPPORTED_TYPES.add(Short.class);
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(byte.class, SearchFieldDataType.SBYTE);
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Byte.class, SearchFieldDataType.SBYTE);
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(short.class, SearchFieldDataType.INT16);
+        SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Short.class, SearchFieldDataType.INT16);
     }
 
     /**
@@ -270,7 +271,7 @@ public final class FieldBuilder {
             return searchField;
         }
 
-        boolean key, hidden, filterable, sortable, facetable;
+        boolean key, hidden, filterable, sortable, facetable, stored;
         boolean searchable = searchableField != null;
         String analyzerName = null;
         String searchAnalyzerName = null;
@@ -279,10 +280,12 @@ public final class FieldBuilder {
         String normalizerName;
         Integer vectorSearchDimensions = null;
         String vectorSearchProfileName = null;
+        String vectorEncodingFormat = null;
 
         if (simpleField != null) {
             key = simpleField.isKey();
             hidden = simpleField.isHidden();
+            stored = simpleField.isStored();
             filterable = simpleField.isFilterable();
             sortable = simpleField.isSortable();
             facetable = simpleField.isFacetable();
@@ -290,6 +293,7 @@ public final class FieldBuilder {
         } else {
             key = searchableField.isKey();
             hidden = searchableField.isHidden();
+            stored = searchableField.isStored();
             filterable = searchableField.isFilterable();
             sortable = searchableField.isSortable();
             facetable = searchableField.isFacetable();
@@ -302,6 +306,8 @@ public final class FieldBuilder {
                 ? searchableField.vectorSearchDimensions() : null;
             vectorSearchProfileName = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfileName())
                 ? null : searchableField.vectorSearchProfileName();
+            vectorEncodingFormat = CoreUtils.isNullOrEmpty(searchableField.vectorEncodingFormat())
+                ? null : searchableField.vectorEncodingFormat();
         }
 
         StringBuilder errorMessage = new StringBuilder();
@@ -312,6 +318,7 @@ public final class FieldBuilder {
         boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
         boolean hasIndexAnalyzerName = !CoreUtils.isNullOrEmpty(indexAnalyzerName);
         boolean hasNormalizerName = !CoreUtils.isNullOrEmpty(normalizerName);
+        boolean hasVectorEncodingFormat = !CoreUtils.isNullOrEmpty(vectorEncodingFormat);
         if (searchable) {
             if (!isSearchableType) {
                 errorMessage.append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', or "
@@ -354,6 +361,7 @@ public final class FieldBuilder {
             .setFilterable(filterable)
             .setSortable(sortable)
             .setFacetable(facetable)
+            .setStored(stored)
             .setVectorSearchDimensions(vectorSearchDimensions)
             .setVectorSearchProfileName(vectorSearchProfileName);
 
@@ -366,6 +374,10 @@ public final class FieldBuilder {
 
         if (hasNormalizerName) {
             searchField.setNormalizerName(LexicalNormalizerName.fromString(normalizerName));
+        }
+
+        if (hasVectorEncodingFormat) {
+            searchField.setVectorEncodingFormat(VectorEncodingFormat.fromString(vectorEncodingFormat));
         }
 
         if (!CoreUtils.isNullOrEmpty(synonymMapNames)) {

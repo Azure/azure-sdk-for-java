@@ -29,14 +29,16 @@ public final class ManagedClusterAzureMonitorProfileMetrics {
     @JsonProperty(value = "kubeStateMetrics")
     private ManagedClusterAzureMonitorProfileKubeStateMetrics kubeStateMetrics;
 
-    /** Creates an instance of ManagedClusterAzureMonitorProfileMetrics class. */
+    /**
+     * Creates an instance of ManagedClusterAzureMonitorProfileMetrics class.
+     */
     public ManagedClusterAzureMonitorProfileMetrics() {
     }
 
     /**
      * Get the enabled property: Whether to enable or disable the Azure Managed Prometheus addon for Prometheus
      * monitoring. See aka.ms/AzureManagedPrometheus-aks-enable for details on enabling and disabling.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -46,7 +48,7 @@ public final class ManagedClusterAzureMonitorProfileMetrics {
     /**
      * Set the enabled property: Whether to enable or disable the Azure Managed Prometheus addon for Prometheus
      * monitoring. See aka.ms/AzureManagedPrometheus-aks-enable for details on enabling and disabling.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterAzureMonitorProfileMetrics object itself.
      */
@@ -59,7 +61,7 @@ public final class ManagedClusterAzureMonitorProfileMetrics {
      * Get the kubeStateMetrics property: Kube State Metrics profile for the Azure Managed Prometheus addon. These
      * optional settings are for the kube-state-metrics pod that is deployed with the addon. See
      * aka.ms/AzureManagedPrometheus-optional-parameters for details.
-     *
+     * 
      * @return the kubeStateMetrics value.
      */
     public ManagedClusterAzureMonitorProfileKubeStateMetrics kubeStateMetrics() {
@@ -70,19 +72,19 @@ public final class ManagedClusterAzureMonitorProfileMetrics {
      * Set the kubeStateMetrics property: Kube State Metrics profile for the Azure Managed Prometheus addon. These
      * optional settings are for the kube-state-metrics pod that is deployed with the addon. See
      * aka.ms/AzureManagedPrometheus-optional-parameters for details.
-     *
+     * 
      * @param kubeStateMetrics the kubeStateMetrics value to set.
      * @return the ManagedClusterAzureMonitorProfileMetrics object itself.
      */
-    public ManagedClusterAzureMonitorProfileMetrics withKubeStateMetrics(
-        ManagedClusterAzureMonitorProfileKubeStateMetrics kubeStateMetrics) {
+    public ManagedClusterAzureMonitorProfileMetrics
+        withKubeStateMetrics(ManagedClusterAzureMonitorProfileKubeStateMetrics kubeStateMetrics) {
         this.kubeStateMetrics = kubeStateMetrics;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

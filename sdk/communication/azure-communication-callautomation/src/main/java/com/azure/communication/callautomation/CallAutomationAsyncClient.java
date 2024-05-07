@@ -346,7 +346,7 @@ public final class CallAutomationAsyncClient {
                                                                     Context context) {
         try {
             context = context == null ? Context.NONE : context;
-
+            
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
                 .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
                 .setCallbackUri(answerCallOptions.getCallbackUrl())

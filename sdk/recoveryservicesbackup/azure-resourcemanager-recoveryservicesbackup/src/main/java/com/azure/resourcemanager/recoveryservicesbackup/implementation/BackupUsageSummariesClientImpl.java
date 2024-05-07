@@ -30,23 +30,28 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupMana
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementUsageList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BackupUsageSummariesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupUsageSummariesClient.
+ */
 public final class BackupUsageSummariesClientImpl implements BackupUsageSummariesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BackupUsageSummariesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of BackupUsageSummariesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BackupUsageSummariesClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy
-                .create(BackupUsageSummariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(BackupUsageSummariesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,26 +62,20 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface BackupUsageSummariesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupUsageSummaries")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupUsageSummaries")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BackupManagementUsageList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<BackupManagementUsageList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Fetches the backup management usage summaries of the vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -84,17 +83,15 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup management usage for vault along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return backup management usage for vault along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupManagementUsageInner>> listSinglePageAsync(
-        String vaultName, String resourceGroupName, String filter, String skipToken) {
+    private Mono<PagedResponse<BackupManagementUsageInner>> listSinglePageAsync(String vaultName,
+        String resourceGroupName, String filter, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -104,36 +101,21 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            filter,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<BackupManagementUsageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), filter, skipToken, accept, context))
+            .<PagedResponse<BackupManagementUsageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Fetches the backup management usage summaries of the vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -142,17 +124,15 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup management usage for vault along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return backup management usage for vault along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BackupManagementUsageInner>> listSinglePageAsync(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context) {
+    private Mono<PagedResponse<BackupManagementUsageInner>> listSinglePageAsync(String vaultName,
+        String resourceGroupName, String filter, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -162,33 +142,21 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                filter,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+                this.client.getSubscriptionId(), filter, skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Fetches the backup management usage summaries of the vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -199,14 +167,14 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
      * @return backup management usage for vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BackupManagementUsageInner> listAsync(
-        String vaultName, String resourceGroupName, String filter, String skipToken) {
+    private PagedFlux<BackupManagementUsageInner> listAsync(String vaultName, String resourceGroupName, String filter,
+        String skipToken) {
         return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, filter, skipToken));
     }
 
     /**
      * Fetches the backup management usage summaries of the vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,7 +191,7 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
 
     /**
      * Fetches the backup management usage summaries of the vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -235,14 +203,14 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
      * @return backup management usage for vault as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BackupManagementUsageInner> listAsync(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context) {
+    private PagedFlux<BackupManagementUsageInner> listAsync(String vaultName, String resourceGroupName, String filter,
+        String skipToken, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, filter, skipToken, context));
     }
 
     /**
      * Fetches the backup management usage summaries of the vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,7 +227,7 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
 
     /**
      * Fetches the backup management usage summaries of the vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
@@ -271,8 +239,8 @@ public final class BackupUsageSummariesClientImpl implements BackupUsageSummarie
      * @return backup management usage for vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BackupManagementUsageInner> list(
-        String vaultName, String resourceGroupName, String filter, String skipToken, Context context) {
+    public PagedIterable<BackupManagementUsageInner> list(String vaultName, String resourceGroupName, String filter,
+        String skipToken, Context context) {
         return new PagedIterable<>(listAsync(vaultName, resourceGroupName, filter, skipToken, context));
     }
 }

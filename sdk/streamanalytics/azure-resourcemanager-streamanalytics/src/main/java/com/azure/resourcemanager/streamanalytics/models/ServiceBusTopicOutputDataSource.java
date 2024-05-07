@@ -5,33 +5,36 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ServiceBusTopicOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Describes a Service Bus Topic output data source. */
+/**
+ * Describes a Service Bus Topic output data source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.ServiceBus/Topic")
 @Fluent
 public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceBusTopicOutputDataSource.class);
-
     /*
-     * The properties that are associated with a Service Bus Topic output.
-     * Required on PUT (CreateOrReplace) requests.
+     * The properties that are associated with a Service Bus Topic output. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "properties")
     private ServiceBusTopicOutputDataSourceProperties innerProperties;
 
     /**
-     * Get the innerProperties property: The properties that are associated with a Service Bus Topic output. Required on
-     * PUT (CreateOrReplace) requests.
-     *
+     * Creates an instance of ServiceBusTopicOutputDataSource class.
+     */
+    public ServiceBusTopicOutputDataSource() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties that are associated with a Service Bus Topic output. Required
+     * on PUT (CreateOrReplace) requests.
+     * 
      * @return the innerProperties value.
      */
     private ServiceBusTopicOutputDataSourceProperties innerProperties() {
@@ -40,7 +43,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
 
     /**
      * Get the topicName property: The name of the Service Bus Topic. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the topicName value.
      */
     public String topicName() {
@@ -49,7 +52,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
 
     /**
      * Set the topicName property: The name of the Service Bus Topic. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param topicName the topicName value to set.
      * @return the ServiceBusTopicOutputDataSource object itself.
      */
@@ -64,7 +67,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
     /**
      * Get the propertyColumns property: A string array of the names of output columns to be attached to Service Bus
      * messages as custom properties.
-     *
+     * 
      * @return the propertyColumns value.
      */
     public List<String> propertyColumns() {
@@ -74,7 +77,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
     /**
      * Set the propertyColumns property: A string array of the names of output columns to be attached to Service Bus
      * messages as custom properties.
-     *
+     * 
      * @param propertyColumns the propertyColumns value to set.
      * @return the ServiceBusTopicOutputDataSource object itself.
      */
@@ -88,9 +91,9 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
 
     /**
      * Get the systemPropertyColumns property: The system properties associated with the Service Bus Topic Output. The
-     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
-     * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
-     *
+     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId,
+     * TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
+     * 
      * @return the systemPropertyColumns value.
      */
     public Map<String, String> systemPropertyColumns() {
@@ -99,9 +102,9 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
 
     /**
      * Set the systemPropertyColumns property: The system properties associated with the Service Bus Topic Output. The
-     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
-     * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
-     *
+     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId,
+     * TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
+     * 
      * @param systemPropertyColumns the systemPropertyColumns value to set.
      * @return the ServiceBusTopicOutputDataSource object itself.
      */
@@ -116,7 +119,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
     /**
      * Get the serviceBusNamespace property: The namespace that is associated with the desired Event Hub, Service Bus
      * Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the serviceBusNamespace value.
      */
     public String serviceBusNamespace() {
@@ -126,7 +129,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
     /**
      * Set the serviceBusNamespace property: The namespace that is associated with the desired Event Hub, Service Bus
      * Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param serviceBusNamespace the serviceBusNamespace value to set.
      * @return the ServiceBusTopicOutputDataSource object itself.
      */
@@ -141,7 +144,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
     /**
      * Get the sharedAccessPolicyName property: The shared access policy name for the Event Hub, Service Bus Queue,
      * Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyName value.
      */
     public String sharedAccessPolicyName() {
@@ -151,7 +154,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
     /**
      * Set the sharedAccessPolicyName property: The shared access policy name for the Event Hub, Service Bus Queue,
      * Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyName the sharedAccessPolicyName value to set.
      * @return the ServiceBusTopicOutputDataSource object itself.
      */
@@ -166,7 +169,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
     /**
      * Get the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyKey value.
      */
     public String sharedAccessPolicyKey() {
@@ -176,7 +179,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
     /**
      * Set the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyKey the sharedAccessPolicyKey value to set.
      * @return the ServiceBusTopicOutputDataSource object itself.
      */
@@ -190,7 +193,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
 
     /**
      * Get the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @return the authenticationMode value.
      */
     public AuthenticationMode authenticationMode() {
@@ -199,7 +202,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
 
     /**
      * Set the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @param authenticationMode the authenticationMode value to set.
      * @return the ServiceBusTopicOutputDataSource object itself.
      */
@@ -213,7 +216,7 @@ public final class ServiceBusTopicOutputDataSource extends OutputDataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

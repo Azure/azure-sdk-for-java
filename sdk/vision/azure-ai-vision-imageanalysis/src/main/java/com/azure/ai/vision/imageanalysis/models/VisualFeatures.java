@@ -61,7 +61,7 @@ public final class VisualFeatures extends ExpandableStringEnum<VisualFeatures> {
 
     /**
      * Creates a new instance of VisualFeatures value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -71,7 +71,7 @@ public final class VisualFeatures extends ExpandableStringEnum<VisualFeatures> {
 
     /**
      * Creates or finds a VisualFeatures from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding VisualFeatures.
      */
@@ -83,7 +83,7 @@ public final class VisualFeatures extends ExpandableStringEnum<VisualFeatures> {
 
     /**
      * Gets known VisualFeatures values.
-     * 
+     *
      * @return known VisualFeatures values.
      */
     @Generated

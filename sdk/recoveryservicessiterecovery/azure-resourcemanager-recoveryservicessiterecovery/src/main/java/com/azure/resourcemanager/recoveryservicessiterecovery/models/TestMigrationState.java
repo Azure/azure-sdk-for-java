@@ -8,35 +8,51 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The test migrate state. */
+/**
+ * The test migrate state.
+ */
 public final class TestMigrationState extends ExpandableStringEnum<TestMigrationState> {
-    /** Static value None for TestMigrationState. */
+    /**
+     * Static value None for TestMigrationState.
+     */
     public static final TestMigrationState NONE = fromString("None");
 
-    /** Static value TestMigrationInProgress for TestMigrationState. */
+    /**
+     * Static value TestMigrationInProgress for TestMigrationState.
+     */
     public static final TestMigrationState TEST_MIGRATION_IN_PROGRESS = fromString("TestMigrationInProgress");
 
-    /** Static value TestMigrationSucceeded for TestMigrationState. */
+    /**
+     * Static value TestMigrationSucceeded for TestMigrationState.
+     */
     public static final TestMigrationState TEST_MIGRATION_SUCCEEDED = fromString("TestMigrationSucceeded");
 
-    /** Static value TestMigrationFailed for TestMigrationState. */
+    /**
+     * Static value TestMigrationFailed for TestMigrationState.
+     */
     public static final TestMigrationState TEST_MIGRATION_FAILED = fromString("TestMigrationFailed");
 
-    /** Static value TestMigrationCleanupInProgress for TestMigrationState. */
-    public static final TestMigrationState TEST_MIGRATION_CLEANUP_IN_PROGRESS =
-        fromString("TestMigrationCleanupInProgress");
+    /**
+     * Static value TestMigrationCleanupInProgress for TestMigrationState.
+     */
+    public static final TestMigrationState TEST_MIGRATION_CLEANUP_IN_PROGRESS
+        = fromString("TestMigrationCleanupInProgress");
 
-    /** Static value TestMigrationCompletedWithInformation for TestMigrationState. */
-    public static final TestMigrationState TEST_MIGRATION_COMPLETED_WITH_INFORMATION =
-        fromString("TestMigrationCompletedWithInformation");
+    /**
+     * Static value TestMigrationCompletedWithInformation for TestMigrationState.
+     */
+    public static final TestMigrationState TEST_MIGRATION_COMPLETED_WITH_INFORMATION
+        = fromString("TestMigrationCompletedWithInformation");
 
-    /** Static value TestMigrationPartiallySucceeded for TestMigrationState. */
-    public static final TestMigrationState TEST_MIGRATION_PARTIALLY_SUCCEEDED =
-        fromString("TestMigrationPartiallySucceeded");
+    /**
+     * Static value TestMigrationPartiallySucceeded for TestMigrationState.
+     */
+    public static final TestMigrationState TEST_MIGRATION_PARTIALLY_SUCCEEDED
+        = fromString("TestMigrationPartiallySucceeded");
 
     /**
      * Creates a new instance of TestMigrationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +61,7 @@ public final class TestMigrationState extends ExpandableStringEnum<TestMigration
 
     /**
      * Creates or finds a TestMigrationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TestMigrationState.
      */
@@ -56,7 +72,7 @@ public final class TestMigrationState extends ExpandableStringEnum<TestMigration
 
     /**
      * Gets known TestMigrationState values.
-     *
+     * 
      * @return known TestMigrationState values.
      */
     public static Collection<TestMigrationState> values() {

@@ -13,31 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class TrinoUserPluginsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrinoUserPlugins model =
-            BinaryData
-                .fromString(
-                    "{\"plugins\":[{\"enabled\":false,\"name\":\"j\",\"path\":\"hfxobbcswsrtj\"},{\"enabled\":true,\"name\":\"rbpbewtghfgblcg\",\"path\":\"zvlvqhjkbegib\"}]}")
-                .toObject(TrinoUserPlugins.class);
-        Assertions.assertEquals(false, model.plugins().get(0).enabled());
-        Assertions.assertEquals("j", model.plugins().get(0).name());
-        Assertions.assertEquals("hfxobbcswsrtj", model.plugins().get(0).path());
+        TrinoUserPlugins model = BinaryData.fromString(
+            "{\"plugins\":[{\"enabled\":true,\"name\":\"sapskr\",\"path\":\"mhjjdhtldwkyzx\"},{\"enabled\":false,\"name\":\"ncwscwsvlxoto\",\"path\":\"wrupqsxvnmicykvc\"},{\"enabled\":false,\"name\":\"ilovnot\",\"path\":\"jfcn\"},{\"enabled\":false,\"name\":\"nxdhbt\",\"path\":\"phywpnvj\"}]}")
+            .toObject(TrinoUserPlugins.class);
+        Assertions.assertEquals(true, model.plugins().get(0).enabled());
+        Assertions.assertEquals("sapskr", model.plugins().get(0).name());
+        Assertions.assertEquals("mhjjdhtldwkyzx", model.plugins().get(0).path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrinoUserPlugins model =
-            new TrinoUserPlugins()
-                .withPlugins(
-                    Arrays
-                        .asList(
-                            new TrinoUserPlugin().withEnabled(false).withName("j").withPath("hfxobbcswsrtj"),
-                            new TrinoUserPlugin()
-                                .withEnabled(true)
-                                .withName("rbpbewtghfgblcg")
-                                .withPath("zvlvqhjkbegib")));
+        TrinoUserPlugins model = new TrinoUserPlugins().withPlugins(
+            Arrays.asList(new TrinoUserPlugin().withEnabled(true).withName("sapskr").withPath("mhjjdhtldwkyzx"),
+                new TrinoUserPlugin().withEnabled(false).withName("ncwscwsvlxoto").withPath("wrupqsxvnmicykvc"),
+                new TrinoUserPlugin().withEnabled(false).withName("ilovnot").withPath("jfcn"),
+                new TrinoUserPlugin().withEnabled(false).withName("nxdhbt").withPath("phywpnvj")));
         model = BinaryData.fromObject(model).toObject(TrinoUserPlugins.class);
-        Assertions.assertEquals(false, model.plugins().get(0).enabled());
-        Assertions.assertEquals("j", model.plugins().get(0).name());
-        Assertions.assertEquals("hfxobbcswsrtj", model.plugins().get(0).path());
+        Assertions.assertEquals(true, model.plugins().get(0).enabled());
+        Assertions.assertEquals("sapskr", model.plugins().get(0).name());
+        Assertions.assertEquals("mhjjdhtldwkyzx", model.plugins().get(0).path());
     }
 }

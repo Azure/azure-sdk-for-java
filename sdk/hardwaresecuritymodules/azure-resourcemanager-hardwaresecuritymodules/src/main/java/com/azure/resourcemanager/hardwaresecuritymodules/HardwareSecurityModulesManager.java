@@ -23,12 +23,20 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hardwaresecuritymodules.fluent.AzureDedicatedHsmResourceProvider;
-import com.azure.resourcemanager.hardwaresecuritymodules.implementation.AzureDedicatedHsmResourceProviderBuilder;
+import com.azure.resourcemanager.hardwaresecuritymodules.fluent.AzureHsmResourceProvider;
+import com.azure.resourcemanager.hardwaresecuritymodules.implementation.AzureHsmResourceProviderBuilder;
+import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClusterPrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClusterPrivateLinkResourcesImpl;
+import com.azure.resourcemanager.hardwaresecuritymodules.implementation.CloudHsmClustersImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.DedicatedHsmsImpl;
 import com.azure.resourcemanager.hardwaresecuritymodules.implementation.OperationsImpl;
+import com.azure.resourcemanager.hardwaresecuritymodules.implementation.PrivateEndpointConnectionsImpl;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPrivateEndpointConnections;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusterPrivateLinkResources;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.CloudHsmClusters;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.DedicatedHsms;
 import com.azure.resourcemanager.hardwaresecuritymodules.models.Operations;
+import com.azure.resourcemanager.hardwaresecuritymodules.models.PrivateEndpointConnections;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -37,32 +45,36 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to HardwareSecurityModulesManager. The Azure management API provides a RESTful set of web services that
- * interact with Azure Dedicated HSM RP.
+ * Entry point to HardwareSecurityModulesManager.
+ * The Azure management API provides a RESTful set of web services that interact with Azure HSM RP.
  */
 public final class HardwareSecurityModulesManager {
+    private CloudHsmClusters cloudHsmClusters;
+
+    private CloudHsmClusterPrivateLinkResources cloudHsmClusterPrivateLinkResources;
+
+    private CloudHsmClusterPrivateEndpointConnections cloudHsmClusterPrivateEndpointConnections;
+
+    private PrivateEndpointConnections privateEndpointConnections;
+
     private Operations operations;
 
     private DedicatedHsms dedicatedHsms;
 
-    private final AzureDedicatedHsmResourceProvider clientObject;
+    private final AzureHsmResourceProvider clientObject;
 
-    private HardwareSecurityModulesManager(
-        HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private HardwareSecurityModulesManager(HttpPipeline httpPipeline, AzureProfile profile,
+        Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new AzureDedicatedHsmResourceProviderBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new AzureHsmResourceProviderBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
      * Creates an instance of Hardware Security Modules service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Hardware Security Modules service API instance.
@@ -75,7 +87,7 @@ public final class HardwareSecurityModulesManager {
 
     /**
      * Creates an instance of Hardware Security Modules service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Hardware Security Modules service API instance.
@@ -89,14 +101,16 @@ public final class HardwareSecurityModulesManager {
     /**
      * Gets a Configurable instance that can be used to create HardwareSecurityModulesManager with optional
      * configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new HardwareSecurityModulesManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -168,8 +182,8 @@ public final class HardwareSecurityModulesManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -186,8 +200,8 @@ public final class HardwareSecurityModulesManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -207,21 +221,12 @@ public final class HardwareSecurityModulesManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
-                .append("-")
-                .append("com.azure.resourcemanager.hardwaresecuritymodules")
-                .append("/")
-                .append("1.0.0-beta.1");
+            userAgentBuilder.append("azsdk-java").append("-")
+                .append("com.azure.resourcemanager.hardwaresecuritymodules").append("/").append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
-                    .append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.name"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version"))
-                    .append("; auto-generated)");
+                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -240,38 +245,77 @@ public final class HardwareSecurityModulesManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
             return new HardwareSecurityModulesManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
+     * Gets the resource collection API of CloudHsmClusters. It manages CloudHsmCluster.
+     * 
+     * @return Resource collection API of CloudHsmClusters.
+     */
+    public CloudHsmClusters cloudHsmClusters() {
+        if (this.cloudHsmClusters == null) {
+            this.cloudHsmClusters = new CloudHsmClustersImpl(clientObject.getCloudHsmClusters(), this);
+        }
+        return cloudHsmClusters;
+    }
+
+    /**
+     * Gets the resource collection API of CloudHsmClusterPrivateLinkResources.
+     * 
+     * @return Resource collection API of CloudHsmClusterPrivateLinkResources.
+     */
+    public CloudHsmClusterPrivateLinkResources cloudHsmClusterPrivateLinkResources() {
+        if (this.cloudHsmClusterPrivateLinkResources == null) {
+            this.cloudHsmClusterPrivateLinkResources = new CloudHsmClusterPrivateLinkResourcesImpl(
+                clientObject.getCloudHsmClusterPrivateLinkResources(), this);
+        }
+        return cloudHsmClusterPrivateLinkResources;
+    }
+
+    /**
+     * Gets the resource collection API of CloudHsmClusterPrivateEndpointConnections. It manages
+     * PrivateEndpointConnection.
+     * 
+     * @return Resource collection API of CloudHsmClusterPrivateEndpointConnections.
+     */
+    public CloudHsmClusterPrivateEndpointConnections cloudHsmClusterPrivateEndpointConnections() {
+        if (this.cloudHsmClusterPrivateEndpointConnections == null) {
+            this.cloudHsmClusterPrivateEndpointConnections = new CloudHsmClusterPrivateEndpointConnectionsImpl(
+                clientObject.getCloudHsmClusterPrivateEndpointConnections(), this);
+        }
+        return cloudHsmClusterPrivateEndpointConnections;
+    }
+
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections.
+     * 
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+        }
+        return privateEndpointConnections;
+    }
+
+    /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -282,8 +326,8 @@ public final class HardwareSecurityModulesManager {
     }
 
     /**
-     * Gets the resource collection API of DedicatedHsms.
-     *
+     * Gets the resource collection API of DedicatedHsms. It manages DedicatedHsm.
+     * 
      * @return Resource collection API of DedicatedHsms.
      */
     public DedicatedHsms dedicatedHsms() {
@@ -294,10 +338,12 @@ public final class HardwareSecurityModulesManager {
     }
 
     /**
-     * @return Wrapped service client AzureDedicatedHsmResourceProvider providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client AzureHsmResourceProvider providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client AzureHsmResourceProvider.
      */
-    public AzureDedicatedHsmResourceProvider serviceClient() {
+    public AzureHsmResourceProvider serviceClient() {
         return this.clientObject;
     }
 }

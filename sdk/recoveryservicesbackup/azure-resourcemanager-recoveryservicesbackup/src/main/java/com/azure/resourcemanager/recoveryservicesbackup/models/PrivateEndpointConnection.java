@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Private Endpoint Connection Response Properties. */
+/**
+ * Private Endpoint Connection Response Properties.
+ */
 @Fluent
 public final class PrivateEndpointConnection {
     /*
@@ -35,13 +37,15 @@ public final class PrivateEndpointConnection {
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
-    /** Creates an instance of PrivateEndpointConnection class. */
+    /**
+     * Creates an instance of PrivateEndpointConnection class.
+     */
     public PrivateEndpointConnection() {
     }
 
     /**
      * Get the provisioningState property: Gets or sets provisioning state of the private endpoint connection.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -50,7 +54,7 @@ public final class PrivateEndpointConnection {
 
     /**
      * Set the provisioningState property: Gets or sets provisioning state of the private endpoint connection.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the PrivateEndpointConnection object itself.
      */
@@ -61,7 +65,7 @@ public final class PrivateEndpointConnection {
 
     /**
      * Get the privateEndpoint property: Gets or sets private endpoint associated with the private endpoint connection.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpoint privateEndpoint() {
@@ -70,7 +74,7 @@ public final class PrivateEndpointConnection {
 
     /**
      * Set the privateEndpoint property: Gets or sets private endpoint associated with the private endpoint connection.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnection object itself.
      */
@@ -81,7 +85,7 @@ public final class PrivateEndpointConnection {
 
     /**
      * Get the groupIds property: Group Ids for the Private Endpoint.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<VaultSubResourceType> groupIds() {
@@ -90,7 +94,7 @@ public final class PrivateEndpointConnection {
 
     /**
      * Set the groupIds property: Group Ids for the Private Endpoint.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateEndpointConnection object itself.
      */
@@ -101,7 +105,7 @@ public final class PrivateEndpointConnection {
 
     /**
      * Get the privateLinkServiceConnectionState property: Gets or sets private link service connection state.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -110,19 +114,19 @@ public final class PrivateEndpointConnection {
 
     /**
      * Set the privateLinkServiceConnectionState property: Gets or sets private link service connection state.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnection object itself.
      */
-    public PrivateEndpointConnection withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnection
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

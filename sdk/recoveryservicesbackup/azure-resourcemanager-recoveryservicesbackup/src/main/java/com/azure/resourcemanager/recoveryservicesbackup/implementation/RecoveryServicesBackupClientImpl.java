@@ -42,6 +42,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BmsPrepareDataMov
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.DeletedProtectionContainersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ExportJobsOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.FeatureSupportsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.FetchTieringCostsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.GetTieringCostOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ItemLevelRecoveryConnectionsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobCancellationsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobDetailsClient;
@@ -70,6 +72,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceGuardProx
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.RestoresClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.SecurityPINsClient;
+import com.azure.resourcemanager.recoveryservicesbackup.fluent.TieringCostOperationStatusClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationStatusesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperationsClient;
@@ -82,675 +85,789 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the RecoveryServicesBackupClientImpl type. */
+/**
+ * Initializes a new instance of the RecoveryServicesBackupClientImpl type.
+ */
 @ServiceClient(builder = RecoveryServicesBackupClientBuilder.class)
 public final class RecoveryServicesBackupClientImpl implements RecoveryServicesBackupClient {
-    /** The subscription Id. */
+    /**
+     * The subscription Id.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The BackupResourceStorageConfigsNonCrrsClient object to access its operations. */
+    /**
+     * The BackupResourceStorageConfigsNonCrrsClient object to access its operations.
+     */
     private final BackupResourceStorageConfigsNonCrrsClient backupResourceStorageConfigsNonCrrs;
 
     /**
      * Gets the BackupResourceStorageConfigsNonCrrsClient object to access its operations.
-     *
+     * 
      * @return the BackupResourceStorageConfigsNonCrrsClient object.
      */
     public BackupResourceStorageConfigsNonCrrsClient getBackupResourceStorageConfigsNonCrrs() {
         return this.backupResourceStorageConfigsNonCrrs;
     }
 
-    /** The ProtectionIntentsClient object to access its operations. */
+    /**
+     * The ProtectionIntentsClient object to access its operations.
+     */
     private final ProtectionIntentsClient protectionIntents;
 
     /**
      * Gets the ProtectionIntentsClient object to access its operations.
-     *
+     * 
      * @return the ProtectionIntentsClient object.
      */
     public ProtectionIntentsClient getProtectionIntents() {
         return this.protectionIntents;
     }
 
-    /** The BackupStatusClient object to access its operations. */
+    /**
+     * The BackupStatusClient object to access its operations.
+     */
     private final BackupStatusClient backupStatus;
 
     /**
      * Gets the BackupStatusClient object to access its operations.
-     *
+     * 
      * @return the BackupStatusClient object.
      */
     public BackupStatusClient getBackupStatus() {
         return this.backupStatus;
     }
 
-    /** The FeatureSupportsClient object to access its operations. */
+    /**
+     * The FeatureSupportsClient object to access its operations.
+     */
     private final FeatureSupportsClient featureSupports;
 
     /**
      * Gets the FeatureSupportsClient object to access its operations.
-     *
+     * 
      * @return the FeatureSupportsClient object.
      */
     public FeatureSupportsClient getFeatureSupports() {
         return this.featureSupports;
     }
 
-    /** The BackupProtectionIntentsClient object to access its operations. */
+    /**
+     * The BackupProtectionIntentsClient object to access its operations.
+     */
     private final BackupProtectionIntentsClient backupProtectionIntents;
 
     /**
      * Gets the BackupProtectionIntentsClient object to access its operations.
-     *
+     * 
      * @return the BackupProtectionIntentsClient object.
      */
     public BackupProtectionIntentsClient getBackupProtectionIntents() {
         return this.backupProtectionIntents;
     }
 
-    /** The BackupUsageSummariesClient object to access its operations. */
+    /**
+     * The BackupUsageSummariesClient object to access its operations.
+     */
     private final BackupUsageSummariesClient backupUsageSummaries;
 
     /**
      * Gets the BackupUsageSummariesClient object to access its operations.
-     *
+     * 
      * @return the BackupUsageSummariesClient object.
      */
     public BackupUsageSummariesClient getBackupUsageSummaries() {
         return this.backupUsageSummaries;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The BackupResourceVaultConfigsClient object to access its operations. */
+    /**
+     * The BackupResourceVaultConfigsClient object to access its operations.
+     */
     private final BackupResourceVaultConfigsClient backupResourceVaultConfigs;
 
     /**
      * Gets the BackupResourceVaultConfigsClient object to access its operations.
-     *
+     * 
      * @return the BackupResourceVaultConfigsClient object.
      */
     public BackupResourceVaultConfigsClient getBackupResourceVaultConfigs() {
         return this.backupResourceVaultConfigs;
     }
 
-    /** The BackupResourceEncryptionConfigsClient object to access its operations. */
+    /**
+     * The BackupResourceEncryptionConfigsClient object to access its operations.
+     */
     private final BackupResourceEncryptionConfigsClient backupResourceEncryptionConfigs;
 
     /**
      * Gets the BackupResourceEncryptionConfigsClient object to access its operations.
-     *
+     * 
      * @return the BackupResourceEncryptionConfigsClient object.
      */
     public BackupResourceEncryptionConfigsClient getBackupResourceEncryptionConfigs() {
         return this.backupResourceEncryptionConfigs;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** The PrivateEndpointsClient object to access its operations. */
+    /**
+     * The PrivateEndpointsClient object to access its operations.
+     */
     private final PrivateEndpointsClient privateEndpoints;
 
     /**
      * Gets the PrivateEndpointsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointsClient object.
      */
     public PrivateEndpointsClient getPrivateEndpoints() {
         return this.privateEndpoints;
     }
 
-    /** The ResourceProvidersClient object to access its operations. */
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
     private final ResourceProvidersClient resourceProviders;
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
     }
 
-    /** The BmsPrepareDataMoveOperationResultsClient object to access its operations. */
+    /**
+     * The BmsPrepareDataMoveOperationResultsClient object to access its operations.
+     */
     private final BmsPrepareDataMoveOperationResultsClient bmsPrepareDataMoveOperationResults;
 
     /**
      * Gets the BmsPrepareDataMoveOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the BmsPrepareDataMoveOperationResultsClient object.
      */
     public BmsPrepareDataMoveOperationResultsClient getBmsPrepareDataMoveOperationResults() {
         return this.bmsPrepareDataMoveOperationResults;
     }
 
-    /** The ProtectedItemsClient object to access its operations. */
+    /**
+     * The ProtectedItemsClient object to access its operations.
+     */
     private final ProtectedItemsClient protectedItems;
 
     /**
      * Gets the ProtectedItemsClient object to access its operations.
-     *
+     * 
      * @return the ProtectedItemsClient object.
      */
     public ProtectedItemsClient getProtectedItems() {
         return this.protectedItems;
     }
 
-    /** The ProtectedItemOperationResultsClient object to access its operations. */
+    /**
+     * The ProtectedItemOperationResultsClient object to access its operations.
+     */
     private final ProtectedItemOperationResultsClient protectedItemOperationResults;
 
     /**
      * Gets the ProtectedItemOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ProtectedItemOperationResultsClient object.
      */
     public ProtectedItemOperationResultsClient getProtectedItemOperationResults() {
         return this.protectedItemOperationResults;
     }
 
-    /** The RecoveryPointsClient object to access its operations. */
+    /**
+     * The RecoveryPointsClient object to access its operations.
+     */
     private final RecoveryPointsClient recoveryPoints;
 
     /**
      * Gets the RecoveryPointsClient object to access its operations.
-     *
+     * 
      * @return the RecoveryPointsClient object.
      */
     public RecoveryPointsClient getRecoveryPoints() {
         return this.recoveryPoints;
     }
 
-    /** The RestoresClient object to access its operations. */
+    /**
+     * The RestoresClient object to access its operations.
+     */
     private final RestoresClient restores;
 
     /**
      * Gets the RestoresClient object to access its operations.
-     *
+     * 
      * @return the RestoresClient object.
      */
     public RestoresClient getRestores() {
         return this.restores;
     }
 
-    /** The BackupPoliciesClient object to access its operations. */
+    /**
+     * The BackupPoliciesClient object to access its operations.
+     */
     private final BackupPoliciesClient backupPolicies;
 
     /**
      * Gets the BackupPoliciesClient object to access its operations.
-     *
+     * 
      * @return the BackupPoliciesClient object.
      */
     public BackupPoliciesClient getBackupPolicies() {
         return this.backupPolicies;
     }
 
-    /** The ProtectionPoliciesClient object to access its operations. */
+    /**
+     * The ProtectionPoliciesClient object to access its operations.
+     */
     private final ProtectionPoliciesClient protectionPolicies;
 
     /**
      * Gets the ProtectionPoliciesClient object to access its operations.
-     *
+     * 
      * @return the ProtectionPoliciesClient object.
      */
     public ProtectionPoliciesClient getProtectionPolicies() {
         return this.protectionPolicies;
     }
 
-    /** The ProtectionPolicyOperationResultsClient object to access its operations. */
+    /**
+     * The ProtectionPolicyOperationResultsClient object to access its operations.
+     */
     private final ProtectionPolicyOperationResultsClient protectionPolicyOperationResults;
 
     /**
      * Gets the ProtectionPolicyOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ProtectionPolicyOperationResultsClient object.
      */
     public ProtectionPolicyOperationResultsClient getProtectionPolicyOperationResults() {
         return this.protectionPolicyOperationResults;
     }
 
-    /** The BackupJobsClient object to access its operations. */
+    /**
+     * The BackupJobsClient object to access its operations.
+     */
     private final BackupJobsClient backupJobs;
 
     /**
      * Gets the BackupJobsClient object to access its operations.
-     *
+     * 
      * @return the BackupJobsClient object.
      */
     public BackupJobsClient getBackupJobs() {
         return this.backupJobs;
     }
 
-    /** The JobDetailsClient object to access its operations. */
+    /**
+     * The JobDetailsClient object to access its operations.
+     */
     private final JobDetailsClient jobDetails;
 
     /**
      * Gets the JobDetailsClient object to access its operations.
-     *
+     * 
      * @return the JobDetailsClient object.
      */
     public JobDetailsClient getJobDetails() {
         return this.jobDetails;
     }
 
-    /** The JobCancellationsClient object to access its operations. */
+    /**
+     * The JobCancellationsClient object to access its operations.
+     */
     private final JobCancellationsClient jobCancellations;
 
     /**
      * Gets the JobCancellationsClient object to access its operations.
-     *
+     * 
      * @return the JobCancellationsClient object.
      */
     public JobCancellationsClient getJobCancellations() {
         return this.jobCancellations;
     }
 
-    /** The JobOperationResultsClient object to access its operations. */
+    /**
+     * The JobOperationResultsClient object to access its operations.
+     */
     private final JobOperationResultsClient jobOperationResults;
 
     /**
      * Gets the JobOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the JobOperationResultsClient object.
      */
     public JobOperationResultsClient getJobOperationResults() {
         return this.jobOperationResults;
     }
 
-    /** The ExportJobsOperationResultsClient object to access its operations. */
+    /**
+     * The ExportJobsOperationResultsClient object to access its operations.
+     */
     private final ExportJobsOperationResultsClient exportJobsOperationResults;
 
     /**
      * Gets the ExportJobsOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ExportJobsOperationResultsClient object.
      */
     public ExportJobsOperationResultsClient getExportJobsOperationResults() {
         return this.exportJobsOperationResults;
     }
 
-    /** The JobsClient object to access its operations. */
+    /**
+     * The JobsClient object to access its operations.
+     */
     private final JobsClient jobs;
 
     /**
      * Gets the JobsClient object to access its operations.
-     *
+     * 
      * @return the JobsClient object.
      */
     public JobsClient getJobs() {
         return this.jobs;
     }
 
-    /** The BackupProtectedItemsClient object to access its operations. */
+    /**
+     * The BackupProtectedItemsClient object to access its operations.
+     */
     private final BackupProtectedItemsClient backupProtectedItems;
 
     /**
      * Gets the BackupProtectedItemsClient object to access its operations.
-     *
+     * 
      * @return the BackupProtectedItemsClient object.
      */
     public BackupProtectedItemsClient getBackupProtectedItems() {
         return this.backupProtectedItems;
     }
 
-    /** The OperationOperationsClient object to access its operations. */
+    /**
+     * The OperationOperationsClient object to access its operations.
+     */
     private final OperationOperationsClient operationOperations;
 
     /**
      * Gets the OperationOperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationOperationsClient object.
      */
     public OperationOperationsClient getOperationOperations() {
         return this.operationOperations;
     }
 
-    /** The ValidateOperationsClient object to access its operations. */
+    /**
+     * The ValidateOperationsClient object to access its operations.
+     */
     private final ValidateOperationsClient validateOperations;
 
     /**
      * Gets the ValidateOperationsClient object to access its operations.
-     *
+     * 
      * @return the ValidateOperationsClient object.
      */
     public ValidateOperationsClient getValidateOperations() {
         return this.validateOperations;
     }
 
-    /** The ValidateOperationResultsClient object to access its operations. */
+    /**
+     * The ValidateOperationResultsClient object to access its operations.
+     */
     private final ValidateOperationResultsClient validateOperationResults;
 
     /**
      * Gets the ValidateOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ValidateOperationResultsClient object.
      */
     public ValidateOperationResultsClient getValidateOperationResults() {
         return this.validateOperationResults;
     }
 
-    /** The ValidateOperationStatusesClient object to access its operations. */
+    /**
+     * The ValidateOperationStatusesClient object to access its operations.
+     */
     private final ValidateOperationStatusesClient validateOperationStatuses;
 
     /**
      * Gets the ValidateOperationStatusesClient object to access its operations.
-     *
+     * 
      * @return the ValidateOperationStatusesClient object.
      */
     public ValidateOperationStatusesClient getValidateOperationStatuses() {
         return this.validateOperationStatuses;
     }
 
-    /** The BackupEnginesClient object to access its operations. */
+    /**
+     * The BackupEnginesClient object to access its operations.
+     */
     private final BackupEnginesClient backupEngines;
 
     /**
      * Gets the BackupEnginesClient object to access its operations.
-     *
+     * 
      * @return the BackupEnginesClient object.
      */
     public BackupEnginesClient getBackupEngines() {
         return this.backupEngines;
     }
 
-    /** The ProtectionContainerRefreshOperationResultsClient object to access its operations. */
+    /**
+     * The ProtectionContainerRefreshOperationResultsClient object to access its operations.
+     */
     private final ProtectionContainerRefreshOperationResultsClient protectionContainerRefreshOperationResults;
 
     /**
      * Gets the ProtectionContainerRefreshOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ProtectionContainerRefreshOperationResultsClient object.
      */
     public ProtectionContainerRefreshOperationResultsClient getProtectionContainerRefreshOperationResults() {
         return this.protectionContainerRefreshOperationResults;
     }
 
-    /** The ProtectableContainersClient object to access its operations. */
+    /**
+     * The ProtectableContainersClient object to access its operations.
+     */
     private final ProtectableContainersClient protectableContainers;
 
     /**
      * Gets the ProtectableContainersClient object to access its operations.
-     *
+     * 
      * @return the ProtectableContainersClient object.
      */
     public ProtectableContainersClient getProtectableContainers() {
         return this.protectableContainers;
     }
 
-    /** The ProtectionContainersClient object to access its operations. */
+    /**
+     * The ProtectionContainersClient object to access its operations.
+     */
     private final ProtectionContainersClient protectionContainers;
 
     /**
      * Gets the ProtectionContainersClient object to access its operations.
-     *
+     * 
      * @return the ProtectionContainersClient object.
      */
     public ProtectionContainersClient getProtectionContainers() {
         return this.protectionContainers;
     }
 
-    /** The BackupWorkloadItemsClient object to access its operations. */
+    /**
+     * The BackupWorkloadItemsClient object to access its operations.
+     */
     private final BackupWorkloadItemsClient backupWorkloadItems;
 
     /**
      * Gets the BackupWorkloadItemsClient object to access its operations.
-     *
+     * 
      * @return the BackupWorkloadItemsClient object.
      */
     public BackupWorkloadItemsClient getBackupWorkloadItems() {
         return this.backupWorkloadItems;
     }
 
-    /** The ProtectionContainerOperationResultsClient object to access its operations. */
+    /**
+     * The ProtectionContainerOperationResultsClient object to access its operations.
+     */
     private final ProtectionContainerOperationResultsClient protectionContainerOperationResults;
 
     /**
      * Gets the ProtectionContainerOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ProtectionContainerOperationResultsClient object.
      */
     public ProtectionContainerOperationResultsClient getProtectionContainerOperationResults() {
         return this.protectionContainerOperationResults;
     }
 
-    /** The BackupsClient object to access its operations. */
+    /**
+     * The BackupsClient object to access its operations.
+     */
     private final BackupsClient backups;
 
     /**
      * Gets the BackupsClient object to access its operations.
-     *
+     * 
      * @return the BackupsClient object.
      */
     public BackupsClient getBackups() {
         return this.backups;
     }
 
-    /** The ProtectedItemOperationStatusesClient object to access its operations. */
+    /**
+     * The ProtectedItemOperationStatusesClient object to access its operations.
+     */
     private final ProtectedItemOperationStatusesClient protectedItemOperationStatuses;
 
     /**
      * Gets the ProtectedItemOperationStatusesClient object to access its operations.
-     *
+     * 
      * @return the ProtectedItemOperationStatusesClient object.
      */
     public ProtectedItemOperationStatusesClient getProtectedItemOperationStatuses() {
         return this.protectedItemOperationStatuses;
     }
 
-    /** The ItemLevelRecoveryConnectionsClient object to access its operations. */
+    /**
+     * The ItemLevelRecoveryConnectionsClient object to access its operations.
+     */
     private final ItemLevelRecoveryConnectionsClient itemLevelRecoveryConnections;
 
     /**
      * Gets the ItemLevelRecoveryConnectionsClient object to access its operations.
-     *
+     * 
      * @return the ItemLevelRecoveryConnectionsClient object.
      */
     public ItemLevelRecoveryConnectionsClient getItemLevelRecoveryConnections() {
         return this.itemLevelRecoveryConnections;
     }
 
-    /** The BackupOperationResultsClient object to access its operations. */
+    /**
+     * The BackupOperationResultsClient object to access its operations.
+     */
     private final BackupOperationResultsClient backupOperationResults;
 
     /**
      * Gets the BackupOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the BackupOperationResultsClient object.
      */
     public BackupOperationResultsClient getBackupOperationResults() {
         return this.backupOperationResults;
     }
 
-    /** The BackupOperationStatusesClient object to access its operations. */
+    /**
+     * The BackupOperationStatusesClient object to access its operations.
+     */
     private final BackupOperationStatusesClient backupOperationStatuses;
 
     /**
      * Gets the BackupOperationStatusesClient object to access its operations.
-     *
+     * 
      * @return the BackupOperationStatusesClient object.
      */
     public BackupOperationStatusesClient getBackupOperationStatuses() {
         return this.backupOperationStatuses;
     }
 
-    /** The ProtectionPolicyOperationStatusesClient object to access its operations. */
+    /**
+     * The ProtectionPolicyOperationStatusesClient object to access its operations.
+     */
     private final ProtectionPolicyOperationStatusesClient protectionPolicyOperationStatuses;
 
     /**
      * Gets the ProtectionPolicyOperationStatusesClient object to access its operations.
-     *
+     * 
      * @return the ProtectionPolicyOperationStatusesClient object.
      */
     public ProtectionPolicyOperationStatusesClient getProtectionPolicyOperationStatuses() {
         return this.protectionPolicyOperationStatuses;
     }
 
-    /** The BackupProtectableItemsClient object to access its operations. */
+    /**
+     * The BackupProtectableItemsClient object to access its operations.
+     */
     private final BackupProtectableItemsClient backupProtectableItems;
 
     /**
      * Gets the BackupProtectableItemsClient object to access its operations.
-     *
+     * 
      * @return the BackupProtectableItemsClient object.
      */
     public BackupProtectableItemsClient getBackupProtectableItems() {
         return this.backupProtectableItems;
     }
 
-    /** The BackupProtectionContainersClient object to access its operations. */
+    /**
+     * The BackupProtectionContainersClient object to access its operations.
+     */
     private final BackupProtectionContainersClient backupProtectionContainers;
 
     /**
      * Gets the BackupProtectionContainersClient object to access its operations.
-     *
+     * 
      * @return the BackupProtectionContainersClient object.
      */
     public BackupProtectionContainersClient getBackupProtectionContainers() {
         return this.backupProtectionContainers;
     }
 
-    /** The DeletedProtectionContainersClient object to access its operations. */
+    /**
+     * The DeletedProtectionContainersClient object to access its operations.
+     */
     private final DeletedProtectionContainersClient deletedProtectionContainers;
 
     /**
      * Gets the DeletedProtectionContainersClient object to access its operations.
-     *
+     * 
      * @return the DeletedProtectionContainersClient object.
      */
     public DeletedProtectionContainersClient getDeletedProtectionContainers() {
         return this.deletedProtectionContainers;
     }
 
-    /** The SecurityPINsClient object to access its operations. */
+    /**
+     * The SecurityPINsClient object to access its operations.
+     */
     private final SecurityPINsClient securityPINs;
 
     /**
      * Gets the SecurityPINsClient object to access its operations.
-     *
+     * 
      * @return the SecurityPINsClient object.
      */
     public SecurityPINsClient getSecurityPINs() {
         return this.securityPINs;
     }
 
-    /** The RecoveryPointsRecommendedForMovesClient object to access its operations. */
+    /**
+     * The RecoveryPointsRecommendedForMovesClient object to access its operations.
+     */
     private final RecoveryPointsRecommendedForMovesClient recoveryPointsRecommendedForMoves;
 
     /**
      * Gets the RecoveryPointsRecommendedForMovesClient object to access its operations.
-     *
+     * 
      * @return the RecoveryPointsRecommendedForMovesClient object.
      */
     public RecoveryPointsRecommendedForMovesClient getRecoveryPointsRecommendedForMoves() {
         return this.recoveryPointsRecommendedForMoves;
     }
 
-    /** The ResourceGuardProxiesClient object to access its operations. */
+    /**
+     * The ResourceGuardProxiesClient object to access its operations.
+     */
     private final ResourceGuardProxiesClient resourceGuardProxies;
 
     /**
      * Gets the ResourceGuardProxiesClient object to access its operations.
-     *
+     * 
      * @return the ResourceGuardProxiesClient object.
      */
     public ResourceGuardProxiesClient getResourceGuardProxies() {
         return this.resourceGuardProxies;
     }
 
-    /** The ResourceGuardProxyOperationsClient object to access its operations. */
+    /**
+     * The ResourceGuardProxyOperationsClient object to access its operations.
+     */
     private final ResourceGuardProxyOperationsClient resourceGuardProxyOperations;
 
     /**
      * Gets the ResourceGuardProxyOperationsClient object to access its operations.
-     *
+     * 
      * @return the ResourceGuardProxyOperationsClient object.
      */
     public ResourceGuardProxyOperationsClient getResourceGuardProxyOperations() {
@@ -758,8 +875,50 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
     }
 
     /**
+     * The FetchTieringCostsClient object to access its operations.
+     */
+    private final FetchTieringCostsClient fetchTieringCosts;
+
+    /**
+     * Gets the FetchTieringCostsClient object to access its operations.
+     * 
+     * @return the FetchTieringCostsClient object.
+     */
+    public FetchTieringCostsClient getFetchTieringCosts() {
+        return this.fetchTieringCosts;
+    }
+
+    /**
+     * The GetTieringCostOperationResultsClient object to access its operations.
+     */
+    private final GetTieringCostOperationResultsClient getTieringCostOperationResults;
+
+    /**
+     * Gets the GetTieringCostOperationResultsClient object to access its operations.
+     * 
+     * @return the GetTieringCostOperationResultsClient object.
+     */
+    public GetTieringCostOperationResultsClient getGetTieringCostOperationResults() {
+        return this.getTieringCostOperationResults;
+    }
+
+    /**
+     * The TieringCostOperationStatusClient object to access its operations.
+     */
+    private final TieringCostOperationStatusClient tieringCostOperationStatus;
+
+    /**
+     * Gets the TieringCostOperationStatusClient object to access its operations.
+     * 
+     * @return the TieringCostOperationStatusClient object.
+     */
+    public TieringCostOperationStatusClient getTieringCostOperationStatus() {
+        return this.tieringCostOperationStatus;
+    }
+
+    /**
      * Initializes an instance of RecoveryServicesBackupClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -767,19 +926,14 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
      * @param subscriptionId The subscription Id.
      * @param endpoint server parameter.
      */
-    RecoveryServicesBackupClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    RecoveryServicesBackupClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-04-01";
+        this.apiVersion = "2023-06-01";
         this.backupResourceStorageConfigsNonCrrs = new BackupResourceStorageConfigsNonCrrsClientImpl(this);
         this.protectionIntents = new ProtectionIntentsClientImpl(this);
         this.backupStatus = new BackupStatusClientImpl(this);
@@ -812,8 +966,8 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.validateOperationResults = new ValidateOperationResultsClientImpl(this);
         this.validateOperationStatuses = new ValidateOperationStatusesClientImpl(this);
         this.backupEngines = new BackupEnginesClientImpl(this);
-        this.protectionContainerRefreshOperationResults =
-            new ProtectionContainerRefreshOperationResultsClientImpl(this);
+        this.protectionContainerRefreshOperationResults
+            = new ProtectionContainerRefreshOperationResultsClientImpl(this);
         this.protectableContainers = new ProtectableContainersClientImpl(this);
         this.protectionContainers = new ProtectionContainersClientImpl(this);
         this.backupWorkloadItems = new BackupWorkloadItemsClientImpl(this);
@@ -831,11 +985,14 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
         this.recoveryPointsRecommendedForMoves = new RecoveryPointsRecommendedForMovesClientImpl(this);
         this.resourceGuardProxies = new ResourceGuardProxiesClientImpl(this);
         this.resourceGuardProxyOperations = new ResourceGuardProxyOperationsClientImpl(this);
+        this.fetchTieringCosts = new FetchTieringCostsClientImpl(this);
+        this.getTieringCostOperationResults = new GetTieringCostOperationResultsClientImpl(this);
+        this.tieringCostOperationStatus = new TieringCostOperationStatusClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -844,7 +1001,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -854,7 +1011,7 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -864,26 +1021,15 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -896,19 +1042,16 @@ public final class RecoveryServicesBackupClientImpl implements RecoveryServicesB
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AddVCenterRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddVCenterRequest model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"friendlyName\":\"awddjibab\",\"ipAddress\":\"ititvtzeexavoxt\",\"processServerId\":\"lecdmdqbw\",\"port\":\"pqtgsfjac\",\"runAsAccountId\":\"lhhxudbxvodhtnsi\"}}")
-                .toObject(AddVCenterRequest.class);
+        AddVCenterRequest model = BinaryData.fromString(
+            "{\"properties\":{\"friendlyName\":\"awddjibab\",\"ipAddress\":\"ititvtzeexavoxt\",\"processServerId\":\"lecdmdqbw\",\"port\":\"pqtgsfjac\",\"runAsAccountId\":\"lhhxudbxvodhtnsi\"}}")
+            .toObject(AddVCenterRequest.class);
         Assertions.assertEquals("awddjibab", model.properties().friendlyName());
         Assertions.assertEquals("ititvtzeexavoxt", model.properties().ipAddress());
         Assertions.assertEquals("lecdmdqbw", model.properties().processServerId());
@@ -26,15 +24,9 @@ public final class AddVCenterRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddVCenterRequest model =
-            new AddVCenterRequest()
-                .withProperties(
-                    new AddVCenterRequestProperties()
-                        .withFriendlyName("awddjibab")
-                        .withIpAddress("ititvtzeexavoxt")
-                        .withProcessServerId("lecdmdqbw")
-                        .withPort("pqtgsfjac")
-                        .withRunAsAccountId("lhhxudbxvodhtnsi"));
+        AddVCenterRequest model = new AddVCenterRequest().withProperties(
+            new AddVCenterRequestProperties().withFriendlyName("awddjibab").withIpAddress("ititvtzeexavoxt")
+                .withProcessServerId("lecdmdqbw").withPort("pqtgsfjac").withRunAsAccountId("lhhxudbxvodhtnsi"));
         model = BinaryData.fromObject(model).toObject(AddVCenterRequest.class);
         Assertions.assertEquals("awddjibab", model.properties().friendlyName());
         Assertions.assertEquals("ititvtzeexavoxt", model.properties().ipAddress());

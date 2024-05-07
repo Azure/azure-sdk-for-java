@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.10 (Unreleased)
+## 1.0.0-beta.11 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,33 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.10 (2024-02-27)
+
+- Azure Resource Manager StorageCache client library for Java. This package contains Microsoft Azure SDK for StorageCache Management SDK. Azure Managed Lustre provides a fully managed Lustre® file system, integrated with Blob storage, for use on demand. These operations create and manage Azure Managed Lustre file systems. Package tag package-preview-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.AmlFilesystemSquashMode` was added
+
+* `models.AmlFilesystemRootSquashSettings` was added
+
+#### `models.AmlFilesystem$Definition` was modified
+
+* `withRootSquashSettings(models.AmlFilesystemRootSquashSettings)` was added
+
+#### `models.AmlFilesystemUpdate` was modified
+
+* `rootSquashSettings()` was added
+* `withRootSquashSettings(models.AmlFilesystemRootSquashSettings)` was added
+
+#### `models.AmlFilesystem` was modified
+
+* `rootSquashSettings()` was added
+
+#### `models.AmlFilesystem$Update` was modified
+
+* `withRootSquashSettings(models.AmlFilesystemRootSquashSettings)` was added
 
 ## 1.0.0-beta.9 (2023-06-20)
 

@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.OrganizationResourceInner;
 
-/** An instance of this class provides access to all the operations defined in OrganizationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OrganizationsClient.
+ */
 public interface OrganizationsClient {
     /**
      * List all the existing organizations.
-     *
+     * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface OrganizationsClient {
 
     /**
      * List all the existing organizations.
-     *
+     * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
      * @param context The context to associate with this operation.

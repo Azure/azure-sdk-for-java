@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Custom Domain of a Container App. */
+/**
+ * Custom Domain of a Container App.
+ */
 @Fluent
 public final class CustomDomain {
     /*
@@ -29,13 +31,15 @@ public final class CustomDomain {
     @JsonProperty(value = "certificateId")
     private String certificateId;
 
-    /** Creates an instance of CustomDomain class. */
+    /**
+     * Creates an instance of CustomDomain class.
+     */
     public CustomDomain() {
     }
 
     /**
      * Get the name property: Hostname.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class CustomDomain {
 
     /**
      * Set the name property: Hostname.
-     *
+     * 
      * @param name the name value to set.
      * @return the CustomDomain object itself.
      */
@@ -55,7 +59,7 @@ public final class CustomDomain {
 
     /**
      * Get the bindingType property: Custom Domain binding type.
-     *
+     * 
      * @return the bindingType value.
      */
     public BindingType bindingType() {
@@ -64,7 +68,7 @@ public final class CustomDomain {
 
     /**
      * Set the bindingType property: Custom Domain binding type.
-     *
+     * 
      * @param bindingType the bindingType value to set.
      * @return the CustomDomain object itself.
      */
@@ -76,7 +80,7 @@ public final class CustomDomain {
     /**
      * Get the certificateId property: Resource Id of the Certificate to be bound to this hostname. Must exist in the
      * Managed Environment.
-     *
+     * 
      * @return the certificateId value.
      */
     public String certificateId() {
@@ -86,7 +90,7 @@ public final class CustomDomain {
     /**
      * Set the certificateId property: Resource Id of the Certificate to be bound to this hostname. Must exist in the
      * Managed Environment.
-     *
+     * 
      * @param certificateId the certificateId value to set.
      * @return the CustomDomain object itself.
      */
@@ -97,14 +101,13 @@ public final class CustomDomain {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model CustomDomain"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model CustomDomain"));
         }
     }
 

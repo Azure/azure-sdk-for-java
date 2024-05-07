@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -15,7 +14,6 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAudience;
-import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
@@ -46,6 +44,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,13 +54,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
@@ -123,7 +120,14 @@ public class ContainerApiTests extends BlobTestBase {
         cc.createWithResponse(metadata, null, null, null);
         Response<BlobContainerProperties> response = cc.getPropertiesWithResponse(null, null, null);
 
-        assertEquals(response.getValue().getMetadata(), metadata);
+        if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
+            // JDK HttpClient returns headers with names lowercased.
+            Map<String, String> lowercasedMetadata = metadata.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
+            assertEquals(lowercasedMetadata, response.getValue().getMetadata());
+        } else {
+            assertEquals(metadata, response.getValue().getMetadata());
+        }
     }
 
     private static Stream<Arguments> createMetadataSupplier() {
@@ -218,7 +222,14 @@ public class ContainerApiTests extends BlobTestBase {
         Response<Boolean> result = cc.createIfNotExistsWithResponse(options, null, null);
         Response<BlobContainerProperties> response = cc.getPropertiesWithResponse(null, null, null);
 
-        assertEquals(response.getValue().getMetadata(), metadata);
+        if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
+            // JDK HttpClient returns headers with names lowercased.
+            Map<String, String> lowercasedMetadata = metadata.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
+            assertEquals(lowercasedMetadata, response.getValue().getMetadata());
+        } else {
+            assertEquals(metadata, response.getValue().getMetadata());
+        }
         assertTrue(result.getValue());
     }
 
@@ -405,28 +416,7 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(cc.getProperties().getBlobPublicAccess(), publicAccess);
     }
 
-    @Test
-    public void setAccessPolicyMinAccess() {
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null);
-        assertEquals(cc.getProperties().getBlobPublicAccess(), PublicAccessType.CONTAINER);
-    }
 
-    @Test
-    public void setAccessPolicyMinIds() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
-                .setExpiresOn(testResourceNamer.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
-                    .plusDays(1))
-                .setPermissions("r"));
-
-        List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
-
-        cc.setAccessPolicy(null, ids);
-
-        assertEquals(cc.getAccessPolicy().getIdentifiers().get(0).getId(), "0000");
-    }
 
     @Test
     public void setAccessPolicyIds() {
@@ -519,36 +509,6 @@ public class ContainerApiTests extends BlobTestBase {
         return Stream.of(
             Arguments.of(RECEIVED_ETAG, null),
             Arguments.of(null, GARBAGE_ETAG));
-    }
-
-    @Test
-    public void setAccessPolicyError() {
-        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
-
-        assertThrows(BlobStorageException.class, () -> cc.setAccessPolicy(null, null));
-    }
-
-    @Test
-    public void getAccessPolicy() {
-        BlobSignedIdentifier identifier = new BlobSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new BlobAccessPolicy()
-                .setStartsOn(testResourceNamer.now())
-                .setExpiresOn(testResourceNamer.now().plusDays(1))
-                .setPermissions("r"));
-        List<BlobSignedIdentifier> ids = Collections.singletonList(identifier);
-        cc.setAccessPolicy(PublicAccessType.BLOB, ids);
-        Response<BlobContainerAccessPolicies> response = cc.getAccessPolicyWithResponse(null, null, null);
-
-        assertResponseStatusCode(response, 200);
-        assertEquals(response.getValue().getBlobAccessType(), PublicAccessType.BLOB);
-        assertTrue(validateBasicHeaders(response.getHeaders()));
-        assertEquals(response.getValue().getIdentifiers().get(0).getAccessPolicy().getExpiresOn(),
-            identifier.getAccessPolicy().getExpiresOn());
-        assertEquals(response.getValue().getIdentifiers().get(0).getAccessPolicy().getStartsOn(),
-            identifier.getAccessPolicy().getStartsOn());
-        assertEquals(response.getValue().getIdentifiers().get(0).getAccessPolicy().getPermissions(),
-            identifier.getAccessPolicy().getPermissions());
     }
 
     @Test
@@ -955,7 +915,6 @@ public class ContainerApiTests extends BlobTestBase {
 
         assertEquals(normalName, blobs.get(0).getName());
         assertEquals(uncommittedName, blobs.get(4).getName());
-        assertEquals(uncommittedName, blobs.get(4).getName());
         assertEquals(5, blobs.size()); // Normal, copy, metadata, tags, uncommitted
     }
 
@@ -989,9 +948,6 @@ public class ContainerApiTests extends BlobTestBase {
 
         // expect: "Get first page of blob listings (sync and async)"
         assertEquals(pageSize, cc.listBlobs(options, null).iterableByPage().iterator().next().getValue().size());
-        StepVerifier.create(ccAsync.listBlobs(options).byPage().limitRequest(1))
-            .assertNext(it -> assertEquals(pageSize, it.getValue().size()))
-            .verifyComplete();
     }
 
     @Test
@@ -1010,10 +966,6 @@ public class ContainerApiTests extends BlobTestBase {
         for (PagedResponse<BlobItem> page : cc.listBlobs(options, null).iterableByPage(pageSize)) {
             assertTrue(page.getValue().size() <= pageSize);
         }
-
-        StepVerifier.create(ccAsync.listBlobs(options).byPage(pageSize).limitRequest(1))
-            .assertNext(it -> assertEquals(pageSize, it.getValue().size()))
-            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -1076,17 +1028,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(pageSize, pagedSyncResponse1.getValue().size());
         assertEquals(numBlobs - pageSize, pagedSyncResponse2.getValue().size());
         assertNull(pagedSyncResponse2.getContinuationToken());
-
-        // when: "listBlobs with async client"
-        PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
-        PagedResponse<BlobItem> pagedResponse1 = pagedFlux.byPage().blockFirst();
-        assertNotNull(pagedResponse1);
-        PagedResponse<BlobItem> pagedResponse2 = pagedFlux.byPage(pagedResponse1.getContinuationToken()).blockFirst();
-
-        assertEquals(pageSize, pagedResponse1.getValue().size());
-        assertNotNull(pagedResponse2);
-        assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
-        assertNull(pagedResponse2.getContinuationToken());
     }
 
     @Test
@@ -1110,20 +1051,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertEquals(pageSize, pagedSyncResponse1.getValue().size());
         assertEquals(numBlobs - pageSize, pagedSyncResponse2.getValue().size());
         assertNull(pagedSyncResponse2.getContinuationToken());
-
-
-        // when: "listBlobs with async client"
-        PagedFlux<BlobItem> pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize));
-        PagedResponse<BlobItem> pagedResponse1 = pagedFlux.byPage().blockFirst();
-        assertNotNull(pagedResponse1);
-        pagedFlux = ccAsync.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageSize),
-            pagedResponse1.getContinuationToken());
-        PagedResponse<BlobItem> pagedResponse2 = pagedFlux.byPage().blockFirst();
-
-        assertEquals(pageSize, pagedResponse1.getValue().size());
-        assertNotNull(pagedResponse2);
-        assertEquals(numBlobs - pageSize, pagedResponse2.getValue().size());
-        assertNull(pagedResponse2.getContinuationToken());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -1357,22 +1284,6 @@ public class ContainerApiTests extends BlobTestBase {
 
         assertEquals(normalName, blobs.next().getName());
         assertFalse(blobs.hasNext()); // Normal
-    }
-
-    @Test
-    public void listBlobsHierOptionsmaxResults() {
-        ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveCopy(true)
-            .setRetrieveUncommittedBlobs(true)).setMaxResultsPerPage(1);
-        String normalName = "a" + generateBlobName();
-        String copyName = "c" + generateBlobName();
-        String metadataName = "m" + generateBlobName();
-        String tagsName = "t" + generateBlobName();
-        String uncommittedName = "u" + generateBlobName();
-        setupListBlobsTest(normalName, copyName, metadataName, tagsName, uncommittedName);
-
-        StepVerifier.create(ccAsync.listBlobsByHierarchy("", options).byPage().limitRequest(1))
-            .assertNext(it -> assertEquals(1, it.getValue().size()))
-            .verifyComplete();
     }
 
     @Test

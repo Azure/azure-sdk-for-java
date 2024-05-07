@@ -25,83 +25,69 @@ public final class AzureEnvironment {
         this.endpoints = endpoints;
     }
 
+    private AzureEnvironment(String portalUrl, String publishingProfileUrl, String managementEndpointUrl,
+        String resourceManagerEndpointUrl, String sqlManagementEndpointUrl, String sqlServerHostnameSuffix,
+        String galleryEndpointUrl, String activeDirectoryEndpointUrl, String activeDirectoryResourceId,
+        String activeDirectoryGraphResourceId, String microsoftGraphResourceId, String dataLakeEndpointResourceId,
+        String activeDirectoryGraphApiVersion, String storageEndpointSuffix, String keyVaultDnsSuffix,
+        String azureDataLakeStoreFileSystemEndpointSuffix, String azureDataLakeAnalyticsCatalogAndJobEndpointSuffix,
+        String azureLogAnalyticsResourceId, String azureApplicationInsightsResourceId, String managedHsmDnsSuffix) {
+        this.endpoints = new HashMap<>((int) (20 / 0.75F));
+        this.endpoints.put("portalUrl", portalUrl);
+        this.endpoints.put("publishingProfileUrl", publishingProfileUrl);
+        this.endpoints.put("managementEndpointUrl", managementEndpointUrl);
+        this.endpoints.put("resourceManagerEndpointUrl", resourceManagerEndpointUrl);
+        this.endpoints.put("sqlManagementEndpointUrl", sqlManagementEndpointUrl);
+        this.endpoints.put("sqlServerHostnameSuffix", sqlServerHostnameSuffix);
+        this.endpoints.put("galleryEndpointUrl", galleryEndpointUrl);
+        this.endpoints.put("activeDirectoryEndpointUrl", activeDirectoryEndpointUrl);
+        this.endpoints.put("activeDirectoryResourceId", activeDirectoryResourceId);
+        this.endpoints.put("activeDirectoryGraphResourceId", activeDirectoryGraphResourceId);
+        this.endpoints.put("microsoftGraphResourceId", microsoftGraphResourceId);
+        this.endpoints.put("dataLakeEndpointResourceId", dataLakeEndpointResourceId);
+        this.endpoints.put("activeDirectoryGraphApiVersion", activeDirectoryGraphApiVersion);
+        this.endpoints.put("storageEndpointSuffix", storageEndpointSuffix);
+        this.endpoints.put("keyVaultDnsSuffix", keyVaultDnsSuffix);
+        this.endpoints.put("azureDataLakeStoreFileSystemEndpointSuffix", azureDataLakeStoreFileSystemEndpointSuffix);
+        this.endpoints.put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix",
+            azureDataLakeAnalyticsCatalogAndJobEndpointSuffix);
+        this.endpoints.put("azureLogAnalyticsResourceId", azureLogAnalyticsResourceId);
+        this.endpoints.put("azureApplicationInsightsResourceId", azureApplicationInsightsResourceId);
+        this.endpoints.put("managedHsmDnsSuffix", managedHsmDnsSuffix);
+    }
+
     /**
      * Provides the settings for authentication with Azure.
      */
-    public static final AzureEnvironment AZURE = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "https://portal.azure.com");
-            put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkId=254432");
-            put("managementEndpointUrl", "https://management.core.windows.net/");
-            put("resourceManagerEndpointUrl", "https://management.azure.com/");
-            put("sqlManagementEndpointUrl", "https://management.core.windows.net:8443/");
-            put("sqlServerHostnameSuffix", ".database.windows.net");
-            put("galleryEndpointUrl", "https://gallery.azure.com/");
-            put("activeDirectoryEndpointUrl", "https://login.microsoftonline.com/");
-            put("activeDirectoryResourceId", "https://management.core.windows.net/");
-            put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
-            put("microsoftGraphResourceId", "https://graph.microsoft.com/");
-            put("dataLakeEndpointResourceId", "https://datalake.azure.net/");
-            put("activeDirectoryGraphApiVersion", "2013-04-05");
-            put("storageEndpointSuffix", ".core.windows.net");
-            put("keyVaultDnsSuffix", ".vault.azure.net");
-            put("azureDataLakeStoreFileSystemEndpointSuffix", "azuredatalakestore.net");
-            put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "azuredatalakeanalytics.net");
-            put("azureLogAnalyticsResourceId", "https://api.loganalytics.io/");
-            put("azureApplicationInsightsResourceId", "https://api.applicationinsights.io/");
-            put("managedHsmDnsSuffix", ".managedhsm.azure.net");
-        }});
+    public static final AzureEnvironment AZURE = new AzureEnvironment("https://portal.azure.com",
+        "http://go.microsoft.com/fwlink/?LinkId=254432", "https://management.core.windows.net/",
+        "https://management.azure.com/", "https://management.core.windows.net:8443/", ".database.windows.net",
+        "https://gallery.azure.com/", "https://login.microsoftonline.com/", "https://management.core.windows.net/",
+        "https://graph.windows.net/", "https://graph.microsoft.com/", "https://datalake.azure.net/", "2013-04-05",
+        ".core.windows.net", ".vault.azure.net", "azuredatalakestore.net", "azuredatalakeanalytics.net",
+        "https://api.loganalytics.io/", "https://api.applicationinsights.io/", ".managedhsm.azure.net");
 
     /**
      * Provides the settings for authentication with Azure China.
      */
-    public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "https://portal.azure.cn");
-            put("publishingProfileUrl", "http://go.microsoft.com/fwlink/?LinkID=301774");
-            put("managementEndpointUrl", "https://management.core.chinacloudapi.cn/");
-            put("resourceManagerEndpointUrl", "https://management.chinacloudapi.cn/");
-            put("sqlManagementEndpointUrl", "https://management.core.chinacloudapi.cn:8443/");
-            put("sqlServerHostnameSuffix", ".database.chinacloudapi.cn");
-            put("galleryEndpointUrl", "https://gallery.chinacloudapi.cn/");
-            put("activeDirectoryEndpointUrl", "https://login.chinacloudapi.cn/");
-            put("activeDirectoryResourceId", "https://management.core.chinacloudapi.cn/");
-            put("activeDirectoryGraphResourceId", "https://graph.chinacloudapi.cn/");
-            put("microsoftGraphResourceId", "https://microsoftgraph.chinacloudapi.cn/");
-            put("dataLakeEndpointResourceId", "N/A");
-            put("activeDirectoryGraphApiVersion", "2013-04-05");
-            put("storageEndpointSuffix", ".core.chinacloudapi.cn");
-            put("keyVaultDnsSuffix", ".vault.azure.cn");
-            put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
-            put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
-            put("azureLogAnalyticsResourceId", "N/A");
-            put("azureApplicationInsightsResourceId", "N/A");
-            put("managedHsmDnsSuffix", ".managedhsm.azure.cn");
-        }});
+    public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment("https://portal.azure.cn",
+        "http://go.microsoft.com/fwlink/?LinkID=301774", "https://management.core.chinacloudapi.cn/",
+        "https://management.chinacloudapi.cn/", "https://management.core.chinacloudapi.cn:8443/",
+        ".database.chinacloudapi.cn", "https://gallery.chinacloudapi.cn/", "https://login.chinacloudapi.cn/",
+        "https://management.core.chinacloudapi.cn/", "https://graph.chinacloudapi.cn/",
+        "https://microsoftgraph.chinacloudapi.cn/", "N/A", "2013-04-05", ".core.chinacloudapi.cn", ".vault.azure.cn",
+        "N/A", "N/A", "N/A", "N/A", ".managedhsm.azure.cn");
 
     /**
      * Provides the settings for authentication with Azure US Government.
      */
-    public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "https://portal.azure.us");
-            put("publishingProfileUrl", "https://manage.windowsazure.us/publishsettings/index");
-            put("managementEndpointUrl", "https://management.core.usgovcloudapi.net/");
-            put("resourceManagerEndpointUrl", "https://management.usgovcloudapi.net/");
-            put("sqlManagementEndpointUrl", "https://management.core.usgovcloudapi.net:8443/");
-            put("sqlServerHostnameSuffix", ".database.usgovcloudapi.net");
-            put("galleryEndpointUrl", "https://gallery.usgovcloudapi.net/");
-            put("activeDirectoryEndpointUrl", "https://login.microsoftonline.us/");
-            put("activeDirectoryResourceId", "https://management.core.usgovcloudapi.net/");
-            put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
-            put("microsoftGraphResourceId", "https://graph.microsoft.us/");
-            put("dataLakeEndpointResourceId", "N/A");
-            put("activeDirectoryGraphApiVersion", "2013-04-05");
-            put("storageEndpointSuffix", ".core.usgovcloudapi.net");
-            put("keyVaultDnsSuffix", ".vault.usgovcloudapi.net");
-            put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
-            put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
-            put("azureLogAnalyticsResourceId", "https://api.loganalytics.us/");
-            put("azureApplicationInsightsResourceId", "N/A");
-            put("managedHsmDnsSuffix", ".managedhsm.usgovcloudapi.net");
-        }});
+    public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment("https://portal.azure.us",
+        "https://manage.windowsazure.us/publishsettings/index", "https://management.core.usgovcloudapi.net/",
+        "https://management.usgovcloudapi.net/", "https://management.core.usgovcloudapi.net:8443/",
+        ".database.usgovcloudapi.net", "https://gallery.usgovcloudapi.net/", "https://login.microsoftonline.us/",
+        "https://management.core.usgovcloudapi.net/", "https://graph.windows.net/", "https://graph.microsoft.us/",
+        "N/A", "2013-04-05", ".core.usgovcloudapi.net", ".vault.usgovcloudapi.net", "N/A", "N/A",
+        "https://api.loganalytics.us/", "N/A", ".managedhsm.usgovcloudapi.net");
 
     /**
      * Provides the settings for authentication with Azure Germany.
@@ -112,28 +98,12 @@ public final class AzureEnvironment {
      * with {@link AzureEnvironment#AZURE}.
      */
     @Deprecated
-    public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(new HashMap<String, String>() {{
-            put("portalUrl", "https://portal.microsoftazure.de");
-            put("publishingProfileUrl", "https://manage.microsoftazure.de/publishsettings/index");
-            put("managementEndpointUrl", "https://management.core.cloudapi.de/");
-            put("resourceManagerEndpointUrl", "https://management.microsoftazure.de/");
-            put("sqlManagementEndpointUrl", "https://management.core.cloudapi.de:8443/");
-            put("sqlServerHostnameSuffix", ".database.cloudapi.de");
-            put("galleryEndpointUrl", "https://gallery.cloudapi.de/");
-            put("activeDirectoryEndpointUrl", "https://login.microsoftonline.de/");
-            put("activeDirectoryResourceId", "https://management.core.cloudapi.de/");
-            put("activeDirectoryGraphResourceId", "https://graph.cloudapi.de/");
-            put("microsoftGraphResourceId", "https://graph.microsoft.de/");
-            put("dataLakeEndpointResourceId", "N/A");
-            put("activeDirectoryGraphApiVersion", "2013-04-05");
-            put("storageEndpointSuffix", ".core.cloudapi.de");
-            put("keyVaultDnsSuffix", ".vault.microsoftazure.de");
-            put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
-            put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
-            put("azureLogAnalyticsResourceId", "N/A");
-            put("azureApplicationInsightsResourceId", "N/A");
-            put("managedHsmDnsSuffix", "N/A");
-        }});
+    public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment("https://portal.microsoftazure.de",
+        "https://manage.microsoftazure.de/publishsettings/index", "https://management.core.cloudapi.de/",
+        "https://management.microsoftazure.de/", "https://management.core.cloudapi.de:8443/", ".database.cloudapi.de",
+        "https://gallery.cloudapi.de/", "https://login.microsoftonline.de/", "https://management.core.cloudapi.de/",
+        "https://graph.cloudapi.de/", "https://graph.microsoft.de/", "N/A", "2013-04-05", ".core.cloudapi.de",
+        ".vault.microsoftazure.de", "N/A", "N/A", "N/A", "N/A", "N/A");
 
     /**
      * Gets the entirety of the endpoints associated with the current environment.
@@ -289,6 +259,15 @@ public final class AzureEnvironment {
     }
 
     /**
+     * Gets the managed HSM DNS suffix.
+     *
+     * @return the managed HSM DNS suffix.
+     */
+    public String getManagedHsmDnsSuffix() {
+        return endpoints.get("managedHsmDnsSuffix");
+    }
+
+    /**
      * Gets the data lake store filesystem service dns suffix.
      *
      * @return the data lake store filesystem service dns suffix.
@@ -353,7 +332,9 @@ public final class AzureEnvironment {
         /** Microsoft Graph APIs endpoint. */
         MICROSOFT_GRAPH("microsoftGraphResourceId"),
         /** Managed HSM DNS suffix. */
-        MANAGED_HSM("managedHsmDnsSuffix");
+        MANAGED_HSM("managedHsmDnsSuffix"),
+        /** Storage DNS suffix. */
+        STORAGE("storageEndpointSuffix");
 
         private final String field;
 

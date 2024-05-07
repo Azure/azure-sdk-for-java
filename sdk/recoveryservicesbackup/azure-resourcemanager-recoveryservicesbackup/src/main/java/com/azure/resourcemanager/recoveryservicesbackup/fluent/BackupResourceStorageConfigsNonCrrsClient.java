@@ -11,12 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceConfigResourceInner;
 
 /**
- * An instance of this class provides access to all the operations defined in BackupResourceStorageConfigsNonCrrsClient.
+ * An instance of this class provides access to all the operations defined in
+ * BackupResourceStorageConfigsNonCrrsClient.
  */
 public interface BackupResourceStorageConfigsNonCrrsClient {
     /**
      * Fetches resource storage config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -26,12 +27,12 @@ public interface BackupResourceStorageConfigsNonCrrsClient {
      * @return the resource storage details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupResourceConfigResourceInner> getWithResponse(
-        String vaultName, String resourceGroupName, Context context);
+    Response<BackupResourceConfigResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        Context context);
 
     /**
      * Fetches resource storage config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +45,7 @@ public interface BackupResourceStorageConfigsNonCrrsClient {
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -55,12 +56,12 @@ public interface BackupResourceStorageConfigsNonCrrsClient {
      * @return the resource storage details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupResourceConfigResourceInner> updateWithResponse(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context);
+    Response<BackupResourceConfigResourceInner> updateWithResponse(String vaultName, String resourceGroupName,
+        BackupResourceConfigResourceInner parameters, Context context);
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -70,12 +71,12 @@ public interface BackupResourceStorageConfigsNonCrrsClient {
      * @return the resource storage details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupResourceConfigResourceInner update(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters);
+    BackupResourceConfigResourceInner update(String vaultName, String resourceGroupName,
+        BackupResourceConfigResourceInner parameters);
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.
@@ -86,12 +87,12 @@ public interface BackupResourceStorageConfigsNonCrrsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> patchWithResponse(
-        String vaultName, String resourceGroupName, BackupResourceConfigResourceInner parameters, Context context);
+    Response<Void> patchWithResponse(String vaultName, String resourceGroupName,
+        BackupResourceConfigResourceInner parameters, Context context);
 
     /**
      * Updates vault storage model type.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault storage config request.

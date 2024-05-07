@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.security.models.SecurityContactPropertiesAlertNotifications;
+import com.azure.resourcemanager.security.models.NotificationsSource;
 import com.azure.resourcemanager.security.models.SecurityContactPropertiesNotificationsByRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** Describes security contact properties. */
+/**
+ * Describes security contact properties.
+ */
 @Fluent
 public final class SecurityContactProperties {
     /*
@@ -26,10 +29,16 @@ public final class SecurityContactProperties {
     private String phone;
 
     /*
-     * Defines whether to send email notifications about new security alerts
+     * Indicates whether the security contact is enabled.
      */
-    @JsonProperty(value = "alertNotifications")
-    private SecurityContactPropertiesAlertNotifications alertNotifications;
+    @JsonProperty(value = "isEnabled")
+    private Boolean isEnabled;
+
+    /*
+     * A collection of sources types which evaluate the email notification.
+     */
+    @JsonProperty(value = "notificationsSources")
+    private List<NotificationsSource> notificationsSources;
 
     /*
      * Defines whether to send email notifications from Microsoft Defender for Cloud to persons with specific RBAC
@@ -38,14 +47,16 @@ public final class SecurityContactProperties {
     @JsonProperty(value = "notificationsByRole")
     private SecurityContactPropertiesNotificationsByRole notificationsByRole;
 
-    /** Creates an instance of SecurityContactProperties class. */
+    /**
+     * Creates an instance of SecurityContactProperties class.
+     */
     public SecurityContactProperties() {
     }
 
     /**
      * Get the emails property: List of email addresses which will get notifications from Microsoft Defender for Cloud
      * by the configurations defined in this security contact.
-     *
+     * 
      * @return the emails value.
      */
     public String emails() {
@@ -55,7 +66,7 @@ public final class SecurityContactProperties {
     /**
      * Set the emails property: List of email addresses which will get notifications from Microsoft Defender for Cloud
      * by the configurations defined in this security contact.
-     *
+     * 
      * @param emails the emails value to set.
      * @return the SecurityContactProperties object itself.
      */
@@ -66,7 +77,7 @@ public final class SecurityContactProperties {
 
     /**
      * Get the phone property: The security contact's phone number.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -75,7 +86,7 @@ public final class SecurityContactProperties {
 
     /**
      * Set the phone property: The security contact's phone number.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the SecurityContactProperties object itself.
      */
@@ -85,30 +96,49 @@ public final class SecurityContactProperties {
     }
 
     /**
-     * Get the alertNotifications property: Defines whether to send email notifications about new security alerts.
-     *
-     * @return the alertNotifications value.
+     * Get the isEnabled property: Indicates whether the security contact is enabled.
+     * 
+     * @return the isEnabled value.
      */
-    public SecurityContactPropertiesAlertNotifications alertNotifications() {
-        return this.alertNotifications;
+    public Boolean isEnabled() {
+        return this.isEnabled;
     }
 
     /**
-     * Set the alertNotifications property: Defines whether to send email notifications about new security alerts.
-     *
-     * @param alertNotifications the alertNotifications value to set.
+     * Set the isEnabled property: Indicates whether the security contact is enabled.
+     * 
+     * @param isEnabled the isEnabled value to set.
      * @return the SecurityContactProperties object itself.
      */
-    public SecurityContactProperties withAlertNotifications(
-        SecurityContactPropertiesAlertNotifications alertNotifications) {
-        this.alertNotifications = alertNotifications;
+    public SecurityContactProperties withIsEnabled(Boolean isEnabled) {
+        this.isEnabled = isEnabled;
+        return this;
+    }
+
+    /**
+     * Get the notificationsSources property: A collection of sources types which evaluate the email notification.
+     * 
+     * @return the notificationsSources value.
+     */
+    public List<NotificationsSource> notificationsSources() {
+        return this.notificationsSources;
+    }
+
+    /**
+     * Set the notificationsSources property: A collection of sources types which evaluate the email notification.
+     * 
+     * @param notificationsSources the notificationsSources value to set.
+     * @return the SecurityContactProperties object itself.
+     */
+    public SecurityContactProperties withNotificationsSources(List<NotificationsSource> notificationsSources) {
+        this.notificationsSources = notificationsSources;
         return this;
     }
 
     /**
      * Get the notificationsByRole property: Defines whether to send email notifications from Microsoft Defender for
      * Cloud to persons with specific RBAC roles on the subscription.
-     *
+     * 
      * @return the notificationsByRole value.
      */
     public SecurityContactPropertiesNotificationsByRole notificationsByRole() {
@@ -118,24 +148,24 @@ public final class SecurityContactProperties {
     /**
      * Set the notificationsByRole property: Defines whether to send email notifications from Microsoft Defender for
      * Cloud to persons with specific RBAC roles on the subscription.
-     *
+     * 
      * @param notificationsByRole the notificationsByRole value to set.
      * @return the SecurityContactProperties object itself.
      */
-    public SecurityContactProperties withNotificationsByRole(
-        SecurityContactPropertiesNotificationsByRole notificationsByRole) {
+    public SecurityContactProperties
+        withNotificationsByRole(SecurityContactPropertiesNotificationsByRole notificationsByRole) {
         this.notificationsByRole = notificationsByRole;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (alertNotifications() != null) {
-            alertNotifications().validate();
+        if (notificationsSources() != null) {
+            notificationsSources().forEach(e -> e.validate());
         }
         if (notificationsByRole() != null) {
             notificationsByRole().validate();

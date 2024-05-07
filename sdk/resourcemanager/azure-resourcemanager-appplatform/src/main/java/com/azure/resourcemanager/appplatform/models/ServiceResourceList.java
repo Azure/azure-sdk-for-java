@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appplatform.fluent.models.ServiceResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that includes an array of Service resources and a possible link for next set. */
+/**
+ * Object that includes an array of Service resources and a possible link for next set.
+ */
 @Fluent
 public final class ServiceResourceList {
     /*
@@ -26,8 +28,14 @@ public final class ServiceResourceList {
     private String nextLink;
 
     /**
+     * Creates an instance of ServiceResourceList class.
+     */
+    public ServiceResourceList() {
+    }
+
+    /**
      * Get the value property: Collection of Service resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ServiceResourceInner> value() {
@@ -36,7 +44,7 @@ public final class ServiceResourceList {
 
     /**
      * Set the value property: Collection of Service resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServiceResourceList object itself.
      */
@@ -46,9 +54,9 @@ public final class ServiceResourceList {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +64,9 @@ public final class ServiceResourceList {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ServiceResourceList object itself.
      */
@@ -69,7 +77,7 @@ public final class ServiceResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

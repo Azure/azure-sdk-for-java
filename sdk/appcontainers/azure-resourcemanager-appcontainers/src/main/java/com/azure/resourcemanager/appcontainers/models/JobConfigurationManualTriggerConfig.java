@@ -25,14 +25,16 @@ public final class JobConfigurationManualTriggerConfig {
     @JsonProperty(value = "parallelism")
     private Integer parallelism;
 
-    /** Creates an instance of JobConfigurationManualTriggerConfig class. */
+    /**
+     * Creates an instance of JobConfigurationManualTriggerConfig class.
+     */
     public JobConfigurationManualTriggerConfig() {
     }
 
     /**
      * Get the replicaCompletionCount property: Minimum number of successful replica completions before overall job
      * completion.
-     *
+     * 
      * @return the replicaCompletionCount value.
      */
     public Integer replicaCompletionCount() {
@@ -42,7 +44,7 @@ public final class JobConfigurationManualTriggerConfig {
     /**
      * Set the replicaCompletionCount property: Minimum number of successful replica completions before overall job
      * completion.
-     *
+     * 
      * @param replicaCompletionCount the replicaCompletionCount value to set.
      * @return the JobConfigurationManualTriggerConfig object itself.
      */
@@ -53,7 +55,7 @@ public final class JobConfigurationManualTriggerConfig {
 
     /**
      * Get the parallelism property: Number of parallel replicas of a job that can run at a given time.
-     *
+     * 
      * @return the parallelism value.
      */
     public Integer parallelism() {
@@ -62,7 +64,7 @@ public final class JobConfigurationManualTriggerConfig {
 
     /**
      * Set the parallelism property: Number of parallel replicas of a job that can run at a given time.
-     *
+     * 
      * @param parallelism the parallelism value to set.
      * @return the JobConfigurationManualTriggerConfig object itself.
      */
@@ -73,7 +75,7 @@ public final class JobConfigurationManualTriggerConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

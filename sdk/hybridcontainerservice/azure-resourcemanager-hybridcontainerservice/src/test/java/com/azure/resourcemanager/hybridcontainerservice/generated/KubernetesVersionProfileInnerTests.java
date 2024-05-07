@@ -14,18 +14,18 @@ public final class KubernetesVersionProfileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesVersionProfileInner model = BinaryData.fromString(
-            "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"abcypmivk\"},\"properties\":{\"provisioningState\":\"InProgress\",\"values\":[{\"version\":\"fwnfnb\",\"capabilities\":{\"supportPlan\":[\"onlebxetqgtzxdpn\",\"bqqwxrj\"]},\"isPreview\":false,\"patchVersions\":{\"chcbonqvpkvlrxnj\":{\"readiness\":[{},{},{}],\"upgrades\":[\"bisnja\",\"pmng\",\"zscxaqwo\"]},\"e\":{\"readiness\":[{},{}],\"upgrades\":[\"pheoflokeyy\",\"enjbdlwtgrhp\",\"jp\",\"umasxazjpq\"]},\"xhejjzzvdud\":{\"readiness\":[{},{}],\"upgrades\":[\"b\"]}}},{\"version\":\"dslfhotwmcy\",\"capabilities\":{\"supportPlan\":[\"bjnpg\",\"cftadeh\",\"nltyfsoppusuesnz\",\"dejbavo\"]},\"isPreview\":true,\"patchVersions\":{\"azjdyggd\":{\"readiness\":[{},{},{}],\"upgrades\":[\"bqvudwxdndn\",\"owgujjugwdkcglhs\"]},\"enevfyexfwhybci\":{\"readiness\":[{},{},{},{}],\"upgrades\":[\"b\",\"uofqwe\",\"kh\"]}}},{\"version\":\"yvdcsitynnaa\",\"capabilities\":{\"supportPlan\":[\"tehfiqscjeypvh\",\"zrkgqhcjrefovg\",\"kqsleyyvxy\"]},\"isPreview\":false,\"patchVersions\":{\"oaeupfhyhltrpmo\":{\"readiness\":[{}],\"upgrades\":[\"ngj\",\"rcczsqpjhvmd\",\"jvnysounqe\",\"a\"]},\"zydagfuaxbezyiuo\":{\"readiness\":[{},{},{},{}],\"upgrades\":[\"atuokthfuiu\",\"odsfcpkvxodpuozm\"]},\"o\":{\"readiness\":[{},{},{},{}],\"upgrades\":[\"rdxwzywqsm\",\"surex\",\"moryocfsfksym\",\"dystkiiuxhqyud\"]},\"lrmv\":{\"readiness\":[{}],\"upgrades\":[\"poczvyifqrvkdvjs\"]}}},{\"version\":\"f\",\"capabilities\":{\"supportPlan\":[\"pnpulexxbczwtru\",\"iqzbq\",\"vsovmyokac\",\"pkwlhz\"]},\"isPreview\":false,\"patchVersions\":{\"zjuqkhrsaj\":{\"readiness\":[{},{}],\"upgrades\":[\"bvvnchrkcciw\"]},\"rfbyaosvexcso\":{\"readiness\":[{}],\"upgrades\":[\"foskghsauuimj\",\"vxieduugidyj\"]}}}]},\"id\":\"clhocohsl\",\"name\":\"ev\",\"type\":\"eggzfb\"}")
+            "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"exxbczwtr\"},\"properties\":{\"provisioningState\":\"Creating\",\"values\":[{\"version\":\"j\",\"isPreview\":false,\"patchVersions\":{\"zjuqkhrsaj\":{\"readiness\":[{},{}],\"upgrades\":[\"cspkwlhzdobpxjmf\",\"bvvnchrkcciw\"]},\"rfbyaosvexcso\":{\"readiness\":[{}],\"upgrades\":[\"foskghsauuimj\",\"vxieduugidyj\"]},\"vmezy\":{\"readiness\":[{},{},{}],\"upgrades\":[\"ocohslkevleg\",\"zfbuhf\",\"vfaxkffeiith\"]}}}]},\"id\":\"hxmzsbbzoggig\",\"name\":\"xwburvjxxjns\",\"type\":\"ydptkoen\"}")
             .toObject(KubernetesVersionProfileInner.class);
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.extendedLocation().type());
-        Assertions.assertEquals("abcypmivk", model.extendedLocation().name());
+        Assertions.assertEquals("exxbczwtr", model.extendedLocation().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         KubernetesVersionProfileInner model = new KubernetesVersionProfileInner().withExtendedLocation(
-            new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("abcypmivk"));
+            new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("exxbczwtr"));
         model = BinaryData.fromObject(model).toObject(KubernetesVersionProfileInner.class);
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.extendedLocation().type());
-        Assertions.assertEquals("abcypmivk", model.extendedLocation().name());
+        Assertions.assertEquals("exxbczwtr", model.extendedLocation().name());
     }
 }

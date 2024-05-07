@@ -14,6 +14,13 @@ package com.azure.identity;
  */
 public class SharedTokenCacheCredentialBuilder extends AadCredentialBuilderBase<SharedTokenCacheCredentialBuilder> {
     private String username;
+
+    /**
+     * Constructs an instance of SharedTokenCacheCredentialBuilder.
+     */
+    public SharedTokenCacheCredentialBuilder() {
+        super();
+    }
     private TokenCachePersistenceOptions tokenCachePersistenceOptions = new TokenCachePersistenceOptions()
         .setUnencryptedStorageAllowed(true);
 

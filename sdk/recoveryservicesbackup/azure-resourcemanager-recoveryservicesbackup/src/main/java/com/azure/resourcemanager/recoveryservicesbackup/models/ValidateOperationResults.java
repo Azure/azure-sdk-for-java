@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ValidateOperationResults. */
+/**
+ * Resource collection API of ValidateOperationResults.
+ */
 public interface ValidateOperationResults {
     /**
      * Fetches the result of a triggered validate operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation whose result needs to be fetched.
@@ -21,12 +23,12 @@ public interface ValidateOperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<ValidateOperationsResponse> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context);
+    Response<ValidateOperationsResponse> getWithResponse(String vaultName, String resourceGroupName, String operationId,
+        Context context);
 
     /**
      * Fetches the result of a triggered validate operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation whose result needs to be fetched.

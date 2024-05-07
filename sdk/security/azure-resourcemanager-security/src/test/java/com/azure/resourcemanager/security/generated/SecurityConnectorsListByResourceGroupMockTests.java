@@ -32,41 +32,30 @@ public final class SecurityConnectorsListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"ylblfsprr\",\"hierarchyIdentifierTrialEndDate\":\"2021-06-27T02:59:42Z\",\"environmentName\":\"GitLab\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"vvfxrdytzfsl\",\"tags\":{\"mcdiiisk\":\"hqikmgobliq\",\"vtrkfkg\":\"bonxxupj\"},\"id\":\"njqnnpjwkosny\",\"name\":\"igfoujjcxgdqmr\",\"type\":\"hnzkwopswnyinxu\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"l\",\"hierarchyIdentifierTrialEndDate\":\"2021-07-29T04:59:24Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"wlfjwxgvtk\"},{\"offeringType\":\"CloudOffering\",\"description\":\"tvrpeawzzkv\"},{\"offeringType\":\"CloudOffering\",\"description\":\"cozv\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"sphtraitrmsukxtu\",\"tags\":{\"fvrcclcl\":\"cptctxpoegyckme\",\"mmw\":\"kfvyj\"},\"id\":\"vpoip\",\"name\":\"ylxtebvse\",\"type\":\"fzvvpaysqwhzdc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SecurityConnector> response =
-            manager.securityConnectors().listByResourceGroup("qshixbc", com.azure.core.util.Context.NONE);
+        PagedIterable<SecurityConnector> response
+            = manager.securityConnectors().listByResourceGroup("tkajqhsnsej", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vvfxrdytzfsl", response.iterator().next().location());
-        Assertions.assertEquals("hqikmgobliq", response.iterator().next().tags().get("mcdiiisk"));
-        Assertions.assertEquals("ylblfsprr", response.iterator().next().hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GIT_LAB, response.iterator().next().environmentName());
+        Assertions.assertEquals("sphtraitrmsukxtu", response.iterator().next().location());
+        Assertions.assertEquals("cptctxpoegyckme", response.iterator().next().tags().get("fvrcclcl"));
+        Assertions.assertEquals("l", response.iterator().next().hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GITHUB, response.iterator().next().environmentName());
     }
 }

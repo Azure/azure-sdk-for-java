@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -21,11 +22,7 @@ import java.util.Map;
  * The nested object which contains the information and credential which can be used to connect with related store or
  * compute resource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = LinkedService.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = LinkedService.class, visible = true)
 @JsonTypeName("LinkedService")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureStorage", value = AzureStorageLinkedService.class),
@@ -53,6 +50,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureMySql", value = AzureMySqlLinkedService.class),
     @JsonSubTypes.Type(name = "MySql", value = MySqlLinkedService.class),
     @JsonSubTypes.Type(name = "PostgreSql", value = PostgreSqlLinkedService.class),
+    @JsonSubTypes.Type(name = "PostgreSqlV2", value = PostgreSqlV2LinkedService.class),
     @JsonSubTypes.Type(name = "Sybase", value = SybaseLinkedService.class),
     @JsonSubTypes.Type(name = "Db2", value = Db2LinkedService.class),
     @JsonSubTypes.Type(name = "Teradata", value = TeradataLinkedService.class),
@@ -104,6 +102,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "Drill", value = DrillLinkedService.class),
     @JsonSubTypes.Type(name = "Eloqua", value = EloquaLinkedService.class),
     @JsonSubTypes.Type(name = "GoogleBigQuery", value = GoogleBigQueryLinkedService.class),
+    @JsonSubTypes.Type(name = "GoogleBigQueryV2", value = GoogleBigQueryV2LinkedService.class),
     @JsonSubTypes.Type(name = "Greenplum", value = GreenplumLinkedService.class),
     @JsonSubTypes.Type(name = "HBase", value = HBaseLinkedService.class),
     @JsonSubTypes.Type(name = "Hive", value = HiveLinkedService.class),
@@ -139,11 +138,23 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerLinkedService.class),
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
     @JsonSubTypes.Type(name = "Snowflake", value = SnowflakeLinkedService.class),
+    @JsonSubTypes.Type(name = "SnowflakeV2", value = SnowflakeV2LinkedService.class),
     @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class),
     @JsonSubTypes.Type(name = "AzureSynapseArtifacts", value = AzureSynapseArtifactsLinkedService.class),
-    @JsonSubTypes.Type(name = "LakeHouse", value = LakeHouseLinkedService.class) })
+    @JsonSubTypes.Type(name = "LakeHouse", value = LakeHouseLinkedService.class),
+    @JsonSubTypes.Type(name = "SalesforceV2", value = SalesforceV2LinkedService.class),
+    @JsonSubTypes.Type(name = "SalesforceServiceCloudV2", value = SalesforceServiceCloudV2LinkedService.class),
+    @JsonSubTypes.Type(name = "Warehouse", value = WarehouseLinkedService.class),
+    @JsonSubTypes.Type(name = "ServiceNowV2", value = ServiceNowV2LinkedService.class) })
 @Fluent
 public class LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
     /*
      * The integration runtime reference.
      */
@@ -170,8 +181,7 @@ public class LinkedService {
     private List<Object> annotations;
 
     /*
-     * The nested object which contains the information and credential which can be used to connect with related store
-     * or compute resource.
+     * The nested object which contains the information and credential which can be used to connect with related store or compute resource.
      */
     @JsonIgnore
     private Map<String, Object> additionalProperties;
@@ -180,6 +190,16 @@ public class LinkedService {
      * Creates an instance of LinkedService class.
      */
     public LinkedService() {
+        this.type = "LinkedService";
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

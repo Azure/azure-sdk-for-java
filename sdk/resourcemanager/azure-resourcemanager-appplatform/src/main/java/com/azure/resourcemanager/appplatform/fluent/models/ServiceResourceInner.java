@@ -6,12 +6,15 @@ package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.ClusterResourceProperties;
 import com.azure.resourcemanager.appplatform.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Service resource. */
+/**
+ * Service resource.
+ */
 @Fluent
 public final class ServiceResourceInner extends Resource {
     /*
@@ -26,9 +29,21 @@ public final class ServiceResourceInner extends Resource {
     @JsonProperty(value = "sku")
     private Sku sku;
 
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of ServiceResourceInner class.
+     */
+    public ServiceResourceInner() {
+    }
+
     /**
      * Get the properties property: Properties of the Service resource.
-     *
+     * 
      * @return the properties value.
      */
     public ClusterResourceProperties properties() {
@@ -37,7 +52,7 @@ public final class ServiceResourceInner extends Resource {
 
     /**
      * Set the properties property: Properties of the Service resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ServiceResourceInner object itself.
      */
@@ -48,7 +63,7 @@ public final class ServiceResourceInner extends Resource {
 
     /**
      * Get the sku property: Sku of the Service resource.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -57,7 +72,7 @@ public final class ServiceResourceInner extends Resource {
 
     /**
      * Set the sku property: Sku of the Service resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ServiceResourceInner object itself.
      */
@@ -66,14 +81,27 @@ public final class ServiceResourceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -82,7 +110,7 @@ public final class ServiceResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

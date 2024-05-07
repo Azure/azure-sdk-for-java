@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the action that will be triggered by the Automation. */
+/**
+ * The type of the action that will be triggered by the Automation.
+ */
 public final class ActionType extends ExpandableStringEnum<ActionType> {
-    /** Static value LogicApp for ActionType. */
+    /**
+     * Static value LogicApp for ActionType.
+     */
     public static final ActionType LOGIC_APP = fromString("LogicApp");
 
-    /** Static value EventHub for ActionType. */
+    /**
+     * Static value EventHub for ActionType.
+     */
     public static final ActionType EVENT_HUB = fromString("EventHub");
 
-    /** Static value Workspace for ActionType. */
+    /**
+     * Static value Workspace for ActionType.
+     */
     public static final ActionType WORKSPACE = fromString("Workspace");
 
     /**
      * Creates a new instance of ActionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
 
     /**
      * Creates or finds a ActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActionType.
      */
@@ -41,7 +49,7 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
 
     /**
      * Gets known ActionType values.
-     *
+     * 
      * @return known ActionType values.
      */
     public static Collection<ActionType> values() {

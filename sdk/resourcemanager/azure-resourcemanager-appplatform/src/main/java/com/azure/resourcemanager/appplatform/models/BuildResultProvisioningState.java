@@ -8,26 +8,47 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BuildResultProvisioningState. */
+/**
+ * Provisioning state of the KPack build result.
+ */
 public final class BuildResultProvisioningState extends ExpandableStringEnum<BuildResultProvisioningState> {
-    /** Static value Queuing for BuildResultProvisioningState. */
+    /**
+     * Static value Queuing for BuildResultProvisioningState.
+     */
     public static final BuildResultProvisioningState QUEUING = fromString("Queuing");
 
-    /** Static value Building for BuildResultProvisioningState. */
+    /**
+     * Static value Building for BuildResultProvisioningState.
+     */
     public static final BuildResultProvisioningState BUILDING = fromString("Building");
 
-    /** Static value Succeeded for BuildResultProvisioningState. */
+    /**
+     * Static value Succeeded for BuildResultProvisioningState.
+     */
     public static final BuildResultProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for BuildResultProvisioningState. */
+    /**
+     * Static value Failed for BuildResultProvisioningState.
+     */
     public static final BuildResultProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Deleting for BuildResultProvisioningState. */
+    /**
+     * Static value Deleting for BuildResultProvisioningState.
+     */
     public static final BuildResultProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of BuildResultProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BuildResultProvisioningState() {
+    }
+
+    /**
      * Creates or finds a BuildResultProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BuildResultProvisioningState.
      */
@@ -38,7 +59,7 @@ public final class BuildResultProvisioningState extends ExpandableStringEnum<Bui
 
     /**
      * Gets known BuildResultProvisioningState values.
-     *
+     * 
      * @return known BuildResultProvisioningState values.
      */
     public static Collection<BuildResultProvisioningState> values() {

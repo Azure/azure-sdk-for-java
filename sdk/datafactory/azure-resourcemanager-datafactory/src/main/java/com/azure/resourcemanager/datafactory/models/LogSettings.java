@@ -109,8 +109,9 @@ public final class LogSettings {
             copyActivityLogSettings().validate();
         }
         if (logLocationSettings() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property logLocationSettings in model LogSettings"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property logLocationSettings in model LogSettings"));
         } else {
             logLocationSettings().validate();
         }

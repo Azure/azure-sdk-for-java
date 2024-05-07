@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Status of the sub-assessment. */
+/**
+ * Status of the sub-assessment.
+ */
 @Immutable
 public final class SubAssessmentStatus {
     /*
@@ -34,13 +36,15 @@ public final class SubAssessmentStatus {
     @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private Severity severity;
 
-    /** Creates an instance of SubAssessmentStatus class. */
+    /**
+     * Creates an instance of SubAssessmentStatus class.
+     */
     public SubAssessmentStatus() {
     }
 
     /**
      * Get the code property: Programmatic code for the status of the assessment.
-     *
+     * 
      * @return the code value.
      */
     public SubAssessmentStatusCode code() {
@@ -49,7 +53,7 @@ public final class SubAssessmentStatus {
 
     /**
      * Get the cause property: Programmatic code for the cause of the assessment status.
-     *
+     * 
      * @return the cause value.
      */
     public String cause() {
@@ -58,7 +62,7 @@ public final class SubAssessmentStatus {
 
     /**
      * Get the description property: Human readable description of the assessment status.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -67,7 +71,7 @@ public final class SubAssessmentStatus {
 
     /**
      * Get the severity property: The sub-assessment severity level.
-     *
+     * 
      * @return the severity value.
      */
     public Severity severity() {
@@ -76,7 +80,7 @@ public final class SubAssessmentStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

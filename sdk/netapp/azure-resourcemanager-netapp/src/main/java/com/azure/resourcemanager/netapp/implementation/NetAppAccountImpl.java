@@ -10,7 +10,6 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
-import com.azure.resourcemanager.netapp.models.EncryptionMigrationRequest;
 import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
 import com.azure.resourcemanager.netapp.models.NetAppAccountPatch;
@@ -79,14 +78,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public Boolean disableShowmount() {
         return this.innerModel().disableShowmount();
-    }
-
-    public String nfsV4IdDomain() {
-        return this.innerModel().nfsV4IdDomain();
-    }
-
-    public Boolean isMultiAdEnabled() {
-        return this.innerModel().isMultiAdEnabled();
     }
 
     public Region region() {
@@ -159,8 +150,8 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
     }
 
     public NetAppAccount refresh() {
@@ -181,14 +172,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public void renewCredentials(Context context) {
         serviceManager.accounts().renewCredentials(resourceGroupName, accountName, context);
-    }
-
-    public void migrateEncryptionKey() {
-        serviceManager.accounts().migrateEncryptionKey(resourceGroupName, accountName);
-    }
-
-    public void migrateEncryptionKey(EncryptionMigrationRequest body, Context context) {
-        serviceManager.accounts().migrateEncryptionKey(resourceGroupName, accountName, body, context);
     }
 
     public NetAppAccountImpl withRegion(Region location) {
@@ -237,16 +220,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
             return this;
         } else {
             this.updateBody.withEncryption(encryption);
-            return this;
-        }
-    }
-
-    public NetAppAccountImpl withNfsV4IdDomain(String nfsV4IdDomain) {
-        if (isInCreateMode()) {
-            this.innerModel().withNfsV4IdDomain(nfsV4IdDomain);
-            return this;
-        } else {
-            this.updateBody.withNfsV4IdDomain(nfsV4IdDomain);
             return this;
         }
     }

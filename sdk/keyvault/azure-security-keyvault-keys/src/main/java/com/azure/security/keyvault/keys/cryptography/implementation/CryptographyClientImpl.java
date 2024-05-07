@@ -64,7 +64,6 @@ public final class CryptographyClientImpl {
     public CryptographyClientImpl(String keyId, HttpPipeline pipeline, CryptographyServiceVersion serviceVersion) {
         Objects.requireNonNull(keyId);
 
-        //Arrays.asList(vaultUrl, keyCollection, keyName, keyVersion);
         List<String> data = unpackAndValidateId(keyId, LOGGER);
 
         this.vaultUrl = data.get(0);
@@ -182,7 +181,6 @@ public final class CryptographyClientImpl {
         return new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(),
             result.getAuthenticationTag(), result.getAdditionalAuthenticatedData());
     }
-
 
     public Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
@@ -322,7 +320,6 @@ public final class CryptographyClientImpl {
 
         return new UnwrapResult(result.getResult(), algorithm, keyId);
     }
-
 
     public Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");

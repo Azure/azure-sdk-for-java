@@ -48,13 +48,15 @@ public class ConnectionOptions {
      *     namespace.servicebus.windows.net)
      * @param tokenCredential The credential for connecting to the AMQP broker.
      * @param authorizationType The authorisation type used for authorizing with the CBS node.
+     * @param authorizationScope The scope to use when authorizing.
      * @param transport The type connection used for the AMQP connection.
      * @param retryOptions Retry options for the connection.
      * @param proxyOptions Any proxy options to set.
      * @param scheduler Scheduler for async operations.
      * @param clientOptions Client options for the connection.
      * @param verifyMode How to verify SSL information.
-     *
+     * @param product The name of the product this connection is being used for.
+     * @param clientVersion The version of the client library creating the connection.
      * @throws NullPointerException in the case that {@code fullyQualifiedNamespace}, {@code tokenCredential},
      *     {@code authorizationType}, {@code transport}, {@code retryOptions}, {@code scheduler}, {@code clientOptions}
      *     {@code proxyOptions} or {@code verifyMode} is null.
@@ -76,12 +78,15 @@ public class ConnectionOptions {
      *     namespace.servicebus.windows.net)
      * @param tokenCredential The credential for connecting to the AMQP broker.
      * @param authorizationType The authorisation type used for authorizing with the CBS node.
+     * @param authorizationScope The scope to use when authorizing.
      * @param transport The type connection used for the AMQP connection.
      * @param retryOptions Retry options for the connection.
      * @param proxyOptions (Optional) Any proxy options to set.
      * @param scheduler Scheduler for async operations.
      * @param clientOptions Client options for the connection.
      * @param verifyMode How to verify SSL information.
+     * @param product The name of the product this connection is being used for.
+     * @param clientVersion The version of the client library creating the connection.
      * @param hostname Connection hostname. Used to create the connection to in the case that we cannot
      *     connect directly to the AMQP broker.
      * @param port Connection port. Used to create the connection to in the case we cannot connect directly
@@ -96,8 +101,8 @@ public class ConnectionOptions {
         AmqpRetryOptions retryOptions, ProxyOptions proxyOptions, Scheduler scheduler, ClientOptions clientOptions,
         SslDomain.VerifyMode verifyMode, String product, String clientVersion, String hostname, int port) {
 
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' is required.");
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' is required.");
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' is required.");
         this.authorizationType = Objects.requireNonNull(authorizationType, "'authorizationType' is required.");
         this.authorizationScope = Objects.requireNonNull(authorizationScope, "'authorizationScope' is required.");
@@ -169,6 +174,11 @@ public class ConnectionOptions {
         return fullyQualifiedNamespace;
     }
 
+    /**
+     * Gets the retry options.
+     *
+     * @return The retry options.
+     */
     public AmqpRetryOptions getRetry() {
         return retryOptions;
     }
@@ -242,11 +252,13 @@ public class ConnectionOptions {
         switch (transport) {
             case AMQP:
                 return ConnectionHandler.AMQPS_PORT;
+
             case AMQP_WEB_SOCKETS:
                 return WebSocketsConnectionHandler.HTTPS_PORT;
+
             default:
-                throw LOGGER.logThrowableAsError(
-                    new IllegalArgumentException("Transport Type is not supported: " + transport));
+                throw LOGGER
+                    .logThrowableAsError(new IllegalArgumentException("Transport Type is not supported: " + transport));
         }
     }
 }

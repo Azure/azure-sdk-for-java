@@ -10,7 +10,9 @@ import com.azure.resourcemanager.playwrighttesting.fluent.models.QuotaInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a Quota list operation. */
+/**
+ * The response of a Quota list operation.
+ */
 @Fluent
 public final class QuotaListResult {
     /*
@@ -25,13 +27,15 @@ public final class QuotaListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of QuotaListResult class. */
+    /**
+     * Creates an instance of QuotaListResult class.
+     */
     public QuotaListResult() {
     }
 
     /**
      * Get the value property: The Quota items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<QuotaInner> value() {
@@ -40,7 +44,7 @@ public final class QuotaListResult {
 
     /**
      * Set the value property: The Quota items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the QuotaListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class QuotaListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class QuotaListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the QuotaListResult object itself.
      */
@@ -71,14 +75,13 @@ public final class QuotaListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model QuotaListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model QuotaListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

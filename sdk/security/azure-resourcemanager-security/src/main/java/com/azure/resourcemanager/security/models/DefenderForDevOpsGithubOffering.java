@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The Defender for DevOps for Github offering. */
+/**
+ * The Defender for DevOps for Github offering.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
 @JsonTypeName("DefenderForDevOpsGithub")
 @Immutable
 public final class DefenderForDevOpsGithubOffering extends CloudOffering {
-    /** Creates an instance of DefenderForDevOpsGithubOffering class. */
+    /**
+     * Creates an instance of DefenderForDevOpsGithubOffering class.
+     */
     public DefenderForDevOpsGithubOffering() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

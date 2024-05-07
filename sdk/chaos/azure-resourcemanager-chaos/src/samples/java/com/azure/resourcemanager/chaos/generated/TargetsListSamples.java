@@ -4,26 +4,22 @@
 
 package com.azure.resourcemanager.chaos.generated;
 
-/** Samples for Targets List. */
+/**
+ * Samples for Targets List.
+ */
 public final class TargetsListSamples {
     /*
-     * x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/ListTargets.json
+     * x-ms-original-file:
+     * specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/ListTargets.json
      */
     /**
      * Sample code: List all Targets that extend a virtual machine resource.
-     *
+     * 
      * @param manager Entry point to ChaosManager.
      */
-    public static void listAllTargetsThatExtendAVirtualMachineResource(
-        com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager
-            .targets()
-            .list(
-                "exampleRG",
-                "Microsoft.Compute",
-                "virtualMachines",
-                "exampleVM",
-                null,
-                com.azure.core.util.Context.NONE);
+    public static void
+        listAllTargetsThatExtendAVirtualMachineResource(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.targets().list("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM", null,
+            com.azure.core.util.Context.NONE);
     }
 }

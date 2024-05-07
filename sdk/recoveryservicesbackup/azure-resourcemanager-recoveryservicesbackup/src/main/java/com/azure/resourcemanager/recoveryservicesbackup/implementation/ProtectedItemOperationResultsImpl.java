@@ -20,48 +20,28 @@ public final class ProtectedItemOperationResultsImpl implements ProtectedItemOpe
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ProtectedItemOperationResultsImpl(
-        ProtectedItemOperationResultsClient innerClient,
+    public ProtectedItemOperationResultsImpl(ProtectedItemOperationResultsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ProtectedItemResource> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId,
-        Context context) {
-        Response<ProtectedItemResourceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId, context);
+    public Response<ProtectedItemResource> getWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String operationId, Context context) {
+        Response<ProtectedItemResourceInner> inner = this.serviceClient().getWithResponse(vaultName, resourceGroupName,
+            fabricName, containerName, protectedItemName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProtectedItemResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ProtectedItemResource get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId) {
-        ProtectedItemResourceInner inner =
-            this
-                .serviceClient()
-                .get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId);
+    public ProtectedItemResource get(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String operationId) {
+        ProtectedItemResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, fabricName,
+            containerName, protectedItemName, operationId);
         if (inner != null) {
             return new ProtectedItemResourceImpl(inner, this.manager());
         } else {

@@ -46,8 +46,8 @@ public final class VolumesAuthorizeReplicationMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.volumes().authorizeReplication("aoqltfaey", "inmfgvxirp", "hriypoqeyhlqhy", "prlpy",
-            new AuthorizeRequest().withRemoteVolumeResourceId("uciqdsme"), com.azure.core.util.Context.NONE);
+        manager.volumes().authorizeReplication("lqxihhrmooiz", "seypxiutcxapz", "y", "petogebjox",
+            new AuthorizeRequest().withRemoteVolumeResourceId("hvnh"), com.azure.core.util.Context.NONE);
 
     }
 }

@@ -24,13 +24,15 @@ public final class ImageTemplateManagedImageSource extends ImageTemplateSource {
     @JsonProperty(value = "imageId", required = true)
     private String imageId;
 
-    /** Creates an instance of ImageTemplateManagedImageSource class. */
+    /**
+     * Creates an instance of ImageTemplateManagedImageSource class.
+     */
     public ImageTemplateManagedImageSource() {
     }
 
     /**
      * Get the imageId property: ARM resource id of the managed image in customer subscription.
-     *
+     * 
      * @return the imageId value.
      */
     public String imageId() {
@@ -39,7 +41,7 @@ public final class ImageTemplateManagedImageSource extends ImageTemplateSource {
 
     /**
      * Set the imageId property: ARM resource id of the managed image in customer subscription.
-     *
+     * 
      * @param imageId the imageId value to set.
      * @return the ImageTemplateManagedImageSource object itself.
      */
@@ -50,17 +52,15 @@ public final class ImageTemplateManagedImageSource extends ImageTemplateSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (imageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property imageId in model ImageTemplateManagedImageSource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property imageId in model ImageTemplateManagedImageSource"));
         }
     }
 

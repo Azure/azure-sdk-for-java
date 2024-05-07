@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.security.keyvault.keys.cryptography.implementation;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -19,6 +20,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.azure.security.keyvault.keys.models.KeyType.EC;
@@ -32,6 +34,10 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  * Utility methods for the Cryptography portion of KeyVault Keys.
  */
 public final class CryptographyUtils {
+    private CryptographyUtils() {
+        // No-op
+    }
+
     public static final String SECRETS_COLLECTION = "secrets";
 
     public static List<String> unpackAndValidateId(String keyId, ClientLogger logger) {
@@ -66,32 +72,44 @@ public final class CryptographyUtils {
         }
     }
 
-    public static LocalKeyCryptographyClient initializeCryptoClient(JsonWebKey jsonWebKey,
-        CryptographyClientImpl implClient, ClientLogger logger) {
+    public static LocalKeyCryptographyClient initializeLocalClient(JsonWebKey jsonWebKey,
+                                                                   CryptographyClientImpl implClient) {
         if (!KeyType.values().contains(jsonWebKey.getKeyType())) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "The JSON Web Key type: %s is not supported.", jsonWebKey.getKeyType().toString())));
+            throw new IllegalArgumentException(String.format(
+                "The JSON Web Key type: %s is not supported.", jsonWebKey.getKeyType().toString()));
         }
 
-        try {
-            if (jsonWebKey.getKeyType().equals(RSA) || jsonWebKey.getKeyType().equals(RSA_HSM)) {
-                return new RsaKeyCryptographyClient(jsonWebKey, implClient);
-            } else if (jsonWebKey.getKeyType().equals(EC) || jsonWebKey.getKeyType().equals(EC_HSM)) {
-                return new EcKeyCryptographyClient(jsonWebKey, implClient);
-            } else if (jsonWebKey.getKeyType().equals(OCT) || jsonWebKey.getKeyType().equals(OCT_HSM)) {
-                return new AesKeyCryptographyClient(jsonWebKey, implClient);
-            }
-        } catch (RuntimeException e) {
-            throw logger.logExceptionAsError(new RuntimeException("Could not initialize local cryptography client.",
-                e));
+        if (jsonWebKey.getKeyType().equals(RSA) || jsonWebKey.getKeyType().equals(RSA_HSM)) {
+            return new RsaKeyCryptographyClient(jsonWebKey, implClient);
+        } else if (jsonWebKey.getKeyType().equals(EC) || jsonWebKey.getKeyType().equals(EC_HSM)) {
+            return new EcKeyCryptographyClient(jsonWebKey, implClient);
+        } else if (jsonWebKey.getKeyType().equals(OCT) || jsonWebKey.getKeyType().equals(OCT_HSM)) {
+            return new AesKeyCryptographyClient(jsonWebKey, implClient);
         }
 
-        // Should not reach here.
-        return null;
+        // Should never reach this point.
+        throw new IllegalStateException("Could not create local cryptography client.");
     }
 
-    public static boolean checkKeyPermissions(List<KeyOperation> operations, KeyOperation keyOperation) {
-        return operations.contains(keyOperation);
+    public static void verifyKeyPermissions(JsonWebKey jsonWebKey, KeyOperation keyOperation) {
+        if (!jsonWebKey.getKeyOps().contains(keyOperation)) {
+            throw new UnsupportedOperationException(
+                String.format("The %s operation is not allowed for key with id: %s",
+                    keyOperation.toString().toLowerCase(Locale.ROOT), jsonWebKey.getId()));
+        }
+    }
+
+    public static boolean isThrowableRetryable(Throwable e) {
+        if (e instanceof HttpResponseException) {
+            int statusCode = ((HttpResponseException) e).getResponse().getStatusCode();
+
+            // Not a retriable error code.
+            return statusCode != 501 && statusCode != 505
+                && (statusCode >= 500 || statusCode == 408 || statusCode == 429);
+        } else {
+            // Not a service-related transient error.
+            return false;
+        }
     }
 
     /*

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.newrelicobservability.models.LogRules;
 import com.azure.resourcemanager.newrelicobservability.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource-specific properties for this resource. */
+/**
+ * The resource-specific properties for this resource.
+ */
 @Fluent
 public final class MonitoringTagRulesPropertiesInner {
     /*
@@ -30,13 +32,15 @@ public final class MonitoringTagRulesPropertiesInner {
     @JsonProperty(value = "metricRules")
     private MetricRulesInner metricRules;
 
-    /** Creates an instance of MonitoringTagRulesPropertiesInner class. */
+    /**
+     * Creates an instance of MonitoringTagRulesPropertiesInner class.
+     */
     public MonitoringTagRulesPropertiesInner() {
     }
 
     /**
      * Get the provisioningState property: Provisioning State of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -45,7 +49,7 @@ public final class MonitoringTagRulesPropertiesInner {
 
     /**
      * Get the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @return the logRules value.
      */
     public LogRules logRules() {
@@ -54,7 +58,7 @@ public final class MonitoringTagRulesPropertiesInner {
 
     /**
      * Set the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @param logRules the logRules value to set.
      * @return the MonitoringTagRulesPropertiesInner object itself.
      */
@@ -65,7 +69,7 @@ public final class MonitoringTagRulesPropertiesInner {
 
     /**
      * Get the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @return the metricRules value.
      */
     public MetricRulesInner metricRules() {
@@ -74,7 +78,7 @@ public final class MonitoringTagRulesPropertiesInner {
 
     /**
      * Set the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @param metricRules the metricRules value to set.
      * @return the MonitoringTagRulesPropertiesInner object itself.
      */
@@ -85,7 +89,7 @@ public final class MonitoringTagRulesPropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

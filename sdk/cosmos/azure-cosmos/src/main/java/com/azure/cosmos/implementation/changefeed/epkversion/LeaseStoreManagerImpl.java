@@ -196,8 +196,7 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
                 return documentServiceLease
                     .withId(document.getId())
                     .withETag(document.getETag())
-                    .withTs(ModelBridgeInternal.getStringFromJsonSerializable(document,
-                        Constants.Properties.LAST_MODIFIED));
+                    .withTs(document.getString(Constants.Properties.LAST_MODIFIED));
             });
     }
 

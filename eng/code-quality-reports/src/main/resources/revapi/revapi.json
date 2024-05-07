@@ -178,17 +178,17 @@
           "old": "method void com\\.azure\\.spring\\.cloud\\.autoconfigure\\.jms\\.properties\\.AzureServiceBusJmsProperties::(setPassword|setRemoteUrl|setUsername)\\(java\\.lang\\.String\\)",
           "justification": "Remove some meaningless jms properties"
         },
-		{
+        {
           "code": "java.method.addedToInterface",
           "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionQueue(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusQueueProperties)",
           "justification": "New method added to support more properties."
         },
-		{
+        {
           "code": "java.method.addedToInterface",
           "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionSubscription(java.lang.String, java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
           "justification": "New method added to support more properties."
         },
-		{
+        {
           "code": "java.method.addedToInterface",
           "new": "method void com.azure.spring.cloud.resourcemanager.provisioning.ServiceBusProvisioner::provisionTopic(java.lang.String, java.lang.String, com.azure.spring.cloud.resourcemanager.provisioning.properties.ServiceBusTopicProperties)",
           "justification": "New method added to support more properties."
@@ -283,17 +283,53 @@
           "justification": "Previous constant value had a typo and was never functional."
         },
         {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.(containers\\.containerregistry|search\\.documents(\\.indexes)?|security\\.keyvault\\.(administration|certificates|keys|keys\\.cryptography)|ai\\.textanalytics|ai\\.formrecognizer(\\.(documentanalysis(\\.administration)?|training))?)\\.models.*",
-          "description": ".*com.fasterxml.jackson.*",
-          "justification": "Removing Jackson annotations from ACR, KeyVault, Search, and Text Analytics in transition to stream-style."
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_CREATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_CREATED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_DELETED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_DELETED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_CREATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_CREATED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_DELETED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_DELETED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_UPDATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_UPDATED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_UPDATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_UPDATED",
+          "justification": "Previous value did was incorrect."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.ai\\.metricsadvisor\\.(administration\\.)?models.*",
-          "justification": "Removing Jackson annotations from Metrics Advisor in transition to stream-style."
+          "old": ".*? com\\.azure\\.(containers\\.containerregistry|search\\.documents(\\.indexes)?|security\\.keyvault\\.(administration|certificates|keys|keys\\.cryptography)|ai\\.textanalytics|ai\\.formrecognizer(\\.(documentanalysis(\\.administration)?|training))?|ai\\.metricsadvisor(\\.administration)?|messaging.servicebus(\\.administration)?)\\.models.*",
+          "description": ".*com.fasterxml.jackson.*",
+          "justification": "Removing Jackson annotations from ACR, Form Recognizer, KeyVault, Metrics Advisor, Search, ServiceBus, and Text Analytics in transition to stream-style."
         },
         {
           "regex": true,
@@ -339,6 +375,12 @@
         },
         {
           "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.data\\.tables\\.models.*",
+          "justification": "Removing Jackson annotations from Tables in transition to stream-style."
+        },
+        {
+          "regex": true,
           "code": "java.method.(returnTypeTypeParametersChanged|parameterTypeChanged|returnTypeChanged)",
           "new": ".* com.azure.security.attestation.*attestTpm.*"
         },
@@ -353,6 +395,54 @@
           "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
         },
         {
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Adding missing Jackson annotations to Job Router models."
+        },
+		{
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Remove setter for Value from RouterWorkerSelector/RouterQueueSelector since it's in the constructor."
+        },
+		{
+          "regex": true,
+          "code": "java\\.method\\.numberOfParametersChanged",
+          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Make Value mandatory in RouterWorkerSelector/RouterQueueSelector constructor."
+        },
+		{
+          "regex": true,
+          "code": "java\\.annotation\\.attributeValueChanged",
+          "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "new": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Fix incorrect json attributes."
+        },
+		{
+          "regex": true,
+          "code": "java\\.method\\.returnTypeTypeParametersChanged",
+          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
+          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Return Router models rather than BinaryData."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.parameterTypeChanged",
+          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
+          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Accept Router models rather than BinaryData."
+        },
+		{
+          "regex": true,
+          "code": "java\\.method\\.returnTypeChanged",
+          "old": ".*?com\\.azure\\.communication\\.jobrouter.*",
+          "new": ".*?com\\.azure\\.communication\\.jobrouter\\.models.*",
+          "justification": "Return Router models rather than BinaryData."
+        },
+        {
           "ignore": true,
           "code": "java.field.addedStaticField",
           "new": "field com.azure.data.schemaregistry.SchemaRegistryVersion.V2022_10",
@@ -364,6 +454,40 @@
           "code": "java.field.addedStaticField",
           "new": "field com\\.azure\\.data\\.schemaregistry\\.models\\.SchemaFormat\\.(CUSTOM|JSON)",
           "justification": "Additional schema formats are supported by Schema Registry."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "package": "com.azure.ai.contentsafety.models",
+          "annotationType": "com.fasterxml.jackson.annotation.JsonProperty",
+          "justification": "Migrate to azure-json."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "package": "com.azure.ai.contentsafety.models",
+          "annotationType": "com.fasterxml.jackson.annotation.JsonCreator",
+          "justification": "Migrate to azure-json."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.storage\\.queue\\.models.*",
+          "justification": "Removing Jackson annotations from Storage Queue in transition to stream-style."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.storage\\.file\\.share\\.models.*",
+          "justification": "Removing Jackson annotations from Storage File Share in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.monitor\\.query.*",
+          "justification": "Removing Jackson annotations from Monitor Query in transition to stream-style."
         }
       ]
     }

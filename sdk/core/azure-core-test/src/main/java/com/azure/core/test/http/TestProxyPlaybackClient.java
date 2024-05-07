@@ -95,8 +95,9 @@ public class TestProxyPlaybackClient implements HttpClient {
             HttpResponse response = sendRequestWithRetries(request);
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue(X_RECORDING_ID);
-            xRecordingFileLocation = new String(Base64.getUrlDecoder().decode(
-                response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)), StandardCharsets.UTF_8);
+            xRecordingFileLocation
+                = new String(Base64.getUrlDecoder().decode(response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)),
+                    StandardCharsets.UTF_8);
             addProxySanitization(this.sanitizers);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
@@ -159,8 +160,8 @@ public class TestProxyPlaybackClient implements HttpClient {
      * Stops playback of a test recording.
      */
     public void stopPlayback() {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/stop")
-            .setHeader(X_RECORDING_ID, xRecordingId);
+        HttpRequest request
+            = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/stop").setHeader(X_RECORDING_ID, xRecordingId);
         sendRequestWithRetries(request);
     }
 
@@ -217,8 +218,8 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
         if (isPlayingBack()) {
-            HttpRequest request = createAddSanitizersRequest(sanitizers, proxyUrl)
-                .setHeader(X_RECORDING_ID, xRecordingId);
+            HttpRequest request
+                = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
 
             client.sendSync(request, Context.NONE).close();
         } else {

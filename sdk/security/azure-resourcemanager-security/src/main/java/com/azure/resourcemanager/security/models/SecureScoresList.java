@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.SecureScoreItemInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of secure scores. */
+/**
+ * List of secure scores.
+ */
 @Immutable
 public final class SecureScoresList {
     /*
@@ -24,13 +26,15 @@ public final class SecureScoresList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SecureScoresList class. */
+    /**
+     * Creates an instance of SecureScoresList class.
+     */
     public SecureScoresList() {
     }
 
     /**
      * Get the value property: Collection of secure scores in this page.
-     *
+     * 
      * @return the value value.
      */
     public List<SecureScoreItemInner> value() {
@@ -39,7 +43,7 @@ public final class SecureScoresList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class SecureScoresList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2ACrossClu
 public final class A2ACrossClusterMigrationContainerCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2ACrossClusterMigrationContainerCreationInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"A2ACrossClusterMigration\"}")
+        A2ACrossClusterMigrationContainerCreationInput model
+            = BinaryData.fromString("{\"instanceType\":\"A2ACrossClusterMigration\"}")
                 .toObject(A2ACrossClusterMigrationContainerCreationInput.class);
     }
 

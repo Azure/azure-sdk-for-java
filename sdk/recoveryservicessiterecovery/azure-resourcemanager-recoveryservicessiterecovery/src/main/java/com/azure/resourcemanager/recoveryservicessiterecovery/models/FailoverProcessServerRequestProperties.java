@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of the Failover Process Server request. */
+/**
+ * The properties of the Failover Process Server request.
+ */
 @Fluent
 public final class FailoverProcessServerRequestProperties {
     /*
@@ -41,13 +43,15 @@ public final class FailoverProcessServerRequestProperties {
     @JsonProperty(value = "updateType")
     private String updateType;
 
-    /** Creates an instance of FailoverProcessServerRequestProperties class. */
+    /**
+     * Creates an instance of FailoverProcessServerRequestProperties class.
+     */
     public FailoverProcessServerRequestProperties() {
     }
 
     /**
      * Get the containerName property: The container identifier.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -56,7 +60,7 @@ public final class FailoverProcessServerRequestProperties {
 
     /**
      * Set the containerName property: The container identifier.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the FailoverProcessServerRequestProperties object itself.
      */
@@ -67,7 +71,7 @@ public final class FailoverProcessServerRequestProperties {
 
     /**
      * Get the sourceProcessServerId property: The source process server.
-     *
+     * 
      * @return the sourceProcessServerId value.
      */
     public String sourceProcessServerId() {
@@ -76,7 +80,7 @@ public final class FailoverProcessServerRequestProperties {
 
     /**
      * Set the sourceProcessServerId property: The source process server.
-     *
+     * 
      * @param sourceProcessServerId the sourceProcessServerId value to set.
      * @return the FailoverProcessServerRequestProperties object itself.
      */
@@ -87,7 +91,7 @@ public final class FailoverProcessServerRequestProperties {
 
     /**
      * Get the targetProcessServerId property: The new process server.
-     *
+     * 
      * @return the targetProcessServerId value.
      */
     public String targetProcessServerId() {
@@ -96,7 +100,7 @@ public final class FailoverProcessServerRequestProperties {
 
     /**
      * Set the targetProcessServerId property: The new process server.
-     *
+     * 
      * @param targetProcessServerId the targetProcessServerId value to set.
      * @return the FailoverProcessServerRequestProperties object itself.
      */
@@ -107,7 +111,7 @@ public final class FailoverProcessServerRequestProperties {
 
     /**
      * Get the vmsToMigrate property: The VMS to migrate.
-     *
+     * 
      * @return the vmsToMigrate value.
      */
     public List<String> vmsToMigrate() {
@@ -116,7 +120,7 @@ public final class FailoverProcessServerRequestProperties {
 
     /**
      * Set the vmsToMigrate property: The VMS to migrate.
-     *
+     * 
      * @param vmsToMigrate the vmsToMigrate value to set.
      * @return the FailoverProcessServerRequestProperties object itself.
      */
@@ -127,7 +131,7 @@ public final class FailoverProcessServerRequestProperties {
 
     /**
      * Get the updateType property: A value for failover type. It can be systemlevel/serverlevel.
-     *
+     * 
      * @return the updateType value.
      */
     public String updateType() {
@@ -136,7 +140,7 @@ public final class FailoverProcessServerRequestProperties {
 
     /**
      * Set the updateType property: A value for failover type. It can be systemlevel/serverlevel.
-     *
+     * 
      * @param updateType the updateType value to set.
      * @return the FailoverProcessServerRequestProperties object itself.
      */
@@ -147,7 +151,7 @@ public final class FailoverProcessServerRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

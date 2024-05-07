@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerservice.fluent.models.TrustedAccessRol
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of trusted access role bindings. */
+/**
+ * List of trusted access role bindings.
+ */
 @Fluent
 public final class TrustedAccessRoleBindingListResult {
     /*
@@ -24,13 +26,15 @@ public final class TrustedAccessRoleBindingListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of TrustedAccessRoleBindingListResult class. */
+    /**
+     * Creates an instance of TrustedAccessRoleBindingListResult class.
+     */
     public TrustedAccessRoleBindingListResult() {
     }
 
     /**
      * Get the value property: Role binding list.
-     *
+     * 
      * @return the value value.
      */
     public List<TrustedAccessRoleBindingInner> value() {
@@ -39,7 +43,7 @@ public final class TrustedAccessRoleBindingListResult {
 
     /**
      * Set the value property: Role binding list.
-     *
+     * 
      * @param value the value value to set.
      * @return the TrustedAccessRoleBindingListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class TrustedAccessRoleBindingListResult {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class TrustedAccessRoleBindingListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

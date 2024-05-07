@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Model that represents the Simple filter parameters. */
+/**
+ * Model that represents the Simple filter parameters.
+ */
 @Fluent
 public final class ChaosTargetSimpleFilterParameters {
     /*
@@ -17,13 +19,15 @@ public final class ChaosTargetSimpleFilterParameters {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
-    /** Creates an instance of ChaosTargetSimpleFilterParameters class. */
+    /**
+     * Creates an instance of ChaosTargetSimpleFilterParameters class.
+     */
     public ChaosTargetSimpleFilterParameters() {
     }
 
     /**
      * Get the zones property: List of Azure availability zones to filter targets by.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -32,7 +36,7 @@ public final class ChaosTargetSimpleFilterParameters {
 
     /**
      * Set the zones property: List of Azure availability zones to filter targets by.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ChaosTargetSimpleFilterParameters object itself.
      */
@@ -43,7 +47,7 @@ public final class ChaosTargetSimpleFilterParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

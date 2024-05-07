@@ -13,40 +13,42 @@ import com.azure.resourcemanager.security.fluent.models.SecurityAssessmentRespon
 import com.azure.resourcemanager.security.models.ExpandEnum;
 import com.azure.resourcemanager.security.models.SecurityAssessment;
 
-/** An instance of this class provides access to all the operations defined in AssessmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AssessmentsClient.
+ */
 public interface AssessmentsClient {
     /**
      * Get security assessments on all your scanned resources inside a scope.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return security assessments on all your scanned resources inside a scope as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityAssessmentResponseInner> list(String scope);
 
     /**
      * Get security assessments on all your scanned resources inside a scope.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security assessments on all your scanned resources inside a scope as paginated response with {@link
-     *     PagedIterable}.
+     * @return security assessments on all your scanned resources inside a scope as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityAssessmentResponseInner> list(String scope, Context context);
 
     /**
      * Get a security assessment on your scanned resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param expand OData expand. Optional.
@@ -57,12 +59,12 @@ public interface AssessmentsClient {
      * @return a security assessment on your scanned resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityAssessmentResponseInner> getWithResponse(
-        String resourceId, String assessmentName, ExpandEnum expand, Context context);
+    Response<SecurityAssessmentResponseInner> getWithResponse(String resourceId, String assessmentName,
+        ExpandEnum expand, Context context);
 
     /**
      * Get a security assessment on your scanned resource.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,7 +78,7 @@ public interface AssessmentsClient {
     /**
      * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param assessment Calculated assessment on a pre-defined assessment metadata.
@@ -87,13 +89,13 @@ public interface AssessmentsClient {
      * @return security assessment on a resource - response format along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityAssessmentResponseInner> createOrUpdateWithResponse(
-        String resourceId, String assessmentName, SecurityAssessment assessment, Context context);
+    Response<SecurityAssessmentResponseInner> createOrUpdateWithResponse(String resourceId, String assessmentName,
+        SecurityAssessment assessment, Context context);
 
     /**
      * Create a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param assessment Calculated assessment on a pre-defined assessment metadata.
@@ -103,13 +105,13 @@ public interface AssessmentsClient {
      * @return security assessment on a resource - response format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityAssessmentResponseInner createOrUpdate(
-        String resourceId, String assessmentName, SecurityAssessment assessment);
+    SecurityAssessmentResponseInner createOrUpdate(String resourceId, String assessmentName,
+        SecurityAssessment assessment);
 
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @param context The context to associate with this operation.
@@ -124,7 +126,7 @@ public interface AssessmentsClient {
     /**
      * Delete a security assessment on your resource. An assessment metadata that describes this assessment must be
      * predefined with the same name before inserting the assessment result.
-     *
+     * 
      * @param resourceId The identifier of the resource.
      * @param assessmentName The Assessment Key - Unique key for the assessment type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

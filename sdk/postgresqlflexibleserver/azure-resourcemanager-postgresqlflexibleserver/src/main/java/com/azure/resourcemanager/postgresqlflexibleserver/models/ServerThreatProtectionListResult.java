@@ -9,7 +9,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerTh
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of the server's Advanced Threat Protection settings. */
+/**
+ * A list of the server's Advanced Threat Protection settings.
+ */
 @Immutable
 public final class ServerThreatProtectionListResult {
     /*
@@ -24,13 +26,15 @@ public final class ServerThreatProtectionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ServerThreatProtectionListResult class. */
+    /**
+     * Creates an instance of ServerThreatProtectionListResult class.
+     */
     public ServerThreatProtectionListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ServerThreatProtectionSettingsModelInner> value() {
@@ -39,7 +43,7 @@ public final class ServerThreatProtectionListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ServerThreatProtectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

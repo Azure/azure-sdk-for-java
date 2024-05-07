@@ -8,13 +8,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityResourceInner;
 
-/** Resource collection API of ResourceProviders. */
+/**
+ * Resource collection API of ResourceProviders.
+ */
 public interface ResourceProviders {
     /**
      * Check migration name validity and availability
-     *
-     * <p>This method checks whether a proposed migration name is valid and available.
-     *
+     * 
+     * This method checks whether a proposed migration name is valid and available.
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -25,18 +27,15 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a migration name's availability along with {@link Response}.
      */
-    Response<MigrationNameAvailabilityResource> checkMigrationNameAvailabilityWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters,
+    Response<MigrationNameAvailabilityResource> checkMigrationNameAvailabilityWithResponse(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, MigrationNameAvailabilityResourceInner parameters,
         Context context);
 
     /**
      * Check migration name validity and availability
-     *
-     * <p>This method checks whether a proposed migration name is valid and available.
-     *
+     * 
+     * This method checks whether a proposed migration name is valid and available.
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -46,9 +45,6 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a migration name's availability.
      */
-    MigrationNameAvailabilityResource checkMigrationNameAvailability(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters);
+    MigrationNameAvailabilityResource checkMigrationNameAvailability(String subscriptionId, String resourceGroupName,
+        String targetDbServerName, MigrationNameAvailabilityResourceInner parameters);
 }

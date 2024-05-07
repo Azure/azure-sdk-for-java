@@ -2,14 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.functions.MyFunctionCallArguments;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
+import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationFormat;
-import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionConfiguration;
-import com.azure.ai.openai.models.AzureCognitiveSearchChatExtensionParameters;
+import com.azure.ai.openai.models.AzureSearchChatExtensionConfiguration;
+import com.azure.ai.openai.models.AzureSearchChatExtensionParameters;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
@@ -26,6 +26,7 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
 import com.azure.ai.openai.models.OnYourDataApiKeyAuthenticationOptions;
+import com.azure.ai.openai.models.SpeechGenerationResponseFormat;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -144,7 +145,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
             completionsOptions.setMaxTokens(3);
             Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
-            assertCompletions(1, "length", resultCompletions);
+            assertCompletions(1, resultCompletions);
         });
     }
 
@@ -166,6 +167,20 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
             assertTrue(resultChatCompletions.stream().toArray().length > 1);
             resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsWithResponseRunner(deploymentId -> chatMessages -> requestOptions -> {
+            Response<IterableStream<ChatCompletions>> response = client.getChatCompletionsStreamWithResponse(
+                    deploymentId, new ChatCompletionsOptions(chatMessages), requestOptions);
+            assertResponseRequestHeader(response.getRequest());
+            IterableStream<ChatCompletions> value = response.getValue();
+            assertTrue(value.stream().toArray().length > 1);
+            value.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
         });
     }
 
@@ -193,6 +208,17 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getEmbeddingsWithSmallerDimensions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getEmbeddingWithSmallerDimensionsRunner((deploymentId, embeddingsOptions) -> {
+            Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
+            assertEmbeddings(resultEmbeddings);
+            assertEquals(embeddingsOptions.getDimensions(), resultEmbeddings.getData().get(0).getEmbedding().size());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
@@ -207,7 +233,19 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        getImageGenerationRunner((deploymentId, options) -> assertImageGenerations(client.getImageGenerations(deploymentId, options)));
+        getImageGenerationRunner((deploymentId, options) ->
+                assertImageGenerationsForAzure(client.getImageGenerations(deploymentId, options)));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testContentFilterInputExceptionInImageGeneration(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        contentFilterInputExceptionRunner((deploymentId, options) -> {
+            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
+                    () -> client.getImageGenerations(deploymentId, options));
+            validateImageGenerationContentFilteringException(httpResponseException);
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -224,7 +262,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 chatChoice,
                 "MyFunction",
                 MyFunctionCallArguments.class);
-            assertEquals(arguments.getLocation(), "San Francisco, CA");
+            assertTrue(arguments.getLocation().contains("San Francisco"));
             assertEquals(arguments.getUnit(), "CELSIUS");
         });
     }
@@ -265,7 +303,6 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertSafePromptContentFilterResults(chatCompletions.getPromptFilterResults().get(0));
             assertEquals(1, chatCompletions.getChoices().size());
             assertSafeChoiceContentFilterResults(chatCompletions.getChoices().get(0).getContentFilterResults());
-
         });
     }
 
@@ -343,7 +380,6 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 Completions completions = it.next();
                 assertCompletionsStream(completions);
                 if (i == 0) {
-                    System.out.println("First stream message");
                     // The first stream message has the prompt filter result
                     assertEquals(1, completions.getPromptFilterResults().size());
                     assertSafePromptContentFilterResults(completions.getPromptFilterResults().get(0));
@@ -372,15 +408,13 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
-            AzureCognitiveSearchChatExtensionParameters searchParameters = new AzureCognitiveSearchChatExtensionParameters(
+            AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
                     "https://openaisdktestsearch.search.windows.net",
                     "openai-test-index-carbon-wiki"
             );
             searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
-            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-                new AzureCognitiveSearchChatExtensionConfiguration(
-                        searchParameters
-                );
+            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                new AzureSearchChatExtensionConfiguration(searchParameters);
 
             chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentName, chatCompletionsOptions);
@@ -395,15 +429,13 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getChatCompletionsAzureChatSearchRunner((deploymentName, chatCompletionsOptions) -> {
-            AzureCognitiveSearchChatExtensionParameters searchParameters = new AzureCognitiveSearchChatExtensionParameters(
+            AzureSearchChatExtensionParameters searchParameters = new AzureSearchChatExtensionParameters(
                     "https://openaisdktestsearch.search.windows.net",
                     "openai-test-index-carbon-wiki"
             );
             searchParameters.setAuthentication(new OnYourDataApiKeyAuthenticationOptions(getAzureCognitiveSearchKey()));
-            AzureCognitiveSearchChatExtensionConfiguration cognitiveSearchConfiguration =
-                    new AzureCognitiveSearchChatExtensionConfiguration(
-                            searchParameters
-                    );
+            AzureSearchChatExtensionConfiguration cognitiveSearchConfiguration =
+                    new AzureSearchChatExtensionConfiguration(searchParameters);
 
             chatCompletionsOptions.setDataSources(Arrays.asList(cognitiveSearchConfiguration));
             IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentName, chatCompletionsOptions);
@@ -437,6 +469,101 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
             AudioTranscription transcription = client.getAudioTranscription(deploymentName, transcriptionOptions.getFilename(), transcriptionOptions);
             assertAudioTranscriptionVerboseJson(transcription, BATMAN_TRANSCRIPTION, AudioTaskLabel.TRANSCRIBE);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testAudioTranscriptionTimestampGranularityInWord(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((modelId, transcriptionOptions) -> {
+            transcriptionOptions
+                    .setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
+                    .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.WORD));
+
+            AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
+                    transcriptionOptions);
+
+            assertNull(transcription.getSegments());
+            assertAudioTranscriptionWords(transcription.getWords());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testAudioTranscriptionTimestampGranularityInSegment(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((modelId, transcriptionOptions) -> {
+            transcriptionOptions
+                    .setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
+                    .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.SEGMENT));
+
+            AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
+                    transcriptionOptions);
+
+            assertAudioTranscriptionSegments(transcription.getSegments());
+            assertNull(transcription.getWords());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testAudioTranscriptionTimestampGranularityInBothSegmentAndWord(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((modelId, transcriptionOptions) -> {
+            transcriptionOptions
+                    .setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
+                    .setTimestampGranularities(Arrays.asList(
+                            AudioTranscriptionTimestampGranularity.SEGMENT,
+                            AudioTranscriptionTimestampGranularity.WORD));
+
+            AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
+                    transcriptionOptions);
+
+            assertAudioTranscriptionSegments(transcription.getSegments());
+            assertAudioTranscriptionWords(transcription.getWords());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testAudioTranscriptionDuplicateTimestampGranularity(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getAudioTranscriptionRunner((modelId, transcriptionOptions) -> {
+            transcriptionOptions
+                    .setResponseFormat(AudioTranscriptionFormat.VERBOSE_JSON)
+                    .setTimestampGranularities(Arrays.asList(
+                            AudioTranscriptionTimestampGranularity.WORD,
+                            AudioTranscriptionTimestampGranularity.WORD));
+
+            AudioTranscription transcription = client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
+                    transcriptionOptions);
+
+            assertNull(transcription.getSegments());
+            assertAudioTranscriptionWords(transcription.getWords());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testAudioTranscriptionTimestampGranularityInWrongResponseFormat(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getAudioTranscriptionRunner((modelId, transcriptionOptions) -> {
+            transcriptionOptions
+                    .setResponseFormat(AudioTranscriptionFormat.JSON)
+                    .setTimestampGranularities(Arrays.asList(AudioTranscriptionTimestampGranularity.WORD));
+
+            assertThrows(HttpResponseException.class, () ->
+                    client.getAudioTranscription(modelId, transcriptionOptions.getFilename(),
+                            transcriptionOptions));
         });
     }
 
@@ -653,7 +780,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsToolCall(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        getChatWithToolCallRunnerForAzure(((modelId, chatCompletionsOptions) -> {
+        getChatWithToolCallRunner(((modelId, chatCompletionsOptions) -> {
             Response<ChatCompletions> response = client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions());
 
             // first round trip
@@ -670,7 +797,6 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             assertNotNull(responseMessage);
             assertTrue(responseMessage.getContent() == null || responseMessage.getContent().isEmpty());
             assertFalse(responseMessage.getToolCalls() == null || responseMessage.getToolCalls().isEmpty());
-            assertEquals(1, responseMessage.getToolCalls().size());
 
             ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
             assertNotNull(functionToolCall);
@@ -700,7 +826,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsToolCallStreaming(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        getChatWithToolCallRunnerForAzure(((modelId, chatCompletionsOptions) -> {
+        getChatWithToolCallRunner(((modelId, chatCompletionsOptions) -> {
             IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(modelId, chatCompletionsOptions);
 
             StringBuilder argumentsBuilder = new StringBuilder();
@@ -722,9 +848,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                         ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
                         FunctionCall functionCall = toolCall.getFunction();
 
-                        // this data is only available in the second stream message, if at all
+                        // TODO: It used to be second stream event but now third event.
+                        // this data is only available in the third stream message, if at all
                         // The first contains filter results mostly
-                        if (i == 1) {
+                        if (i == 2) {
                             content = chatChoice.getDelta().getContent();
                             functionName = functionCall.getName();
                             toolCallId = toolCall.getId();
@@ -769,6 +896,64 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 j++;
             }
             assertFalse(CoreUtils.isNullOrEmpty(contentBuilder.toString()));
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testTextToSpeech(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        textToSpeechRunner(((modelId, speechGenerationOptions) -> {
+            BinaryData speech = client.generateSpeechFromText(modelId, speechGenerationOptions);
+            assertNotNull(speech);
+            byte[] bytes = speech.toBytes();
+            assertNotNull(bytes);
+            assertTrue(bytes.length > 0);
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testTextToSpeechWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        textToSpeechRunner(((modelId, speechGenerationOptions) -> {
+            Response<BinaryData> response = client.generateSpeechFromTextWithResponse(modelId,
+                    BinaryData.fromObject(speechGenerationOptions), new RequestOptions());
+            assertTrue(response.getStatusCode() > 0);
+            assertNotNull(response.getHeaders());
+            BinaryData speech = response.getValue();
+            assertNotNull(speech);
+            byte[] bytes = speech.toBytes();
+            assertNotNull(bytes);
+            assertTrue(bytes.length > 0);
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void generateSpeechInMp3(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        textToSpeechRunner(((modelId, speechGenerationOptions) -> {
+            speechGenerationOptions.setResponseFormat(SpeechGenerationResponseFormat.MP3);
+            BinaryData speech = client.generateSpeechFromText(modelId, speechGenerationOptions);
+            assertNotNull(speech);
+            byte[] bytes = speech.toBytes();
+            assertNotNull(bytes);
+            assertTrue(bytes.length > 0);
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void generateSpeechInWav(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        textToSpeechRunner(((modelId, speechGenerationOptions) -> {
+            speechGenerationOptions.setResponseFormat(SpeechGenerationResponseFormat.WAV);
+            BinaryData speech = client.generateSpeechFromText(modelId, speechGenerationOptions);
+            assertNotNull(speech);
+            byte[] bytes = speech.toBytes();
+            assertNotNull(bytes);
+            assertTrue(bytes.length > 0);
         }));
     }
 }

@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.CloudName;
+import com.azure.resourcemanager.security.models.CloudOffering;
 import com.azure.resourcemanager.security.models.EnvironmentData;
 import com.azure.resourcemanager.security.models.SecurityConnector;
 import java.nio.ByteBuffer;
@@ -35,54 +36,37 @@ public final class SecurityConnectorsCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"hierarchyIdentifier\":\"m\",\"hierarchyIdentifierTrialEndDate\":\"2021-06-20T07:23:24Z\",\"environmentName\":\"AWS\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"rpvsgloiovs\",\"tags\":{\"suvw\":\"v\",\"i\":\"enbg\",\"oa\":\"pkhc\"},\"id\":\"xukuicjuftekio\",\"name\":\"anduew\",\"type\":\"hvpxjhxz\"}";
+        String responseStr
+            = "{\"properties\":{\"hierarchyIdentifier\":\"nddlirqq\",\"hierarchyIdentifierTrialEndDate\":\"2021-07-04T20:06:19Z\",\"environmentName\":\"AzureDevOps\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"pd\"},{\"offeringType\":\"CloudOffering\",\"description\":\"eevivkig\"},{\"offeringType\":\"CloudOffering\",\"description\":\"oklsuffpxesw\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"lfytbltytvnpbgce\",\"tags\":{\"zzwweoblb\":\"dfclmowurofofkbc\",\"hixcc\":\"dq\",\"og\":\"kf\"},\"id\":\"yoxmyqzyqepg\",\"name\":\"bzd\",\"type\":\"luokc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecurityConnector response =
-            manager
-                .securityConnectors()
-                .define("qpqsdoctpzpuj")
-                .withRegion("hfwlfxzfwugeup")
-                .withExistingResourceGroup("krjflsgaojb")
-                .withTags(mapOf("sytqpdzfyxcnwawo", "ecexkgrvfpsjdmn", "bejqfbifopfjx", "cg", "q", "wdrpa"))
-                .withHierarchyIdentifier("cdsgxceluji")
-                .withEnvironmentName(CloudName.AWS)
-                .withOfferings(Arrays.asList())
-                .withEnvironmentData(new EnvironmentData())
-                .create();
+        SecurityConnector response = manager.securityConnectors().define("pvnpeukgnmfakeqn").withRegion("jropxfqdm")
+            .withExistingResourceGroup("zammpk").withTags(mapOf("vhwirilamq", "nyjyuwqlzwgd", "gacde", "rhqdoxd"))
+            .withHierarchyIdentifier("mlcsvk").withEnvironmentName(CloudName.AZURE)
+            .withOfferings(Arrays.asList(new CloudOffering(), new CloudOffering()))
+            .withEnvironmentData(new EnvironmentData()).create();
 
-        Assertions.assertEquals("rpvsgloiovs", response.location());
-        Assertions.assertEquals("v", response.tags().get("suvw"));
-        Assertions.assertEquals("m", response.hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.AWS, response.environmentName());
+        Assertions.assertEquals("lfytbltytvnpbgce", response.location());
+        Assertions.assertEquals("dfclmowurofofkbc", response.tags().get("zzwweoblb"));
+        Assertions.assertEquals("nddlirqq", response.hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.AZURE_DEV_OPS, response.environmentName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

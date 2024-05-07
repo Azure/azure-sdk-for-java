@@ -4,11 +4,13 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.MatchConditions;
 import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * A set of options for selecting configuration settings from App Configuration service.
@@ -36,6 +38,8 @@ public class SettingSelector {
     private String labelFilter;
     private SettingFields[] fields;
     private String acceptDatetime;
+
+    private List<MatchConditions> matchConditions;
 
     /**
      * Creates a setting selector that will populate responses with all of the {@link ConfigurationSetting
@@ -143,6 +147,26 @@ public class SettingSelector {
      */
     public SettingSelector setFields(SettingFields... fields) {
         this.fields = fields;
+        return this;
+    }
+
+    /**
+     * Get the match conditions
+     *
+     * @return The match conditions
+     */
+    public List<MatchConditions> getMatchConditions() {
+        return matchConditions;
+    }
+
+    /**
+     * Set the match conditions
+     *
+     * @param matchConditions The match conditions
+     * @return The updated SettingSelector object.
+     */
+    public SettingSelector setMatchConditions(List<MatchConditions> matchConditions) {
+        this.matchConditions = matchConditions;
         return this;
     }
 

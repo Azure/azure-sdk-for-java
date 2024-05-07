@@ -19,20 +19,20 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ApiOperation> list() {
         PagedIterable<ApiOperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ApiOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiOperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApiOperation> list(Context context) {
         PagedIterable<ApiOperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ApiOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiOperationImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

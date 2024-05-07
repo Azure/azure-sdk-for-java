@@ -158,20 +158,39 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
                     readerToUse.skipChildren();
                 }
             }
-
-            if (discriminatorValue != null) {
-                readerToUse = readerToUse.reset();
-            }
             // Use the discriminator value to determine which subtype should be deserialized.
             if ("Email".equals(discriminatorValue)) {
-                return EmailHookInfoPatch.fromJson(readerToUse);
+                return EmailHookInfoPatch.fromJson(readerToUse.reset());
             } else if ("Webhook".equals(discriminatorValue)) {
-                return WebhookHookInfoPatch.fromJson(readerToUse);
+                return WebhookHookInfoPatch.fromJson(readerToUse.reset());
             } else {
-                throw new IllegalStateException(
-                    "Discriminator field 'hookType' didn't match one of the expected values 'Email', or 'Webhook'. It was: '"
-                        + discriminatorValue + "'.");
+                return fromJsonKnownDiscriminator(readerToUse.reset());
             }
+        });
+    }
+
+    static HookInfoPatch fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HookInfoPatch deserializedHookInfoPatch = new HookInfoPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hookName".equals(fieldName)) {
+                    deserializedHookInfoPatch.hookName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedHookInfoPatch.description = reader.getString();
+                } else if ("externalLink".equals(fieldName)) {
+                    deserializedHookInfoPatch.externalLink = reader.getString();
+                } else if ("admins".equals(fieldName)) {
+                    List<String> admins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHookInfoPatch.admins = admins;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHookInfoPatch;
         });
     }
 }

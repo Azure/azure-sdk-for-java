@@ -15,8 +15,7 @@ public final class OutboundEnvironmentEndpointImpl implements OutboundEnvironmen
 
     private final com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager serviceManager;
 
-    OutboundEnvironmentEndpointImpl(
-        OutboundEnvironmentEndpointInner innerObject,
+    OutboundEnvironmentEndpointImpl(OutboundEnvironmentEndpointInner innerObject,
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

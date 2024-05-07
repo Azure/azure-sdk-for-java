@@ -31,7 +31,7 @@ public final class SenderUsernamesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"dataLocation\":\"yhqmibzyhwi\",\"username\":\"smypyynpc\",\"displayName\":\"umnzgmwznmabik\",\"provisioningState\":\"Updating\"},\"id\":\"gj\",\"name\":\"xbldtlwwrlkdmtn\",\"type\":\"vokotllxdyh\"}";
+            = "{\"properties\":{\"dataLocation\":\"hfwdsjnkaljutiis\",\"username\":\"acffgdkzzewkfvhq\",\"displayName\":\"a\",\"provisioningState\":\"Updating\"},\"id\":\"n\",\"name\":\"pfuflrw\",\"type\":\"mh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,10 +49,9 @@ public final class SenderUsernamesGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SenderUsernameResource response = manager.senderUsernames()
-            .getWithResponse("sjswsrms", "yzrpzbchckqqzq", "ox", "ysuiizynkedya", com.azure.core.util.Context.NONE)
-            .getValue();
+            .getWithResponse("quuvxzxcl", "ithhqzon", "sg", "b", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("smypyynpc", response.username());
-        Assertions.assertEquals("umnzgmwznmabik", response.displayName());
+        Assertions.assertEquals("acffgdkzzewkfvhq", response.username());
+        Assertions.assertEquals("a", response.displayName());
     }
 }

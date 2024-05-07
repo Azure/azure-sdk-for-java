@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Weekly retention schedule. */
+/**
+ * Weekly retention schedule.
+ */
 @Fluent
 public final class WeeklyRetentionSchedule {
     /*
@@ -30,13 +32,15 @@ public final class WeeklyRetentionSchedule {
     @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
-    /** Creates an instance of WeeklyRetentionSchedule class. */
+    /**
+     * Creates an instance of WeeklyRetentionSchedule class.
+     */
     public WeeklyRetentionSchedule() {
     }
 
     /**
      * Get the daysOfTheWeek property: List of days of week for weekly retention policy.
-     *
+     * 
      * @return the daysOfTheWeek value.
      */
     public List<DayOfWeek> daysOfTheWeek() {
@@ -45,7 +49,7 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Set the daysOfTheWeek property: List of days of week for weekly retention policy.
-     *
+     * 
      * @param daysOfTheWeek the daysOfTheWeek value to set.
      * @return the WeeklyRetentionSchedule object itself.
      */
@@ -56,7 +60,7 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Get the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @return the retentionTimes value.
      */
     public List<OffsetDateTime> retentionTimes() {
@@ -65,7 +69,7 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Set the retentionTimes property: Retention times of retention policy.
-     *
+     * 
      * @param retentionTimes the retentionTimes value to set.
      * @return the WeeklyRetentionSchedule object itself.
      */
@@ -76,7 +80,7 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Get the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @return the retentionDuration value.
      */
     public RetentionDuration retentionDuration() {
@@ -85,7 +89,7 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Set the retentionDuration property: Retention duration of retention Policy.
-     *
+     * 
      * @param retentionDuration the retentionDuration value to set.
      * @return the WeeklyRetentionSchedule object itself.
      */
@@ -96,7 +100,7 @@ public final class WeeklyRetentionSchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

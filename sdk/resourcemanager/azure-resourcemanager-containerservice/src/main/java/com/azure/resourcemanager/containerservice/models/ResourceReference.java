@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A reference to an Azure resource. */
+/**
+ * A reference to an Azure resource.
+ */
 @Fluent
 public final class ResourceReference {
     /*
@@ -16,13 +18,15 @@ public final class ResourceReference {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ResourceReference class. */
+    /**
+     * Creates an instance of ResourceReference class.
+     */
     public ResourceReference() {
     }
 
     /**
      * Get the id property: The fully qualified Azure resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class ResourceReference {
 
     /**
      * Set the id property: The fully qualified Azure resource id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ResourceReference object itself.
      */
@@ -42,7 +46,7 @@ public final class ResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,10 +12,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointCo
 import java.util.Collections;
 import java.util.Map;
 
-public final class PrivateEndpointConnectionResourceImpl
-    implements PrivateEndpointConnectionResource,
-        PrivateEndpointConnectionResource.Definition,
-        PrivateEndpointConnectionResource.Update {
+public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpointConnectionResource,
+    PrivateEndpointConnectionResource.Definition, PrivateEndpointConnectionResource.Update {
     private PrivateEndpointConnectionResourceInner innerObject;
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
@@ -86,25 +84,19 @@ public final class PrivateEndpointConnectionResourceImpl
     }
 
     public PrivateEndpointConnectionResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .put(vaultName, resourceGroupName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(vaultName,
+            resourceGroupName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnectionResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .put(vaultName, resourceGroupName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(vaultName,
+            resourceGroupName, privateEndpointConnectionName, this.innerModel(), context);
         return this;
     }
 
-    PrivateEndpointConnectionResourceImpl(
-        String name, com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
+    PrivateEndpointConnectionResourceImpl(String name,
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = new PrivateEndpointConnectionResourceInner();
         this.serviceManager = serviceManager;
         this.privateEndpointConnectionName = name;
@@ -115,50 +107,36 @@ public final class PrivateEndpointConnectionResourceImpl
     }
 
     public PrivateEndpointConnectionResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .put(vaultName, resourceGroupName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(vaultName,
+            resourceGroupName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnectionResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .put(vaultName, resourceGroupName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(vaultName,
+            resourceGroupName, privateEndpointConnectionName, this.innerModel(), context);
         return this;
     }
 
-    PrivateEndpointConnectionResourceImpl(
-        PrivateEndpointConnectionResourceInner innerObject,
+    PrivateEndpointConnectionResourceImpl(PrivateEndpointConnectionResourceInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.vaultName = Utils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.privateEndpointConnectionName = Utils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.vaultName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
     }
 
     public PrivateEndpointConnectionResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .getWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
+            .getWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, Context.NONE).getValue();
         return this;
     }
 
     public PrivateEndpointConnectionResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .getWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
+            .getWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, context).getValue();
         return this;
     }
 

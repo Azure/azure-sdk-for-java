@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ResumeJobParamsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResumeJobParamsProperties model =
-            BinaryData.fromString("{\"comments\":\"snewmozqvbub\"}").toObject(ResumeJobParamsProperties.class);
+        ResumeJobParamsProperties model
+            = BinaryData.fromString("{\"comments\":\"snewmozqvbub\"}").toObject(ResumeJobParamsProperties.class);
         Assertions.assertEquals("snewmozqvbub", model.comments());
     }
 

@@ -20,32 +20,28 @@ public final class ProtectionPolicyOperationResultsImpl implements ProtectionPol
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ProtectionPolicyOperationResultsImpl(
-        ProtectionPolicyOperationResultsClient innerClient,
+    public ProtectionPolicyOperationResultsImpl(ProtectionPolicyOperationResultsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ProtectionPolicyResource> getWithResponse(
-        String vaultName, String resourceGroupName, String policyName, String operationId, Context context) {
-        Response<ProtectionPolicyResourceInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, policyName, operationId, context);
+    public Response<ProtectionPolicyResource> getWithResponse(String vaultName, String resourceGroupName,
+        String policyName, String operationId, Context context) {
+        Response<ProtectionPolicyResourceInner> inner
+            = this.serviceClient().getWithResponse(vaultName, resourceGroupName, policyName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProtectionPolicyResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ProtectionPolicyResource get(
-        String vaultName, String resourceGroupName, String policyName, String operationId) {
-        ProtectionPolicyResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, policyName, operationId);
+    public ProtectionPolicyResource get(String vaultName, String resourceGroupName, String policyName,
+        String operationId) {
+        ProtectionPolicyResourceInner inner
+            = this.serviceClient().get(vaultName, resourceGroupName, policyName, operationId);
         if (inner != null) {
             return new ProtectionPolicyResourceImpl(inner, this.manager());
         } else {

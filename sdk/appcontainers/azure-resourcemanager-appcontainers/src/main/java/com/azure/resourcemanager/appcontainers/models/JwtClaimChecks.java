@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The configuration settings of the checks that should be made while validating the JWT Claims. */
+/**
+ * The configuration settings of the checks that should be made while validating the JWT Claims.
+ */
 @Fluent
 public final class JwtClaimChecks {
     /*
@@ -23,13 +25,15 @@ public final class JwtClaimChecks {
     @JsonProperty(value = "allowedClientApplications")
     private List<String> allowedClientApplications;
 
-    /** Creates an instance of JwtClaimChecks class. */
+    /**
+     * Creates an instance of JwtClaimChecks class.
+     */
     public JwtClaimChecks() {
     }
 
     /**
      * Get the allowedGroups property: The list of the allowed groups.
-     *
+     * 
      * @return the allowedGroups value.
      */
     public List<String> allowedGroups() {
@@ -38,7 +42,7 @@ public final class JwtClaimChecks {
 
     /**
      * Set the allowedGroups property: The list of the allowed groups.
-     *
+     * 
      * @param allowedGroups the allowedGroups value to set.
      * @return the JwtClaimChecks object itself.
      */
@@ -49,7 +53,7 @@ public final class JwtClaimChecks {
 
     /**
      * Get the allowedClientApplications property: The list of the allowed client applications.
-     *
+     * 
      * @return the allowedClientApplications value.
      */
     public List<String> allowedClientApplications() {
@@ -58,7 +62,7 @@ public final class JwtClaimChecks {
 
     /**
      * Set the allowedClientApplications property: The list of the allowed client applications.
-     *
+     * 
      * @param allowedClientApplications the allowedClientApplications value to set.
      * @return the JwtClaimChecks object itself.
      */
@@ -69,7 +73,7 @@ public final class JwtClaimChecks {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

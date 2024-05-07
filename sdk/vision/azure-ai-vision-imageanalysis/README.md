@@ -11,8 +11,8 @@ Use the Image Analysis client library to:
 [Product documentation][image_analysis_overview] 
 | [Samples][samples]
 | [Vision Studio][vision_studio]
-| [API reference documentation](https://learn.microsoft.com/java/api/com.azure.ai.vision.imageanalysis)
-| [Maven Package](https://mvnrepository.com/artifact/com.azure/azure-ai-vision-imageanalysis)
+| [API reference documentation](https://aka.ms/azsdk/image-analysis/ref-docs/java)
+| [Maven Package](https://aka.ms/azsdk/image-analysis/package/maven)
 | [SDK source code][sdk_source_code]
 
 ## Getting started
@@ -23,7 +23,7 @@ Use the Image Analysis client library to:
 * An [Azure subscription](https://azure.microsoft.com/free).
 * A [Computer Vision resource](https://portal.azure.com/#create/Microsoft.CognitiveServicesComputerVision) in your Azure subscription.
   * You will need the key and endpoint from this resource to authenticate against the service.
-  * Note that in order to run Image Analysis with the `Caption` or `Dense Captions` features, the Azure resource needs to be from a GPU-supported region. See the note [here](https://learn.microsoft.com/azure/ai-services/computer-vision/concept-describe-images-40) for a list of supported regions.
+  * Note that in order to run Image Analysis with the `Caption` or `Dense Captions` features, the Azure resource needs to be from a GPU-supported region. See this [document][supported_regions] for a list of supported regions.
 
 ### Adding the package to your product
 
@@ -32,7 +32,7 @@ Use the Image Analysis client library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-vision-imageanalysis</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -136,11 +136,11 @@ A call to `getCaption()` on this result will return a `CaptionResult` object.
 It contains the generated caption and its confidence score in the range [0, 1]. By default the caption may contain gender terms such as "man", "woman", or "boy", "girl". You have the option to request gender-neutral terms such as "person" or "child" by setting `genderNeutralCaption` to `true` when calling `analyze`, as shown in this example.
 
 Notes:
-* Caption is only available in some Azure regions. See [Prerequisites](#prerequisites).
+* Caption is only available in some Azure regions. See this [document][supported_regions] for a list of supported regions.
 * Caption is only supported in English at the moment.
 
 ```java imports-caption-file-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.util.BinaryData;
@@ -149,7 +149,7 @@ import java.util.Arrays;
 ```
 ```java caption-file-snippet
 ImageAnalysisResult result = client.analyze(
-    BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
+    BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
     Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
     new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
@@ -160,22 +160,21 @@ System.out.println("   \"" + result.getCaption().getText() + "\", Confidence "
     + String.format("%.4f", result.getCaption().getConfidence()));
 ```
 
-To generate captions for additional images, simply call the `analyze` multiple times. You can use the same `ImageAnalysisClient` do to multiple analysis calls.
+To generate captions for additional images, simply call `analyze` multiple times. You can use the same `ImageAnalysisClient` do to multiple analysis calls.
 
 ### Generate an image caption for an image URL
 
-This example is similar to the above, expect it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azai/vision/image-analysis-sample.jpg) instead of a file name.
+This example is similar to the above, except it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azsdk/image-analysis/sample.jpg) instead of a file name.
 
 ```java imports-caption-url-snippet
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import java.net.URL;
 import java.util.Arrays;
 ```
 ```java caption-url-snippet
-ImageAnalysisResult result = client.analyze(
-    new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageUrl: the URL of the image to analyze
+ImageAnalysisResult result = client.analyzeFromUrl(
+    "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
     Arrays.asList(VisualFeatures.CAPTION), // visualFeatures
     new ImageAnalysisOptions().setGenderNeutralCaption(true)); // options:  Set to 'true' or 'false' (relevant for CAPTION or DENSE_CAPTIONS visual features)
 
@@ -203,7 +202,7 @@ import java.util.Arrays;
 ```
 ```java ocr-file-snippet
 ImageAnalysisResult result = client.analyze(
-    BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: Image file loaded into memory as BinaryData
+    BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: Image file loaded into memory as BinaryData
     Arrays.asList(VisualFeatures.READ), // visualFeatures
     null); // options: There are no options for READ visual feature
 
@@ -226,19 +225,18 @@ To extract text for additional images, simply call the `analyze` multiple times.
 
 ### Extract text from an image URL
 
-This example is similar to the above, expect it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azai/vision/image-analysis-sample.jpg) instead of a file name.
+This example is similar to the above, except it calls the `analyze` method and provides a [publicly accessible image URL](https://aka.ms/azsdk/image-analysis/sample.jpg) instead of a file name.
 
 ```java imports-ocr-url-snippet
 import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
 import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
-import java.net.URL;
 import java.util.Arrays;
 ```
 ```java ocr-url-snippet
-ImageAnalysisResult result = client.analyze(
-    new URL("https://aka.ms/azai/vision/image-analysis-sample.jpg"), // imageContent: the URL of the image to analyze
+ImageAnalysisResult result = client.analyzeFromUrl(
+    "https://aka.ms/azsdk/image-analysis/sample.jpg", // imageUrl: the URL of the image to analyze
     Arrays.asList(VisualFeatures.READ), // visualFeatures
     null); // options: There are no options for READ visual feature
 
@@ -260,7 +258,7 @@ for (DetectedTextLine line : result.getRead().getBlocks().get(0).getLines()) {
 
 ### Exceptions
 
-The `analyze` methods throw exceptions from [com.azure.core.exception](https://learn.microsoft.com/java/api/com.azure.core.exception) when the service responds with a non-success HTTP status code. The exception's `getResponse().getStatusCode()` will hold the HTTP response status code. The exception's `getMessage()` contains a detailed message that will allow you to diagnose the issue:
+The `analyze` methods throw [HttpResponseException](https://learn.microsoft.com/java/api/com.azure.core.exception) when the service responds with a non-success HTTP status code. The exception's `getResponse().getStatusCode()` will hold the HTTP response status code. The exception's `getMessage()` contains a detailed message that will allow you to diagnose the issue:
 
 ```java
 try {
@@ -290,7 +288,34 @@ Message: Status code 400, "{"error":{"code":"InvalidRequest","message":"Image fo
 
 ### Enable HTTP request/response logging
 
-Reviewing the HTTP request sent or response received over the wire to the Image Analysis service can be useful in troubleshooting. To enable console logging, create the `ImageAnalysisClient` by setting `httpLogOptions` in the the builder:
+Reviewing the HTTP request sent or response received over the wire to the Image Analysis service can be useful in troubleshooting. This can be done in two ways:
+
+1. The Image Analysis client library supports a built-in console logging framework for temporary debugging purposes. It also supports more advanced logging using the [SLF4J](https://www.slf4j.org/) interface. For detailed information see [Use logging in the Azure SDK for Java](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-overview#use-logging-in-the-azure-sdk-for-java).
+1. By getting access to the [Response](https://learn.microsoft.com/java/api/com.azure.core.http.rest.response) object, and from it the [HttpRequest](https://learn.microsoft.com/java/api/com.azure.core.http.httprequest) object, and printing information provided by these objects. See [SampleCaptionImageFileWithResponse.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleCaptionImageFileWithResponse.java) and [SampleOcrImageUrlWithResponseAsync.java](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/SampleOcrImageUrlWithResponseAsync.java).
+
+We recommend you enable console logging (option #1). The sections below discusses enabling console logging using the built-in framework.
+
+#### By setting environment variables
+
+You can enable console logging of HTTP request and response for your entire application by setting the following two environment variables. Note that this change will affect every Azure client that supports logging HTTP request and response.
+
+* Set environment variable `AZURE_LOG_LEVEL` to `debug`
+* Set environment variable `AZURE_HTTP_LOG_DETAIL_LEVEL` to one of the following values:
+
+| Value             | Logging level                                                        |
+|-------------------|----------------------------------------------------------------------|
+| `none`            | HTTP request/response logging is disabled                            |
+| `basic`           | Logs only URLs, HTTP methods, and time to finish the request.        |
+| `headers`         | Logs everything in BASIC, plus all the request and response headers. |
+| `body`            | Logs everything in BASIC, plus all the request and response body.    |
+| `body_and_headers`| Logs everything in HEADERS and BODY.                                 |
+
+#### By setting httpLogOptions
+
+ To enable console logging of HTTP request and response for a single client
+
+* Set environment variable `AZURE_LOG_LEVEL` to `debug`
+* Add a call to `httpLogOptions` when building the `ImageAnalysisClient`:
 
 ```java
 ImageAnalysisClient client = new ImageAnalysisClientBuilder()
@@ -299,17 +324,29 @@ ImageAnalysisClient client = new ImageAnalysisClientBuilder()
     .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
     .buildClient();
 ```
-
 The enum [HttpLogDetailLevel](https://learn.microsoft.com/java/api/com.azure.core.http.policy.httplogdetaillevel) defines the supported logging levels.
 
-By default, when logging, certain HTTP header values are redacted. It is possible to override this default by specifying which headers values are safe to log:
+By default, when logging, certain HTTP header and query parameter values are redacted. It is possible to override this default by specifying which headers and query parameters are safe to log:
 ```java
 ImageAnalysisClient client = new ImageAnalysisClientBuilder()
     .endpoint(endpoint)
     .credential(new KeyCredential(key))
-    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).addAllowedHeaderName("safe-to-log-header-name"))
+    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+        .addAllowedHeaderName("safe-to-log-header-name")
+        .addAllowedQueryParamName("safe-to-log-query-parameter-name"))
     .buildClient();
 ```
+For example, to get a complete un-redacted log of the HTTP request, apply the following:
+```java
+    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
+        .addAllowedHeaderName("Ocp-Apim-Subscription-Key")
+        .addAllowedQueryParamName("features")
+        .addAllowedQueryParamName("language")
+        .addAllowedQueryParamName("gender-neutral-caption")
+        .addAllowedQueryParamName("smartcrops-aspect-ratios")
+        .addAllowedQueryParamName("model-version"))
+```
+Add more to the above to get a completely un-redacted HTTP response. When you share an un-redacted log, make sure it does not contain secrets such as your subscription key.
 
 ## Next steps
 
@@ -335,7 +372,7 @@ additional questions or comments.
 <!-- LINKS -->
 [image_analysis_overview]: https://learn.microsoft.com/azure/ai-services/computer-vision/overview-image-analysis?tabs=4-0
 [image_analysis_concepts]: https://learn.microsoft.com/azure/ai-services/computer-vision/concept-tag-images-40
-[vision_studio]: https://portal.vision.cognitive.azure.com/gallery/imageanalysis
-[samples](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples)
-[sdk_source_code](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis/src/main/java/com/azure/ai/vision/imageanalysis)
-
+[vision_studio]: https://aka.ms/vision-studio/image-analysis
+[samples]: https://aka.ms/azsdk/image-analysis/samples/java
+[sdk_source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-imageanalysis/src/main/java/com/azure/ai/vision/imageanalysis
+[supported_regions]: https://learn.microsoft.com/azure/ai-services/computer-vision/concept-describe-images-40

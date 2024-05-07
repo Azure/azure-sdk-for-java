@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** Distribute as a Managed Disk Image. */
+/**
+ * Distribute as a Managed Disk Image.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ManagedImage")
 @Fluent
@@ -28,13 +30,15 @@ public final class ImageTemplateManagedImageDistributor extends ImageTemplateDis
     @JsonProperty(value = "location", required = true)
     private String location;
 
-    /** Creates an instance of ImageTemplateManagedImageDistributor class. */
+    /**
+     * Creates an instance of ImageTemplateManagedImageDistributor class.
+     */
     public ImageTemplateManagedImageDistributor() {
     }
 
     /**
      * Get the imageId property: Resource Id of the Managed Disk Image.
-     *
+     * 
      * @return the imageId value.
      */
     public String imageId() {
@@ -43,7 +47,7 @@ public final class ImageTemplateManagedImageDistributor extends ImageTemplateDis
 
     /**
      * Set the imageId property: Resource Id of the Managed Disk Image.
-     *
+     * 
      * @param imageId the imageId value to set.
      * @return the ImageTemplateManagedImageDistributor object itself.
      */
@@ -54,7 +58,7 @@ public final class ImageTemplateManagedImageDistributor extends ImageTemplateDis
 
     /**
      * Get the location property: Azure location for the image, should match if image already exists.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -63,7 +67,7 @@ public final class ImageTemplateManagedImageDistributor extends ImageTemplateDis
 
     /**
      * Set the location property: Azure location for the image, should match if image already exists.
-     *
+     * 
      * @param location the location value to set.
      * @return the ImageTemplateManagedImageDistributor object itself.
      */
@@ -72,14 +76,18 @@ public final class ImageTemplateManagedImageDistributor extends ImageTemplateDis
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateManagedImageDistributor withRunOutputName(String runOutputName) {
         super.withRunOutputName(runOutputName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateManagedImageDistributor withArtifactTags(Map<String, String> artifactTags) {
         super.withArtifactTags(artifactTags);
@@ -88,23 +96,19 @@ public final class ImageTemplateManagedImageDistributor extends ImageTemplateDis
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (imageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property imageId in model ImageTemplateManagedImageDistributor"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property imageId in model ImageTemplateManagedImageDistributor"));
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model ImageTemplateManagedImageDistributor"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property location in model ImageTemplateManagedImageDistributor"));
         }
     }
 

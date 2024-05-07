@@ -23,7 +23,7 @@ public class GetLanguages {
             .endpoint("https://api.cognitive.microsofttranslator.com")
             .buildClient();
 
-		// BEGIN: getTextTranslationLanguages
+        // BEGIN: getTextTranslationLanguages
         GetLanguagesResult languages = client.getLanguages();
 
         System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
@@ -44,6 +44,6 @@ public class GetLanguages {
         for (Map.Entry<String, SourceDictionaryLanguage> dictionaryLanguage : languages.getDictionary().entrySet()) {
             System.out.println(dictionaryLanguage.getKey() + " -- name: " + dictionaryLanguage.getValue().getName() + ", supported target languages count: " + dictionaryLanguage.getValue().getTranslations().size());
         }
-		// END: getTextTranslationLanguages
+        // END: getTextTranslationLanguages
     }
 }

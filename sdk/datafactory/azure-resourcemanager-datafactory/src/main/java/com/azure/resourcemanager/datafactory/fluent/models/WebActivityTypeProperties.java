@@ -11,8 +11,10 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeReference;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.WebActivityAuthentication;
 import com.azure.resourcemanager.datafactory.models.WebActivityMethod;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Web activity type properties.
@@ -32,16 +34,14 @@ public final class WebActivityTypeProperties {
     private Object url;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
-     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
-     * resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "headers")
-    private Object headers;
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, Object> headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
-     * method Type: string (or Expression with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET method Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "body")
     private Object body;
@@ -57,6 +57,18 @@ public final class WebActivityTypeProperties {
      */
     @JsonProperty(value = "disableCertValidation")
     private Boolean disableCertValidation;
+
+    /*
+     * Timeout for the HTTP request to get a response. Format is in TimeSpan (hh:mm:ss). This value is the timeout to get a response, not the activity timeout. The default value is 00:01:00 (1 minute). The range is from 1 to 10 minutes
+     */
+    @JsonProperty(value = "httpRequestTimeout")
+    private Object httpRequestTimeout;
+
+    /*
+     * Option to disable invoking HTTP GET on location given in response header of a HTTP 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set false then continues to invoke HTTP GET call on location given in http response headers.
+     */
+    @JsonProperty(value = "turnOffAsync")
+    private Boolean turnOffAsync;
 
     /*
      * List of datasets passed to web endpoint.
@@ -103,8 +115,7 @@ public final class WebActivityTypeProperties {
     }
 
     /**
-     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
+     * Get the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
      * 
      * @return the url value.
      */
@@ -113,8 +124,7 @@ public final class WebActivityTypeProperties {
     }
 
     /**
-     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType
-     * string).
+     * Set the url property: Web activity target endpoint and path. Type: string (or Expression with resultType string).
      * 
      * @param url the url value to set.
      * @return the WebActivityTypeProperties object itself.
@@ -131,7 +141,7 @@ public final class WebActivityTypeProperties {
      * 
      * @return the headers value.
      */
-    public Object headers() {
+    public Map<String, Object> headers() {
         return this.headers;
     }
 
@@ -143,7 +153,7 @@ public final class WebActivityTypeProperties {
      * @param headers the headers value to set.
      * @return the WebActivityTypeProperties object itself.
      */
-    public WebActivityTypeProperties withHeaders(Object headers) {
+    public WebActivityTypeProperties withHeaders(Map<String, Object> headers) {
         this.headers = headers;
         return this;
     }
@@ -207,6 +217,54 @@ public final class WebActivityTypeProperties {
      */
     public WebActivityTypeProperties withDisableCertValidation(Boolean disableCertValidation) {
         this.disableCertValidation = disableCertValidation;
+        return this;
+    }
+
+    /**
+     * Get the httpRequestTimeout property: Timeout for the HTTP request to get a response. Format is in TimeSpan
+     * (hh:mm:ss). This value is the timeout to get a response, not the activity timeout. The default value is 00:01:00
+     * (1 minute). The range is from 1 to 10 minutes.
+     * 
+     * @return the httpRequestTimeout value.
+     */
+    public Object httpRequestTimeout() {
+        return this.httpRequestTimeout;
+    }
+
+    /**
+     * Set the httpRequestTimeout property: Timeout for the HTTP request to get a response. Format is in TimeSpan
+     * (hh:mm:ss). This value is the timeout to get a response, not the activity timeout. The default value is 00:01:00
+     * (1 minute). The range is from 1 to 10 minutes.
+     * 
+     * @param httpRequestTimeout the httpRequestTimeout value to set.
+     * @return the WebActivityTypeProperties object itself.
+     */
+    public WebActivityTypeProperties withHttpRequestTimeout(Object httpRequestTimeout) {
+        this.httpRequestTimeout = httpRequestTimeout;
+        return this;
+    }
+
+    /**
+     * Get the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a HTTP
+     * 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set false
+     * then continues to invoke HTTP GET call on location given in http response headers.
+     * 
+     * @return the turnOffAsync value.
+     */
+    public Boolean turnOffAsync() {
+        return this.turnOffAsync;
+    }
+
+    /**
+     * Set the turnOffAsync property: Option to disable invoking HTTP GET on location given in response header of a HTTP
+     * 202 Response. If set true, it stops invoking HTTP GET on http location given in response header. If set false
+     * then continues to invoke HTTP GET call on location given in http response headers.
+     * 
+     * @param turnOffAsync the turnOffAsync value to set.
+     * @return the WebActivityTypeProperties object itself.
+     */
+    public WebActivityTypeProperties withTurnOffAsync(Boolean turnOffAsync) {
+        this.turnOffAsync = turnOffAsync;
         return this;
     }
 
@@ -277,12 +335,13 @@ public final class WebActivityTypeProperties {
      */
     public void validate() {
         if (method() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property method in model WebActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property method in model WebActivityTypeProperties"));
         }
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model WebActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property url in model WebActivityTypeProperties"));
         }
         if (authentication() != null) {
             authentication().validate();

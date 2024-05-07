@@ -16,18 +16,21 @@ public final class BinarySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BinarySource model = BinaryData.fromString(
-            "{\"type\":\"BinarySource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datapkgxemvlyaprjz\",\"disableMetricsCollection\":\"dataxxq\",\"\":{\"lpxfauvgtoin\":\"datatzbhm\",\"w\":\"datazsmyvvfapfbm\",\"dspdd\":\"dataknefcoopt\",\"laxuybxjwny\":\"datagupiosibg\"}},\"formatSettings\":{\"type\":\"BinaryReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"ssqfiksjpk\":\"datattnri\",\"bf\":\"datagnmtoqtuivi\"}},\"\":{\"vzpq\":\"dataslp\",\"kgiecjyftsn\":\"datadnok\",\"z\":\"dataf\"}},\"sourceRetryCount\":\"datajclaqxx\",\"sourceRetryWait\":\"dataq\",\"maxConcurrentConnections\":\"datagpdsuyyw\",\"disableMetricsCollection\":\"dataqg\",\"\":{\"yl\":\"datauhhvgddfzc\",\"gcpwrtgtdegfh\":\"datawlhuf\",\"otjj\":\"datafoptbiuik\",\"snr\":\"dataecxvkqjpovjvvx\"}}")
+            "{\"type\":\"pyavcbmzembv\",\"storeSettings\":{\"type\":\"vhf\",\"maxConcurrentConnections\":\"dataccffsbz\",\"disableMetricsCollection\":\"datatfxq\",\"\":{\"pzvqzml\":\"dataxoudjcttavbc\"}},\"formatSettings\":{\"type\":\"nodrfcl\",\"compressionProperties\":{\"type\":\"qttfqgdoowgqooip\",\"\":{\"etwfre\":\"datavsnedhkjiwf\",\"zdcwqalxpmiyt\":\"datavflrrtjuuik\",\"pvlsljutawg\":\"datajiscisolkw\"}},\"\":{\"eyjlyxdux\":\"dataopipvpe\"}},\"sourceRetryCount\":\"datarqx\",\"sourceRetryWait\":\"dataazyxmum\",\"maxConcurrentConnections\":\"datakaxzrycvac\",\"disableMetricsCollection\":\"datazjysyphxeoqm\",\"\":{\"sbbawrb\":\"dataikceiyuv\",\"rtnk\":\"dataooxvprqlxqhqgip\"}}")
             .toObject(BinarySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BinarySource model = new BinarySource().withSourceRetryCount("datajclaqxx").withSourceRetryWait("dataq")
-            .withMaxConcurrentConnections("datagpdsuyyw").withDisableMetricsCollection("dataqg")
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datapkgxemvlyaprjz")
-                .withDisableMetricsCollection("dataxxq").withAdditionalProperties(mapOf("type", "StoreReadSettings")))
+        BinarySource model = new BinarySource().withSourceRetryCount("datarqx")
+            .withSourceRetryWait("dataazyxmum")
+            .withMaxConcurrentConnections("datakaxzrycvac")
+            .withDisableMetricsCollection("datazjysyphxeoqm")
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("dataccffsbz")
+                .withDisableMetricsCollection("datatfxq")
+                .withAdditionalProperties(mapOf("type", "vhf")))
             .withFormatSettings(new BinaryReadSettings().withCompressionProperties(
-                new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings"))));
+                new CompressionReadSettings().withAdditionalProperties(mapOf("type", "qttfqgdoowgqooip"))));
         model = BinaryData.fromObject(model).toObject(BinarySource.class);
     }
 

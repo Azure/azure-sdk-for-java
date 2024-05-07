@@ -37,23 +37,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BuildServiceAgentPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BuildServiceAgentPoolsClient.
+ */
 public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgentPoolsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BuildServiceAgentPoolsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppPlatformManagementClientImpl client;
 
     /**
      * Initializes an instance of BuildServiceAgentPoolsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BuildServiceAgentPoolsClientImpl(AppPlatformManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(BuildServiceAgentPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(BuildServiceAgentPoolsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,96 +68,70 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface BuildServiceAgentPoolsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/agentPools")
-        @ExpectedResponses({200})
+    public interface BuildServiceAgentPoolsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/agentPools")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BuildServiceAgentPoolResourceCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("buildServiceName") String buildServiceName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<BuildServiceAgentPoolResourceCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("buildServiceName") String buildServiceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/agentPools/{agentPoolName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/agentPools/{agentPoolName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BuildServiceAgentPoolResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("buildServiceName") String buildServiceName,
-            @PathParam("agentPoolName") String agentPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<BuildServiceAgentPoolResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("buildServiceName") String buildServiceName, @PathParam("agentPoolName") String agentPoolName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/buildServices/{buildServiceName}/agentPools/{agentPoolName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/buildServices/{buildServiceName}/agentPools/{agentPoolName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updatePut(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("buildServiceName") String buildServiceName,
-            @PathParam("agentPoolName") String agentPoolName,
+        Mono<Response<Flux<ByteBuffer>>> updatePut(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("buildServiceName") String buildServiceName, @PathParam("agentPoolName") String agentPoolName,
             @BodyParam("application/json") BuildServiceAgentPoolResourceInner agentPoolResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BuildServiceAgentPoolResourceCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of build service agent pool resources and a possible link for next set
-     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BuildServiceAgentPoolResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String buildServiceName) {
+    private Mono<PagedResponse<BuildServiceAgentPoolResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName, String buildServiceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -167,35 +146,18 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            buildServiceName,
-                            accept,
-                            context))
-            .<PagedResponse<BuildServiceAgentPoolResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, buildServiceName, accept, context))
+            .<PagedResponse<BuildServiceAgentPoolResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param context The context to associate with this operation.
@@ -203,22 +165,18 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of build service agent pool resources and a possible link for next set
-     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BuildServiceAgentPoolResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, Context context) {
+    private Mono<PagedResponse<BuildServiceAgentPoolResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName, String buildServiceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -234,52 +192,37 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                buildServiceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceName, buildServiceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of build service agent pool resources and a possible link for next set as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BuildServiceAgentPoolResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String buildServiceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, buildServiceName),
+    public PagedFlux<BuildServiceAgentPoolResourceInner> listAsync(String resourceGroupName, String serviceName,
+        String buildServiceName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName, buildServiceName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param context The context to associate with this operation.
@@ -287,40 +230,39 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of build service agent pool resources and a possible link for next set as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BuildServiceAgentPoolResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, buildServiceName, context),
+    private PagedFlux<BuildServiceAgentPoolResourceInner> listAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName, buildServiceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of build service agent pool resources and a possible link for next set as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BuildServiceAgentPoolResourceInner> list(
-        String resourceGroupName, String serviceName, String buildServiceName) {
+    public PagedIterable<BuildServiceAgentPoolResourceInner> list(String resourceGroupName, String serviceName,
+        String buildServiceName) {
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, buildServiceName));
     }
 
     /**
      * List build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param context The context to associate with this operation.
@@ -328,19 +270,19 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of build service agent pool resources and a possible link for next set as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BuildServiceAgentPoolResourceInner> list(
-        String resourceGroupName, String serviceName, String buildServiceName, Context context) {
+    public PagedIterable<BuildServiceAgentPoolResourceInner> list(String resourceGroupName, String serviceName,
+        String buildServiceName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, buildServiceName, context));
     }
 
     /**
      * Get build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -350,19 +292,15 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @return build service agent pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BuildServiceAgentPoolResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName) {
+    public Mono<Response<BuildServiceAgentPoolResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String buildServiceName, String agentPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -380,27 +318,17 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            buildServiceName,
-                            agentPoolName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, buildServiceName, agentPoolName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -411,19 +339,15 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @return build service agent pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BuildServiceAgentPoolResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName, Context context) {
+    private Mono<Response<BuildServiceAgentPoolResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String buildServiceName, String agentPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -441,24 +365,15 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                buildServiceName,
-                agentPoolName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, buildServiceName, agentPoolName, accept, context);
     }
 
     /**
      * Get build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -468,36 +383,17 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @return build service agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BuildServiceAgentPoolResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName) {
+    public Mono<BuildServiceAgentPoolResourceInner> getAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String agentPoolName) {
         return getWithResponseAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param buildServiceName The name of the build service resource.
-     * @param agentPoolName The name of the build service agent pool resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return build service agent pool.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BuildServiceAgentPoolResourceInner get(
-        String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName) {
-        return getAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName).block();
-    }
-
-    /**
-     * Get build service agent pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -508,16 +404,36 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @return build service agent pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BuildServiceAgentPoolResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName, Context context) {
+    public Response<BuildServiceAgentPoolResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String buildServiceName, String agentPoolName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, context).block();
     }
 
     /**
-     * Create or update build service agent pool.
-     *
+     * Get build service agent pool.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param buildServiceName The name of the build service resource.
+     * @param agentPoolName The name of the build service agent pool resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return build service agent pool.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BuildServiceAgentPoolResourceInner get(String resourceGroupName, String serviceName, String buildServiceName,
+        String agentPoolName) {
+        return getWithResponse(resourceGroupName, serviceName, buildServiceName, agentPoolName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Create or update build service agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -525,27 +441,19 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the build service agent pool resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the build service agent pool resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updatePutWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String agentPoolName,
-        BuildServiceAgentPoolResourceInner agentPoolResource) {
+    public Mono<Response<Flux<ByteBuffer>>> updatePutWithResponseAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String agentPoolName, BuildServiceAgentPoolResourceInner agentPoolResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -569,28 +477,17 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updatePut(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            buildServiceName,
-                            agentPoolName,
-                            agentPoolResource,
-                            accept,
-                            context))
+            .withContext(context -> service.updatePut(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, buildServiceName, agentPoolName,
+                agentPoolResource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -599,28 +496,20 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the build service agent pool resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the build service agent pool resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updatePutWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String agentPoolName,
-        BuildServiceAgentPoolResourceInner agentPoolResource,
+    private Mono<Response<Flux<ByteBuffer>>> updatePutWithResponseAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String agentPoolName, BuildServiceAgentPoolResourceInner agentPoolResource,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -644,25 +533,16 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updatePut(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                buildServiceName,
-                agentPoolName,
-                agentPoolResource,
-                accept,
-                context);
+        return service.updatePut(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serviceName, buildServiceName, agentPoolName,
+            agentPoolResource, accept, context);
     }
 
     /**
      * Create or update build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -674,30 +554,20 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BuildServiceAgentPoolResourceInner>, BuildServiceAgentPoolResourceInner>
-        beginUpdatePutAsync(
-            String resourceGroupName,
-            String serviceName,
-            String buildServiceName,
-            String agentPoolName,
+        beginUpdatePutAsync(String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName,
             BuildServiceAgentPoolResourceInner agentPoolResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updatePutWithResponseAsync(
-                resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource);
-        return this
-            .client
-            .<BuildServiceAgentPoolResourceInner, BuildServiceAgentPoolResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BuildServiceAgentPoolResourceInner.class,
-                BuildServiceAgentPoolResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updatePutWithResponseAsync(resourceGroupName, serviceName,
+            buildServiceName, agentPoolName, agentPoolResource);
+        return this.client.<BuildServiceAgentPoolResourceInner, BuildServiceAgentPoolResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BuildServiceAgentPoolResourceInner.class,
+            BuildServiceAgentPoolResourceInner.class, this.client.getContext());
     }
 
     /**
      * Create or update build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -710,32 +580,21 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BuildServiceAgentPoolResourceInner>, BuildServiceAgentPoolResourceInner>
-        beginUpdatePutAsync(
-            String resourceGroupName,
-            String serviceName,
-            String buildServiceName,
-            String agentPoolName,
-            BuildServiceAgentPoolResourceInner agentPoolResource,
-            Context context) {
+        beginUpdatePutAsync(String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName,
+            BuildServiceAgentPoolResourceInner agentPoolResource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updatePutWithResponseAsync(
-                resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource, context);
-        return this
-            .client
-            .<BuildServiceAgentPoolResourceInner, BuildServiceAgentPoolResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BuildServiceAgentPoolResourceInner.class,
-                BuildServiceAgentPoolResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updatePutWithResponseAsync(resourceGroupName, serviceName,
+            buildServiceName, agentPoolName, agentPoolResource, context);
+        return this.client.<BuildServiceAgentPoolResourceInner, BuildServiceAgentPoolResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BuildServiceAgentPoolResourceInner.class,
+            BuildServiceAgentPoolResourceInner.class, context);
     }
 
     /**
      * Create or update build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -747,21 +606,18 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BuildServiceAgentPoolResourceInner>, BuildServiceAgentPoolResourceInner>
-        beginUpdatePut(
-            String resourceGroupName,
-            String serviceName,
-            String buildServiceName,
-            String agentPoolName,
+        beginUpdatePut(String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName,
             BuildServiceAgentPoolResourceInner agentPoolResource) {
-        return beginUpdatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource)
+        return this
+            .beginUpdatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource)
             .getSyncPoller();
     }
 
     /**
      * Create or update build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -774,23 +630,17 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BuildServiceAgentPoolResourceInner>, BuildServiceAgentPoolResourceInner>
-        beginUpdatePut(
-            String resourceGroupName,
-            String serviceName,
-            String buildServiceName,
-            String agentPoolName,
-            BuildServiceAgentPoolResourceInner agentPoolResource,
-            Context context) {
-        return beginUpdatePutAsync(
-                resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource, context)
-            .getSyncPoller();
+        beginUpdatePut(String resourceGroupName, String serviceName, String buildServiceName, String agentPoolName,
+            BuildServiceAgentPoolResourceInner agentPoolResource, Context context) {
+        return this.beginUpdatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName,
+            agentPoolResource, context).getSyncPoller();
     }
 
     /**
      * Create or update build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -801,22 +651,17 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @return the build service agent pool resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BuildServiceAgentPoolResourceInner> updatePutAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String agentPoolName,
-        BuildServiceAgentPoolResourceInner agentPoolResource) {
+    public Mono<BuildServiceAgentPoolResourceInner> updatePutAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String agentPoolName, BuildServiceAgentPoolResourceInner agentPoolResource) {
         return beginUpdatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -828,24 +673,18 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @return the build service agent pool resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BuildServiceAgentPoolResourceInner> updatePutAsync(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String agentPoolName,
-        BuildServiceAgentPoolResourceInner agentPoolResource,
+    private Mono<BuildServiceAgentPoolResourceInner> updatePutAsync(String resourceGroupName, String serviceName,
+        String buildServiceName, String agentPoolName, BuildServiceAgentPoolResourceInner agentPoolResource,
         Context context) {
-        return beginUpdatePutAsync(
-                resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginUpdatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -856,21 +695,17 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @return the build service agent pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BuildServiceAgentPoolResourceInner updatePut(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String agentPoolName,
-        BuildServiceAgentPoolResourceInner agentPoolResource) {
+    public BuildServiceAgentPoolResourceInner updatePut(String resourceGroupName, String serviceName,
+        String buildServiceName, String agentPoolName, BuildServiceAgentPoolResourceInner agentPoolResource) {
         return updatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource)
             .block();
     }
 
     /**
      * Create or update build service agent pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param buildServiceName The name of the build service resource.
      * @param agentPoolName The name of the build service agent pool resource.
@@ -882,27 +717,24 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
      * @return the build service agent pool resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BuildServiceAgentPoolResourceInner updatePut(
-        String resourceGroupName,
-        String serviceName,
-        String buildServiceName,
-        String agentPoolName,
-        BuildServiceAgentPoolResourceInner agentPoolResource,
+    public BuildServiceAgentPoolResourceInner updatePut(String resourceGroupName, String serviceName,
+        String buildServiceName, String agentPoolName, BuildServiceAgentPoolResourceInner agentPoolResource,
         Context context) {
-        return updatePutAsync(
-                resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource, context)
-            .block();
+        return updatePutAsync(resourceGroupName, serviceName, buildServiceName, agentPoolName, agentPoolResource,
+            context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of build service agent pool resources and a possible link for next set
-     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BuildServiceAgentPoolResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -910,61 +742,43 @@ public final class BuildServiceAgentPoolsClientImpl implements BuildServiceAgent
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BuildServiceAgentPoolResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<BuildServiceAgentPoolResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of build service agent pool resources and a possible link for next set
-     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BuildServiceAgentPoolResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<BuildServiceAgentPoolResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

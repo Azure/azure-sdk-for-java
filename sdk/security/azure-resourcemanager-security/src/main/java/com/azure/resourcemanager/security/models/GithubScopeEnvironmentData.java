@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The github scope connector's environment data. */
+/**
+ * The github scope connector's environment data.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "environmentType")
 @JsonTypeName("GithubScope")
 @Immutable
 public final class GithubScopeEnvironmentData extends EnvironmentData {
-    /** Creates an instance of GithubScopeEnvironmentData class. */
+    /**
+     * Creates an instance of GithubScopeEnvironmentData class.
+     */
     public GithubScopeEnvironmentData() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

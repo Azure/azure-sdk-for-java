@@ -16,10 +16,11 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.sas.BlobSasPermission;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
@@ -538,7 +539,6 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void appendBlockFromURLMin() {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         byte[] data = getRandomByteArray(1024);
         bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
 
@@ -547,8 +547,10 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
         BlobRange blobRange = new BlobRange(0, (long) PageBlobClient.PAGE_BYTES);
 
-        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl(), blobRange, null,
-            null, null))
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, blobRange, null,
+                null, null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 201);
                 validateBasicHeaders(r.getHeaders());
@@ -558,14 +560,15 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void appendBlockFromURLRange() {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         byte[] data = getRandomByteArray(4 * 1024);
         bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
 
         AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         destURL.create().block();
 
-        destURL.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(2 * 1024, 1024L)).block();
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        destURL.appendBlockFromUrl(bc.getBlobUrl() + "?" + sas, new BlobRange(2 * 1024, 1024L)).block();
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(destURL.downloadStream()))
             .assertNext(r -> TestUtils.assertArraysEqual(data, 2 * 1024, r, 0, 1024))
@@ -574,30 +577,32 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void appendBlockFromURLMD5() throws NoSuchAlgorithmException {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         byte[] data = getRandomByteArray(1024);
         bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
 
         AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         destURL.create().block();
 
-        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl(), null,
-            MessageDigest.getInstance("MD5").digest(data), null, null))
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
+                MessageDigest.getInstance("MD5").digest(data), null, null))
             .expectNextCount(1)
             .verifyComplete();
     }
 
     @Test
     public void appendBlockFromURLMD5Fail() throws NoSuchAlgorithmException {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         byte[] data = getRandomByteArray(1024);
         bc.appendBlock(Flux.just(ByteBuffer.wrap(data)), data.length).block();
 
         AppendBlobAsyncClient destURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         destURL.create().block();
 
-        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl(), null,
-            MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null,
+        String sas = bc.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        StepVerifier.create(destURL.appendBlockFromUrlWithResponse(bc.getBlobUrl() + "?" + sas, null,
+                MessageDigest.getInstance("MD5").digest("garbage".getBytes()), null,
                 null))
             .verifyError(BlobStorageException.class);
     }
@@ -611,7 +616,6 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
         bc.setTags(t).block();
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         match = setupBlobMatchCondition(bc, match);
         leaseID = setupBlobLeaseCondition(bc, leaseID);
         AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
@@ -629,7 +633,9 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
             null).block();
 
-        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null,
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
             null, bac, null), 201);
     }
 
@@ -639,7 +645,6 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     public void appendBlockFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                                     String noneMatch, String leaseID, Long maxSizeLTE, Long appendPosE,
                                                     String tags) {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
         noneMatch = setupBlobMatchCondition(bc, noneMatch);
         setupBlobLeaseCondition(bc, leaseID);
 
@@ -658,8 +663,10 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
             null).block();
 
-        StepVerifier.create(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null,
-            null, bac, null))
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        StepVerifier.create(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
+                null, bac, null))
             .verifyError(BlobStorageException.class);
     }
 
@@ -668,8 +675,6 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("appendBlockFromURLSupplier")
     public void appendBlockFromURLSourceAC(OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
                                            String sourceIfMatch, String sourceIfNoneMatch) {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
         sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
@@ -681,7 +686,9 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .setIfMatch(setupBlobMatchCondition(sourceURL, sourceIfMatch))
             .setIfNoneMatch(sourceIfNoneMatch);
 
-        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null,
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        assertAsyncResponseStatusCode(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
             null, null, smac), 201);
     }
 
@@ -701,8 +708,6 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     public void appendBlockFromURLSourceACFail(OffsetDateTime sourceIfModifiedSince,
                                                OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
                                                String sourceIfNoneMatch) {
-        ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null).block();
-
         AppendBlobAsyncClient sourceURL = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         sourceURL.create().block();
         sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
@@ -714,8 +719,10 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .setIfMatch(sourceIfMatch)
             .setIfNoneMatch(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch));
 
-        StepVerifier.create(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl(), null,
-            null, null, smac))
+        String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
+        StepVerifier.create(bc.appendBlockFromUrlWithResponse(sourceURL.getBlobUrl() + "?" + sas, null,
+                null, null, smac))
             .verifyError(BlobStorageException.class);
     }
 
@@ -885,10 +892,10 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     public void audienceError() {
-        AppendBlobAsyncClient aadBlob = new SpecializedBlobClientBuilder()
+        AppendBlobAsyncClient aadBlob = instrument(new SpecializedBlobClientBuilder()
             .endpoint(bc.getBlobUrl())
             .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
             .buildAppendBlobAsyncClient();
 
         StepVerifier.create(aadBlob.exists())

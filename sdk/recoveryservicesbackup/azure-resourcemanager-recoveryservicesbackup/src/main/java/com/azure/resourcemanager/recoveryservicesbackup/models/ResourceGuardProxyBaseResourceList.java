@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ResourceGu
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of ResourceGuardProxyBase resources. */
+/**
+ * List of ResourceGuardProxyBase resources.
+ */
 @Fluent
 public final class ResourceGuardProxyBaseResourceList extends ResourceList {
     /*
@@ -18,13 +20,15 @@ public final class ResourceGuardProxyBaseResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<ResourceGuardProxyBaseResourceInner> value;
 
-    /** Creates an instance of ResourceGuardProxyBaseResourceList class. */
+    /**
+     * Creates an instance of ResourceGuardProxyBaseResourceList class.
+     */
     public ResourceGuardProxyBaseResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceGuardProxyBaseResourceInner> value() {
@@ -33,7 +37,7 @@ public final class ResourceGuardProxyBaseResourceList extends ResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceGuardProxyBaseResourceList object itself.
      */
@@ -42,7 +46,9 @@ public final class ResourceGuardProxyBaseResourceList extends ResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceGuardProxyBaseResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -51,7 +57,7 @@ public final class ResourceGuardProxyBaseResourceList extends ResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

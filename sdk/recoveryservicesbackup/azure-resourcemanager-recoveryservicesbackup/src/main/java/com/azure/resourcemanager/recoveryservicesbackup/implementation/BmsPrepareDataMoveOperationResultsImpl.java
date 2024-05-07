@@ -20,32 +20,28 @@ public final class BmsPrepareDataMoveOperationResultsImpl implements BmsPrepareD
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BmsPrepareDataMoveOperationResultsImpl(
-        BmsPrepareDataMoveOperationResultsClient innerClient,
+    public BmsPrepareDataMoveOperationResultsImpl(BmsPrepareDataMoveOperationResultsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<VaultStorageConfigOperationResultResponse> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
-        Response<VaultStorageConfigOperationResultResponseInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
+    public Response<VaultStorageConfigOperationResultResponse> getWithResponse(String vaultName,
+        String resourceGroupName, String operationId, Context context) {
+        Response<VaultStorageConfigOperationResultResponseInner> inner
+            = this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VaultStorageConfigOperationResultResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public VaultStorageConfigOperationResultResponse get(
-        String vaultName, String resourceGroupName, String operationId) {
-        VaultStorageConfigOperationResultResponseInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, operationId);
+    public VaultStorageConfigOperationResultResponse get(String vaultName, String resourceGroupName,
+        String operationId) {
+        VaultStorageConfigOperationResultResponseInner inner
+            = this.serviceClient().get(vaultName, resourceGroupName, operationId);
         if (inner != null) {
             return new VaultStorageConfigOperationResultResponseImpl(inner, this.manager());
         } else {

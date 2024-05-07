@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.hdinsight.containers.generated;
 
-/** Samples for Clusters Delete. */
+/**
+ * Samples for Clusters Delete.
+ */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-06-01-preview/examples/DeleteCluster.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * DeleteCluster.json
      */
     /**
      * Sample code: HDInsightClustersDelete.
-     *
+     * 
      * @param manager Entry point to HDInsightContainersManager.
      */
-    public static void hDInsightClustersDelete(
-        com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
+    public static void
+        hDInsightClustersDelete(com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
         manager.clusters().delete("rg1", "clusterpool1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,25 +8,24 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * NetworkProfile - Profile of network configuration.
+ * The network configuration profile for the provisioned cluster.
  */
 @Fluent
 public final class NetworkProfile {
     /*
-     * LoadBalancerProfile - Profile of the cluster load balancer.
+     * Profile of the HA Proxy load balancer.
      */
     @JsonProperty(value = "loadBalancerProfile")
     private NetworkProfileLoadBalancerProfile loadBalancerProfile;
 
     /*
-     * NetworkPolicy - Network policy used for building Kubernetes network. Possible values include: 'calico',
-     * 'flannel'. Default is 'calico'
+     * Network policy used for building Kubernetes network. Possible values include: 'calico'.
      */
     @JsonProperty(value = "networkPolicy")
     private NetworkPolicy networkPolicy;
 
     /*
-     * PodCidr - A CIDR notation IP range from which to assign pod IPs when kubenet is used.
+     * A CIDR notation IP Address range from which to assign pod IPs.
      */
     @JsonProperty(value = "podCidr")
     private String podCidr;
@@ -38,7 +37,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the loadBalancerProfile property: LoadBalancerProfile - Profile of the cluster load balancer.
+     * Get the loadBalancerProfile property: Profile of the HA Proxy load balancer.
      * 
      * @return the loadBalancerProfile value.
      */
@@ -47,7 +46,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the loadBalancerProfile property: LoadBalancerProfile - Profile of the cluster load balancer.
+     * Set the loadBalancerProfile property: Profile of the HA Proxy load balancer.
      * 
      * @param loadBalancerProfile the loadBalancerProfile value to set.
      * @return the NetworkProfile object itself.
@@ -58,8 +57,8 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the networkPolicy property: NetworkPolicy - Network policy used for building Kubernetes network. Possible
-     * values include: 'calico', 'flannel'. Default is 'calico'.
+     * Get the networkPolicy property: Network policy used for building Kubernetes network. Possible values include:
+     * 'calico'.
      * 
      * @return the networkPolicy value.
      */
@@ -68,8 +67,8 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the networkPolicy property: NetworkPolicy - Network policy used for building Kubernetes network. Possible
-     * values include: 'calico', 'flannel'. Default is 'calico'.
+     * Set the networkPolicy property: Network policy used for building Kubernetes network. Possible values include:
+     * 'calico'.
      * 
      * @param networkPolicy the networkPolicy value to set.
      * @return the NetworkProfile object itself.
@@ -80,7 +79,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the podCidr property: PodCidr - A CIDR notation IP range from which to assign pod IPs when kubenet is used.
+     * Get the podCidr property: A CIDR notation IP Address range from which to assign pod IPs.
      * 
      * @return the podCidr value.
      */
@@ -89,7 +88,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the podCidr property: PodCidr - A CIDR notation IP range from which to assign pod IPs when kubenet is used.
+     * Set the podCidr property: A CIDR notation IP Address range from which to assign pod IPs.
      * 
      * @param podCidr the podCidr value to set.
      * @return the NetworkProfile object itself.

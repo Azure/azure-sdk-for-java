@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** A2A provider specific settings. */
+/**
+ * A2A provider specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -342,13 +344,15 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     @JsonProperty(value = "churnOptionSelected", access = JsonProperty.Access.WRITE_ONLY)
     private ChurnOptionSelected churnOptionSelected;
 
-    /** Creates an instance of A2AReplicationDetails class. */
+    /**
+     * Creates an instance of A2AReplicationDetails class.
+     */
     public A2AReplicationDetails() {
     }
 
     /**
      * Get the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -357,7 +361,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @param fabricObjectId the fabricObjectId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -368,7 +372,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the initialPrimaryZone property: The initial primary availability zone.
-     *
+     * 
      * @return the initialPrimaryZone value.
      */
     public String initialPrimaryZone() {
@@ -377,7 +381,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the initialPrimaryFabricLocation property: The initial primary fabric location.
-     *
+     * 
      * @return the initialPrimaryFabricLocation value.
      */
     public String initialPrimaryFabricLocation() {
@@ -386,7 +390,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the initialRecoveryZone property: The initial recovery availability zone.
-     *
+     * 
      * @return the initialRecoveryZone value.
      */
     public String initialRecoveryZone() {
@@ -395,7 +399,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the initialPrimaryExtendedLocation property: The initial primary extended location.
-     *
+     * 
      * @return the initialPrimaryExtendedLocation value.
      */
     public ExtendedLocation initialPrimaryExtendedLocation() {
@@ -404,7 +408,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the initialPrimaryExtendedLocation property: The initial primary extended location.
-     *
+     * 
      * @param initialPrimaryExtendedLocation the initialPrimaryExtendedLocation value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -415,7 +419,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the initialRecoveryExtendedLocation property: The initial recovery extended location.
-     *
+     * 
      * @return the initialRecoveryExtendedLocation value.
      */
     public ExtendedLocation initialRecoveryExtendedLocation() {
@@ -424,7 +428,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the initialRecoveryExtendedLocation property: The initial recovery extended location.
-     *
+     * 
      * @param initialRecoveryExtendedLocation the initialRecoveryExtendedLocation value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -435,7 +439,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the initialRecoveryFabricLocation property: The initial recovery fabric location.
-     *
+     * 
      * @return the initialRecoveryFabricLocation value.
      */
     public String initialRecoveryFabricLocation() {
@@ -444,7 +448,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the multiVmGroupId property: The multi vm group Id.
-     *
+     * 
      * @return the multiVmGroupId value.
      */
     public String multiVmGroupId() {
@@ -453,7 +457,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the multiVmGroupId property: The multi vm group Id.
-     *
+     * 
      * @param multiVmGroupId the multiVmGroupId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -464,7 +468,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -473,7 +477,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @param multiVmGroupName the multiVmGroupName value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -484,7 +488,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the multiVmGroupCreateOption property: Whether Multi VM group is auto created or specified by user.
-     *
+     * 
      * @return the multiVmGroupCreateOption value.
      */
     public MultiVmGroupCreateOption multiVmGroupCreateOption() {
@@ -493,7 +497,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the multiVmGroupCreateOption property: Whether Multi VM group is auto created or specified by user.
-     *
+     * 
      * @param multiVmGroupCreateOption the multiVmGroupCreateOption value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -504,7 +508,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the managementId property: The management Id.
-     *
+     * 
      * @return the managementId value.
      */
     public String managementId() {
@@ -513,7 +517,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the managementId property: The management Id.
-     *
+     * 
      * @param managementId the managementId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -524,7 +528,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @return the protectedDisks value.
      */
     public List<A2AProtectedDiskDetails> protectedDisks() {
@@ -533,7 +537,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @param protectedDisks the protectedDisks value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -544,7 +548,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the unprotectedDisks property: The list of unprotected disks.
-     *
+     * 
      * @return the unprotectedDisks value.
      */
     public List<A2AUnprotectedDiskDetails> unprotectedDisks() {
@@ -553,7 +557,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the unprotectedDisks property: The list of unprotected disks.
-     *
+     * 
      * @param unprotectedDisks the unprotectedDisks value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -564,7 +568,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the protectedManagedDisks property: The list of protected managed disks.
-     *
+     * 
      * @return the protectedManagedDisks value.
      */
     public List<A2AProtectedManagedDiskDetails> protectedManagedDisks() {
@@ -573,7 +577,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the protectedManagedDisks property: The list of protected managed disks.
-     *
+     * 
      * @param protectedManagedDisks the protectedManagedDisks value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -584,7 +588,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryBootDiagStorageAccountId property: The recovery boot diagnostic storage account Arm Id.
-     *
+     * 
      * @return the recoveryBootDiagStorageAccountId value.
      */
     public String recoveryBootDiagStorageAccountId() {
@@ -593,7 +597,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryBootDiagStorageAccountId property: The recovery boot diagnostic storage account Arm Id.
-     *
+     * 
      * @param recoveryBootDiagStorageAccountId the recoveryBootDiagStorageAccountId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -604,7 +608,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the primaryFabricLocation property: Primary fabric location.
-     *
+     * 
      * @return the primaryFabricLocation value.
      */
     public String primaryFabricLocation() {
@@ -613,7 +617,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the primaryFabricLocation property: Primary fabric location.
-     *
+     * 
      * @param primaryFabricLocation the primaryFabricLocation value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -624,7 +628,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryFabricLocation property: The recovery fabric location.
-     *
+     * 
      * @return the recoveryFabricLocation value.
      */
     public String recoveryFabricLocation() {
@@ -633,7 +637,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryFabricLocation property: The recovery fabric location.
-     *
+     * 
      * @param recoveryFabricLocation the recoveryFabricLocation value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -644,7 +648,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the osType property: The type of operating system.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -653,7 +657,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the osType property: The type of operating system.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -664,7 +668,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryAzureVMSize property: The size of recovery virtual machine.
-     *
+     * 
      * @return the recoveryAzureVMSize value.
      */
     public String recoveryAzureVMSize() {
@@ -673,7 +677,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryAzureVMSize property: The size of recovery virtual machine.
-     *
+     * 
      * @param recoveryAzureVMSize the recoveryAzureVMSize value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -684,7 +688,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryAzureVMName property: The name of recovery virtual machine.
-     *
+     * 
      * @return the recoveryAzureVMName value.
      */
     public String recoveryAzureVMName() {
@@ -693,7 +697,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryAzureVMName property: The name of recovery virtual machine.
-     *
+     * 
      * @param recoveryAzureVMName the recoveryAzureVMName value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -704,7 +708,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryAzureResourceGroupId property: The recovery resource group.
-     *
+     * 
      * @return the recoveryAzureResourceGroupId value.
      */
     public String recoveryAzureResourceGroupId() {
@@ -713,7 +717,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryAzureResourceGroupId property: The recovery resource group.
-     *
+     * 
      * @param recoveryAzureResourceGroupId the recoveryAzureResourceGroupId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -724,7 +728,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryCloudService property: The recovery cloud service.
-     *
+     * 
      * @return the recoveryCloudService value.
      */
     public String recoveryCloudService() {
@@ -733,7 +737,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryCloudService property: The recovery cloud service.
-     *
+     * 
      * @param recoveryCloudService the recoveryCloudService value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -744,7 +748,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryAvailabilitySet property: The recovery availability set.
-     *
+     * 
      * @return the recoveryAvailabilitySet value.
      */
     public String recoveryAvailabilitySet() {
@@ -753,7 +757,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryAvailabilitySet property: The recovery availability set.
-     *
+     * 
      * @param recoveryAvailabilitySet the recoveryAvailabilitySet value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -764,7 +768,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the selectedRecoveryAzureNetworkId property: The recovery virtual network.
-     *
+     * 
      * @return the selectedRecoveryAzureNetworkId value.
      */
     public String selectedRecoveryAzureNetworkId() {
@@ -773,7 +777,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the selectedRecoveryAzureNetworkId property: The recovery virtual network.
-     *
+     * 
      * @param selectedRecoveryAzureNetworkId the selectedRecoveryAzureNetworkId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -784,7 +788,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the selectedTfoAzureNetworkId property: The test failover virtual network.
-     *
+     * 
      * @return the selectedTfoAzureNetworkId value.
      */
     public String selectedTfoAzureNetworkId() {
@@ -793,7 +797,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the selectedTfoAzureNetworkId property: The test failover virtual network.
-     *
+     * 
      * @param selectedTfoAzureNetworkId the selectedTfoAzureNetworkId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -804,7 +808,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the vmNics property: The virtual machine nic details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<VMNicDetails> vmNics() {
@@ -813,7 +817,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the vmNics property: The virtual machine nic details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -824,7 +828,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the vmSyncedConfigDetails property: The synced configuration details.
-     *
+     * 
      * @return the vmSyncedConfigDetails value.
      */
     public AzureToAzureVmSyncedConfigDetails vmSyncedConfigDetails() {
@@ -833,7 +837,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the vmSyncedConfigDetails property: The synced configuration details.
-     *
+     * 
      * @param vmSyncedConfigDetails the vmSyncedConfigDetails value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -843,9 +847,9 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     }
 
     /**
-     * Get the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the monitoring
-     * job is defined by MonitoringJobType property.
-     *
+     * Get the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the
+     * monitoring job is defined by MonitoringJobType property.
+     * 
      * @return the monitoringPercentageCompletion value.
      */
     public Integer monitoringPercentageCompletion() {
@@ -853,9 +857,9 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     }
 
     /**
-     * Set the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the monitoring
-     * job is defined by MonitoringJobType property.
-     *
+     * Set the monitoringPercentageCompletion property: The percentage of the monitoring job. The type of the
+     * monitoring job is defined by MonitoringJobType property.
+     * 
      * @param monitoringPercentageCompletion the monitoringPercentageCompletion value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -867,7 +871,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     /**
      * Get the monitoringJobType property: The type of the monitoring job. The progress is contained in
      * MonitoringPercentageCompletion property.
-     *
+     * 
      * @return the monitoringJobType value.
      */
     public String monitoringJobType() {
@@ -877,7 +881,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     /**
      * Set the monitoringJobType property: The type of the monitoring job. The progress is contained in
      * MonitoringPercentageCompletion property.
-     *
+     * 
      * @param monitoringJobType the monitoringJobType value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -888,7 +892,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the lastHeartbeat property: The last heartbeat received from the source server.
-     *
+     * 
      * @return the lastHeartbeat value.
      */
     public OffsetDateTime lastHeartbeat() {
@@ -897,7 +901,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the lastHeartbeat property: The last heartbeat received from the source server.
-     *
+     * 
      * @param lastHeartbeat the lastHeartbeat value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -908,7 +912,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the agentVersion property: The agent version.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -917,7 +921,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the agentVersion property: The agent version.
-     *
+     * 
      * @param agentVersion the agentVersion value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -928,7 +932,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @return the agentExpiryDate value.
      */
     public OffsetDateTime agentExpiryDate() {
@@ -937,7 +941,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @param agentExpiryDate the agentExpiryDate value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -949,7 +953,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     /**
      * Get the isReplicationAgentUpdateRequired property: A value indicating whether replication agent update is
      * required.
-     *
+     * 
      * @return the isReplicationAgentUpdateRequired value.
      */
     public Boolean isReplicationAgentUpdateRequired() {
@@ -959,7 +963,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     /**
      * Set the isReplicationAgentUpdateRequired property: A value indicating whether replication agent update is
      * required.
-     *
+     * 
      * @param isReplicationAgentUpdateRequired the isReplicationAgentUpdateRequired value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -970,7 +974,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the agentCertificateExpiryDate property: Agent certificate expiry date.
-     *
+     * 
      * @return the agentCertificateExpiryDate value.
      */
     public OffsetDateTime agentCertificateExpiryDate() {
@@ -978,9 +982,9 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     }
 
     /**
-     * Get the isReplicationAgentCertificateUpdateRequired property: A value indicating whether agent certificate update
-     * is required.
-     *
+     * Get the isReplicationAgentCertificateUpdateRequired property: A value indicating whether agent certificate
+     * update is required.
+     * 
      * @return the isReplicationAgentCertificateUpdateRequired value.
      */
     public Boolean isReplicationAgentCertificateUpdateRequired() {
@@ -988,21 +992,21 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     }
 
     /**
-     * Set the isReplicationAgentCertificateUpdateRequired property: A value indicating whether agent certificate update
-     * is required.
-     *
+     * Set the isReplicationAgentCertificateUpdateRequired property: A value indicating whether agent certificate
+     * update is required.
+     * 
      * @param isReplicationAgentCertificateUpdateRequired the isReplicationAgentCertificateUpdateRequired value to set.
      * @return the A2AReplicationDetails object itself.
      */
-    public A2AReplicationDetails withIsReplicationAgentCertificateUpdateRequired(
-        Boolean isReplicationAgentCertificateUpdateRequired) {
+    public A2AReplicationDetails
+        withIsReplicationAgentCertificateUpdateRequired(Boolean isReplicationAgentCertificateUpdateRequired) {
         this.isReplicationAgentCertificateUpdateRequired = isReplicationAgentCertificateUpdateRequired;
         return this;
     }
 
     /**
      * Get the recoveryFabricObjectId property: The recovery fabric object Id.
-     *
+     * 
      * @return the recoveryFabricObjectId value.
      */
     public String recoveryFabricObjectId() {
@@ -1011,7 +1015,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryFabricObjectId property: The recovery fabric object Id.
-     *
+     * 
      * @param recoveryFabricObjectId the recoveryFabricObjectId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1022,7 +1026,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @return the vmProtectionState value.
      */
     public String vmProtectionState() {
@@ -1031,7 +1035,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @param vmProtectionState the vmProtectionState value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1042,7 +1046,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @return the vmProtectionStateDescription value.
      */
     public String vmProtectionStateDescription() {
@@ -1051,7 +1055,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @param vmProtectionStateDescription the vmProtectionStateDescription value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1065,7 +1069,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
      * change the backing PE/CPE objects internally.The lifecycle id gets carried forward to have a link/continuity in
      * being able to have an Id that denotes the "same" protected item even though other internal Ids/ARM Id might be
      * changing.
-     *
+     * 
      * @return the lifecycleId value.
      */
     public String lifecycleId() {
@@ -1077,7 +1081,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
      * change the backing PE/CPE objects internally.The lifecycle id gets carried forward to have a link/continuity in
      * being able to have an Id that denotes the "same" protected item even though other internal Ids/ARM Id might be
      * changing.
-     *
+     * 
      * @param lifecycleId the lifecycleId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1088,7 +1092,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the testFailoverRecoveryFabricObjectId property: The test failover fabric object Id.
-     *
+     * 
      * @return the testFailoverRecoveryFabricObjectId value.
      */
     public String testFailoverRecoveryFabricObjectId() {
@@ -1097,7 +1101,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the testFailoverRecoveryFabricObjectId property: The test failover fabric object Id.
-     *
+     * 
      * @param testFailoverRecoveryFabricObjectId the testFailoverRecoveryFabricObjectId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1108,7 +1112,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the rpoInSeconds property: The last RPO value in seconds.
-     *
+     * 
      * @return the rpoInSeconds value.
      */
     public Long rpoInSeconds() {
@@ -1117,7 +1121,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the rpoInSeconds property: The last RPO value in seconds.
-     *
+     * 
      * @param rpoInSeconds the rpoInSeconds value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1129,7 +1133,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     /**
      * Get the lastRpoCalculatedTime property: The time (in UTC) when the last RPO value was calculated by Protection
      * Service.
-     *
+     * 
      * @return the lastRpoCalculatedTime value.
      */
     public OffsetDateTime lastRpoCalculatedTime() {
@@ -1139,7 +1143,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
     /**
      * Set the lastRpoCalculatedTime property: The time (in UTC) when the last RPO value was calculated by Protection
      * Service.
-     *
+     * 
      * @param lastRpoCalculatedTime the lastRpoCalculatedTime value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1150,7 +1154,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the primaryAvailabilityZone property: The primary availability zone.
-     *
+     * 
      * @return the primaryAvailabilityZone value.
      */
     public String primaryAvailabilityZone() {
@@ -1159,7 +1163,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the primaryAvailabilityZone property: The primary availability zone.
-     *
+     * 
      * @param primaryAvailabilityZone the primaryAvailabilityZone value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1170,7 +1174,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @return the recoveryAvailabilityZone value.
      */
     public String recoveryAvailabilityZone() {
@@ -1179,7 +1183,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @param recoveryAvailabilityZone the recoveryAvailabilityZone value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1190,7 +1194,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the primaryExtendedLocation property: The primary Extended Location.
-     *
+     * 
      * @return the primaryExtendedLocation value.
      */
     public ExtendedLocation primaryExtendedLocation() {
@@ -1199,7 +1203,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the primaryExtendedLocation property: The primary Extended Location.
-     *
+     * 
      * @param primaryExtendedLocation the primaryExtendedLocation value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1210,7 +1214,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryExtendedLocation property: The recovery Extended Location.
-     *
+     * 
      * @return the recoveryExtendedLocation value.
      */
     public ExtendedLocation recoveryExtendedLocation() {
@@ -1219,7 +1223,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryExtendedLocation property: The recovery Extended Location.
-     *
+     * 
      * @param recoveryExtendedLocation the recoveryExtendedLocation value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1230,7 +1234,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the vmEncryptionType property: The encryption type of the VM.
-     *
+     * 
      * @return the vmEncryptionType value.
      */
     public VmEncryptionType vmEncryptionType() {
@@ -1239,7 +1243,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the tfoAzureVMName property: The test failover vm name.
-     *
+     * 
      * @return the tfoAzureVMName value.
      */
     public String tfoAzureVMName() {
@@ -1248,7 +1252,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the tfoAzureVMName property: The test failover vm name.
-     *
+     * 
      * @param tfoAzureVMName the tfoAzureVMName value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1259,7 +1263,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryAzureGeneration property: The recovery azure generation.
-     *
+     * 
      * @return the recoveryAzureGeneration value.
      */
     public String recoveryAzureGeneration() {
@@ -1268,7 +1272,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryProximityPlacementGroupId property: The recovery proximity placement group Id.
-     *
+     * 
      * @return the recoveryProximityPlacementGroupId value.
      */
     public String recoveryProximityPlacementGroupId() {
@@ -1277,7 +1281,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryProximityPlacementGroupId property: The recovery proximity placement group Id.
-     *
+     * 
      * @param recoveryProximityPlacementGroupId the recoveryProximityPlacementGroupId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1288,7 +1292,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the autoProtectionOfDataDisk property: A value indicating whether the auto protection is enabled.
-     *
+     * 
      * @return the autoProtectionOfDataDisk value.
      */
     public AutoProtectionOfDataDisk autoProtectionOfDataDisk() {
@@ -1297,7 +1301,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the autoProtectionOfDataDisk property: A value indicating whether the auto protection is enabled.
-     *
+     * 
      * @param autoProtectionOfDataDisk the autoProtectionOfDataDisk value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1308,7 +1312,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryVirtualMachineScaleSetId property: The recovery virtual machine scale set id.
-     *
+     * 
      * @return the recoveryVirtualMachineScaleSetId value.
      */
     public String recoveryVirtualMachineScaleSetId() {
@@ -1317,7 +1321,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryVirtualMachineScaleSetId property: The recovery virtual machine scale set id.
-     *
+     * 
      * @param recoveryVirtualMachineScaleSetId the recoveryVirtualMachineScaleSetId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1328,7 +1332,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the recoveryCapacityReservationGroupId property: The recovery capacity reservation group Id.
-     *
+     * 
      * @return the recoveryCapacityReservationGroupId value.
      */
     public String recoveryCapacityReservationGroupId() {
@@ -1337,7 +1341,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Set the recoveryCapacityReservationGroupId property: The recovery capacity reservation group Id.
-     *
+     * 
      * @param recoveryCapacityReservationGroupId the recoveryCapacityReservationGroupId value to set.
      * @return the A2AReplicationDetails object itself.
      */
@@ -1348,7 +1352,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Get the churnOptionSelected property: A value indicating the churn option selected by user.
-     *
+     * 
      * @return the churnOptionSelected value.
      */
     public ChurnOptionSelected churnOptionSelected() {
@@ -1357,7 +1361,7 @@ public final class A2AReplicationDetails extends ReplicationProviderSpecificSett
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

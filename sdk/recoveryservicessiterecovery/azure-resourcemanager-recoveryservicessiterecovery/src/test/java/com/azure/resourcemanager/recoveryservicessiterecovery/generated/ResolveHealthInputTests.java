@@ -14,27 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ResolveHealthInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResolveHealthInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"healthErrors\":[{\"healthErrorId\":\"oftpipiwycz\"},{\"healthErrorId\":\"xacpqjli\"},{\"healthErrorId\":\"yuspskas\"},{\"healthErrorId\":\"lmfwdgzx\"}]}}")
-                .toObject(ResolveHealthInput.class);
+        ResolveHealthInput model = BinaryData.fromString(
+            "{\"properties\":{\"healthErrors\":[{\"healthErrorId\":\"oftpipiwycz\"},{\"healthErrorId\":\"xacpqjli\"},{\"healthErrorId\":\"yuspskas\"},{\"healthErrorId\":\"lmfwdgzx\"}]}}")
+            .toObject(ResolveHealthInput.class);
         Assertions.assertEquals("oftpipiwycz", model.properties().healthErrors().get(0).healthErrorId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResolveHealthInput model =
-            new ResolveHealthInput()
-                .withProperties(
-                    new ResolveHealthInputProperties()
-                        .withHealthErrors(
-                            Arrays
-                                .asList(
-                                    new ResolveHealthError().withHealthErrorId("oftpipiwycz"),
-                                    new ResolveHealthError().withHealthErrorId("xacpqjli"),
-                                    new ResolveHealthError().withHealthErrorId("yuspskas"),
-                                    new ResolveHealthError().withHealthErrorId("lmfwdgzx"))));
+        ResolveHealthInput model = new ResolveHealthInput().withProperties(new ResolveHealthInputProperties()
+            .withHealthErrors(Arrays.asList(new ResolveHealthError().withHealthErrorId("oftpipiwycz"),
+                new ResolveHealthError().withHealthErrorId("xacpqjli"),
+                new ResolveHealthError().withHealthErrorId("yuspskas"),
+                new ResolveHealthError().withHealthErrorId("lmfwdgzx"))));
         model = BinaryData.fromObject(model).toObject(ResolveHealthInput.class);
         Assertions.assertEquals("oftpipiwycz", model.properties().healthErrors().get(0).healthErrorId());
     }

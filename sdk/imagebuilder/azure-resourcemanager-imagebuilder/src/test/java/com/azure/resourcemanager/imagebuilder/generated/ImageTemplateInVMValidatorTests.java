@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateInVMValidatorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateInVMValidator model =
-            BinaryData
-                .fromString("{\"type\":\"ImageTemplateInVMValidator\",\"name\":\"lthqtrgqjbp\"}")
+        ImageTemplateInVMValidator model
+            = BinaryData.fromString("{\"type\":\"ImageTemplateInVMValidator\",\"name\":\"wjzrnfygxgisp\"}")
                 .toObject(ImageTemplateInVMValidator.class);
-        Assertions.assertEquals("lthqtrgqjbp", model.name());
+        Assertions.assertEquals("wjzrnfygxgisp", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateInVMValidator model = new ImageTemplateInVMValidator().withName("lthqtrgqjbp");
+        ImageTemplateInVMValidator model = new ImageTemplateInVMValidator().withName("wjzrnfygxgisp");
         model = BinaryData.fromObject(model).toObject(ImageTemplateInVMValidator.class);
-        Assertions.assertEquals("lthqtrgqjbp", model.name());
+        Assertions.assertEquals("wjzrnfygxgisp", model.name());
     }
 }

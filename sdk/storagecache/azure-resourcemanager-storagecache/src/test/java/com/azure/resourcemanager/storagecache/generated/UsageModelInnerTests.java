@@ -12,26 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageModelInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageModelInner model =
-            BinaryData
-                .fromString(
-                    "{\"display\":{\"description\":\"yp\"},\"modelName\":\"bpizcdrqjsdpydn\",\"targetType\":\"hxdeoejz\"}")
-                .toObject(UsageModelInner.class);
-        Assertions.assertEquals("yp", model.display().description());
-        Assertions.assertEquals("bpizcdrqjsdpydn", model.modelName());
-        Assertions.assertEquals("hxdeoejz", model.targetType());
+        UsageModelInner model = BinaryData.fromString(
+            "{\"display\":{\"description\":\"rywn\"},\"modelName\":\"oqftiyqzrnkcq\",\"targetType\":\"xlwhzlsicoh\"}")
+            .toObject(UsageModelInner.class);
+        Assertions.assertEquals("rywn", model.display().description());
+        Assertions.assertEquals("oqftiyqzrnkcq", model.modelName());
+        Assertions.assertEquals("xlwhzlsicoh", model.targetType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageModelInner model =
-            new UsageModelInner()
-                .withDisplay(new UsageModelDisplay().withDescription("yp"))
-                .withModelName("bpizcdrqjsdpydn")
-                .withTargetType("hxdeoejz");
+        UsageModelInner model = new UsageModelInner().withDisplay(new UsageModelDisplay().withDescription("rywn"))
+            .withModelName("oqftiyqzrnkcq").withTargetType("xlwhzlsicoh");
         model = BinaryData.fromObject(model).toObject(UsageModelInner.class);
-        Assertions.assertEquals("yp", model.display().description());
-        Assertions.assertEquals("bpizcdrqjsdpydn", model.modelName());
-        Assertions.assertEquals("hxdeoejz", model.targetType());
+        Assertions.assertEquals("rywn", model.display().description());
+        Assertions.assertEquals("oqftiyqzrnkcq", model.modelName());
+        Assertions.assertEquals("xlwhzlsicoh", model.targetType());
     }
 }

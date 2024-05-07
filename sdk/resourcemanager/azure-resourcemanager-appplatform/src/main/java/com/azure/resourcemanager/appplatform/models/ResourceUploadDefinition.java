@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource upload definition payload. */
+/**
+ * Resource upload definition payload.
+ */
 @Fluent
 public final class ResourceUploadDefinition {
     /*
@@ -23,8 +25,14 @@ public final class ResourceUploadDefinition {
     private String uploadUrl;
 
     /**
+     * Creates an instance of ResourceUploadDefinition class.
+     */
+    public ResourceUploadDefinition() {
+    }
+
+    /**
      * Get the relativePath property: Source relative path.
-     *
+     * 
      * @return the relativePath value.
      */
     public String relativePath() {
@@ -33,7 +41,7 @@ public final class ResourceUploadDefinition {
 
     /**
      * Set the relativePath property: Source relative path.
-     *
+     * 
      * @param relativePath the relativePath value to set.
      * @return the ResourceUploadDefinition object itself.
      */
@@ -44,7 +52,7 @@ public final class ResourceUploadDefinition {
 
     /**
      * Get the uploadUrl property: Upload URL.
-     *
+     * 
      * @return the uploadUrl value.
      */
     public String uploadUrl() {
@@ -53,7 +61,7 @@ public final class ResourceUploadDefinition {
 
     /**
      * Set the uploadUrl property: Upload URL.
-     *
+     * 
      * @param uploadUrl the uploadUrl value to set.
      * @return the ResourceUploadDefinition object itself.
      */
@@ -64,7 +72,7 @@ public final class ResourceUploadDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

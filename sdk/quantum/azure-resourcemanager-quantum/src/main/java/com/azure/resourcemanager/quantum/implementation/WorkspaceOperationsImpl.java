@@ -10,8 +10,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quantum.fluent.WorkspaceOperationsClient;
 import com.azure.resourcemanager.quantum.fluent.models.CheckNameAvailabilityResultInner;
+import com.azure.resourcemanager.quantum.fluent.models.ListKeysResultInner;
+import com.azure.resourcemanager.quantum.models.ApiKeys;
 import com.azure.resourcemanager.quantum.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.quantum.models.CheckNameAvailabilityResult;
+import com.azure.resourcemanager.quantum.models.ListKeysResult;
 import com.azure.resourcemanager.quantum.models.WorkspaceOperations;
 
 public final class WorkspaceOperationsImpl implements WorkspaceOperations {
@@ -21,38 +24,64 @@ public final class WorkspaceOperationsImpl implements WorkspaceOperations {
 
     private final com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager;
 
-    public WorkspaceOperationsImpl(
-        WorkspaceOperationsClient innerClient, com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager) {
+    public WorkspaceOperationsImpl(WorkspaceOperationsClient innerClient,
+        com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        String locationName, CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
-        Response<CheckNameAvailabilityResultInner> inner =
-            this
-                .serviceClient()
-                .checkNameAvailabilityWithResponse(locationName, checkNameAvailabilityParameters, context);
+    public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(String locationName,
+        CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context) {
+        Response<CheckNameAvailabilityResultInner> inner = this.serviceClient()
+            .checkNameAvailabilityWithResponse(locationName, checkNameAvailabilityParameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckNameAvailabilityResult checkNameAvailability(
-        String locationName, CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
-        CheckNameAvailabilityResultInner inner =
-            this.serviceClient().checkNameAvailability(locationName, checkNameAvailabilityParameters);
+    public CheckNameAvailabilityResult checkNameAvailability(String locationName,
+        CheckNameAvailabilityParameters checkNameAvailabilityParameters) {
+        CheckNameAvailabilityResultInner inner
+            = this.serviceClient().checkNameAvailability(locationName, checkNameAvailabilityParameters);
         if (inner != null) {
             return new CheckNameAvailabilityResultImpl(inner, this.manager());
         } else {
             return null;
         }
+    }
+
+    public Response<ListKeysResult> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context) {
+        Response<ListKeysResultInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, workspaceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ListKeysResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ListKeysResult listKeys(String resourceGroupName, String workspaceName) {
+        ListKeysResultInner inner = this.serviceClient().listKeys(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new ListKeysResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> regenerateKeysWithResponse(String resourceGroupName, String workspaceName,
+        ApiKeys keySpecification, Context context) {
+        return this.serviceClient().regenerateKeysWithResponse(resourceGroupName, workspaceName, keySpecification,
+            context);
+    }
+
+    public void regenerateKeys(String resourceGroupName, String workspaceName, ApiKeys keySpecification) {
+        this.serviceClient().regenerateKeys(resourceGroupName, workspaceName, keySpecification);
     }
 
     private WorkspaceOperationsClient serviceClient() {

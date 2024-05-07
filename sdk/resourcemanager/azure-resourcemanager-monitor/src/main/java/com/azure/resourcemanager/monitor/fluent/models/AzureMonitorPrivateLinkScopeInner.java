@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** An Azure Monitor PrivateLinkScope definition. */
+/**
+ * An Azure Monitor PrivateLinkScope definition.
+ */
 @Fluent
 public final class AzureMonitorPrivateLinkScopeInner extends Resource {
     /*
@@ -28,13 +30,15 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AzureMonitorPrivateLinkScopeInner class. */
+    /**
+     * Creates an instance of AzureMonitorPrivateLinkScopeInner class.
+     */
     public AzureMonitorPrivateLinkScopeInner() {
     }
 
     /**
      * Get the innerProperties property: Properties that define a Azure Monitor PrivateLinkScope resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AzureMonitorPrivateLinkScopeProperties innerProperties() {
@@ -43,21 +47,25 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
 
     /**
      * Get the systemData property: System data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMonitorPrivateLinkScopeInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMonitorPrivateLinkScopeInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -66,9 +74,9 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
 
     /**
      * Get the provisioningState property: Current state of this PrivateLinkScope: whether or not is has been
-     * provisioned within the resource group it is defined. Users cannot change this value but are able to read from it.
-     * Values will include Provisioning ,Succeeded, Canceled and Failed.
-     *
+     * provisioned within the resource group it is defined. Users cannot change this value but are able to read from
+     * it. Values will include Provisioning ,Succeeded, Canceled and Failed.
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -77,7 +85,7 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -86,7 +94,7 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
 
     /**
      * Get the accessModeSettings property: Access mode settings.
-     *
+     * 
      * @return the accessModeSettings value.
      */
     public AccessModeSettings accessModeSettings() {
@@ -95,7 +103,7 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
 
     /**
      * Set the accessModeSettings property: Access mode settings.
-     *
+     * 
      * @param accessModeSettings the accessModeSettings value to set.
      * @return the AzureMonitorPrivateLinkScopeInner object itself.
      */
@@ -109,15 +117,13 @@ public final class AzureMonitorPrivateLinkScopeInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AzureMonitorPrivateLinkScopeInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model AzureMonitorPrivateLinkScopeInner"));
         } else {
             innerProperties().validate();
         }

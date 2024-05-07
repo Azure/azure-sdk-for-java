@@ -185,20 +185,42 @@ public class HookInfo implements JsonSerializable<HookInfo> {
                     readerToUse.skipChildren();
                 }
             }
-
-            if (discriminatorValue != null) {
-                readerToUse = readerToUse.reset();
-            }
             // Use the discriminator value to determine which subtype should be deserialized.
             if ("Email".equals(discriminatorValue)) {
-                return EmailHookInfo.fromJson(readerToUse);
+                return EmailHookInfo.fromJson(readerToUse.reset());
             } else if ("Webhook".equals(discriminatorValue)) {
-                return WebhookHookInfo.fromJson(readerToUse);
+                return WebhookHookInfo.fromJson(readerToUse.reset());
             } else {
-                throw new IllegalStateException(
-                    "Discriminator field 'hookType' didn't match one of the expected values 'Email', or 'Webhook'. It was: '"
-                        + discriminatorValue + "'.");
+                return fromJsonKnownDiscriminator(readerToUse.reset());
             }
+        });
+    }
+
+    static HookInfo fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HookInfo deserializedHookInfo = new HookInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hookName".equals(fieldName)) {
+                    deserializedHookInfo.hookName = reader.getString();
+                } else if ("hookId".equals(fieldName)) {
+                    deserializedHookInfo.hookId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedHookInfo.description = reader.getString();
+                } else if ("externalLink".equals(fieldName)) {
+                    deserializedHookInfo.externalLink = reader.getString();
+                } else if ("admins".equals(fieldName)) {
+                    List<String> admins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHookInfo.admins = admins;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHookInfo;
         });
     }
 }

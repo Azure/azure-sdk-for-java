@@ -7,13 +7,10 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
-import com.azure.core.util.Configuration;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -28,22 +25,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Isolated
 public class RecordNetworkCallPolicyTests {
-    private static String azureTestRecordMode;
+    private static final class AlwaysRecordRecordNetworkCallPolicy extends RecordNetworkCallPolicy {
+        @Override
+        TestMode getTestMode() {
+            return TestMode.RECORD;
+        }
 
-    @SuppressWarnings("deprecation")
-    @BeforeAll
-    public static void beforeAll() {
-        azureTestRecordMode = Configuration.getGlobalConfiguration().get(TestingHelpers.AZURE_TEST_MODE);
-        Configuration.getGlobalConfiguration().put(TestingHelpers.AZURE_TEST_MODE, "RECORD");
-    }
-
-    @SuppressWarnings("deprecation")
-    @AfterAll
-    public static void afterAll() {
-        if (azureTestRecordMode == null) {
-            Configuration.getGlobalConfiguration().remove(TestingHelpers.AZURE_TEST_MODE);
-        } else {
-            Configuration.getGlobalConfiguration().put(TestingHelpers.AZURE_TEST_MODE, azureTestRecordMode);
+        AlwaysRecordRecordNetworkCallPolicy(RecordedData recordedData) {
+            super(recordedData);
         }
     }
 
@@ -51,10 +40,10 @@ public class RecordNetworkCallPolicyTests {
     @MethodSource("sigValueIsRedactedSupplier")
     public void sigValueIsRedacted(String requestUrl, String expectedRedactedUrl) {
         RecordedData recordedData = new RecordedData();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new RecordNetworkCallPolicy(recordedData))
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(new AlwaysRecordRecordNetworkCallPolicy(recordedData))
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, requestUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
@@ -65,11 +54,13 @@ public class RecordNetworkCallPolicyTests {
     }
 
     private static Stream<Arguments> sigValueIsRedactedSupplier() {
-        return Stream.of(
-            Arguments.of("https://azure.com", "https://REDACTED.com"), // No sig should result in no sig
-            Arguments.of("https://azure.com?sig", "https://REDACTED.com?sig=REDACTED"), // Empty sig should result in redacted sig
-            Arguments.of("https://azure.com?sig=", "https://REDACTED.com?sig=REDACTED"), // Empty sig should result in redacted sig
-            Arguments.of("https://azure.com?sig=fake", "https://REDACTED.com?sig=REDACTED") // sig should result in redacted sig
+        return Stream.of(Arguments.of("https://azure.com", "https://REDACTED.com"), // No sig should result in no sig
+            Arguments.of("https://azure.com?sig", "https://REDACTED.com?sig=REDACTED"), // Empty sig should result in
+            // redacted sig
+            Arguments.of("https://azure.com?sig=", "https://REDACTED.com?sig=REDACTED"), // Empty sig should result in
+            // redacted sig
+            Arguments.of("https://azure.com?sig=fake", "https://REDACTED.com?sig=REDACTED") // sig should result in
+                                                                                           // redacted sig
         );
     }
 }

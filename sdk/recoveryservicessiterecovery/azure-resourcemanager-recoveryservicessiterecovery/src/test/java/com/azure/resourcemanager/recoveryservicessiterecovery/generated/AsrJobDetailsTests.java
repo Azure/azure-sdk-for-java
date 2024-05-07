@@ -13,20 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AsrJobDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AsrJobDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"AsrJobDetails\",\"affectedObjectDetails\":{\"mhmjpjs\":\"wnphbkgfyrto\",\"mseharx\":\"dfpdqwtygevg\",\"n\":\"fv\",\"mbpjptnvwjh\":\"x\"}}")
-                .toObject(AsrJobDetails.class);
+        AsrJobDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"AsrJobDetails\",\"affectedObjectDetails\":{\"mhmjpjs\":\"wnphbkgfyrto\",\"mseharx\":\"dfpdqwtygevg\",\"n\":\"fv\",\"mbpjptnvwjh\":\"x\"}}")
+            .toObject(AsrJobDetails.class);
         Assertions.assertEquals("wnphbkgfyrto", model.affectedObjectDetails().get("mhmjpjs"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AsrJobDetails model =
-            new AsrJobDetails()
-                .withAffectedObjectDetails(
-                    mapOf("mhmjpjs", "wnphbkgfyrto", "mseharx", "dfpdqwtygevg", "n", "fv", "mbpjptnvwjh", "x"));
+        AsrJobDetails model = new AsrJobDetails().withAffectedObjectDetails(
+            mapOf("mhmjpjs", "wnphbkgfyrto", "mseharx", "dfpdqwtygevg", "n", "fv", "mbpjptnvwjh", "x"));
         model = BinaryData.fromObject(model).toObject(AsrJobDetails.class);
         Assertions.assertEquals("wnphbkgfyrto", model.affectedObjectDetails().get("mhmjpjs"));
     }

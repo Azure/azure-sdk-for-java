@@ -7,12 +7,15 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BackupWorkloadItems. */
+/**
+ * Resource collection API of BackupWorkloadItems.
+ */
 public interface BackupWorkloadItems {
     /**
      * Provides a pageable list of workload item of a specific container according to the query filter and the
-     * pagination parameters.
-     *
+     * pagination
+     * parameters.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -22,13 +25,14 @@ public interface BackupWorkloadItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of WorkloadItem resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadItemResource> list(
-        String vaultName, String resourceGroupName, String fabricName, String containerName);
+    PagedIterable<WorkloadItemResource> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName);
 
     /**
      * Provides a pageable list of workload item of a specific container according to the query filter and the
-     * pagination parameters.
-     *
+     * pagination
+     * parameters.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the container.
@@ -41,12 +45,6 @@ public interface BackupWorkloadItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of WorkloadItem resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadItemResource> list(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String filter,
-        String skipToken,
-        Context context);
+    PagedIterable<WorkloadItemResource> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String filter, String skipToken, Context context);
 }

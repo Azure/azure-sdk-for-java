@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Recovery plan protected item. */
+/**
+ * Recovery plan protected item.
+ */
 @Fluent
 public final class RecoveryPlanProtectedItem {
     /*
@@ -22,13 +24,15 @@ public final class RecoveryPlanProtectedItem {
     @JsonProperty(value = "virtualMachineId")
     private String virtualMachineId;
 
-    /** Creates an instance of RecoveryPlanProtectedItem class. */
+    /**
+     * Creates an instance of RecoveryPlanProtectedItem class.
+     */
     public RecoveryPlanProtectedItem() {
     }
 
     /**
      * Get the id property: The ARM Id of the recovery plan protected item.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +41,7 @@ public final class RecoveryPlanProtectedItem {
 
     /**
      * Set the id property: The ARM Id of the recovery plan protected item.
-     *
+     * 
      * @param id the id value to set.
      * @return the RecoveryPlanProtectedItem object itself.
      */
@@ -48,7 +52,7 @@ public final class RecoveryPlanProtectedItem {
 
     /**
      * Get the virtualMachineId property: The virtual machine Id.
-     *
+     * 
      * @return the virtualMachineId value.
      */
     public String virtualMachineId() {
@@ -57,7 +61,7 @@ public final class RecoveryPlanProtectedItem {
 
     /**
      * Set the virtualMachineId property: The virtual machine Id.
-     *
+     * 
      * @param virtualMachineId the virtualMachineId value to set.
      * @return the RecoveryPlanProtectedItem object itself.
      */
@@ -68,7 +72,7 @@ public final class RecoveryPlanProtectedItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

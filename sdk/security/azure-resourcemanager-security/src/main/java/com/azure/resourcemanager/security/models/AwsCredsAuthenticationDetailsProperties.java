@@ -37,13 +37,15 @@ public final class AwsCredsAuthenticationDetailsProperties extends Authenticatio
     @JsonProperty(value = "awsSecretAccessKey", required = true)
     private String awsSecretAccessKey;
 
-    /** Creates an instance of AwsCredsAuthenticationDetailsProperties class. */
+    /**
+     * Creates an instance of AwsCredsAuthenticationDetailsProperties class.
+     */
     public AwsCredsAuthenticationDetailsProperties() {
     }
 
     /**
      * Get the accountId property: The ID of the cloud account.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -52,7 +54,7 @@ public final class AwsCredsAuthenticationDetailsProperties extends Authenticatio
 
     /**
      * Get the awsAccessKeyId property: Public key element of the AWS credential object (write only).
-     *
+     * 
      * @return the awsAccessKeyId value.
      */
     public String awsAccessKeyId() {
@@ -61,7 +63,7 @@ public final class AwsCredsAuthenticationDetailsProperties extends Authenticatio
 
     /**
      * Set the awsAccessKeyId property: Public key element of the AWS credential object (write only).
-     *
+     * 
      * @param awsAccessKeyId the awsAccessKeyId value to set.
      * @return the AwsCredsAuthenticationDetailsProperties object itself.
      */
@@ -72,7 +74,7 @@ public final class AwsCredsAuthenticationDetailsProperties extends Authenticatio
 
     /**
      * Get the awsSecretAccessKey property: Secret key element of the AWS credential object (write only).
-     *
+     * 
      * @return the awsSecretAccessKey value.
      */
     public String awsSecretAccessKey() {
@@ -81,7 +83,7 @@ public final class AwsCredsAuthenticationDetailsProperties extends Authenticatio
 
     /**
      * Set the awsSecretAccessKey property: Secret key element of the AWS credential object (write only).
-     *
+     * 
      * @param awsSecretAccessKey the awsSecretAccessKey value to set.
      * @return the AwsCredsAuthenticationDetailsProperties object itself.
      */
@@ -92,24 +94,19 @@ public final class AwsCredsAuthenticationDetailsProperties extends Authenticatio
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (awsAccessKeyId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property awsAccessKeyId in model AwsCredsAuthenticationDetailsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property awsAccessKeyId in model AwsCredsAuthenticationDetailsProperties"));
         }
         if (awsSecretAccessKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property awsSecretAccessKey in model"
-                            + " AwsCredsAuthenticationDetailsProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property awsSecretAccessKey in model AwsCredsAuthenticationDetailsProperties"));
         }
     }
 

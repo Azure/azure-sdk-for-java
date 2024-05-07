@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Collections;
@@ -107,6 +106,15 @@ public final class CosmosMetricName {
         CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
+     * Actual item count - relevant for non-point-operations - indicating the actual number of
+     * docs returned in the response (DistributionSummary)
+     * NOTE: No percentiles or histogram supported
+     */
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT = new CosmosMetricName(
+        nameOf("req.rntbd.actualItemCount"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    /**
      * Number of requests (Counter)
      * NOTE: No percentiles or histogram supported
      */
@@ -126,6 +134,15 @@ public final class CosmosMetricName {
      */
     public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE = new CosmosMetricName(
         nameOf("req.gw.RUs"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    /**
+     * Actual item count - relevant for non-point-operations - indicating the actual number of
+     * docs returned in the response (DistributionSummary)
+     * NOTE: No percentiles or histogram supported
+     */
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT = new CosmosMetricName(
+        nameOf("req.gw.actualItemCount"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
@@ -371,11 +388,13 @@ public final class CosmosMetricName {
         map.put(nameOf("req.rntbd.latency"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_LATENCY);
         map.put(nameOf("req.rntbd.backendlatency"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY);
         map.put(nameOf("req.rntbd.rus"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUEST_CHARGE);
+        map.put(nameOf("req.rntbd.actualitemcount"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
         map.put(nameOf("req.gw.requests"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
         map.put(nameOf("req.gw.latency"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
         map.put(nameOf("req.gw.rus"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
-        map.put(nameOf("req.reqPayloadSize"), CosmosMetricName.REQUEST_SUMMARY_SIZE_REQUEST);
-        map.put(nameOf("req.rspPayloadSize"), CosmosMetricName.REQUEST_SUMMARY_SIZE_RESPONSE);
+        map.put(nameOf("req.gw.actualitemcount"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
+        map.put(nameOf("req.reqpayloadsize"), CosmosMetricName.REQUEST_SUMMARY_SIZE_REQUEST);
+        map.put(nameOf("req.rsppayloadsize"), CosmosMetricName.REQUEST_SUMMARY_SIZE_RESPONSE);
         map.put(nameOf("req.rntbd.timeline"), CosmosMetricName.REQUEST_DETAILS_DIRECT_TIMELINE);
         map.put(nameOf("req.gw.timeline"), CosmosMetricName.REQUEST_DETAILS_GATEWAY_TIMELINE);
         map.put(nameOf("rntbd.channels.acquired.count"), CosmosMetricName.DIRECT_CHANNELS_ACQUIRED_COUNT);

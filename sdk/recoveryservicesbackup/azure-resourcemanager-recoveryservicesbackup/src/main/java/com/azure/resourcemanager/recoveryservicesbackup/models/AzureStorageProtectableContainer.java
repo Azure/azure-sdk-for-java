@@ -8,37 +8,49 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure Storage-specific protectable containers. */
+/**
+ * Azure Storage-specific protectable containers.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectableContainerType")
 @JsonTypeName("StorageContainer")
 @Fluent
 public final class AzureStorageProtectableContainer extends ProtectableContainer {
-    /** Creates an instance of AzureStorageProtectableContainer class. */
+    /**
+     * Creates an instance of AzureStorageProtectableContainer class.
+     */
     public AzureStorageProtectableContainer() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageProtectableContainer withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageProtectableContainer withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageProtectableContainer withHealthStatus(String healthStatus) {
         super.withHealthStatus(healthStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureStorageProtectableContainer withContainerId(String containerId) {
         super.withContainerId(containerId);
@@ -47,7 +59,7 @@ public final class AzureStorageProtectableContainer extends ProtectableContainer
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

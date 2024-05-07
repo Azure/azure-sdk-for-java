@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateDiskInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateDiskInput model =
-            BinaryData
-                .fromString("{\"diskId\":\"zamicb\",\"targetDiskName\":\"wcdgzsez\"}")
-                .toObject(UpdateDiskInput.class);
+        UpdateDiskInput model = BinaryData.fromString("{\"diskId\":\"zamicb\",\"targetDiskName\":\"wcdgzsez\"}")
+            .toObject(UpdateDiskInput.class);
         Assertions.assertEquals("zamicb", model.diskId());
         Assertions.assertEquals("wcdgzsez", model.targetDiskName());
     }

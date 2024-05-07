@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -18,11 +19,7 @@ import java.util.Map;
 /**
  * A copy activity sink.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = CopySink.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CopySink.class, visible = true)
 @JsonTypeName("CopySink")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DelimitedTextSink", value = DelimitedTextSink.class),
@@ -32,6 +29,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzurePostgreSqlSink", value = AzurePostgreSqlSink.class),
     @JsonSubTypes.Type(name = "AzureMySqlSink", value = AzureMySqlSink.class),
     @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeSink", value = AzureDatabricksDeltaLakeSink.class),
+    @JsonSubTypes.Type(name = "WarehouseSink", value = WarehouseSink.class),
     @JsonSubTypes.Type(name = "SapCloudForCustomerSink", value = SapCloudForCustomerSink.class),
     @JsonSubTypes.Type(name = "AzureQueueSink", value = AzureQueueSink.class),
     @JsonSubTypes.Type(name = "AzureTableSink", value = AzureTableSink.class),
@@ -48,6 +46,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "SqlMISink", value = SqlMISink.class),
     @JsonSubTypes.Type(name = "SqlDWSink", value = SqlDWSink.class),
     @JsonSubTypes.Type(name = "SnowflakeSink", value = SnowflakeSink.class),
+    @JsonSubTypes.Type(name = "SnowflakeV2Sink", value = SnowflakeV2Sink.class),
     @JsonSubTypes.Type(name = "OracleSink", value = OracleSink.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreSink", value = AzureDataLakeStoreSink.class),
     @JsonSubTypes.Type(name = "AzureBlobFSSink", value = AzureBlobFSSink.class),
@@ -64,9 +63,18 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "MongoDbAtlasSink", value = MongoDbAtlasSink.class),
     @JsonSubTypes.Type(name = "MongoDbV2Sink", value = MongoDbV2Sink.class),
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSink", value = CosmosDbMongoDbApiSink.class),
-    @JsonSubTypes.Type(name = "LakeHouseTableSink", value = LakeHouseTableSink.class) })
+    @JsonSubTypes.Type(name = "LakeHouseTableSink", value = LakeHouseTableSink.class),
+    @JsonSubTypes.Type(name = "SalesforceV2Sink", value = SalesforceV2Sink.class),
+    @JsonSubTypes.Type(name = "SalesforceServiceCloudV2Sink", value = SalesforceServiceCloudV2Sink.class) })
 @Fluent
 public class CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
     /*
      * Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
      */
@@ -74,8 +82,7 @@ public class CopySink {
     private Object writeBatchSize;
 
     /*
-     * Write batch timeout. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Write batch timeout. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "writeBatchTimeout")
     private Object writeBatchTimeout;
@@ -87,22 +94,19 @@ public class CopySink {
     private Object sinkRetryCount;
 
     /*
-     * Sink retry wait. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Sink retry wait. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "sinkRetryWait")
     private Object sinkRetryWait;
 
     /*
-     * The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType
-     * integer).
+     * The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
 
     /*
-     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType
-     * boolean).
+     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "disableMetricsCollection")
     private Object disableMetricsCollection;
@@ -117,6 +121,16 @@ public class CopySink {
      * Creates an instance of CopySink class.
      */
     public CopySink() {
+        this.type = "CopySink";
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -206,8 +220,8 @@ public class CopySink {
     }
 
     /**
-     * Get the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store.
-     * Type: integer (or Expression with resultType integer).
+     * Get the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store. Type:
+     * integer (or Expression with resultType integer).
      * 
      * @return the maxConcurrentConnections value.
      */
@@ -216,8 +230,8 @@ public class CopySink {
     }
 
     /**
-     * Set the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store.
-     * Type: integer (or Expression with resultType integer).
+     * Set the maxConcurrentConnections property: The maximum concurrent connection count for the sink data store. Type:
+     * integer (or Expression with resultType integer).
      * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the CopySink object itself.

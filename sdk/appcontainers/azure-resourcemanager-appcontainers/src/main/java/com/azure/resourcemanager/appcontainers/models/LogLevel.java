@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error. Default is info. */
+/**
+ * Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error. Default is info.
+ */
 public final class LogLevel extends ExpandableStringEnum<LogLevel> {
-    /** Static value info for LogLevel. */
+    /**
+     * Static value info for LogLevel.
+     */
     public static final LogLevel INFO = fromString("info");
 
-    /** Static value debug for LogLevel. */
+    /**
+     * Static value debug for LogLevel.
+     */
     public static final LogLevel DEBUG = fromString("debug");
 
-    /** Static value warn for LogLevel. */
+    /**
+     * Static value warn for LogLevel.
+     */
     public static final LogLevel WARN = fromString("warn");
 
-    /** Static value error for LogLevel. */
+    /**
+     * Static value error for LogLevel.
+     */
     public static final LogLevel ERROR = fromString("error");
 
     /**
      * Creates a new instance of LogLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class LogLevel extends ExpandableStringEnum<LogLevel> {
 
     /**
      * Creates or finds a LogLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LogLevel.
      */
@@ -44,7 +54,7 @@ public final class LogLevel extends ExpandableStringEnum<LogLevel> {
 
     /**
      * Gets known LogLevel values.
-     *
+     * 
      * @return known LogLevel values.
      */
     public static Collection<LogLevel> values() {

@@ -11,8 +11,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The DataFeedDetailPatch model.
@@ -565,24 +565,27 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
         jsonWriter.writeStringField("dataFeedName", this.dataFeedName);
         jsonWriter.writeStringField("dataFeedDescription", this.dataFeedDescription);
         jsonWriter.writeStringField("timestampColumn", this.timestampColumn);
-        jsonWriter.writeStringField("dataStartFrom", Objects.toString(this.dataStartFrom, null));
+        jsonWriter.writeStringField("dataStartFrom",
+            this.dataStartFrom == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dataStartFrom));
         jsonWriter.writeNumberField("startOffsetInSeconds", this.startOffsetInSeconds);
         jsonWriter.writeNumberField("maxConcurrency", this.maxConcurrency);
         jsonWriter.writeNumberField("minRetryIntervalInSeconds", this.minRetryIntervalInSeconds);
         jsonWriter.writeNumberField("stopRetryAfterInSeconds", this.stopRetryAfterInSeconds);
-        jsonWriter.writeStringField("needRollup", Objects.toString(this.needRollup, null));
-        jsonWriter.writeStringField("rollUpMethod", Objects.toString(this.rollUpMethod, null));
+        jsonWriter.writeStringField("needRollup", this.needRollup == null ? null : this.needRollup.toString());
+        jsonWriter.writeStringField("rollUpMethod", this.rollUpMethod == null ? null : this.rollUpMethod.toString());
         jsonWriter.writeArrayField("rollUpColumns", this.rollUpColumns,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("allUpIdentification", this.allUpIdentification);
-        jsonWriter.writeStringField("fillMissingPointType", Objects.toString(this.fillMissingPointType, null));
+        jsonWriter.writeStringField("fillMissingPointType",
+            this.fillMissingPointType == null ? null : this.fillMissingPointType.toString());
         jsonWriter.writeNumberField("fillMissingPointValue", this.fillMissingPointValue);
-        jsonWriter.writeStringField("viewMode", Objects.toString(this.viewMode, null));
+        jsonWriter.writeStringField("viewMode", this.viewMode == null ? null : this.viewMode.toString());
         jsonWriter.writeArrayField("admins", this.admins, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("viewers", this.viewers, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("actionLinkTemplate", this.actionLinkTemplate);
-        jsonWriter.writeStringField("authenticationType", Objects.toString(this.authenticationType, null));
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
         jsonWriter.writeStringField("credentialId", this.credentialId);
         return jsonWriter.writeEndObject();
     }
@@ -612,42 +615,100 @@ public class DataFeedDetailPatch implements JsonSerializable<DataFeedDetailPatch
                     readerToUse.skipChildren();
                 }
             }
-
-            if (discriminatorValue != null) {
-                readerToUse = readerToUse.reset();
-            }
             // Use the discriminator value to determine which subtype should be deserialized.
             if ("AzureApplicationInsights".equals(discriminatorValue)) {
-                return AzureApplicationInsightsDataFeedPatch.fromJson(readerToUse);
+                return AzureApplicationInsightsDataFeedPatch.fromJson(readerToUse.reset());
             } else if ("AzureBlob".equals(discriminatorValue)) {
-                return AzureBlobDataFeedPatch.fromJson(readerToUse);
+                return AzureBlobDataFeedPatch.fromJson(readerToUse.reset());
             } else if ("AzureCosmosDB".equals(discriminatorValue)) {
-                return AzureCosmosDBDataFeedPatch.fromJson(readerToUse);
+                return AzureCosmosDBDataFeedPatch.fromJson(readerToUse.reset());
             } else if ("AzureDataExplorer".equals(discriminatorValue)) {
-                return AzureDataExplorerDataFeedPatch.fromJson(readerToUse);
+                return AzureDataExplorerDataFeedPatch.fromJson(readerToUse.reset());
             } else if ("AzureDataLakeStorageGen2".equals(discriminatorValue)) {
-                return AzureDataLakeStorageGen2DataFeedPatch.fromJson(readerToUse);
+                return AzureDataLakeStorageGen2DataFeedPatch.fromJson(readerToUse.reset());
             } else if ("AzureEventHubs".equals(discriminatorValue)) {
-                return AzureEventHubsDataFeedPatch.fromJson(readerToUse);
+                return AzureEventHubsDataFeedPatch.fromJson(readerToUse.reset());
             } else if ("AzureLogAnalytics".equals(discriminatorValue)) {
-                return AzureLogAnalyticsDataFeedPatch.fromJson(readerToUse);
+                return AzureLogAnalyticsDataFeedPatch.fromJson(readerToUse.reset());
             } else if ("AzureTable".equals(discriminatorValue)) {
-                return AzureTableDataFeedPatch.fromJson(readerToUse);
+                return AzureTableDataFeedPatch.fromJson(readerToUse.reset());
             } else if ("InfluxDB".equals(discriminatorValue)) {
-                return InfluxDBDataFeedPatch.fromJson(readerToUse);
+                return InfluxDBDataFeedPatch.fromJson(readerToUse.reset());
             } else if ("MySql".equals(discriminatorValue)) {
-                return MySqlDataFeedPatch.fromJson(readerToUse);
+                return MySqlDataFeedPatch.fromJson(readerToUse.reset());
             } else if ("PostgreSql".equals(discriminatorValue)) {
-                return PostgreSqlDataFeedPatch.fromJson(readerToUse);
+                return PostgreSqlDataFeedPatch.fromJson(readerToUse.reset());
             } else if ("SqlServer".equals(discriminatorValue)) {
-                return SQLServerDataFeedPatch.fromJson(readerToUse);
+                return SQLServerDataFeedPatch.fromJson(readerToUse.reset());
             } else if ("MongoDB".equals(discriminatorValue)) {
-                return MongoDBDataFeedPatch.fromJson(readerToUse);
+                return MongoDBDataFeedPatch.fromJson(readerToUse.reset());
             } else {
-                throw new IllegalStateException(
-                    "Discriminator field 'dataSourceType' didn't match one of the expected values 'AzureApplicationInsights', 'AzureBlob', 'AzureCosmosDB', 'AzureDataExplorer', 'AzureDataLakeStorageGen2', 'AzureEventHubs', 'AzureLogAnalytics', 'AzureTable', 'InfluxDB', 'MySql', 'PostgreSql', 'SqlServer', or 'MongoDB'. It was: '"
-                        + discriminatorValue + "'.");
+                return fromJsonKnownDiscriminator(readerToUse.reset());
             }
+        });
+    }
+
+    static DataFeedDetailPatch fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFeedDetailPatch deserializedDataFeedDetailPatch = new DataFeedDetailPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataFeedName".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.dataFeedName = reader.getString();
+                } else if ("dataFeedDescription".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.dataFeedDescription = reader.getString();
+                } else if ("timestampColumn".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.timestampColumn = reader.getString();
+                } else if ("dataStartFrom".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.dataStartFrom
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("startOffsetInSeconds".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.startOffsetInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.maxConcurrency = reader.getNullable(JsonReader::getInt);
+                } else if ("minRetryIntervalInSeconds".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.minRetryIntervalInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("stopRetryAfterInSeconds".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.stopRetryAfterInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("needRollup".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.needRollup = NeedRollupEnum.fromString(reader.getString());
+                } else if ("rollUpMethod".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.rollUpMethod = RollUpMethod.fromString(reader.getString());
+                } else if ("rollUpColumns".equals(fieldName)) {
+                    List<String> rollUpColumns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataFeedDetailPatch.rollUpColumns = rollUpColumns;
+                } else if ("allUpIdentification".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.allUpIdentification = reader.getString();
+                } else if ("fillMissingPointType".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.fillMissingPointType
+                        = FillMissingPointType.fromString(reader.getString());
+                } else if ("fillMissingPointValue".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.fillMissingPointValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("viewMode".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.viewMode = ViewMode.fromString(reader.getString());
+                } else if ("admins".equals(fieldName)) {
+                    List<String> admins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataFeedDetailPatch.admins = admins;
+                } else if ("viewers".equals(fieldName)) {
+                    List<String> viewers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataFeedDetailPatch.viewers = viewers;
+                } else if ("status".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.status = EntityStatus.fromString(reader.getString());
+                } else if ("actionLinkTemplate".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.actionLinkTemplate = reader.getString();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.authenticationType
+                        = AuthenticationTypeEnum.fromString(reader.getString());
+                } else if ("credentialId".equals(fieldName)) {
+                    deserializedDataFeedDetailPatch.credentialId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFeedDetailPatch;
         });
     }
 }

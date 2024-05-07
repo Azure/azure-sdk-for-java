@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.ApplicationsList;
 public final class ApplicationsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"fbwqrooht\",\"description\":\"vmaonurjt\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[]},\"id\":\"ghihpvecms\",\"name\":\"clbl\",\"type\":\"jxl\"},{\"properties\":{\"displayName\":\"juscvsfx\",\"description\":\"ctmgxuupbezqccy\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[]},\"id\":\"tce\",\"name\":\"kdqkkyihzt\",\"type\":\"eq\"}],\"nextLink\":\"qzgwldoychil\"}")
-                .toObject(ApplicationsList.class);
+        ApplicationsList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"onnxkrlgnyhm\",\"description\":\"sxkkg\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datarghxjb\",\"datahqxvcxgfrpdsofbs\",\"datarnsvbuswd\",\"dataz\"]},\"id\":\"ybycnunvj\",\"name\":\"rtkfawnopq\",\"type\":\"ikyzirtxdy\"},{\"properties\":{\"displayName\":\"ejnt\",\"description\":\"ewgioilqukrydxt\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataeoxorggufhyao\",\"datatbghhavgrvkf\",\"dataovjzhpjbibgjmfx\",\"datamv\"]},\"id\":\"cluyovwxnbkf\",\"name\":\"zzxscyhwzdgiruj\",\"type\":\"zbomvzzbtdcqvpni\"},{\"properties\":{\"displayName\":\"viylwdshfssnrbgy\",\"description\":\"rymsgaojfmw\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datatmr\",\"datahirctymoxoftpipi\"]},\"id\":\"yczuhxacpq\",\"name\":\"lihhyuspskasdvlm\",\"type\":\"wdgzxulucv\"}],\"nextLink\":\"mrsreuzvxurisjnh\"}")
+            .toObject(ApplicationsList.class);
     }
 
     @org.junit.jupiter.api.Test

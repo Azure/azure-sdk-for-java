@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan A2A failover input. */
+/**
+ * Recovery plan A2A failover input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -33,13 +35,15 @@ public final class RecoveryPlanA2AFailoverInput extends RecoveryPlanProviderSpec
     @JsonProperty(value = "multiVmSyncPointOption")
     private MultiVmSyncPointOption multiVmSyncPointOption;
 
-    /** Creates an instance of RecoveryPlanA2AFailoverInput class. */
+    /**
+     * Creates an instance of RecoveryPlanA2AFailoverInput class.
+     */
     public RecoveryPlanA2AFailoverInput() {
     }
 
     /**
      * Get the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public A2ARpRecoveryPointType recoveryPointType() {
@@ -48,7 +52,7 @@ public final class RecoveryPlanA2AFailoverInput extends RecoveryPlanProviderSpec
 
     /**
      * Set the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the RecoveryPlanA2AFailoverInput object itself.
      */
@@ -60,7 +64,7 @@ public final class RecoveryPlanA2AFailoverInput extends RecoveryPlanProviderSpec
     /**
      * Get the cloudServiceCreationOption property: A value indicating whether to use recovery cloud service for TFO or
      * not.
-     *
+     * 
      * @return the cloudServiceCreationOption value.
      */
     public String cloudServiceCreationOption() {
@@ -70,7 +74,7 @@ public final class RecoveryPlanA2AFailoverInput extends RecoveryPlanProviderSpec
     /**
      * Set the cloudServiceCreationOption property: A value indicating whether to use recovery cloud service for TFO or
      * not.
-     *
+     * 
      * @param cloudServiceCreationOption the cloudServiceCreationOption value to set.
      * @return the RecoveryPlanA2AFailoverInput object itself.
      */
@@ -80,9 +84,9 @@ public final class RecoveryPlanA2AFailoverInput extends RecoveryPlanProviderSpec
     }
 
     /**
-     * Get the multiVmSyncPointOption property: A value indicating whether multi VM sync enabled VMs should use multi VM
-     * sync points for failover.
-     *
+     * Get the multiVmSyncPointOption property: A value indicating whether multi VM sync enabled VMs should use multi
+     * VM sync points for failover.
+     * 
      * @return the multiVmSyncPointOption value.
      */
     public MultiVmSyncPointOption multiVmSyncPointOption() {
@@ -90,9 +94,9 @@ public final class RecoveryPlanA2AFailoverInput extends RecoveryPlanProviderSpec
     }
 
     /**
-     * Set the multiVmSyncPointOption property: A value indicating whether multi VM sync enabled VMs should use multi VM
-     * sync points for failover.
-     *
+     * Set the multiVmSyncPointOption property: A value indicating whether multi VM sync enabled VMs should use multi
+     * VM sync points for failover.
+     * 
      * @param multiVmSyncPointOption the multiVmSyncPointOption value to set.
      * @return the RecoveryPlanA2AFailoverInput object itself.
      */
@@ -103,17 +107,15 @@ public final class RecoveryPlanA2AFailoverInput extends RecoveryPlanProviderSpec
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (recoveryPointType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryPointType in model RecoveryPlanA2AFailoverInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryPointType in model RecoveryPlanA2AFailoverInput"));
         }
     }
 

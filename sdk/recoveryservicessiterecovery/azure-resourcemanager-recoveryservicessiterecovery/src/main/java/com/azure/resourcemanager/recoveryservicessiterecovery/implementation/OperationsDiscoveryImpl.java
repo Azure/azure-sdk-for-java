@@ -13,8 +13,7 @@ public final class OperationsDiscoveryImpl implements OperationsDiscovery {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    OperationsDiscoveryImpl(
-        OperationsDiscoveryInner innerObject,
+    OperationsDiscoveryImpl(OperationsDiscoveryInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

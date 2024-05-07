@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.AscLocationList;
 public final class AscLocationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AscLocationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":\"datasmond\",\"id\":\"mquxvypo\",\"name\":\"gkopkwhojvpajqgx\",\"type\":\"smocmbq\"},{\"properties\":\"datavmkcx\",\"id\":\"zapvhelx\",\"name\":\"rgly\",\"type\":\"tddckcb\"}],\"nextLink\":\"ejrjxgciqibrho\"}")
-                .toObject(AscLocationList.class);
+        AscLocationList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":\"dataquvgjxpybczme\",\"id\":\"mtz\",\"name\":\"pbsphrupidgs\",\"type\":\"bb\"},{\"properties\":\"datahphoycm\",\"id\":\"xaobhdxbmtqioqjz\",\"name\":\"htbmuf\",\"type\":\"ownoizhw\"},{\"properties\":\"dataxybqsoqij\",\"id\":\"k\",\"name\":\"mbpazlobcufpdzn\",\"type\":\"btcqq\"}],\"nextLink\":\"qglhq\"}")
+            .toObject(AscLocationList.class);
     }
 
     @org.junit.jupiter.api.Test

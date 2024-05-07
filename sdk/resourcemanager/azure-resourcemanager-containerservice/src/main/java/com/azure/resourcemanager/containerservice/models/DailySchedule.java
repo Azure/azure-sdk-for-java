@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** For schedules like: 'recur every day' or 'recur every 3 days'. */
+/**
+ * For schedules like: 'recur every day' or 'recur every 3 days'.
+ */
 @Fluent
 public final class DailySchedule {
     /*
@@ -16,13 +18,15 @@ public final class DailySchedule {
     @JsonProperty(value = "intervalDays", required = true)
     private int intervalDays;
 
-    /** Creates an instance of DailySchedule class. */
+    /**
+     * Creates an instance of DailySchedule class.
+     */
     public DailySchedule() {
     }
 
     /**
      * Get the intervalDays property: Specifies the number of days between each set of occurrences.
-     *
+     * 
      * @return the intervalDays value.
      */
     public int intervalDays() {
@@ -31,7 +35,7 @@ public final class DailySchedule {
 
     /**
      * Set the intervalDays property: Specifies the number of days between each set of occurrences.
-     *
+     * 
      * @param intervalDays the intervalDays value to set.
      * @return the DailySchedule object itself.
      */
@@ -42,7 +46,7 @@ public final class DailySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

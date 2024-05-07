@@ -26,22 +26,28 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.ResourceProvide
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityResourceInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PostgreSqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(PostgreSqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,27 +58,24 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "PostgreSqlManagement")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/checkMigrationNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{targetDbServerName}/checkMigrationNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MigrationNameAvailabilityResourceInner>> checkMigrationNameAvailability(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("targetDbServerName") String targetDbServerName,
             @BodyParam("application/json") MigrationNameAvailabilityResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Check migration name validity and availability
-     *
-     * <p>This method checks whether a proposed migration name is valid and available.
-     *
+     * 
+     * This method checks whether a proposed migration name is valid and available.
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -80,20 +83,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration name's availability along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a migration name's availability along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MigrationNameAvailabilityResourceInner>> checkMigrationNameAvailabilityWithResponseAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
+        String subscriptionId, String resourceGroupName, String targetDbServerName,
         MigrationNameAvailabilityResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -113,26 +112,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkMigrationNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            subscriptionId,
-                            resourceGroupName,
-                            targetDbServerName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkMigrationNameAvailability(this.client.getEndpoint(),
+                this.client.getApiVersion(), subscriptionId, resourceGroupName, targetDbServerName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check migration name validity and availability
-     *
-     * <p>This method checks whether a proposed migration name is valid and available.
-     *
+     * 
+     * This method checks whether a proposed migration name is valid and available.
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -141,21 +131,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a migration name's availability along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a migration name's availability along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MigrationNameAvailabilityResourceInner>> checkMigrationNameAvailabilityWithResponseAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters,
-        Context context) {
+        String subscriptionId, String resourceGroupName, String targetDbServerName,
+        MigrationNameAvailabilityResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -175,23 +160,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkMigrationNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                subscriptionId,
-                resourceGroupName,
-                targetDbServerName,
-                parameters,
-                accept,
-                context);
+        return service.checkMigrationNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            subscriptionId, resourceGroupName, targetDbServerName, parameters, accept, context);
     }
 
     /**
      * Check migration name validity and availability
-     *
-     * <p>This method checks whether a proposed migration name is valid and available.
-     *
+     * 
+     * This method checks whether a proposed migration name is valid and available.
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -202,21 +179,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return represents a migration name's availability on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MigrationNameAvailabilityResourceInner> checkMigrationNameAvailabilityAsync(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters) {
-        return checkMigrationNameAvailabilityWithResponseAsync(
-                subscriptionId, resourceGroupName, targetDbServerName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<MigrationNameAvailabilityResourceInner> checkMigrationNameAvailabilityAsync(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, MigrationNameAvailabilityResourceInner parameters) {
+        return checkMigrationNameAvailabilityWithResponseAsync(subscriptionId, resourceGroupName, targetDbServerName,
+            parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Check migration name validity and availability
-     *
-     * <p>This method checks whether a proposed migration name is valid and available.
-     *
+     * 
+     * This method checks whether a proposed migration name is valid and available.
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -229,21 +202,17 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MigrationNameAvailabilityResourceInner> checkMigrationNameAvailabilityWithResponse(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters,
-        Context context) {
-        return checkMigrationNameAvailabilityWithResponseAsync(
-                subscriptionId, resourceGroupName, targetDbServerName, parameters, context)
-            .block();
+        String subscriptionId, String resourceGroupName, String targetDbServerName,
+        MigrationNameAvailabilityResourceInner parameters, Context context) {
+        return checkMigrationNameAvailabilityWithResponseAsync(subscriptionId, resourceGroupName, targetDbServerName,
+            parameters, context).block();
     }
 
     /**
      * Check migration name validity and availability
-     *
-     * <p>This method checks whether a proposed migration name is valid and available.
-     *
+     * 
+     * This method checks whether a proposed migration name is valid and available.
+     * 
      * @param subscriptionId The subscription ID of the target database server.
      * @param resourceGroupName The resource group name of the target database server.
      * @param targetDbServerName The name of the target database server.
@@ -254,13 +223,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return represents a migration name's availability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MigrationNameAvailabilityResourceInner checkMigrationNameAvailability(
-        String subscriptionId,
-        String resourceGroupName,
-        String targetDbServerName,
-        MigrationNameAvailabilityResourceInner parameters) {
-        return checkMigrationNameAvailabilityWithResponse(
-                subscriptionId, resourceGroupName, targetDbServerName, parameters, Context.NONE)
-            .getValue();
+    public MigrationNameAvailabilityResourceInner checkMigrationNameAvailability(String subscriptionId,
+        String resourceGroupName, String targetDbServerName, MigrationNameAvailabilityResourceInner parameters) {
+        return checkMigrationNameAvailabilityWithResponse(subscriptionId, resourceGroupName, targetDbServerName,
+            parameters, Context.NONE).getValue();
     }
 }

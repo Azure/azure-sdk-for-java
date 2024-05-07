@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Changing set of properties depending on the supportingEvidence type. */
+/**
+ * Changing set of properties depending on the supportingEvidence type.
+ */
 @Fluent
 public final class AlertPropertiesSupportingEvidence {
     /*
@@ -24,15 +26,18 @@ public final class AlertPropertiesSupportingEvidence {
     /*
      * Changing set of properties depending on the supportingEvidence type.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of AlertPropertiesSupportingEvidence class. */
+    /**
+     * Creates an instance of AlertPropertiesSupportingEvidence class.
+     */
     public AlertPropertiesSupportingEvidence() {
     }
 
     /**
      * Get the type property: Type of the supportingEvidence.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -41,7 +46,7 @@ public final class AlertPropertiesSupportingEvidence {
 
     /**
      * Get the additionalProperties property: Changing set of properties depending on the supportingEvidence type.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -51,7 +56,7 @@ public final class AlertPropertiesSupportingEvidence {
 
     /**
      * Set the additionalProperties property: Changing set of properties depending on the supportingEvidence type.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the AlertPropertiesSupportingEvidence object itself.
      */
@@ -70,7 +75,7 @@ public final class AlertPropertiesSupportingEvidence {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

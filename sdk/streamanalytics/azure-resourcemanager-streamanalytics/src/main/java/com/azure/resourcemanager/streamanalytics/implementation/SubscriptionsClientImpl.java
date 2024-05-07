@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.streamanalytics.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -11,6 +12,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -19,31 +21,48 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.streamanalytics.fluent.SubscriptionsClient;
+import com.azure.resourcemanager.streamanalytics.fluent.models.QueryCompilationResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.QueryTestingResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.SampleInputInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.SampleInputResultInner;
 import com.azure.resourcemanager.streamanalytics.fluent.models.SubscriptionQuotasListResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestDatasourceResultInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestInputInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestOutputInner;
+import com.azure.resourcemanager.streamanalytics.fluent.models.TestQueryInner;
+import com.azure.resourcemanager.streamanalytics.models.CompileQuery;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SubscriptionsClient.
+ */
 public final class SubscriptionsClientImpl implements SubscriptionsClient {
-    private final ClientLogger logger = new ClientLogger(SubscriptionsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SubscriptionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final StreamAnalyticsManagementClientImpl client;
 
     /**
      * Initializes an instance of SubscriptionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SubscriptionsClientImpl(StreamAnalyticsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SubscriptionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SubscriptionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,131 +72,163 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "StreamAnalyticsManag")
-    private interface SubscriptionsService {
-        @Headers({"Content-Type: application/json"})
+    public interface SubscriptionsService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/quotas")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionQuotasListResultInner>> listQuotas(
-            @HostParam("$host") String endpoint,
-            @PathParam("location") String location,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<SubscriptionQuotasListResultInner>> listQuotas(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/testQuery")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> testQuery(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") TestQueryInner testQuery,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/compileQuery")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<QueryCompilationResultInner>> compileQuery(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") CompileQuery compileQuery, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/sampleInput")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> sampleInput(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") SampleInputInner sampleInput, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/testInput")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> testInput(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") TestInputInner testInput,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.StreamAnalytics/locations/{location}/testOutput")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> testOutput(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") TestOutputInner testOutput, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Retrieves the subscription's current quota information in a particular region.
-     *
-     * @param location The region in which to retrieve the subscription's quota information. You can find out which
-     *     regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the GetQuotas operation.
+     * @return result of the GetQuotas operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubscriptionQuotasListResultInner>> listQuotasWithResponseAsync(String location) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listQuotas(
-                            this.client.getEndpoint(),
-                            location,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listQuotas(this.client.getEndpoint(), location, apiVersion,
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the subscription's current quota information in a particular region.
-     *
-     * @param location The region in which to retrieve the subscription's quota information. You can find out which
-     *     regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the GetQuotas operation.
+     * @return result of the GetQuotas operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubscriptionQuotasListResultInner>> listQuotasWithResponseAsync(
-        String location, Context context) {
+    private Mono<Response<SubscriptionQuotasListResultInner>> listQuotasWithResponseAsync(String location,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listQuotas(
-                this.client.getEndpoint(),
-                location,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listQuotas(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(),
+            accept, context);
     }
 
     /**
      * Retrieves the subscription's current quota information in a particular region.
-     *
-     * @param location The region in which to retrieve the subscription's quota information. You can find out which
-     *     regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the GetQuotas operation.
+     * @return result of the GetQuotas operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionQuotasListResultInner> listQuotasAsync(String location) {
-        return listQuotasWithResponseAsync(location)
-            .flatMap(
-                (Response<SubscriptionQuotasListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listQuotasWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves the subscription's current quota information in a particular region.
-     *
-     * @param location The region in which to retrieve the subscription's quota information. You can find out which
-     *     regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the GetQuotas operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SubscriptionQuotasListResultInner> listQuotasWithResponse(String location, Context context) {
+        return listQuotasWithResponseAsync(location, context).block();
+    }
+
+    /**
+     * Retrieves the subscription's current quota information in a particular region.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -185,22 +236,1030 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionQuotasListResultInner listQuotas(String location) {
-        return listQuotasAsync(location).block();
+        return listQuotasWithResponse(location, Context.NONE).getValue();
     }
 
     /**
-     * Retrieves the subscription's current quota information in a particular region.
-     *
-     * @param location The region in which to retrieve the subscription's quota information. You can find out which
-     *     regions Azure Stream Analytics is supported in here: https://azure.microsoft.com/en-us/regions/.
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query testing request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> testQueryWithResponseAsync(String location, TestQueryInner testQuery) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (testQuery == null) {
+            return Mono.error(new IllegalArgumentException("Parameter testQuery is required and cannot be null."));
+        } else {
+            testQuery.validate();
+        }
+        final String apiVersion = "2021-10-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.testQuery(this.client.getEndpoint(), location, apiVersion,
+                this.client.getSubscriptionId(), testQuery, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the GetQuotas operation.
+     * @return the result of the query testing request along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionQuotasListResultInner> listQuotasWithResponse(String location, Context context) {
-        return listQuotasWithResponseAsync(location, context).block();
+    private Mono<Response<Flux<ByteBuffer>>> testQueryWithResponseAsync(String location, TestQueryInner testQuery,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (testQuery == null) {
+            return Mono.error(new IllegalArgumentException("Parameter testQuery is required and cannot be null."));
+        } else {
+            testQuery.validate();
+        }
+        final String apiVersion = "2021-10-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.testQuery(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(),
+            testQuery, accept, context);
+    }
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the result of the query testing request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<QueryTestingResultInner>, QueryTestingResultInner>
+        beginTestQueryAsync(String location, TestQueryInner testQuery) {
+        Mono<Response<Flux<ByteBuffer>>> mono = testQueryWithResponseAsync(location, testQuery);
+        return this.client.<QueryTestingResultInner, QueryTestingResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), QueryTestingResultInner.class, QueryTestingResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the result of the query testing request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<QueryTestingResultInner>, QueryTestingResultInner>
+        beginTestQueryAsync(String location, TestQueryInner testQuery, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = testQueryWithResponseAsync(location, testQuery, context);
+        return this.client.<QueryTestingResultInner, QueryTestingResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), QueryTestingResultInner.class, QueryTestingResultInner.class, context);
+    }
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the query testing request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<QueryTestingResultInner>, QueryTestingResultInner> beginTestQuery(String location,
+        TestQueryInner testQuery) {
+        return this.beginTestQueryAsync(location, testQuery).getSyncPoller();
+    }
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the query testing request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<QueryTestingResultInner>, QueryTestingResultInner> beginTestQuery(String location,
+        TestQueryInner testQuery, Context context) {
+        return this.beginTestQueryAsync(location, testQuery, context).getSyncPoller();
+    }
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query testing request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<QueryTestingResultInner> testQueryAsync(String location, TestQueryInner testQuery) {
+        return beginTestQueryAsync(location, testQuery).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query testing request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<QueryTestingResultInner> testQueryAsync(String location, TestQueryInner testQuery, Context context) {
+        return beginTestQueryAsync(location, testQuery, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query testing request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryTestingResultInner testQuery(String location, TestQueryInner testQuery) {
+        return testQueryAsync(location, testQuery).block();
+    }
+
+    /**
+     * Test the Stream Analytics query on a sample input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testQuery The query testing object that defines the input, output, and transformation for the query
+     * testing.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query testing request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryTestingResultInner testQuery(String location, TestQueryInner testQuery, Context context) {
+        return testQueryAsync(location, testQuery, context).block();
+    }
+
+    /**
+     * Compile the Stream Analytics query.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param compileQuery The query compilation object which defines the input, output, and transformation for the
+     * query compilation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query compilation request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<QueryCompilationResultInner>> compileQueryWithResponseAsync(String location,
+        CompileQuery compileQuery) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (compileQuery == null) {
+            return Mono.error(new IllegalArgumentException("Parameter compileQuery is required and cannot be null."));
+        } else {
+            compileQuery.validate();
+        }
+        final String apiVersion = "2021-10-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.compileQuery(this.client.getEndpoint(), location, apiVersion,
+                this.client.getSubscriptionId(), compileQuery, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Compile the Stream Analytics query.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param compileQuery The query compilation object which defines the input, output, and transformation for the
+     * query compilation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query compilation request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<QueryCompilationResultInner>> compileQueryWithResponseAsync(String location,
+        CompileQuery compileQuery, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (compileQuery == null) {
+            return Mono.error(new IllegalArgumentException("Parameter compileQuery is required and cannot be null."));
+        } else {
+            compileQuery.validate();
+        }
+        final String apiVersion = "2021-10-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.compileQuery(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(),
+            compileQuery, accept, context);
+    }
+
+    /**
+     * Compile the Stream Analytics query.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param compileQuery The query compilation object which defines the input, output, and transformation for the
+     * query compilation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query compilation request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<QueryCompilationResultInner> compileQueryAsync(String location, CompileQuery compileQuery) {
+        return compileQueryWithResponseAsync(location, compileQuery).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Compile the Stream Analytics query.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param compileQuery The query compilation object which defines the input, output, and transformation for the
+     * query compilation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query compilation request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<QueryCompilationResultInner> compileQueryWithResponse(String location, CompileQuery compileQuery,
+        Context context) {
+        return compileQueryWithResponseAsync(location, compileQuery, context).block();
+    }
+
+    /**
+     * Compile the Stream Analytics query.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param compileQuery The query compilation object which defines the input, output, and transformation for the
+     * query compilation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the query compilation request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public QueryCompilationResultInner compileQuery(String location, CompileQuery compileQuery) {
+        return compileQueryWithResponse(location, compileQuery, Context.NONE).getValue();
+    }
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the sample input request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> sampleInputWithResponseAsync(String location,
+        SampleInputInner sampleInput) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (sampleInput == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sampleInput is required and cannot be null."));
+        } else {
+            sampleInput.validate();
+        }
+        final String apiVersion = "2021-10-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.sampleInput(this.client.getEndpoint(), location, apiVersion,
+                this.client.getSubscriptionId(), sampleInput, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the sample input request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> sampleInputWithResponseAsync(String location, SampleInputInner sampleInput,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (sampleInput == null) {
+            return Mono.error(new IllegalArgumentException("Parameter sampleInput is required and cannot be null."));
+        } else {
+            sampleInput.validate();
+        }
+        final String apiVersion = "2021-10-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.sampleInput(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(),
+            sampleInput, accept, context);
+    }
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the result of the sample input request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SampleInputResultInner>, SampleInputResultInner>
+        beginSampleInputAsync(String location, SampleInputInner sampleInput) {
+        Mono<Response<Flux<ByteBuffer>>> mono = sampleInputWithResponseAsync(location, sampleInput);
+        return this.client.<SampleInputResultInner, SampleInputResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SampleInputResultInner.class, SampleInputResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the result of the sample input request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SampleInputResultInner>, SampleInputResultInner>
+        beginSampleInputAsync(String location, SampleInputInner sampleInput, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = sampleInputWithResponseAsync(location, sampleInput, context);
+        return this.client.<SampleInputResultInner, SampleInputResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SampleInputResultInner.class, SampleInputResultInner.class, context);
+    }
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the sample input request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SampleInputResultInner>, SampleInputResultInner> beginSampleInput(String location,
+        SampleInputInner sampleInput) {
+        return this.beginSampleInputAsync(location, sampleInput).getSyncPoller();
+    }
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the sample input request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SampleInputResultInner>, SampleInputResultInner> beginSampleInput(String location,
+        SampleInputInner sampleInput, Context context) {
+        return this.beginSampleInputAsync(location, sampleInput, context).getSyncPoller();
+    }
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the sample input request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SampleInputResultInner> sampleInputAsync(String location, SampleInputInner sampleInput) {
+        return beginSampleInputAsync(location, sampleInput).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the sample input request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SampleInputResultInner> sampleInputAsync(String location, SampleInputInner sampleInput,
+        Context context) {
+        return beginSampleInputAsync(location, sampleInput, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the sample input request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SampleInputResultInner sampleInput(String location, SampleInputInner sampleInput) {
+        return sampleInputAsync(location, sampleInput).block();
+    }
+
+    /**
+     * Sample the Stream Analytics input data.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param sampleInput Defines the necessary parameters for sampling the Stream Analytics input data.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the sample input request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SampleInputResultInner sampleInput(String location, SampleInputInner sampleInput, Context context) {
+        return sampleInputAsync(location, sampleInput, context).block();
+    }
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> testInputWithResponseAsync(String location, TestInputInner testInput) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (testInput == null) {
+            return Mono.error(new IllegalArgumentException("Parameter testInput is required and cannot be null."));
+        } else {
+            testInput.validate();
+        }
+        final String apiVersion = "2021-10-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.testInput(this.client.getEndpoint(), location, apiVersion,
+                this.client.getSubscriptionId(), testInput, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> testInputWithResponseAsync(String location, TestInputInner testInput,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (testInput == null) {
+            return Mono.error(new IllegalArgumentException("Parameter testInput is required and cannot be null."));
+        } else {
+            testInput.validate();
+        }
+        final String apiVersion = "2021-10-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.testInput(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(),
+            testInput, accept, context);
+    }
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner>
+        beginTestInputAsync(String location, TestInputInner testInput) {
+        Mono<Response<Flux<ByteBuffer>>> mono = testInputWithResponseAsync(location, testInput);
+        return this.client.<TestDatasourceResultInner, TestDatasourceResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), TestDatasourceResultInner.class, TestDatasourceResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner>
+        beginTestInputAsync(String location, TestInputInner testInput, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = testInputWithResponseAsync(location, testInput, context);
+        return this.client.<TestDatasourceResultInner, TestDatasourceResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), TestDatasourceResultInner.class, TestDatasourceResultInner.class, context);
+    }
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner> beginTestInput(String location,
+        TestInputInner testInput) {
+        return this.beginTestInputAsync(location, testInput).getSyncPoller();
+    }
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner> beginTestInput(String location,
+        TestInputInner testInput, Context context) {
+        return this.beginTestInputAsync(location, testInput, context).getSyncPoller();
+    }
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TestDatasourceResultInner> testInputAsync(String location, TestInputInner testInput) {
+        return beginTestInputAsync(location, testInput).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TestDatasourceResultInner> testInputAsync(String location, TestInputInner testInput, Context context) {
+        return beginTestInputAsync(location, testInput, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestDatasourceResultInner testInput(String location, TestInputInner testInput) {
+        return testInputAsync(location, testInput).block();
+    }
+
+    /**
+     * Test the Stream Analytics input.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testInput Defines the necessary parameters for testing the Stream Analytics input.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestDatasourceResultInner testInput(String location, TestInputInner testInput, Context context) {
+        return testInputAsync(location, testInput, context).block();
+    }
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> testOutputWithResponseAsync(String location, TestOutputInner testOutput) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (testOutput == null) {
+            return Mono.error(new IllegalArgumentException("Parameter testOutput is required and cannot be null."));
+        } else {
+            testOutput.validate();
+        }
+        final String apiVersion = "2021-10-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.testOutput(this.client.getEndpoint(), location, apiVersion,
+                this.client.getSubscriptionId(), testOutput, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> testOutputWithResponseAsync(String location, TestOutputInner testOutput,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (testOutput == null) {
+            return Mono.error(new IllegalArgumentException("Parameter testOutput is required and cannot be null."));
+        } else {
+            testOutput.validate();
+        }
+        final String apiVersion = "2021-10-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.testOutput(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(),
+            testOutput, accept, context);
+    }
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner>
+        beginTestOutputAsync(String location, TestOutputInner testOutput) {
+        Mono<Response<Flux<ByteBuffer>>> mono = testOutputWithResponseAsync(location, testOutput);
+        return this.client.<TestDatasourceResultInner, TestDatasourceResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), TestDatasourceResultInner.class, TestDatasourceResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner>
+        beginTestOutputAsync(String location, TestOutputInner testOutput, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = testOutputWithResponseAsync(location, testOutput, context);
+        return this.client.<TestDatasourceResultInner, TestDatasourceResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), TestDatasourceResultInner.class, TestDatasourceResultInner.class, context);
+    }
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner> beginTestOutput(String location,
+        TestOutputInner testOutput) {
+        return this.beginTestOutputAsync(location, testOutput).getSyncPoller();
+    }
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<TestDatasourceResultInner>, TestDatasourceResultInner> beginTestOutput(String location,
+        TestOutputInner testOutput, Context context) {
+        return this.beginTestOutputAsync(location, testOutput, context).getSyncPoller();
+    }
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TestDatasourceResultInner> testOutputAsync(String location, TestOutputInner testOutput) {
+        return beginTestOutputAsync(location, testOutput).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TestDatasourceResultInner> testOutputAsync(String location, TestOutputInner testOutput,
+        Context context) {
+        return beginTestOutputAsync(location, testOutput, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestDatasourceResultInner testOutput(String location, TestOutputInner testOutput) {
+        return testOutputAsync(location, testOutput).block();
+    }
+
+    /**
+     * Test the Stream Analytics output.
+     * 
+     * @param location The region to which the request is sent. You can find out which regions Azure Stream Analytics is
+     * supported in here: https://azure.microsoft.com/en-us/regions/.
+     * @param testOutput Defines the necessary parameters for testing the Stream Analytics output.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the test input or output request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestDatasourceResultInner testOutput(String location, TestOutputInner testOutput, Context context) {
+        return testOutputAsync(location, testOutput, context).block();
     }
 }

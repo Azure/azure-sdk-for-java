@@ -9,7 +9,9 @@ import com.azure.resourcemanager.monitor.models.MetricAlertStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a collection of alert rule resources. */
+/**
+ * Represents a collection of alert rule resources.
+ */
 @Fluent
 public final class MetricAlertStatusCollectionInner {
     /*
@@ -18,13 +20,15 @@ public final class MetricAlertStatusCollectionInner {
     @JsonProperty(value = "value")
     private List<MetricAlertStatus> value;
 
-    /** Creates an instance of MetricAlertStatusCollectionInner class. */
+    /**
+     * Creates an instance of MetricAlertStatusCollectionInner class.
+     */
     public MetricAlertStatusCollectionInner() {
     }
 
     /**
      * Get the value property: the values for the alert rule resources.
-     *
+     * 
      * @return the value value.
      */
     public List<MetricAlertStatus> value() {
@@ -33,7 +37,7 @@ public final class MetricAlertStatusCollectionInner {
 
     /**
      * Set the value property: the values for the alert rule resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the MetricAlertStatusCollectionInner object itself.
      */
@@ -44,7 +48,7 @@ public final class MetricAlertStatusCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

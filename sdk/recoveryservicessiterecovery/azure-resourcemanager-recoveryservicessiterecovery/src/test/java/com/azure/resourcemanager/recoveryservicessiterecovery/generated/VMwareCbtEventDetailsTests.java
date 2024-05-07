@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtEv
 public final class VMwareCbtEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareCbtEventDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"VMwareCbt\",\"migrationItemName\":\"rnxhjtlxfikjk\"}")
+        VMwareCbtEventDetails model
+            = BinaryData.fromString("{\"instanceType\":\"VMwareCbt\",\"migrationItemName\":\"rnxhjtlxfikjk\"}")
                 .toObject(VMwareCbtEventDetails.class);
     }
 

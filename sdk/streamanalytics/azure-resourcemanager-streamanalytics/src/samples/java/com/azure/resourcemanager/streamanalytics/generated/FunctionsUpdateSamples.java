@@ -4,51 +4,48 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.core.util.Context;
-import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningWebServiceFunctionBinding;
+import com.azure.resourcemanager.streamanalytics.models.AzureMachineLearningStudioFunctionBinding;
 import com.azure.resourcemanager.streamanalytics.models.Function;
 import com.azure.resourcemanager.streamanalytics.models.JavaScriptFunctionBinding;
 import com.azure.resourcemanager.streamanalytics.models.ScalarFunctionProperties;
 
-/** Samples for Functions Update. */
+/**
+ * Samples for Functions Update.
+ */
 public final class FunctionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_Update_JavaScript.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Function_Update_JavaScript.json
      */
     /**
      * Sample code: Update a JavaScript function.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void updateAJavaScriptFunction(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Function resource =
-            manager.functions().getWithResponse("sjrg1637", "sj8653", "function8197", Context.NONE).getValue();
-        resource
-            .update()
-            .withProperties(
-                new ScalarFunctionProperties()
-                    .withBinding(new JavaScriptFunctionBinding().withScript("function (a, b) { return a * b; }")))
-            .apply();
+    public static void
+        updateAJavaScriptFunction(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Function resource = manager.functions()
+            .getWithResponse("sjrg1637", "sj8653", "function8197", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withProperties(new ScalarFunctionProperties()
+            .withBinding(new JavaScriptFunctionBinding().withScript("function (a, b) { return a * b; }"))).apply();
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/Function_Update_AzureML.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * Function_Update_AzureML.json
      */
     /**
      * Sample code: Update an Azure ML function.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
-    public static void updateAnAzureMLFunction(
-        com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        Function resource =
-            manager.functions().getWithResponse("sjrg7", "sj9093", "function588", Context.NONE).getValue();
-        resource
-            .update()
-            .withProperties(
-                new ScalarFunctionProperties()
-                    .withBinding(new AzureMachineLearningWebServiceFunctionBinding().withBatchSize(5000)))
-            .apply();
+    public static void
+        updateAnAzureMLFunction(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
+        Function resource = manager.functions()
+            .getWithResponse("sjrg7", "sj9093", "function588", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withProperties(new ScalarFunctionProperties()
+            .withBinding(new AzureMachineLearningStudioFunctionBinding().withBatchSize(5000))).apply();
     }
 }

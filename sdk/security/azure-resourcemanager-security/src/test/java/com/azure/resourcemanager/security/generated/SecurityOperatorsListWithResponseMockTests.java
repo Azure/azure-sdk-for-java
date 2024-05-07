@@ -12,10 +12,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.security.SecurityManager;
+import com.azure.resourcemanager.security.models.ResourceIdentityType;
 import com.azure.resourcemanager.security.models.SecurityOperatorList;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -29,39 +31,27 @@ public final class SecurityOperatorsListWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"kixsps\",\"name\":\"igavk\",\"type\":\"vyxzer\"},{\"id\":\"rkpzjbyetjxryop\",\"name\":\"ae\",\"type\":\"twhlbecgih\"},{\"id\":\"pemnrrabo\",\"name\":\"rwwxywpj\",\"type\":\"spboxhifp\"},{\"id\":\"kpeswyhhmifj\",\"name\":\"ajxwwvcmmpegl\",\"type\":\"uqvcmlaexbzbqufp\"}]}";
+        String responseStr
+            = "{\"value\":[{\"identity\":{\"principalId\":\"jxgjwsre\",\"tenantId\":\"kbuud\",\"type\":\"SystemAssigned\"},\"id\":\"wkwkjxlaacedikqe\",\"name\":\"ssybzbe\",\"type\":\"gbnrommkiqhypwt\"},{\"identity\":{\"principalId\":\"jjy\",\"tenantId\":\"omzq\",\"type\":\"SystemAssigned\"},\"id\":\"agwiijc\",\"name\":\"qiywhxpsbapial\",\"type\":\"zaydpuzudegef\"},{\"identity\":{\"principalId\":\"eggot\",\"tenantId\":\"mhssfnwh\",\"type\":\"SystemAssigned\"},\"id\":\"hh\",\"name\":\"ckn\",\"type\":\"mkcu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecurityOperatorList response =
-            manager
-                .securityOperators()
-                .listWithResponse("bfjzabbwzgvzuaix", com.azure.core.util.Context.NONE)
-                .getValue();
+        SecurityOperatorList response
+            = manager.securityOperators().listWithResponse("fq", com.azure.core.util.Context.NONE).getValue();
+
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.value().get(0).identity().type());
     }
 }

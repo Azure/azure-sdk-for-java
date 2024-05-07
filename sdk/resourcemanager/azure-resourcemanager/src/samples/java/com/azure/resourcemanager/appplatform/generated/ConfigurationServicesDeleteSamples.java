@@ -4,24 +4,21 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationServices Delete. */
+/**
+ * Samples for ConfigurationServices Delete.
+ */
 public final class ConfigurationServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ConfigurationServices_Delete.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/
+     * ConfigurationServices_Delete.json
      */
     /**
      * Sample code: ConfigurationServices_Delete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void configurationServicesDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
-            .manager()
-            .serviceClient()
-            .getConfigurationServices()
-            .delete("myResourceGroup", "myservice", "default", Context.NONE);
+        azure.springServices().manager().serviceClient().getConfigurationServices().delete("myResourceGroup",
+            "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

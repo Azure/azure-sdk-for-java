@@ -15,17 +15,18 @@ public final class FactoryIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FactoryIdentity model = BinaryData.fromString(
-            "{\"type\":\"SystemAssigned\",\"principalId\":\"e196c27f-1216-477d-8b23-b44f4e80cb60\",\"tenantId\":\"32077d9b-2ddd-419c-9e89-5916fd955cbf\",\"userAssignedIdentities\":{\"qjpkcattpngjcrc\":\"dataleyyvx\"}}")
+            "{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"8795ef66-8e5f-4f7e-b025-f68d2c204177\",\"tenantId\":\"0b14d1cf-00e0-40ff-88dd-bcb987ea8319\",\"userAssignedIdentities\":{\"jh\":\"dataattpngjcrcczsq\",\"ysou\":\"datamdajv\",\"canoaeupf\":\"dataq\",\"tuo\":\"datayhltrpmopjmcm\"}}")
             .toObject(FactoryIdentity.class);
-        Assertions.assertEquals(FactoryIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(FactoryIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FactoryIdentity model = new FactoryIdentity().withType(FactoryIdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(mapOf("qjpkcattpngjcrc", "dataleyyvx"));
+        FactoryIdentity model = new FactoryIdentity().withType(FactoryIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("jh", "dataattpngjcrcczsq", "ysou", "datamdajv", "canoaeupf", "dataq",
+                "tuo", "datayhltrpmopjmcm"));
         model = BinaryData.fromObject(model).toObject(FactoryIdentity.class);
-        Assertions.assertEquals(FactoryIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(FactoryIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

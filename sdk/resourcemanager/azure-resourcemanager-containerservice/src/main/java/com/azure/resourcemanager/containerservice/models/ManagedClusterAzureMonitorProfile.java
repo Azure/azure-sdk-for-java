@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Monitor addon profiles for monitoring the managed cluster. */
+/**
+ * Azure Monitor addon profiles for monitoring the managed cluster.
+ */
 @Fluent
 public final class ManagedClusterAzureMonitorProfile {
     /*
@@ -18,7 +20,9 @@ public final class ManagedClusterAzureMonitorProfile {
     @JsonProperty(value = "metrics")
     private ManagedClusterAzureMonitorProfileMetrics metrics;
 
-    /** Creates an instance of ManagedClusterAzureMonitorProfile class. */
+    /**
+     * Creates an instance of ManagedClusterAzureMonitorProfile class.
+     */
     public ManagedClusterAzureMonitorProfile() {
     }
 
@@ -26,7 +30,7 @@ public final class ManagedClusterAzureMonitorProfile {
      * Get the metrics property: Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect
      * out-of-the-box Kubernetes infrastructure metrics to send to an Azure Monitor Workspace and configure additional
      * scraping for custom targets. See aka.ms/AzureManagedPrometheus for an overview.
-     *
+     * 
      * @return the metrics value.
      */
     public ManagedClusterAzureMonitorProfileMetrics metrics() {
@@ -37,7 +41,7 @@ public final class ManagedClusterAzureMonitorProfile {
      * Set the metrics property: Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect
      * out-of-the-box Kubernetes infrastructure metrics to send to an Azure Monitor Workspace and configure additional
      * scraping for custom targets. See aka.ms/AzureManagedPrometheus for an overview.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the ManagedClusterAzureMonitorProfile object itself.
      */
@@ -48,7 +52,7 @@ public final class ManagedClusterAzureMonitorProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

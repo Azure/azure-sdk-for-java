@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter.implementation.converters;
 
 import com.azure.communication.jobrouter.models.RouterValue;
-import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Wrapper class for labels. Supports String, int, double and boolean types.
@@ -17,21 +16,22 @@ import com.azure.core.util.logging.ClientLogger;
  * 4. boolValue.
  */
 public class RouterValueAdapter {
-    private static final ClientLogger LOGGER = new ClientLogger(RouterValueAdapter.class);
-
     public static Object getValue(RouterValue routerValue) {
-        if (routerValue.getStringValue() != null) {
-            return routerValue.getStringValue();
+        if (routerValue != null) {
+            if (routerValue.getStringValue() != null) {
+                return routerValue.getStringValue();
+            }
+            if (routerValue.getIntValue() != null) {
+                return routerValue.getIntValue();
+            }
+            if (routerValue.getDoubleValue() != null) {
+                return routerValue.getDoubleValue();
+            }
+            if (routerValue.getBooleanValue() != null) {
+                return routerValue.getBooleanValue();
+            }
         }
-        if (routerValue.getIntValue() != null) {
-            return routerValue.getIntValue();
-        }
-        if (routerValue.getDoubleValue() != null) {
-            return routerValue.getDoubleValue();
-        }
-        if (routerValue.getBooleanValue() != null) {
-            return routerValue.getBooleanValue();
-        }
+
         return null;
     }
 }

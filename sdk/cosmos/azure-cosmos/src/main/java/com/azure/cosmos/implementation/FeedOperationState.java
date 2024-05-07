@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -38,6 +39,7 @@ public abstract class FeedOperationState {
     private final AtomicReference<Integer> maxItemCount;
     private final AtomicInteger sequenceNumberGenerator;
     private final AtomicReference<Double> samplingRate;
+    private final AtomicBoolean isSampledOut;
     private final CosmosPagedFluxOptions fluxOptions;
 
     public FeedOperationState(
@@ -71,6 +73,7 @@ public abstract class FeedOperationState {
         this.sequenceNumberGenerator = new AtomicInteger(0);
         this.fluxOptions = fluxOptions;
         this.samplingRate = new AtomicReference<>(null);
+        this.isSampledOut = new AtomicBoolean(false);
 
         CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
             checkNotNull(spanName, "Argument 'spanName' must not be null." ),
@@ -100,10 +103,11 @@ public abstract class FeedOperationState {
         return this.samplingRate.get();
     }
 
-    public void setSamplingRateSnapshot(double samplingRateSnapshot) {
+    public void setSamplingRateSnapshot(double samplingRateSnapshot, boolean isSampledOut) {
         this.samplingRate.set(samplingRateSnapshot);
+        this.isSampledOut.set(isSampledOut);
         CosmosDiagnosticsContext ctxSnapshot = this.ctxHolder.get();
-        ctxAccessor.setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot);
+        ctxAccessor.setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot, isSampledOut);
     }
 
     // Can return null
@@ -167,7 +171,7 @@ public abstract class FeedOperationState {
         );
         Double samplingRateSnapshot = this.samplingRate.get();
         if (samplingRateSnapshot != null) {
-            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot);
+            ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot, this.isSampledOut.get());
         }
 
         this.ctxHolder.set(cosmosCtx);

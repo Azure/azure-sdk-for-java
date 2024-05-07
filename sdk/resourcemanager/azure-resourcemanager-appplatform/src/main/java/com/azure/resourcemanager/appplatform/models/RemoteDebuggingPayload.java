@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Remote debugging payload. */
+/**
+ * Remote debugging payload.
+ */
 @Fluent
 public final class RemoteDebuggingPayload {
     /*
@@ -17,8 +19,14 @@ public final class RemoteDebuggingPayload {
     private Integer port;
 
     /**
+     * Creates an instance of RemoteDebuggingPayload class.
+     */
+    public RemoteDebuggingPayload() {
+    }
+
+    /**
      * Get the port property: Application debugging port.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -27,7 +35,7 @@ public final class RemoteDebuggingPayload {
 
     /**
      * Set the port property: Application debugging port.
-     *
+     * 
      * @param port the port value to set.
      * @return the RemoteDebuggingPayload object itself.
      */
@@ -38,7 +46,7 @@ public final class RemoteDebuggingPayload {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,15 +10,16 @@ import com.azure.resourcemanager.datafactory.fluent.models.DrillDatasetTypePrope
 public final class DrillDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DrillDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"dataoqejexfd\",\"table\":\"datauhdk\",\"schema\":\"datagywadrklpdyehjr\"}")
-            .toObject(DrillDatasetTypeProperties.class);
+        DrillDatasetTypeProperties model
+            = BinaryData.fromString("{\"tableName\":\"datauklx\",\"table\":\"datalmzpyq\",\"schema\":\"datahuecxhgs\"}")
+                .toObject(DrillDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DrillDatasetTypeProperties model = new DrillDatasetTypeProperties().withTableName("dataoqejexfd")
-            .withTable("datauhdk").withSchema("datagywadrklpdyehjr");
+        DrillDatasetTypeProperties model = new DrillDatasetTypeProperties().withTableName("datauklx")
+            .withTable("datalmzpyq")
+            .withSchema("datahuecxhgs");
         model = BinaryData.fromObject(model).toObject(DrillDatasetTypeProperties.class);
     }
 }

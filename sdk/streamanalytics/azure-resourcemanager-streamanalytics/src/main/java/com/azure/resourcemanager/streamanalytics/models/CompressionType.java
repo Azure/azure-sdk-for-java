@@ -8,20 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CompressionType. */
+/**
+ * Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace) requests.
+ */
 public final class CompressionType extends ExpandableStringEnum<CompressionType> {
-    /** Static value None for CompressionType. */
+    /**
+     * Static value None for CompressionType.
+     */
     public static final CompressionType NONE = fromString("None");
 
-    /** Static value GZip for CompressionType. */
+    /**
+     * Static value GZip for CompressionType.
+     */
     public static final CompressionType GZIP = fromString("GZip");
 
-    /** Static value Deflate for CompressionType. */
+    /**
+     * Static value Deflate for CompressionType.
+     */
     public static final CompressionType DEFLATE = fromString("Deflate");
 
     /**
+     * Creates a new instance of CompressionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CompressionType() {
+    }
+
+    /**
      * Creates or finds a CompressionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CompressionType.
      */
@@ -30,7 +47,11 @@ public final class CompressionType extends ExpandableStringEnum<CompressionType>
         return fromString(name, CompressionType.class);
     }
 
-    /** @return known CompressionType values. */
+    /**
+     * Gets known CompressionType values.
+     * 
+     * @return known CompressionType values.
+     */
     public static Collection<CompressionType> values() {
         return values(CompressionType.class);
     }

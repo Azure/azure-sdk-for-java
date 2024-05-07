@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,7 +15,6 @@ public final class CancelJobOptions {
     /*
      * A note that will be appended to a job's Notes collection with the current timestamp.
      */
-    @Generated
     @JsonProperty(value = "note")
     private String note;
 
@@ -24,14 +22,12 @@ public final class CancelJobOptions {
      * Indicates the outcome of a job, populate this field with your own custom values. If not provided, default value
      * of "Cancelled" is set.
      */
-    @Generated
     @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
     /**
      * Creates an instance of CancelJobOptionsInternal class.
      */
-    @Generated
     public CancelJobOptions() {
     }
 
@@ -40,7 +36,6 @@ public final class CancelJobOptions {
      *
      * @return the note value.
      */
-    @Generated
     public String getNote() {
         return this.note;
     }
@@ -51,7 +46,6 @@ public final class CancelJobOptions {
      * @param note the note value to set.
      * @return the CancelJobOptionsInternal object itself.
      */
-    @Generated
     public CancelJobOptions setNote(String note) {
         this.note = note;
         return this;
@@ -63,7 +57,6 @@ public final class CancelJobOptions {
      *
      * @return the dispositionCode value.
      */
-    @Generated
     public String getDispositionCode() {
         return this.dispositionCode;
     }
@@ -75,7 +68,6 @@ public final class CancelJobOptions {
      * @param dispositionCode the dispositionCode value to set.
      * @return the CancelJobOptionsInternal object itself.
      */
-    @Generated
     public CancelJobOptions setDispositionCode(String dispositionCode) {
         this.dispositionCode = dispositionCode;
         return this;

@@ -62,6 +62,17 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
     }
 
     /**
+     * Enables automatically using the default broker account for authentication instead
+     * of prompting the user with an account picker.
+     *
+     * @return An updated instance of this builder with useDefaultBrokerAccount set.
+     */
+    public InteractiveBrowserCredentialBuilder useDefaultBrokerAccount() {
+        CredentialBuilderBaseHelper.getClientOptions(this).setUseDefaultBrokerAccount(true);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Extended location of the resource. */
+/**
+ * Extended location of the resource.
+ */
 @Fluent
 public final class ExtendedLocation {
     /*
@@ -23,13 +25,15 @@ public final class ExtendedLocation {
     @JsonProperty(value = "type", required = true)
     private ExtendedLocationType type;
 
-    /** Creates an instance of ExtendedLocation class. */
+    /**
+     * Creates an instance of ExtendedLocation class.
+     */
     public ExtendedLocation() {
     }
 
     /**
      * Get the name property: The name of the extended location.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class ExtendedLocation {
 
     /**
      * Set the name property: The name of the extended location.
-     *
+     * 
      * @param name the name value to set.
      * @return the ExtendedLocation object itself.
      */
@@ -49,7 +53,7 @@ public final class ExtendedLocation {
 
     /**
      * Get the type property: The extended location type.
-     *
+     * 
      * @return the type value.
      */
     public ExtendedLocationType type() {
@@ -58,7 +62,7 @@ public final class ExtendedLocation {
 
     /**
      * Set the type property: The extended location type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ExtendedLocation object itself.
      */
@@ -69,19 +73,17 @@ public final class ExtendedLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ExtendedLocation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ExtendedLocation"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ExtendedLocation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model ExtendedLocation"));
         }
     }
 

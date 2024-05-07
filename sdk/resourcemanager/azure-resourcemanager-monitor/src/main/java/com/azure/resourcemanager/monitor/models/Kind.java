@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the type of scheduled query rule. The default is LogAlert. */
+/**
+ * Indicates the type of scheduled query rule. The default is LogAlert.
+ */
 public final class Kind extends ExpandableStringEnum<Kind> {
-    /** Static value LogAlert for Kind. */
+    /**
+     * Static value LogAlert for Kind.
+     */
     public static final Kind LOG_ALERT = fromString("LogAlert");
 
-    /** Static value LogToMetric for Kind. */
+    /**
+     * Static value LogToMetric for Kind.
+     */
     public static final Kind LOG_TO_METRIC = fromString("LogToMetric");
 
     /**
+     * Creates a new instance of Kind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Kind() {
+    }
+
+    /**
      * Creates or finds a Kind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Kind.
      */
@@ -29,7 +44,7 @@ public final class Kind extends ExpandableStringEnum<Kind> {
 
     /**
      * Gets known Kind values.
-     *
+     * 
      * @return known Kind values.
      */
     public static Collection<Kind> values() {

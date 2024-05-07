@@ -174,7 +174,7 @@ public final class QueueSasPermission {
         // The order of the characters should be as specified here to ensure correctness:
         // https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
 
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(4);
 
         if (this.readPermission) {
             builder.append('r');

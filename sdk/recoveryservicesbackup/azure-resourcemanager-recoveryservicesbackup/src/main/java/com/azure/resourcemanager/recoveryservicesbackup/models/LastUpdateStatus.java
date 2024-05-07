@@ -8,35 +8,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LastUpdateStatus. */
+/**
+ * Defines values for LastUpdateStatus.
+ */
 public final class LastUpdateStatus extends ExpandableStringEnum<LastUpdateStatus> {
-    /** Static value Invalid for LastUpdateStatus. */
+    /**
+     * Static value Invalid for LastUpdateStatus.
+     */
     public static final LastUpdateStatus INVALID = fromString("Invalid");
 
-    /** Static value NotEnabled for LastUpdateStatus. */
+    /**
+     * Static value NotEnabled for LastUpdateStatus.
+     */
     public static final LastUpdateStatus NOT_ENABLED = fromString("NotEnabled");
 
-    /** Static value PartiallySucceeded for LastUpdateStatus. */
+    /**
+     * Static value PartiallySucceeded for LastUpdateStatus.
+     */
     public static final LastUpdateStatus PARTIALLY_SUCCEEDED = fromString("PartiallySucceeded");
 
-    /** Static value PartiallyFailed for LastUpdateStatus. */
+    /**
+     * Static value PartiallyFailed for LastUpdateStatus.
+     */
     public static final LastUpdateStatus PARTIALLY_FAILED = fromString("PartiallyFailed");
 
-    /** Static value Failed for LastUpdateStatus. */
+    /**
+     * Static value Failed for LastUpdateStatus.
+     */
     public static final LastUpdateStatus FAILED = fromString("Failed");
 
-    /** Static value Succeeded for LastUpdateStatus. */
+    /**
+     * Static value Succeeded for LastUpdateStatus.
+     */
     public static final LastUpdateStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Initialized for LastUpdateStatus. */
+    /**
+     * Static value Initialized for LastUpdateStatus.
+     */
     public static final LastUpdateStatus INITIALIZED = fromString("Initialized");
 
-    /** Static value FirstInitialization for LastUpdateStatus. */
+    /**
+     * Static value FirstInitialization for LastUpdateStatus.
+     */
     public static final LastUpdateStatus FIRST_INITIALIZATION = fromString("FirstInitialization");
 
     /**
      * Creates a new instance of LastUpdateStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +63,7 @@ public final class LastUpdateStatus extends ExpandableStringEnum<LastUpdateStatu
 
     /**
      * Creates or finds a LastUpdateStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LastUpdateStatus.
      */
@@ -56,7 +74,7 @@ public final class LastUpdateStatus extends ExpandableStringEnum<LastUpdateStatu
 
     /**
      * Gets known LastUpdateStatus values.
-     *
+     * 
      * @return known LastUpdateStatus values.
      */
     public static Collection<LastUpdateStatus> values() {

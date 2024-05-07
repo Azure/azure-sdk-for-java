@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Additional information of the container. */
+/**
+ * Additional information of the container.
+ */
 @Fluent
 public final class MabContainerExtendedInfo {
     /*
@@ -42,13 +44,15 @@ public final class MabContainerExtendedInfo {
     @JsonProperty(value = "lastBackupStatus")
     private String lastBackupStatus;
 
-    /** Creates an instance of MabContainerExtendedInfo class. */
+    /**
+     * Creates an instance of MabContainerExtendedInfo class.
+     */
     public MabContainerExtendedInfo() {
     }
 
     /**
      * Get the lastRefreshedAt property: Time stamp when this container was refreshed.
-     *
+     * 
      * @return the lastRefreshedAt value.
      */
     public OffsetDateTime lastRefreshedAt() {
@@ -57,7 +61,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Set the lastRefreshedAt property: Time stamp when this container was refreshed.
-     *
+     * 
      * @param lastRefreshedAt the lastRefreshedAt value to set.
      * @return the MabContainerExtendedInfo object itself.
      */
@@ -68,7 +72,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Get the backupItemType property: Type of backup items associated with this container.
-     *
+     * 
      * @return the backupItemType value.
      */
     public BackupItemType backupItemType() {
@@ -77,7 +81,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Set the backupItemType property: Type of backup items associated with this container.
-     *
+     * 
      * @param backupItemType the backupItemType value to set.
      * @return the MabContainerExtendedInfo object itself.
      */
@@ -88,7 +92,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Get the backupItems property: List of backup items associated with this container.
-     *
+     * 
      * @return the backupItems value.
      */
     public List<String> backupItems() {
@@ -97,7 +101,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Set the backupItems property: List of backup items associated with this container.
-     *
+     * 
      * @param backupItems the backupItems value to set.
      * @return the MabContainerExtendedInfo object itself.
      */
@@ -108,7 +112,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Get the policyName property: Backup policy associated with this container.
-     *
+     * 
      * @return the policyName value.
      */
     public String policyName() {
@@ -117,7 +121,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Set the policyName property: Backup policy associated with this container.
-     *
+     * 
      * @param policyName the policyName value to set.
      * @return the MabContainerExtendedInfo object itself.
      */
@@ -128,7 +132,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Get the lastBackupStatus property: Latest backup status of this container.
-     *
+     * 
      * @return the lastBackupStatus value.
      */
     public String lastBackupStatus() {
@@ -137,7 +141,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Set the lastBackupStatus property: Latest backup status of this container.
-     *
+     * 
      * @param lastBackupStatus the lastBackupStatus value to set.
      * @return the MabContainerExtendedInfo object itself.
      */
@@ -148,7 +152,7 @@ public final class MabContainerExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -235,10 +235,15 @@ public class ConsistencyWriter {
                                                            }
                                                        }
                                                    } catch (Throwable throwable) {
-                                                       logger.error("Unexpected failure in handling orig [{}]", t.getMessage(), t);
-                                                       logger.error("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
                                                        if (throwable instanceof Error) {
+                                                           logger.error("Unexpected failure in handling orig [{}]", t.getMessage(), t);
+                                                           logger.error("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
                                                            throw (Error) throwable;
+                                                       } else {
+                                                           // this happens before any retry policy - like for example GoneAndRetryRetryPolicy
+                                                           // kicks in - no need to spam warn/error level logs yet
+                                                           logger.info("Unexpected failure in handling orig [{}]", t.getMessage(), t);
+                                                           logger.info("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
                                                        }
                                                    }
                                                }
@@ -273,7 +278,7 @@ public class ConsistencyWriter {
                 .flatMap(v -> {
 
                     if (!v) {
-                        logger.warn("ConsistencyWriter: Write barrier has not been met for global strong request. SelectedGlobalCommittedLsn: {}", request.requestContext.globalCommittedSelectedLSN);
+                        logger.info("ConsistencyWriter: Write barrier has not been met for global strong request. SelectedGlobalCommittedLsn: {}", request.requestContext.globalCommittedSelectedLSN);
                         return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet,
                             HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET));
                     }

@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Vault Dedup state. */
+/**
+ * Vault Dedup state.
+ */
 public final class DedupState extends ExpandableStringEnum<DedupState> {
-    /** Static value Invalid for DedupState. */
+    /**
+     * Static value Invalid for DedupState.
+     */
     public static final DedupState INVALID = fromString("Invalid");
 
-    /** Static value Enabled for DedupState. */
+    /**
+     * Static value Enabled for DedupState.
+     */
     public static final DedupState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for DedupState. */
+    /**
+     * Static value Disabled for DedupState.
+     */
     public static final DedupState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of DedupState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class DedupState extends ExpandableStringEnum<DedupState> {
 
     /**
      * Creates or finds a DedupState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DedupState.
      */
@@ -41,7 +49,7 @@ public final class DedupState extends ExpandableStringEnum<DedupState> {
 
     /**
      * Gets known DedupState values.
-     *
+     * 
      * @return known DedupState values.
      */
     public static Collection<DedupState> values() {

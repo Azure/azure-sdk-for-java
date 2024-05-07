@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of a trigger. */
+/**
+ * The properties of a trigger.
+ */
 @Fluent
 public final class TriggerProperties {
     /*
@@ -29,13 +31,15 @@ public final class TriggerProperties {
     @JsonProperty(value = "baseImageTrigger")
     private BaseImageTrigger baseImageTrigger;
 
-    /** Creates an instance of TriggerProperties class. */
+    /**
+     * Creates an instance of TriggerProperties class.
+     */
     public TriggerProperties() {
     }
 
     /**
      * Get the timerTriggers property: The collection of timer triggers.
-     *
+     * 
      * @return the timerTriggers value.
      */
     public List<TimerTrigger> timerTriggers() {
@@ -44,7 +48,7 @@ public final class TriggerProperties {
 
     /**
      * Set the timerTriggers property: The collection of timer triggers.
-     *
+     * 
      * @param timerTriggers the timerTriggers value to set.
      * @return the TriggerProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class TriggerProperties {
 
     /**
      * Get the sourceTriggers property: The collection of triggers based on source code repository.
-     *
+     * 
      * @return the sourceTriggers value.
      */
     public List<SourceTrigger> sourceTriggers() {
@@ -64,7 +68,7 @@ public final class TriggerProperties {
 
     /**
      * Set the sourceTriggers property: The collection of triggers based on source code repository.
-     *
+     * 
      * @param sourceTriggers the sourceTriggers value to set.
      * @return the TriggerProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class TriggerProperties {
 
     /**
      * Get the baseImageTrigger property: The trigger based on base image dependencies.
-     *
+     * 
      * @return the baseImageTrigger value.
      */
     public BaseImageTrigger baseImageTrigger() {
@@ -84,7 +88,7 @@ public final class TriggerProperties {
 
     /**
      * Set the baseImageTrigger property: The trigger based on base image dependencies.
-     *
+     * 
      * @param baseImageTrigger the baseImageTrigger value to set.
      * @return the TriggerProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class TriggerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -1,7 +1,7 @@
-# Troubleshooting Azure Cognitive Search SDK Issues
+# Troubleshooting Azure AI Search SDK Issues
 
 The `azure-search-documents` package provides APIs for operations on the 
-[Azure Cognitive Search](https://docs.microsoft.com/azure/search/search-what-is-azure-search) cloud service.
+[Azure AI Search](https://docs.microsoft.com/azure/search/search-what-is-azure-search) cloud service.
 
 ## Table of Contents
 
@@ -14,7 +14,7 @@ The `azure-search-documents` package provides APIs for operations on the
 ## Troubleshooting Issues By Response Code
 
 See [this page](https://docs.microsoft.com/rest/api/searchservice/http-status-codes) for the common response status 
-codes sent by the Azure Cognitive Search service.
+codes sent by the Azure AI Search service.
 
 ### 207 Multi-Status
 
@@ -33,7 +33,7 @@ create and delete indexes, indexers, and data sources. The **query key** grants 
 Ensure that the key used for an API call provides sufficient privileges for the operation. See [here](https://docs.microsoft.com/azure/search/search-security-api-keys) 
 for details about managing API keys.
 
-If you are using the `azure-identity` package to authenticate requests to Azure Cognitive Search, please see our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md).
+If you are using the `azure-identity` package to authenticate requests to Azure AI Search, please see our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md).
 
 ### 404 Not Found
 
@@ -43,7 +43,7 @@ verify the index name is specified correctly.
 ### 429 too many requests
 
 If this error occurs while you are trying to create an index, it means you already have the maximum number of indexes 
-allowed for your pricing tier. A count of the indexes stored in Azure Cognitive Search is visible in the search service 
+allowed for your pricing tier. A count of the indexes stored in Azure AI Search is visible in the search service 
 dashboard on the [Azure portal](https://portal.azure.com/). To view the indexes by name, click the Index tile. 
 Alternatively, you can also get a list of the indexes by name using the [listIndexNames() method](https://docs.microsoft.com/java/api/com.azure.search.documents.indexes.searchindexclient.listindexnames?view=azure-java-stable).
 

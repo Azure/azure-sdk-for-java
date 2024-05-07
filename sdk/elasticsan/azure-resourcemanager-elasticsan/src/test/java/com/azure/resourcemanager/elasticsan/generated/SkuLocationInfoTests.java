@@ -10,9 +10,8 @@ import com.azure.resourcemanager.elasticsan.models.SkuLocationInfo;
 public final class SkuLocationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuLocationInfo model =
-            BinaryData
-                .fromString("{\"location\":\"qduujitcjczdz\",\"zones\":[\"dhkrwpdappdsbdk\",\"wrwjfeu\"]}")
+        SkuLocationInfo model
+            = BinaryData.fromString("{\"location\":\"qduujitcjczdz\",\"zones\":[\"dhkrwpdappdsbdk\",\"wrwjfeu\"]}")
                 .toObject(SkuLocationInfo.class);
     }
 

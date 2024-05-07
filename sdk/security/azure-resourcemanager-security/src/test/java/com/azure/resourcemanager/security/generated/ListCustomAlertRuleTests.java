@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ListCustomAlertRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListCustomAlertRule model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"ListCustomAlertRule\",\"valueType\":\"String\",\"displayName\":\"xnj\",\"description\":\"seiphe\",\"isEnabled\":false}")
-                .toObject(ListCustomAlertRule.class);
-        Assertions.assertEquals(false, model.isEnabled());
+        ListCustomAlertRule model = BinaryData.fromString(
+            "{\"ruleType\":\"ListCustomAlertRule\",\"valueType\":\"IpCidr\",\"displayName\":\"jfkakfqfrke\",\"description\":\"il\",\"isEnabled\":true}")
+            .toObject(ListCustomAlertRule.class);
+        Assertions.assertEquals(true, model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListCustomAlertRule model = new ListCustomAlertRule().withIsEnabled(false);
+        ListCustomAlertRule model = new ListCustomAlertRule().withIsEnabled(true);
         model = BinaryData.fromObject(model).toObject(ListCustomAlertRule.class);
-        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(true, model.isEnabled());
     }
 }

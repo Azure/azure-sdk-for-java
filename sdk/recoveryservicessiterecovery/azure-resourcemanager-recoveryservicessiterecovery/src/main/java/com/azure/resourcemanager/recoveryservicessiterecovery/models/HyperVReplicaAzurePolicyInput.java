@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Hyper-V Replica Azure specific input for creating a protection profile. */
+/**
+ * Hyper-V Replica Azure specific input for creating a protection profile.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplicaAzure")
 @Fluent
@@ -46,14 +48,16 @@ public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificI
     @JsonProperty(value = "storageAccounts")
     private List<String> storageAccounts;
 
-    /** Creates an instance of HyperVReplicaAzurePolicyInput class. */
+    /**
+     * Creates an instance of HyperVReplicaAzurePolicyInput class.
+     */
     public HyperVReplicaAzurePolicyInput() {
     }
 
     /**
      * Get the recoveryPointHistoryDuration property: The duration (in hours) to which point the recovery history needs
      * to be maintained.
-     *
+     * 
      * @return the recoveryPointHistoryDuration value.
      */
     public Integer recoveryPointHistoryDuration() {
@@ -63,7 +67,7 @@ public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificI
     /**
      * Set the recoveryPointHistoryDuration property: The duration (in hours) to which point the recovery history needs
      * to be maintained.
-     *
+     * 
      * @param recoveryPointHistoryDuration the recoveryPointHistoryDuration value to set.
      * @return the HyperVReplicaAzurePolicyInput object itself.
      */
@@ -75,7 +79,7 @@ public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificI
     /**
      * Get the applicationConsistentSnapshotFrequencyInHours property: The interval (in hours) at which Hyper-V Replica
      * should create an application consistent snapshot within the VM.
-     *
+     * 
      * @return the applicationConsistentSnapshotFrequencyInHours value.
      */
     public Integer applicationConsistentSnapshotFrequencyInHours() {
@@ -85,20 +89,20 @@ public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificI
     /**
      * Set the applicationConsistentSnapshotFrequencyInHours property: The interval (in hours) at which Hyper-V Replica
      * should create an application consistent snapshot within the VM.
-     *
+     * 
      * @param applicationConsistentSnapshotFrequencyInHours the applicationConsistentSnapshotFrequencyInHours value to
-     *     set.
+     * set.
      * @return the HyperVReplicaAzurePolicyInput object itself.
      */
-    public HyperVReplicaAzurePolicyInput withApplicationConsistentSnapshotFrequencyInHours(
-        Integer applicationConsistentSnapshotFrequencyInHours) {
+    public HyperVReplicaAzurePolicyInput
+        withApplicationConsistentSnapshotFrequencyInHours(Integer applicationConsistentSnapshotFrequencyInHours) {
         this.applicationConsistentSnapshotFrequencyInHours = applicationConsistentSnapshotFrequencyInHours;
         return this;
     }
 
     /**
      * Get the replicationInterval property: The replication interval.
-     *
+     * 
      * @return the replicationInterval value.
      */
     public Integer replicationInterval() {
@@ -107,7 +111,7 @@ public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificI
 
     /**
      * Set the replicationInterval property: The replication interval.
-     *
+     * 
      * @param replicationInterval the replicationInterval value to set.
      * @return the HyperVReplicaAzurePolicyInput object itself.
      */
@@ -119,7 +123,7 @@ public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificI
     /**
      * Get the onlineReplicationStartTime property: The scheduled start time for the initial replication. If this
      * parameter is Null, the initial replication starts immediately.
-     *
+     * 
      * @return the onlineReplicationStartTime value.
      */
     public String onlineReplicationStartTime() {
@@ -129,7 +133,7 @@ public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificI
     /**
      * Set the onlineReplicationStartTime property: The scheduled start time for the initial replication. If this
      * parameter is Null, the initial replication starts immediately.
-     *
+     * 
      * @param onlineReplicationStartTime the onlineReplicationStartTime value to set.
      * @return the HyperVReplicaAzurePolicyInput object itself.
      */
@@ -141,7 +145,7 @@ public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificI
     /**
      * Get the storageAccounts property: The list of storage accounts to which the VMs in the primary cloud can
      * replicate to.
-     *
+     * 
      * @return the storageAccounts value.
      */
     public List<String> storageAccounts() {
@@ -151,7 +155,7 @@ public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificI
     /**
      * Set the storageAccounts property: The list of storage accounts to which the VMs in the primary cloud can
      * replicate to.
-     *
+     * 
      * @param storageAccounts the storageAccounts value to set.
      * @return the HyperVReplicaAzurePolicyInput object itself.
      */
@@ -162,7 +166,7 @@ public final class HyperVReplicaAzurePolicyInput extends PolicyProviderSpecificI
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

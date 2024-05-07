@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A vulnerability assessment scan result properties for a single rule. */
+/**
+ * A vulnerability assessment scan result properties for a single rule.
+ */
 @Fluent
 public final class ScanResultProperties {
     /*
@@ -53,13 +55,15 @@ public final class ScanResultProperties {
     @JsonProperty(value = "ruleMetadata")
     private VaRule ruleMetadata;
 
-    /** Creates an instance of ScanResultProperties class. */
+    /**
+     * Creates an instance of ScanResultProperties class.
+     */
     public ScanResultProperties() {
     }
 
     /**
      * Get the ruleId property: The rule Id.
-     *
+     * 
      * @return the ruleId value.
      */
     public String ruleId() {
@@ -68,7 +72,7 @@ public final class ScanResultProperties {
 
     /**
      * Set the ruleId property: The rule Id.
-     *
+     * 
      * @param ruleId the ruleId value to set.
      * @return the ScanResultProperties object itself.
      */
@@ -79,7 +83,7 @@ public final class ScanResultProperties {
 
     /**
      * Get the status property: The rule result status.
-     *
+     * 
      * @return the status value.
      */
     public RuleStatus status() {
@@ -88,7 +92,7 @@ public final class ScanResultProperties {
 
     /**
      * Set the status property: The rule result status.
-     *
+     * 
      * @param status the status value to set.
      * @return the ScanResultProperties object itself.
      */
@@ -99,7 +103,7 @@ public final class ScanResultProperties {
 
     /**
      * Get the isTrimmed property: Indicated whether the results specified here are trimmed.
-     *
+     * 
      * @return the isTrimmed value.
      */
     public Boolean isTrimmed() {
@@ -108,7 +112,7 @@ public final class ScanResultProperties {
 
     /**
      * Set the isTrimmed property: Indicated whether the results specified here are trimmed.
-     *
+     * 
      * @param isTrimmed the isTrimmed value to set.
      * @return the ScanResultProperties object itself.
      */
@@ -119,7 +123,7 @@ public final class ScanResultProperties {
 
     /**
      * Get the queryResults property: The results of the query that was run.
-     *
+     * 
      * @return the queryResults value.
      */
     public List<List<String>> queryResults() {
@@ -128,7 +132,7 @@ public final class ScanResultProperties {
 
     /**
      * Set the queryResults property: The results of the query that was run.
-     *
+     * 
      * @param queryResults the queryResults value to set.
      * @return the ScanResultProperties object itself.
      */
@@ -139,7 +143,7 @@ public final class ScanResultProperties {
 
     /**
      * Get the remediation property: Remediation details.
-     *
+     * 
      * @return the remediation value.
      */
     public Remediation remediation() {
@@ -148,7 +152,7 @@ public final class ScanResultProperties {
 
     /**
      * Set the remediation property: Remediation details.
-     *
+     * 
      * @param remediation the remediation value to set.
      * @return the ScanResultProperties object itself.
      */
@@ -159,7 +163,7 @@ public final class ScanResultProperties {
 
     /**
      * Get the baselineAdjustedResult property: The rule result adjusted with baseline.
-     *
+     * 
      * @return the baselineAdjustedResult value.
      */
     public BaselineAdjustedResult baselineAdjustedResult() {
@@ -168,7 +172,7 @@ public final class ScanResultProperties {
 
     /**
      * Set the baselineAdjustedResult property: The rule result adjusted with baseline.
-     *
+     * 
      * @param baselineAdjustedResult the baselineAdjustedResult value to set.
      * @return the ScanResultProperties object itself.
      */
@@ -179,7 +183,7 @@ public final class ScanResultProperties {
 
     /**
      * Get the ruleMetadata property: vulnerability assessment rule metadata details.
-     *
+     * 
      * @return the ruleMetadata value.
      */
     public VaRule ruleMetadata() {
@@ -188,7 +192,7 @@ public final class ScanResultProperties {
 
     /**
      * Set the ruleMetadata property: vulnerability assessment rule metadata details.
-     *
+     * 
      * @param ruleMetadata the ruleMetadata value to set.
      * @return the ScanResultProperties object itself.
      */
@@ -199,7 +203,7 @@ public final class ScanResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

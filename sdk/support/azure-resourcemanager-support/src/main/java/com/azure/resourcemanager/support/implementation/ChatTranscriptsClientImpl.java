@@ -30,22 +30,28 @@ import com.azure.resourcemanager.support.fluent.models.ChatTranscriptDetailsInne
 import com.azure.resourcemanager.support.models.ChatTranscriptsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ChatTranscriptsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ChatTranscriptsClient.
+ */
 public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ChatTranscriptsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftSupportImpl client;
 
     /**
      * Initializes an instance of ChatTranscriptsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ChatTranscriptsClientImpl(MicrosoftSupportImpl client) {
-        this.service =
-            RestProxy.create(ChatTranscriptsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ChatTranscriptsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,150 +62,105 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftSupportChat")
     public interface ChatTranscriptsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/chatTranscripts")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/chatTranscripts")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ChatTranscriptsListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ChatTranscriptsListResult>> list(@HostParam("$host") String endpoint,
             @PathParam("supportTicketName") String supportTicketName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/chatTranscripts/{chatTranscriptName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/chatTranscripts/{chatTranscriptName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ChatTranscriptDetailsInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ChatTranscriptDetailsInner>> get(@HostParam("$host") String endpoint,
             @PathParam("supportTicketName") String supportTicketName,
             @PathParam("chatTranscriptName") String chatTranscriptName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ChatTranscriptsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all chat transcripts for a support ticket under subscription.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Chat Transcripts resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChatTranscriptDetailsInner>> listSinglePageAsync(String supportTicketName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            supportTicketName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ChatTranscriptDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), supportTicketName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ChatTranscriptDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all chat transcripts for a support ticket under subscription.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Chat Transcripts resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ChatTranscriptDetailsInner>> listSinglePageAsync(
-        String supportTicketName, Context context) {
+    private Mono<PagedResponse<ChatTranscriptDetailsInner>> listSinglePageAsync(String supportTicketName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                supportTicketName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), supportTicketName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all chat transcripts for a support ticket under subscription.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -208,13 +169,13 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ChatTranscriptDetailsInner> listAsync(String supportTicketName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(supportTicketName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(supportTicketName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all chat transcripts for a support ticket under subscription.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,14 +185,13 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ChatTranscriptDetailsInner> listAsync(String supportTicketName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(supportTicketName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(supportTicketName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all chat transcripts for a support ticket under subscription.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -245,7 +205,7 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
 
     /**
      * Lists all chat transcripts for a support ticket under subscription.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -260,23 +220,21 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
 
     /**
      * Returns chatTranscript details for a support ticket under a subscription.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param chatTranscriptName ChatTranscript name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a Chat Transcript resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ChatTranscriptDetailsInner>> getWithResponseAsync(
-        String supportTicketName, String chatTranscriptName) {
+    private Mono<Response<ChatTranscriptDetailsInner>> getWithResponseAsync(String supportTicketName,
+        String chatTranscriptName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
@@ -287,30 +245,19 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
                 .error(new IllegalArgumentException("Parameter chatTranscriptName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            supportTicketName,
-                            chatTranscriptName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), supportTicketName, chatTranscriptName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns chatTranscript details for a support ticket under a subscription.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param chatTranscriptName ChatTranscript name.
      * @param context The context to associate with this operation.
@@ -318,16 +265,14 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a Chat Transcript resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ChatTranscriptDetailsInner>> getWithResponseAsync(
-        String supportTicketName, String chatTranscriptName, Context context) {
+    private Mono<Response<ChatTranscriptDetailsInner>> getWithResponseAsync(String supportTicketName,
+        String chatTranscriptName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
@@ -338,27 +283,18 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
                 .error(new IllegalArgumentException("Parameter chatTranscriptName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                supportTicketName,
-                chatTranscriptName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), supportTicketName, chatTranscriptName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Returns chatTranscript details for a support ticket under a subscription.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param chatTranscriptName ChatTranscript name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -374,7 +310,7 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
 
     /**
      * Returns chatTranscript details for a support ticket under a subscription.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param chatTranscriptName ChatTranscript name.
      * @param context The context to associate with this operation.
@@ -384,14 +320,14 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
      * @return object that represents a Chat Transcript resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ChatTranscriptDetailsInner> getWithResponse(
-        String supportTicketName, String chatTranscriptName, Context context) {
+    public Response<ChatTranscriptDetailsInner> getWithResponse(String supportTicketName, String chatTranscriptName,
+        Context context) {
         return getWithResponseAsync(supportTicketName, chatTranscriptName, context).block();
     }
 
     /**
      * Returns chatTranscript details for a support ticket under a subscription.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param chatTranscriptName ChatTranscript name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -406,14 +342,15 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Chat Transcripts resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChatTranscriptDetailsInner>> listNextSinglePageAsync(String nextLink) {
@@ -421,37 +358,28 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ChatTranscriptDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ChatTranscriptDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Chat Transcripts resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ChatTranscriptDetailsInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -459,23 +387,13 @@ public final class ChatTranscriptsClientImpl implements ChatTranscriptsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

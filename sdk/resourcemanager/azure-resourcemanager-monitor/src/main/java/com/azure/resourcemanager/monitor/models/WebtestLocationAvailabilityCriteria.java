@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Specifies the metric alert rule criteria for a web test resource. */
+/**
+ * Specifies the metric alert rule criteria for a web test resource.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
 @JsonTypeName("Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria")
 @Fluent
@@ -33,13 +35,15 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
     @JsonProperty(value = "failedLocationCount", required = true)
     private float failedLocationCount;
 
-    /** Creates an instance of WebtestLocationAvailabilityCriteria class. */
+    /**
+     * Creates an instance of WebtestLocationAvailabilityCriteria class.
+     */
     public WebtestLocationAvailabilityCriteria() {
     }
 
     /**
      * Get the webTestId property: The Application Insights web test Id.
-     *
+     * 
      * @return the webTestId value.
      */
     public String webTestId() {
@@ -48,7 +52,7 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
 
     /**
      * Set the webTestId property: The Application Insights web test Id.
-     *
+     * 
      * @param webTestId the webTestId value to set.
      * @return the WebtestLocationAvailabilityCriteria object itself.
      */
@@ -59,7 +63,7 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
 
     /**
      * Get the componentId property: The Application Insights resource Id.
-     *
+     * 
      * @return the componentId value.
      */
     public String componentId() {
@@ -68,7 +72,7 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
 
     /**
      * Set the componentId property: The Application Insights resource Id.
-     *
+     * 
      * @param componentId the componentId value to set.
      * @return the WebtestLocationAvailabilityCriteria object itself.
      */
@@ -79,7 +83,7 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
 
     /**
      * Get the failedLocationCount property: The number of failed locations.
-     *
+     * 
      * @return the failedLocationCount value.
      */
     public float failedLocationCount() {
@@ -88,7 +92,7 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
 
     /**
      * Set the failedLocationCount property: The number of failed locations.
-     *
+     * 
      * @param failedLocationCount the failedLocationCount value to set.
      * @return the WebtestLocationAvailabilityCriteria object itself.
      */
@@ -99,23 +103,19 @@ public final class WebtestLocationAvailabilityCriteria extends MetricAlertCriter
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (webTestId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property webTestId in model WebtestLocationAvailabilityCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property webTestId in model WebtestLocationAvailabilityCriteria"));
         }
         if (componentId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property componentId in model WebtestLocationAvailabilityCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property componentId in model WebtestLocationAvailabilityCriteria"));
         }
     }
 

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The Defender for Servers GCP offering configurations. */
+/**
+ * The Defender for Servers GCP offering configurations.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
 @JsonTypeName("DefenderForServersGcp")
 @Fluent
@@ -50,13 +52,15 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
     @JsonProperty(value = "vmScanners")
     private DefenderForServersGcpOfferingVmScanners vmScanners;
 
-    /** Creates an instance of DefenderForServersGcpOffering class. */
+    /**
+     * Creates an instance of DefenderForServersGcpOffering class.
+     */
     public DefenderForServersGcpOffering() {
     }
 
     /**
      * Get the defenderForServers property: The Defender for servers connection configuration.
-     *
+     * 
      * @return the defenderForServers value.
      */
     public DefenderForServersGcpOfferingDefenderForServers defenderForServers() {
@@ -65,19 +69,19 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
 
     /**
      * Set the defenderForServers property: The Defender for servers connection configuration.
-     *
+     * 
      * @param defenderForServers the defenderForServers value to set.
      * @return the DefenderForServersGcpOffering object itself.
      */
-    public DefenderForServersGcpOffering withDefenderForServers(
-        DefenderForServersGcpOfferingDefenderForServers defenderForServers) {
+    public DefenderForServersGcpOffering
+        withDefenderForServers(DefenderForServersGcpOfferingDefenderForServers defenderForServers) {
         this.defenderForServers = defenderForServers;
         return this;
     }
 
     /**
      * Get the arcAutoProvisioning property: The ARC autoprovisioning configuration.
-     *
+     * 
      * @return the arcAutoProvisioning value.
      */
     public DefenderForServersGcpOfferingArcAutoProvisioning arcAutoProvisioning() {
@@ -86,19 +90,19 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
 
     /**
      * Set the arcAutoProvisioning property: The ARC autoprovisioning configuration.
-     *
+     * 
      * @param arcAutoProvisioning the arcAutoProvisioning value to set.
      * @return the DefenderForServersGcpOffering object itself.
      */
-    public DefenderForServersGcpOffering withArcAutoProvisioning(
-        DefenderForServersGcpOfferingArcAutoProvisioning arcAutoProvisioning) {
+    public DefenderForServersGcpOffering
+        withArcAutoProvisioning(DefenderForServersGcpOfferingArcAutoProvisioning arcAutoProvisioning) {
         this.arcAutoProvisioning = arcAutoProvisioning;
         return this;
     }
 
     /**
      * Get the vaAutoProvisioning property: The Vulnerability Assessment autoprovisioning configuration.
-     *
+     * 
      * @return the vaAutoProvisioning value.
      */
     public DefenderForServersGcpOfferingVaAutoProvisioning vaAutoProvisioning() {
@@ -107,19 +111,19 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
 
     /**
      * Set the vaAutoProvisioning property: The Vulnerability Assessment autoprovisioning configuration.
-     *
+     * 
      * @param vaAutoProvisioning the vaAutoProvisioning value to set.
      * @return the DefenderForServersGcpOffering object itself.
      */
-    public DefenderForServersGcpOffering withVaAutoProvisioning(
-        DefenderForServersGcpOfferingVaAutoProvisioning vaAutoProvisioning) {
+    public DefenderForServersGcpOffering
+        withVaAutoProvisioning(DefenderForServersGcpOfferingVaAutoProvisioning vaAutoProvisioning) {
         this.vaAutoProvisioning = vaAutoProvisioning;
         return this;
     }
 
     /**
      * Get the mdeAutoProvisioning property: The Microsoft Defender for Endpoint autoprovisioning configuration.
-     *
+     * 
      * @return the mdeAutoProvisioning value.
      */
     public DefenderForServersGcpOfferingMdeAutoProvisioning mdeAutoProvisioning() {
@@ -128,19 +132,19 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
 
     /**
      * Set the mdeAutoProvisioning property: The Microsoft Defender for Endpoint autoprovisioning configuration.
-     *
+     * 
      * @param mdeAutoProvisioning the mdeAutoProvisioning value to set.
      * @return the DefenderForServersGcpOffering object itself.
      */
-    public DefenderForServersGcpOffering withMdeAutoProvisioning(
-        DefenderForServersGcpOfferingMdeAutoProvisioning mdeAutoProvisioning) {
+    public DefenderForServersGcpOffering
+        withMdeAutoProvisioning(DefenderForServersGcpOfferingMdeAutoProvisioning mdeAutoProvisioning) {
         this.mdeAutoProvisioning = mdeAutoProvisioning;
         return this;
     }
 
     /**
      * Get the subPlan property: configuration for the servers offering subPlan.
-     *
+     * 
      * @return the subPlan value.
      */
     public DefenderForServersGcpOfferingSubPlan subPlan() {
@@ -149,7 +153,7 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
 
     /**
      * Set the subPlan property: configuration for the servers offering subPlan.
-     *
+     * 
      * @param subPlan the subPlan value to set.
      * @return the DefenderForServersGcpOffering object itself.
      */
@@ -160,7 +164,7 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
 
     /**
      * Get the vmScanners property: The Microsoft Defender for Server VM scanning configuration.
-     *
+     * 
      * @return the vmScanners value.
      */
     public DefenderForServersGcpOfferingVmScanners vmScanners() {
@@ -169,7 +173,7 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
 
     /**
      * Set the vmScanners property: The Microsoft Defender for Server VM scanning configuration.
-     *
+     * 
      * @param vmScanners the vmScanners value to set.
      * @return the DefenderForServersGcpOffering object itself.
      */
@@ -180,7 +184,7 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

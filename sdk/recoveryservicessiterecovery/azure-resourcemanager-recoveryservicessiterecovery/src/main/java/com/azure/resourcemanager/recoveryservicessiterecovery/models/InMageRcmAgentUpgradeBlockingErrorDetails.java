@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** InMageRcm source agent upgrade blocking error details. */
+/**
+ * InMageRcm source agent upgrade blocking error details.
+ */
 @Immutable
 public final class InMageRcmAgentUpgradeBlockingErrorDetails {
     /*
@@ -50,13 +52,15 @@ public final class InMageRcmAgentUpgradeBlockingErrorDetails {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> errorTags;
 
-    /** Creates an instance of InMageRcmAgentUpgradeBlockingErrorDetails class. */
+    /**
+     * Creates an instance of InMageRcmAgentUpgradeBlockingErrorDetails class.
+     */
     public InMageRcmAgentUpgradeBlockingErrorDetails() {
     }
 
     /**
      * Get the errorCode property: The error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -65,7 +69,7 @@ public final class InMageRcmAgentUpgradeBlockingErrorDetails {
 
     /**
      * Get the errorMessage property: The error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -74,7 +78,7 @@ public final class InMageRcmAgentUpgradeBlockingErrorDetails {
 
     /**
      * Get the possibleCauses property: The possible causes.
-     *
+     * 
      * @return the possibleCauses value.
      */
     public String possibleCauses() {
@@ -83,7 +87,7 @@ public final class InMageRcmAgentUpgradeBlockingErrorDetails {
 
     /**
      * Get the recommendedAction property: The recommended action.
-     *
+     * 
      * @return the recommendedAction value.
      */
     public String recommendedAction() {
@@ -92,7 +96,7 @@ public final class InMageRcmAgentUpgradeBlockingErrorDetails {
 
     /**
      * Get the errorMessageParameters property: The error message parameters.
-     *
+     * 
      * @return the errorMessageParameters value.
      */
     public Map<String, String> errorMessageParameters() {
@@ -101,7 +105,7 @@ public final class InMageRcmAgentUpgradeBlockingErrorDetails {
 
     /**
      * Get the errorTags property: The error tags.
-     *
+     * 
      * @return the errorTags value.
      */
     public Map<String, String> errorTags() {
@@ -110,7 +114,7 @@ public final class InMageRcmAgentUpgradeBlockingErrorDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

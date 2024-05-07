@@ -13,57 +13,89 @@ import java.util.Collection;
  * Center's supported kill chain intents.
  */
 public final class Intent extends ExpandableStringEnum<Intent> {
-    /** Static value Unknown for Intent. */
+    /**
+     * Static value Unknown for Intent.
+     */
     public static final Intent UNKNOWN = fromString("Unknown");
 
-    /** Static value PreAttack for Intent. */
+    /**
+     * Static value PreAttack for Intent.
+     */
     public static final Intent PRE_ATTACK = fromString("PreAttack");
 
-    /** Static value InitialAccess for Intent. */
+    /**
+     * Static value InitialAccess for Intent.
+     */
     public static final Intent INITIAL_ACCESS = fromString("InitialAccess");
 
-    /** Static value Persistence for Intent. */
+    /**
+     * Static value Persistence for Intent.
+     */
     public static final Intent PERSISTENCE = fromString("Persistence");
 
-    /** Static value PrivilegeEscalation for Intent. */
+    /**
+     * Static value PrivilegeEscalation for Intent.
+     */
     public static final Intent PRIVILEGE_ESCALATION = fromString("PrivilegeEscalation");
 
-    /** Static value DefenseEvasion for Intent. */
+    /**
+     * Static value DefenseEvasion for Intent.
+     */
     public static final Intent DEFENSE_EVASION = fromString("DefenseEvasion");
 
-    /** Static value CredentialAccess for Intent. */
+    /**
+     * Static value CredentialAccess for Intent.
+     */
     public static final Intent CREDENTIAL_ACCESS = fromString("CredentialAccess");
 
-    /** Static value Discovery for Intent. */
+    /**
+     * Static value Discovery for Intent.
+     */
     public static final Intent DISCOVERY = fromString("Discovery");
 
-    /** Static value LateralMovement for Intent. */
+    /**
+     * Static value LateralMovement for Intent.
+     */
     public static final Intent LATERAL_MOVEMENT = fromString("LateralMovement");
 
-    /** Static value Execution for Intent. */
+    /**
+     * Static value Execution for Intent.
+     */
     public static final Intent EXECUTION = fromString("Execution");
 
-    /** Static value Collection for Intent. */
+    /**
+     * Static value Collection for Intent.
+     */
     public static final Intent COLLECTION = fromString("Collection");
 
-    /** Static value Exfiltration for Intent. */
+    /**
+     * Static value Exfiltration for Intent.
+     */
     public static final Intent EXFILTRATION = fromString("Exfiltration");
 
-    /** Static value CommandAndControl for Intent. */
+    /**
+     * Static value CommandAndControl for Intent.
+     */
     public static final Intent COMMAND_AND_CONTROL = fromString("CommandAndControl");
 
-    /** Static value Impact for Intent. */
+    /**
+     * Static value Impact for Intent.
+     */
     public static final Intent IMPACT = fromString("Impact");
 
-    /** Static value Probing for Intent. */
+    /**
+     * Static value Probing for Intent.
+     */
     public static final Intent PROBING = fromString("Probing");
 
-    /** Static value Exploitation for Intent. */
+    /**
+     * Static value Exploitation for Intent.
+     */
     public static final Intent EXPLOITATION = fromString("Exploitation");
 
     /**
      * Creates a new instance of Intent value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -72,7 +104,7 @@ public final class Intent extends ExpandableStringEnum<Intent> {
 
     /**
      * Creates or finds a Intent from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Intent.
      */
@@ -83,7 +115,7 @@ public final class Intent extends ExpandableStringEnum<Intent> {
 
     /**
      * Gets known Intent values.
-     *
+     * 
      * @return known Intent values.
      */
     public static Collection<Intent> values() {

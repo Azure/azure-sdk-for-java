@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.GovernanceRuleMetadata;
 public final class GovernanceRuleMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GovernanceRuleMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"createdBy\":\"dvrmazlpd\",\"createdOn\":\"2021-01-11T12:00:50Z\",\"updatedBy\":\"ymzvla\",\"updatedOn\":\"2021-05-17T23:09:54Z\"}")
-                .toObject(GovernanceRuleMetadata.class);
+        GovernanceRuleMetadata model = BinaryData.fromString(
+            "{\"createdBy\":\"ft\",\"createdOn\":\"2021-07-25T20:54:55Z\",\"updatedBy\":\"zh\",\"updatedOn\":\"2021-07-28T03:20:11Z\"}")
+            .toObject(GovernanceRuleMetadata.class);
     }
 
     @org.junit.jupiter.api.Test

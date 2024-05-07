@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureFileshareProtectedItemExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureFileshareProtectedItemExtendedInfo model =
-            BinaryData
-                .fromString(
-                    "{\"oldestRecoveryPoint\":\"2021-07-14T05:25:31Z\",\"recoveryPointCount\":270818491,\"policyState\":\"hqxvcxgfrpdsofbs\",\"resourceState\":\"nsvbuswdv\",\"resourceStateSyncTime\":\"2021-07-28T13:53:22Z\"}")
-                .toObject(AzureFileshareProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T05:25:31Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(270818491, model.recoveryPointCount());
-        Assertions.assertEquals("hqxvcxgfrpdsofbs", model.policyState());
+        AzureFileshareProtectedItemExtendedInfo model = BinaryData.fromString(
+            "{\"oldestRecoveryPoint\":\"2021-05-17T23:03:28Z\",\"recoveryPointCount\":1368964811,\"policyState\":\"lbfpncurd\",\"resourceState\":\"wiithtywub\",\"resourceStateSyncTime\":\"2021-05-27T18:04:18Z\"}")
+            .toObject(AzureFileshareProtectedItemExtendedInfo.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T23:03:28Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(1368964811, model.recoveryPointCount());
+        Assertions.assertEquals("lbfpncurd", model.policyState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileshareProtectedItemExtendedInfo model =
-            new AzureFileshareProtectedItemExtendedInfo()
-                .withOldestRecoveryPoint(OffsetDateTime.parse("2021-07-14T05:25:31Z"))
-                .withRecoveryPointCount(270818491)
-                .withPolicyState("hqxvcxgfrpdsofbs");
+        AzureFileshareProtectedItemExtendedInfo model = new AzureFileshareProtectedItemExtendedInfo()
+            .withOldestRecoveryPoint(OffsetDateTime.parse("2021-05-17T23:03:28Z")).withRecoveryPointCount(1368964811)
+            .withPolicyState("lbfpncurd");
         model = BinaryData.fromObject(model).toObject(AzureFileshareProtectedItemExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-14T05:25:31Z"), model.oldestRecoveryPoint());
-        Assertions.assertEquals(270818491, model.recoveryPointCount());
-        Assertions.assertEquals("hqxvcxgfrpdsofbs", model.policyState());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T23:03:28Z"), model.oldestRecoveryPoint());
+        Assertions.assertEquals(1368964811, model.recoveryPointCount());
+        Assertions.assertEquals("lbfpncurd", model.policyState());
     }
 }

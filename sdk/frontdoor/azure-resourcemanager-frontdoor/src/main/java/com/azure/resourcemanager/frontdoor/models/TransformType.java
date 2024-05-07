@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes what transforms applied before matching. */
+/**
+ * Describes what transforms applied before matching.
+ */
 public final class TransformType extends ExpandableStringEnum<TransformType> {
-    /** Static value Lowercase for TransformType. */
+    /**
+     * Static value Lowercase for TransformType.
+     */
     public static final TransformType LOWERCASE = fromString("Lowercase");
 
-    /** Static value Uppercase for TransformType. */
+    /**
+     * Static value Uppercase for TransformType.
+     */
     public static final TransformType UPPERCASE = fromString("Uppercase");
 
-    /** Static value Trim for TransformType. */
+    /**
+     * Static value Trim for TransformType.
+     */
     public static final TransformType TRIM = fromString("Trim");
 
-    /** Static value UrlDecode for TransformType. */
+    /**
+     * Static value UrlDecode for TransformType.
+     */
     public static final TransformType URL_DECODE = fromString("UrlDecode");
 
-    /** Static value UrlEncode for TransformType. */
+    /**
+     * Static value UrlEncode for TransformType.
+     */
     public static final TransformType URL_ENCODE = fromString("UrlEncode");
 
-    /** Static value RemoveNulls for TransformType. */
+    /**
+     * Static value RemoveNulls for TransformType.
+     */
     public static final TransformType REMOVE_NULLS = fromString("RemoveNulls");
 
     /**
      * Creates a new instance of TransformType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class TransformType extends ExpandableStringEnum<TransformType> {
 
     /**
      * Creates or finds a TransformType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TransformType.
      */
@@ -50,7 +64,7 @@ public final class TransformType extends ExpandableStringEnum<TransformType> {
 
     /**
      * Gets known TransformType values.
-     *
+     * 
      * @return known TransformType values.
      */
     public static Collection<TransformType> values() {

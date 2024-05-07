@@ -15,19 +15,22 @@ public final class ValidationActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationActivityTypeProperties model = BinaryData.fromString(
-            "{\"timeout\":\"datavponxhszrotunnk\",\"sleep\":\"datakzkaoonbziklqyzr\",\"minimumSize\":\"dataw\",\"childItems\":\"datajzvvkehasxjmfhb\",\"dataset\":{\"referenceName\":\"eqxwcimamtqf\",\"parameters\":{\"zuuanrj\":\"dataoiqfv\"}}}")
+            "{\"timeout\":\"datahhjdfyusiupdmb\",\"sleep\":\"dataumpwgteroaenv\",\"minimumSize\":\"datauzjkjx\",\"childItems\":\"dataaqzrbvogfmpdlm\",\"dataset\":{\"referenceName\":\"ynl\",\"parameters\":{\"r\":\"datalbwyqoypo\",\"jerokbdkwvjond\":\"dataajxmgxsp\"}}}")
             .toObject(ValidationActivityTypeProperties.class);
-        Assertions.assertEquals("eqxwcimamtqf", model.dataset().referenceName());
+        Assertions.assertEquals("ynl", model.dataset().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidationActivityTypeProperties model = new ValidationActivityTypeProperties()
-            .withTimeout("datavponxhszrotunnk").withSleep("datakzkaoonbziklqyzr").withMinimumSize("dataw")
-            .withChildItems("datajzvvkehasxjmfhb").withDataset(
-                new DatasetReference().withReferenceName("eqxwcimamtqf").withParameters(mapOf("zuuanrj", "dataoiqfv")));
+        ValidationActivityTypeProperties model
+            = new ValidationActivityTypeProperties().withTimeout("datahhjdfyusiupdmb")
+                .withSleep("dataumpwgteroaenv")
+                .withMinimumSize("datauzjkjx")
+                .withChildItems("dataaqzrbvogfmpdlm")
+                .withDataset(new DatasetReference().withReferenceName("ynl")
+                    .withParameters(mapOf("r", "datalbwyqoypo", "jerokbdkwvjond", "dataajxmgxsp")));
         model = BinaryData.fromObject(model).toObject(ValidationActivityTypeProperties.class);
-        Assertions.assertEquals("eqxwcimamtqf", model.dataset().referenceName());
+        Assertions.assertEquals("ynl", model.dataset().referenceName());
     }
 
     // Use "Map.of" if available

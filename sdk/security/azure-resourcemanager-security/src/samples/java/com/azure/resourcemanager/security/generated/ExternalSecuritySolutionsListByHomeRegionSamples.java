@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for ExternalSecuritySolutions ListByHomeRegion. */
+/**
+ * Samples for ExternalSecuritySolutions ListByHomeRegion.
+ */
 public final class ExternalSecuritySolutionsListByHomeRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ExternalSecuritySolutions/GetExternalSecuritySolutionsSubscriptionLocation_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ExternalSecuritySolutions/
+     * GetExternalSecuritySolutionsSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get external security solutions on a subscription from security data location.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getExternalSecuritySolutionsOnASubscriptionFromSecurityDataLocation(

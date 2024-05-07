@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** DRA details. */
+/**
+ * DRA details.
+ */
 @Immutable
 public final class DraDetails {
     /*
@@ -66,13 +68,15 @@ public final class DraDetails {
     @JsonProperty(value = "reverseProtectedItemCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer reverseProtectedItemCount;
 
-    /** Creates an instance of DraDetails class. */
+    /**
+     * Creates an instance of DraDetails class.
+     */
     public DraDetails() {
     }
 
     /**
      * Get the id property: The DRA Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -81,7 +85,7 @@ public final class DraDetails {
 
     /**
      * Get the name property: The DRA name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -90,7 +94,7 @@ public final class DraDetails {
 
     /**
      * Get the biosId property: The DRA Bios Id.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -99,7 +103,7 @@ public final class DraDetails {
 
     /**
      * Get the version property: The version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -108,7 +112,7 @@ public final class DraDetails {
 
     /**
      * Get the lastHeartbeatUtc property: The last heartbeat received from the DRA.
-     *
+     * 
      * @return the lastHeartbeatUtc value.
      */
     public OffsetDateTime lastHeartbeatUtc() {
@@ -117,7 +121,7 @@ public final class DraDetails {
 
     /**
      * Get the health property: The health.
-     *
+     * 
      * @return the health value.
      */
     public ProtectionHealth health() {
@@ -126,7 +130,7 @@ public final class DraDetails {
 
     /**
      * Get the healthErrors property: The health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -136,7 +140,7 @@ public final class DraDetails {
     /**
      * Get the forwardProtectedItemCount property: The count of protected items which are protected in forward
      * direction.
-     *
+     * 
      * @return the forwardProtectedItemCount value.
      */
     public Integer forwardProtectedItemCount() {
@@ -146,7 +150,7 @@ public final class DraDetails {
     /**
      * Get the reverseProtectedItemCount property: The count of protected items which are protected in reverse
      * direction.
-     *
+     * 
      * @return the reverseProtectedItemCount value.
      */
     public Integer reverseProtectedItemCount() {
@@ -155,7 +159,7 @@ public final class DraDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

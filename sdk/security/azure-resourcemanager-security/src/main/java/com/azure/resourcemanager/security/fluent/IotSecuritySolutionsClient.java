@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.IoTSecuritySolutionModelInner;
 import com.azure.resourcemanager.security.models.UpdateIotSecuritySolutionData;
 
-/** An instance of this class provides access to all the operations defined in IotSecuritySolutionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IotSecuritySolutionsClient.
+ */
 public interface IotSecuritySolutionsClient {
     /**
      * Use this method to get the list of IoT Security solutions by subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
@@ -26,7 +28,7 @@ public interface IotSecuritySolutionsClient {
 
     /**
      * Use this method to get the list of IoT Security solutions by subscription.
-     *
+     * 
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -39,9 +41,9 @@ public interface IotSecuritySolutionsClient {
 
     /**
      * Use this method to get the list IoT Security solutions organized by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,9 +54,9 @@ public interface IotSecuritySolutionsClient {
 
     /**
      * Use this method to get the list IoT Security solutions organized by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,14 +65,14 @@ public interface IotSecuritySolutionsClient {
      * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IoTSecuritySolutionModelInner> listByResourceGroup(
-        String resourceGroupName, String filter, Context context);
+    PagedIterable<IoTSecuritySolutionModelInner> listByResourceGroup(String resourceGroupName, String filter,
+        Context context);
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,14 +81,14 @@ public interface IotSecuritySolutionsClient {
      * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IoTSecuritySolutionModelInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String solutionName, Context context);
+    Response<IoTSecuritySolutionModelInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String solutionName, Context context);
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,9 +100,9 @@ public interface IotSecuritySolutionsClient {
 
     /**
      * Use this method to create or update yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param iotSecuritySolutionData The security solution data.
      * @param context The context to associate with this operation.
@@ -110,17 +112,14 @@ public interface IotSecuritySolutionsClient {
      * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IoTSecuritySolutionModelInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String solutionName,
-        IoTSecuritySolutionModelInner iotSecuritySolutionData,
-        Context context);
+    Response<IoTSecuritySolutionModelInner> createOrUpdateWithResponse(String resourceGroupName, String solutionName,
+        IoTSecuritySolutionModelInner iotSecuritySolutionData, Context context);
 
     /**
      * Use this method to create or update yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param iotSecuritySolutionData The security solution data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,15 +128,15 @@ public interface IotSecuritySolutionsClient {
      * @return ioT Security solution configuration and resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IoTSecuritySolutionModelInner createOrUpdate(
-        String resourceGroupName, String solutionName, IoTSecuritySolutionModelInner iotSecuritySolutionData);
+    IoTSecuritySolutionModelInner createOrUpdate(String resourceGroupName, String solutionName,
+        IoTSecuritySolutionModelInner iotSecuritySolutionData);
 
     /**
      * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
      * use the CreateOrUpdate method.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param updateIotSecuritySolutionData The security solution data.
      * @param context The context to associate with this operation.
@@ -147,18 +146,15 @@ public interface IotSecuritySolutionsClient {
      * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IoTSecuritySolutionModelInner> updateWithResponse(
-        String resourceGroupName,
-        String solutionName,
-        UpdateIotSecuritySolutionData updateIotSecuritySolutionData,
-        Context context);
+    Response<IoTSecuritySolutionModelInner> updateWithResponse(String resourceGroupName, String solutionName,
+        UpdateIotSecuritySolutionData updateIotSecuritySolutionData, Context context);
 
     /**
      * Use this method to update existing IoT Security solution tags or user defined resources. To update other fields
      * use the CreateOrUpdate method.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param updateIotSecuritySolutionData The security solution data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,14 +163,14 @@ public interface IotSecuritySolutionsClient {
      * @return ioT Security solution configuration and resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IoTSecuritySolutionModelInner update(
-        String resourceGroupName, String solutionName, UpdateIotSecuritySolutionData updateIotSecuritySolutionData);
+    IoTSecuritySolutionModelInner update(String resourceGroupName, String solutionName,
+        UpdateIotSecuritySolutionData updateIotSecuritySolutionData);
 
     /**
      * Use this method to delete yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,9 +183,9 @@ public interface IotSecuritySolutionsClient {
 
     /**
      * Use this method to delete yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

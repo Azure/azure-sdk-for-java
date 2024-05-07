@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** High availability properties of a server. */
+/**
+ * High availability properties of a server.
+ */
 @Fluent
 public final class HighAvailability {
     /*
@@ -28,13 +30,15 @@ public final class HighAvailability {
     @JsonProperty(value = "standbyAvailabilityZone")
     private String standbyAvailabilityZone;
 
-    /** Creates an instance of HighAvailability class. */
+    /**
+     * Creates an instance of HighAvailability class.
+     */
     public HighAvailability() {
     }
 
     /**
      * Get the mode property: The HA mode for the server.
-     *
+     * 
      * @return the mode value.
      */
     public HighAvailabilityMode mode() {
@@ -43,7 +47,7 @@ public final class HighAvailability {
 
     /**
      * Set the mode property: The HA mode for the server.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the HighAvailability object itself.
      */
@@ -54,7 +58,7 @@ public final class HighAvailability {
 
     /**
      * Get the state property: A state of a HA server that is visible to user.
-     *
+     * 
      * @return the state value.
      */
     public ServerHAState state() {
@@ -63,7 +67,7 @@ public final class HighAvailability {
 
     /**
      * Get the standbyAvailabilityZone property: availability zone information of the standby.
-     *
+     * 
      * @return the standbyAvailabilityZone value.
      */
     public String standbyAvailabilityZone() {
@@ -72,7 +76,7 @@ public final class HighAvailability {
 
     /**
      * Set the standbyAvailabilityZone property: availability zone information of the standby.
-     *
+     * 
      * @param standbyAvailabilityZone the standbyAvailabilityZone value to set.
      * @return the HighAvailability object itself.
      */
@@ -83,7 +87,7 @@ public final class HighAvailability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

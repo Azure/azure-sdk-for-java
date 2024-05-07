@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMage Azure v2 specific protection profile details. */
+/**
+ * InMage Azure v2 specific protection profile details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageAzureV2")
 @Fluent
@@ -44,13 +46,15 @@ public final class InMageAzureV2PolicyDetails extends PolicyProviderSpecificDeta
     @JsonProperty(value = "multiVmSyncStatus")
     private String multiVmSyncStatus;
 
-    /** Creates an instance of InMageAzureV2PolicyDetails class. */
+    /**
+     * Creates an instance of InMageAzureV2PolicyDetails class.
+     */
     public InMageAzureV2PolicyDetails() {
     }
 
     /**
      * Get the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency in minutes.
-     *
+     * 
      * @return the crashConsistentFrequencyInMinutes value.
      */
     public Integer crashConsistentFrequencyInMinutes() {
@@ -59,7 +63,7 @@ public final class InMageAzureV2PolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency in minutes.
-     *
+     * 
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the InMageAzureV2PolicyDetails object itself.
      */
@@ -70,7 +74,7 @@ public final class InMageAzureV2PolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Get the recoveryPointThresholdInMinutes property: The recovery point threshold in minutes.
-     *
+     * 
      * @return the recoveryPointThresholdInMinutes value.
      */
     public Integer recoveryPointThresholdInMinutes() {
@@ -79,7 +83,7 @@ public final class InMageAzureV2PolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the recoveryPointThresholdInMinutes property: The recovery point threshold in minutes.
-     *
+     * 
      * @param recoveryPointThresholdInMinutes the recoveryPointThresholdInMinutes value to set.
      * @return the InMageAzureV2PolicyDetails object itself.
      */
@@ -89,8 +93,9 @@ public final class InMageAzureV2PolicyDetails extends PolicyProviderSpecificDeta
     }
 
     /**
-     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
-     *
+     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
+     * stored.
+     * 
      * @return the recoveryPointHistory value.
      */
     public Integer recoveryPointHistory() {
@@ -98,8 +103,9 @@ public final class InMageAzureV2PolicyDetails extends PolicyProviderSpecificDeta
     }
 
     /**
-     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
-     *
+     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
+     * stored.
+     * 
      * @param recoveryPointHistory the recoveryPointHistory value to set.
      * @return the InMageAzureV2PolicyDetails object itself.
      */
@@ -110,7 +116,7 @@ public final class InMageAzureV2PolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Get the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency in minutes.
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public Integer appConsistentFrequencyInMinutes() {
@@ -119,7 +125,7 @@ public final class InMageAzureV2PolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency in minutes.
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the InMageAzureV2PolicyDetails object itself.
      */
@@ -130,7 +136,7 @@ public final class InMageAzureV2PolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Get the multiVmSyncStatus property: A value indicating whether multi-VM sync has to be enabled.
-     *
+     * 
      * @return the multiVmSyncStatus value.
      */
     public String multiVmSyncStatus() {
@@ -139,7 +145,7 @@ public final class InMageAzureV2PolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Set the multiVmSyncStatus property: A value indicating whether multi-VM sync has to be enabled.
-     *
+     * 
      * @param multiVmSyncStatus the multiVmSyncStatus value to set.
      * @return the InMageAzureV2PolicyDetails object itself.
      */
@@ -150,7 +156,7 @@ public final class InMageAzureV2PolicyDetails extends PolicyProviderSpecificDeta
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

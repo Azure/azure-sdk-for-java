@@ -8,24 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The private endpoint connection status. */
+/**
+ * The private endpoint connection status.
+ */
 public final class PrivateEndpointServiceConnectionStatus
     extends ExpandableStringEnum<PrivateEndpointServiceConnectionStatus> {
-    /** Static value Pending for PrivateEndpointServiceConnectionStatus. */
+    /**
+     * Static value Pending for PrivateEndpointServiceConnectionStatus.
+     */
     public static final PrivateEndpointServiceConnectionStatus PENDING = fromString("Pending");
 
-    /** Static value Approved for PrivateEndpointServiceConnectionStatus. */
+    /**
+     * Static value Approved for PrivateEndpointServiceConnectionStatus.
+     */
     public static final PrivateEndpointServiceConnectionStatus APPROVED = fromString("Approved");
 
-    /** Static value Failed for PrivateEndpointServiceConnectionStatus. */
+    /**
+     * Static value Failed for PrivateEndpointServiceConnectionStatus.
+     */
     public static final PrivateEndpointServiceConnectionStatus FAILED = fromString("Failed");
 
-    /** Static value Rejected for PrivateEndpointServiceConnectionStatus. */
+    /**
+     * Static value Rejected for PrivateEndpointServiceConnectionStatus.
+     */
     public static final PrivateEndpointServiceConnectionStatus REJECTED = fromString("Rejected");
 
     /**
      * Creates a new instance of PrivateEndpointServiceConnectionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +44,7 @@ public final class PrivateEndpointServiceConnectionStatus
 
     /**
      * Creates or finds a PrivateEndpointServiceConnectionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointServiceConnectionStatus.
      */
@@ -45,7 +55,7 @@ public final class PrivateEndpointServiceConnectionStatus
 
     /**
      * Gets known PrivateEndpointServiceConnectionStatus values.
-     *
+     * 
      * @return known PrivateEndpointServiceConnectionStatus values.
      */
     public static Collection<PrivateEndpointServiceConnectionStatus> values() {

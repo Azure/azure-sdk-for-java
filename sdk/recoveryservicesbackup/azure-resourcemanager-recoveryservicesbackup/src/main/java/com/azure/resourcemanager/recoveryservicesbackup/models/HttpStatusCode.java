@@ -7,150 +7,248 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** HTTP Status Code of the operation. */
+/**
+ * HTTP Status Code of the operation.
+ */
 public enum HttpStatusCode {
-    /** Enum value Continue. */
+    /**
+     * Enum value Continue.
+     */
     CONTINUE("Continue"),
 
-    /** Enum value SwitchingProtocols. */
+    /**
+     * Enum value SwitchingProtocols.
+     */
     SWITCHING_PROTOCOLS("SwitchingProtocols"),
 
-    /** Enum value OK. */
+    /**
+     * Enum value OK.
+     */
     OK("OK"),
 
-    /** Enum value Created. */
+    /**
+     * Enum value Created.
+     */
     CREATED("Created"),
 
-    /** Enum value Accepted. */
+    /**
+     * Enum value Accepted.
+     */
     ACCEPTED("Accepted"),
 
-    /** Enum value NonAuthoritativeInformation. */
+    /**
+     * Enum value NonAuthoritativeInformation.
+     */
     NON_AUTHORITATIVE_INFORMATION("NonAuthoritativeInformation"),
 
-    /** Enum value NoContent. */
+    /**
+     * Enum value NoContent.
+     */
     NO_CONTENT("NoContent"),
 
-    /** Enum value ResetContent. */
+    /**
+     * Enum value ResetContent.
+     */
     RESET_CONTENT("ResetContent"),
 
-    /** Enum value PartialContent. */
+    /**
+     * Enum value PartialContent.
+     */
     PARTIAL_CONTENT("PartialContent"),
 
-    /** Enum value MultipleChoices. */
+    /**
+     * Enum value MultipleChoices.
+     */
     MULTIPLE_CHOICES("MultipleChoices"),
 
-    /** Enum value Ambiguous. */
+    /**
+     * Enum value Ambiguous.
+     */
     AMBIGUOUS("Ambiguous"),
 
-    /** Enum value MovedPermanently. */
+    /**
+     * Enum value MovedPermanently.
+     */
     MOVED_PERMANENTLY("MovedPermanently"),
 
-    /** Enum value Moved. */
+    /**
+     * Enum value Moved.
+     */
     MOVED("Moved"),
 
-    /** Enum value Found. */
+    /**
+     * Enum value Found.
+     */
     FOUND("Found"),
 
-    /** Enum value Redirect. */
+    /**
+     * Enum value Redirect.
+     */
     REDIRECT("Redirect"),
 
-    /** Enum value SeeOther. */
+    /**
+     * Enum value SeeOther.
+     */
     SEE_OTHER("SeeOther"),
 
-    /** Enum value RedirectMethod. */
+    /**
+     * Enum value RedirectMethod.
+     */
     REDIRECT_METHOD("RedirectMethod"),
 
-    /** Enum value NotModified. */
+    /**
+     * Enum value NotModified.
+     */
     NOT_MODIFIED("NotModified"),
 
-    /** Enum value UseProxy. */
+    /**
+     * Enum value UseProxy.
+     */
     USE_PROXY("UseProxy"),
 
-    /** Enum value Unused. */
+    /**
+     * Enum value Unused.
+     */
     UNUSED("Unused"),
 
-    /** Enum value TemporaryRedirect. */
+    /**
+     * Enum value TemporaryRedirect.
+     */
     TEMPORARY_REDIRECT("TemporaryRedirect"),
 
-    /** Enum value RedirectKeepVerb. */
+    /**
+     * Enum value RedirectKeepVerb.
+     */
     REDIRECT_KEEP_VERB("RedirectKeepVerb"),
 
-    /** Enum value BadRequest. */
+    /**
+     * Enum value BadRequest.
+     */
     BAD_REQUEST("BadRequest"),
 
-    /** Enum value Unauthorized. */
+    /**
+     * Enum value Unauthorized.
+     */
     UNAUTHORIZED("Unauthorized"),
 
-    /** Enum value PaymentRequired. */
+    /**
+     * Enum value PaymentRequired.
+     */
     PAYMENT_REQUIRED("PaymentRequired"),
 
-    /** Enum value Forbidden. */
+    /**
+     * Enum value Forbidden.
+     */
     FORBIDDEN("Forbidden"),
 
-    /** Enum value NotFound. */
+    /**
+     * Enum value NotFound.
+     */
     NOT_FOUND("NotFound"),
 
-    /** Enum value MethodNotAllowed. */
+    /**
+     * Enum value MethodNotAllowed.
+     */
     METHOD_NOT_ALLOWED("MethodNotAllowed"),
 
-    /** Enum value NotAcceptable. */
+    /**
+     * Enum value NotAcceptable.
+     */
     NOT_ACCEPTABLE("NotAcceptable"),
 
-    /** Enum value ProxyAuthenticationRequired. */
+    /**
+     * Enum value ProxyAuthenticationRequired.
+     */
     PROXY_AUTHENTICATION_REQUIRED("ProxyAuthenticationRequired"),
 
-    /** Enum value RequestTimeout. */
+    /**
+     * Enum value RequestTimeout.
+     */
     REQUEST_TIMEOUT("RequestTimeout"),
 
-    /** Enum value Conflict. */
+    /**
+     * Enum value Conflict.
+     */
     CONFLICT("Conflict"),
 
-    /** Enum value Gone. */
+    /**
+     * Enum value Gone.
+     */
     GONE("Gone"),
 
-    /** Enum value LengthRequired. */
+    /**
+     * Enum value LengthRequired.
+     */
     LENGTH_REQUIRED("LengthRequired"),
 
-    /** Enum value PreconditionFailed. */
+    /**
+     * Enum value PreconditionFailed.
+     */
     PRECONDITION_FAILED("PreconditionFailed"),
 
-    /** Enum value RequestEntityTooLarge. */
+    /**
+     * Enum value RequestEntityTooLarge.
+     */
     REQUEST_ENTITY_TOO_LARGE("RequestEntityTooLarge"),
 
-    /** Enum value RequestUriTooLong. */
+    /**
+     * Enum value RequestUriTooLong.
+     */
     REQUEST_URI_TOO_LONG("RequestUriTooLong"),
 
-    /** Enum value UnsupportedMediaType. */
+    /**
+     * Enum value UnsupportedMediaType.
+     */
     UNSUPPORTED_MEDIA_TYPE("UnsupportedMediaType"),
 
-    /** Enum value RequestedRangeNotSatisfiable. */
+    /**
+     * Enum value RequestedRangeNotSatisfiable.
+     */
     REQUESTED_RANGE_NOT_SATISFIABLE("RequestedRangeNotSatisfiable"),
 
-    /** Enum value ExpectationFailed. */
+    /**
+     * Enum value ExpectationFailed.
+     */
     EXPECTATION_FAILED("ExpectationFailed"),
 
-    /** Enum value UpgradeRequired. */
+    /**
+     * Enum value UpgradeRequired.
+     */
     UPGRADE_REQUIRED("UpgradeRequired"),
 
-    /** Enum value InternalServerError. */
+    /**
+     * Enum value InternalServerError.
+     */
     INTERNAL_SERVER_ERROR("InternalServerError"),
 
-    /** Enum value NotImplemented. */
+    /**
+     * Enum value NotImplemented.
+     */
     NOT_IMPLEMENTED("NotImplemented"),
 
-    /** Enum value BadGateway. */
+    /**
+     * Enum value BadGateway.
+     */
     BAD_GATEWAY("BadGateway"),
 
-    /** Enum value ServiceUnavailable. */
+    /**
+     * Enum value ServiceUnavailable.
+     */
     SERVICE_UNAVAILABLE("ServiceUnavailable"),
 
-    /** Enum value GatewayTimeout. */
+    /**
+     * Enum value GatewayTimeout.
+     */
     GATEWAY_TIMEOUT("GatewayTimeout"),
 
-    /** Enum value HttpVersionNotSupported. */
+    /**
+     * Enum value HttpVersionNotSupported.
+     */
     HTTP_VERSION_NOT_SUPPORTED("HttpVersionNotSupported");
 
-    /** The actual serialized value for a HttpStatusCode instance. */
+    /**
+     * The actual serialized value for a HttpStatusCode instance.
+     */
     private final String value;
 
     HttpStatusCode(String value) {
@@ -159,7 +257,7 @@ public enum HttpStatusCode {
 
     /**
      * Parses a serialized value to a HttpStatusCode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed HttpStatusCode object, or null if unable to parse.
      */
@@ -177,7 +275,9 @@ public enum HttpStatusCode {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

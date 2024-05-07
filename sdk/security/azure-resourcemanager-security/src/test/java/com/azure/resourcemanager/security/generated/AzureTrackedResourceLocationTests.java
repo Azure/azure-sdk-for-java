@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureTrackedResourceLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureTrackedResourceLocation model =
-            BinaryData.fromString("{\"location\":\"ltducea\"}").toObject(AzureTrackedResourceLocation.class);
-        Assertions.assertEquals("ltducea", model.location());
+        AzureTrackedResourceLocation model
+            = BinaryData.fromString("{\"location\":\"vasrruvwb\"}").toObject(AzureTrackedResourceLocation.class);
+        Assertions.assertEquals("vasrruvwb", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureTrackedResourceLocation model = new AzureTrackedResourceLocation().withLocation("ltducea");
+        AzureTrackedResourceLocation model = new AzureTrackedResourceLocation().withLocation("vasrruvwb");
         model = BinaryData.fromObject(model).toObject(AzureTrackedResourceLocation.class);
-        Assertions.assertEquals("ltducea", model.location());
+        Assertions.assertEquals("vasrruvwb", model.location());
     }
 }

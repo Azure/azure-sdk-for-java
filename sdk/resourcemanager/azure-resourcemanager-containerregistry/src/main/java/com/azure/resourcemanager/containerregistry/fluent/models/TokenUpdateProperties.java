@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.models.TokenCredentialsProper
 import com.azure.resourcemanager.containerregistry.models.TokenStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters for updating token properties. */
+/**
+ * The parameters for updating token properties.
+ */
 @Fluent
 public final class TokenUpdateProperties {
     /*
@@ -30,13 +32,15 @@ public final class TokenUpdateProperties {
     @JsonProperty(value = "credentials")
     private TokenCredentialsProperties credentials;
 
-    /** Creates an instance of TokenUpdateProperties class. */
+    /**
+     * Creates an instance of TokenUpdateProperties class.
+     */
     public TokenUpdateProperties() {
     }
 
     /**
      * Get the scopeMapId property: The resource ID of the scope map to which the token will be associated with.
-     *
+     * 
      * @return the scopeMapId value.
      */
     public String scopeMapId() {
@@ -45,7 +49,7 @@ public final class TokenUpdateProperties {
 
     /**
      * Set the scopeMapId property: The resource ID of the scope map to which the token will be associated with.
-     *
+     * 
      * @param scopeMapId the scopeMapId value to set.
      * @return the TokenUpdateProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class TokenUpdateProperties {
 
     /**
      * Get the status property: The status of the token example enabled or disabled.
-     *
+     * 
      * @return the status value.
      */
     public TokenStatus status() {
@@ -65,7 +69,7 @@ public final class TokenUpdateProperties {
 
     /**
      * Set the status property: The status of the token example enabled or disabled.
-     *
+     * 
      * @param status the status value to set.
      * @return the TokenUpdateProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class TokenUpdateProperties {
 
     /**
      * Get the credentials property: The credentials that can be used for authenticating the token.
-     *
+     * 
      * @return the credentials value.
      */
     public TokenCredentialsProperties credentials() {
@@ -85,7 +89,7 @@ public final class TokenUpdateProperties {
 
     /**
      * Set the credentials property: The credentials that can be used for authenticating the token.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the TokenUpdateProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class TokenUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

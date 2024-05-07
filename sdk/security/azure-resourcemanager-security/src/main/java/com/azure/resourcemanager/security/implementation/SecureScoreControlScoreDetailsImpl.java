@@ -14,8 +14,7 @@ public final class SecureScoreControlScoreDetailsImpl implements SecureScoreCont
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    SecureScoreControlScoreDetailsImpl(
-        SecureScoreControlScoreDetailsInner innerObject,
+    SecureScoreControlScoreDetailsImpl(SecureScoreControlScoreDetailsInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

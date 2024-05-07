@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Weekly retention format. */
+/**
+ * Weekly retention format.
+ */
 @Fluent
 public final class WeeklyRetentionFormat {
     /*
@@ -23,13 +25,15 @@ public final class WeeklyRetentionFormat {
     @JsonProperty(value = "weeksOfTheMonth")
     private List<WeekOfMonth> weeksOfTheMonth;
 
-    /** Creates an instance of WeeklyRetentionFormat class. */
+    /**
+     * Creates an instance of WeeklyRetentionFormat class.
+     */
     public WeeklyRetentionFormat() {
     }
 
     /**
      * Get the daysOfTheWeek property: List of days of the week.
-     *
+     * 
      * @return the daysOfTheWeek value.
      */
     public List<DayOfWeek> daysOfTheWeek() {
@@ -38,7 +42,7 @@ public final class WeeklyRetentionFormat {
 
     /**
      * Set the daysOfTheWeek property: List of days of the week.
-     *
+     * 
      * @param daysOfTheWeek the daysOfTheWeek value to set.
      * @return the WeeklyRetentionFormat object itself.
      */
@@ -49,7 +53,7 @@ public final class WeeklyRetentionFormat {
 
     /**
      * Get the weeksOfTheMonth property: List of weeks of month.
-     *
+     * 
      * @return the weeksOfTheMonth value.
      */
     public List<WeekOfMonth> weeksOfTheMonth() {
@@ -58,7 +62,7 @@ public final class WeeklyRetentionFormat {
 
     /**
      * Set the weeksOfTheMonth property: List of weeks of month.
-     *
+     * 
      * @param weeksOfTheMonth the weeksOfTheMonth value to set.
      * @return the WeeklyRetentionFormat object itself.
      */
@@ -69,7 +73,7 @@ public final class WeeklyRetentionFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** class to define the health summary of the Vault. */
+/**
+ * class to define the health summary of the Vault.
+ */
 @Fluent
 public final class VaultHealthProperties {
     /*
@@ -35,13 +37,15 @@ public final class VaultHealthProperties {
     @JsonProperty(value = "containersHealth")
     private ResourceHealthSummary containersHealth;
 
-    /** Creates an instance of VaultHealthProperties class. */
+    /**
+     * Creates an instance of VaultHealthProperties class.
+     */
     public VaultHealthProperties() {
     }
 
     /**
      * Get the vaultErrors property: The list of errors on the vault.
-     *
+     * 
      * @return the vaultErrors value.
      */
     public List<HealthError> vaultErrors() {
@@ -50,7 +54,7 @@ public final class VaultHealthProperties {
 
     /**
      * Set the vaultErrors property: The list of errors on the vault.
-     *
+     * 
      * @param vaultErrors the vaultErrors value to set.
      * @return the VaultHealthProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class VaultHealthProperties {
 
     /**
      * Get the protectedItemsHealth property: The list of the health detail of the protected items in the vault.
-     *
+     * 
      * @return the protectedItemsHealth value.
      */
     public ResourceHealthSummary protectedItemsHealth() {
@@ -70,7 +74,7 @@ public final class VaultHealthProperties {
 
     /**
      * Set the protectedItemsHealth property: The list of the health detail of the protected items in the vault.
-     *
+     * 
      * @param protectedItemsHealth the protectedItemsHealth value to set.
      * @return the VaultHealthProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class VaultHealthProperties {
 
     /**
      * Get the fabricsHealth property: The list of the health detail of the fabrics in the vault.
-     *
+     * 
      * @return the fabricsHealth value.
      */
     public ResourceHealthSummary fabricsHealth() {
@@ -90,7 +94,7 @@ public final class VaultHealthProperties {
 
     /**
      * Set the fabricsHealth property: The list of the health detail of the fabrics in the vault.
-     *
+     * 
      * @param fabricsHealth the fabricsHealth value to set.
      * @return the VaultHealthProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class VaultHealthProperties {
 
     /**
      * Get the containersHealth property: The list of the health detail of the containers in the vault.
-     *
+     * 
      * @return the containersHealth value.
      */
     public ResourceHealthSummary containersHealth() {
@@ -110,7 +114,7 @@ public final class VaultHealthProperties {
 
     /**
      * Set the containersHealth property: The list of the health detail of the containers in the vault.
-     *
+     * 
      * @param containersHealth the containersHealth value to set.
      * @return the VaultHealthProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class VaultHealthProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

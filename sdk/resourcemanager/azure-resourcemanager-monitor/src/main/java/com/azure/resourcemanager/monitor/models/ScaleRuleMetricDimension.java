@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies an auto scale rule metric dimension. */
+/**
+ * Specifies an auto scale rule metric dimension.
+ */
 @Fluent
 public final class ScaleRuleMetricDimension {
     /*
@@ -31,13 +33,15 @@ public final class ScaleRuleMetricDimension {
     @JsonProperty(value = "Values", required = true)
     private List<String> values;
 
-    /** Creates an instance of ScaleRuleMetricDimension class. */
+    /**
+     * Creates an instance of ScaleRuleMetricDimension class.
+     */
     public ScaleRuleMetricDimension() {
     }
 
     /**
      * Get the dimensionName property: Name of the dimension.
-     *
+     * 
      * @return the dimensionName value.
      */
     public String dimensionName() {
@@ -46,7 +50,7 @@ public final class ScaleRuleMetricDimension {
 
     /**
      * Set the dimensionName property: Name of the dimension.
-     *
+     * 
      * @param dimensionName the dimensionName value to set.
      * @return the ScaleRuleMetricDimension object itself.
      */
@@ -58,7 +62,7 @@ public final class ScaleRuleMetricDimension {
     /**
      * Get the operator property: the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being
      * equal to any of the values. 'NotEquals' being not equal to all of the values.
-     *
+     * 
      * @return the operator value.
      */
     public ScaleRuleMetricDimensionOperationType operator() {
@@ -68,7 +72,7 @@ public final class ScaleRuleMetricDimension {
     /**
      * Set the operator property: the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being
      * equal to any of the values. 'NotEquals' being not equal to all of the values.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the ScaleRuleMetricDimension object itself.
      */
@@ -79,7 +83,7 @@ public final class ScaleRuleMetricDimension {
 
     /**
      * Get the values property: list of dimension values. For example: ["App1","App2"].
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -88,7 +92,7 @@ public final class ScaleRuleMetricDimension {
 
     /**
      * Set the values property: list of dimension values. For example: ["App1","App2"].
-     *
+     * 
      * @param values the values value to set.
      * @return the ScaleRuleMetricDimension object itself.
      */
@@ -99,26 +103,21 @@ public final class ScaleRuleMetricDimension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dimensionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dimensionName in model ScaleRuleMetricDimension"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dimensionName in model ScaleRuleMetricDimension"));
         }
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operator in model ScaleRuleMetricDimension"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property operator in model ScaleRuleMetricDimension"));
         }
         if (values() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property values in model ScaleRuleMetricDimension"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property values in model ScaleRuleMetricDimension"));
         }
     }
 

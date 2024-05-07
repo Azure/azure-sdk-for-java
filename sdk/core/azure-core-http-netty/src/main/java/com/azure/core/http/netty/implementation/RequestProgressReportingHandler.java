@@ -13,6 +13,9 @@ import io.netty.channel.FileRegion;
 
 import java.util.Objects;
 
+/**
+ * Channel handler that reports progress as data is written to the channel.
+ */
 public final class RequestProgressReportingHandler extends ChannelOutboundHandlerAdapter {
     /**
      * Name of the handler when it is added into a ChannelPipeline.
@@ -21,6 +24,12 @@ public final class RequestProgressReportingHandler extends ChannelOutboundHandle
 
     private final ProgressReporter progressReporter;
 
+    /**
+     * Creates a channel handler that reports progress as data is written to the channel.
+     *
+     * @param progressReporter The progress reporter.
+     * @throws NullPointerException If {@code progressReporter} is null.
+     */
     public RequestProgressReportingHandler(ProgressReporter progressReporter) {
         this.progressReporter = Objects.requireNonNull(progressReporter, "'progressReporter' must not be null");
     }

@@ -14,8 +14,8 @@ public final class AutoProvisioningSettingImpl implements AutoProvisioningSettin
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    AutoProvisioningSettingImpl(
-        AutoProvisioningSettingInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    AutoProvisioningSettingImpl(AutoProvisioningSettingInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -47,22 +47,14 @@ public final class AutoProvisioningSettingImpl implements AutoProvisioningSettin
     private String settingName;
 
     public AutoProvisioningSetting create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutoProvisioningSettings()
-                .createWithResponse(settingName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAutoProvisioningSettings()
+            .createWithResponse(settingName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public AutoProvisioningSetting create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutoProvisioningSettings()
-                .createWithResponse(settingName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAutoProvisioningSettings()
+            .createWithResponse(settingName, this.innerModel(), context).getValue();
         return this;
     }
 
@@ -73,22 +65,14 @@ public final class AutoProvisioningSettingImpl implements AutoProvisioningSettin
     }
 
     public AutoProvisioningSetting refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutoProvisioningSettings()
-                .getWithResponse(settingName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAutoProvisioningSettings()
+            .getWithResponse(settingName, Context.NONE).getValue();
         return this;
     }
 
     public AutoProvisioningSetting refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutoProvisioningSettings()
-                .getWithResponse(settingName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAutoProvisioningSettings()
+            .getWithResponse(settingName, context).getValue();
         return this;
     }
 

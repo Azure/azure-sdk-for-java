@@ -13,13 +13,14 @@ public final class VmSkuProfilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmSkuProfileProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"InProgress\",\"values\":[{\"resourceType\":\"fdygpfqbuaceopz\",\"capabilities\":[{\"name\":\"huaoppp\",\"value\":\"eqx\"},{\"name\":\"z\",\"value\":\"hzxct\"},{\"name\":\"gbkdmoizpos\",\"value\":\"grcfb\"},{\"name\":\"rmfqjhhkxbpvj\",\"value\":\"jhxxjyn\"}],\"name\":\"divkrt\",\"tier\":\"bxqz\",\"size\":\"zjf\"}]}")
+            "{\"provisioningState\":\"Updating\",\"values\":[{\"resourceType\":\"nrjawgqwg\",\"capabilities\":[{\"name\":\"skxfbk\",\"value\":\"cg\"}],\"name\":\"wndnhj\",\"tier\":\"uwhvylwzbtdhxujz\",\"size\":\"mpowuwpr\"},{\"resourceType\":\"lve\",\"capabilities\":[{\"name\":\"pjmkhfxobbc\",\"value\":\"s\"}],\"name\":\"jriplrbpbewtghf\",\"tier\":\"lcgwxzvlvqh\",\"size\":\"begibtnmxiebwwa\"}]}")
             .toObject(VmSkuProfileProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmSkuProfileProperties model = new VmSkuProfileProperties().withValues(Arrays.asList(new VmSkuProperties()));
+        VmSkuProfileProperties model
+            = new VmSkuProfileProperties().withValues(Arrays.asList(new VmSkuProperties(), new VmSkuProperties()));
         model = BinaryData.fromObject(model).toObject(VmSkuProfileProperties.class);
     }
 }

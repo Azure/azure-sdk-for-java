@@ -4,69 +4,87 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentStorageInner;
 
-/** An immutable client-side representation of ManagedEnvironmentStorage. */
+/**
+ * An immutable client-side representation of ManagedEnvironmentStorage.
+ */
 public interface ManagedEnvironmentStorage {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: Storage properties.
-     *
+     * 
      * @return the properties value.
      */
     ManagedEnvironmentStorageProperties properties();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentStorageInner object.
-     *
+     * 
      * @return the inner object.
      */
     ManagedEnvironmentStorageInner innerModel();
 
-    /** The entirety of the ManagedEnvironmentStorage definition. */
+    /**
+     * The entirety of the ManagedEnvironmentStorage definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The ManagedEnvironmentStorage definition stages. */
+    /**
+     * The ManagedEnvironmentStorage definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the ManagedEnvironmentStorage definition. */
+        /**
+         * The first stage of the ManagedEnvironmentStorage definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the ManagedEnvironmentStorage definition allowing to specify parent resource. */
+        /**
+         * The stage of the ManagedEnvironmentStorage definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, environmentName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param environmentName Name of the Environment.
              * @return the next definition stage.
@@ -81,25 +99,27 @@ public interface ManagedEnvironmentStorage {
         interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             ManagedEnvironmentStorage create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             ManagedEnvironmentStorage create(Context context);
         }
 
-        /** The stage of the ManagedEnvironmentStorage definition allowing to specify properties. */
+        /**
+         * The stage of the ManagedEnvironmentStorage definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Storage properties.
-             *
+             * 
              * @param properties Storage properties.
              * @return the next definition stage.
              */
@@ -109,36 +129,42 @@ public interface ManagedEnvironmentStorage {
 
     /**
      * Begins update for the ManagedEnvironmentStorage resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     ManagedEnvironmentStorage.Update update();
 
-    /** The template for ManagedEnvironmentStorage update. */
+    /**
+     * The template for ManagedEnvironmentStorage update.
+     */
     interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         ManagedEnvironmentStorage apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         ManagedEnvironmentStorage apply(Context context);
     }
 
-    /** The ManagedEnvironmentStorage update stages. */
+    /**
+     * The ManagedEnvironmentStorage update stages.
+     */
     interface UpdateStages {
-        /** The stage of the ManagedEnvironmentStorage update allowing to specify properties. */
+        /**
+         * The stage of the ManagedEnvironmentStorage update allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Storage properties.
-             *
+             * 
              * @param properties Storage properties.
              * @return the next definition stage.
              */
@@ -148,14 +174,14 @@ public interface ManagedEnvironmentStorage {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     ManagedEnvironmentStorage refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

@@ -15,7 +15,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The security connector resource. */
+/**
+ * The security connector resource.
+ */
 @Fluent
 public final class SecurityConnectorInner extends Resource {
     /*
@@ -30,13 +32,15 @@ public final class SecurityConnectorInner extends Resource {
     @JsonProperty(value = "properties")
     private SecurityConnectorProperties innerProperties;
 
-    /** Creates an instance of SecurityConnectorInner class. */
+    /**
+     * Creates an instance of SecurityConnectorInner class.
+     */
     public SecurityConnectorInner() {
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -45,21 +49,25 @@ public final class SecurityConnectorInner extends Resource {
 
     /**
      * Get the innerProperties property: Security connector data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityConnectorProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityConnectorInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityConnectorInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -69,7 +77,7 @@ public final class SecurityConnectorInner extends Resource {
     /**
      * Get the hierarchyIdentifier property: The multi cloud resource identifier (account id in case of AWS connector,
      * project number in case of GCP connector).
-     *
+     * 
      * @return the hierarchyIdentifier value.
      */
     public String hierarchyIdentifier() {
@@ -79,7 +87,7 @@ public final class SecurityConnectorInner extends Resource {
     /**
      * Set the hierarchyIdentifier property: The multi cloud resource identifier (account id in case of AWS connector,
      * project number in case of GCP connector).
-     *
+     * 
      * @param hierarchyIdentifier the hierarchyIdentifier value to set.
      * @return the SecurityConnectorInner object itself.
      */
@@ -94,7 +102,7 @@ public final class SecurityConnectorInner extends Resource {
     /**
      * Get the hierarchyIdentifierTrialEndDate property: The date on which the trial period will end, if applicable.
      * Trial period exists for 30 days after upgrading to payed offerings.
-     *
+     * 
      * @return the hierarchyIdentifierTrialEndDate value.
      */
     public OffsetDateTime hierarchyIdentifierTrialEndDate() {
@@ -103,7 +111,7 @@ public final class SecurityConnectorInner extends Resource {
 
     /**
      * Get the environmentName property: The multi cloud resource's cloud name.
-     *
+     * 
      * @return the environmentName value.
      */
     public CloudName environmentName() {
@@ -112,7 +120,7 @@ public final class SecurityConnectorInner extends Resource {
 
     /**
      * Set the environmentName property: The multi cloud resource's cloud name.
-     *
+     * 
      * @param environmentName the environmentName value to set.
      * @return the SecurityConnectorInner object itself.
      */
@@ -126,7 +134,7 @@ public final class SecurityConnectorInner extends Resource {
 
     /**
      * Get the offerings property: A collection of offerings for the security connector.
-     *
+     * 
      * @return the offerings value.
      */
     public List<CloudOffering> offerings() {
@@ -135,7 +143,7 @@ public final class SecurityConnectorInner extends Resource {
 
     /**
      * Set the offerings property: A collection of offerings for the security connector.
-     *
+     * 
      * @param offerings the offerings value to set.
      * @return the SecurityConnectorInner object itself.
      */
@@ -149,7 +157,7 @@ public final class SecurityConnectorInner extends Resource {
 
     /**
      * Get the environmentData property: The security connector environment data.
-     *
+     * 
      * @return the environmentData value.
      */
     public EnvironmentData environmentData() {
@@ -158,7 +166,7 @@ public final class SecurityConnectorInner extends Resource {
 
     /**
      * Set the environmentData property: The security connector environment data.
-     *
+     * 
      * @param environmentData the environmentData value to set.
      * @return the SecurityConnectorInner object itself.
      */
@@ -172,7 +180,7 @@ public final class SecurityConnectorInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
