@@ -35,6 +35,7 @@ import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.RunStep;
+import com.azure.ai.openai.assistants.models.SubmitToolOutputsOptions;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
@@ -3181,9 +3182,7 @@ public final class AssistantsClient {
      *
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
-     * @param toolOutputs The list of tool outputs requested by tool calls from the specified run.
-     * @param stream If `true`, returns a stream of events that happen during the Run as server-sent events, terminating
-     * when the Run enters a terminal state with a `data: [DONE]` message.
+     * @param submitToolOutputsOptions Submit the results for the requested tool calls from the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3192,14 +3191,13 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data representing a single evaluation run of an assistant thread.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadRun submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs,
-        Boolean stream) {
+    public ThreadRun submitToolOutputsToRun(String threadId, String runId,
+        SubmitToolOutputsOptions submitToolOutputsOptions) {
         // Generated convenience method for submitToolOutputsToRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(stream);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).getValue()
-            .toObject(ThreadRun.class);
+        return submitToolOutputsToRunWithResponse(threadId, runId, BinaryData.fromObject(submitToolOutputsOptions),
+            requestOptions).getValue().toObject(ThreadRun.class);
     }
 }

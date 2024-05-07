@@ -27,6 +27,7 @@ import com.azure.ai.openai.assistants.models.RequiredToolCall;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
+import com.azure.ai.openai.assistants.models.SubmitToolOutputsOptions;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
@@ -265,7 +266,7 @@ public final class ReadmeSamples {
                 for (RequiredToolCall toolCall : requiredAction.getSubmitToolOutputs().getToolCalls()) {
                     toolOutputs.add(getResolvedToolOutput(toolCall));
                 }
-                run = client.submitToolOutputsToRun(thread.getId(), run.getId(), toolOutputs);
+                run = client.submitToolOutputsToRun(thread.getId(), run.getId(), new SubmitToolOutputsOptions(toolOutputs));
             }
         } while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);
         // END: readme-sample-functionHandlingRunPolling

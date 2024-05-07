@@ -17,6 +17,7 @@ import com.azure.ai.openai.assistants.models.StreamRequiredAction;
 import com.azure.ai.openai.assistants.models.StreamRunCreation;
 import com.azure.ai.openai.assistants.models.StreamRunStepUpdate;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
+import com.azure.ai.openai.assistants.models.SubmitToolOutputsOptions;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.credential.KeyCredential;
@@ -79,7 +80,7 @@ public class StreamingFunctionCallExample {
         System.out.println("Submitting tool outputs");
         System.out.println("Generating python code:");
         client.submitToolOutputsToRunStream(threadId.get(), runId.get(),
-            prepareToolOutputs((SubmitToolOutputsAction) requiredAction.get())
+            new SubmitToolOutputsOptions(prepareToolOutputs((SubmitToolOutputsAction) requiredAction.get()))
         ).doOnNext(streamUpdate -> {
             if (streamUpdate instanceof StreamRunStepUpdate) {
                 RunStepDeltaToolCallObject runStepDetails = (RunStepDeltaToolCallObject) ((StreamRunStepUpdate) streamUpdate).getMessage().getDelta().getStepDetails();
