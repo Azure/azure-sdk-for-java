@@ -222,7 +222,7 @@ public class RecurrenceEvaluatorTest {
         settings.setStart("2023-09-03T00:00:00+08:00");    // Sunday
         settings.setEnd("2023-09-03T00:00:01+08:00");
         settings.setRecurrence(recurrence);
-        consumeEvaluationTestData(settings, now, false);
+        consumeEvaluationTestData(settings, now, true);
     }
 
     @Test
@@ -243,6 +243,25 @@ public class RecurrenceEvaluatorTest {
         settings2.setEnd("2023-09-03T00:00:01+08:00");
         settings2.setRecurrence(recurrence2);
         consumeEvaluationTestData(settings2, now2, false);
+    }
+
+    @Test
+    public void weeklyDayOfWeekIntervalFalse2() {
+        final ZonedDateTime now = ZonedDateTime.parse("2024-02-12T08:00:00+08:00");    // Monday in the 3rd week after the Start date
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Friday", "Monday"));
+        pattern.setFirstDayOfWeek("Sunday");
+        pattern.setInterval(2);
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        settings.setStart("2024-02-02T12:00:00+08:00");    // Friday
+        settings.setEnd("2024-02-03T12:00:01+08:00");
+        settings.setRecurrence(recurrence);
+        consumeEvaluationTestData(settings, now, false);
     }
 
     @Test
@@ -343,14 +362,33 @@ public class RecurrenceEvaluatorTest {
     }
 
     @Test
+    public void weeklyTimeWindowAcrossDaysIntervalTrue() {
+        final ZonedDateTime now = ZonedDateTime.parse("2023-09-13T08:00:00+08:00");    // Within the recurring time window 2023-09-11T:00:00:00+08:00 ~ 2023-09-15T:00:00:00+08:00
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Sunday", "Monday")); // Time window occurrences: 9-3 ~ 9-7 (1st week), 9-11 ~ 9-15 and 9-17 ~ 9-21 (3rd week)
+        pattern.setFirstDayOfWeek("Monday");
+        pattern.setInterval(2);
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        settings.setStart("2023-09-03T00:00:00+08:00");
+        settings.setEnd("2023-09-07T00:00:01+08:00");
+        settings.setRecurrence(recurrence);
+        consumeEvaluationTestData(settings, now, true);
+    }
+
+    @Test
     public void weeklyTimeWindowAcrossDaysNumberedRangeTrue() {
-        final ZonedDateTime now5 = ZonedDateTime.parse("2023-09-19T00:00:00+08:00");    // Tuesday in the 4th week
+        final ZonedDateTime now5 = ZonedDateTime.parse("2023-09-19T00:00:00+08:00");    // The 3rd occurrence: 2023-9-17T:00:00:00+08:00 ~ 2023-9-21T:00:00:00+08:00
         final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern5 = new RecurrencePattern();
         final RecurrenceRange range5 = new RecurrenceRange();
         final Recurrence recurrence5 = new Recurrence();
         pattern5.setType("Weekly");
-        pattern5.setDaysOfWeek(List.of("Monday", "Sunday"));
+        pattern5.setDaysOfWeek(List.of("Monday", "Sunday"));    // Time window occurrences: 9-3 ~ 9-7 (1st week), 9-11 ~ 9-15 and 9-17 ~ 9-21 (3rd week)
         pattern5.setFirstDayOfWeek("Monday");
         pattern5.setInterval(2);
         range5.setType("Numbered");
@@ -365,13 +403,13 @@ public class RecurrenceEvaluatorTest {
 
     @Test
     public void weeklyTimeWindowAcrossDaysNumberedRangeFalse() {
-        final ZonedDateTime now6 = ZonedDateTime.parse("2023-09-19T00:00:00+08:00");    // Tuesday in the 4th week
+        final ZonedDateTime now6 = ZonedDateTime.parse("2023-09-19T00:00:00+08:00");    // 3rd occurrence
         final TimeWindowFilterSettings settings6 = new TimeWindowFilterSettings();
         final RecurrencePattern pattern6 = new RecurrencePattern();
         final RecurrenceRange range6 = new RecurrenceRange();
         final Recurrence recurrence6 = new Recurrence();
         pattern6.setType("Weekly");
-        pattern6.setDaysOfWeek(List.of("Monday", "Sunday"));
+        pattern6.setDaysOfWeek(List.of("Monday", "Sunday"));    // Time window occurrences: 9-3 ~ 9-7, 9-11 ~ 9-15 and 9-17 ~ 9-21 (3rd occurrence)
         pattern6.setFirstDayOfWeek("Monday");
         pattern6.setInterval(2);
         range6.setType("Numbered");
@@ -382,6 +420,112 @@ public class RecurrenceEvaluatorTest {
         settings6.setEnd("2023-09-07T00:00:00+08:00");
         settings6.setRecurrence(recurrence6);
         consumeEvaluationTestData(settings6, now6, false);
+    }
+
+    @Test
+    public void weeklyDiffTimeZoneTrue() {
+        final ZonedDateTime now = ZonedDateTime.parse("2023-09-03T16:00:00+00:00");    // Monday in the 2nd week after the Start date if timezone is UTC+8
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Friday", "Monday"));
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T00:00:01+08:00");
+        settings.setRecurrence(recurrence);
+        consumeEvaluationTestData(settings, now, true);
+    }
+
+    @Test
+    public void weeklyDiffTimeZoneTrue2() {
+        final ZonedDateTime now = ZonedDateTime.parse("2023-09-07T16:00:00+00:00");    // Friday in the 2nd week after the Start date if timezone is UTC+8
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Friday", "Monday"));
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T00:00:01+08:00");
+        settings.setRecurrence(recurrence);
+        consumeEvaluationTestData(settings, now, true);
+    }
+
+    @Test
+    public void weeklyDiffTimeZoneFalse() {
+        final ZonedDateTime now = ZonedDateTime.parse("2023-09-03T15:59:00+00:00");    // Sunday in the 2nd week after the Start date if timezone is UTC+8
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Friday", "Monday"));
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T00:00:01+08:00");
+        settings.setRecurrence(recurrence);
+        consumeEvaluationTestData(settings, now, false);
+    }
+
+    @Test
+    public void weeklyDiffTimeZoneFalse2() {
+        final ZonedDateTime now = ZonedDateTime.parse("2023-09-07T15:59:00+00:00");    // Thursday in the 2nd week after the Start date if timezone is UTC+8
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Friday", "Monday"));
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T00:00:01+08:00");
+        settings.setRecurrence(recurrence);
+        consumeEvaluationTestData(settings, now, false);
+    }
+
+    @Test
+    public void weeklyDiffTimeZoneIntervalTrue() {
+        final ZonedDateTime now = ZonedDateTime.parse("2023-09-10T16:00:00+00:00"); // Within the recurring time window 2023-09-11T:00:00:00+08:00 ~ 2023-9-15T:00:00:00+08:00
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Sunday", "Monday")); // Time window occurrences: 9-3 ~ 9-7, 9-11 ~ 9-15 and 9-17 ~ 9-21
+        pattern.setInterval(2);
+        pattern.setFirstDayOfWeek("Monday");
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        settings.setStart("2023-09-03T00:00:00+08:00");
+        settings.setEnd("2023-09-07T00:00:00+08:00");
+        settings.setRecurrence(recurrence);
+        consumeEvaluationTestData(settings, now, true);
+    }
+
+    @Test
+    public void weeklyDiffTimeZoneIntervalFalse() {
+        final ZonedDateTime now = ZonedDateTime.parse("2023-09-10T15:59:00+00:00"); // Within the recurring time window 2023-09-11T:00:00:00+08:00 ~ 2023-9-15T:00:00:00+08:00
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        final RecurrencePattern pattern = new RecurrencePattern();
+        final RecurrenceRange range = new RecurrenceRange();
+        final Recurrence recurrence = new Recurrence();
+        pattern.setType("Weekly");
+        pattern.setDaysOfWeek(List.of("Sunday", "Monday")); // Time window occurrences: 9-3 ~ 9-7, 9-11 ~ 9-15 and 9-17 ~ 9-21
+        pattern.setInterval(2);
+        pattern.setFirstDayOfWeek("Monday");
+        recurrence.setRange(range);
+        recurrence.setPattern(pattern);
+        settings.setStart("2023-09-03T00:00:00+08:00");
+        settings.setEnd("2023-09-07T00:00:00+08:00");
+        settings.setRecurrence(recurrence);
+        consumeEvaluationTestData(settings, now, false);
     }
 
     private void consumeEvaluationTestData(TimeWindowFilterSettings settings, ZonedDateTime now, boolean isEnabled) {

@@ -102,7 +102,7 @@ public class RecurrenceEvaluator {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
         final int interval = pattern.getInterval();
         final ZonedDateTime firstDayOfFirstWeek = settings.getStart().minusDays(
-            TimeWindowUtils.passingDaysOfWeek(settings.getStart().getDayOfWeek(), pattern.getFirstDayOfWeek())).truncatedTo(ChronoUnit.DAYS);
+            TimeWindowUtils.passingDaysOfWeek(settings.getStart().getDayOfWeek(), pattern.getFirstDayOfWeek()));
 
         final long numberOfInterval = Duration.between(firstDayOfFirstWeek, now).toSeconds()
             / Duration.ofDays((long) interval * RecurrenceConstants.DAYS_PER_WEEK).toSeconds();
