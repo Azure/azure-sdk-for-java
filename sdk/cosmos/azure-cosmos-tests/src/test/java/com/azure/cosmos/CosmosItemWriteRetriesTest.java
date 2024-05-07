@@ -96,7 +96,7 @@ public class CosmosItemWriteRetriesTest extends TestSuiteBase {
             .clientTelemetryConfig(telemetryConfig);
 
         if (clientWideWriteRetryPolicy != null && clientWideWriteRetryPolicy.isEnabled()) {
-            builder.setNonIdempotentWriteRetryPolicy(
+            builder.nonIdempotentWriteRetryPolicy(
                 true, clientWideWriteRetryPolicy.useTrackingIdProperty());
         } else {
             builder.resetNonIdempotentWriteRetryPolicy();

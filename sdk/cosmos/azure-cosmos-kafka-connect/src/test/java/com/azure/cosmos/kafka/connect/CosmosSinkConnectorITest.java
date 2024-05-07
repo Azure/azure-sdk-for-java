@@ -49,15 +49,13 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         };
     }
 
-    // TODO[public preview]: add more integration tests
-    @Test(groups = { "kafka-integration"}, dataProvider = "sinkAuthParameterProvider", timeOut = TIMEOUT)
+    @Test(groups = { "kafka-integration" }, dataProvider = "sinkAuthParameterProvider", timeOut = TIMEOUT)
     public void sinkToSingleContainer(boolean useMasterKey) throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
 
         sinkConnectorConfig.put("topics", topicName);
         sinkConnectorConfig.put("value.converter", JsonConverter.class.getName());
-        // TODO[Public Preview]: add tests for with schema
         sinkConnectorConfig.put("value.converter.schemas.enable", "false");
         sinkConnectorConfig.put("key.converter", StringConverter.class.getName());
         sinkConnectorConfig.put("connector.class", "com.azure.cosmos.kafka.connect.CosmosSinkConnector");
@@ -131,7 +129,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         }
     }
 
-    @Test(groups = { "kafka-integration"}, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka-integration" }, timeOut = 10 * TIMEOUT)
     public void postAvroMessage() throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-avro-" + UUID.randomUUID();
@@ -209,7 +207,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         }
     }
 
-    @Test(groups = { "kafka-integration"}, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka-integration" }, timeOut = 10 * TIMEOUT)
     public void postAvroMessageWithTemplateIdStrategy() throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-avro-" + UUID.randomUUID();
@@ -281,7 +279,7 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         }
     }
 
-    @Test(groups = { "kafka-integration"}, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "kafka-integration" }, timeOut = 10 * TIMEOUT)
     public void postAvroMessageWithJsonPathInProvidedInKeyStrategy() throws InterruptedException {
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-avro-" + UUID.randomUUID();

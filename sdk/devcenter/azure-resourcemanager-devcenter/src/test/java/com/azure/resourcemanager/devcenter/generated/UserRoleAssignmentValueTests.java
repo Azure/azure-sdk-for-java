@@ -13,25 +13,16 @@ import java.util.Map;
 public final class UserRoleAssignmentValueTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserRoleAssignmentValue model =
-            BinaryData
-                .fromString(
-                    "{\"roles\":{\"pfqbuaceopzf\":{\"roleName\":\"pkteo\",\"description\":\"lwptfdy\"},\"lzdahzxctobgbkdm\":{\"roleName\":\"hhuao\",\"description\":\"pcqeqx\"},\"jy\":{\"roleName\":\"zpostmgrcfbu\",\"description\":\"mfqjhhkxbp\"}}}")
-                .toObject(UserRoleAssignmentValue.class);
+        UserRoleAssignmentValue model = BinaryData.fromString(
+            "{\"roles\":{\"evfdnwnwm\":{\"roleName\":\"nbyxbaaabjyv\",\"description\":\"ffimrzrtuzqogsex\"},\"thzvaytdwkqbrqu\":{\"roleName\":\"zsyyceuzso\",\"description\":\"judpfrxt\"},\"oaxoruzfgsqu\":{\"roleName\":\"axhexiilivp\",\"description\":\"iirqtd\"},\"wxuqlcvydypatdoo\":{\"roleName\":\"xrxxlep\",\"description\":\"amxjezwlw\"}}}")
+            .toObject(UserRoleAssignmentValue.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserRoleAssignmentValue model =
-            new UserRoleAssignmentValue()
-                .withRoles(
-                    mapOf(
-                        "pfqbuaceopzf",
-                        new EnvironmentRole(),
-                        "lzdahzxctobgbkdm",
-                        new EnvironmentRole(),
-                        "jy",
-                        new EnvironmentRole()));
+        UserRoleAssignmentValue model = new UserRoleAssignmentValue()
+            .withRoles(mapOf("evfdnwnwm", new EnvironmentRole(), "thzvaytdwkqbrqu", new EnvironmentRole(),
+                "oaxoruzfgsqu", new EnvironmentRole(), "wxuqlcvydypatdoo", new EnvironmentRole()));
         model = BinaryData.fromObject(model).toObject(UserRoleAssignmentValue.class);
     }
 

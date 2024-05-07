@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.changefeed.epkversion;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -100,7 +101,10 @@ class LeaseStoreImpl implements LeaseStore {
         String lockId = this.getStoreLockName();
         InternalObjectNode containerDocument = new InternalObjectNode();
         containerDocument.setId(lockId);
-        BridgeInternal.setProperty(containerDocument, Constants.Properties.TTL, Long.valueOf(lockExpirationTime.getSeconds()).intValue());
+        containerDocument.set(
+            Constants.Properties.TTL,
+            Long.valueOf(lockExpirationTime.getSeconds()).intValue(),
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         return this.client.createItem(
             this.leaseCollectionLink,

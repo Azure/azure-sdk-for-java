@@ -13,28 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomerManagedKeyEncryptionKeyIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomerManagedKeyEncryptionKeyIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"identityType\":\"delegatedResourceIdentity\",\"userAssignedIdentityResourceId\":\"nrbtcqqjnq\",\"delegatedIdentityClientId\":\"4deee13a-8dfc-4d32-9f79-7d07d403bcb9\"}")
-                .toObject(CustomerManagedKeyEncryptionKeyIdentity.class);
+        CustomerManagedKeyEncryptionKeyIdentity model = BinaryData.fromString(
+            "{\"identityType\":\"delegatedResourceIdentity\",\"userAssignedIdentityResourceId\":\"nrbtcqqjnq\",\"delegatedIdentityClientId\":\"2a0dd333-9f2e-44a9-8937-b2b5780e4777\"}")
+            .toObject(CustomerManagedKeyEncryptionKeyIdentity.class);
         Assertions.assertEquals(IdentityType.DELEGATED_RESOURCE_IDENTITY, model.identityType());
         Assertions.assertEquals("nrbtcqqjnq", model.userAssignedIdentityResourceId());
-        Assertions
-            .assertEquals(UUID.fromString("4deee13a-8dfc-4d32-9f79-7d07d403bcb9"), model.delegatedIdentityClientId());
+        Assertions.assertEquals(UUID.fromString("2a0dd333-9f2e-44a9-8937-b2b5780e4777"),
+            model.delegatedIdentityClientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomerManagedKeyEncryptionKeyIdentity model =
-            new CustomerManagedKeyEncryptionKeyIdentity()
-                .withIdentityType(IdentityType.DELEGATED_RESOURCE_IDENTITY)
+        CustomerManagedKeyEncryptionKeyIdentity model
+            = new CustomerManagedKeyEncryptionKeyIdentity().withIdentityType(IdentityType.DELEGATED_RESOURCE_IDENTITY)
                 .withUserAssignedIdentityResourceId("nrbtcqqjnq")
-                .withDelegatedIdentityClientId(UUID.fromString("4deee13a-8dfc-4d32-9f79-7d07d403bcb9"));
+                .withDelegatedIdentityClientId(UUID.fromString("2a0dd333-9f2e-44a9-8937-b2b5780e4777"));
         model = BinaryData.fromObject(model).toObject(CustomerManagedKeyEncryptionKeyIdentity.class);
         Assertions.assertEquals(IdentityType.DELEGATED_RESOURCE_IDENTITY, model.identityType());
         Assertions.assertEquals("nrbtcqqjnq", model.userAssignedIdentityResourceId());
-        Assertions
-            .assertEquals(UUID.fromString("4deee13a-8dfc-4d32-9f79-7d07d403bcb9"), model.delegatedIdentityClientId());
+        Assertions.assertEquals(UUID.fromString("2a0dd333-9f2e-44a9-8937-b2b5780e4777"),
+            model.delegatedIdentityClientId());
     }
 }

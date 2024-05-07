@@ -26,6 +26,12 @@ public final class StepInput {
     private QuestionType questionType;
 
     /*
+     * Question title
+     */
+    @JsonProperty(value = "questionTitle")
+    private String questionTitle;
+
+    /*
      * User question content.
      */
     @JsonProperty(value = "questionContent")
@@ -110,6 +116,26 @@ public final class StepInput {
      */
     public StepInput withQuestionType(QuestionType questionType) {
         this.questionType = questionType;
+        return this;
+    }
+
+    /**
+     * Get the questionTitle property: Question title.
+     * 
+     * @return the questionTitle value.
+     */
+    public String questionTitle() {
+        return this.questionTitle;
+    }
+
+    /**
+     * Set the questionTitle property: Question title.
+     * 
+     * @param questionTitle the questionTitle value to set.
+     * @return the StepInput object itself.
+     */
+    public StepInput withQuestionTitle(String questionTitle) {
+        this.questionTitle = questionTitle;
         return this;
     }
 

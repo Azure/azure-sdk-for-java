@@ -108,6 +108,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final ConsistencyLevel accountConsistencyLevel;
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
     private Consumer<CosmosRequestOptionsTransformer> requestOptionsTransformer;
+    private final CosmosItemSerializer defaultCustomSerializer;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         // Async Cosmos client wrapper
@@ -125,6 +126,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
         this.requestOptionsTransformer = builder.getRequestOptionsTransformer();
+        this.defaultCustomSerializer = builder.getCustomSerializer();
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
         SessionRetryOptions sessionRetryOptions = builder.getSessionRetryOptions();
 
@@ -171,6 +173,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
                                        .withSessionRetryOptions(sessionRetryOptions)
                                        .withContainerProactiveInitConfig(this.proactiveContainerInitConfig)
+                                       .withDefaultSerializer(this.defaultCustomSerializer)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();
@@ -765,6 +768,10 @@ public final class CosmosAsyncClient implements Closeable {
         return clientLevelThresholds != null ? clientLevelThresholds : new CosmosDiagnosticsThresholds();
     }
 
+    CosmosItemSerializer getEffectiveItemSerializer(CosmosItemSerializer requestOptionsItemSerializer) {
+        return this.asyncDocumentClient.getEffectiveItemSerializer(requestOptionsItemSerializer);
+    }
+
     boolean isTransportLevelTracingEnabled() {
 
         CosmosClientTelemetryConfig effectiveConfig = this.clientTelemetryConfig != null ?
@@ -902,6 +909,10 @@ public final class CosmosAsyncClient implements Closeable {
                 @Override
                 public Consumer<CosmosRequestOptionsTransformer> getRequestOptionsTransformer(CosmosAsyncClient client) {
                     return client.requestOptionsTransformer;
+                }
+
+                public CosmosItemSerializer getEffectiveItemSerializer(CosmosAsyncClient client, CosmosItemSerializer requestOptionsItemSerializer) {
+                    return client.getEffectiveItemSerializer(requestOptionsItemSerializer);
                 }
             }
         );

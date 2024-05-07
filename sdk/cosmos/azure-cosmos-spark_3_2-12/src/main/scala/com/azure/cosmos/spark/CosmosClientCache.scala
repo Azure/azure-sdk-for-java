@@ -174,6 +174,15 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // scalastyle:off cyclomatic.complexity
   private[this] def createCosmosAsyncClient(cosmosClientConfiguration: CosmosClientConfiguration,
                                             cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot]): CosmosAsyncClient = {
+      if (cosmosClientConfiguration.enforceNativeTransport && !io.netty.channel.epoll.Epoll.isAvailable) {
+        throw new IllegalStateException(
+          "The enforcement of native transport is enabled in your configuration and native transport is not " +
+            "available. Either ensure `spark.cosmos.enforceNativeTransport` is set to false or make " +
+            "sure you use a Spark environment supporting native transport.",
+          io.netty.channel.epoll.Epoll.unavailabilityCause()
+        )
+      }
+
       var builder = new CosmosClientBuilder()
           .endpoint(cosmosClientConfiguration.endpoint)
           .userAgentSuffix(cosmosClientConfiguration.applicationName)

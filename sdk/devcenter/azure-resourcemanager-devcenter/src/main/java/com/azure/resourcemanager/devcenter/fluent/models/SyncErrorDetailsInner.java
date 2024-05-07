@@ -11,7 +11,9 @@ import com.azure.resourcemanager.devcenter.models.CatalogSyncError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Synchronization error details. */
+/**
+ * Synchronization error details.
+ */
 @Immutable
 public final class SyncErrorDetailsInner {
     /*
@@ -32,13 +34,15 @@ public final class SyncErrorDetailsInner {
     @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<CatalogSyncError> errors;
 
-    /** Creates an instance of SyncErrorDetailsInner class. */
+    /**
+     * Creates an instance of SyncErrorDetailsInner class.
+     */
     public SyncErrorDetailsInner() {
     }
 
     /**
      * Get the operationError property: Error information for the overall synchronization operation.
-     *
+     * 
      * @return the operationError value.
      */
     public CatalogErrorDetails operationError() {
@@ -47,7 +51,7 @@ public final class SyncErrorDetailsInner {
 
     /**
      * Get the conflicts property: Catalog items that have conflicting names.
-     *
+     * 
      * @return the conflicts value.
      */
     public List<CatalogConflictError> conflicts() {
@@ -56,7 +60,7 @@ public final class SyncErrorDetailsInner {
 
     /**
      * Get the errors property: Errors that occured during synchronization.
-     *
+     * 
      * @return the errors value.
      */
     public List<CatalogSyncError> errors() {
@@ -65,7 +69,7 @@ public final class SyncErrorDetailsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,67 +6,38 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.DevCenterSku;
 import com.azure.resourcemanager.devcenter.models.SkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SkusListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"resourceType\":\"wqrjzfrg\",\"locations\":[\"ohcmbu\",\"cnjrohmbpyryxame\",\"l\"],\"capabilities\":[{\"name\":\"kfkmrocxnehvsmt\",\"value\":\"lfpya\"}],\"name\":\"ucygvo\",\"tier\":\"Basic\",\"size\":\"nssxlgh\",\"family\":\"egjlgvvpa\",\"capacity\":1923565340}]}";
 
-        String responseStr =
-            "{\"value\":[{\"resourceType\":\"gsnnf\",\"locations\":[\"tefypococtfjgti\"],\"capabilities\":[{\"name\":\"zuyt\",\"value\":\"mlmuowol\"},{\"name\":\"uir\",\"value\":\"ionszonwp\"}],\"name\":\"gajinnixjawrtmj\",\"tier\":\"Basic\",\"size\":\"ccxlzhcoxovnek\",\"family\":\"nlusfnrd\",\"capacity\":1290692047}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<DevCenterSku> response = manager.skus().list(1254644077, com.azure.core.util.Context.NONE);
 
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<DevCenterSku> response = manager.skus().list(1565849312, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("gajinnixjawrtmj", response.iterator().next().name());
+        Assertions.assertEquals("ucygvo", response.iterator().next().name());
         Assertions.assertEquals(SkuTier.BASIC, response.iterator().next().tier());
-        Assertions.assertEquals("ccxlzhcoxovnek", response.iterator().next().size());
-        Assertions.assertEquals("nlusfnrd", response.iterator().next().family());
-        Assertions.assertEquals(1290692047, response.iterator().next().capacity());
+        Assertions.assertEquals("nssxlgh", response.iterator().next().size());
+        Assertions.assertEquals("egjlgvvpa", response.iterator().next().family());
+        Assertions.assertEquals(1923565340, response.iterator().next().capacity());
     }
 }

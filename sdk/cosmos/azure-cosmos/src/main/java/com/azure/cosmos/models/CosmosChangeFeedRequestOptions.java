@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -20,14 +21,12 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -50,9 +49,27 @@ public final class CosmosChangeFeedRequestOptions {
     private String throughputControlGroupName;
     private Map<String, String> customOptions;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
-    private Function<JsonNode, ?> itemFactoryMethod;
     private CosmosDiagnosticsThresholds thresholds;
     private List<String> excludeRegions;
+    private CosmosItemSerializer customSerializer;
+
+    CosmosChangeFeedRequestOptions(CosmosChangeFeedRequestOptions topBeCloned) {
+        this.continuationState = topBeCloned.continuationState;
+        this.feedRangeInternal = topBeCloned.feedRangeInternal;
+        this.properties = topBeCloned.properties;
+        this.maxItemCount = topBeCloned.maxItemCount;
+        this.maxPrefetchPageCount = topBeCloned.maxPrefetchPageCount;
+        this.mode = topBeCloned.mode;
+        this.startFromInternal = topBeCloned.startFromInternal;
+        this.isSplitHandlingDisabled = topBeCloned.isSplitHandlingDisabled;
+        this.quotaInfoEnabled = topBeCloned.quotaInfoEnabled;
+        this.throughputControlGroupName = topBeCloned.throughputControlGroupName;
+        this.customOptions = topBeCloned.customOptions;
+        this.operationContextAndListenerTuple = topBeCloned.operationContextAndListenerTuple;
+        this.thresholds = topBeCloned.thresholds;
+        this.excludeRegions = topBeCloned.excludeRegions;
+        this.customSerializer = topBeCloned.customSerializer;
+    }
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -207,6 +224,27 @@ public final class CosmosChangeFeedRequestOptions {
         return this.thresholds;
     }
 
+    /**
+     * Gets the custom item serializer defined for this instance of request options
+     * @return the custom item serializer
+     */
+    public CosmosItemSerializer getCustomSerializer() {
+        return this.customSerializer;
+    }
+
+    /**
+     * Allows specifying a custom item serializer to be used for this operation. If the serializer
+     * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
+     * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
+     * @param itemSerializerOverride the custom item serializer for this operation
+     * @return  the CosmosChangeFeedRequestOptions.
+     */
+    public CosmosChangeFeedRequestOptions setCustomSerializer(CosmosItemSerializer itemSerializerOverride) {
+        this.customSerializer = itemSerializerOverride;
+
+        return this;
+    }
+
     boolean isSplitHandlingDisabled() {
         return this.isSplitHandlingDisabled;
     }
@@ -270,7 +308,6 @@ public final class CosmosChangeFeedRequestOptions {
     /***
      * Creates a new {@link CosmosChangeFeedRequestOptions} instance to start processing
      * change feed items based on a previous continuation.
-     *
      * ONLY used by Kafka connector.
      *
      * @param continuation The continuation that was retrieved from a previously retrieved FeedResponse
@@ -582,13 +619,6 @@ public final class CosmosChangeFeedRequestOptions {
         return this.operationContextAndListenerTuple;
     }
 
-    Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
-
-    CosmosChangeFeedRequestOptions setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
-        this.itemFactoryMethod = factoryMethod;
-        return this;
-    }
-
     private void addCustomOptionsForFullFidelityMode() {
         this.setHeader(
             HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,
@@ -632,22 +662,6 @@ public final class CosmosChangeFeedRequestOptions {
                 }
 
                 @Override
-                @SuppressWarnings("unchecked")
-                public <T> Function<JsonNode, T> getItemFactoryMethod(
-                    CosmosChangeFeedRequestOptions options, Class<T> classOfT) {
-
-                    return (Function<JsonNode, T>)options.getItemFactoryMethod();
-                }
-
-                @Override
-                public CosmosChangeFeedRequestOptions setItemFactoryMethod(
-                    CosmosChangeFeedRequestOptions options,
-                    Function<JsonNode, ?> factoryMethod) {
-
-                    return options.setItemFactoryMethod(factoryMethod);
-                }
-
-                @Override
                 public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options) {
                     return options.thresholds;
                 }
@@ -664,6 +678,11 @@ public final class CosmosChangeFeedRequestOptions {
                     String continuationLsn) {
 
                     return CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(continuation, targetRange, continuationLsn);
+                }
+
+                @Override
+                public CosmosChangeFeedRequestOptions clone(CosmosChangeFeedRequestOptions toBeCloned) {
+                    return new CosmosChangeFeedRequestOptions(toBeCloned);
                 }
             });
     }

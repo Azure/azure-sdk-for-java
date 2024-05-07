@@ -94,7 +94,7 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
     private static final String MESSAGE_KEY_FIELD_CONFIG = SOURCE_CONFIG_PREFIX + "messageKey.field";
     private static final String MESSAGE_KEY_FIELD_CONFIG_DOC = "The field to use as the message key.";
     private static final String MESSAGE_KEY_FIELD_CONFIG_DISPLAY = "Kafka message key field.";
-    private static final String DEFAULT_MESSAGE_KEY_FIELD = "id"; // TODO: should we use pk instead?
+    private static final String DEFAULT_MESSAGE_KEY_FIELD = "id";
 
     private final CosmosSourceContainersConfig containersConfig;
     private final CosmosMetadataConfig metadataConfig;

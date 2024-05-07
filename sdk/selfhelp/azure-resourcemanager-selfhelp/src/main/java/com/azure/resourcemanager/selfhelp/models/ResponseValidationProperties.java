@@ -19,6 +19,12 @@ public final class ResponseValidationProperties {
     private String regex;
 
     /*
+     * Validation scope
+     */
+    @JsonProperty(value = "validationScope")
+    private ValidationScope validationScope;
+
+    /*
      * Default True
      */
     @JsonProperty(value = "isRequired")
@@ -59,6 +65,26 @@ public final class ResponseValidationProperties {
      */
     public ResponseValidationProperties withRegex(String regex) {
         this.regex = regex;
+        return this;
+    }
+
+    /**
+     * Get the validationScope property: Validation scope.
+     * 
+     * @return the validationScope value.
+     */
+    public ValidationScope validationScope() {
+        return this.validationScope;
+    }
+
+    /**
+     * Set the validationScope property: Validation scope.
+     * 
+     * @param validationScope the validationScope value to set.
+     * @return the ResponseValidationProperties object itself.
+     */
+    public ResponseValidationProperties withValidationScope(ValidationScope validationScope) {
+        this.validationScope = validationScope;
         return this;
     }
 

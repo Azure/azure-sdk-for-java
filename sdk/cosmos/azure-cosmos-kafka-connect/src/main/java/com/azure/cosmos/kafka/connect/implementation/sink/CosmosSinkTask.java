@@ -53,8 +53,6 @@ public class CosmosSinkTask extends SinkTask {
                     this.sinkTaskConfig.getThroughputControlConfig(),
                     context.errantRecordReporter());
         }
-
-        // TODO[public preview]: in V1, it will create the database if does not exists, but why?
     }
 
     private CosmosAsyncClient getThroughputControlCosmosClient() {

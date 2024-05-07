@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the edition of the license. The values are either Standard or Datacenter. */
+/**
+ * Describes the edition of the license. The values are either Standard or Datacenter.
+ */
 public final class LicenseEdition extends ExpandableStringEnum<LicenseEdition> {
-    /** Static value Standard for LicenseEdition. */
+    /**
+     * Static value Standard for LicenseEdition.
+     */
     public static final LicenseEdition STANDARD = fromString("Standard");
 
-    /** Static value Datacenter for LicenseEdition. */
+    /**
+     * Static value Datacenter for LicenseEdition.
+     */
     public static final LicenseEdition DATACENTER = fromString("Datacenter");
 
     /**
      * Creates a new instance of LicenseEdition value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class LicenseEdition extends ExpandableStringEnum<LicenseEdition> {
 
     /**
      * Creates or finds a LicenseEdition from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LicenseEdition.
      */
@@ -38,7 +44,7 @@ public final class LicenseEdition extends ExpandableStringEnum<LicenseEdition> {
 
     /**
      * Gets known LicenseEdition values.
-     *
+     * 
      * @return known LicenseEdition values.
      */
     public static Collection<LicenseEdition> values() {

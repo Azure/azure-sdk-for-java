@@ -6,18 +6,17 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Function;
 
 /**
  * Specifies the options associated with readMany methods
@@ -39,9 +38,9 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     private Map<String, String> customOptions;
     private boolean indexMetricsEnabled;
     private UUID correlationActivityId;
-    private Function<JsonNode, ?> itemFactoryMethod;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
+    private CosmosItemSerializer customSerializer;
 
     /**
      * Instantiates a new query request options.
@@ -68,11 +67,11 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         this.customOptions = options.customOptions;
         this.indexMetricsEnabled = options.indexMetricsEnabled;
         this.correlationActivityId = options.correlationActivityId;
-        this.itemFactoryMethod = options.itemFactoryMethod;
         this.thresholds = options.thresholds;
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.excludeRegions = options.excludeRegions;
         this.properties = options.properties;
+        this.customSerializer = options.customSerializer;
     }
 
     public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -419,27 +418,34 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         return this.customOptions;
     }
 
-    public Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
-
-    @SuppressWarnings("unchecked")
-    public <T> Function<JsonNode, T> getItemFactoryMethod(Class<T> classOfT) {
-
-        return (Function<JsonNode, T>)this.itemFactoryMethod;
-    }
-
-    @SuppressWarnings("unchecked")
-    public T setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
-        this.itemFactoryMethod = factoryMethod;
-
-        return (T)this;
-    }
-
     public CosmosDiagnosticsThresholds getThresholds() {
         return this.thresholds;
     }
 
     public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyConfig() {
         return cosmosEndToEndOperationLatencyPolicyConfig;
+    }
+
+    /**
+     * Gets the custom item serializer defined for this instance of request options
+     * @return the custom item serializer
+     */
+    public CosmosItemSerializer getCustomSerializer() {
+        return this.customSerializer;
+    }
+
+    /**
+     * Allows specifying a custom item serializer to be used for this operation. If the serializer
+     * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
+     * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
+     * @param itemSerializerOverride the custom item serializer for this operation
+     * @return  the CosmosItemRequestOptions.
+     */
+    @SuppressWarnings("unchecked")
+    public T setCustomSerializer(CosmosItemSerializer itemSerializerOverride) {
+        this.customSerializer = itemSerializerOverride;
+
+        return (T)this;
     }
 
     public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {

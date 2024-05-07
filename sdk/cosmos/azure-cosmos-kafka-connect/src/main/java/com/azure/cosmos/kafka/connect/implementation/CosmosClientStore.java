@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CosmosClientStore {
-    // TODO[Public Preview]: revalidate how to get the active directory endpoint map. It suppose to come from management SDK.
     private static final Map<CosmosAzureEnvironment, String> ACTIVE_DIRECTORY_ENDPOINT_MAP;
     static {
+        // for now we maintain a static list within the SDK these values do not change very frequently
         ACTIVE_DIRECTORY_ENDPOINT_MAP = new HashMap<>();
         ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE, "https://login.microsoftonline.com/");
         ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_CHINA, "https://login.chinacloudapi.cn/");

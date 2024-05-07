@@ -21,8 +21,7 @@ public final class ProjectAllowedEnvironmentTypesImpl implements ProjectAllowedE
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    public ProjectAllowedEnvironmentTypesImpl(
-        ProjectAllowedEnvironmentTypesClient innerClient,
+    public ProjectAllowedEnvironmentTypesImpl(ProjectAllowedEnvironmentTypesClient innerClient,
         com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,25 +29,22 @@ public final class ProjectAllowedEnvironmentTypesImpl implements ProjectAllowedE
 
     public PagedIterable<AllowedEnvironmentType> list(String resourceGroupName, String projectName) {
         PagedIterable<AllowedEnvironmentTypeInner> inner = this.serviceClient().list(resourceGroupName, projectName);
-        return Utils.mapPage(inner, inner1 -> new AllowedEnvironmentTypeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AllowedEnvironmentTypeImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AllowedEnvironmentType> list(
-        String resourceGroupName, String projectName, Integer top, Context context) {
-        PagedIterable<AllowedEnvironmentTypeInner> inner =
-            this.serviceClient().list(resourceGroupName, projectName, top, context);
-        return Utils.mapPage(inner, inner1 -> new AllowedEnvironmentTypeImpl(inner1, this.manager()));
+    public PagedIterable<AllowedEnvironmentType> list(String resourceGroupName, String projectName, Integer top,
+        Context context) {
+        PagedIterable<AllowedEnvironmentTypeInner> inner
+            = this.serviceClient().list(resourceGroupName, projectName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AllowedEnvironmentTypeImpl(inner1, this.manager()));
     }
 
-    public Response<AllowedEnvironmentType> getWithResponse(
-        String resourceGroupName, String projectName, String environmentTypeName, Context context) {
-        Response<AllowedEnvironmentTypeInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, projectName, environmentTypeName, context);
+    public Response<AllowedEnvironmentType> getWithResponse(String resourceGroupName, String projectName,
+        String environmentTypeName, Context context) {
+        Response<AllowedEnvironmentTypeInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, projectName, environmentTypeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AllowedEnvironmentTypeImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -56,8 +52,8 @@ public final class ProjectAllowedEnvironmentTypesImpl implements ProjectAllowedE
     }
 
     public AllowedEnvironmentType get(String resourceGroupName, String projectName, String environmentTypeName) {
-        AllowedEnvironmentTypeInner inner =
-            this.serviceClient().get(resourceGroupName, projectName, environmentTypeName);
+        AllowedEnvironmentTypeInner inner
+            = this.serviceClient().get(resourceGroupName, projectName, environmentTypeName);
         if (inner != null) {
             return new AllowedEnvironmentTypeImpl(inner, this.manager());
         } else {

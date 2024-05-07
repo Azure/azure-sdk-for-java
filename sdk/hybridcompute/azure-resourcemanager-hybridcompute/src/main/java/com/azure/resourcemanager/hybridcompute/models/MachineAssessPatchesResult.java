@@ -7,29 +7,32 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineAssessPatchesResultInner;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
-/** An immutable client-side representation of MachineAssessPatchesResult. */
+/**
+ * An immutable client-side representation of MachineAssessPatchesResult.
+ */
 public interface MachineAssessPatchesResult {
     /**
      * Gets the status property: The overall success or failure status of the operation. It remains "InProgress" until
      * the operation completes. At that point it will become "Unknown", "Failed", "Succeeded", or
      * "CompletedWithWarnings.".
-     *
+     * 
      * @return the status value.
      */
     PatchOperationStatus status();
 
     /**
      * Gets the assessmentActivityId property: The activity ID of the operation that produced this result.
-     *
+     * 
      * @return the assessmentActivityId value.
      */
-    String assessmentActivityId();
+    UUID assessmentActivityId();
 
     /**
      * Gets the rebootPending property: The overall reboot status of the VM. It will be true when partially installed
      * patches require a reboot to complete installation but the reboot has not yet occurred.
-     *
+     * 
      * @return the rebootPending value.
      */
     Boolean rebootPending();
@@ -37,42 +40,42 @@ public interface MachineAssessPatchesResult {
     /**
      * Gets the availablePatchCountByClassification property: Summarization of patches available for installation on the
      * machine by classification.
-     *
+     * 
      * @return the availablePatchCountByClassification value.
      */
     AvailablePatchCountByClassification availablePatchCountByClassification();
 
     /**
      * Gets the startDateTime property: The UTC timestamp when the operation began.
-     *
+     * 
      * @return the startDateTime value.
      */
     OffsetDateTime startDateTime();
 
     /**
      * Gets the lastModifiedDateTime property: The UTC timestamp when the operation finished.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     OffsetDateTime lastModifiedDateTime();
 
     /**
      * Gets the startedBy property: Indicates if operation was triggered by user or by platform.
-     *
+     * 
      * @return the startedBy value.
      */
     PatchOperationStartedBy startedBy();
 
     /**
      * Gets the patchServiceUsed property: Specifies the patch service used for the operation.
-     *
+     * 
      * @return the patchServiceUsed value.
      */
     PatchServiceUsed patchServiceUsed();
 
     /**
      * Gets the osType property: The operating system type of the machine.
-     *
+     * 
      * @return the osType value.
      */
     OsType osType();
@@ -80,14 +83,14 @@ public interface MachineAssessPatchesResult {
     /**
      * Gets the errorDetails property: The errors that were encountered during execution of the operation. The details
      * array contains the list of them.
-     *
+     * 
      * @return the errorDetails value.
      */
     ManagementError errorDetails();
 
     /**
      * Gets the inner com.azure.resourcemanager.hybridcompute.fluent.models.MachineAssessPatchesResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     MachineAssessPatchesResultInner innerModel();

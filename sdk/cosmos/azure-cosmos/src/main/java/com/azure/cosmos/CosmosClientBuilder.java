@@ -146,6 +146,7 @@ public class CosmosClientBuilder implements
     private SessionRetryOptions sessionRetryOptions;
     private Supplier<CosmosExcludedRegions> cosmosExcludedRegionsSupplier;
     private Consumer<CosmosRequestOptionsTransformer> requestOptionsTransformer;
+    private CosmosItemSerializer defaultCustomSerializer;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -755,7 +756,7 @@ public class CosmosClientBuilder implements
      * on their own.
      * @return the CosmosItemRequestOptions
      */
-    CosmosClientBuilder setNonIdempotentWriteRetryPolicy(
+    public CosmosClientBuilder nonIdempotentWriteRetryPolicy(
         boolean nonIdempotentWriteRetriesEnabled,
         boolean useTrackingIdPropertyForCreateAndReplace) {
 
@@ -1075,6 +1076,23 @@ public class CosmosClientBuilder implements
     }
 
     /**
+     * Sets a custom serializer that should be used for conversion between POJOs and Json payload stored in the
+     * Cosmos DB service. The custom serializer can also be specified in request options. If defined here and
+     * in request options the serializer defined in request options will be used.
+     * @param serializer the custom serialzier to be used for payload transformations
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder customSerializer(CosmosItemSerializer serializer) {
+        this.defaultCustomSerializer = serializer;
+
+        return this;
+    }
+
+    CosmosItemSerializer getCustomSerializer() {
+        return this.defaultCustomSerializer;
+    }
+
+    /**
      * Builds a cosmos async client with the provided properties
      *
      * @return CosmosAsyncClient
@@ -1230,7 +1248,7 @@ public class CosmosClientBuilder implements
     private void logStartupInfo(StopWatch stopwatch, CosmosAsyncClient client) {
         stopwatch.stop();
 
-        if (logger.isInfoEnabled()) {
+        if (logger.isWarnEnabled()) {
             long time = stopwatch.getTime();
             String diagnosticsCfg = "";
             String tracingCfg = "";
@@ -1247,11 +1265,14 @@ public class CosmosClientBuilder implements
             logger.warn("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
                     "configuration: serviceEndpoint [{}], preferredRegions [{}], excludedRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
-                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], diagnostics [{}], tracing [{}]",
+                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], " +
+                    "diagnostics [{}], tracing [{}], nativeTransport [{}] fastClientOpen [{}]",
                 client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(), getExcludedRegions(),
                 getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
                 isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
-                isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg, tracingCfg);
+                isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg,
+                tracingCfg, io.netty.channel.epoll.Epoll.isAvailable(),
+                io.netty.channel.epoll.Epoll.isTcpFastOpenClientSideAvailable());
         }
     }
 
@@ -1306,6 +1327,11 @@ public class CosmosClientBuilder implements
                 @Override
                 public String getEndpoint(CosmosClientBuilder builder) {
                     return builder.getEndpoint();
+                }
+
+                @Override
+                public CosmosItemSerializer getDefaultCustomSerializer(CosmosClientBuilder builder) {
+                    return builder.getCustomSerializer();
                 }
             });
     }

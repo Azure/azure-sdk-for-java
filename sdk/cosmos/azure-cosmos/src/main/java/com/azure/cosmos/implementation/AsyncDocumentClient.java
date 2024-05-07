@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -106,6 +107,7 @@ public interface AsyncDocumentClient {
         private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
         private SessionRetryOptions sessionRetryOptions;
         private CosmosContainerProactiveInitConfig containerProactiveInitConfig;
+        private CosmosItemSerializer defaultCustomSerializer;
 
         private Consumer<CosmosRequestOptionsTransformer> requestOptionsWrapper;
 
@@ -115,6 +117,12 @@ public interface AsyncDocumentClient {
             } catch (URISyntaxException e) {
                 throw new IllegalArgumentException(e.getMessage());
             }
+            return this;
+        }
+
+        public Builder withDefaultSerializer( CosmosItemSerializer defaultCustomSerializer) {
+            this.defaultCustomSerializer = defaultCustomSerializer;
+
             return this;
         }
 
@@ -299,7 +307,8 @@ public interface AsyncDocumentClient {
                     clientCorrelationId,
                     cosmosEndToEndOperationLatencyPolicyConfig,
                     sessionRetryOptions,
-                    containerProactiveInitConfig);
+                    containerProactiveInitConfig,
+                    defaultCustomSerializer);
 
             client.init(state, null);
             return client;
@@ -1585,7 +1594,7 @@ public interface AsyncDocumentClient {
      */
     void close();
 
-    ItemDeserializer getItemDeserializer();
+    CosmosItemSerializer getEffectiveItemSerializer(CosmosItemSerializer requestOptionsItemSerializer);
 
     /**
      * Enable throughput control group.

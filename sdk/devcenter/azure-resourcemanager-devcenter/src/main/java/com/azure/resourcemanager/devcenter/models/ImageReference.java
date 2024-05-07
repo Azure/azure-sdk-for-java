@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Image reference information. */
+/**
+ * Image reference information.
+ */
 @Fluent
 public final class ImageReference {
     /*
@@ -17,19 +19,20 @@ public final class ImageReference {
     private String id;
 
     /*
-     * The actual version of the image after use. When id references a gallery image latest version, this will indicate
-     * the actual version in use.
+     * The actual version of the image after use. When id references a gallery image latest version, this will indicate the actual version in use.
      */
     @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String exactVersion;
 
-    /** Creates an instance of ImageReference class. */
+    /**
+     * Creates an instance of ImageReference class.
+     */
     public ImageReference() {
     }
 
     /**
      * Get the id property: Image ID, or Image version ID. When Image ID is provided, its latest version will be used.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -38,7 +41,7 @@ public final class ImageReference {
 
     /**
      * Set the id property: Image ID, or Image version ID. When Image ID is provided, its latest version will be used.
-     *
+     * 
      * @param id the id value to set.
      * @return the ImageReference object itself.
      */
@@ -50,7 +53,7 @@ public final class ImageReference {
     /**
      * Get the exactVersion property: The actual version of the image after use. When id references a gallery image
      * latest version, this will indicate the actual version in use.
-     *
+     * 
      * @return the exactVersion value.
      */
     public String exactVersion() {
@@ -59,7 +62,7 @@ public final class ImageReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
