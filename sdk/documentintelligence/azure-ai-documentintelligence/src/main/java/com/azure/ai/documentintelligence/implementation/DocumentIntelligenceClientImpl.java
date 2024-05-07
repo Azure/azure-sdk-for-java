@@ -112,7 +112,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     * 
+     *
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
@@ -123,7 +123,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
@@ -135,7 +135,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The Document Intelligence service endpoint.
@@ -225,7 +225,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -277,7 +277,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -329,7 +329,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -380,7 +380,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -400,12 +400,12 @@ public final class DocumentIntelligenceClientImpl {
     public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-            new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+            new SyncFinalResultViaPropertyPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
                     : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+                .setServiceVersion(this.getServiceVersion().getVersion()), "analyzeResult"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -431,7 +431,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -484,7 +484,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -505,12 +505,12 @@ public final class DocumentIntelligenceClientImpl {
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-            new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+            new SyncFinalResultViaPropertyPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
                     : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+                .setServiceVersion(this.getServiceVersion().getVersion()), "analyzeResult"),
             TypeReference.createInstance(AnalyzeResultOperation.class),
             TypeReference.createInstance(AnalyzeResult.class));
     }
@@ -528,7 +528,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -568,7 +568,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -607,7 +607,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -651,7 +651,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -695,7 +695,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
@@ -740,7 +740,7 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
