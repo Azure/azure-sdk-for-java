@@ -16,35 +16,36 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
+import io.clientcore.core.implementation.util.UrlBuilder;
+import io.clientcore.core.models.SocketConnection;
+import io.clientcore.core.models.SocketConnectionCache;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.ServerSentEventUtils;
 import io.clientcore.core.util.ServerSentResult;
 import io.clientcore.core.util.binarydata.BinaryData;
 
 import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
-import java.io.BufferedReader;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.ProtocolException;
 import java.net.Proxy;
-import java.net.Socket;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
 import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
+import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_LENGTH;
 import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE;
 import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
@@ -63,7 +64,7 @@ class DefaultHttpClient implements HttpClient {
     // in keep alive scenarios which we don't want. InputStream.close may also close the Socket connection but it has
     // finer control on whether that will happen based on keep alive information.
     // In the scenario we receive an error response stream, keep alive won't be honored as the connection received an
-    // error status and it will be handled appropriately.
+    // error status, and it will be handled appropriately.
 
     private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
 
@@ -71,6 +72,18 @@ class DefaultHttpClient implements HttpClient {
     private final long readTimeout;
     private final ProxyOptions proxyOptions;
     private final SSLSocketFactory sslSocketFactory;
+    private static final int MAX_CONNECTIONS;
+    private static final boolean KEEP_CONNECTION_ALIVE;
+    private static final SocketConnectionCache SOCKET_CONNECTION_CACHE;
+
+    static {
+        String keepAlive = System.getProperty("http.keepAlive");
+        KEEP_CONNECTION_ALIVE = keepAlive != null && Boolean.parseBoolean(keepAlive);
+
+        String maxConnectionsString = System.getProperty("http.maxConnections");
+        MAX_CONNECTIONS = maxConnectionsString != null ? Integer.parseInt(maxConnectionsString) : 0;
+        SOCKET_CONNECTION_CACHE = SocketConnectionCache.getInstance(KEEP_CONNECTION_ALIVE, MAX_CONNECTIONS);
+    }
 
     DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions,
         SSLSocketFactory sslSocketFactory) {
@@ -82,14 +95,29 @@ class DefaultHttpClient implements HttpClient {
 
     @Override
     public Response<?> send(HttpRequest httpRequest) throws IOException {
+        SocketConnection socketConnection;
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
-            return SocketClient.sendPatchRequest(httpRequest, getSslSocketFactory());
+            final URL requestUrl = httpRequest.getUrl();
+            final String protocol = requestUrl.getProtocol();
+            final String host = requestUrl.getHost();
+            final int port = requestUrl.getPort();
+
+            socketConnection = SOCKET_CONNECTION_CACHE.get(
+                new SocketConnection.SocketConnectionProperties(protocol, host, port, getSslSocketFactory(), (int) readTimeout));
+
+            Response<?> response
+                = SocketClient.sendPatchRequest(httpRequest, socketConnection.getSocketInputStream(),
+                socketConnection.getSocketOutputStream());
+
+            // Handle connection reusing
+            SOCKET_CONNECTION_CACHE.reuseConnection(socketConnection);
+            return response;
+
+        } else {
+            HttpURLConnection urlConnection = connect(httpRequest);
+            sendBody(httpRequest, urlConnection);
+            return receiveResponse(httpRequest, urlConnection);
         }
-
-        HttpURLConnection connection = connect(httpRequest);
-        sendBody(httpRequest, connection);
-
-        return receiveResponse(httpRequest, connection);
     }
 
     private SSLSocketFactory getSslSocketFactory() {
@@ -139,6 +167,15 @@ class DefaultHttpClient implements HttpClient {
 
         if (readTimeout != -1) {
             connection.setReadTimeout((int) readTimeout);
+        }
+
+        if (KEEP_CONNECTION_ALIVE) {
+            connection.setRequestProperty(HttpHeaderName.CONNECTION.toString(), "keep-alive");
+        }
+
+        if (MAX_CONNECTIONS > 0) {
+            connection.setRequestProperty(HttpHeaderName.CONNECTION.toString(), "keep-alive");
+            connection.setRequestProperty(HttpHeaderName.KEEP_ALIVE.toString(), "max=" + MAX_CONNECTIONS);
         }
 
         connection.setRequestMethod(httpRequest.getHttpMethod().toString());
@@ -340,7 +377,7 @@ class DefaultHttpClient implements HttpClient {
     }
 
     private static int speculateContentLength(HttpHeaders headers) {
-        String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+        String contentLength = headers.getValue(CONTENT_LENGTH);
         if (contentLength == null) {
             return -1;
         }
@@ -353,7 +390,6 @@ class DefaultHttpClient implements HttpClient {
             return -1;
         }
     }
-
     private ResponseBodyMode determineResponseBodyMode(HttpRequest httpRequest, HttpHeaders responseHeaders) {
         HttpHeader contentType = responseHeaders.get(CONTENT_TYPE);
 
@@ -368,79 +404,42 @@ class DefaultHttpClient implements HttpClient {
         }
     }
 
-    private static final class SocketClient {
+    private static class SocketClient {
 
         private static final String HTTP_VERSION = " HTTP/1.1";
-
-        /**
-         * Opens a socket connection, then writes the PATCH request across the connection and reads the response
-         *
-         * @param httpRequest The HTTP Request being sent
-         * @param sslSocketFactory The SSLSocketFactory to use for HTTPS connections
-         * @return an instance of HttpUrlConnectionResponse
-         * @throws ProtocolException If the protocol is not HTTP or HTTPS
-         * @throws IOException If an I/O error occurs
-         */
-        public static Response<?> sendPatchRequest(HttpRequest httpRequest, SSLSocketFactory sslSocketFactory)
-            throws IOException {
-            final URL requestUrl = httpRequest.getUrl();
-            final String protocol = requestUrl.getProtocol();
-            final String host = requestUrl.getHost();
-            final int port = requestUrl.getPort();
-
-            switch (protocol) {
-                case "https":
-                    try (SSLSocket socket = (SSLSocket) sslSocketFactory.createSocket(host, port)) {
-                        return doInputOutput(httpRequest, socket, sslSocketFactory);
-                    }
-
-                case "http":
-                    try (Socket socket = new Socket(host, port)) {
-                        return doInputOutput(httpRequest, socket, sslSocketFactory);
-                    }
-
-                default:
-                    throw LOGGER.logThrowableAsWarning(
-                        new ProtocolException("Only HTTP and HTTPS are supported by this client."));
-            }
-        }
 
         /**
          * Calls buildAndSend to send a String representation of the request across the output stream, then calls
          * buildResponse to get an instance of HttpUrlConnectionResponse from the input stream
          *
          * @param httpRequest The HTTP Request being sent
-         * @param socket An instance of the SocketClient
+         * @param bufferedInputStream the input stream from the socket
+         * @param outputStream the output stream from the socket for writing the request
          * @return an instance of Response
          */
-        @SuppressWarnings("deprecation")
-        private static Response<?> doInputOutput(HttpRequest httpRequest, Socket socket,
-            SSLSocketFactory sslSocketFactory) throws IOException {
+        private static Response<?> sendPatchRequest(HttpRequest httpRequest, BufferedInputStream bufferedInputStream,
+            OutputStream outputStream) throws IOException {
             httpRequest.getHeaders().set(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
-            if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HttpHeaderName.CONNECTION))) {
-                httpRequest.getHeaders().set(HttpHeaderName.CONNECTION, "close");
-            }
+            OutputStreamWriter out = new OutputStreamWriter(outputStream);
 
-            try (BufferedReader in = new BufferedReader(
-                new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
-                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream())) {
+            buildAndSend(httpRequest, out);
+            Response<?> response = buildResponse(httpRequest, bufferedInputStream);
+            HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
+            String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
 
-                buildAndSend(httpRequest, out);
-
-                Response<?> response = buildResponse(httpRequest, in);
-                HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
-                String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
-
-                if (redirectLocation != null) {
-                    if (redirectLocation.startsWith("http")) {
-                        httpRequest.setUrl(redirectLocation);
-                    } else {
-                        httpRequest.setUrl(new URL(httpRequest.getUrl(), redirectLocation));
-                    }
-                    return sendPatchRequest(httpRequest, sslSocketFactory);
+            if (redirectLocation != null) {
+                if (redirectLocation.startsWith("http")) {
+                    httpRequest.setUrl(redirectLocation);
+                } else {
+                    UrlBuilder urlBuilder = UrlBuilder.parse(httpRequest.getUrl())
+                        .setPath(redirectLocation);
+                    httpRequest.setUrl(urlBuilder.toUrl());
                 }
-                return response;
+                return sendPatchRequest(httpRequest, bufferedInputStream, outputStream);
             }
+
+            return response;
+
         }
 
         /**
@@ -471,38 +470,104 @@ class DefaultHttpClient implements HttpClient {
 
         /**
          * Reads the response from the input stream and extracts the information needed to construct an instance of
-         * HttpUrlConnectionResponse
+         * Response
          *
          * @param httpRequest The HTTP Request being sent
-         * @param reader the input stream from the socket
-         * @return an instance of HttpUrlConnectionResponse
+         * @param inputStream the input stream from the socket
+         * @return an instance of Response
          * @throws IOException If an I/O error occurs
          */
-        private static Response<?> buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
-            String statusLine = reader.readLine();
-            int dotIndex = statusLine.indexOf('.');
-            int statusCode = Integer.parseInt(statusLine.substring(dotIndex + 3, dotIndex + 6));
+        private static Response<?> buildResponse(HttpRequest httpRequest, BufferedInputStream inputStream)
+            throws IOException {
+            // Parse Http response from socket:
+            // Status Line
+            // Response Headers
+            // Blank Line
+            // Response Body
 
+            int statusCode = readStatusCode(inputStream);
+            HttpHeaders headers = readResponseHeaders(inputStream);
+            // read body if present
+            // TODO: (add chunked encoding support)
+            HttpHeader contentLengthHeader = headers.get(CONTENT_LENGTH);
+            byte[] body = getBody(inputStream, contentLengthHeader);
+            if (body != null) {
+                return new HttpResponse<>(httpRequest, statusCode, headers, BinaryData.fromBytes(body));
+            }
+            return new HttpResponse<>(httpRequest, statusCode, headers, null);
+        }
+
+        private static byte[] getBody(BufferedInputStream inputStream, HttpHeader contentLengthHeader)
+            throws IOException {
+            int contentLength;
+            if (contentLengthHeader == null || contentLengthHeader.getValue() == null) {
+                return null;
+            } else {
+                contentLength = Integer.parseInt(contentLengthHeader.getValue());
+            }
+            if (contentLength > 0) {
+                byte[] buffer = new byte[contentLength];
+                int bytesRead;
+                int totalBytesRead = 0;
+
+                while (totalBytesRead < contentLength
+                    && (bytesRead = inputStream.read(buffer, totalBytesRead, contentLength - totalBytesRead)) != -1) {
+                    totalBytesRead += bytesRead;
+                }
+
+                if (totalBytesRead != contentLength) {
+                    try {
+                        inputStream.close(); // close the input stream
+                    } catch (IOException e) {
+                        // handle the exception
+                    }
+                    throw new IOException("Read " + totalBytesRead + " bytes but expected " + contentLength);
+                }
+
+                return buffer;
+            }
+            return null;
+        }
+
+        private static int readStatusCode(InputStream inputStream) throws IOException {
+            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+            int b;
+            while ((b = inputStream.read()) != -1 && b != '\n') {
+                byteOutputStream.write(b);
+            }
+            String statusLine = byteOutputStream.toString("UTF-8").trim();
+            if (statusLine.isEmpty()) {
+                inputStream.close();
+                throw new ProtocolException("Unexpected response from server.");
+            }
+            String[] parts = statusLine.split(" ");
+            if (parts.length < 2) {
+                inputStream.close();
+                throw new ProtocolException(("Unexpected response from server. Status : " + statusLine));
+            }
+            return Integer.parseInt(parts[1]);
+        }
+
+        private static HttpHeaders readResponseHeaders(InputStream inputStream) throws IOException {
             HttpHeaders headers = new HttpHeaders();
-            String line;
-            while ((line = reader.readLine()) != null && !line.isEmpty()) {
-                // Headers may have optional leading and trailing whitespace around the header value.
-                // https://tools.ietf.org/html/rfc7230#section-3.2
-                // Process this accordingly.
-                int split = line.indexOf(':'); // Find ':' to split the header name and value.
-                String key = line.substring(0, split); // Get the header name.
-                String value = line.substring(split + 1).trim(); // Get the header value and trim whitespace.
-                headers.add(HttpHeaderName.fromString(key), value);
+            ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream();
+            int b;
+            while ((b = inputStream.read()) != -1) {
+                if (b == '\n') {
+                    String headerLine = byteOutputStream.toString("UTF-8").trim();
+                    if (headerLine.isEmpty()) {
+                        return headers;
+                    }
+                    int split = headerLine.indexOf(':');
+                    String key = headerLine.substring(0, split);
+                    String value = headerLine.substring(split + 1).trim();
+                    headers.add(HttpHeaderName.fromString(key), value);
+                    byteOutputStream.reset();
+                }
+                byteOutputStream.write(b);
+
             }
-
-            StringBuilder bodyString = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                bodyString.append(line);
-            }
-
-            BinaryData body = BinaryData.fromByteBuffer(ByteBuffer.wrap(bodyString.toString().getBytes()));
-
-            return new HttpResponse<>(httpRequest, statusCode, headers, body);
+            return headers;
         }
     }
 }

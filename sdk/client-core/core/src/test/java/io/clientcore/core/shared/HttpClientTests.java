@@ -316,7 +316,7 @@ public abstract class HttpClientTests {
     public void canSendBinaryDataWithProgressReporting(BinaryData requestBody, byte[] expectedResponseBody) {
         HttpRequest request = new HttpRequest(
             HttpMethod.PUT,
-            getRequestUrl(ECHO_RESPONSE),
+            getProtocol(ECHO_RESPONSE),
             new Headers(),
             requestBody);
 

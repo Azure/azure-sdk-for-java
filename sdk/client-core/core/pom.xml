@@ -50,7 +50,6 @@
       --add-opens io.clientcore.core/io.clientcore.core.http.exception=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.models=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.pipeline=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.http.policy=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation.http.rest=ALL-UNNAMED
