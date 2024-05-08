@@ -127,7 +127,6 @@ public class RetryPolicyTests {
         AtomicInteger attempt = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpRetryPolicy(retryOptions))
             .httpClient(new NoOpHttpClient() {
-
                 @Override
                 public Response<?> send(HttpRequest request) {
                     return new MockHttpResponse(request, statusCodes[attempt.getAndIncrement()]);

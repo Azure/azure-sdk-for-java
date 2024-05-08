@@ -24,7 +24,7 @@ import java.util.function.Predicate;
  * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as a
  * {@link Response response}.
  */
-public final class HttpRedirectPolicy implements HttpPipelinePolicy {
+public final class HttpRedirectPolicy extends HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpRedirectPolicy.class);
     private final int maxAttempts;
     private final Predicate<HttpRequestRedirectCondition> shouldRedirectCondition;
@@ -71,25 +71,36 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<?> process(HttpRequest httpRequest, HttpPipeline httpPipeline) {
         // Reset the attemptedRedirectUrls for each individual request.
-        return attemptRedirect(next, 1, new LinkedHashSet<>());
+        return attemptRedirect(httpRequest, httpPipeline, 1, new LinkedHashSet<>());
     }
 
     /**
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URL.
      */
-    private Response<?> attemptRedirect(final HttpPipelineNextPolicy next,
-                                        final int redirectAttempt, LinkedHashSet<String> attemptedRedirectUrls) {
-        // Make sure the context is not modified during redirect, except for the URL
-        Response<?> response = next.clone().process();
+    private Response<?> attemptRedirect(final HttpRequest httpRequest, final HttpPipeline httpPipeline,
+        final int redirectAttempt, LinkedHashSet<String> attemptedRedirectUrls) {
 
-        HttpRequestRedirectCondition requestRedirectCondition = new HttpRequestRedirectCondition(response, redirectAttempt, attemptedRedirectUrls);
+        Response<?> response;
+
+        // Make sure the context is not modified during redirect, except for the URL
+        if (getNextPolicy() == null) {
+            response = super.process(httpRequest, httpPipeline);
+        } else  {
+            response = getNextPolicy().clone().process(httpRequest, httpPipeline);
+        }
+
+        HttpRequestRedirectCondition requestRedirectCondition =
+            new HttpRequestRedirectCondition(response, redirectAttempt, attemptedRedirectUrls);
+
         if ((shouldRedirectCondition != null && shouldRedirectCondition.test(requestRedirectCondition))
             || (shouldRedirectCondition == null && defaultShouldAttemptRedirect(requestRedirectCondition))) {
+
             createRedirectRequest(response);
-            return attemptRedirect(next, redirectAttempt + 1, attemptedRedirectUrls);
+
+            return attemptRedirect(httpRequest, httpPipeline, redirectAttempt + 1, attemptedRedirectUrls);
         }
 
         return response;
@@ -207,6 +218,16 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
+    }
 
+    /**
+     * Creates a new instance that's a copy of this policy.
+     *
+     * @return A new instance that's a copy of this policy.
+     */
+    @Override
+    public HttpPipelinePolicy clone() {
+        return new HttpRedirectPolicy(new HttpRedirectOptions(this.maxAttempts, this.locationHeader,
+            this.allowedRedirectHttpMethods));
     }
 }

@@ -32,7 +32,7 @@ import static io.clientcore.core.http.models.HttpHeaderName.TRACEPARENT;
 /**
  * The pipeline policy that handles logging of HTTP requests and responses.
  */
-public class HttpLoggingPolicy implements HttpPipelinePolicy {
+public class HttpLoggingPolicy extends HttpPipelinePolicy {
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
@@ -74,10 +74,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<?> process(HttpRequest httpRequest, HttpPipeline httpPipeline) {
         // No logging will be performed, trigger a no-op.
         if (httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
-            return next.process();
+            return super.process(httpRequest, httpPipeline);
         }
 
         ClientLogger logger = null;
@@ -95,7 +95,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         requestLogger.logRequest(logger, httpRequest);
 
         try {
-            Response<?> response = next.process();
+            Response<?> response = super.process(httpRequest, httpPipeline);
 
             if (response != null) {
                 response = responseLogger.logResponse(logger, response, Duration.ofNanos(System.nanoTime() - startNs));
@@ -392,5 +392,20 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         private void doLog(String body) {
             logBuilder.addKeyValue("body", body).log(RESPONSE_LOG_MESSAGE);
         }
+    }
+
+    /**
+     * Creates a new instance that's a copy of this policy.
+     *
+     * @return A new instance that's a copy of this policy.
+     */
+    @Override
+    public HttpPipelinePolicy clone() {
+        return new HttpLoggingPolicy(new HttpLogOptions()
+            .setLogLevel(httpLogDetailLevel)
+            .setAllowedHeaderNames(allowedHeaderNames)
+            .setAllowedQueryParamNames(allowedQueryParameterNames)
+            .setRequestLogger(requestLogger)
+            .setResponseLogger(responseLogger));
     }
 }

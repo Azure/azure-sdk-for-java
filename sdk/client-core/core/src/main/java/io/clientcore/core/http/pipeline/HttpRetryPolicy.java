@@ -32,7 +32,7 @@ import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUE
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
-public class HttpRetryPolicy implements HttpPipelinePolicy {
+public class HttpRetryPolicy extends HttpPipelinePolicy {
     // RetryPolicy is a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRetryPolicy.class);
     private final int maxRetries;
@@ -116,8 +116,8 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
-        return attempt(httpRequest, next, 0, null);
+    public Response<?> process(HttpRequest httpRequest, HttpPipeline httpPipeline) {
+        return attempt(httpRequest, httpPipeline, 0, null);
     }
 
     /*
@@ -133,23 +133,30 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         return calculateRetryDelay(tryCount);
     }
 
-    private Response<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next, final int tryCount,
-                                final List<Exception> suppressed) {
+    private Response<?> attempt(final HttpRequest httpRequest, final HttpPipeline httpPipeline, final int tryCount,
+        final List<Exception> suppressed) {
+
         HttpRequestAccessHelper.setRetryCount(httpRequest, tryCount + 1);
 
         Response<?> response;
 
         try {
-            response = next.clone().process();
+            if (getNextPolicy() == null) {
+                response = super.process(httpRequest, httpPipeline);
+            } else {
+                response = getNextPolicy().clone().process(httpRequest, httpPipeline);
+            }
         } catch (RuntimeException err) {
             if (shouldRetryException(err, tryCount, suppressed)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
 
                 boolean interrupted = false;
+
                 try {
                     Thread.sleep(calculateRetryDelay(tryCount).toMillis());
                 } catch (InterruptedException ie) {
                     interrupted = true;
+
                     err.addSuppressed(ie);
                 }
 
@@ -161,7 +168,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
 
                 suppressedLocal.add(err);
 
-                return attempt(httpRequest, next, tryCount + 1, suppressedLocal);
+                return attempt(httpRequest, httpPipeline, tryCount + 1, suppressedLocal);
             } else {
                 logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
 
@@ -191,7 +198,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ie));
             }
 
-            return attempt(httpRequest, next, tryCount + 1, suppressed);
+            return attempt(httpRequest, httpPipeline, tryCount + 1, suppressed);
         } else {
             if (tryCount >= maxRetries) {
                 logRetryExhausted(tryCount);
@@ -299,5 +306,15 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         } else {
             return requestRetryCondition.getException() instanceof Exception;
         }
+    }
+
+    /**
+     * Creates a new instance that's a copy of this policy.
+     *
+     * @return A new instance that's a copy of this policy.
+     */
+    @Override
+    public HttpPipelinePolicy clone() {
+        return new HttpRetryPolicy(baseDelay, maxDelay, fixedDelay, maxRetries, delayFromHeaders, shouldRetryCondition);
     }
 }

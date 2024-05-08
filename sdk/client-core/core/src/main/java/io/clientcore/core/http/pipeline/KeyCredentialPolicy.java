@@ -18,7 +18,7 @@ import java.util.Objects;
  * <p>Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
  * an exception will be thrown to prevent leaking the key.</p>
  */
-public class KeyCredentialPolicy implements HttpPipelinePolicy {
+public class KeyCredentialPolicy extends HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(KeyCredentialPolicy.class);
     private final HttpHeaderName name;
     private final KeyCredential credential;
@@ -71,13 +71,25 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<?> process(HttpRequest httpRequest, HttpPipeline httpPipeline) {
         setCredential(httpRequest.getHeaders());
-        return next.process();
+
+        return super.process(httpRequest, httpPipeline);
     }
 
     void setCredential(HttpHeaders headers) {
         String credential = this.credential.getKey();
+
         headers.set(name, (prefix == null) ? credential : prefix + " " + credential);
+    }
+
+    /**
+     * Creates a new instance that's a copy of this policy.
+     *
+     * @return A new instance that's a copy of this policy.
+     */
+    @Override
+    public HttpPipelinePolicy clone() {
+        return new KeyCredentialPolicy(this.name, this.credential, this.prefix);
     }
 }
