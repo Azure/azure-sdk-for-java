@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -63,6 +64,7 @@ public abstract class JsonObjectContractTests {
         String json = "{\"string\":\"string\",\"null\":null,\"integer\":10,\"float\":10.0,\"boolean\":true}";
         try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
             JsonObject jsonObject = JsonObject.fromJson(reader);
+            assertEquals(5, jsonObject.size());
 
             JsonElement stringElement = jsonObject.getProperty("string");
             assertTrue(stringElement.isString());
@@ -82,6 +84,13 @@ public abstract class JsonObjectContractTests {
             JsonElement booleanElement = jsonObject.getProperty("boolean");
             assertTrue(booleanElement.isBoolean());
             assertEquals("true", booleanElement.toJsonString());
+
+            assertEquals(json, jsonObject.toJsonString());
+
+            assertEquals("\"string\"", jsonObject.removeProperty("string").toJsonString());
+            assertEquals(4, jsonObject.size());
+            assertNull(jsonObject.removeProperty("string"));
+            assertEquals("{\"null\":null,\"integer\":10,\"float\":10.0,\"boolean\":true}", jsonObject.toJsonString());
         }
     }
 

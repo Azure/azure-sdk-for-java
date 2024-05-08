@@ -17,6 +17,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -53,6 +54,14 @@ public abstract class JsonStringContractTests {
             assertEquals(json, jsonString.toJsonString());
             assertEquals(json.substring(1, json.length() - 1), jsonString.getValue());
         }
+    }
+
+    @Test
+    public void toJsonStringCachesValue() throws IOException {
+        JsonString jsonString = new JsonString("hello");
+        String json = jsonString.toJsonString();
+        assertEquals("\"hello\"", json);
+        assertSame(json, jsonString.toJsonString());
     }
 
     @ParameterizedTest

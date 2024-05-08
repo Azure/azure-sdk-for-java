@@ -41,7 +41,7 @@ public final class StringBuilderWriter extends Writer {
     public void write(int c) throws IOException {
         ensureOpen();
 
-        builder.append(c);
+        builder.append((char) c);
     }
 
     @Override

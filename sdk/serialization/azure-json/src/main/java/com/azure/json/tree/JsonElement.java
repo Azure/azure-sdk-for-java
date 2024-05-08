@@ -3,12 +3,9 @@
 
 package com.azure.json.tree;
 
-import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import com.azure.json.implementation.StringBuilderWriter;
 
 import java.io.IOException;
 
@@ -136,12 +133,5 @@ public abstract class JsonElement implements JsonSerializable<JsonElement> {
      * @return JSON String representation of this element.
      * @throws IOException If an error occurs while creating the JSON string.
      */
-    public String toJsonString() throws IOException {
-        StringBuilderWriter writer = new StringBuilderWriter();
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
-            toJson(jsonWriter).flush();
-            return writer.toString();
-        }
-    }
-
+    public abstract String toJsonString() throws IOException;
 }

@@ -16,11 +16,14 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -54,14 +57,34 @@ public abstract class JsonNumberContractTests {
     public void fromJson(String json, Number number) throws IOException, ParseException {
         try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
             JsonNumber jsonNumber = JsonNumber.fromJson(reader);
-            assertEquals(number, jsonNumber.getValue());
+            if (number instanceof BigInteger) {
+                BigInteger jsonBigInteger = assertInstanceOf(BigInteger.class, jsonNumber.getValue());
+                assertEquals(0, ((BigInteger) number).compareTo(jsonBigInteger));
+            } else if (number instanceof BigDecimal) {
+                BigDecimal jsonBigDecimal = assertInstanceOf(BigDecimal.class, jsonNumber.getValue());
+                assertEquals(0, ((BigDecimal) number).compareTo(jsonBigDecimal));
+            } else {
+                assertEquals(number, jsonNumber.getValue());
+            }
         }
     }
 
     private static Stream<Arguments> fromJsonSupplier() {
-        return Stream.of(Arguments.of("0", 0), Arguments.of("-1", -1), Arguments.of("0.0", 0.0F),
-            Arguments.of("-1.0", -1.0F), Arguments.of("1E6", 1000000.0F), Arguments.of("-1E6", -1000000.0F),
-            Arguments.of("1.0E6", 1000000.0F), Arguments.of("-1.0E6", -1000000.0F));
+        return Stream.of(Arguments.of("0", 0), Arguments.of("-1", -1), Arguments.of("10000000000", 10000000000L),
+            Arguments.of("-10000000000", -10000000000L),
+            Arguments.of("100000000000000000000", new BigInteger("100000000000000000000")),
+            Arguments.of("-100000000000000000000", new BigInteger("-100000000000000000000")), Arguments.of("0.0", 0.0F),
+            Arguments.of("-1.0", -1.0F), Arguments.of("1E6", 1E6F), Arguments.of("-1E6", -1E6F),
+            Arguments.of("1.0E6", 1E6F), Arguments.of("-1.0E6", -1E6F), Arguments.of("1e6", 1E6F),
+            Arguments.of("-1e6", -1E6F), Arguments.of("1.0e6", 1E6F), Arguments.of("-1.0e6", -1E6F),
+            Arguments.of("1E39", 1E39D), Arguments.of("-1E39", -1E39D), Arguments.of("1.0E39", 1E39D),
+            Arguments.of("-1.0E39", -1E39D), Arguments.of("1e39", 1E39D), Arguments.of("-1e39", -1E39D),
+            Arguments.of("1.0e39", 1E39D), Arguments.of("-1.0e39", -1E39D),
+            Arguments.of("1E309", new BigDecimal("1E309")), Arguments.of("-1E309", new BigDecimal("-1E309")),
+            Arguments.of("1.0E309", new BigDecimal("1E309")), Arguments.of("-1.0E309", new BigDecimal("-1E309")),
+            Arguments.of("1e309", new BigDecimal("1E309")), Arguments.of("-1e309", new BigDecimal("-1E309")),
+            Arguments.of("1.0e309", new BigDecimal("1E309")), Arguments.of("-1.0e309", new BigDecimal("-1E309")),
+            Arguments.of("Infinity", Double.POSITIVE_INFINITY), Arguments.of("-Infinity", Double.NEGATIVE_INFINITY));
     }
 
     @ParameterizedTest
@@ -85,6 +108,13 @@ public abstract class JsonNumberContractTests {
     public void invalidFromJsonStartingPoints(String json) throws IOException {
         try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
             assertThrows(IllegalStateException.class, () -> JsonNumber.fromJson(reader));
+        }
+    }
+
+    @Test
+    public void invalidIntegerParse() throws IOException {
+        try (JsonReader reader = getJsonProvider().createReader("1D", new JsonOptions())) {
+            assertThrows(NumberFormatException.class, () -> JsonNumber.fromJson(reader));
         }
     }
 }
