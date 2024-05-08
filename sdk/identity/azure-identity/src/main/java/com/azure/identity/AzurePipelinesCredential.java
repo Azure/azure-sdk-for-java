@@ -10,15 +10,15 @@ import com.azure.identity.implementation.IdentityClientOptions;
 import reactor.core.publisher.Mono;
 
 /**
- * The {@link AzurePipelinesServiceConnectionCredential} acquires a token using the Azure Devops Pipeline service connection.
+ * The {@link AzurePipelinesCredential} acquires a token using the Azure Devops Pipeline service connection.
  */
-public class AzurePipelinesServiceConnectionCredential implements TokenCredential {
+public class AzurePipelinesCredential implements TokenCredential {
 
     private final String serviceConnectionId;
 
     private final IdentityClientOptions identityClientOptions;
 
-    AzurePipelinesServiceConnectionCredential(String serviceConnectionId, IdentityClientOptions identityClientOptions) {
+    AzurePipelinesCredential(String serviceConnectionId, IdentityClientOptions identityClientOptions) {
         this.serviceConnectionId = serviceConnectionId;
         this.identityClientOptions = identityClientOptions;
     }
