@@ -72,17 +72,17 @@ class DefaultHttpClient implements HttpClient {
     private final long readTimeout;
     private final ProxyOptions proxyOptions;
     private final SSLSocketFactory sslSocketFactory;
-    private static final int maxConnections;
-    private static final boolean keepConnectionAlive;
-    private static final SocketConnectionCache socketConnectionCache;
+    private static final int MAX_CONNECTIONS;
+    private static final boolean KEEP_CONNECTION_ALIVE;
+    private static final SocketConnectionCache SOCKET_CONNECTION_CACHE;
 
     static {
         String keepAlive = System.getProperty("http.keepAlive");
-        keepConnectionAlive = keepAlive != null && Boolean.parseBoolean(keepAlive);
+        KEEP_CONNECTION_ALIVE = keepAlive != null && Boolean.parseBoolean(keepAlive);
 
         String maxConnectionsString = System.getProperty("http.maxConnections");
-        maxConnections = maxConnectionsString != null ? Integer.parseInt(maxConnectionsString) : 0;
-        socketConnectionCache = SocketConnectionCache.getInstance(keepConnectionAlive, maxConnections);
+        MAX_CONNECTIONS = maxConnectionsString != null ? Integer.parseInt(maxConnectionsString) : 0;
+        SOCKET_CONNECTION_CACHE = SocketConnectionCache.getInstance(KEEP_CONNECTION_ALIVE, MAX_CONNECTIONS);
     }
 
     DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions,
@@ -102,7 +102,7 @@ class DefaultHttpClient implements HttpClient {
             final String host = requestUrl.getHost();
             final int port = requestUrl.getPort();
 
-            socketConnection = socketConnectionCache.get(
+            socketConnection = SOCKET_CONNECTION_CACHE.get(
                 new SocketConnection.SocketConnectionProperties(protocol, host, port, getSslSocketFactory(), (int) readTimeout));
 
             Response<?> response
@@ -110,7 +110,7 @@ class DefaultHttpClient implements HttpClient {
                 socketConnection.getSocketOutputStream());
 
             // Handle connection reusing
-            socketConnectionCache.reuseConnection(socketConnection);
+            SOCKET_CONNECTION_CACHE.reuseConnection(socketConnection);
             return response;
 
         } else {
@@ -169,13 +169,13 @@ class DefaultHttpClient implements HttpClient {
             connection.setReadTimeout((int) readTimeout);
         }
 
-        if (keepConnectionAlive) {
+        if (KEEP_CONNECTION_ALIVE) {
             connection.setRequestProperty(HttpHeaderName.CONNECTION.toString(), "keep-alive");
         }
 
-        if (maxConnections > 0) {
+        if (MAX_CONNECTIONS > 0) {
             connection.setRequestProperty(HttpHeaderName.CONNECTION.toString(), "keep-alive");
-            connection.setRequestProperty(HttpHeaderName.KEEP_ALIVE.toString(), "max=" + maxConnections);
+            connection.setRequestProperty(HttpHeaderName.KEEP_ALIVE.toString(), "max=" + MAX_CONNECTIONS);
         }
 
         connection.setRequestMethod(httpRequest.getHttpMethod().toString());

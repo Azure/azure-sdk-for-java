@@ -22,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Class to maintain a cache of socket connections
  */
 public final class SocketConnectionCache {
-    private static final ClientLogger logger = new ClientLogger(SocketConnectionCache.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SocketConnectionCache.class);
     private static SocketConnectionCache instance;
     private static final ReentrantLock LOCK = new ReentrantLock();
     private static final Map<SocketConnectionProperties, List<SocketConnection>> CONNECTION_POOL
@@ -39,7 +39,7 @@ public final class SocketConnectionCache {
      * Get the instance of the SocketConnectionCache (Singleton)
      *
      * @param connectionKeepAlive boolean to keep the connection alive
-     * @param maximumConnections  maximum number of connections to keep alive
+     * @param maximumConnections maximum number of connections to keep alive
      * @return the instance of the SocketConnectionCache if it exists, else create a new one
      */
     public static SocketConnectionCache getInstance(boolean connectionKeepAlive, int maximumConnections) {
@@ -93,7 +93,7 @@ public final class SocketConnectionCache {
 
         LOCK.lock();
         try {
-         List<SocketConnection> connections = CONNECTION_POOL.get(socketConnectionProperties);
+            List<SocketConnection> connections = CONNECTION_POOL.get(socketConnectionProperties);
             if (connections == null) {
                 connections = new ArrayList<>();
                 CONNECTION_POOL.put(socketConnectionProperties, connections);
@@ -189,7 +189,7 @@ public final class SocketConnectionCache {
             long toSkip = Math.min(chunkSize, count - pos);
             long skipped = is.skip(toSkip);
             if (skipped == -1) {
-                logger.logThrowableAsError(new IOException("No data, can't skip " + count + " bytes"));
+                LOGGER.logThrowableAsError(new IOException("No data, can't skip " + count + " bytes"));
             }
             pos += skipped;
         }

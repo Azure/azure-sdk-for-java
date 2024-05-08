@@ -105,6 +105,7 @@ public final class SocketConnection {
          * @param host the host name
          * @param port the port number
          * @param sslSocketFactory the SSL socket factory
+         * @param readTimeout the read timeout
          */
         public SocketConnectionProperties(String protocol, String host, int port, SSLSocketFactory sslSocketFactory,
             int readTimeout) {
