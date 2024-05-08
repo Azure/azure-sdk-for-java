@@ -14,10 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -181,6 +179,51 @@ public class ResourceTests {
             super.withId(id);
             return this;
         }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter.writeStartObject()
+                .writeStringField("id", id())
+                .writeJsonField("subResource", this.subResource)
+                .writeArrayField("subResourceList", this.subResourceList, JsonWriter::writeJson)
+                .writeJsonField("subResourceResource", this.subResourceResource)
+                .writeArrayField("subResourceResourceList", this.subResourceResourceList, JsonWriter::writeJson)
+                .writeEndObject();
+        }
+
+        /**
+         * Reads a JSON stream into a {@link SubResourceResource}.
+         *
+         * @param jsonReader The {@link JsonReader} being read.
+         * @return The {@link SubResourceResource} that the JSON stream represented, may return null.
+         * @throws IOException If a {@link SubResourceResource} fails to be read from the {@code jsonReader}.
+         */
+        public static SubResourceResource fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                SubResourceResource subResource = new SubResourceResource();
+
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("id".equals(fieldName)) {
+                        subResource.withId(reader.getString());
+                    } else if("subResource".equals(fieldName)) {
+                        subResource.withSubResource(reader.readObject(reader1 -> SubResource.fromJson(reader1)));
+                    } else if("subResourceList".equals(fieldName)) {
+                        subResource.withSubResourceList(reader.readArray(reader1 -> SubResource.fromJson(reader1)));
+                    } else if("subResourceResource".equals(fieldName)) {
+                        subResource.withSubResourceResource(reader.readObject(reader1 -> SubResourceResource.fromJson(reader1)));
+                    } else if("subResourceResourceList".equals(fieldName)) {
+                        subResource.withSubResourceResourceList(reader.readArray(reader1 -> SubResourceResource.fromJson(reader1)));
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+
+                return subResource;
+            });
+        }
     }
 
     @Test
@@ -267,7 +310,9 @@ public class ResourceTests {
 
     private static <T extends JsonSerializable<T>> String serializeToString(T serializable) throws IOException {
         StringWriter writer = new StringWriter();
-        serializable.toJson(JsonProviders.createWriter(writer));
+        JsonWriter jsonWriter = JsonProviders.createWriter(writer);
+        serializable.toJson(jsonWriter);
+        jsonWriter.flush();
         return writer.toString();
     }
 
