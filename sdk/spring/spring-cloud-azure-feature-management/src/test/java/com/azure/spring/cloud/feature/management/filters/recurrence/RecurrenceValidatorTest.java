@@ -259,6 +259,25 @@ public class RecurrenceValidatorTest {
         consumeValidationTestData(settings, daysOfWeek, RecurrenceConstants.REQUIRED_PARAMETER);
     }
 
+    @Test
+    public void startParameterNotMatchTest() {
+        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
+        settings.setStart("2023-09-01T00:00:00+08:00");
+        settings.setEnd("2023-09-01T02:00:00+08:00");
+        final RecurrenceRange range = new RecurrenceRange();
+        range.setType("NoEnd");
+        final Recurrence recurrence = new Recurrence();
+        recurrence.setRange(range);
+        settings.setRecurrence(recurrence);
+
+        // start time need to match the first recurrence
+        final RecurrencePattern pattern1 = new RecurrencePattern();
+        pattern1.setType("Weekly");
+        pattern1.setDaysOfWeek(List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Saturday", "Sunday"));
+        recurrence.setPattern(pattern1);
+        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_START, RecurrenceConstants.NOT_MATCHED);
+    }
+
     private void consumeValidationTestData(TimeWindowFilterSettings settings, String parameterName, String errorMessage) {
 
         try {

@@ -52,7 +52,7 @@ public class RecurrenceEvaluator {
      * If now is in previous occurrence, return previous occurrence.
      * If now is after the end of previous occurrence, return next occurrence.
      * */
-    public ZonedDateTime calculateClosestStart() {
+    public ZonedDateTime getClosestStart() {
         final OccurrenceInfo occurrenceInfo = getPreviousOccurrence();
         final ZonedDateTime prevOccurrence = occurrenceInfo.previousOccurrence;
         final ZonedDateTime nextOccurrence = getNextOccurrence(occurrenceInfo);

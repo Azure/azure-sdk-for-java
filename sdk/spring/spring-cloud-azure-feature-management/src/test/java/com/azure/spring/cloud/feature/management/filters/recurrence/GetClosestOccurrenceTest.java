@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GetPreviousOccurrenceTest {
+public class GetClosestOccurrenceTest {
     @Test
     public void dailyBeforeStart() {
         final ZonedDateTime now = ZonedDateTime.parse("2024-02-28T00:00:00+08:00");
@@ -210,6 +210,6 @@ public class GetPreviousOccurrenceTest {
 
     private void consumeEvaluationTestData(TimeWindowFilterSettings settings, ZonedDateTime now, ZonedDateTime expectedTime) {
         final RecurrenceEvaluator evaluator = new RecurrenceEvaluator(settings, now);
-        assertEquals(evaluator.calculateClosestStart(), expectedTime);
+        assertEquals(evaluator.getClosestStart(), expectedTime);
     }
 }
