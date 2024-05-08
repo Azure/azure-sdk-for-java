@@ -3,11 +3,10 @@
 
 package com.azure.cosmos.spark
 
+import reactor.core.publisher.Mono
+
 trait AccountDataResolver {
     def getAccountDataConfig(configs : Map[String, String]): Map[String, String]
 
-    // @TODO fabianm - leaving this commented out for now. Below is how I would envision
-    // exposing the option to use linked service tokens eventually when the LinkedService for
-    // Cosmos DB supports ManagedIdentity authentication
-    // def getManagedIdentityTokenProvider: List[String] => Mono[CosmosAccessToken]
+    def getAccessTokenProvider(configs : Map[String, String]): Option[List[String] => CosmosAccessToken]
 }

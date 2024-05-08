@@ -19,7 +19,7 @@ import com.azure.cosmos.spark.PriorityLevels.PriorityLevel
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.SerializationDateTimeConversionModes.SerializationDateTimeConversionMode
 import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
-import com.azure.cosmos.spark.diagnostics.{DetailedFeedDiagnosticsProvider, DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
+import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DetailedFeedDiagnosticsProvider, DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -31,7 +31,7 @@ import java.time.format.DateTimeFormatter
 import java.time.{Duration, Instant}
 import java.util.{Locale, ServiceLoader}
 import scala.collection.concurrent.TrieMap
-import scala.collection.immutable.{HashSet, Map}
+import scala.collection.immutable.{HashSet, List, Map}
 import scala.collection.mutable
 
 // scalastyle:off underscore.import
@@ -233,14 +233,17 @@ private[spark] object CosmosConfigNames {
   }
 }
 
-private object CosmosConfig {
+private object CosmosConfig  extends BasicLoggingTrait {
   lazy val accountDataResolverCls = getAccountDataResolver
   def getAccountDataResolver(): Option[AccountDataResolver] = {
+    logInfo("Checking for account resolvers")
     var accountDataResolverCls = None: Option[AccountDataResolver]
     val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
     val iterator = serviceLoader.iterator()
     if (iterator.hasNext()) {
-      accountDataResolverCls = Some(iterator.next())
+      val resolver = iterator.next()
+      logInfo(s"Found account resolver ${resolver.getClass.getName}")
+      accountDataResolverCls = Some(resolver)
     }
 
     accountDataResolverCls
@@ -536,19 +539,17 @@ private object CosmosAccountConfig {
     }
 
     // parsing above already validated these assertions
-    assert(endpointOpt.isDefined)
-    assert(accountName.isDefined)
-    assert(azureEnvironmentOpt.isDefined)
+    assert(endpointOpt.isDefined, s"Parameter '${CosmosConfigNames.AccountEndpoint}' (Uri) is missing.")
+    assert(accountName.isDefined, s"Parameter '${CosmosConfigNames.AccountEndpoint}' is missing.")
+    assert(azureEnvironmentOpt.isDefined, s"Parameter '${CosmosConfigNames.AzureEnvironment}' is missing.")
 
     authConfig match {
         case _: CosmosServicePrincipalAuthConfig =>
-            assert(subscriptionIdOpt.isDefined)
-            assert(resourceGroupNameOpt.isDefined)
-            assert(tenantIdOpt.isDefined)
         case _: CosmosManagedIdentityAuthConfig =>
-          assert(subscriptionIdOpt.isDefined)
-          assert(resourceGroupNameOpt.isDefined)
-          assert(tenantIdOpt.isDefined)
+        case _: CosmosAccessTokenAuthConfig =>
+            assert(subscriptionIdOpt.isDefined, s"Parameter '${CosmosConfigNames.SubscriptionId}' is missing.")
+            assert(resourceGroupNameOpt.isDefined, s"Parameter '${CosmosConfigNames.ResourceGroupName}' is missing.")
+            assert(tenantIdOpt.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
         case  _ =>
     }
 
@@ -592,9 +593,9 @@ private object CosmosAccountConfig {
   }
 }
 
-object CosmosAuthType extends Enumeration {
+private[spark] object CosmosAuthType extends Enumeration {
     type CosmosAuthType = Value
-    val MasterKey, ServicePrinciple, ServicePrincipal, ManagedIdentity = Value
+    val MasterKey, ServicePrinciple, ServicePrincipal, ManagedIdentity, AccessToken = Value
 }
 
 private object AzureEnvironmentType extends Enumeration {
@@ -602,7 +603,7 @@ private object AzureEnvironmentType extends Enumeration {
     val Azure, AzureChina, AzureUsGovernment, AzureGermany = Value
 }
 
-trait CosmosAuthConfig {}
+private[spark] trait CosmosAuthConfig {}
 
 private case class CosmosMasterKeyAuthConfig(accountKey: String) extends CosmosAuthConfig
 private case class CosmosServicePrincipalAuthConfig(
@@ -612,6 +613,9 @@ private case class CosmosServicePrincipalAuthConfig(
 private case class CosmosManagedIdentityAuthConfig( tenantId: String,
                                                      clientId: Option[String],
                                                      resourceId: Option[String]) extends CosmosAuthConfig
+
+private case class CosmosAccessTokenAuthConfig(tenantId: String, tokenProvider: List[String] => CosmosAccessToken)
+  extends CosmosAuthConfig
 
 private object CosmosAuthConfig {
     private val DefaultAuthType = CosmosAuthType.MasterKey
@@ -664,23 +668,43 @@ private object CosmosAuthConfig {
         val tenantId = CosmosConfigEntry.parse(cfg, TenantId)
         val clientSecret = CosmosConfigEntry.parse(cfg, ClientSecret)
 
-        assert(authType.isDefined)
+        assert(authType.isDefined,s"Parameter '${CosmosConfigNames.AuthType}' is missing.")
 
         if (authType.get == CosmosAuthType.MasterKey) {
-          assert(key.isDefined)
+          assert(key.isDefined, s"Parameter '${CosmosConfigNames.AccountKey}' is missing.")
           CosmosMasterKeyAuthConfig(key.get)
         } else if (authType.get == CosmosAuthType.ManagedIdentity) {
-          assert(tenantId.isDefined)
+          assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
           CosmosManagedIdentityAuthConfig(tenantId.get, clientId, resourceId)
-        } else {
-            assert(clientId.isDefined)
-            assert(tenantId.isDefined)
-            assert(clientSecret.isDefined)
+        } else if (authType.get == CosmosAuthType.ServicePrincipal || authType.get == CosmosAuthType.ServicePrinciple) {
+            assert(clientId.isDefined, s"Parameter '${CosmosConfigNames.ClientId}' is missing.")
+            assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
+            assert(clientSecret.isDefined, s"Parameter '${CosmosConfigNames.ClientSecret}' is missing.")
 
             CosmosServicePrincipalAuthConfig(
                 clientId.get,
                 tenantId.get,
                 clientSecret.get)
+        } else if (authType.get == CosmosAuthType.AccessToken) {
+          assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
+          val accountDataResolver = CosmosConfig.getAccountDataResolver()
+          if (!accountDataResolver.isDefined) {
+            throw new IllegalArgumentException(
+              s"For auth type '${authType.get}' you have to provide an implementation of the " +
+                "'com.azure.cosmos.spark.AccountDataResolver' trait on the class path.")
+          }
+
+          val accessTokenProvider = accountDataResolver.get.getAccessTokenProvider(cfg)
+          if (!accessTokenProvider.isDefined) {
+            throw new IllegalArgumentException(
+              s"For auth type '${authType.get}' you have to provide an implementation of the " +
+                "'com.azure.cosmos.spark.AccountDataResolver' trait on the class path, which " +
+                "returns an access token provider in the 'getAccessTokenProvider' method.")
+          }
+
+          CosmosAccessTokenAuthConfig(tenantId.get, accessTokenProvider.get)
+        } else {
+          throw new IllegalArgumentException(s"Unknown auth type '${authType.get}'.")
         }
     }
 }
@@ -1197,12 +1221,11 @@ private object CosmosWriteConfig {
     val initialBatchSizeOpt = CosmosConfigEntry.parse(cfg, initialMicroBatchSize)
     val maxBatchSizeOpt = CosmosConfigEntry.parse(cfg, maxMicroBatchSize)
 
-    assert(bulkEnabledOpt.isDefined)
+    assert(bulkEnabledOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteBulkEnabled}' is missing.")
 
     // parsing above already validated this
-    assert(itemWriteStrategyOpt.isDefined)
-    assert(maxRetryCountOpt.isDefined)
-    assert(bulkEnabledOpt.isDefined)
+    assert(itemWriteStrategyOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteStrategy}' is missing.")
+    assert(maxRetryCountOpt.isDefined, s"Parameter '${CosmosConfigNames.WriteMaxRetryCount}' is missing.")
 
     itemWriteStrategyOpt.get match {
       case ItemWriteStrategy.ItemPatch =>
@@ -1333,8 +1356,10 @@ private object CosmosSerializationConfig {
     val dateTimeConversionModeOpt = CosmosConfigEntry.parse(cfg, dateTimeConversionMode)
 
     // parsing above already validated this
-    assert(inclusionModeOpt.isDefined)
-    assert(dateTimeConversionModeOpt.isDefined)
+    assert(inclusionModeOpt.isDefined, s"Parameter '${CosmosConfigNames.SerializationInclusionMode}' is missing.")
+    assert(
+      dateTimeConversionModeOpt.isDefined,
+      s"Parameter '${CosmosConfigNames.SerializationDateTimeConversionMode}' is missing.")
 
     CosmosSerializationConfig(
       serializationInclusionMode = inclusionModeOpt.get,
@@ -1471,8 +1496,8 @@ private object CosmosSchemaInferenceConfig {
     val includeTimestamp = CosmosConfigEntry.parse(cfg, inferSchemaIncludeTimestamp)
     val allowNullForInferredProperties = CosmosConfigEntry.parse(cfg, inferSchemaForceNullableProperties)
 
-    assert(samplingSize.isDefined)
-    assert(enabled.isDefined)
+    assert(samplingSize.isDefined, s"Parameter '${CosmosConfigNames.ReadInferSchemaSamplingSize}' is missing.")
+    assert(enabled.isDefined, s"Parameter '${CosmosConfigNames.ReadInferSchemaEnabled}' is missing.")
     CosmosSchemaInferenceConfig(
       samplingSize.get,
       enabled.get,
@@ -1827,13 +1852,15 @@ private object CosmosThroughputControlConfig {
               throw new IllegalArgumentException(
                 s"Configuration option '${CosmosConfigNames.ThroughputControlName}' must not be empty.")
             }
-            assert(groupName.isDefined)
+            assert(groupName.isDefined, s"Parameter '${CosmosConfigNames.ThroughputControlName}' is missing.")
 
             if (globalControlUseDedicatedContainer.isEmpty) {
               throw new IllegalArgumentException(
                 s"Configuration option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' must not be empty.")
             }
-            assert(globalControlUseDedicatedContainer.isDefined)
+            assert(
+              globalControlUseDedicatedContainer.isDefined,
+              s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is missing.")
 
             if (globalControlUseDedicatedContainer.get) {
               if (globalControlDatabase.isEmpty || globalControlContainer.isEmpty) {
@@ -1842,8 +1869,12 @@ private object CosmosThroughputControlConfig {
                     s"'${CosmosConfigNames.ThroughputControlGlobalControlContainer}' must not be empty if " +
                     s" option '${CosmosConfigNames.ThroughputControlGlobalControlUseDedicatedContainer}' is true.")
               }
-              assert(globalControlDatabase.isDefined)
-              assert(globalControlContainer.isDefined)
+              assert(
+                globalControlDatabase.isDefined,
+                s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlDatabase}' is missing.")
+              assert(
+                globalControlContainer.isDefined,
+                s"Parameter '${CosmosConfigNames.ThroughputControlGlobalControlContainer}' is missing.")
             }
 
             Some(CosmosThroughputControlConfig(
@@ -1865,8 +1896,12 @@ private object CosmosThroughputControlConfig {
   def parseThroughputControlAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val throughputControlAccountEndpoint = CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier)
     val throughputControlAccountKey = CosmosConfigEntry.parse(cfg, throughputControlAccountKeySupplier)
-    assert(throughputControlAccountEndpoint.isDefined)
-    assert(throughputControlAccountKey.isDefined)
+    assert(
+      throughputControlAccountEndpoint.isDefined,
+      s"Parameter '${CosmosConfigNames.ThroughputControlAccountEndpoint}' is missing.")
+    assert(
+      throughputControlAccountKey.isDefined,
+      s"Parameter '${CosmosConfigNames.ThroughputControlAccountKey}' is missing.")
 
     // use customized throughput control database account
     val throughputControlAccountConfigMap = mutable.Map[String, String]()
