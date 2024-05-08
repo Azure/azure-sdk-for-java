@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class PollingUtils {
+public final class PollingUtils {
 
     public static final TypeReference<Map<String, Object>> POST_POLL_RESULT_TYPE_REFERENCE
         = new TypeReference<Map<String, Object>>() { };
@@ -63,6 +63,7 @@ public class PollingUtils {
         if (binaryData == null) {
             value = null;
         } else if (typeReference.getJavaClass().isAssignableFrom(BinaryData.class)) {
+            // T is BinaryData
             value = typeReference.getJavaClass().cast(binaryData.toReplayableBinaryData());
         } else {
             value = binaryData.toObject(typeReference, serializer);
@@ -76,6 +77,7 @@ public class PollingUtils {
         if (binaryData == null) {
             value = Mono.empty();
         } else if (typeReference.getJavaClass().isAssignableFrom(BinaryData.class)) {
+            // T is BinaryData
             value = (Mono<T>) binaryData.toReplayableBinaryDataAsync();
         } else {
             value = binaryData.toObjectAsync(typeReference, serializer);

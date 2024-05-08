@@ -80,7 +80,7 @@ public final class SyncFinalResultViaPropertyPollingStrategy<T, U> extends SyncO
         throw LOGGER.logExceptionAsError(new AzureException(String.format(
             "Operation failed or cancelled with status code %d, '%s' header: %s, and response body: %s",
             response.getStatusCode(), PollingUtils.OPERATION_LOCATION_HEADER, operationLocationHeader,
-            response.getValue().toString())));
+            response.getValue())));
     }
 
     /**

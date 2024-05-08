@@ -29,7 +29,7 @@ import java.util.Objects;
  * @param <U> the type of the final result object to deserialize into, or BinaryData if raw response body should be
  * kept
  */
-public class FinalResultViaPropertyPollingStrategy<T, U> extends OperationResourcePollingStrategy<T, U> {
+public final class FinalResultViaPropertyPollingStrategy<T, U> extends OperationResourcePollingStrategy<T, U> {
 
     private static final ClientLogger LOGGER = new ClientLogger(FinalResultViaPropertyPollingStrategy.class);
 
@@ -82,7 +82,7 @@ public class FinalResultViaPropertyPollingStrategy<T, U> extends OperationResour
             return Mono.error(new AzureException(String.format(
                 "Operation failed or cancelled with status code %d," + ", '%s' header: %s, and response body: %s",
                 response.getStatusCode(), PollingUtils.OPERATION_LOCATION_HEADER, operationLocationHeader,
-                response.getValue().toString())));
+                response.getValue())));
         }
     }
 
