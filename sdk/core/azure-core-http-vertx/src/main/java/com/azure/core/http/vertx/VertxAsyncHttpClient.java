@@ -11,6 +11,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
 import com.azure.core.http.vertx.implementation.VertxHttpAsyncResponse;
 import com.azure.core.http.vertx.implementation.VertxRequestWriteSubscriber;
+import com.azure.core.http.vertx.implementation.VertxUtils;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -23,19 +24,18 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import io.netty.buffer.Unpooled;
+import io.vertx.core.Future;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoSink;
+import reactor.util.context.ContextView;
 
 import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
-import static com.azure.core.http.vertx.implementation.VertxUtils.wrapVertxException;
 
 /**
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
@@ -72,54 +72,42 @@ class VertxAsyncHttpClient implements HttpClient {
         RequestOptions options = new RequestOptions().setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
             .setAbsoluteURI(request.getUrl());
 
-        return Mono.create(sink -> client.request(options, requestResult -> {
-            if (requestResult.failed()) {
-                sink.error(wrapVertxException(requestResult.cause()));
-                return;
-            }
+        return Mono.deferContextual(contextView -> {
+            // Design change for VertxAsyncHttpClient.
+            // Previously, we were using Mono.create with a MonoSink that controlled the reactive flow. Instead, use
+            // Vert.x's Future and composition pattern to control the flow. This allows for the request-response flow to be
+            // completely controlled by Vert.x's patterns and upon completion, we can convert the result to a Mono.
+            Future<HttpClientResponse> responseFuture = client.request(options).compose(vertxRequest -> {
+                for (HttpHeader header : request.getHeaders()) {
+                    // Potential optimization here would be creating a MultiMap wrapper around azure-core's
+                    // HttpHeaders and using RequestOptions.setHeaders(MultiMap)
+                    vertxRequest.putHeader(header.getName(), header.getValuesList());
+                }
+                if (request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) {
+                    vertxRequest.setChunked(true);
+                }
 
-            HttpClientRequest vertxRequest = requestResult.result();
-            for (HttpHeader header : request.getHeaders()) {
-                // Potential optimization here would be creating a MultiMap wrapper around azure-core's
-                // HttpHeaders and using RequestOptions.setHeaders(MultiMap)
-                vertxRequest.putHeader(header.getName(), header.getValuesList());
-            }
-            if (request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) {
-                vertxRequest.setChunked(true);
-            }
-
-            io.vertx.core.Future<HttpClientResponse> bodySendFuture
-                = sendBody(sink, request, progressReporter, vertxRequest);
+                return sendBody(contextView, request, progressReporter, vertxRequest);
+            });
 
             if (!perCallTimeout.isZero() && !perCallTimeout.isNegative()) {
-                bodySendFuture = bodySendFuture.timeout(perCallTimeout.toMillis(), TimeUnit.MILLISECONDS);
+                responseFuture = responseFuture.timeout(perCallTimeout.toMillis(), TimeUnit.MILLISECONDS);
             }
 
-            bodySendFuture.andThen(event -> {
-                if (event.succeeded()) {
-                    HttpClientResponse vertxHttpResponse = event.result();
-                    vertxHttpResponse.exceptionHandler(exception -> sink.error(wrapVertxException(exception)));
+            Mono<HttpResponse> responseMono;
+            if (eagerlyReadResponse || ignoreResponseBody) {
+                responseMono = Mono.fromCompletionStage(responseFuture
+                    .compose(vertxHttpResponse -> vertxHttpResponse.body()
+                        .map(body -> new BufferedVertxHttpResponse(request, vertxHttpResponse, body)))
+                    .toCompletionStage());
+            } else {
+                responseMono = Mono.fromCompletionStage(
+                    responseFuture.map(vertxHttpResponse -> new VertxHttpAsyncResponse(request, vertxHttpResponse))
+                        .toCompletionStage());
+            }
 
-                    // TODO (alzimmer)
-                    // For now Vertx will always use a buffered response until reliability issues when using streaming
-                    // can be resolved.
-                    if (eagerlyReadResponse || ignoreResponseBody) {
-                        vertxHttpResponse.body(bodyEvent -> {
-                            if (bodyEvent.succeeded()) {
-                                sink.success(
-                                    new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyEvent.result()));
-                            } else {
-                                sink.error(wrapVertxException(bodyEvent.cause()));
-                            }
-                        });
-                    } else {
-                        sink.success(new VertxHttpAsyncResponse(request, vertxHttpResponse));
-                    }
-                } else {
-                    sink.error(wrapVertxException(event.cause()));
-                }
-            }).onFailure(cause -> sink.error(wrapVertxException(cause)));
-        }));
+            return responseMono.onErrorMap(VertxUtils::wrapVertxException);
+        });
     }
 
     @Override
@@ -128,7 +116,7 @@ class VertxAsyncHttpClient implements HttpClient {
     }
 
     @SuppressWarnings("deprecation")
-    private io.vertx.core.Future<HttpClientResponse> sendBody(MonoSink<HttpResponse> sink, HttpRequest azureRequest,
+    private io.vertx.core.Future<HttpClientResponse> sendBody(ContextView contextView, HttpRequest azureRequest,
         ProgressReporter progressReporter, HttpClientRequest vertxRequest) {
         BinaryData body = azureRequest.getBodyAsBinaryData();
         if (body == null) {
@@ -138,13 +126,9 @@ class VertxAsyncHttpClient implements HttpClient {
         io.vertx.core.Future<?> writeAndEnd;
         BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
         if (bodyContent instanceof ByteArrayContent
+            || bodyContent instanceof ByteBufferContent
             || bodyContent instanceof StringContent
             || bodyContent instanceof SerializableContent) {
-            byte[] content = bodyContent.toBytes();
-            writeAndEnd = vertxRequest.write(Buffer.buffer(content))
-                .onSuccess(ignored -> reportProgress(content.length, progressReporter))
-                .compose(ignored -> vertxRequest.end());
-        } else if (bodyContent instanceof ByteBufferContent) {
             long contentLength = bodyContent.getLength();
             writeAndEnd = vertxRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bodyContent.toByteBuffer())))
                 .onSuccess(ignored -> reportProgress(contentLength, progressReporter))
@@ -153,8 +137,7 @@ class VertxAsyncHttpClient implements HttpClient {
             // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
             io.vertx.core.Promise<Void> promise = io.vertx.core.Promise.promise();
             azureRequest.getBody()
-                .subscribe(
-                    new VertxRequestWriteSubscriber(vertxRequest, promise, progressReporter, sink.contextView()));
+                .subscribe(new VertxRequestWriteSubscriber(vertxRequest, promise, progressReporter, contextView));
             writeAndEnd = promise.future();
         }
 
