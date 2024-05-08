@@ -13,18 +13,18 @@ public final class ServiceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceInner model = BinaryData.fromString(
-            "{\"id\":\"xqeofjaeqjhqjba\",\"name\":\"msmjqulngsntn\",\"type\":\"bkzgcwrwclx\",\"properties\":{\"displayName\":\"ljdousk\",\"resourceTypes\":[\"kocrcjdkwtnhx\",\"njbiksqrglssain\",\"p\"],\"metadata\":{\"xsabkyqdu\":\"zlljfmppeebvm\"}}}")
+            "{\"id\":\"ctazakljlahbcryf\",\"name\":\"fdosyg\",\"type\":\"paojakhmsbzjh\",\"properties\":{\"displayName\":\"evdphlxaol\",\"resourceTypes\":[\"trg\",\"jbp\",\"zfsinzgvf\",\"jrwzox\"]}}")
             .toObject(ServiceInner.class);
-        Assertions.assertEquals("ljdousk", model.displayName());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.resourceTypes().get(0));
+        Assertions.assertEquals("evdphlxaol", model.displayName());
+        Assertions.assertEquals("trg", model.resourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceInner model = new ServiceInner().withDisplayName("ljdousk")
-            .withResourceTypes(Arrays.asList("kocrcjdkwtnhx", "njbiksqrglssain", "p"));
+        ServiceInner model = new ServiceInner().withDisplayName("evdphlxaol")
+            .withResourceTypes(Arrays.asList("trg", "jbp", "zfsinzgvf", "jrwzox"));
         model = BinaryData.fromObject(model).toObject(ServiceInner.class);
-        Assertions.assertEquals("ljdousk", model.displayName());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.resourceTypes().get(0));
+        Assertions.assertEquals("evdphlxaol", model.displayName());
+        Assertions.assertEquals("trg", model.resourceTypes().get(0));
     }
 }

@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,14 +15,12 @@ public final class UnassignJobOptions {
     /*
      * If SuspendMatching is true, then a job is not queued for re-matching with a worker.
      */
-    @Generated
     @JsonProperty(value = "suspendMatching")
     private Boolean suspendMatching;
 
     /**
      * Creates an instance of UnassignJobOptions class.
      */
-    @Generated
     public UnassignJobOptions() {
     }
 
@@ -33,7 +30,6 @@ public final class UnassignJobOptions {
      *
      * @return the suspendMatching value.
      */
-    @Generated
     public Boolean isSuspendMatching() {
         return this.suspendMatching;
     }
@@ -45,7 +41,6 @@ public final class UnassignJobOptions {
      * @param suspendMatching the suspendMatching value to set.
      * @return the UnassignJobOptions object itself.
      */
-    @Generated
     public UnassignJobOptions setSuspendMatching(Boolean suspendMatching) {
         this.suspendMatching = suspendMatching;
         return this;

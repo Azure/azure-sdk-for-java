@@ -6,11 +6,9 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.EventDefinitionKind;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
@@ -20,7 +18,6 @@ import com.azure.resourcemanager.eventgrid.models.InlineEventProperties;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopic;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicActivationState;
 import com.azure.resourcemanager.eventgrid.models.UserIdentityProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -28,83 +25,71 @@ import java.util.Map;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PartnerTopicsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"c62830cd-c44a-48f0-a094-918926e3eb80\",\"source\":\"gtkihonikzsr\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"lykhkg\":{\"description\":\"z\",\"displayName\":\"pntogkensckh\",\"documentationUrl\":\"carmoyfx\",\"dataSchemaUrl\":\"wykuqdnd\"},\"qmlfv\":{\"description\":\"pvd\",\"displayName\":\"fpeerscdxrnr\",\"documentationUrl\":\"rcufmbgacnrgfdtn\",\"dataSchemaUrl\":\"spsanmameubkq\"},\"e\":{\"description\":\"qcs\",\"displayName\":\"qjmxpt\",\"documentationUrl\":\"ipuugkwdrqmr\",\"dataSchemaUrl\":\"huuonjkkxukg\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-11-04T15:53:15Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"gcjojlleui\",\"messageForActivation\":\"mt\"},\"identity\":{\"type\":\"SystemAssigned, UserAssigned\",\"principalId\":\"htmep\",\"tenantId\":\"bpjbapm\",\"userAssignedIdentities\":{\"mnuf\":{\"principalId\":\"kvavucgj\",\"clientId\":\"aiq\"},\"scotyx\":{\"principalId\":\"rchxwwuzdmhvwl\",\"clientId\":\"vjmxmlitqdsjipdv\"}}},\"location\":\"riifefn\",\"tags\":{\"eailwdqmqf\":\"vrqoemwsi\",\"kd\":\"deotmfx\"},\"id\":\"g\",\"name\":\"gnamkuuyiu\",\"type\":\"uafixlxicwgp\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"90bb0e6f-9db9-41c3-bcf2-fa1d78821a2f\",\"source\":\"gzxlermkmerghski\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"f\":{\"description\":\"cbkfukd\",\"displayName\":\"qnv\",\"documentationUrl\":\"dydshk\",\"dataSchemaUrl\":\"fyaloowwzizzny\"},\"qpfzlpejtznxlue\":{\"description\":\"zstifgufyj\",\"displayName\":\"kqiyvnd\",\"documentationUrl\":\"kgwesy\",\"dataSchemaUrl\":\"qh\"},\"cumecsaaqg\":{\"description\":\"jqbbgsimwejlw\",\"displayName\":\"bpjzobdwbcpraswk\",\"documentationUrl\":\"ydtnaczkfwfatgaw\",\"dataSchemaUrl\":\"nskivdwgt\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-09-11T10:28:46Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"sbskowkrbhz\",\"messageForActivation\":\"bkhtmqowiu\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"ucyhfaimq\",\"tenantId\":\"ruozkgyfp\",\"userAssignedIdentities\":{\"xvlzjxplhpevasyn\":{\"principalId\":\"gfmq\",\"clientId\":\"kk\"}}},\"location\":\"vzjyielb\",\"tags\":{\"nmpecqxgiqasifub\":\"vbqv\"},\"id\":\"snstl\",\"name\":\"wqpjnxjkhtupsvy\",\"type\":\"uweuiy\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PartnerTopic response = manager.partnerTopics().define("b").withRegion("svbxxyjisskob")
-            .withExistingResourceGroup("fwkztsms").withTags(mapOf("rkdpsqeqfb", "lflioewyhxessm", "ses", "xm"))
-            .withIdentity(new IdentityInfo().withType(IdentityType.USER_ASSIGNED).withPrincipalId("gnuywezygva")
-                .withTenantId("aaqwvkg").withUserAssignedIdentities(
-                    mapOf("ortbnukkfax", new UserIdentityProperties().withPrincipalId("pmpv").withClientId("ogehluf"))))
-            .withPartnerRegistrationImmutableId(UUID.fromString("79187893-1ce3-4248-a027-11bad6b932fc"))
-            .withSource(
-                "lznfhkqytkztado")
+        PartnerTopic response = manager.partnerTopics()
+            .define("osnqliwkmzojfe")
+            .withRegion("dhqnufbxweiib")
+            .withExistingResourceGroup("ofnqhlbs")
+            .withTags(mapOf("ybydhui", "jovf", "aorhjkehwvumo", "aouwudh", "ugejcvjkjyczcmt", "qircamqprlob"))
+            .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withPrincipalId("pg")
+                .withTenantId("qebmvrdjomlnwsb")
+                .withUserAssignedIdentities(mapOf("oinmphymcqidklt",
+                    new UserIdentityProperties().withPrincipalId("sflxkqesd").withClientId("dsbgzan"))))
+            .withPartnerRegistrationImmutableId(UUID.fromString("231746ee-1140-4b42-9504-fe5bf76a39ab"))
+            .withSource("htgmknazgbj")
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                .withInlineEventTypes(mapOf("pnfdbgsosciene",
-                    new InlineEventProperties().withDescription("fcycrsvlo").withDisplayName("h")
-                        .withDocumentationUrl("qkzjuqwqaj").withDataSchemaUrl("zxpixhyo"),
-                    "urz",
-                    new InlineEventProperties().withDescription("vbennmfkbpjnrt").withDisplayName("w")
-                        .withDocumentationUrl("thr").withDataSchemaUrl("mdudsy"),
-                    "yehhfdyldhg",
-                    new InlineEventProperties().withDescription("ktjhffe").withDisplayName("koqyouer")
-                        .withDocumentationUrl("g").withDataSchemaUrl("uzxk"),
-                    "zwhpjlwyxedz",
-                    new InlineEventProperties().withDescription("d").withDisplayName("zqiyuqhtder")
-                        .withDocumentationUrl("n").withDataSchemaUrl("a"))))
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-07-11T01:48:14Z"))
+                .withInlineEventTypes(mapOf("lna",
+                    new InlineEventProperties().withDescription("sttcucrcmm")
+                        .withDisplayName("xp")
+                        .withDocumentationUrl("iwifhbk")
+                        .withDataSchemaUrl("dttohq"),
+                    "bun",
+                    new InlineEventProperties().withDescription("tgs")
+                        .withDisplayName("ikvllrhtpmgl")
+                        .withDocumentationUrl("oi")
+                        .withDataSchemaUrl("trawrqkza"))))
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-04-11T13:49:27Z"))
             .withActivationState(PartnerTopicActivationState.ACTIVATED)
-            .withPartnerTopicFriendlyDescription("kewvmyifopxfj").withMessageForActivation("pdyzoutx").create();
+            .withPartnerTopicFriendlyDescription("wee")
+            .withMessageForActivation("nejzltkaszfjsxs")
+            .create();
 
-        Assertions.assertEquals("riifefn", response.location());
-        Assertions.assertEquals("vrqoemwsi", response.tags().get("eailwdqmqf"));
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("htmep", response.identity().principalId());
-        Assertions.assertEquals("bpjbapm", response.identity().tenantId());
-        Assertions.assertEquals("kvavucgj", response.identity().userAssignedIdentities().get("mnuf").principalId());
-        Assertions.assertEquals("aiq", response.identity().userAssignedIdentities().get("mnuf").clientId());
-        Assertions.assertEquals(UUID.fromString("c62830cd-c44a-48f0-a094-918926e3eb80"),
+        Assertions.assertEquals("vzjyielb", response.location());
+        Assertions.assertEquals("vbqv", response.tags().get("nmpecqxgiqasifub"));
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("ucyhfaimq", response.identity().principalId());
+        Assertions.assertEquals("ruozkgyfp", response.identity().tenantId());
+        Assertions.assertEquals("gfmq",
+            response.identity().userAssignedIdentities().get("xvlzjxplhpevasyn").principalId());
+        Assertions.assertEquals("kk", response.identity().userAssignedIdentities().get("xvlzjxplhpevasyn").clientId());
+        Assertions.assertEquals(UUID.fromString("90bb0e6f-9db9-41c3-bcf2-fa1d78821a2f"),
             response.partnerRegistrationImmutableId());
-        Assertions.assertEquals("gtkihonikzsr", response.source());
+        Assertions.assertEquals("gzxlermkmerghski", response.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, response.eventTypeInfo().kind());
-        Assertions.assertEquals("z", response.eventTypeInfo().inlineEventTypes().get("lykhkg").description());
-        Assertions.assertEquals("pntogkensckh",
-            response.eventTypeInfo().inlineEventTypes().get("lykhkg").displayName());
-        Assertions.assertEquals("carmoyfx",
-            response.eventTypeInfo().inlineEventTypes().get("lykhkg").documentationUrl());
-        Assertions.assertEquals("wykuqdnd", response.eventTypeInfo().inlineEventTypes().get("lykhkg").dataSchemaUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T15:53:15Z"),
+        Assertions.assertEquals("cbkfukd", response.eventTypeInfo().inlineEventTypes().get("f").description());
+        Assertions.assertEquals("qnv", response.eventTypeInfo().inlineEventTypes().get("f").displayName());
+        Assertions.assertEquals("dydshk", response.eventTypeInfo().inlineEventTypes().get("f").documentationUrl());
+        Assertions.assertEquals("fyaloowwzizzny", response.eventTypeInfo().inlineEventTypes().get("f").dataSchemaUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-11T10:28:46Z"),
             response.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerTopicActivationState.NEVER_ACTIVATED, response.activationState());
-        Assertions.assertEquals("gcjojlleui", response.partnerTopicFriendlyDescription());
-        Assertions.assertEquals("mt", response.messageForActivation());
+        Assertions.assertEquals("sbskowkrbhz", response.partnerTopicFriendlyDescription());
+        Assertions.assertEquals("bkhtmqowiu", response.messageForActivation());
     }
 
     // Use "Map.of" if available

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sphere.fluent.models.DeviceInsightInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Paged collection of DeviceInsight items. */
+/**
+ * Paged collection of DeviceInsight items.
+ */
 @Fluent
 public final class PagedDeviceInsight {
     /*
@@ -22,16 +24,18 @@ public final class PagedDeviceInsight {
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PagedDeviceInsight class. */
+    /**
+     * Creates an instance of PagedDeviceInsight class.
+     */
     public PagedDeviceInsight() {
     }
 
     /**
      * Get the value property: The DeviceInsight items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<DeviceInsightInner> value() {
@@ -40,7 +44,7 @@ public final class PagedDeviceInsight {
 
     /**
      * Set the value property: The DeviceInsight items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the PagedDeviceInsight object itself.
      */
@@ -51,7 +55,7 @@ public final class PagedDeviceInsight {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,26 +63,14 @@ public final class PagedDeviceInsight {
     }
 
     /**
-     * Set the nextLink property: The link to the next page of items.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the PagedDeviceInsight object itself.
-     */
-    public PagedDeviceInsight withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model PagedDeviceInsight"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model PagedDeviceInsight"));
         } else {
             value().forEach(e -> e.validate());
         }

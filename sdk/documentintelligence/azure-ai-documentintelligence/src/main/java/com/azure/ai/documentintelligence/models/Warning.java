@@ -6,33 +6,33 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The error object.
  */
 @Immutable
-public final class Warning {
+public final class Warning implements JsonSerializable<Warning> {
     /*
      * One of a server-defined set of warning codes.
      */
     @Generated
-    @JsonProperty(value = "code")
-    private String code;
+    private final String code;
 
     /*
      * A human-readable representation of the warning.
      */
     @Generated
-    @JsonProperty(value = "message")
-    private String message;
+    private final String message;
 
     /*
      * The target of the error.
      */
     @Generated
-    @JsonProperty(value = "target")
     private String target;
 
     /**
@@ -42,8 +42,7 @@ public final class Warning {
      * @param message the message value to set.
      */
     @Generated
-    @JsonCreator
-    private Warning(@JsonProperty(value = "code") String code, @JsonProperty(value = "message") String message) {
+    private Warning(String code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -76,5 +75,54 @@ public final class Warning {
     @Generated
     public String getTarget() {
         return this.target;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Warning from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Warning if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Warning.
+     */
+    @Generated
+    public static Warning fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String code = null;
+            String message = null;
+            String target = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    target = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            Warning deserializedWarning = new Warning(code, message);
+            deserializedWarning.target = target;
+
+            return deserializedWarning;
+        });
     }
 }

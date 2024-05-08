@@ -10,7 +10,9 @@ import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterJobIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of cluster job. */
+/**
+ * Collection of cluster job.
+ */
 @Fluent
 public final class ClusterJobList {
     /*
@@ -25,13 +27,15 @@ public final class ClusterJobList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ClusterJobList class. */
+    /**
+     * Creates an instance of ClusterJobList class.
+     */
     public ClusterJobList() {
     }
 
     /**
      * Get the value property: Collection of cluster job.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterJobInner> value() {
@@ -40,7 +44,7 @@ public final class ClusterJobList {
 
     /**
      * Set the value property: Collection of cluster job.
-     *
+     * 
      * @param value the value value to set.
      * @return the ClusterJobList object itself.
      */
@@ -51,7 +55,7 @@ public final class ClusterJobList {
 
     /**
      * Get the nextLink property: The Url of next result page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class ClusterJobList {
 
     /**
      * Set the nextLink property: The Url of next result page.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ClusterJobList object itself.
      */
@@ -71,14 +75,13 @@ public final class ClusterJobList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ClusterJobList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ClusterJobList"));
         } else {
             value().forEach(e -> e.validate());
         }

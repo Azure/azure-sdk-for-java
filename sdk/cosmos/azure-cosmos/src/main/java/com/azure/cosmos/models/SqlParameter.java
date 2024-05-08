@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -59,7 +60,10 @@ public final class SqlParameter {
      * @return the SqlParameter.
      */
     public SqlParameter setName(String name) {
-        this.jsonSerializable.set("name", name);
+        this.jsonSerializable.set(
+            "name",
+            name,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
@@ -81,7 +85,10 @@ public final class SqlParameter {
      * @return the SqlParameter.
      */
     public SqlParameter setValue(Object value) {
-        this.jsonSerializable.set("value", value);
+        this.jsonSerializable.set(
+            "value",
+            value,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 

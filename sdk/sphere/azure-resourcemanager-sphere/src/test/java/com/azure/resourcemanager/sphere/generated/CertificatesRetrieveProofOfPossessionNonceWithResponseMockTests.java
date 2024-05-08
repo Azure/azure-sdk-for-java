@@ -30,44 +30,29 @@ public final class CertificatesRetrieveProofOfPossessionNonceWithResponseMockTes
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"certificate\":\"k\",\"status\":\"Inactive\",\"subject\":\"pjflcxogao\",\"thumbprint\":\"nzmnsikvm\",\"expiryUtc\":\"2021-05-13T18:51:38Z\",\"notBeforeUtc\":\"2021-02-18T23:34:18Z\",\"provisioningState\":\"Failed\"}";
+        String responseStr
+            = "{\"certificate\":\"mweriofzpy\",\"status\":\"Inactive\",\"subject\":\"wab\",\"thumbprint\":\"tshhszhedp\",\"expiryUtc\":\"2021-10-13T23:51:57Z\",\"notBeforeUtc\":\"2021-09-12T04:45:44Z\",\"provisioningState\":\"Succeeded\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureSphereManager manager =
-            AzureSphereManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ProofOfPossessionNonceResponse response =
-            manager
-                .certificates()
-                .retrieveProofOfPossessionNonceWithResponse(
-                    "semwabnet",
-                    "hhszh",
-                    "d",
-                    new ProofOfPossessionNonceRequest().withProofOfPossessionNonce("lvwiwubmwmbesl"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        ProofOfPossessionNonceResponse response = manager.certificates()
+            .retrieveProofOfPossessionNonceWithResponse("bhhxsrzdzuc", "rsc", "ntnev",
+                new ProofOfPossessionNonceRequest().withProofOfPossessionNonce("iwjmygtdssls"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
+
     }
 }

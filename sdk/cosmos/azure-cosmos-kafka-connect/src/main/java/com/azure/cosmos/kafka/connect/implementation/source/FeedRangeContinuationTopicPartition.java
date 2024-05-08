@@ -4,7 +4,7 @@
 package com.azure.cosmos.kafka.connect.implementation.source;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.FeedRange;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,12 +19,12 @@ public class FeedRangeContinuationTopicPartition {
 
     private final String databaseName;
     private final String containerRid;
-    private final Range<String> feedRange;
+    private final FeedRange feedRange;
 
     public FeedRangeContinuationTopicPartition(
         String databaseName,
         String containerRid,
-        Range<String> feedRange) {
+        FeedRange feedRange) {
         checkArgument(StringUtils.isNotEmpty(databaseName), "Argument 'databaseName' should not be null");
         checkArgument(StringUtils.isNotEmpty(containerRid), "Argument 'containerRid' should not be null");
         checkNotNull(feedRange, "Argument 'feedRange' can not be null");
@@ -42,7 +42,7 @@ public class FeedRangeContinuationTopicPartition {
         return containerRid;
     }
 
-    public Range<String> getFeedRange() {
+    public FeedRange getFeedRange() {
         return feedRange;
     }
 
@@ -50,7 +50,7 @@ public class FeedRangeContinuationTopicPartition {
         Map<String, Object> map = new HashMap<>();
         map.put(DATABASE_NAME_KEY, partition.getDatabaseName());
         map.put(CONTAINER_RESOURCE_ID_KEY, partition.getContainerRid());
-        map.put(CONTAINER_FEED_RANGE_KEY, partition.getFeedRange().toJson());
+        map.put(CONTAINER_FEED_RANGE_KEY, partition.getFeedRange().toString());
 
         return map;
     }

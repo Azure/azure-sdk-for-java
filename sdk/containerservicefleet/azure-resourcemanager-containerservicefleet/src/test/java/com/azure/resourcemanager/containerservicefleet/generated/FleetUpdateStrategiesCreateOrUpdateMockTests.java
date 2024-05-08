@@ -34,60 +34,41 @@ public final class FleetUpdateStrategiesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"mrv\",\"groups\":[{\"name\":\"tvb\"},{\"name\":\"qgsfraoyzkoow\"},{\"name\":\"lmnguxaw\"}],\"afterStageWaitInSeconds\":1823569828},{\"name\":\"dsyuuximerqfob\",\"groups\":[{\"name\":\"nkbykutwpfhp\"},{\"name\":\"gmhrskdsnfdsdoak\"},{\"name\":\"tdlmkkzevd\"},{\"name\":\"hewpusdsttwv\"}],\"afterStageWaitInSeconds\":221713689}]}},\"eTag\":\"bejdcn\",\"id\":\"qmoa\",\"name\":\"ufgmjzrwrdg\",\"type\":\"twaenuuzko\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"wzrmuh\",\"groups\":[{\"name\":\"cqdpsqxqvpsvuoym\"},{\"name\":\"ccelve\"}],\"afterStageWaitInSeconds\":808786975},{\"name\":\"pqlmfe\",\"groups\":[{\"name\":\"rqwky\"},{\"name\":\"kobopgxed\"},{\"name\":\"owepbqpcrfkb\"},{\"name\":\"ccsnjvcdwxlpq\"}],\"afterStageWaitInSeconds\":1838635209}]}},\"eTag\":\"nkhtjsyingw\",\"id\":\"atmtdhtmdvy\",\"name\":\"gikdgsz\",\"type\":\"w\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ContainerServiceFleetManager manager =
-            ContainerServiceFleetManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ContainerServiceFleetManager manager = ContainerServiceFleetManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        FleetUpdateStrategy response =
-            manager
-                .fleetUpdateStrategies()
-                .define("jcntuj")
-                .withExistingFleet("tpuqujmq", "gkfbtndoaong")
-                .withStrategy(
-                    new UpdateRunStrategy()
-                        .withStages(
-                            Arrays
-                                .asList(
-                                    new UpdateStage()
-                                        .withName("df")
-                                        .withGroups(
-                                            Arrays
-                                                .asList(
-                                                    new UpdateGroup().withName("ae"),
-                                                    new UpdateGroup().withName("kojvd"),
-                                                    new UpdateGroup().withName("pzfoqoui")))
-                                        .withAfterStageWaitInSeconds(1370358053))))
-                .withIfMatch("khazxkhnzbonlwn")
-                .withIfNoneMatch("oegokdwbwh")
-                .create();
+        FleetUpdateStrategy response
+            = manager.fleetUpdateStrategies().define("jnalghf").withExistingFleet("bgofeljag", "qmqhldvriii")
+                .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(
+                    new UpdateStage().withName("ex")
+                        .withGroups(Arrays.asList(new UpdateGroup().withName("ueluqhhahhxvrhmz"),
+                            new UpdateGroup().withName("wpjgwws"), new UpdateGroup().withName("ughftqsx"),
+                            new UpdateGroup().withName("qxujxukndxd")))
+                        .withAfterStageWaitInSeconds(1490533084),
+                    new UpdateStage().withName("jguufzdm")
+                        .withGroups(Arrays.asList(new UpdateGroup().withName("tfih"),
+                            new UpdateGroup().withName("hbotzingamvppho"), new UpdateGroup().withName("zqzudph"),
+                            new UpdateGroup().withName("amvdkfwynwcvtbv")))
+                        .withAfterStageWaitInSeconds(550696096))))
+                .withIfMatch("hwyg").withIfNoneMatch("lvdnkfx").create();
 
-        Assertions.assertEquals("mrv", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("tvb", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1823569828, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("wzrmuh", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("cqdpsqxqvpsvuoym", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(808786975, response.strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

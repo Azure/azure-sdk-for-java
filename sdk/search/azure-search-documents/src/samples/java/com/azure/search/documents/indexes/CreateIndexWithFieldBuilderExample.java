@@ -7,8 +7,8 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.SearchField;
-import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,13 +19,14 @@ public class CreateIndexWithFieldBuilderExample {
      * From the Azure portal, get your Azure AI Search service name and API key and populate ADMIN_KEY and
      * SEARCH_SERVICE_NAME.
      */
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
-    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration()
+        .get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
+    private static final String ADMIN_KEY = Configuration.getGlobalConfiguration()
+        .get("AZURE_COGNITIVE_SEARCH_API_KEY");
 
     public static void main(String[] args) {
         // Create the SearchIndex client.
-        SearchIndexClient client = new SearchIndexClientBuilder()
-            .endpoint(ENDPOINT)
+        SearchIndexClient client = new SearchIndexClientBuilder().endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
 
@@ -34,13 +35,10 @@ public class CreateIndexWithFieldBuilderExample {
         List<SearchField> indexFields = SearchIndexClient.buildSearchFields(Hotel.class, new FieldBuilderOptions());
         String indexName = "hotels";
         List<SearchField> searchFieldList = new ArrayList<>();
-        searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
-	                            .setKey(true)
-	                            .setFilterable(true)
-	                            .setSortable(true));
-        SearchIndex newIndex = new SearchIndex(indexName, indexFields)
-	                            .setFields(searchFieldList);
-         // Create index.
+        searchFieldList.add(
+            new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true).setFilterable(true).setSortable(true));
+        SearchIndex newIndex = new SearchIndex(indexName, indexFields).setFields(searchFieldList);
+        // Create index.
         client.createIndex(newIndex);
         // Cleanup index resource.
         client.deleteIndex(indexName);
@@ -200,7 +198,11 @@ public class CreateIndexWithFieldBuilderExample {
         @SearchableField(isFilterable = true, isSortable = true, isFacetable = true)
         private String stateProvince;
 
-        @SearchableField(synonymMapNames = {"synonymMapName"}, isFilterable = true, isSortable = true, isFacetable = true)
+        @SearchableField(
+            synonymMapNames = { "synonymMapName" },
+            isFilterable = true,
+            isSortable = true,
+            isFacetable = true)
         private String country;
 
         @SearchableField(isFilterable = true, isSortable = true, isFacetable = true)

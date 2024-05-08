@@ -10,11 +10,9 @@ import com.azure.resourcemanager.frontdoor.models.ManagedRuleDefinition;
 public final class ManagedRuleDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedRuleDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"ruleId\":\"bnbdxkqpxokajion\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Redirect\",\"description\":\"stxgc\"}")
-                .toObject(ManagedRuleDefinition.class);
+        ManagedRuleDefinition model = BinaryData.fromString(
+            "{\"ruleId\":\"dqgbiqylihkaetc\",\"defaultState\":\"Enabled\",\"defaultAction\":\"JSChallenge\",\"description\":\"vf\"}")
+            .toObject(ManagedRuleDefinition.class);
     }
 
     @org.junit.jupiter.api.Test

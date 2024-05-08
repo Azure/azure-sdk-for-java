@@ -106,14 +106,16 @@ public final class IotConnectorImpl implements IotConnector, IotConnector.Defini
     }
 
     public IotConnector create() {
-        this.innerObject = serviceManager.serviceClient().getIotConnectors().createOrUpdate(resourceGroupName,
-            workspaceName, iotConnectorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotConnectors()
+            .createOrUpdate(resourceGroupName, workspaceName, iotConnectorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IotConnector create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getIotConnectors().createOrUpdate(resourceGroupName,
-            workspaceName, iotConnectorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotConnectors()
+            .createOrUpdate(resourceGroupName, workspaceName, iotConnectorName, this.innerModel(), context);
         return this;
     }
 
@@ -129,14 +131,16 @@ public final class IotConnectorImpl implements IotConnector, IotConnector.Defini
     }
 
     public IotConnector apply() {
-        this.innerObject = serviceManager.serviceClient().getIotConnectors().update(resourceGroupName, iotConnectorName,
-            workspaceName, updateIotConnectorPatchResource, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotConnectors()
+            .update(resourceGroupName, iotConnectorName, workspaceName, updateIotConnectorPatchResource, Context.NONE);
         return this;
     }
 
     public IotConnector apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getIotConnectors().update(resourceGroupName, iotConnectorName,
-            workspaceName, updateIotConnectorPatchResource, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotConnectors()
+            .update(resourceGroupName, iotConnectorName, workspaceName, updateIotConnectorPatchResource, context);
         return this;
     }
 
@@ -144,20 +148,24 @@ public final class IotConnectorImpl implements IotConnector, IotConnector.Defini
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.iotConnectorName = Utils.getValueFromIdByName(innerObject.id(), "iotconnectors");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.iotConnectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "iotconnectors");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
     }
 
     public IotConnector refresh() {
-        this.innerObject = serviceManager.serviceClient().getIotConnectors()
-            .getWithResponse(resourceGroupName, workspaceName, iotConnectorName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotConnectors()
+            .getWithResponse(resourceGroupName, workspaceName, iotConnectorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IotConnector refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getIotConnectors()
-            .getWithResponse(resourceGroupName, workspaceName, iotConnectorName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotConnectors()
+            .getWithResponse(resourceGroupName, workspaceName, iotConnectorName, context)
+            .getValue();
         return this;
     }
 

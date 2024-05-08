@@ -14,6 +14,7 @@ matrix:
       lockRenewalNeededRatio: 0.01
       processCallbackDurationMaxInMs: 10
       lockDurationInSec: 5
+      messageSizeInBytes: 16
     happy-case:
       imageBuildDir: ..\..\..\
       testDurationMin: 15

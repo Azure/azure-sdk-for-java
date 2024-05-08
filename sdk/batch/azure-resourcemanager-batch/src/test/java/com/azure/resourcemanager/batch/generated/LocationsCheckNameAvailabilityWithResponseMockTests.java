@@ -30,7 +30,7 @@ public final class LocationsCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"sutrgjup\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"qg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -47,8 +47,11 @@ public final class LocationsCheckNameAvailabilityWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CheckNameAvailabilityResult response = manager.locations().checkNameAvailabilityWithResponse("xifqjzgxm",
-            new CheckNameAvailabilityParameters().withName("hu"), com.azure.core.util.Context.NONE).getValue();
+        CheckNameAvailabilityResult response
+            = manager.locations()
+                .checkNameAvailabilityWithResponse("swdvzyybycnun",
+                    new CheckNameAvailabilityParameters().withName("jsrtk"), com.azure.core.util.Context.NONE)
+                .getValue();
 
     }
 }

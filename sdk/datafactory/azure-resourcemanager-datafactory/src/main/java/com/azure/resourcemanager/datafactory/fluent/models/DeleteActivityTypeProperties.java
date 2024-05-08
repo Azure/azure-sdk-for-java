@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class DeleteActivityTypeProperties {
     /*
-     * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;
@@ -30,8 +29,7 @@ public final class DeleteActivityTypeProperties {
     private Integer maxConcurrentConnections;
 
     /*
-     * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or
-     * Expression with resultType boolean).
+     * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableLogging")
     private Object enableLogging;
@@ -196,8 +194,9 @@ public final class DeleteActivityTypeProperties {
             logStorageSettings().validate();
         }
         if (dataset() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataset in model DeleteActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataset in model DeleteActivityTypeProperties"));
         } else {
             dataset().validate();
         }

@@ -252,6 +252,12 @@ public interface StorageAccount
      *         {@link StorageAccount#identityTypeForCustomerEncryptionKey()} is not {@link IdentityType#USER_ASSIGNED}
      */
     String userAssignedIdentityIdForCustomerEncryptionKey();
+    /**
+     * Whether the storage account can be accessed from public network.
+     *
+     * @return whether the storage account can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
@@ -559,6 +565,12 @@ public interface StorageAccount
 
         /** The stage of storage account definition allowing to configure network access settings. */
         interface WithNetworkAccess {
+            /**
+             * Disables public network access for the storage account.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
             /**
              * Specifies that by default access to storage account should be allowed from all networks.
              *
@@ -989,6 +1001,20 @@ public interface StorageAccount
 
         /** The stage of storage account update allowing to configure network access. */
         interface WithNetworkAccess {
+            /**
+             * Enables public network access for the storage account.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+
+            /**
+             * Disables public network access for the storage account.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
+
             /**
              * Specifies that by default access to storage account should be allowed from all networks.
              *

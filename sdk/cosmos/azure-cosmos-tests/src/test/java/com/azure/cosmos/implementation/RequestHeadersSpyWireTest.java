@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -25,6 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class RequestHeadersSpyWireTest extends TestSuiteBase {
+    private static final ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.CosmosItemRequestOptionsAccessor
+        itemOptionsAccessor = ImplementationBridgeHelpers.CosmosItemRequestOptionsHelper.getCosmosItemRequestOptionsAccessor();
 
     private static final String DOCUMENT_ID = UUID.randomUUID().toString();
 
@@ -201,7 +204,9 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
+        RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(
+            cosmosItemRequestOptions,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
         client.readDocument(documentLink, requestOptions).block();
 
@@ -222,7 +227,9 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         String documentLink = getDocumentLink();
 
         client.clearCapturedRequests();
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
+        RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(
+            cosmosItemRequestOptions,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
 
         assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions).block())
@@ -240,7 +247,9 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
         String documentLink = getDocumentLink();
 
         client.clearCapturedRequests();
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
+        RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(
+            cosmosItemRequestOptions,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
 
         assertThatThrownBy(() -> client.readDocument(documentLink, requestOptions).block())
@@ -261,7 +270,9 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        RequestOptions requestOptions = ModelBridgeInternal.toRequestOptions(cosmosItemRequestOptions);
+        RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(
+            cosmosItemRequestOptions,
+            CosmosItemSerializer.DEFAULT_SERIALIZER);
         requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
         ResourceResponse<Document> response = client.readDocument(documentLink, requestOptions).block();
         if (cacheBypass) {

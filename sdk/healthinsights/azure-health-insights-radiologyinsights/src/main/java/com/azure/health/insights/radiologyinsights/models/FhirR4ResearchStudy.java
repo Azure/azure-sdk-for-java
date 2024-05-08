@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,22 @@ import java.util.List;
  * Detailed information about Research Study
  * Based on [FHIR ResearchStudy](https://www.hl7.org/fhir/R4/researchstudy.html).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "resourceType",
+    defaultImpl = FhirR4ResearchStudy.class,
+    visible = true)
 @JsonTypeName("ResearchStudy")
 @Fluent
 public final class FhirR4ResearchStudy extends FhirR4DomainResource {
+
+    /*
+     * resourceType
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "resourceType")
+    private String resourceType = "ResearchStudy";
 
     /*
      * Business Identifier for study
@@ -49,17 +62,14 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     private List<FhirR4Reference> partOf;
 
     /*
-     * active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention |
-     * completed | disapproved | in-review | temporarily-closed-to-accrual |
-     * temporarily-closed-to-accrual-and-intervention | withdrawn
+     * active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | in-review | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | withdrawn
      */
     @Generated
     @JsonProperty(value = "status")
-    private ResearchStudyStatusCodeType status;
+    private final ResearchStudyStatusCodeType status;
 
     /*
-     * treatment | prevention | diagnostic | supportive-care | screening | health-services-research | basic-science |
-     * device-feasibility
+     * treatment | prevention | diagnostic | supportive-care | screening | health-services-research | basic-science | device-feasibility
      */
     @Generated
     @JsonProperty(value = "primaryPurposeType")
@@ -157,8 +167,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     private List<FhirR4Reference> site;
 
     /*
-     * accrual-goal-met | closed-due-to-toxicity | closed-due-to-lack-of-study-progress |
-     * temporarily-closed-per-study-design
+     * accrual-goal-met | closed-due-to-toxicity | closed-due-to-lack-of-study-progress | temporarily-closed-per-study-design
      */
     @Generated
     @JsonProperty(value = "reasonStopped")
@@ -197,6 +206,17 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
         @JsonProperty(value = "status") ResearchStudyStatusCodeType status) {
         super(resourceType);
         this.status = status;
+    }
+
+    /**
+     * Get the resourceType property: resourceType.
+     *
+     * @return the resourceType value.
+     */
+    @Generated
+    @Override
+    public String getResourceType() {
+        return this.resourceType;
     }
 
     /**

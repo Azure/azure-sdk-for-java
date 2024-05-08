@@ -4,7 +4,8 @@
 package com.azure.cosmos.kafka.connect.implementation.source;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,26 +32,32 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @JsonSerialize(using = MetadataTaskUnit.MetadataTaskUnitSerializer.class)
 @JsonDeserialize(using = MetadataTaskUnit.MetadataTaskUnitDeserializer.class)
 public class MetadataTaskUnit implements ITaskUnit {
+    private final String connectorName;
     private final String databaseName;
     private final List<String> containerRids;
-    private final Map<String, List<Range<String>>> containersEffectiveRangesMap;
-    private final String topic;
+    private final Map<String, List<FeedRange>> containersEffectiveRangesMap;
+    private final String storageName;
+    private final CosmosMetadataStorageType storageType;
 
     public MetadataTaskUnit(
+        String connectorName,
         String databaseName,
         List<String> containerRids,
-        Map<String, List<Range<String>>> containersEffectiveRangesMap,
-        String topic) {
+        Map<String, List<FeedRange>> containersEffectiveRangesMap,
+        String storageName,
+        CosmosMetadataStorageType storageType) {
 
         checkArgument(StringUtils.isNotEmpty(databaseName), "Argument 'databaseName' should not be null");
         checkNotNull(containerRids, "Argument 'containerRids' can not be null");
         checkNotNull(containersEffectiveRangesMap, "Argument 'containersEffectiveRangesMap' can not be null");
-        checkArgument(StringUtils.isNotEmpty(topic), "Argument 'topic' should not be null");
+        checkArgument(StringUtils.isNotEmpty(storageName), "Argument 'storageName' should not be null");
 
+        this.connectorName = connectorName;
         this.databaseName = databaseName;
         this.containerRids = containerRids;
         this.containersEffectiveRangesMap = containersEffectiveRangesMap;
-        this.topic = topic;
+        this.storageName = storageName;
+        this.storageType = storageType;
     }
 
     public String getDatabaseName() {
@@ -60,25 +68,57 @@ public class MetadataTaskUnit implements ITaskUnit {
         return containerRids;
     }
 
-    public Map<String, List<Range<String>>> getContainersEffectiveRangesMap() {
+    public Map<String, List<FeedRange>> getContainersEffectiveRangesMap() {
         return containersEffectiveRangesMap;
     }
 
-    public String getTopic() {
-        return topic;
+    public String getStorageName() {
+        return storageName;
+    }
+
+    public CosmosMetadataStorageType getStorageType() {
+        return storageType;
+    }
+
+    public String getConnectorName() {
+        return connectorName;
+    }
+
+    public Pair<ContainersMetadataTopicPartition, ContainersMetadataTopicOffset> getContainersMetadata() {
+        ContainersMetadataTopicPartition containersMetadataTopicPartition =
+            new ContainersMetadataTopicPartition(this.databaseName, this.connectorName);
+
+        ContainersMetadataTopicOffset containersMetadataTopicOffset =
+            new ContainersMetadataTopicOffset(this.containerRids);
+
+        return Pair.of(containersMetadataTopicPartition, containersMetadataTopicOffset);
+    }
+
+    public List<Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset>> getFeedRangesMetadataList() {
+
+        List<Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset>> feedRangesMetadataList = new ArrayList<>();
+
+        for (String containerRid : this.containersEffectiveRangesMap.keySet()) {
+            FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
+                new FeedRangesMetadataTopicPartition(this.databaseName, containerRid, this.connectorName);
+            FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
+                new FeedRangesMetadataTopicOffset(this.containersEffectiveRangesMap.get(containerRid));
+
+            feedRangesMetadataList.add(Pair.of(feedRangesMetadataTopicPartition, feedRangesMetadataTopicOffset));
+        }
+
+        return feedRangesMetadataList;
     }
 
     @Override
     public String toString() {
         return "MetadataTaskUnit{"
-            + "databaseName='"
-            + databaseName
-            + '\''
-            + ", containerRids="
-            + containerRids
-            + ", containersEffectiveRangesMap="
-            + containersEffectiveRangesMap
-            + ", topic='" + topic + '\''
+            + "connectorName='" + connectorName + '\''
+            + "databaseName='" + databaseName + '\''
+            + ", containerRids=" + containerRids
+            + ", containersEffectiveRangesMap=" + containersEffectiveRangesMap
+            + ", storageName='" + storageName + '\''
+            + ", storageType='" + storageType + '\''
             + '}';
     }
 
@@ -91,15 +131,17 @@ public class MetadataTaskUnit implements ITaskUnit {
             return false;
         }
         MetadataTaskUnit that = (MetadataTaskUnit) o;
-        return databaseName.equals(that.databaseName)
-            && containerRids.equals(that.containerRids)
+        return Objects.equals(connectorName, that.connectorName)
+            && Objects.equals(databaseName, that.databaseName)
+            && Objects.equals(containerRids, that.containerRids)
             && Objects.equals(containersEffectiveRangesMap, that.containersEffectiveRangesMap)
-            && topic.equals(that.topic);
+            && Objects.equals(storageName, that.storageName)
+            && Objects.equals(storageType, that.storageType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(databaseName, containerRids, containersEffectiveRangesMap, topic);
+        return Objects.hash(connectorName, databaseName, containerRids, containersEffectiveRangesMap, storageName, storageType);
     }
 
     public static class MetadataTaskUnitSerializer extends com.fasterxml.jackson.databind.JsonSerializer<MetadataTaskUnit> {
@@ -109,6 +151,7 @@ public class MetadataTaskUnit implements ITaskUnit {
                               SerializerProvider serializerProvider) throws IOException {
             ObjectMapper objectMapper = new ObjectMapper();
             writer.writeStartObject();
+            writer.writeStringField("connectorName", metadataTaskUnit.getConnectorName());
             writer.writeStringField("databaseName", metadataTaskUnit.getDatabaseName());
             writer.writeStringField(
                 "containerRids",
@@ -125,13 +168,15 @@ public class MetadataTaskUnit implements ITaskUnit {
                             getContainersEffectiveRangesMap().
                             get(containerRid)
                             .stream()
-                            .map(range -> range.toJson())
+                            .map(range -> range.toString())
                             .collect(Collectors.toList())));
                 writer.writeEndObject();
             }
             writer.writeEndArray();
 
-            writer.writeStringField("topic", metadataTaskUnit.getTopic());
+            writer.writeStringField("storageName", metadataTaskUnit.getStorageName());
+            writer.writeStringField("storageType", metadataTaskUnit.getStorageType().getName());
+
             writer.writeEndObject();
         }
     }
@@ -149,25 +194,32 @@ public class MetadataTaskUnit implements ITaskUnit {
             final JsonNode rootNode = jsonParser.getCodec().readTree(jsonParser);
             final ObjectMapper mapper = (ObjectMapper) jsonParser.getCodec();
 
+            String connectorName = rootNode.get("connectorName").asText();
             String databaseName = rootNode.get("databaseName").asText();
             List<String> containerRids = mapper.readValue(rootNode.get("containerRids").asText(), new TypeReference<List<String>>() {});
             ArrayNode arrayNode = (ArrayNode) rootNode.get("containersEffectiveRangesMap");
 
-            Map<String, List<Range<String>>> containersEffectiveRangesMap = new HashMap<>();
+            Map<String, List<FeedRange>> containersEffectiveRangesMap = new HashMap<>();
             for (JsonNode jsonNode : arrayNode) {
                 String containerRid = jsonNode.get("containerRid").asText();
-                List<Range<String>> effectiveRanges =
+                List<FeedRange> effectiveRanges =
                     mapper
                         .readValue(
                             jsonNode.get("effectiveFeedRanges").asText(),
                             new TypeReference<List<String>>() {})
-                        .stream().map(rangeJson -> new Range<String>(rangeJson))
+                        .stream().map(rangeJson -> FeedRange.fromString(rangeJson))
                         .collect(Collectors.toList());
                 containersEffectiveRangesMap.put(containerRid, effectiveRanges);
             }
-            String topic = rootNode.get("topic").asText();
-
-            return new MetadataTaskUnit(databaseName, containerRids, containersEffectiveRangesMap, topic);
+            String storageName = rootNode.get("storageName").asText();
+            CosmosMetadataStorageType storageType = CosmosMetadataStorageType.fromName(rootNode.get("storageType").asText());
+            return new MetadataTaskUnit(
+                connectorName,
+                databaseName,
+                containerRids,
+                containersEffectiveRangesMap,
+                storageName,
+                storageType);
         }
     }
 }

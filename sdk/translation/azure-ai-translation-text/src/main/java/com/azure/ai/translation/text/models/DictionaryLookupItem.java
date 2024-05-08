@@ -22,7 +22,7 @@ public final class DictionaryLookupItem {
      */
     @Generated
     @JsonProperty(value = "normalizedSource")
-    private String normalizedSource;
+    private final String normalizedSource;
 
     /*
      * A string giving the source term in a form best suited for end-user display.
@@ -31,14 +31,14 @@ public final class DictionaryLookupItem {
      */
     @Generated
     @JsonProperty(value = "displaySource")
-    private String displaySource;
+    private final String displaySource;
 
     /*
      * A list of translations for the source term.
      */
     @Generated
     @JsonProperty(value = "translations")
-    private List<DictionaryTranslation> translations;
+    private final List<DictionaryTranslation> translations;
 
     /**
      * Creates an instance of DictionaryLookupItem class.

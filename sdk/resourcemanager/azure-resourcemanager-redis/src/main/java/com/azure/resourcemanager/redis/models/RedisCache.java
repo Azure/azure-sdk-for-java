@@ -104,6 +104,13 @@ public interface RedisCache
      */
     RedisAccessKeys regenerateKey(RedisKeyType keyType);
 
+    /**
+     * Whether the redis cache can be accessed from public network.
+     *
+     * @return whether the redis cache can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
     /**************************************************************
      * Fluent interfaces to provision a RedisCache
      **************************************************************/
@@ -289,6 +296,13 @@ public interface RedisCache
              * @return the next stage of Redis Cache with Premium SKU definition.
              */
             WithCreate withRedisVersion(RedisVersion redisVersion);
+
+            /**
+             * Disables public network access for the redis cache.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
         }
 
         /** A Redis Cache definition with Premium Sku specific functionality. */
@@ -443,6 +457,23 @@ public interface RedisCache
              */
             Update withoutRedisConfiguration(String key);
         }
+
+
+        /** The stage of redis cache update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the redis cache.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the redis cache.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
+        }
     }
 
     /** The template for a Redis Cache update operation, containing all the settings that can be modified. */
@@ -451,7 +482,8 @@ public interface RedisCache
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithSku,
             UpdateStages.WithNonSslPort,
-            UpdateStages.WithRedisConfiguration {
+            UpdateStages.WithRedisConfiguration,
+            UpdateStages.WithPublicNetworkAccess {
         /**
          * The number of shards to be created on a Premium Cluster Cache.
          *

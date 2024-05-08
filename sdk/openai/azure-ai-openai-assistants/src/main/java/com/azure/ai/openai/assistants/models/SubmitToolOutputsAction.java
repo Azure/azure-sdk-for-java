@@ -5,16 +5,14 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The details for required tool calls that must be submitted for an assistant thread run to continue.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("submit_tool_outputs")
 @Immutable
 public final class SubmitToolOutputsAction extends RequiredAction {
 
@@ -22,8 +20,7 @@ public final class SubmitToolOutputsAction extends RequiredAction {
      * The details describing tools that should be called to submit tool outputs.
      */
     @Generated
-    @JsonProperty(value = "submit_tool_outputs")
-    private SubmitToolOutputsDetails submitToolOutputs;
+    private final SubmitToolOutputsDetails submitToolOutputs;
 
     /**
      * Creates an instance of SubmitToolOutputsAction class.
@@ -31,9 +28,7 @@ public final class SubmitToolOutputsAction extends RequiredAction {
      * @param submitToolOutputs the submitToolOutputs value to set.
      */
     @Generated
-    @JsonCreator
-    private SubmitToolOutputsAction(
-        @JsonProperty(value = "submit_tool_outputs") SubmitToolOutputsDetails submitToolOutputs) {
+    private SubmitToolOutputsAction(SubmitToolOutputsDetails submitToolOutputs) {
         this.submitToolOutputs = submitToolOutputs;
     }
 
@@ -45,5 +40,66 @@ public final class SubmitToolOutputsAction extends RequiredAction {
     @Generated
     public SubmitToolOutputsDetails getSubmitToolOutputs() {
         return this.submitToolOutputs;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("submit_tool_outputs", this.submitToolOutputs);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubmitToolOutputsAction from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubmitToolOutputsAction if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubmitToolOutputsAction.
+     */
+    @Generated
+    public static SubmitToolOutputsAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubmitToolOutputsDetails submitToolOutputs = null;
+            String type = "submit_tool_outputs";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("submit_tool_outputs".equals(fieldName)) {
+                    submitToolOutputs = SubmitToolOutputsDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            SubmitToolOutputsAction deserializedSubmitToolOutputsAction
+                = new SubmitToolOutputsAction(submitToolOutputs);
+            deserializedSubmitToolOutputsAction.type = type;
+            return deserializedSubmitToolOutputsAction;
+        });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "submit_tool_outputs";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

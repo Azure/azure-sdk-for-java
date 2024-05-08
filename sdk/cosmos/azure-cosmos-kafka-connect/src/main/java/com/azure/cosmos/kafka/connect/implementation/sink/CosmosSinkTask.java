@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.apache.kafka.connect.sink.SinkTask;
@@ -22,6 +23,7 @@ public class CosmosSinkTask extends SinkTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSinkTask.class);
     private CosmosSinkTaskConfig sinkTaskConfig;
     private CosmosAsyncClient cosmosClient;
+    private CosmosAsyncClient throughputControlClient;
     private SinkRecordTransformer sinkRecordTransformer;
     private IWriter cosmosWriter;
 
@@ -32,20 +34,38 @@ public class CosmosSinkTask extends SinkTask {
 
     @Override
     public void start(Map<String, String> props) {
-        LOGGER.info("Starting the kafka cosmos sink task...");
+        LOGGER.info("Starting the kafka cosmos sink task");
         this.sinkTaskConfig = new CosmosSinkTaskConfig(props);
-        this.cosmosClient = CosmosClientStore.getCosmosClient(this.sinkTaskConfig.getAccountConfig());
+        this.cosmosClient = CosmosClientStore.getCosmosClient(this.sinkTaskConfig.getAccountConfig(), this.sinkTaskConfig.getTaskId());
+        LOGGER.info("The taskId is " + this.sinkTaskConfig.getTaskId());
+        this.throughputControlClient = this.getThroughputControlCosmosClient();
         this.sinkRecordTransformer = new SinkRecordTransformer(this.sinkTaskConfig);
 
         if (this.sinkTaskConfig.getWriteConfig().isBulkEnabled()) {
             this.cosmosWriter =
-                new KafkaCosmosBulkWriter(this.sinkTaskConfig.getWriteConfig(), this.context.errantRecordReporter());
+                new CosmosBulkWriter(
+                    this.sinkTaskConfig.getWriteConfig(),
+                    this.sinkTaskConfig.getThroughputControlConfig(),
+                    this.context.errantRecordReporter());
         } else {
             this.cosmosWriter =
-                new KafkaCosmosPointWriter(this.sinkTaskConfig.getWriteConfig(), context.errantRecordReporter());
+                new CosmosPointWriter(
+                    this.sinkTaskConfig.getWriteConfig(),
+                    this.sinkTaskConfig.getThroughputControlConfig(),
+                    context.errantRecordReporter());
         }
+    }
 
-        // TODO[public preview]: in V1, it will create the database if does not exists, but why?
+    private CosmosAsyncClient getThroughputControlCosmosClient() {
+        if (this.sinkTaskConfig.getThroughputControlConfig().isThroughputControlEnabled()
+            && this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
+            // throughput control is using a different database account config
+            return CosmosClientStore.getCosmosClient(
+                this.sinkTaskConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
+                this.sinkTaskConfig.getTaskId());
+        } else {
+            return this.cosmosClient;
+        }
     }
 
     @Override
@@ -77,6 +97,12 @@ public class CosmosSinkTask extends SinkTask {
                     .getDatabase(this.sinkTaskConfig.getContainersConfig().getDatabaseName())
                     .getContainer(containerName);
 
+            CosmosThroughputControlHelper
+                .tryEnableThroughputControl(
+                    container,
+                    this.throughputControlClient,
+                    this.sinkTaskConfig.getThroughputControlConfig());
+
             // transform sink records, for example populating id
             List<SinkRecord> transformedRecords = sinkRecordTransformer.transform(containerName, entry.getValue());
             this.cosmosWriter.write(container, transformedRecords);
@@ -85,11 +111,9 @@ public class CosmosSinkTask extends SinkTask {
 
     @Override
     public void stop() {
-        LOGGER.info("Stopping Kafka CosmosDB sink task...");
+        LOGGER.info("Stopping Kafka CosmosDB sink task");
         if (this.cosmosClient != null) {
             this.cosmosClient.close();
         }
-
-        this.cosmosClient = null;
     }
 }

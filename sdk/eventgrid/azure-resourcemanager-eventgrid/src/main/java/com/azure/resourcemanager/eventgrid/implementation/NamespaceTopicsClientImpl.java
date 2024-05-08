@@ -36,8 +36,8 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.NamespaceTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceTopicInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicSharedAccessKeysInner;
-import com.azure.resourcemanager.eventgrid.models.NamespaceTopicUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.NamespaceTopicsListResult;
+import com.azure.resourcemanager.eventgrid.models.NamespaceTopicUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -1041,7 +1041,8 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
     private Mono<NamespaceTopicInner> updateAsync(String resourceGroupName, String namespaceName, String topicName,
         NamespaceTopicUpdateParameters namespaceTopicUpdateParameters, Context context) {
         return beginUpdateAsync(resourceGroupName, namespaceName, topicName, namespaceTopicUpdateParameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1675,7 +1676,8 @@ public final class NamespaceTopicsClientImpl implements NamespaceTopicsClient {
     private Mono<TopicSharedAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String namespaceName,
         String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
         return beginRegenerateKeyAsync(resourceGroupName, namespaceName, topicName, regenerateKeyRequest, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

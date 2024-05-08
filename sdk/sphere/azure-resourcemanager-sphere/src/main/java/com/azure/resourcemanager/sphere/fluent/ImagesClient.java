@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sphere.fluent.models.ImageInner;
 
-/** An instance of this class provides access to all the operations defined in ImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ImagesClient.
+ */
 public interface ImagesClient {
     /**
      * List Image resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface ImagesClient {
 
     /**
      * List Image resources by Catalog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
      * @param filter Filter the result list using the given expression.
@@ -44,21 +46,15 @@ public interface ImagesClient {
      * @return the response of a Image list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ImageInner> listByCatalog(
-        String resourceGroupName,
-        String catalogName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Integer maxpagesize,
-        Context context);
+    PagedIterable<ImageInner> listByCatalog(String resourceGroupName, String catalogName, String filter, Integer top,
+        Integer skip, Integer maxpagesize, Context context);
 
     /**
      * Get a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,15 +62,15 @@ public interface ImagesClient {
      * @return a Image along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImageInner> getWithResponse(
-        String resourceGroupName, String catalogName, String imageName, Context context);
+    Response<ImageInner> getWithResponse(String resourceGroupName, String catalogName, String imageName,
+        Context context);
 
     /**
      * Get a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -85,10 +81,10 @@ public interface ImagesClient {
 
     /**
      * Create a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -96,15 +92,15 @@ public interface ImagesClient {
      * @return the {@link SyncPoller} for polling of an image resource belonging to a catalog resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
-        String resourceGroupName, String catalogName, String imageName, ImageInner resource);
+    SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(String resourceGroupName, String catalogName,
+        String imageName, ImageInner resource);
 
     /**
      * Create a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,15 +109,15 @@ public interface ImagesClient {
      * @return the {@link SyncPoller} for polling of an image resource belonging to a catalog resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
-        String resourceGroupName, String catalogName, String imageName, ImageInner resource, Context context);
+    SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(String resourceGroupName, String catalogName,
+        String imageName, ImageInner resource, Context context);
 
     /**
      * Create a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,10 +129,10 @@ public interface ImagesClient {
 
     /**
      * Create a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,15 +141,15 @@ public interface ImagesClient {
      * @return an image resource belonging to a catalog resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageInner createOrUpdate(
-        String resourceGroupName, String catalogName, String imageName, ImageInner resource, Context context);
+    ImageInner createOrUpdate(String resourceGroupName, String catalogName, String imageName, ImageInner resource,
+        Context context);
 
     /**
      * Delete a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -164,10 +160,10 @@ public interface ImagesClient {
 
     /**
      * Delete a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -175,15 +171,15 @@ public interface ImagesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String catalogName, String imageName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String catalogName, String imageName,
+        Context context);
 
     /**
      * Delete a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -193,10 +189,10 @@ public interface ImagesClient {
 
     /**
      * Delete a Image.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param catalogName Name of catalog.
-     * @param imageName Image name. Use .default for image creation.
+     * @param imageName Image name. Use an image GUID for GA versions of the API.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

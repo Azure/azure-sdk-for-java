@@ -7,6 +7,7 @@ package com.azure.resourcemanager.batch.implementation;
 import com.azure.resourcemanager.batch.fluent.models.SupportedSkuInner;
 import com.azure.resourcemanager.batch.models.SkuCapability;
 import com.azure.resourcemanager.batch.models.SupportedSku;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,6 +36,10 @@ public final class SupportedSkuImpl implements SupportedSku {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public OffsetDateTime batchSupportEndOfLife() {
+        return this.innerModel().batchSupportEndOfLife();
     }
 
     public SupportedSkuInner innerModel() {

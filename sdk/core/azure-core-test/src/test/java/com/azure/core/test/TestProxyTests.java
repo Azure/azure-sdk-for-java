@@ -234,6 +234,7 @@ public class TestProxyTests extends TestProxyTestBase {
                 .startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
             // custom sanitizers
             assertEquals(REDACTED, record.getResponse().get("modelId"));
+            assertEquals(REDACTED, record.getResponse().get("client_secret"));
         }
     }
 
@@ -287,6 +288,32 @@ public class TestProxyTests extends TestProxyTestBase {
 
         // custom body regex
         assertEquals(record.getResponse().get("TableName"), REDACTED);
+    }
+
+    @Test
+    @Tag("Playback")
+    public void testRedactRequestBodyRegex() {
+
+        HttpClient client = interceptorManager.getPlaybackClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept")));
+
+        //        HttpClient client = new HttpURLConnectionHttpClient();
+        //        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, "http://localhost:" + server.port() + "/post");
+        request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/x-www-form-urlencoded");
+        request.setBody("first_value=value&client_secret=aVerySecretSecret&other=value&is=cool");
+
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
+
+        RecordedTestProxyData recordedTestProxyData = readDataFromFile();
+        RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
+
+        assertEquals(record.getRequestBody(), "first_value=value&client_secret=REDACTED&other=value&is=cool");
+
     }
 
     @Test

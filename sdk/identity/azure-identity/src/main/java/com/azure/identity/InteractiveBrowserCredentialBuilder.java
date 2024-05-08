@@ -16,7 +16,7 @@ import java.util.List;
  * Fluent credential builder for instantiating a {@link InteractiveBrowserCredential}.
  *
  * <p>Interactive browser authentication is a type of authentication flow offered by
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a>
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a>
  * that enables users to sign in to applications and services using a web browser. This authentication method is
  * commonly used for web applications, where users enter their credentials directly into a web page.
  * With interactive browser authentication, the user navigates to a web application and is prompted to enter their

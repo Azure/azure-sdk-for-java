@@ -33,6 +33,11 @@ public final class Type extends ExpandableStringEnum<Type> {
     public static final Type AUTOMATED_CHECK = fromString("AutomatedCheck");
 
     /**
+     * Static value Input for Type.
+     */
+    public static final Type INPUT = fromString("Input");
+
+    /**
      * Creates a new instance of Type value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

@@ -52,8 +52,9 @@ public final class LinkedIntegrationRuntimeRequest {
      */
     public void validate() {
         if (linkedFactoryName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property linkedFactoryName in model LinkedIntegrationRuntimeRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedFactoryName in model LinkedIntegrationRuntimeRequest"));
         }
     }
 

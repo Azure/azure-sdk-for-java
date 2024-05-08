@@ -6,7 +6,6 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -120,7 +119,6 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
      * @return the corresponding DocumentFieldType.
      */
     @Generated
-    @JsonCreator
     public static DocumentFieldType fromString(String name) {
         return fromString(name, DocumentFieldType.class);
     }

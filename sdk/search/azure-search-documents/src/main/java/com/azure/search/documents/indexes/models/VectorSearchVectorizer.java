@@ -25,7 +25,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
 
     /**
      * Creates an instance of VectorSearchVectorizer class.
-     * 
+     *
      * @param name the name value to set.
      */
     public VectorSearchVectorizer(String name) {
@@ -34,7 +34,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
 
     /**
      * Get the name property: The name to associate with this particular vectorization method.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -50,7 +50,7 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
 
     /**
      * Reads an instance of VectorSearchVectorizer from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of VectorSearchVectorizer if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -79,6 +79,10 @@ public class VectorSearchVectorizer implements JsonSerializable<VectorSearchVect
                 return AzureOpenAIVectorizer.fromJson(readerToUse.reset());
             } else if ("customWebApi".equals(discriminatorValue)) {
                 return CustomVectorizer.fromJson(readerToUse.reset());
+            } else if ("aiServicesVision".equals(discriminatorValue)) {
+                return AIServicesVisionVectorizer.fromJson(readerToUse.reset());
+            } else if ("aml".equals(discriminatorValue)) {
+                return AzureMachineLearningVectorizer.fromJson(readerToUse.reset());
             } else {
                 return fromJsonKnownDiscriminator(readerToUse.reset());
             }

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.repository;
 
-import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.domain.Role;
 import com.azure.spring.data.cosmos.repository.Query;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;

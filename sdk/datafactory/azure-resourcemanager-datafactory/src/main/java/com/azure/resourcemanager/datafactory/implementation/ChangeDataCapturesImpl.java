@@ -42,8 +42,8 @@ public final class ChangeDataCapturesImpl implements ChangeDataCaptures {
 
     public Response<ChangeDataCaptureResource> getWithResponse(String resourceGroupName, String factoryName,
         String changeDataCaptureName, String ifNoneMatch, Context context) {
-        Response<ChangeDataCaptureResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            factoryName, changeDataCaptureName, ifNoneMatch, context);
+        Response<ChangeDataCaptureResourceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, factoryName, changeDataCaptureName, ifNoneMatch, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ChangeDataCaptureResourceImpl(inner.getValue(), this.manager()));

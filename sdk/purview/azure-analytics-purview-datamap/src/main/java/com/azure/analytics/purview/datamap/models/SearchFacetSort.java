@@ -6,25 +6,27 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The sorting criteria.
  */
 @Fluent
-public final class SearchFacetSort {
+public final class SearchFacetSort implements JsonSerializable<SearchFacetSort> {
     /*
      * Order by count
      */
     @Generated
-    @JsonProperty(value = "count")
     private SearchSortOrder count;
 
     /*
      * Order by value
      */
     @Generated
-    @JsonProperty(value = "value")
     private SearchSortOrder value;
 
     /**
@@ -76,5 +78,46 @@ public final class SearchFacetSort {
     public SearchFacetSort setValue(SearchSortOrder value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("count", this.count == null ? null : this.count.toString());
+        jsonWriter.writeStringField("value", this.value == null ? null : this.value.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SearchFacetSort from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SearchFacetSort if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SearchFacetSort.
+     */
+    @Generated
+    public static SearchFacetSort fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SearchFacetSort deserializedSearchFacetSort = new SearchFacetSort();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedSearchFacetSort.count = SearchSortOrder.fromString(reader.getString());
+                } else if ("value".equals(fieldName)) {
+                    deserializedSearchFacetSort.value = SearchSortOrder.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSearchFacetSort;
+        });
     }
 }

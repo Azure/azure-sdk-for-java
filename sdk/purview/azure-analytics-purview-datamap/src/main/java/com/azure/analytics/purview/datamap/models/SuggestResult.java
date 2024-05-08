@@ -6,19 +6,22 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The result item of the search suggest.
  */
 @Immutable
-public final class SuggestResult {
+public final class SuggestResult implements JsonSerializable<SuggestResult> {
     /*
      * The result value
      */
     @Generated
-    @JsonProperty(value = "value")
     private List<SuggestResultValue> value;
 
     /**
@@ -36,5 +39,44 @@ public final class SuggestResult {
     @Generated
     public List<SuggestResultValue> getValue() {
         return this.value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SuggestResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SuggestResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SuggestResult.
+     */
+    @Generated
+    public static SuggestResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SuggestResult deserializedSuggestResult = new SuggestResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SuggestResultValue> value = reader.readArray(reader1 -> SuggestResultValue.fromJson(reader1));
+                    deserializedSuggestResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSuggestResult;
+        });
     }
 }

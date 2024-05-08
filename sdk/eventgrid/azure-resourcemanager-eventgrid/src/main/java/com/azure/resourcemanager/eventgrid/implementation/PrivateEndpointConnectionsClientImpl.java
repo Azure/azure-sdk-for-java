@@ -65,8 +65,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * The interface defining all the services for EventGridManagementClientPrivateEndpointConnections to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for EventGridManagementClientPrivateEndpointConnections to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
@@ -497,8 +497,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
-        return this.beginUpdateAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName,
-            privateEndpointConnection).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName,
+                privateEndpointConnection)
+            .getSyncPoller();
     }
 
     /**
@@ -524,8 +526,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
-        return this.beginUpdateAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName,
-            privateEndpointConnection, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName,
+                privateEndpointConnection, context)
+            .getSyncPoller();
     }
 
     /**
@@ -871,7 +875,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     private Mono<Void> deleteAsync(String resourceGroupName, PrivateEndpointConnectionsParentType parentType,
         String parentName, String privateEndpointConnectionName, Context context) {
         return beginDeleteAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

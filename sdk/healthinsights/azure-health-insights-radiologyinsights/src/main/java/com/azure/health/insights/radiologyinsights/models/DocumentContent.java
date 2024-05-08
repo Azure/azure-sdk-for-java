@@ -21,14 +21,14 @@ public final class DocumentContent {
      */
     @Generated
     @JsonProperty(value = "sourceType")
-    private DocumentContentSourceType sourceType;
+    private final DocumentContentSourceType sourceType;
 
     /*
      * The content of the document, given either inline (as a string) or as a reference (URI).
      */
     @Generated
     @JsonProperty(value = "value")
-    private String value;
+    private final String value;
 
     /**
      * Creates an instance of DocumentContent class.

@@ -41,9 +41,8 @@ public final class RelationshipAsyncClient {
 
     /**
      * Create a new relationship between entities.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -71,9 +70,9 @@ public final class RelationshipAsyncClient {
      *     version: Long (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -118,9 +117,8 @@ public final class RelationshipAsyncClient {
 
     /**
      * Update an existing relationship between entities.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -148,9 +146,9 @@ public final class RelationshipAsyncClient {
      *     version: Long (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -195,28 +193,15 @@ public final class RelationshipAsyncClient {
 
     /**
      * Get relationship information between entities by its GUID.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>extendedInfo</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Limits whether includes extended information.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>extendedInfo</td><td>Boolean</td><td>No</td><td>Limits whether includes extended information.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     referredEntities (Optional): {

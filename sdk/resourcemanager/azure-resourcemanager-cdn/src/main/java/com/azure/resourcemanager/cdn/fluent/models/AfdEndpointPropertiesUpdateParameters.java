@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object containing endpoint update parameters. */
+/**
+ * The JSON object containing endpoint update parameters.
+ */
 @Fluent
 public class AfdEndpointPropertiesUpdateParameters {
     /*
@@ -23,13 +25,15 @@ public class AfdEndpointPropertiesUpdateParameters {
     @JsonProperty(value = "enabledState")
     private EnabledState enabledState;
 
-    /** Creates an instance of AfdEndpointPropertiesUpdateParameters class. */
+    /**
+     * Creates an instance of AfdEndpointPropertiesUpdateParameters class.
+     */
     public AfdEndpointPropertiesUpdateParameters() {
     }
 
     /**
      * Get the profileName property: The name of the profile which holds the endpoint.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -38,7 +42,7 @@ public class AfdEndpointPropertiesUpdateParameters {
 
     /**
      * Get the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the enabledState value.
      */
     public EnabledState enabledState() {
@@ -47,7 +51,7 @@ public class AfdEndpointPropertiesUpdateParameters {
 
     /**
      * Set the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the AfdEndpointPropertiesUpdateParameters object itself.
      */
@@ -58,7 +62,7 @@ public class AfdEndpointPropertiesUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

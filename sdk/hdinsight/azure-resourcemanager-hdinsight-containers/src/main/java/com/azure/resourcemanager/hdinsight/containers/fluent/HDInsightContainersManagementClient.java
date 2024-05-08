@@ -7,88 +7,104 @@ package com.azure.resourcemanager.hdinsight.containers.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for HDInsightContainersManagementClient class. */
+/**
+ * The interface for HDInsightContainersManagementClient class.
+ */
 public interface HDInsightContainersManagementClient {
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the ClusterPoolsClient object to access its operations.
-     *
+     * 
      * @return the ClusterPoolsClient object.
      */
     ClusterPoolsClient getClusterPools();
 
     /**
+     * Gets the ClusterPoolAvailableUpgradesClient object to access its operations.
+     * 
+     * @return the ClusterPoolAvailableUpgradesClient object.
+     */
+    ClusterPoolAvailableUpgradesClient getClusterPoolAvailableUpgrades();
+
+    /**
      * Gets the ClustersClient object to access its operations.
-     *
+     * 
      * @return the ClustersClient object.
      */
     ClustersClient getClusters();
 
     /**
+     * Gets the ClusterAvailableUpgradesClient object to access its operations.
+     * 
+     * @return the ClusterAvailableUpgradesClient object.
+     */
+    ClusterAvailableUpgradesClient getClusterAvailableUpgrades();
+
+    /**
      * Gets the ClusterJobsClient object to access its operations.
-     *
+     * 
      * @return the ClusterJobsClient object.
      */
     ClusterJobsClient getClusterJobs();
 
     /**
      * Gets the LocationsClient object to access its operations.
-     *
+     * 
      * @return the LocationsClient object.
      */
     LocationsClient getLocations();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the AvailableClusterPoolVersionsClient object to access its operations.
-     *
+     * 
      * @return the AvailableClusterPoolVersionsClient object.
      */
     AvailableClusterPoolVersionsClient getAvailableClusterPoolVersions();
 
     /**
      * Gets the AvailableClusterVersionsClient object to access its operations.
-     *
+     * 
      * @return the AvailableClusterVersionsClient object.
      */
     AvailableClusterVersionsClient getAvailableClusterVersions();

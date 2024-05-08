@@ -27,6 +27,12 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
     private Boolean writeAcceleratorEnabled;
 
     /*
+     * Specifies the ephemeral disk Settings for the operating system disk used by the virtual machine scale set.
+     */
+    @JsonProperty(value = "diffDiskSettings")
+    private DiffDiskSettings diffDiskSettings;
+
+    /*
      * Specifies the size of an empty data disk in gigabytes. This element can be used to overwrite the size of the
      * disk in a virtual machine image. <br><br> diskSizeGB is the number of bytes x 1024^3 for the disk and the value
      * cannot be larger than 1023
@@ -108,6 +114,28 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
      */
     public VirtualMachineScaleSetUpdateOSDisk withWriteAcceleratorEnabled(Boolean writeAcceleratorEnabled) {
         this.writeAcceleratorEnabled = writeAcceleratorEnabled;
+        return this;
+    }
+
+    /**
+     * Get the diffDiskSettings property: Specifies the ephemeral disk Settings for the operating system disk used by
+     * the virtual machine scale set.
+     * 
+     * @return the diffDiskSettings value.
+     */
+    public DiffDiskSettings diffDiskSettings() {
+        return this.diffDiskSettings;
+    }
+
+    /**
+     * Set the diffDiskSettings property: Specifies the ephemeral disk Settings for the operating system disk used by
+     * the virtual machine scale set.
+     * 
+     * @param diffDiskSettings the diffDiskSettings value to set.
+     * @return the VirtualMachineScaleSetUpdateOSDisk object itself.
+     */
+    public VirtualMachineScaleSetUpdateOSDisk withDiffDiskSettings(DiffDiskSettings diffDiskSettings) {
+        this.diffDiskSettings = diffDiskSettings;
         return this;
     }
 
@@ -235,6 +263,9 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (diffDiskSettings() != null) {
+            diffDiskSettings().validate();
+        }
         if (image() != null) {
             image().validate();
         }

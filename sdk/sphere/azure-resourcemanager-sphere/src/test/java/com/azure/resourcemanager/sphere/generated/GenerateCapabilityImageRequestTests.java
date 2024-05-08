@@ -13,19 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateCapabilityImageRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateCapabilityImageRequest model =
-            BinaryData
-                .fromString("{\"capabilities\":[\"ApplicationDevelopment\"]}")
+        GenerateCapabilityImageRequest model
+            = BinaryData.fromString("{\"capabilities\":[\"FieldServicing\",\"FieldServicing\",\"FieldServicing\"]}")
                 .toObject(GenerateCapabilityImageRequest.class);
-        Assertions.assertEquals(CapabilityType.APPLICATION_DEVELOPMENT, model.capabilities().get(0));
+        Assertions.assertEquals(CapabilityType.FIELD_SERVICING, model.capabilities().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateCapabilityImageRequest model =
-            new GenerateCapabilityImageRequest()
-                .withCapabilities(Arrays.asList(CapabilityType.APPLICATION_DEVELOPMENT));
+        GenerateCapabilityImageRequest model = new GenerateCapabilityImageRequest().withCapabilities(Arrays
+            .asList(CapabilityType.FIELD_SERVICING, CapabilityType.FIELD_SERVICING, CapabilityType.FIELD_SERVICING));
         model = BinaryData.fromObject(model).toObject(GenerateCapabilityImageRequest.class);
-        Assertions.assertEquals(CapabilityType.APPLICATION_DEVELOPMENT, model.capabilities().get(0));
+        Assertions.assertEquals(CapabilityType.FIELD_SERVICING, model.capabilities().get(0));
     }
 }

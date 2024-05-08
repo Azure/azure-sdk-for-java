@@ -9,6 +9,7 @@ import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
+import com.azure.spring.data.cosmos.config.CosmosConfig;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Address;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -49,6 +50,9 @@ public class AddressRepositoryIT {
 
     @Autowired
     AddressRepository repository;
+
+    @Autowired
+    CosmosConfig cosmosConfig;
 
     @Autowired
     private CosmosTemplate template;
@@ -301,5 +305,41 @@ public class AddressRepositoryIT {
         } catch (CosmosAccessException ex) {
             assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
         }
+    }
+
+
+    @Test
+    public void queryDatabaseWithQueryMetricsEnabled() {
+        // Test flag is true
+        assertThat(cosmosConfig.isQueryMetricsEnabled()).isTrue();
+
+        // Make sure a query runs
+        final List<Address> result = TestUtils.toList(repository.findAll());
+        assertThat(result.size()).isEqualTo(4);
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).contains("retrievedDocumentCount");
+        assertThat(queryDiagnostics).contains("queryPreparationTimes");
+        assertThat(queryDiagnostics).contains("runtimeExecutionTimes");
+        assertThat(queryDiagnostics).contains("fetchExecutionRanges");
+    }
+
+    @Test
+    public void queryDatabaseWithIndexMetricsEnabled() {
+        // Test flag is true
+        assertThat(cosmosConfig.isIndexMetricsEnabled()).isTrue();
+
+        // Make sure a query runs
+        final List<Address> result = TestUtils.toList(repository.findAll());
+        assertThat(result.size()).isEqualTo(4);
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).contains("\"indexUtilizationInfo\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedCompositeIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialCompositeIndexes\"");
     }
 }

@@ -1,14 +1,13 @@
 #!/bin/sh
 
-sudo apt-get install -y --upgrade python3-pip python3-setuptools
-pip3 install --upgrade wheel
-pip3 install --upgrade PyYAML requests
+echo Install Python
+sudo apt-get install -y --upgrade python3-pip python3-setuptools 2>&1
+pip3 install --upgrade wheel 2>&1
+pip3 install --upgrade PyYAML requests 2>&1
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-nvm install v18.15.0
-nvm alias default node
+# install tsp-client globally (local install may interfere with tooling)
+echo Install tsp-client
+npm install -g @azure-tools/typespec-client-generator-cli 2>&1
 
 cat << EOF > $2
 {"envs": {"PATH": "$JAVA_HOME_11_X64/bin:$PATH", "JAVA_HOME": "$JAVA_HOME_11_X64"}}

@@ -31,43 +31,26 @@ public final class ClusterJobsRunJobMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"bunzozudh\",\"name\":\"xg\",\"type\":\"moy\"}";
+        String responseStr
+            = "{\"properties\":{\"jobType\":\"ClusterJobProperties\"},\"id\":\"wmdboxdfgsftuf\",\"name\":\"obrjlnacgcc\",\"type\":\"knh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        HDInsightContainersManager manager =
-            HDInsightContainersManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HDInsightContainersManager manager = HDInsightContainersManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ClusterJob response =
-            manager
-                .clusterJobs()
-                .runJob(
-                    "qojpy",
-                    "vgtrdcnifmzzs",
-                    "ymbrnysuxmpraf",
-                    new ClusterJobInner().withProperties(new ClusterJobProperties()),
-                    com.azure.core.util.Context.NONE);
+        ClusterJob response = manager.clusterJobs().runJob("cbslhhx", "db", "vodhtn",
+            new ClusterJobInner().withProperties(new ClusterJobProperties()), com.azure.core.util.Context.NONE);
+
     }
 }

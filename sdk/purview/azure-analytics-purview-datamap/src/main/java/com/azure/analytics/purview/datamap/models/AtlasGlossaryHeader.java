@@ -6,32 +6,33 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The glossary header with basic information.
  */
 @Fluent
-public final class AtlasGlossaryHeader {
+public final class AtlasGlossaryHeader implements JsonSerializable<AtlasGlossaryHeader> {
     /*
      * The display text.
      */
     @Generated
-    @JsonProperty(value = "displayText")
     private String displayText;
 
     /*
      * The GUID of the glossary.
      */
     @Generated
-    @JsonProperty(value = "glossaryGuid")
     private String glossaryGuid;
 
     /*
      * The GUID of the relationship.
      */
     @Generated
-    @JsonProperty(value = "relationGuid")
     private String relationGuid;
 
     /**
@@ -105,5 +106,49 @@ public final class AtlasGlossaryHeader {
     public AtlasGlossaryHeader setRelationGuid(String relationGuid) {
         this.relationGuid = relationGuid;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayText", this.displayText);
+        jsonWriter.writeStringField("glossaryGuid", this.glossaryGuid);
+        jsonWriter.writeStringField("relationGuid", this.relationGuid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasGlossaryHeader from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasGlossaryHeader if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasGlossaryHeader.
+     */
+    @Generated
+    public static AtlasGlossaryHeader fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasGlossaryHeader deserializedAtlasGlossaryHeader = new AtlasGlossaryHeader();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayText".equals(fieldName)) {
+                    deserializedAtlasGlossaryHeader.displayText = reader.getString();
+                } else if ("glossaryGuid".equals(fieldName)) {
+                    deserializedAtlasGlossaryHeader.glossaryGuid = reader.getString();
+                } else if ("relationGuid".equals(fieldName)) {
+                    deserializedAtlasGlossaryHeader.relationGuid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasGlossaryHeader;
+        });
     }
 }

@@ -72,7 +72,7 @@ import java.util.List;
  * <p><strong>Sample: Construct DefaultAzureCredential with User Assigned Managed Identity </strong></p>
  *
  * <p>User-Assigned Managed Identity (UAMI) in Azure is a feature that allows you to create an identity in
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> that is
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> that is
  * associated with one or more Azure resources. This identity can then be used to authenticate and
  * authorize access to various Azure services and resources. The following code sample demonstrates the creation of
  * a DefaultAzureCredential to target a user assigned managed identity, using the
@@ -106,5 +106,6 @@ public final class DefaultAzureCredential extends ChainedTokenCredential {
      */
     DefaultAzureCredential(List<TokenCredential> tokenCredentials) {
         super(tokenCredentials);
+        this.enableUseCachedWorkingCredential();
     }
 }

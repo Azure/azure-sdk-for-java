@@ -14,45 +14,33 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterInstanceViewPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterInstanceViewProperties model =
-            BinaryData
-                .fromString(
-                    "{\"status\":{\"ready\":\"xje\",\"reason\":\"lwnwxuqlcvydyp\",\"message\":\"dooaojkniodko\"},\"serviceStatuses\":[{\"kind\":\"bw\",\"ready\":\"ujhemmsbvdkcrodt\",\"message\":\"nfwjlfltkacjvefk\"},{\"kind\":\"lfoakg\",\"ready\":\"kfpagao\",\"message\":\"ulpqblylsyxkqjn\"}]}")
-                .toObject(ClusterInstanceViewProperties.class);
-        Assertions.assertEquals("xje", model.status().ready());
-        Assertions.assertEquals("lwnwxuqlcvydyp", model.status().reason());
-        Assertions.assertEquals("dooaojkniodko", model.status().message());
-        Assertions.assertEquals("bw", model.serviceStatuses().get(0).kind());
-        Assertions.assertEquals("ujhemmsbvdkcrodt", model.serviceStatuses().get(0).ready());
-        Assertions.assertEquals("nfwjlfltkacjvefk", model.serviceStatuses().get(0).message());
+        ClusterInstanceViewProperties model = BinaryData.fromString(
+            "{\"status\":{\"ready\":\"ykutwpf\",\"reason\":\"a\",\"message\":\"hrskdsnfd\"},\"serviceStatuses\":[{\"kind\":\"oakgtdlmkkzev\",\"ready\":\"l\",\"message\":\"wpusdsttwvogv\"},{\"kind\":\"bejdcn\",\"ready\":\"qqmoaku\",\"message\":\"m\"},{\"kind\":\"zr\",\"ready\":\"rdgrtw\",\"message\":\"nuuzkopbm\"},{\"kind\":\"nrfdw\",\"ready\":\"yuhhziu\",\"message\":\"fozbhdmsmlmzqhof\"}]}")
+            .toObject(ClusterInstanceViewProperties.class);
+        Assertions.assertEquals("ykutwpf", model.status().ready());
+        Assertions.assertEquals("a", model.status().reason());
+        Assertions.assertEquals("hrskdsnfd", model.status().message());
+        Assertions.assertEquals("oakgtdlmkkzev", model.serviceStatuses().get(0).kind());
+        Assertions.assertEquals("l", model.serviceStatuses().get(0).ready());
+        Assertions.assertEquals("wpusdsttwvogv", model.serviceStatuses().get(0).message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterInstanceViewProperties model =
-            new ClusterInstanceViewProperties()
-                .withStatus(
-                    new ClusterInstanceViewPropertiesStatus()
-                        .withReady("xje")
-                        .withReason("lwnwxuqlcvydyp")
-                        .withMessage("dooaojkniodko"))
-                .withServiceStatuses(
-                    Arrays
-                        .asList(
-                            new ServiceStatus()
-                                .withKind("bw")
-                                .withReady("ujhemmsbvdkcrodt")
-                                .withMessage("nfwjlfltkacjvefk"),
-                            new ServiceStatus()
-                                .withKind("lfoakg")
-                                .withReady("kfpagao")
-                                .withMessage("ulpqblylsyxkqjn")));
+        ClusterInstanceViewProperties model = new ClusterInstanceViewProperties()
+            .withStatus(
+                new ClusterInstanceViewPropertiesStatus().withReady("ykutwpf").withReason("a").withMessage("hrskdsnfd"))
+            .withServiceStatuses(
+                Arrays.asList(new ServiceStatus().withKind("oakgtdlmkkzev").withReady("l").withMessage("wpusdsttwvogv"),
+                    new ServiceStatus().withKind("bejdcn").withReady("qqmoaku").withMessage("m"),
+                    new ServiceStatus().withKind("zr").withReady("rdgrtw").withMessage("nuuzkopbm"),
+                    new ServiceStatus().withKind("nrfdw").withReady("yuhhziu").withMessage("fozbhdmsmlmzqhof")));
         model = BinaryData.fromObject(model).toObject(ClusterInstanceViewProperties.class);
-        Assertions.assertEquals("xje", model.status().ready());
-        Assertions.assertEquals("lwnwxuqlcvydyp", model.status().reason());
-        Assertions.assertEquals("dooaojkniodko", model.status().message());
-        Assertions.assertEquals("bw", model.serviceStatuses().get(0).kind());
-        Assertions.assertEquals("ujhemmsbvdkcrodt", model.serviceStatuses().get(0).ready());
-        Assertions.assertEquals("nfwjlfltkacjvefk", model.serviceStatuses().get(0).message());
+        Assertions.assertEquals("ykutwpf", model.status().ready());
+        Assertions.assertEquals("a", model.status().reason());
+        Assertions.assertEquals("hrskdsnfd", model.status().message());
+        Assertions.assertEquals("oakgtdlmkkzev", model.serviceStatuses().get(0).kind());
+        Assertions.assertEquals("l", model.serviceStatuses().get(0).ready());
+        Assertions.assertEquals("wpusdsttwvogv", model.serviceStatuses().get(0).message());
     }
 }

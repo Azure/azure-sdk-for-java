@@ -21,7 +21,7 @@ public final class PatientDocument {
      */
     @Generated
     @JsonProperty(value = "type")
-    private DocumentType type;
+    private final DocumentType type;
 
     /*
      * The type of the clinical document.
@@ -35,7 +35,7 @@ public final class PatientDocument {
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * A 2 letter ISO 639-1 representation of the language of the document.
@@ -77,7 +77,7 @@ public final class PatientDocument {
      */
     @Generated
     @JsonProperty(value = "content")
-    private DocumentContent content;
+    private final DocumentContent content;
 
     /**
      * Creates an instance of PatientDocument class.

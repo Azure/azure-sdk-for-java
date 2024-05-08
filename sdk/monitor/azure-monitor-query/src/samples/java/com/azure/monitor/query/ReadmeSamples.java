@@ -58,7 +58,7 @@ public class ReadmeSamples {
     /**
      * Sample for creating sync and async clients for querying metrics.
      */
-    public void createMetricsClients() {
+    public void createMetricsQueryClients() {
         // BEGIN: readme-sample-createMetricsQueryClient
         MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -72,20 +72,20 @@ public class ReadmeSamples {
         // END: readme-sample-createMetricsQueryAsyncClient
     }
 
-    public void createMetricsBatchClients() {
-        // BEGIN: readme-sample-createMetricsBatchQueryClient
-        MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
+    public void createMetricsClients() {
+        // BEGIN: readme-sample-createMetricsClient
+        MetricsClient metricsClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{endpoint}")
             .buildClient();
-        // END: readme-sample-createMetricsBatchQueryClient
+        // END: readme-sample-createMetricsClient
 
-        // BEGIN: readme-sample-createMetricsBatchQueryAsyncClient
+        // BEGIN: readme-sample-createMetricsAsyncClient
         MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{endpoint}")
             .buildAsyncClient();
-        // END: readme-sample-createMetricsBatchQueryAsyncClient
+        // END: readme-sample-createMetricsAsyncClient
     }
 
     /**
@@ -446,14 +446,14 @@ public class ReadmeSamples {
     /**
      * Sample to demonstrate querying Azure Monitor for metrics.
      */
-    public void getMetricsBatch() {
-        // BEGIN: readme-sample-metricsquerybatch
-        MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
+    public void getMetricsForMultipleResources() {
+        // BEGIN: readme-sample-metricsquerymultipleresources
+        MetricsClient metricsClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{endpoint}")
             .buildClient();
 
-        MetricsQueryResourcesResult metricsQueryResourcesResult = metricsBatchQueryClient.queryResources(
+        MetricsQueryResourcesResult metricsQueryResourcesResult = metricsClient.queryResources(
             Arrays.asList("{resourceId1}", "{resourceId2}"),
             Arrays.asList("{metric1}", "{metric2}"),
             "{metricNamespace}");
@@ -476,6 +476,6 @@ public class ReadmeSamples {
                         + "; Average = " + mv.getAverage()));
             });
         }
-        // END: readme-sample-metricsquerybatch
+        // END: readme-sample-metricsquerymultipleresources
     }
 }

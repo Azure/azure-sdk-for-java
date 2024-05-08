@@ -11,14 +11,15 @@ public final class DistcpSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DistcpSettings model = BinaryData.fromString(
-            "{\"resourceManagerEndpoint\":\"datawcp\",\"tempScriptPath\":\"dataaosk\",\"distcpOptions\":\"dataalljsoasxjjklm\"}")
+            "{\"resourceManagerEndpoint\":\"dataapbdbicjzntiblx\",\"tempScriptPath\":\"dataygosuhroicjt\",\"distcpOptions\":\"datadymoanpkcmdixiux\"}")
             .toObject(DistcpSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DistcpSettings model = new DistcpSettings().withResourceManagerEndpoint("datawcp")
-            .withTempScriptPath("dataaosk").withDistcpOptions("dataalljsoasxjjklm");
+        DistcpSettings model = new DistcpSettings().withResourceManagerEndpoint("dataapbdbicjzntiblx")
+            .withTempScriptPath("dataygosuhroicjt")
+            .withDistcpOptions("datadymoanpkcmdixiux");
         model = BinaryData.fromObject(model).toObject(DistcpSettings.class);
     }
 }

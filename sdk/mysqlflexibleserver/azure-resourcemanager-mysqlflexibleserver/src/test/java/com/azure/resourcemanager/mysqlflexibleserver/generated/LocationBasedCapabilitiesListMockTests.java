@@ -6,60 +6,32 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mysqlflexibleserver.MySqlManager;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CapabilityProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LocationBasedCapabilitiesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"zone\":\"pchrqbn\",\"supportedHAMode\":[\"cgegydcwbo\",\"jumvqqolihrraio\",\"aubrjtloq\",\"fuojrngif\"],\"supportedGeoBackupRegions\":[\"pasccbi\"],\"supportedFlexibleServerEditions\":[{\"name\":\"dlyjdf\",\"supportedStorageEditions\":[{\"name\":\"yoqufdvruz\",\"minStorageSize\":2600237364584230542,\"maxStorageSize\":2316867821838180775,\"minBackupRetentionDays\":6225539481081816034,\"maxBackupRetentionDays\":2583150434628365125,\"minBackupIntervalHours\":8115343484266818229,\"maxBackupIntervalHours\":1515180407492298673},{\"name\":\"gugey\",\"minStorageSize\":5337182634110247447,\"maxStorageSize\":5298190426321476453,\"minBackupRetentionDays\":1071033951175761885,\"maxBackupRetentionDays\":8501858796124170627,\"minBackupIntervalHours\":3001413149063858536,\"maxBackupIntervalHours\":1993582902542449094},{\"name\":\"jee\",\"minStorageSize\":3280820966134981534,\"maxStorageSize\":8257115146119139176,\"minBackupRetentionDays\":7698479884404425134,\"maxBackupRetentionDays\":1467661718533894522,\"minBackupIntervalHours\":3345098193027628401,\"maxBackupIntervalHours\":6180206974862965470},{\"name\":\"lqgleohibet\",\"minStorageSize\":4209998401256114116,\"maxStorageSize\":4672708132953979269,\"minBackupRetentionDays\":7813661747400439711,\"maxBackupRetentionDays\":2804942930724576693,\"minBackupIntervalHours\":4102985204616686159,\"maxBackupIntervalHours\":805696348509533279}],\"supportedServerVersions\":[{\"name\":\"mq\",\"supportedSkus\":[{},{}]},{\"name\":\"xl\",\"supportedSkus\":[{},{},{},{}]}]},{\"name\":\"wxacevehj\",\"supportedStorageEditions\":[{\"name\":\"oafgaoql\",\"minStorageSize\":7162692697812879561,\"maxStorageSize\":7771885144500029839,\"minBackupRetentionDays\":7322499256241128041,\"maxBackupRetentionDays\":3765841685495474303,\"minBackupIntervalHours\":235699248571174778,\"maxBackupIntervalHours\":6212930626984689307},{\"name\":\"ypoq\",\"minStorageSize\":2882536637469097723,\"maxStorageSize\":424407896028094311,\"minBackupRetentionDays\":5206156324264475119,\"maxBackupRetentionDays\":303682682740043347,\"minBackupIntervalHours\":5418923826666685582,\"maxBackupIntervalHours\":1668391382882186409}],\"supportedServerVersions\":[{\"name\":\"ex\",\"supportedSkus\":[{},{}]},{\"name\":\"fuxtyasiibmiybnn\",\"supportedSkus\":[{},{},{},{}]},{\"name\":\"nlj\",\"supportedSkus\":[{},{},{},{}]}]},{\"name\":\"ixhcmavmqfoudor\",\"supportedStorageEditions\":[{\"name\":\"yprotwyp\",\"minStorageSize\":632418466926418439,\"maxStorageSize\":6016947306008941575,\"minBackupRetentionDays\":9000547488418283781,\"maxBackupRetentionDays\":4750372007133576018,\"minBackupIntervalHours\":4453190151402917015,\"maxBackupIntervalHours\":2120941596738305720},{\"name\":\"mftpmdtz\",\"minStorageSize\":6562239674764125403,\"maxStorageSize\":8628108633019438318,\"minBackupRetentionDays\":1872475560881606725,\"maxBackupRetentionDays\":840747953367424454,\"minBackupIntervalHours\":343574870705821595,\"maxBackupIntervalHours\":8439082664009301787},{\"name\":\"bdb\",\"minStorageSize\":3940441182690359236,\"maxStorageSize\":4397077651740023584,\"minBackupRetentionDays\":6059165866604595135,\"maxBackupRetentionDays\":7204032751679115216,\"minBackupIntervalHours\":7606272604171191671,\"maxBackupIntervalHours\":5526633382348478789}],\"supportedServerVersions\":[{\"name\":\"sihsgqcwdhohsd\",\"supportedSkus\":[{},{}]},{\"name\":\"zsu\",\"supportedSkus\":[{},{},{}]}]},{\"name\":\"dxbzlmcmuap\",\"supportedStorageEditions\":[{\"name\":\"bevwqqxeys\",\"minStorageSize\":4160120838530826902,\"maxStorageSize\":328893230492625152,\"minBackupRetentionDays\":4259363860416490102,\"maxBackupRetentionDays\":1183436721296067733,\"minBackupIntervalHours\":4864080345534775106,\"maxBackupIntervalHours\":5579125360239999126},{\"name\":\"o\",\"minStorageSize\":6641902450143738474,\"maxStorageSize\":6112219280585883624,\"minBackupRetentionDays\":5480964169842909766,\"maxBackupRetentionDays\":7238686048723622110,\"minBackupIntervalHours\":6179637668412316681,\"maxBackupIntervalHours\":6018450273197530878},{\"name\":\"ezrxcczurtleipqx\",\"minStorageSize\":2834445186156751088,\"maxStorageSize\":5401595898507177425,\"minBackupRetentionDays\":219465156296514130,\"maxBackupRetentionDays\":8865201443625196451,\"minBackupIntervalHours\":2796904412967112909,\"maxBackupIntervalHours\":7791117034992992148},{\"name\":\"noda\",\"minStorageSize\":4300342895561175446,\"maxStorageSize\":8320087394217577004,\"minBackupRetentionDays\":7022680732951740114,\"maxBackupRetentionDays\":7812585541741451756,\"minBackupIntervalHours\":7587339093272860703,\"maxBackupIntervalHours\":857600244335587375}],\"supportedServerVersions\":[{\"name\":\"dlat\",\"supportedSkus\":[{},{},{},{}]}]}]}]}";
 
-        String responseStr =
-            "{\"value\":[{\"zone\":\"jwosytxitcskfck\",\"supportedHAMode\":[\"miekkezzikhlyfjh\",\"gqggebdunygae\",\"idb\"],\"supportedGeoBackupRegions\":[\"t\",\"xllrxcyjm\"],\"supportedFlexibleServerEditions\":[{\"name\":\"uvarmywdmjsjq\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"xrwlyc\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"xkgymareqnajxqu\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]},{\"name\":\"ubeddg\",\"supportedStorageEditions\":[],\"supportedServerVersions\":[]}]}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MySqlManager manager = MySqlManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<CapabilityProperties> response
+            = manager.locationBasedCapabilities().list("dunqnd", com.azure.core.util.Context.NONE);
 
-        MySqlManager manager =
-            MySqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<CapabilityProperties> response =
-            manager.locationBasedCapabilities().list("jrvxaglrv", com.azure.core.util.Context.NONE);
     }
 }

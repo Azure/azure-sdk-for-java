@@ -14,7 +14,7 @@ public final class ListPrivateLinkResourcesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListPrivateLinkResourcesResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"ukgjnpiucgygevq\",\"requiredMembers\":[\"yp\",\"rbpizc\",\"r\",\"j\"],\"requiredZoneNames\":[\"ydnfyhxdeoejz\"]},\"etag\":\"w\",\"id\":\"fsj\",\"name\":\"tgzfbishcbkh\",\"type\":\"jdeyeamdpha\"}],\"nextLink\":\"lpbuxwgipwhonowk\"}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"xieduugidyjrr\",\"requiredMembers\":[\"aos\"],\"requiredZoneNames\":[\"csonpclhoco\"]},\"etag\":\"lkevle\",\"id\":\"gz\",\"name\":\"buhfmvfaxkffeiit\",\"type\":\"lvmezyvshxmzsbbz\"},{\"properties\":{\"groupId\":\"igrxwburvjxxjn\",\"requiredMembers\":[\"dptkoenkouk\",\"vudwtiukbldng\"],\"requiredZoneNames\":[\"cipazyxoegukgjnp\",\"ucgygevqz\",\"typmrbpizcdrqjsd\"]},\"etag\":\"dnfyhxdeoejzicwi\",\"id\":\"sjttgzfbish\",\"name\":\"bkh\",\"type\":\"jdeyeamdpha\"}],\"nextLink\":\"lpbuxwgipwhonowk\"}")
             .toObject(ListPrivateLinkResourcesResult.class);
         Assertions.assertEquals("lpbuxwgipwhonowk", model.nextLink());
     }
@@ -22,7 +22,8 @@ public final class ListPrivateLinkResourcesResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ListPrivateLinkResourcesResult model = new ListPrivateLinkResourcesResult()
-            .withValue(Arrays.asList(new PrivateLinkResourceInner())).withNextLink("lpbuxwgipwhonowk");
+            .withValue(Arrays.asList(new PrivateLinkResourceInner(), new PrivateLinkResourceInner()))
+            .withNextLink("lpbuxwgipwhonowk");
         model = BinaryData.fromObject(model).toObject(ListPrivateLinkResourcesResult.class);
         Assertions.assertEquals("lpbuxwgipwhonowk", model.nextLink());
     }

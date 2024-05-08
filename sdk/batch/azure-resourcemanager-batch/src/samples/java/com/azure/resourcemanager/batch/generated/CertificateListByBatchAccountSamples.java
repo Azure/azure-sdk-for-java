@@ -10,7 +10,7 @@ package com.azure.resourcemanager.batch.generated;
 public final class CertificateListByBatchAccountSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateListWithFilter.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/CertificateListWithFilter.json
      */
     /**
      * Sample code: ListCertificates - Filter and Select.
@@ -26,7 +26,7 @@ public final class CertificateListByBatchAccountSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateList.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/CertificateList.json
      */
     /**
      * Sample code: ListCertificates.

@@ -6,34 +6,35 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The result of the search result.
  */
 @Immutable
-public final class QueryResult {
+public final class QueryResult implements JsonSerializable<QueryResult> {
     /*
      * The total number of search results (not the number of documents in a single
      * page).
      */
     @Generated
-    @JsonProperty(value = "@search.count")
     private Integer searchCount;
 
     /*
      * 'True' if the '@search.count' is an approximate value and vise versa.
      */
     @Generated
-    @JsonProperty(value = "@search.count.approximate")
     private Boolean searchCountApproximate;
 
     /*
      * The token used to get next batch of data. Absent if there's no more data.
      */
     @Generated
-    @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
     /*
@@ -42,14 +43,12 @@ public final class QueryResult {
      * the facet is returned as an element of @search.facets.
      */
     @Generated
-    @JsonProperty(value = "@search.facets")
     private SearchFacetResultValue searchFacets;
 
     /*
      * Search result value
      */
     @Generated
-    @JsonProperty(value = "value")
     private List<SearchResultValue> value;
 
     /**
@@ -111,5 +110,56 @@ public final class QueryResult {
     @Generated
     public List<SearchResultValue> getValue() {
         return this.value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("@search.count", this.searchCount);
+        jsonWriter.writeBooleanField("@search.count.approximate", this.searchCountApproximate);
+        jsonWriter.writeStringField("continuationToken", this.continuationToken);
+        jsonWriter.writeJsonField("@search.facets", this.searchFacets);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryResult.
+     */
+    @Generated
+    public static QueryResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryResult deserializedQueryResult = new QueryResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@search.count".equals(fieldName)) {
+                    deserializedQueryResult.searchCount = reader.getNullable(JsonReader::getInt);
+                } else if ("@search.count.approximate".equals(fieldName)) {
+                    deserializedQueryResult.searchCountApproximate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("continuationToken".equals(fieldName)) {
+                    deserializedQueryResult.continuationToken = reader.getString();
+                } else if ("@search.facets".equals(fieldName)) {
+                    deserializedQueryResult.searchFacets = SearchFacetResultValue.fromJson(reader);
+                } else if ("value".equals(fieldName)) {
+                    List<SearchResultValue> value = reader.readArray(reader1 -> SearchResultValue.fromJson(reader1));
+                    deserializedQueryResult.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryResult;
+        });
     }
 }

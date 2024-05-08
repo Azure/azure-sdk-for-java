@@ -25,8 +25,7 @@ public final class IntegrationRuntimeDataFlowProperties {
     private DataFlowComputeType computeType;
 
     /*
-     * Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and
-     * 272.
+     * Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272.
      */
     @JsonProperty(value = "coreCount")
     private Integer coreCount;
@@ -38,8 +37,7 @@ public final class IntegrationRuntimeDataFlowProperties {
     private Integer timeToLive;
 
     /*
-     * Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is
-     * reached if this is set as false. Default is true.
+     * Cluster will not be recycled and it will be used in next data flow activity run until TTL (time to live) is reached if this is set as false. Default is true.
      */
     @JsonProperty(value = "cleanup")
     private Boolean cleanup;

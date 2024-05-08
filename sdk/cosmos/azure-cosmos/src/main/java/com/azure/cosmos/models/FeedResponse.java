@@ -7,6 +7,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -571,12 +572,28 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         BridgeInternal.setQueryPlanDiagnosticsContext(cosmosDiagnostics, queryPlanDiagnosticsContext);
     }
 
+    private static boolean noChanges(RxDocumentServiceResponse rsp) {
+        return rsp.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.FeedResponseHelper.setFeedResponseAccessor(
             new ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor() {
+                @Override
+                public <T> FeedResponse<T> createFeedResponse(RxDocumentServiceResponse response, CosmosItemSerializer itemSerializer, Class<T> cls) {
+                    return new FeedResponse<>(response.getQueryResponse(itemSerializer, cls), response);
+                }
+
+                @Override
+                public <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response, CosmosItemSerializer itemSerializer, Class<T> cls) {
+                    return new FeedResponse<>(
+                        noChanges(response) ? Collections.emptyList() : response.getQueryResponse(itemSerializer, cls),
+                        response.getResponseHeaders(), noChanges(response));
+                }
+
                 @Override
                 public <T> boolean getNoChanges(FeedResponse<T> feedResponse) {
                     return feedResponse.getNoChanges();

@@ -21,6 +21,14 @@ public class VirtualMachineInfo {
     private ImageReference imageReference;
 
     /**
+     * The resource ID of the Compute Node's current Virtual Machine Scale Set
+     * VM. Only defined if the Batch Account was created with its
+     * poolAllocationMode property set to 'UserSubscription'.
+     */
+    @JsonProperty(value = "scaleSetVmResourceId")
+    private String scaleSetVmResourceId;
+
+    /**
      * Get the imageReference value.
      *
      * @return the imageReference value
@@ -37,6 +45,26 @@ public class VirtualMachineInfo {
      */
     public VirtualMachineInfo withImageReference(ImageReference imageReference) {
         this.imageReference = imageReference;
+        return this;
+    }
+
+    /**
+     * Get the scaleSetVmResourceId value.
+     *
+     * @return the scaleSetVmResourceId value
+     */
+    public String scaleSetVmResourceId() {
+        return this.scaleSetVmResourceId;
+    }
+
+    /**
+     * Set the scaleSetVmResourceId value.
+     *
+     * @param scaleSetVmResourceId the scaleSetVmResourceId value to set
+     * @return the VirtualMachineInfo object itself.
+     */
+    public VirtualMachineInfo withScaleSetVmResourceId(String scaleSetVmResourceId) {
+        this.scaleSetVmResourceId = scaleSetVmResourceId;
         return this;
     }
 

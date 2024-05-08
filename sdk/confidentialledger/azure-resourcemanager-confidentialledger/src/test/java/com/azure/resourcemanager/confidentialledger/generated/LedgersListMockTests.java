@@ -6,68 +6,52 @@ package com.azure.resourcemanager.confidentialledger.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager;
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedger;
+import com.azure.resourcemanager.confidentialledger.models.LedgerRoleName;
+import com.azure.resourcemanager.confidentialledger.models.LedgerSku;
 import com.azure.resourcemanager.confidentialledger.models.LedgerType;
 import com.azure.resourcemanager.confidentialledger.models.RunningState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LedgersListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"ledgerName\":\"dvjsllrmvvdf\",\"ledgerUri\":\"t\",\"identityServiceUri\":\"n\",\"ledgerInternalNamespace\":\"lexxbczwtru\",\"runningState\":\"Resuming\",\"ledgerType\":\"Private\",\"provisioningState\":\"Failed\",\"ledgerSku\":\"Basic\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"yokacspkw\",\"tenantId\":\"zdobpxjmflbvvnch\",\"ledgerRoleName\":\"Reader\"},{\"principalId\":\"iwwzjuqk\",\"tenantId\":\"sa\",\"ledgerRoleName\":\"Administrator\"},{\"principalId\":\"uo\",\"tenantId\":\"skghsauuimj\",\"ledgerRoleName\":\"Administrator\"}],\"certBasedSecurityPrincipals\":[{\"cert\":\"uugidyjrrfby\",\"ledgerRoleName\":\"Contributor\"},{\"cert\":\"e\",\"ledgerRoleName\":\"Reader\"}]},\"location\":\"npc\",\"tags\":{\"eggzfb\":\"cohslkev\",\"ithlvmezyvshxm\":\"hfmvfaxkffe\",\"gigr\":\"sbbzo\"},\"id\":\"wburvjxxjnspydpt\",\"name\":\"oenkouknvudwti\",\"type\":\"kbldngkpocipa\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"ledgerName\":\"dwxdndnv\",\"ledgerUri\":\"gujjugwdkcglh\",\"identityServiceUri\":\"azjdyggd\",\"ledgerInternalNamespace\":\"ixhbkuofqweykhm\",\"runningState\":\"Paused\",\"ledgerType\":\"Private\",\"provisioningState\":\"Unknown\",\"aadBasedSecurityPrincipals\":[],\"certBasedSecurityPrincipals\":[]},\"location\":\"bcibvyvdcsitynn\",\"tags\":{\"eypvhezrkg\":\"dectehfiqsc\",\"sle\":\"hcjrefovgmk\",\"cattpngjcrcczsq\":\"yvxyqjp\",\"mdajv\":\"jh\"},\"id\":\"ysou\",\"name\":\"q\",\"type\":\"canoaeupf\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ConfidentialLedgerManager manager = ConfidentialLedgerManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ConfidentialLedger> response
+            = manager.ledgers().list("czvyifq", com.azure.core.util.Context.NONE);
 
-        ConfidentialLedgerManager manager =
-            ConfidentialLedgerManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ConfidentialLedger> response =
-            manager.ledgers().list("xzdmohctb", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("bcibvyvdcsitynn", response.iterator().next().location());
-        Assertions.assertEquals("dectehfiqsc", response.iterator().next().tags().get("eypvhezrkg"));
-        Assertions.assertEquals(RunningState.PAUSED, response.iterator().next().properties().runningState());
+        Assertions.assertEquals("npc", response.iterator().next().location());
+        Assertions.assertEquals("cohslkev", response.iterator().next().tags().get("eggzfb"));
+        Assertions.assertEquals(RunningState.RESUMING, response.iterator().next().properties().runningState());
         Assertions.assertEquals(LedgerType.PRIVATE, response.iterator().next().properties().ledgerType());
+        Assertions.assertEquals(LedgerSku.BASIC, response.iterator().next().properties().ledgerSku());
+        Assertions.assertEquals("yokacspkw",
+            response.iterator().next().properties().aadBasedSecurityPrincipals().get(0).principalId());
+        Assertions.assertEquals("zdobpxjmflbvvnch",
+            response.iterator().next().properties().aadBasedSecurityPrincipals().get(0).tenantId());
+        Assertions.assertEquals(LedgerRoleName.READER,
+            response.iterator().next().properties().aadBasedSecurityPrincipals().get(0).ledgerRoleName());
+        Assertions.assertEquals("uugidyjrrfby",
+            response.iterator().next().properties().certBasedSecurityPrincipals().get(0).cert());
+        Assertions.assertEquals(LedgerRoleName.CONTRIBUTOR,
+            response.iterator().next().properties().certBasedSecurityPrincipals().get(0).ledgerRoleName());
     }
 }

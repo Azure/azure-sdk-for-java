@@ -8,83 +8,133 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Image type values. */
+/**
+ * Image type values.
+ */
 public final class ImageType extends ExpandableStringEnum<ImageType> {
-    /** Static value InvalidImageType for ImageType. */
+    /**
+     * Static value InvalidImageType for ImageType.
+     */
     public static final ImageType INVALID_IMAGE_TYPE = fromString("InvalidImageType");
 
-    /** Static value OneBl for ImageType. */
+    /**
+     * Static value OneBl for ImageType.
+     */
     public static final ImageType ONE_BL = fromString("OneBl");
 
-    /** Static value PlutonRuntime for ImageType. */
+    /**
+     * Static value PlutonRuntime for ImageType.
+     */
     public static final ImageType PLUTON_RUNTIME = fromString("PlutonRuntime");
 
-    /** Static value WifiFirmware for ImageType. */
+    /**
+     * Static value WifiFirmware for ImageType.
+     */
     public static final ImageType WIFI_FIRMWARE = fromString("WifiFirmware");
 
-    /** Static value SecurityMonitor for ImageType. */
+    /**
+     * Static value SecurityMonitor for ImageType.
+     */
     public static final ImageType SECURITY_MONITOR = fromString("SecurityMonitor");
 
-    /** Static value NormalWorldLoader for ImageType. */
+    /**
+     * Static value NormalWorldLoader for ImageType.
+     */
     public static final ImageType NORMAL_WORLD_LOADER = fromString("NormalWorldLoader");
 
-    /** Static value NormalWorldDtb for ImageType. */
+    /**
+     * Static value NormalWorldDtb for ImageType.
+     */
     public static final ImageType NORMAL_WORLD_DTB = fromString("NormalWorldDtb");
 
-    /** Static value NormalWorldKernel for ImageType. */
+    /**
+     * Static value NormalWorldKernel for ImageType.
+     */
     public static final ImageType NORMAL_WORLD_KERNEL = fromString("NormalWorldKernel");
 
-    /** Static value RootFs for ImageType. */
+    /**
+     * Static value RootFs for ImageType.
+     */
     public static final ImageType ROOT_FS = fromString("RootFs");
 
-    /** Static value Services for ImageType. */
+    /**
+     * Static value Services for ImageType.
+     */
     public static final ImageType SERVICES = fromString("Services");
 
-    /** Static value Applications for ImageType. */
+    /**
+     * Static value Applications for ImageType.
+     */
     public static final ImageType APPLICATIONS = fromString("Applications");
 
-    /** Static value FwConfig for ImageType. */
+    /**
+     * Static value FwConfig for ImageType.
+     */
     public static final ImageType FW_CONFIG = fromString("FwConfig");
 
-    /** Static value BootManifest for ImageType. */
+    /**
+     * Static value BootManifest for ImageType.
+     */
     public static final ImageType BOOT_MANIFEST = fromString("BootManifest");
 
-    /** Static value Nwfs for ImageType. */
+    /**
+     * Static value Nwfs for ImageType.
+     */
     public static final ImageType NWFS = fromString("Nwfs");
 
-    /** Static value TrustedKeystore for ImageType. */
+    /**
+     * Static value TrustedKeystore for ImageType.
+     */
     public static final ImageType TRUSTED_KEYSTORE = fromString("TrustedKeystore");
 
-    /** Static value Policy for ImageType. */
+    /**
+     * Static value Policy for ImageType.
+     */
     public static final ImageType POLICY = fromString("Policy");
 
-    /** Static value CustomerBoardConfig for ImageType. */
+    /**
+     * Static value CustomerBoardConfig for ImageType.
+     */
     public static final ImageType CUSTOMER_BOARD_CONFIG = fromString("CustomerBoardConfig");
 
-    /** Static value UpdateCertStore for ImageType. */
+    /**
+     * Static value UpdateCertStore for ImageType.
+     */
     public static final ImageType UPDATE_CERT_STORE = fromString("UpdateCertStore");
 
-    /** Static value BaseSystemUpdateManifest for ImageType. */
+    /**
+     * Static value BaseSystemUpdateManifest for ImageType.
+     */
     public static final ImageType BASE_SYSTEM_UPDATE_MANIFEST = fromString("BaseSystemUpdateManifest");
 
-    /** Static value FirmwareUpdateManifest for ImageType. */
+    /**
+     * Static value FirmwareUpdateManifest for ImageType.
+     */
     public static final ImageType FIRMWARE_UPDATE_MANIFEST = fromString("FirmwareUpdateManifest");
 
-    /** Static value CustomerUpdateManifest for ImageType. */
+    /**
+     * Static value CustomerUpdateManifest for ImageType.
+     */
     public static final ImageType CUSTOMER_UPDATE_MANIFEST = fromString("CustomerUpdateManifest");
 
-    /** Static value RecoveryManifest for ImageType. */
+    /**
+     * Static value RecoveryManifest for ImageType.
+     */
     public static final ImageType RECOVERY_MANIFEST = fromString("RecoveryManifest");
 
-    /** Static value ManifestSet for ImageType. */
+    /**
+     * Static value ManifestSet for ImageType.
+     */
     public static final ImageType MANIFEST_SET = fromString("ManifestSet");
 
-    /** Static value Other for ImageType. */
+    /**
+     * Static value Other for ImageType.
+     */
     public static final ImageType OTHER = fromString("Other");
 
     /**
      * Creates a new instance of ImageType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -93,7 +143,7 @@ public final class ImageType extends ExpandableStringEnum<ImageType> {
 
     /**
      * Creates or finds a ImageType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImageType.
      */
@@ -104,7 +154,7 @@ public final class ImageType extends ExpandableStringEnum<ImageType> {
 
     /**
      * Gets known ImageType values.
-     *
+     * 
      * @return known ImageType values.
      */
     public static Collection<ImageType> values() {

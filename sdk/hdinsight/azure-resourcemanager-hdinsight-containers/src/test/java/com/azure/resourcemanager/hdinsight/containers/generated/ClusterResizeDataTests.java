@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterResizeData;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterResizeProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,27 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterResizeDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterResizeData model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"targetWorkerNodeCount\":1761160515},\"location\":\"pt\",\"tags\":{\"pzfqrhhuaoppp\":\"gpfqbuace\",\"z\":\"qeqxo\"},\"id\":\"ahzxctobgbk\",\"name\":\"moizpos\",\"type\":\"mgrcfbu\"}")
-                .toObject(ClusterResizeData.class);
-        Assertions.assertEquals("pt", model.location());
-        Assertions.assertEquals("gpfqbuace", model.tags().get("pzfqrhhuaoppp"));
-        Assertions.assertEquals(1761160515, model.targetWorkerNodeCount());
+        ClusterResizeData model = BinaryData.fromString(
+            "{\"properties\":{\"targetWorkerNodeCount\":462425094},\"location\":\"ztfolhbnxk\",\"tags\":{\"pnapnyiropuh\":\"aulppggd\",\"git\":\"igvpgylg\"},\"id\":\"medjvcslynqwwncw\",\"name\":\"zhxgktrmgucn\",\"type\":\"pkteo\"}")
+            .toObject(ClusterResizeData.class);
+        Assertions.assertEquals("ztfolhbnxk", model.location());
+        Assertions.assertEquals("aulppggd", model.tags().get("pnapnyiropuh"));
+        Assertions.assertEquals(462425094, model.properties().targetWorkerNodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterResizeData model =
-            new ClusterResizeData()
-                .withLocation("pt")
-                .withTags(mapOf("pzfqrhhuaoppp", "gpfqbuace", "z", "qeqxo"))
-                .withTargetWorkerNodeCount(1761160515);
+        ClusterResizeData model = new ClusterResizeData().withLocation("ztfolhbnxk")
+            .withTags(mapOf("pnapnyiropuh", "aulppggd", "git", "igvpgylg"))
+            .withProperties(new ClusterResizeProperties().withTargetWorkerNodeCount(462425094));
         model = BinaryData.fromObject(model).toObject(ClusterResizeData.class);
-        Assertions.assertEquals("pt", model.location());
-        Assertions.assertEquals("gpfqbuace", model.tags().get("pzfqrhhuaoppp"));
-        Assertions.assertEquals(1761160515, model.targetWorkerNodeCount());
+        Assertions.assertEquals("ztfolhbnxk", model.location());
+        Assertions.assertEquals("aulppggd", model.tags().get("pnapnyiropuh"));
+        Assertions.assertEquals(462425094, model.properties().targetWorkerNodeCount());
     }
 
     // Use "Map.of" if available

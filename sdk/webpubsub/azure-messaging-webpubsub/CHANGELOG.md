@@ -10,6 +10,28 @@
 
 ### Other Changes
 
+
+## 1.2.14 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+
+## 1.2.13 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `nimbus-jose-jwt` from `9.31` to version `9.37.3`.
+
+
 ## 1.2.12 (2024-02-20)
 
 ### Other Changes

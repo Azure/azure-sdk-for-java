@@ -73,29 +73,6 @@ jobs:
       image: $(LINUXVMIMAGE)
       os: linux
 
-    templateContext:
-      outputParentDirectory: '$(System.DefaultWorkingDirectory)'
-      outputs:
-        - output: pipelineArtifact
-          artifactName: '$(ArtifactName)'
-          targetPath: $(Build.ArtifactStagingDirectory)
-        # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
-        # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
-        # during testing if tests failed, and linting reports.
-        - output: pipelineArtifact
-          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)
-          targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
-          displayName: 'Capture troubleshooting artifacts'
-          condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
-          sbomEnabled: false
-
-        - output: pipelineArtifact
-          artifactName: 'repository-$(System.JobName)'
-          targetPath: '$(System.DefaultWorkingDirectory)'
-          displayName: 'Capture repo state for analysis'
-          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
-          sbomEnabled: false
-
     steps:
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
@@ -217,6 +194,28 @@ jobs:
             -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
             -InformationAction Continue
 
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+        parameters:
+          ArtifactPath: $(Build.ArtifactStagingDirectory)
+          ArtifactName: '$(ArtifactName)'
+
+      # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
+      # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
+      # during testing if tests failed, and linting reports.
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+        parameters:
+          ArtifactName: troubleshooting-$(System.StageName)-$(System.JobName)
+          ArtifactPath: $(System.DefaultWorkingDirectory)/troubleshooting
+          SbomEnabled: false
+          CustomCondition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
+
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+        parameters:
+          ArtifactName: 'repository-$(System.JobName)'
+          ArtifactPath: '$(System.DefaultWorkingDirectory)'
+          SbomEnabled: false
+          CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
           Artifacts: ${{parameters.ReleaseArtifacts}}
@@ -224,6 +223,10 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
+
+      - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
+        parameters:
+          Artifacts: ${{ parameters.Artifacts }}
 
       - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
 
@@ -234,26 +237,6 @@ jobs:
       name: $(LINUXPOOL)
       image: $(LINUXVMIMAGE)
       os: linux
-
-    templateContext:
-      outputParentDirectory: '$(System.DefaultWorkingDirectory)'
-      outputs:
-        - output: pipelineArtifact
-          artifactName: 'repository-$(System.JobName)'
-          targetPath: '$(System.DefaultWorkingDirectory)'
-          displayName: 'Capture repo state for analysis'
-          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
-          sbomEnabled: false
-
-        # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
-        # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
-        # during testing if tests failed, and linting reports.
-        - output: pipelineArtifact
-          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)
-          targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
-          displayName: 'Capture troubleshooting artifacts'
-          condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
-          sbomEnabled: false
 
     steps:
       - task: UsePythonVersion@0
@@ -380,6 +363,23 @@ jobs:
       - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
 
       - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
+
+      # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
+      # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
+      # during testing if tests failed, and linting reports.
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+        parameters:
+          ArtifactName: troubleshooting-$(System.StageName)-$(System.JobName)
+          ArtifactPath: $(System.DefaultWorkingDirectory)/troubleshooting
+          SbomEnabled: false
+          CustomCondition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
+
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+        parameters:
+          ArtifactName: 'repository-$(System.JobName)'
+          ArtifactPath: '$(System.DefaultWorkingDirectory)'
+          SbomEnabled: false
+          CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
 
   - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
     parameters:

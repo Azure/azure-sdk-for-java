@@ -57,20 +57,6 @@ public class ReceiveLinkHandler extends LinkHandler {
      * @param hostname Hostname of the connection.
      * @param linkName Name of the link.
      * @param entityPath Address to the entity.
-     * @deprecated use {@link #ReceiveLinkHandler(String, String, String, String, AmqpMetricsProvider)} instead.
-     */
-    @Deprecated
-    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
-        this(connectionId, hostname, linkName, entityPath, new AmqpMetricsProvider(null, hostname, entityPath));
-    }
-
-    /**
-     * Creates a new instance of ReceiveLinkHandler.
-     *
-     * @param connectionId Identifier for the connection.
-     * @param hostname Hostname of the connection.
-     * @param linkName Name of the link.
-     * @param entityPath Address to the entity.
      * @param metricsProvider A provider that supplies the required metrics for this link.
      */
     public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath,

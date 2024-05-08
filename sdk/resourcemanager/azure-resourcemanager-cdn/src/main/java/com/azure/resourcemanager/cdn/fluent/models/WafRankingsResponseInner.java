@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Waf Rankings Response. */
+/**
+ * Waf Rankings Response.
+ */
 @Fluent
 public final class WafRankingsResponseInner {
     /*
@@ -37,13 +39,15 @@ public final class WafRankingsResponseInner {
     @JsonProperty(value = "data")
     private List<WafRankingsResponseDataItem> data;
 
-    /** Creates an instance of WafRankingsResponseInner class. */
+    /**
+     * Creates an instance of WafRankingsResponseInner class.
+     */
     public WafRankingsResponseInner() {
     }
 
     /**
      * Get the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @return the dateTimeBegin value.
      */
     public OffsetDateTime dateTimeBegin() {
@@ -52,7 +56,7 @@ public final class WafRankingsResponseInner {
 
     /**
      * Set the dateTimeBegin property: The dateTimeBegin property.
-     *
+     * 
      * @param dateTimeBegin the dateTimeBegin value to set.
      * @return the WafRankingsResponseInner object itself.
      */
@@ -63,7 +67,7 @@ public final class WafRankingsResponseInner {
 
     /**
      * Get the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @return the dateTimeEnd value.
      */
     public OffsetDateTime dateTimeEnd() {
@@ -72,7 +76,7 @@ public final class WafRankingsResponseInner {
 
     /**
      * Set the dateTimeEnd property: The dateTimeEnd property.
-     *
+     * 
      * @param dateTimeEnd the dateTimeEnd value to set.
      * @return the WafRankingsResponseInner object itself.
      */
@@ -83,7 +87,7 @@ public final class WafRankingsResponseInner {
 
     /**
      * Get the groups property: The groups property.
-     *
+     * 
      * @return the groups value.
      */
     public List<String> groups() {
@@ -92,7 +96,7 @@ public final class WafRankingsResponseInner {
 
     /**
      * Set the groups property: The groups property.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the WafRankingsResponseInner object itself.
      */
@@ -103,7 +107,7 @@ public final class WafRankingsResponseInner {
 
     /**
      * Get the data property: The data property.
-     *
+     * 
      * @return the data value.
      */
     public List<WafRankingsResponseDataItem> data() {
@@ -112,7 +116,7 @@ public final class WafRankingsResponseInner {
 
     /**
      * Set the data property: The data property.
-     *
+     * 
      * @param data the data value to set.
      * @return the WafRankingsResponseInner object itself.
      */
@@ -123,7 +127,7 @@ public final class WafRankingsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Device insight report. */
+/**
+ * Device insight report.
+ */
 @Fluent
 public final class DeviceInsightInner {
     /*
@@ -60,13 +62,15 @@ public final class DeviceInsightInner {
     @JsonProperty(value = "eventCount", required = true)
     private int eventCount;
 
-    /** Creates an instance of DeviceInsightInner class. */
+    /**
+     * Creates an instance of DeviceInsightInner class.
+     */
     public DeviceInsightInner() {
     }
 
     /**
      * Get the deviceId property: Device ID.
-     *
+     * 
      * @return the deviceId value.
      */
     public String deviceId() {
@@ -75,7 +79,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the deviceId property: Device ID.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -86,7 +90,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the description property: Event description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -95,7 +99,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the description property: Event description.
-     *
+     * 
      * @param description the description value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -106,7 +110,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the startTimestampUtc property: Event start timestamp.
-     *
+     * 
      * @return the startTimestampUtc value.
      */
     public OffsetDateTime startTimestampUtc() {
@@ -115,7 +119,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the startTimestampUtc property: Event start timestamp.
-     *
+     * 
      * @param startTimestampUtc the startTimestampUtc value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -126,7 +130,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the endTimestampUtc property: Event end timestamp.
-     *
+     * 
      * @return the endTimestampUtc value.
      */
     public OffsetDateTime endTimestampUtc() {
@@ -135,7 +139,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the endTimestampUtc property: Event end timestamp.
-     *
+     * 
      * @param endTimestampUtc the endTimestampUtc value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -146,7 +150,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the eventCategory property: Event category.
-     *
+     * 
      * @return the eventCategory value.
      */
     public String eventCategory() {
@@ -155,7 +159,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the eventCategory property: Event category.
-     *
+     * 
      * @param eventCategory the eventCategory value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -166,7 +170,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the eventClass property: Event class.
-     *
+     * 
      * @return the eventClass value.
      */
     public String eventClass() {
@@ -175,7 +179,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the eventClass property: Event class.
-     *
+     * 
      * @param eventClass the eventClass value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -186,7 +190,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the eventType property: Event type.
-     *
+     * 
      * @return the eventType value.
      */
     public String eventType() {
@@ -195,7 +199,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the eventType property: Event type.
-     *
+     * 
      * @param eventType the eventType value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -206,7 +210,7 @@ public final class DeviceInsightInner {
 
     /**
      * Get the eventCount property: Event count.
-     *
+     * 
      * @return the eventCount value.
      */
     public int eventCount() {
@@ -215,7 +219,7 @@ public final class DeviceInsightInner {
 
     /**
      * Set the eventCount property: Event count.
-     *
+     * 
      * @param eventCount the eventCount value to set.
      * @return the DeviceInsightInner object itself.
      */
@@ -226,47 +230,37 @@ public final class DeviceInsightInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (deviceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property deviceId in model DeviceInsightInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property deviceId in model DeviceInsightInner"));
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property description in model DeviceInsightInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property description in model DeviceInsightInner"));
         }
         if (startTimestampUtc() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startTimestampUtc in model DeviceInsightInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property startTimestampUtc in model DeviceInsightInner"));
         }
         if (endTimestampUtc() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endTimestampUtc in model DeviceInsightInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endTimestampUtc in model DeviceInsightInner"));
         }
         if (eventCategory() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventCategory in model DeviceInsightInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property eventCategory in model DeviceInsightInner"));
         }
         if (eventClass() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property eventClass in model DeviceInsightInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property eventClass in model DeviceInsightInner"));
         }
         if (eventType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property eventType in model DeviceInsightInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property eventType in model DeviceInsightInner"));
         }
     }
 

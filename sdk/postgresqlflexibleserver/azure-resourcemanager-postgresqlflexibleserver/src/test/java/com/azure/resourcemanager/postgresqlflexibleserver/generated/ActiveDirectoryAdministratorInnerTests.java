@@ -25,7 +25,9 @@ public final class ActiveDirectoryAdministratorInnerTests {
     public void testSerialize() throws Exception {
         ActiveDirectoryAdministratorInner model
             = new ActiveDirectoryAdministratorInner().withPrincipalType(PrincipalType.UNKNOWN)
-                .withPrincipalName("msxaobhd").withObjectId("mtqio").withTenantId("zehtbmu");
+                .withPrincipalName("msxaobhd")
+                .withObjectId("mtqio")
+                .withTenantId("zehtbmu");
         model = BinaryData.fromObject(model).toObject(ActiveDirectoryAdministratorInner.class);
         Assertions.assertEquals(PrincipalType.UNKNOWN, model.principalType());
         Assertions.assertEquals("msxaobhd", model.principalName());

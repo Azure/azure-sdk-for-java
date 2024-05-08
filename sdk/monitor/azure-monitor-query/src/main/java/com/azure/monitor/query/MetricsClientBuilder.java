@@ -34,7 +34,7 @@ public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBu
     public MetricsClientBuilder() { }
 
     /**
-     * Sets the metrics batch query endpoint.
+     * Sets the metrics endpoint.
      * @param endpoint the endpoint.
      * @return the {@link MetricsClientBuilder}.
      */

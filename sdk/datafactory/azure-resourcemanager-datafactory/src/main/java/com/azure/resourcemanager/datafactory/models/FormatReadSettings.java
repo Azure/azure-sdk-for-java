@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -17,11 +19,7 @@ import java.util.Map;
 /**
  * Format read settings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = FormatReadSettings.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = FormatReadSettings.class, visible = true)
 @JsonTypeName("FormatReadSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ParquetReadSettings", value = ParquetReadSettings.class),
@@ -32,6 +30,13 @@ import java.util.Map;
 @Fluent
 public class FormatReadSettings {
     /*
+     * The read setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
+    /*
      * Format read settings.
      */
     @JsonIgnore
@@ -41,6 +46,16 @@ public class FormatReadSettings {
      * Creates an instance of FormatReadSettings class.
      */
     public FormatReadSettings() {
+        this.type = "FormatReadSettings";
+    }
+
+    /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

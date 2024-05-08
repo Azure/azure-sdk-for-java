@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The usage names. */
+/**
+ * The usage names.
+ */
 @Fluent
 public final class UsageName {
     /*
@@ -22,13 +24,15 @@ public final class UsageName {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of UsageName class. */
+    /**
+     * Creates an instance of UsageName class.
+     */
     public UsageName() {
     }
 
     /**
      * Get the value property: A string describing the resource name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +41,7 @@ public final class UsageName {
 
     /**
      * Set the value property: A string describing the resource name.
-     *
+     * 
      * @param value the value value to set.
      * @return the UsageName object itself.
      */
@@ -48,7 +52,7 @@ public final class UsageName {
 
     /**
      * Get the localizedValue property: A localized string describing the resource name.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -57,7 +61,7 @@ public final class UsageName {
 
     /**
      * Set the localizedValue property: A localized string describing the resource name.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the UsageName object itself.
      */
@@ -68,7 +72,7 @@ public final class UsageName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

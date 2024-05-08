@@ -5,16 +5,20 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for all types of Route. */
+/**
+ * Base class for all types of Route.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "@odata.type",
-    defaultImpl = RouteConfiguration.class)
+    defaultImpl = RouteConfiguration.class,
+    visible = true)
 @JsonTypeName("RouteConfiguration")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -22,17 +26,35 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = ForwardingConfiguration.class),
     @JsonSubTypes.Type(
         name = "#Microsoft.Azure.FrontDoor.Models.FrontdoorRedirectConfiguration",
-        value = RedirectConfiguration.class)
-})
+        value = RedirectConfiguration.class) })
 @Immutable
 public class RouteConfiguration {
-    /** Creates an instance of RouteConfiguration class. */
+    /*
+     * The @odata.type property.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "@odata.type", required = true)
+    private String odataType;
+
+    /**
+     * Creates an instance of RouteConfiguration class.
+     */
     public RouteConfiguration() {
+        this.odataType = "RouteConfiguration";
+    }
+
+    /**
+     * Get the odataType property: The &#064;odata.type property.
+     * 
+     * @return the odataType value.
+     */
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

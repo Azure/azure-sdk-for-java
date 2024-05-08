@@ -6,7 +6,11 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,68 +18,59 @@ import java.util.Map;
  * The lineage information.
  */
 @Immutable
-public final class AtlasLineageInfo {
+public final class AtlasLineageInfo implements JsonSerializable<AtlasLineageInfo> {
     /*
      * The GUID of the base entity.
      */
     @Generated
-    @JsonProperty(value = "baseEntityGuid")
     private String baseEntityGuid;
 
     /*
      * The GUID entity map.
      */
     @Generated
-    @JsonProperty(value = "guidEntityMap")
     private Map<String, AtlasEntityHeader> guidEntityMap;
 
     /*
      * The entity count in specific direction.
      */
     @Generated
-    @JsonProperty(value = "widthCounts")
     private Map<String, Map<String, Object>> widthCounts;
 
     /*
      * The depth of lineage.
      */
     @Generated
-    @JsonProperty(value = "lineageDepth")
     private Integer lineageDepth;
 
     /*
      * The width of lineage.
      */
     @Generated
-    @JsonProperty(value = "lineageWidth")
     private Integer lineageWidth;
 
     /*
      * The number of children node.
      */
     @Generated
-    @JsonProperty(value = "childrenCount")
     private Integer childrenCount;
 
     /*
      * The enum of lineage direction.
      */
     @Generated
-    @JsonProperty(value = "lineageDirection")
     private LineageDirection lineageDirection;
 
     /*
      * An array of parentRelations relations.
      */
     @Generated
-    @JsonProperty(value = "parentRelations")
     private List<ParentRelation> parentRelations;
 
     /*
      * An array of lineage relations.
      */
     @Generated
-    @JsonProperty(value = "relations")
     private List<LineageRelation> relations;
 
     /**
@@ -173,5 +168,77 @@ public final class AtlasLineageInfo {
     @Generated
     public List<LineageRelation> getRelations() {
         return this.relations;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("baseEntityGuid", this.baseEntityGuid);
+        jsonWriter.writeMapField("guidEntityMap", this.guidEntityMap, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("widthCounts", this.widthCounts,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeUntyped(element1)));
+        jsonWriter.writeNumberField("lineageDepth", this.lineageDepth);
+        jsonWriter.writeNumberField("lineageWidth", this.lineageWidth);
+        jsonWriter.writeNumberField("childrenCount", this.childrenCount);
+        jsonWriter.writeStringField("lineageDirection",
+            this.lineageDirection == null ? null : this.lineageDirection.toString());
+        jsonWriter.writeArrayField("parentRelations", this.parentRelations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("relations", this.relations, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasLineageInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasLineageInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasLineageInfo.
+     */
+    @Generated
+    public static AtlasLineageInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasLineageInfo deserializedAtlasLineageInfo = new AtlasLineageInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("baseEntityGuid".equals(fieldName)) {
+                    deserializedAtlasLineageInfo.baseEntityGuid = reader.getString();
+                } else if ("guidEntityMap".equals(fieldName)) {
+                    Map<String, AtlasEntityHeader> guidEntityMap
+                        = reader.readMap(reader1 -> AtlasEntityHeader.fromJson(reader1));
+                    deserializedAtlasLineageInfo.guidEntityMap = guidEntityMap;
+                } else if ("widthCounts".equals(fieldName)) {
+                    Map<String, Map<String, Object>> widthCounts
+                        = reader.readMap(reader1 -> reader1.readMap(reader2 -> reader2.readUntyped()));
+                    deserializedAtlasLineageInfo.widthCounts = widthCounts;
+                } else if ("lineageDepth".equals(fieldName)) {
+                    deserializedAtlasLineageInfo.lineageDepth = reader.getNullable(JsonReader::getInt);
+                } else if ("lineageWidth".equals(fieldName)) {
+                    deserializedAtlasLineageInfo.lineageWidth = reader.getNullable(JsonReader::getInt);
+                } else if ("childrenCount".equals(fieldName)) {
+                    deserializedAtlasLineageInfo.childrenCount = reader.getNullable(JsonReader::getInt);
+                } else if ("lineageDirection".equals(fieldName)) {
+                    deserializedAtlasLineageInfo.lineageDirection = LineageDirection.fromString(reader.getString());
+                } else if ("parentRelations".equals(fieldName)) {
+                    List<ParentRelation> parentRelations
+                        = reader.readArray(reader1 -> ParentRelation.fromJson(reader1));
+                    deserializedAtlasLineageInfo.parentRelations = parentRelations;
+                } else if ("relations".equals(fieldName)) {
+                    List<LineageRelation> relations = reader.readArray(reader1 -> LineageRelation.fromJson(reader1));
+                    deserializedAtlasLineageInfo.relations = relations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasLineageInfo;
+        });
     }
 }

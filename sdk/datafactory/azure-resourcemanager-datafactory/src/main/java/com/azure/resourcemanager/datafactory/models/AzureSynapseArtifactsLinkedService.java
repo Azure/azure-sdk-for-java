@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureSynapseArtifactsLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Azure Synapse Analytics (Artifacts) linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureSynapseArtifactsLinkedService.class,
+    visible = true)
 @JsonTypeName("AzureSynapseArtifacts")
 @Fluent
 public final class AzureSynapseArtifactsLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureSynapseArtifacts";
+
     /*
      * Azure Synapse Analytics (Artifacts) linked service properties.
      */
@@ -31,6 +43,16 @@ public final class AzureSynapseArtifactsLinkedService extends LinkedService {
      * Creates an instance of AzureSynapseArtifactsLinkedService class.
      */
     public AzureSynapseArtifactsLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -164,8 +186,9 @@ public final class AzureSynapseArtifactsLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AzureSynapseArtifactsLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzureSynapseArtifactsLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

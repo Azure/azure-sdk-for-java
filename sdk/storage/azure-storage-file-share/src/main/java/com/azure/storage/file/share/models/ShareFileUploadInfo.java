@@ -26,8 +26,7 @@ public final class ShareFileUploadInfo {
      * @param contentMd5 MD5 of the file's content.
      * @param isServerEncrypted Flag indicating the encryption status of the file's content on the server.
      */
-    public ShareFileUploadInfo(final String eTag, final OffsetDateTime lastModified, final byte[] contentMd5,
-        final Boolean isServerEncrypted) {
+    public ShareFileUploadInfo(String eTag, OffsetDateTime lastModified, byte[] contentMd5, Boolean isServerEncrypted) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.contentMd5 = CoreUtils.clone(contentMd5);
@@ -35,6 +34,8 @@ public final class ShareFileUploadInfo {
     }
 
     /**
+     * Gets the ETag of the file.
+     *
      * @return the ETag of the file.
      */
     public String getETag() {
@@ -42,6 +43,8 @@ public final class ShareFileUploadInfo {
     }
 
     /**
+     * Gets the time when the file was last modified.
+     *
      * @return the time when the file was last modified.
      */
     public OffsetDateTime getLastModified() {
@@ -49,6 +52,8 @@ public final class ShareFileUploadInfo {
     }
 
     /**
+     * Gets the MD5 of the file's content.
+     *
      * @return the MD5 of the file's content.
      */
     public byte[] getContentMd5() {
@@ -56,6 +61,8 @@ public final class ShareFileUploadInfo {
     }
 
     /**
+     * Gets whether the file's content is encrypted on the server.
+     *
      * @return whether the file's content is encrypted on the server.
      */
     public Boolean isServerEncrypted() {

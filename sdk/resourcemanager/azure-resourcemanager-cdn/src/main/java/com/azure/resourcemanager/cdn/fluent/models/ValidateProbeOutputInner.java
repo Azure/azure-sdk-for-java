@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Output of the validate probe API. */
+/**
+ * Output of the validate probe API.
+ */
 @Immutable
 public final class ValidateProbeOutputInner {
     /*
@@ -28,13 +30,15 @@ public final class ValidateProbeOutputInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of ValidateProbeOutputInner class. */
+    /**
+     * Creates an instance of ValidateProbeOutputInner class.
+     */
     public ValidateProbeOutputInner() {
     }
 
     /**
      * Get the isValid property: Indicates whether the probe URL is accepted or not.
-     *
+     * 
      * @return the isValid value.
      */
     public Boolean isValid() {
@@ -43,7 +47,7 @@ public final class ValidateProbeOutputInner {
 
     /**
      * Get the errorCode property: Specifies the error code when the probe url is not accepted.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -52,7 +56,7 @@ public final class ValidateProbeOutputInner {
 
     /**
      * Get the message property: The detailed error message describing why the probe URL is not accepted.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -61,7 +65,7 @@ public final class ValidateProbeOutputInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

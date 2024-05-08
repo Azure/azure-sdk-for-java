@@ -171,7 +171,7 @@
       "type": "string",
       "defaultValue": "core.windows.net",
       "metadata": {
-          "description": "The url suffix to use when accessing the storage data plane."
+        "description": "The url suffix to use when accessing the storage data plane."
       }
     }
   },
@@ -486,45 +486,11 @@
         "azPowerShellVersion": "5.0",
         "timeout": "PT30M",
         "arguments": "[format(' -vaultName {0} -certificateName {1} -subjectName {2}', variables('kvName'), parameters('certificateName'), parameters('subjectName'))]",
-        "scriptContent": "
-        param(
-    [string] [Parameter(Mandatory=$true)] $vaultName,
-    [string] [Parameter(Mandatory=$true)] $certificateName,
-    [string] [Parameter(Mandatory=$true)] $subjectName
-    )
-
-    $ErrorActionPreference = 'Stop'
-    $DeploymentScriptOutputs = @{}
-
-    $policy = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -Verbose
-
-    Add-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName -CertificatePolicy $policy -Verbose
-
-    $newCert = Get-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName
-
-    $tries = 0
-    do {
-      Write-Host 'Waiting for certificate creation completion...'
-      Start-Sleep -Seconds 10
-      $operation = Get-AzKeyVaultCertificateOperation -VaultName $vaultName -Name $certificateName
-      $tries++
-
-      if ($operation.Status -eq 'failed') {
-        throw 'Creating certificate $certificateName in vault $vaultName failed with error $($operation.ErrorMessage)'
+        "scriptContent": "param([string] [Parameter(Mandatory=$true)] $vaultName, [string] [Parameter(Mandatory=$true)] $certificateName, [string] [Parameter(Mandatory=$true)] $subjectName)\n\n$ErrorActionPreference = 'Stop'\n$DeploymentScriptOutputs = @{}\n$policy = New-AzKeyVaultCertificatePolicy -SubjectName $subjectName -IssuerName Self -ValidityInMonths 12 -Verbose\n\nAdd-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName -CertificatePolicy $policy -Verbose\n\n$newCert = Get-AzKeyVaultCertificate -VaultName $vaultName -Name $certificateName\n$tries = 0\n\ndo {\n    Write-Host 'Waiting for certificate creation completion...'\n    Start-Sleep -Seconds 10\n    $operation = Get-AzKeyVaultCertificateOperation -VaultName $vaultName -Name $certificateName\n    $tries++\n\n    if ($operation.Status -eq 'failed') {\n        throw 'Creating certificate $certificateName in vault $vaultName failed with error $($operation.ErrorMessage)'\n    }\n\n    if ($tries -gt 120) {\n        throw 'Timed out waiting for creation of certificate $certificateName in vault $vaultName'\n    }\n} while ($operation.Status -ne 'completed')\n\n$DeploymentScriptOutputs['certThumbprint'] = $newCert.Thumbprint\n$newCert | Out-String\n",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
       }
-
-      if ($tries -gt 120) {
-        throw 'Timed out waiting for creation of certificate $certificateName in vault $vaultName'
-      }
-    } while ($operation.Status -ne 'completed')
-
-    $DeploymentScriptOutputs['certThumbprint'] = $newCert.Thumbprint
-    $newCert | Out-String
-    ",
-    "cleanupPreference": "OnSuccess",
-    "retentionInterval": "P1D"
     }
-  }
   ],
   "outputs": {
     "AZURE_KEYVAULT_ENDPOINT": {
@@ -565,8 +531,8 @@
       "value": "[parameters('testApplicationOid')]"
     },
     "KEYVAULT_STORAGE_ENDPOINT_SUFFIX": {
-        "type": "string",
-        "value": "[parameters('storageEndpointSuffix')]"
+      "type": "string",
+      "value": "[parameters('storageEndpointSuffix')]"
     },
     "BLOB_STORAGE_ACCOUNT_NAME": {
       "type": "string",

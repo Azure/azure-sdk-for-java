@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Azure SQL sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzureSqlSink.class, visible = true)
 @JsonTypeName("AzureSqlSink")
 @Fluent
 public final class AzureSqlSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureSqlSink";
+
     /*
      * SQL writer stored procedure name. Type: string (or Expression with resultType string).
      */
@@ -47,8 +55,7 @@ public final class AzureSqlSink extends CopySink {
     private Object storedProcedureTableTypeParameterName;
 
     /*
-     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
-     * (or Expression with resultType string).
+     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableOption")
     private Object tableOption;
@@ -60,8 +67,7 @@ public final class AzureSqlSink extends CopySink {
     private Object sqlWriterUseTableLock;
 
     /*
-     * Write behavior when copying data into Azure SQL. Type: SqlWriteBehaviorEnum (or Expression with resultType
-     * SqlWriteBehaviorEnum)
+     * Write behavior when copying data into Azure SQL. Type: SqlWriteBehaviorEnum (or Expression with resultType SqlWriteBehaviorEnum)
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
@@ -79,8 +85,18 @@ public final class AzureSqlSink extends CopySink {
     }
 
     /**
-     * Get the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression
-     * with resultType string).
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the sqlWriterStoredProcedureName value.
      */
@@ -89,8 +105,8 @@ public final class AzureSqlSink extends CopySink {
     }
 
     /**
-     * Set the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression
-     * with resultType string).
+     * Set the sqlWriterStoredProcedureName property: SQL writer stored procedure name. Type: string (or Expression with
+     * resultType string).
      * 
      * @param sqlWriterStoredProcedureName the sqlWriterStoredProcedureName value to set.
      * @return the AzureSqlSink object itself.

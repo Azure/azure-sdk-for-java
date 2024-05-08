@@ -7,6 +7,7 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -16,11 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * BoolEqualsAdvancedFilter, NumberInAdvancedFilter, StringEqualsAdvancedFilter etc. depending on the type of the key
  * based on which you want to filter.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "operatorType",
-    defaultImpl = AdvancedFilter.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "operatorType", defaultImpl = AdvancedFilter.class, visible = true)
 @JsonTypeName("AdvancedFilter")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "NumberIn", value = NumberInAdvancedFilter.class),
@@ -45,6 +42,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AdvancedFilter {
     /*
+     * The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "operatorType", required = true)
+    private AdvancedFilterOperatorType operatorType;
+
+    /*
      * The field/property in the event based on which you want to filter.
      */
     @JsonProperty(value = "key")
@@ -54,6 +58,17 @@ public class AdvancedFilter {
      * Creates an instance of AdvancedFilter class.
      */
     public AdvancedFilter() {
+        this.operatorType = AdvancedFilterOperatorType.fromString("AdvancedFilter");
+    }
+
+    /**
+     * Get the operatorType property: The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals
+     * and others.
+     * 
+     * @return the operatorType value.
+     */
+    public AdvancedFilterOperatorType operatorType() {
+        return this.operatorType;
     }
 
     /**

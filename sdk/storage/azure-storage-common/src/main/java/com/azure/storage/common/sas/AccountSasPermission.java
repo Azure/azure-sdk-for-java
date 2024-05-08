@@ -22,31 +22,18 @@ import java.util.Locale;
  * @see <a href="https://docs.microsoft.com/rest/api/storageservices/create-account-sas">Create account SAS</a>
  */
 public final class AccountSasPermission {
-
     private boolean readPermission;
-
     private boolean addPermission;
-
     private boolean createPermission;
-
     private boolean writePermission;
-
     private boolean deletePermission;
-
     private boolean deleteVersionPermission;
-
     private boolean permanentDeletePermission;
-
     private boolean listPermission;
-
     private boolean updatePermission;
-
     private boolean processMessagesPermission;
-
     private boolean tagsPermission;
-
     private boolean filterTagsPermission;
-
     private boolean immutabilityPolicyPermission;
 
     /**
@@ -60,9 +47,7 @@ public final class AccountSasPermission {
      * IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
      *
      * @param permissionString A {@code String} which represents the {@link AccountSasPermission}.
-     *
      * @return An {@link AccountSasPermission} object generated from the given {@link String}.
-     *
      * @throws IllegalArgumentException If {@code permString} contains a character other than r, w, d, x, l, a, c, u, p,
      * t, f or i.
      */
@@ -113,14 +98,16 @@ public final class AccountSasPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permissionString, c));
+                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions",
+                            permissionString, c));
             }
         }
         return permissions;
     }
 
     /**
+     * Whether read permission has been set.
+     *
      * @return the read permission status
      */
     public boolean hasReadPermission() {
@@ -131,7 +118,6 @@ public final class AccountSasPermission {
      * Sets the read permission status.
      *
      * @param hasReadPermission Permission status to set
-     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setReadPermission(boolean hasReadPermission) {
@@ -140,6 +126,8 @@ public final class AccountSasPermission {
     }
 
     /**
+     * Whether add permission has been set.
+     *
      * @return the add permission status
      */
     public boolean hasAddPermission() {
@@ -150,7 +138,6 @@ public final class AccountSasPermission {
      * Sets the add permission status.
      *
      * @param hasAddPermission Permission status to set
-     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setAddPermission(boolean hasAddPermission) {
@@ -159,6 +146,8 @@ public final class AccountSasPermission {
     }
 
     /**
+     * Whether create permission has been set.
+     *
      * @return the create permission status
      */
     public boolean hasCreatePermission() {
@@ -169,7 +158,6 @@ public final class AccountSasPermission {
      * Sets the create permission status.
      *
      * @param hasCreatePermission Permission status to set
-     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setCreatePermission(boolean hasCreatePermission) {
@@ -178,6 +166,8 @@ public final class AccountSasPermission {
     }
 
     /**
+     * Whether write permission has been set.
+     *
      * @return the write permission status
      */
     public boolean hasWritePermission() {
@@ -188,7 +178,6 @@ public final class AccountSasPermission {
      * Sets the write permission status.
      *
      * @param hasWritePermission Permission status to set
-     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setWritePermission(boolean hasWritePermission) {
@@ -197,6 +186,8 @@ public final class AccountSasPermission {
     }
 
     /**
+     * Whether delete permission has been set.
+     *
      * @return the delete permission status
      */
     public boolean hasDeletePermission() {
@@ -207,7 +198,6 @@ public final class AccountSasPermission {
      * Sets the delete permission status.
      *
      * @param hasDeletePermission Permission status to set
-     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setDeletePermission(boolean hasDeletePermission) {
@@ -216,6 +206,8 @@ public final class AccountSasPermission {
     }
 
     /**
+     * Whether delete version permission has been set.
+     *
      * @return the delete version permission status
      */
     public boolean hasDeleteVersionPermission() {
@@ -226,7 +218,6 @@ public final class AccountSasPermission {
      * Sets the delete version permission status.
      *
      * @param hasDeleteVersionPermission Permission status to set
-     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setDeleteVersionPermission(boolean hasDeleteVersionPermission) {
@@ -235,6 +226,8 @@ public final class AccountSasPermission {
     }
 
     /**
+     * Whether permanent delete permission has been set.
+     *
      * @return the permanent delete permission status.
      */
     public boolean hasPermanentDeletePermission() {
@@ -253,6 +246,8 @@ public final class AccountSasPermission {
     }
 
     /**
+     * Whether list permission has been set.
+     *
      * @return the list permission status
      */
     public boolean hasListPermission() {
@@ -264,7 +259,6 @@ public final class AccountSasPermission {
      * directories, and files.
      *
      * @param hasListPermission Permission status to set
-     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setListPermission(boolean hasListPermission) {
@@ -285,7 +279,6 @@ public final class AccountSasPermission {
      * Sets the update permission status, it allows the update of queue messages and tables.
      *
      * @param hasUpdatePermission Permission status to set
-     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setUpdatePermission(boolean hasUpdatePermission) {
@@ -306,7 +299,6 @@ public final class AccountSasPermission {
      * Sets the process messages permission, this allows the retrieval and deletion of queue messages.
      *
      * @param hasProcessMessagesPermission Permission status to set
-     *
      * @return the updated AccountSasPermission object
      */
     public AccountSasPermission setProcessMessages(boolean hasProcessMessagesPermission) {
@@ -315,6 +307,8 @@ public final class AccountSasPermission {
     }
 
     /**
+     * Whether tags permissions has been set.
+     *
      * @return the tags permission status.
      */
     public boolean hasTagsPermission() {
@@ -333,6 +327,8 @@ public final class AccountSasPermission {
     }
 
     /**
+     * Whether filter tags permission has been set.
+     *
      * @return the filter tags permission status.
      */
     public boolean hasFilterTagsPermission() {
@@ -351,6 +347,8 @@ public final class AccountSasPermission {
     }
 
     /**
+     * Whether immutability policy permissions has been set.
+     *
      * @return the set immutability policy permission status.
      */
     public boolean hasImmutabilityPolicyPermission() {

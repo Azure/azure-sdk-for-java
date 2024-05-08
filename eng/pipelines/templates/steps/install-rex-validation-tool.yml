@@ -1,0 +1,22 @@
+steps:
+  # Create a java2docfx subdirectory in the $(Build.BinariesDirectory) and install the java2docfx there
+  # This way, the jar file is in its own subdirectory and isolated.
+  - pwsh: |
+      $java2docfxVer = Get-Content eng/scripts/docs/java2docfx.version.txt
+      $java2docfxDir = Join-Path $(Build.BinariesDirectory) "java2docfx"
+      New-Item $java2docfxDir -ItemType Directory | Out-Null
+      $originLocation = Get-Location
+      try {
+        # Set the location into the created java2docfx directory . Running mvn from the repository root
+        # picks up the root POM and processes that while doing the dependency:copy in spite of
+        # the fact it has nothing to do with this download.
+        Set-Location $java2docfxDir
+        Write-Host "mvn dependency:copy -Dartifact=""com.microsoft:java2docfx:$java2docfxVer"" -DoutputDirectory=""$java2docfxDir"""
+        mvn dependency:copy -Dartifact="com.microsoft:java2docfx:$java2docfxVer" -DoutputDirectory="$java2docfxDir"
+        $java2docfxJarLoc = Join-Path $java2docfxDir -ChildPath "java2docfx-$java2docfxVer.jar"
+        Write-Host "Testing the install, running java -jar $java2docfxJarLoc -h"
+        java -jar $java2docfxJarLoc -h
+      } finally {
+        Set-Location $originLocation
+      }
+    displayName: Install java2docfx for package validation

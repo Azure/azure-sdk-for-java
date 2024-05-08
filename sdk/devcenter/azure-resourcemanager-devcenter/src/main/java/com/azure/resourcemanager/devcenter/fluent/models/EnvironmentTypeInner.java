@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Represents an environment type. */
+/**
+ * Represents an environment type.
+ */
 @Fluent
 public final class EnvironmentTypeInner extends ProxyResource {
     /*
@@ -34,13 +36,15 @@ public final class EnvironmentTypeInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of EnvironmentTypeInner class. */
+    /**
+     * Creates an instance of EnvironmentTypeInner class.
+     */
     public EnvironmentTypeInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of an environment type.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EnvironmentTypeProperties innerProperties() {
@@ -49,7 +53,7 @@ public final class EnvironmentTypeInner extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -58,7 +62,7 @@ public final class EnvironmentTypeInner extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the EnvironmentTypeInner object itself.
      */
@@ -69,7 +73,7 @@ public final class EnvironmentTypeInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -78,7 +82,7 @@ public final class EnvironmentTypeInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -87,7 +91,7 @@ public final class EnvironmentTypeInner extends ProxyResource {
 
     /**
      * Get the displayName property: The display name of the environment type.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -96,7 +100,7 @@ public final class EnvironmentTypeInner extends ProxyResource {
 
     /**
      * Set the displayName property: The display name of the environment type.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the EnvironmentTypeInner object itself.
      */
@@ -110,7 +114,7 @@ public final class EnvironmentTypeInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -23,14 +23,14 @@ public final class FhirR4Narrative extends FhirR4Element {
      */
     @Generated
     @JsonProperty(value = "status")
-    private String status;
+    private final String status;
 
     /*
      * xhtml
      */
     @Generated
     @JsonProperty(value = "div")
-    private String div;
+    private final String div;
 
     /**
      * Creates an instance of FhirR4Narrative class.

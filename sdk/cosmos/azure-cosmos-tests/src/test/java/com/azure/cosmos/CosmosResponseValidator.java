@@ -131,7 +131,7 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 @Override
                 public void validate(T cosmosResponse) {
                     assertThat(getResource(cosmosResponse)).isNotNull();
-                    assertThat(ModelBridgeInternal.getObjectFromJsonSerializable(getResource(cosmosResponse), propertyName)).isEqualTo(value);
+                    assertThat(getResource(cosmosResponse).get(propertyName)).isEqualTo(value);
                 }
             });
             return this;

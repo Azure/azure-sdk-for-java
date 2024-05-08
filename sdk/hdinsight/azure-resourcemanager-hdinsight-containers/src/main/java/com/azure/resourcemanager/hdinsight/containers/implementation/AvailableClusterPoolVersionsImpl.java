@@ -19,8 +19,7 @@ public final class AvailableClusterPoolVersionsImpl implements AvailableClusterP
 
     private final com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager;
 
-    public AvailableClusterPoolVersionsImpl(
-        AvailableClusterPoolVersionsClient innerClient,
+    public AvailableClusterPoolVersionsImpl(AvailableClusterPoolVersionsClient innerClient,
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class AvailableClusterPoolVersionsImpl implements AvailableClusterP
 
     public PagedIterable<ClusterPoolVersion> listByLocation(String location) {
         PagedIterable<ClusterPoolVersionInner> inner = this.serviceClient().listByLocation(location);
-        return Utils.mapPage(inner, inner1 -> new ClusterPoolVersionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterPoolVersionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ClusterPoolVersion> listByLocation(String location, Context context) {
         PagedIterable<ClusterPoolVersionInner> inner = this.serviceClient().listByLocation(location, context);
-        return Utils.mapPage(inner, inner1 -> new ClusterPoolVersionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterPoolVersionImpl(inner1, this.manager()));
     }
 
     private AvailableClusterPoolVersionsClient serviceClient() {

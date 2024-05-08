@@ -6,41 +6,40 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Document analysis result.
  */
 @Immutable
-public final class AnalyzeResult {
+public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     /*
      * API version used to produce this result.
      */
     @Generated
-    @JsonProperty(value = "apiVersion")
-    private String apiVersion;
+    private final String apiVersion;
 
     /*
      * Document model ID used to produce this result.
      */
     @Generated
-    @JsonProperty(value = "modelId")
-    private String modelId;
+    private final String modelId;
 
     /*
      * Method used to compute string offset and length.
      */
     @Generated
-    @JsonProperty(value = "stringIndexType")
-    private StringIndexType stringIndexType;
+    private final StringIndexType stringIndexType;
 
     /*
      * Format of the analyze result top-level content.
      */
     @Generated
-    @JsonProperty(value = "contentFormat")
     private ContentFormat contentFormat;
 
     /*
@@ -48,77 +47,66 @@ public final class AnalyzeResult {
      * order.
      */
     @Generated
-    @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /*
      * Analyzed pages.
      */
     @Generated
-    @JsonProperty(value = "pages")
-    private List<DocumentPage> pages;
+    private final List<DocumentPage> pages;
 
     /*
      * Extracted paragraphs.
      */
     @Generated
-    @JsonProperty(value = "paragraphs")
     private List<DocumentParagraph> paragraphs;
 
     /*
      * Extracted tables.
      */
     @Generated
-    @JsonProperty(value = "tables")
     private List<DocumentTable> tables;
 
     /*
      * Extracted figures.
      */
     @Generated
-    @JsonProperty(value = "figures")
     private List<DocumentFigure> figures;
 
     /*
      * Extracted lists.
      */
     @Generated
-    @JsonProperty(value = "lists")
     private List<DocumentList> lists;
 
     /*
      * Extracted sections.
      */
     @Generated
-    @JsonProperty(value = "sections")
     private List<DocumentSection> sections;
 
     /*
      * Extracted key-value pairs.
      */
     @Generated
-    @JsonProperty(value = "keyValuePairs")
     private List<DocumentKeyValuePair> keyValuePairs;
 
     /*
      * Extracted font styles.
      */
     @Generated
-    @JsonProperty(value = "styles")
     private List<DocumentStyle> styles;
 
     /*
      * Detected languages.
      */
     @Generated
-    @JsonProperty(value = "languages")
     private List<DocumentLanguage> languages;
 
     /*
      * Extracted documents.
      */
     @Generated
-    @JsonProperty(value = "documents")
     private List<Document> documents;
 
     /**
@@ -131,11 +119,8 @@ public final class AnalyzeResult {
      * @param pages the pages value to set.
      */
     @Generated
-    @JsonCreator
-    private AnalyzeResult(@JsonProperty(value = "apiVersion") String apiVersion,
-        @JsonProperty(value = "modelId") String modelId,
-        @JsonProperty(value = "stringIndexType") StringIndexType stringIndexType,
-        @JsonProperty(value = "content") String content, @JsonProperty(value = "pages") List<DocumentPage> pages) {
+    private AnalyzeResult(String apiVersion, String modelId, StringIndexType stringIndexType, String content,
+        List<DocumentPage> pages) {
         this.apiVersion = apiVersion;
         this.modelId = modelId;
         this.stringIndexType = stringIndexType;
@@ -292,5 +277,113 @@ public final class AnalyzeResult {
     @Generated
     public List<Document> getDocuments() {
         return this.documents;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeStringField("modelId", this.modelId);
+        jsonWriter.writeStringField("stringIndexType",
+            this.stringIndexType == null ? null : this.stringIndexType.toString());
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeArrayField("pages", this.pages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("contentFormat", this.contentFormat == null ? null : this.contentFormat.toString());
+        jsonWriter.writeArrayField("paragraphs", this.paragraphs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("figures", this.figures, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("lists", this.lists, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sections", this.sections, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("keyValuePairs", this.keyValuePairs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("styles", this.styles, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("languages", this.languages, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("documents", this.documents, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzeResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AnalyzeResult.
+     */
+    @Generated
+    public static AnalyzeResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String apiVersion = null;
+            String modelId = null;
+            StringIndexType stringIndexType = null;
+            String content = null;
+            List<DocumentPage> pages = null;
+            ContentFormat contentFormat = null;
+            List<DocumentParagraph> paragraphs = null;
+            List<DocumentTable> tables = null;
+            List<DocumentFigure> figures = null;
+            List<DocumentList> lists = null;
+            List<DocumentSection> sections = null;
+            List<DocumentKeyValuePair> keyValuePairs = null;
+            List<DocumentStyle> styles = null;
+            List<DocumentLanguage> languages = null;
+            List<Document> documents = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiVersion".equals(fieldName)) {
+                    apiVersion = reader.getString();
+                } else if ("modelId".equals(fieldName)) {
+                    modelId = reader.getString();
+                } else if ("stringIndexType".equals(fieldName)) {
+                    stringIndexType = StringIndexType.fromString(reader.getString());
+                } else if ("content".equals(fieldName)) {
+                    content = reader.getString();
+                } else if ("pages".equals(fieldName)) {
+                    pages = reader.readArray(reader1 -> DocumentPage.fromJson(reader1));
+                } else if ("contentFormat".equals(fieldName)) {
+                    contentFormat = ContentFormat.fromString(reader.getString());
+                } else if ("paragraphs".equals(fieldName)) {
+                    paragraphs = reader.readArray(reader1 -> DocumentParagraph.fromJson(reader1));
+                } else if ("tables".equals(fieldName)) {
+                    tables = reader.readArray(reader1 -> DocumentTable.fromJson(reader1));
+                } else if ("figures".equals(fieldName)) {
+                    figures = reader.readArray(reader1 -> DocumentFigure.fromJson(reader1));
+                } else if ("lists".equals(fieldName)) {
+                    lists = reader.readArray(reader1 -> DocumentList.fromJson(reader1));
+                } else if ("sections".equals(fieldName)) {
+                    sections = reader.readArray(reader1 -> DocumentSection.fromJson(reader1));
+                } else if ("keyValuePairs".equals(fieldName)) {
+                    keyValuePairs = reader.readArray(reader1 -> DocumentKeyValuePair.fromJson(reader1));
+                } else if ("styles".equals(fieldName)) {
+                    styles = reader.readArray(reader1 -> DocumentStyle.fromJson(reader1));
+                } else if ("languages".equals(fieldName)) {
+                    languages = reader.readArray(reader1 -> DocumentLanguage.fromJson(reader1));
+                } else if ("documents".equals(fieldName)) {
+                    documents = reader.readArray(reader1 -> Document.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AnalyzeResult deserializedAnalyzeResult
+                = new AnalyzeResult(apiVersion, modelId, stringIndexType, content, pages);
+            deserializedAnalyzeResult.contentFormat = contentFormat;
+            deserializedAnalyzeResult.paragraphs = paragraphs;
+            deserializedAnalyzeResult.tables = tables;
+            deserializedAnalyzeResult.figures = figures;
+            deserializedAnalyzeResult.lists = lists;
+            deserializedAnalyzeResult.sections = sections;
+            deserializedAnalyzeResult.keyValuePairs = keyValuePairs;
+            deserializedAnalyzeResult.styles = styles;
+            deserializedAnalyzeResult.languages = languages;
+            deserializedAnalyzeResult.documents = documents;
+
+            return deserializedAnalyzeResult;
+        });
     }
 }

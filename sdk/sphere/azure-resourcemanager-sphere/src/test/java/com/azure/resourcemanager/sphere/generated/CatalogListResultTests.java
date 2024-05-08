@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sphere.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.fluent.models.CatalogInner;
 import com.azure.resourcemanager.sphere.models.CatalogListResult;
+import com.azure.resourcemanager.sphere.models.CatalogProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,33 +16,28 @@ import org.junit.jupiter.api.Assertions;
 public final class CatalogListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CatalogListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\"},\"location\":\"hxqh\",\"tags\":{\"scnpqxuhivy\":\"fpikxwczb\",\"wby\":\"n\",\"grtfwvu\":\"rkxvdum\"},\"id\":\"xgaudccs\",\"name\":\"h\",\"type\":\"jcny\"}],\"nextLink\":\"hkryhtn\"}")
-                .toObject(CatalogListResult.class);
-        Assertions.assertEquals("hxqh", model.value().get(0).location());
-        Assertions.assertEquals("fpikxwczb", model.value().get(0).tags().get("scnpqxuhivy"));
-        Assertions.assertEquals("hkryhtn", model.nextLink());
+        CatalogListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"tenantId\":\"ithxqhabifpi\",\"provisioningState\":\"Accepted\"},\"location\":\"zb\",\"tags\":{\"vyq\":\"npqxuh\",\"tfwvukxgaudc\":\"iwbybrkxvdumjg\",\"napczwlokjy\":\"snhsjcnyejhkryh\",\"oxzjnchgejspod\":\"mkkvnip\"},\"id\":\"ailzydehojwyahu\",\"name\":\"inpm\",\"type\":\"njaqwixjspro\"}],\"nextLink\":\"cputegjvwmfdats\"}")
+            .toObject(CatalogListResult.class);
+        Assertions.assertEquals("zb", model.value().get(0).location());
+        Assertions.assertEquals("npqxuh", model.value().get(0).tags().get("vyq"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CatalogListResult model =
-            new CatalogListResult()
+        CatalogListResult model
+            = new CatalogListResult()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new CatalogInner()
-                                .withLocation("hxqh")
-                                .withTags(mapOf("scnpqxuhivy", "fpikxwczb", "wby", "n", "grtfwvu", "rkxvdum"))))
-                .withNextLink("hkryhtn");
+                    Arrays.asList(new CatalogInner()
+                        .withLocation("zb").withTags(mapOf("vyq", "npqxuh", "tfwvukxgaudc", "iwbybrkxvdumjg",
+                            "napczwlokjy", "snhsjcnyejhkryh", "oxzjnchgejspod", "mkkvnip"))
+                        .withProperties(new CatalogProperties())));
         model = BinaryData.fromObject(model).toObject(CatalogListResult.class);
-        Assertions.assertEquals("hxqh", model.value().get(0).location());
-        Assertions.assertEquals("fpikxwczb", model.value().get(0).tags().get("scnpqxuhivy"));
-        Assertions.assertEquals("hkryhtn", model.nextLink());
+        Assertions.assertEquals("zb", model.value().get(0).location());
+        Assertions.assertEquals("npqxuh", model.value().get(0).tags().get("vyq"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

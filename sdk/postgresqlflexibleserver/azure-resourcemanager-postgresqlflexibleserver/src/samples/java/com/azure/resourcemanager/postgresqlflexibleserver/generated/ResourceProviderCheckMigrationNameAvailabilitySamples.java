@@ -11,9 +11,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.Migratio
  */
 public final class ResourceProviderCheckMigrationNameAvailabilitySamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
-     * CheckMigrationNameAvailability.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/CheckMigrationNameAvailability.json
      */
     /**
      * Sample code: CheckMigrationNameAvailability.
@@ -22,9 +20,10 @@ public final class ResourceProviderCheckMigrationNameAvailabilitySamples {
      */
     public static void
         checkMigrationNameAvailability(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.resourceProviders().checkMigrationNameAvailabilityWithResponse(
-            "ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget", new MigrationNameAvailabilityResourceInner()
-                .withName("name1").withType("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
-            com.azure.core.util.Context.NONE);
+        manager.resourceProviders()
+            .checkMigrationNameAvailabilityWithResponse("ffffffff-ffff-ffff-ffff-ffffffffffff", "testrg", "testtarget",
+                new MigrationNameAvailabilityResourceInner().withName("name1")
+                    .withType("Microsoft.DBforPostgreSQL/flexibleServers/migrations"),
+                com.azure.core.util.Context.NONE);
     }
 }

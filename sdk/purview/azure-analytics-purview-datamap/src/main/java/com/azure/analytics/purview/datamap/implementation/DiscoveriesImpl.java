@@ -134,9 +134,8 @@ public final class DiscoveriesImpl {
 
     /**
      * Get data using search.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -164,10 +163,11 @@ public final class DiscoveriesImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     &#64;search.count: Integer (Optional)
      *     &#64;search.count.approximate: Boolean (Optional)
@@ -270,7 +270,8 @@ public final class DiscoveriesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param queryOptions The search query of advanced search request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -289,9 +290,8 @@ public final class DiscoveriesImpl {
 
     /**
      * Get data using search.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -319,10 +319,11 @@ public final class DiscoveriesImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     &#64;search.count: Integer (Optional)
      *     &#64;search.count.approximate: Boolean (Optional)
@@ -425,7 +426,8 @@ public final class DiscoveriesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param queryOptions The search query of advanced search request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -444,9 +446,8 @@ public final class DiscoveriesImpl {
 
     /**
      * Get search suggestions by query criteria.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -454,10 +455,11 @@ public final class DiscoveriesImpl {
      *     filter: Object (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -506,7 +508,8 @@ public final class DiscoveriesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param suggestOptions The payload of suggest request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -527,9 +530,8 @@ public final class DiscoveriesImpl {
 
     /**
      * Get search suggestions by query criteria.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -537,10 +539,11 @@ public final class DiscoveriesImpl {
      *     filter: Object (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -589,7 +592,8 @@ public final class DiscoveriesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param suggestOptions The payload of suggest request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -608,9 +612,8 @@ public final class DiscoveriesImpl {
 
     /**
      * Get auto complete options.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -618,9 +621,9 @@ public final class DiscoveriesImpl {
      *     filter: Object (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     value (Optional): [
@@ -650,9 +653,8 @@ public final class DiscoveriesImpl {
 
     /**
      * Get auto complete options.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -660,9 +662,9 @@ public final class DiscoveriesImpl {
      *     filter: Object (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     value (Optional): [

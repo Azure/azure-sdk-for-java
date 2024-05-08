@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LogRankingMetric. */
+/**
+ * Defines values for LogRankingMetric.
+ */
 public final class LogRankingMetric extends ExpandableStringEnum<LogRankingMetric> {
-    /** Static value clientRequestCount for LogRankingMetric. */
+    /**
+     * Static value clientRequestCount for LogRankingMetric.
+     */
     public static final LogRankingMetric CLIENT_REQUEST_COUNT = fromString("clientRequestCount");
 
-    /** Static value clientRequestTraffic for LogRankingMetric. */
+    /**
+     * Static value clientRequestTraffic for LogRankingMetric.
+     */
     public static final LogRankingMetric CLIENT_REQUEST_TRAFFIC = fromString("clientRequestTraffic");
 
-    /** Static value hitCount for LogRankingMetric. */
+    /**
+     * Static value hitCount for LogRankingMetric.
+     */
     public static final LogRankingMetric HIT_COUNT = fromString("hitCount");
 
-    /** Static value missCount for LogRankingMetric. */
+    /**
+     * Static value missCount for LogRankingMetric.
+     */
     public static final LogRankingMetric MISS_COUNT = fromString("missCount");
 
-    /** Static value userErrorCount for LogRankingMetric. */
+    /**
+     * Static value userErrorCount for LogRankingMetric.
+     */
     public static final LogRankingMetric USER_ERROR_COUNT = fromString("userErrorCount");
 
-    /** Static value errorCount for LogRankingMetric. */
+    /**
+     * Static value errorCount for LogRankingMetric.
+     */
     public static final LogRankingMetric ERROR_COUNT = fromString("errorCount");
 
     /**
      * Creates a new instance of LogRankingMetric value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class LogRankingMetric extends ExpandableStringEnum<LogRankingMetri
 
     /**
      * Creates or finds a LogRankingMetric from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LogRankingMetric.
      */
@@ -50,7 +64,7 @@ public final class LogRankingMetric extends ExpandableStringEnum<LogRankingMetri
 
     /**
      * Gets known LogRankingMetric values.
-     *
+     * 
      * @return known LogRankingMetric values.
      */
     public static Collection<LogRankingMetric> values() {

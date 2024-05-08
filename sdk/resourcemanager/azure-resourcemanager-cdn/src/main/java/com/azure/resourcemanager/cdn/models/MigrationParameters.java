@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Request body for Migrate operation. */
+/**
+ * Request body for Migrate operation.
+ */
 @Fluent
 public final class MigrationParameters {
     /*
@@ -36,13 +38,15 @@ public final class MigrationParameters {
     @JsonProperty(value = "migrationWebApplicationFirewallMappings")
     private List<MigrationWebApplicationFirewallMapping> migrationWebApplicationFirewallMappings;
 
-    /** Creates an instance of MigrationParameters class. */
+    /**
+     * Creates an instance of MigrationParameters class.
+     */
     public MigrationParameters() {
     }
 
     /**
      * Get the sku property: Sku for the migration.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -51,7 +55,7 @@ public final class MigrationParameters {
 
     /**
      * Set the sku property: Sku for the migration.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the MigrationParameters object itself.
      */
@@ -63,7 +67,7 @@ public final class MigrationParameters {
     /**
      * Get the classicResourceReference property: Resource reference of the classic cdn profile or classic frontdoor
      * that need to be migrated.
-     *
+     * 
      * @return the classicResourceReference value.
      */
     public ResourceReference classicResourceReference() {
@@ -73,7 +77,7 @@ public final class MigrationParameters {
     /**
      * Set the classicResourceReference property: Resource reference of the classic cdn profile or classic frontdoor
      * that need to be migrated.
-     *
+     * 
      * @param classicResourceReference the classicResourceReference value to set.
      * @return the MigrationParameters object itself.
      */
@@ -84,7 +88,7 @@ public final class MigrationParameters {
 
     /**
      * Get the profileName property: Name of the new profile that need to be created.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -93,7 +97,7 @@ public final class MigrationParameters {
 
     /**
      * Set the profileName property: Name of the new profile that need to be created.
-     *
+     * 
      * @param profileName the profileName value to set.
      * @return the MigrationParameters object itself.
      */
@@ -104,7 +108,7 @@ public final class MigrationParameters {
 
     /**
      * Get the migrationWebApplicationFirewallMappings property: Waf mapping for the migrated profile.
-     *
+     * 
      * @return the migrationWebApplicationFirewallMappings value.
      */
     public List<MigrationWebApplicationFirewallMapping> migrationWebApplicationFirewallMappings() {
@@ -113,7 +117,7 @@ public final class MigrationParameters {
 
     /**
      * Set the migrationWebApplicationFirewallMappings property: Waf mapping for the migrated profile.
-     *
+     * 
      * @param migrationWebApplicationFirewallMappings the migrationWebApplicationFirewallMappings value to set.
      * @return the MigrationParameters object itself.
      */
@@ -125,29 +129,25 @@ public final class MigrationParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model MigrationParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model MigrationParameters"));
         } else {
             sku().validate();
         }
         if (classicResourceReference() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property classicResourceReference in model MigrationParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property classicResourceReference in model MigrationParameters"));
         } else {
             classicResourceReference().validate();
         }
         if (profileName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property profileName in model MigrationParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property profileName in model MigrationParameters"));
         }
         if (migrationWebApplicationFirewallMappings() != null) {
             migrationWebApplicationFirewallMappings().forEach(e -> e.validate());

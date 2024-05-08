@@ -19,28 +19,28 @@ public class CommonScriptModel {
      */
     @Generated
     @JsonProperty(value = "code")
-    private String code;
+    private final String code;
 
     /*
      * Display name of the script in the locale requested via Accept-Language header.
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * Display name of the language in the locale native for the language.
      */
     @Generated
     @JsonProperty(value = "nativeName")
-    private String nativeName;
+    private final String nativeName;
 
     /*
      * Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
      */
     @Generated
     @JsonProperty(value = "dir")
-    private String dir;
+    private final String dir;
 
     /**
      * Creates an instance of CommonScriptModel class.

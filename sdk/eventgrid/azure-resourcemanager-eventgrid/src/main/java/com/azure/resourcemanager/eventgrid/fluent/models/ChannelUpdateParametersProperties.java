@@ -16,8 +16,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class ChannelUpdateParametersProperties {
     /*
-     * Expiration time of the channel. If this timer expires while the corresponding partner topic or partner
-     * destination is never activated,
+     * Expiration time of the channel. If this timer expires while the corresponding partner topic or partner destination is never activated,
      * the channel and corresponding partner topic or partner destination are deleted.
      */
     @JsonProperty(value = "expirationTimeIfNotActivatedUtc")
@@ -42,8 +41,8 @@ public final class ChannelUpdateParametersProperties {
     }
 
     /**
-     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while
-     * the corresponding partner topic or partner destination is never activated,
+     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
+     * corresponding partner topic or partner destination is never activated,
      * the channel and corresponding partner topic or partner destination are deleted.
      * 
      * @return the expirationTimeIfNotActivatedUtc value.
@@ -53,8 +52,8 @@ public final class ChannelUpdateParametersProperties {
     }
 
     /**
-     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while
-     * the corresponding partner topic or partner destination is never activated,
+     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
+     * corresponding partner topic or partner destination is never activated,
      * the channel and corresponding partner topic or partner destination are deleted.
      * 
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
@@ -67,8 +66,8 @@ public final class ChannelUpdateParametersProperties {
     }
 
     /**
-     * Get the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is
-     * of type PartnerDestination.
+     * Get the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
+     * type PartnerDestination.
      * 
      * @return the partnerDestinationInfo value.
      */
@@ -77,8 +76,8 @@ public final class ChannelUpdateParametersProperties {
     }
 
     /**
-     * Set the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is
-     * of type PartnerDestination.
+     * Set the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
+     * type PartnerDestination.
      * 
      * @param partnerDestinationInfo the partnerDestinationInfo value to set.
      * @return the ChannelUpdateParametersProperties object itself.

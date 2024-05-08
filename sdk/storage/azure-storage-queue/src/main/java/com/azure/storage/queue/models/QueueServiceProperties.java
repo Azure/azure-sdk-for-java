@@ -5,57 +5,50 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** Storage Service Properties. */
-@JacksonXmlRootElement(localName = "StorageServiceProperties")
+/**
+ * Storage Service Properties.
+ */
 @Fluent
-public final class QueueServiceProperties {
+public final class QueueServiceProperties implements XmlSerializable<QueueServiceProperties> {
     /*
      * Azure Analytics Logging settings
      */
-    @JsonProperty(value = "Logging")
     private QueueAnalyticsLogging analyticsLogging;
 
     /*
      * A summary of request statistics grouped by API in hourly aggregates for queues
      */
-    @JsonProperty(value = "HourMetrics")
     private QueueMetrics hourMetrics;
 
     /*
      * a summary of request statistics grouped by API in minute aggregates for queues
      */
-    @JsonProperty(value = "MinuteMetrics")
     private QueueMetrics minuteMetrics;
-
-    private static final class CorsWrapper {
-        @JacksonXmlProperty(localName = "CorsRule")
-        private final List<QueueCorsRule> items;
-
-        @JsonCreator
-        private CorsWrapper(@JacksonXmlProperty(localName = "CorsRule") List<QueueCorsRule> items) {
-            this.items = items;
-        }
-    }
 
     /*
      * The set of CORS rules.
      */
-    @JsonProperty(value = "Cors")
-    private CorsWrapper cors;
+    private List<QueueCorsRule> cors;
 
-    /** Creates an instance of QueueServiceProperties class. */
-    public QueueServiceProperties() {}
+    /**
+     * Creates an instance of QueueServiceProperties class.
+     */
+    public QueueServiceProperties() {
+    }
 
     /**
      * Get the analyticsLogging property: Azure Analytics Logging settings.
-     *
+     * 
      * @return the analyticsLogging value.
      */
     public QueueAnalyticsLogging getAnalyticsLogging() {
@@ -64,7 +57,7 @@ public final class QueueServiceProperties {
 
     /**
      * Set the analyticsLogging property: Azure Analytics Logging settings.
-     *
+     * 
      * @param analyticsLogging the analyticsLogging value to set.
      * @return the QueueServiceProperties object itself.
      */
@@ -75,7 +68,7 @@ public final class QueueServiceProperties {
 
     /**
      * Get the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for queues.
-     *
+     * 
      * @return the hourMetrics value.
      */
     public QueueMetrics getHourMetrics() {
@@ -84,7 +77,7 @@ public final class QueueServiceProperties {
 
     /**
      * Set the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for queues.
-     *
+     * 
      * @param hourMetrics the hourMetrics value to set.
      * @return the QueueServiceProperties object itself.
      */
@@ -95,7 +88,7 @@ public final class QueueServiceProperties {
 
     /**
      * Get the minuteMetrics property: a summary of request statistics grouped by API in minute aggregates for queues.
-     *
+     * 
      * @return the minuteMetrics value.
      */
     public QueueMetrics getMinuteMetrics() {
@@ -104,7 +97,7 @@ public final class QueueServiceProperties {
 
     /**
      * Set the minuteMetrics property: a summary of request statistics grouped by API in minute aggregates for queues.
-     *
+     * 
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the QueueServiceProperties object itself.
      */
@@ -115,24 +108,105 @@ public final class QueueServiceProperties {
 
     /**
      * Get the cors property: The set of CORS rules.
-     *
+     * 
      * @return the cors value.
      */
     public List<QueueCorsRule> getCors() {
         if (this.cors == null) {
-            this.cors = new CorsWrapper(new ArrayList<QueueCorsRule>());
+            this.cors = new ArrayList<>();
         }
-        return this.cors.items;
+        return this.cors;
     }
 
     /**
      * Set the cors property: The set of CORS rules.
-     *
+     * 
      * @param cors the cors value to set.
      * @return the QueueServiceProperties object itself.
      */
     public QueueServiceProperties setCors(List<QueueCorsRule> cors) {
-        this.cors = new CorsWrapper(cors);
+        this.cors = cors;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeXml(this.analyticsLogging, "Logging");
+        xmlWriter.writeXml(this.hourMetrics, "HourMetrics");
+        xmlWriter.writeXml(this.minuteMetrics, "MinuteMetrics");
+        if (this.cors != null) {
+            xmlWriter.writeStartElement("Cors");
+            for (QueueCorsRule element : this.cors) {
+                xmlWriter.writeXml(element, "CorsRule");
+            }
+            xmlWriter.writeEndElement();
+        }
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of QueueServiceProperties from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of QueueServiceProperties if the XmlReader was pointing to an instance of it, or null if it
+     * was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the QueueServiceProperties.
+     */
+    public static QueueServiceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of QueueServiceProperties from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of QueueServiceProperties if the XmlReader was pointing to an instance of it, or null if it
+     * was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the QueueServiceProperties.
+     */
+    public static QueueServiceProperties fromXml(XmlReader xmlReader, String rootElementName)
+        throws XMLStreamException {
+        String finalRootElementName
+            = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageServiceProperties" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            QueueServiceProperties deserializedQueueServiceProperties = new QueueServiceProperties();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Logging".equals(elementName.getLocalPart())) {
+                    deserializedQueueServiceProperties.analyticsLogging
+                        = QueueAnalyticsLogging.fromXml(reader, "Logging");
+                } else if ("HourMetrics".equals(elementName.getLocalPart())) {
+                    deserializedQueueServiceProperties.hourMetrics = QueueMetrics.fromXml(reader, "HourMetrics");
+                } else if ("MinuteMetrics".equals(elementName.getLocalPart())) {
+                    deserializedQueueServiceProperties.minuteMetrics = QueueMetrics.fromXml(reader, "MinuteMetrics");
+                } else if ("Cors".equals(elementName.getLocalPart())) {
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        elementName = reader.getElementName();
+                        if ("CorsRule".equals(elementName.getLocalPart())) {
+                            if (deserializedQueueServiceProperties.cors == null) {
+                                deserializedQueueServiceProperties.cors = new ArrayList<>();
+                            }
+                            deserializedQueueServiceProperties.cors.add(QueueCorsRule.fromXml(reader, "CorsRule"));
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedQueueServiceProperties;
+        });
     }
 }

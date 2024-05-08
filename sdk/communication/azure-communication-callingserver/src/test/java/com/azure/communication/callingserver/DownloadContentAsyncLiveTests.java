@@ -8,6 +8,8 @@ import com.azure.communication.callingserver.models.DownloadToFileOptions;
 import com.azure.communication.callingserver.models.ParallelDownloadOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -31,6 +33,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 
 public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(DownloadContentAsyncLiveTests.class);
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -61,7 +64,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         try {
             validateMetadata(conversationAsyncClient.getCallRecordingAsync().downloadStream(METADATA_URL));
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            LOGGER.log(LogLevel.VERBOSE, () -> "Error", e);
             throw e;
         }
     }
@@ -79,7 +82,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
         try {
             validateMetadata(conversationAsyncClient.getCallRecordingAsync().downloadStream(METADATA_URL));
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            LOGGER.log(LogLevel.VERBOSE, () -> "Error", e);
             throw e;
         }
     }
@@ -104,7 +107,7 @@ public class DownloadContentAsyncLiveTests extends CallAutomationLiveTestBase {
                         .verifyComplete())
                     .verifyComplete();
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            LOGGER.log(LogLevel.VERBOSE, () -> "Error", e);
             throw e;
         }
     }

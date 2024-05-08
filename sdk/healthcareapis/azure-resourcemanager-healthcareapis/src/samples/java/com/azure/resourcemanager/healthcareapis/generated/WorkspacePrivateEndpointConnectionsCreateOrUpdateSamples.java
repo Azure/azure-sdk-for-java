@@ -13,9 +13,7 @@ import com.azure.resourcemanager.healthcareapis.models.PrivateLinkServiceConnect
  */
 public final class WorkspacePrivateEndpointConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/privatelink/
-     * WorkspaceCreatePrivateEndpointConnection.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/privatelink/WorkspaceCreatePrivateEndpointConnection.json
      */
     /**
      * Sample code: WorkspacePrivateEndpointConnection_CreateOrUpdate.
@@ -24,10 +22,11 @@ public final class WorkspacePrivateEndpointConnectionsCreateOrUpdateSamples {
      */
     public static void workspacePrivateEndpointConnectionCreateOrUpdate(
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.workspacePrivateEndpointConnections().createOrUpdate("testRG", "workspace1", "myConnection",
-            new PrivateEndpointConnectionDescriptionInner().withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("Auto-Approved")),
-            com.azure.core.util.Context.NONE);
+        manager.workspacePrivateEndpointConnections()
+            .createOrUpdate("testRG", "workspace1", "myConnection",
+                new PrivateEndpointConnectionDescriptionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("Auto-Approved")),
+                com.azure.core.util.Context.NONE);
     }
 }

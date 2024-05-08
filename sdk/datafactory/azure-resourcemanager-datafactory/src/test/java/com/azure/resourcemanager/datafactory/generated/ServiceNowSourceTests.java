@@ -11,16 +11,19 @@ public final class ServiceNowSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceNowSource model = BinaryData.fromString(
-            "{\"type\":\"ServiceNowSource\",\"query\":\"datadtq\",\"queryTimeout\":\"datajbxol\",\"additionalColumns\":\"datahquqihgibog\",\"sourceRetryCount\":\"datajupenoupcolxc\",\"sourceRetryWait\":\"dataszwadesisd\",\"maxConcurrentConnections\":\"datauhqts\",\"disableMetricsCollection\":\"datab\",\"\":{\"bymrgelgoduexx\":\"dataeeucvv\",\"fr\":\"datad\",\"wqzvqtnozwphka\":\"dataenvkqtvtq\",\"bzbbjxkami\":\"dataracvcbrtltpo\"}}")
+            "{\"type\":\"ovwizjraks\",\"query\":\"dataljgaykaqwnk\",\"queryTimeout\":\"dataewshhqgjvchl\",\"additionalColumns\":\"datazfbtczzjf\",\"sourceRetryCount\":\"datawqpukltfk\",\"sourceRetryWait\":\"dataoxmisnbzczpfvqt\",\"maxConcurrentConnections\":\"datakcfe\",\"disableMetricsCollection\":\"datazknhcvxf\",\"\":{\"ysdmovbvnjyq\":\"datagrnh\",\"kczolndwrggyt\":\"dataofdgzl\",\"ukfwmhzarrfttx\":\"datavoxnjbyjgobzj\",\"vvab\":\"dataifrjgvhone\"}}")
             .toObject(ServiceNowSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceNowSource model
-            = new ServiceNowSource().withSourceRetryCount("datajupenoupcolxc").withSourceRetryWait("dataszwadesisd")
-                .withMaxConcurrentConnections("datauhqts").withDisableMetricsCollection("datab")
-                .withQueryTimeout("datajbxol").withAdditionalColumns("datahquqihgibog").withQuery("datadtq");
+        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("datawqpukltfk")
+            .withSourceRetryWait("dataoxmisnbzczpfvqt")
+            .withMaxConcurrentConnections("datakcfe")
+            .withDisableMetricsCollection("datazknhcvxf")
+            .withQueryTimeout("dataewshhqgjvchl")
+            .withAdditionalColumns("datazfbtczzjf")
+            .withQuery("dataljgaykaqwnk");
         model = BinaryData.fromObject(model).toObject(ServiceNowSource.class);
     }
 }

@@ -37,135 +37,159 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the ContainerServiceFleetManagementClientImpl type. */
+/**
+ * Initializes a new instance of the ContainerServiceFleetManagementClientImpl type.
+ */
 @ServiceClient(builder = ContainerServiceFleetManagementClientBuilder.class)
 public final class ContainerServiceFleetManagementClientImpl implements ContainerServiceFleetManagementClient {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The FleetsClient object to access its operations. */
+    /**
+     * The FleetsClient object to access its operations.
+     */
     private final FleetsClient fleets;
 
     /**
      * Gets the FleetsClient object to access its operations.
-     *
+     * 
      * @return the FleetsClient object.
      */
     public FleetsClient getFleets() {
         return this.fleets;
     }
 
-    /** The FleetMembersClient object to access its operations. */
+    /**
+     * The FleetMembersClient object to access its operations.
+     */
     private final FleetMembersClient fleetMembers;
 
     /**
      * Gets the FleetMembersClient object to access its operations.
-     *
+     * 
      * @return the FleetMembersClient object.
      */
     public FleetMembersClient getFleetMembers() {
         return this.fleetMembers;
     }
 
-    /** The UpdateRunsClient object to access its operations. */
+    /**
+     * The UpdateRunsClient object to access its operations.
+     */
     private final UpdateRunsClient updateRuns;
 
     /**
      * Gets the UpdateRunsClient object to access its operations.
-     *
+     * 
      * @return the UpdateRunsClient object.
      */
     public UpdateRunsClient getUpdateRuns() {
         return this.updateRuns;
     }
 
-    /** The FleetUpdateStrategiesClient object to access its operations. */
+    /**
+     * The FleetUpdateStrategiesClient object to access its operations.
+     */
     private final FleetUpdateStrategiesClient fleetUpdateStrategies;
 
     /**
      * Gets the FleetUpdateStrategiesClient object to access its operations.
-     *
+     * 
      * @return the FleetUpdateStrategiesClient object.
      */
     public FleetUpdateStrategiesClient getFleetUpdateStrategies() {
@@ -174,7 +198,7 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
 
     /**
      * Initializes an instance of ContainerServiceFleetManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -182,19 +206,14 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    ContainerServiceFleetManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ContainerServiceFleetManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-10-15";
+        this.apiVersion = "2024-02-02-preview";
         this.operations = new OperationsClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
@@ -204,7 +223,7 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -213,7 +232,7 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -223,7 +242,7 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -233,26 +252,15 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -265,19 +273,16 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

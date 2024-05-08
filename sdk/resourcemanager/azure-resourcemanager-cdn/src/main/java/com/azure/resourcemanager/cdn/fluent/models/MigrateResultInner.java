@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Result for migrate operation. */
+/**
+ * Result for migrate operation.
+ */
 @Immutable
 public final class MigrateResultInner {
     /*
@@ -29,13 +31,15 @@ public final class MigrateResultInner {
     @JsonProperty(value = "properties")
     private MigrateResultProperties innerProperties;
 
-    /** Creates an instance of MigrateResultInner class. */
+    /**
+     * Creates an instance of MigrateResultInner class.
+     */
     public MigrateResultInner() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +48,7 @@ public final class MigrateResultInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -53,7 +57,7 @@ public final class MigrateResultInner {
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MigrateResultProperties innerProperties() {
@@ -62,7 +66,7 @@ public final class MigrateResultInner {
 
     /**
      * Get the migratedProfileResourceId property: Arm resource id of the migrated profile.
-     *
+     * 
      * @return the migratedProfileResourceId value.
      */
     public ResourceReference migratedProfileResourceId() {
@@ -71,7 +75,7 @@ public final class MigrateResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

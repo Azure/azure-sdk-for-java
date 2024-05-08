@@ -188,6 +188,22 @@ public interface NicIpConfiguration
                 ApplicationGateway appGateway, String backendName);
         }
 
+
+        /** The stage of the definition allowing to specify delete options for the public ip address.
+         *
+         * @param <ParentT> the stage of the parent network interface definition to return to after attaching this
+         *     definition
+         * */
+        interface WithPublicIPAddressDeleteOptions<ParentT> {
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
+        }
+
         /**
          * The final stage of network interface IP configuration.
          *
@@ -201,7 +217,8 @@ public interface NicIpConfiguration
             extends Attachable.InDefinition<ParentT>,
                 WithPublicIPAddress<ParentT>,
                 WithLoadBalancer<ParentT>,
-                WithApplicationGateway<ParentT> {
+                WithApplicationGateway<ParentT>,
+                WithPublicIPAddressDeleteOptions<ParentT> {
         }
     }
 
@@ -373,6 +390,22 @@ public interface NicIpConfiguration
         }
 
         /**
+         * The stage of the definition allowing to specify delete options for the public ip address.
+         *
+         * @param <ParentT> the stage of the parent network interface update to return to after attaching this
+         *     definition
+         * */
+        interface WithPublicIPAddressDeleteOptions<ParentT>  {
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the update
+             */
+            WithAttach<ParentT> withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
+        }
+
+        /**
          * The final stage of network interface IP configuration.
          *
          * <p>At this stage, any remaining optional settings can be specified, or the network interface IP configuration
@@ -385,7 +418,8 @@ public interface NicIpConfiguration
             extends Attachable.InUpdate<ParentT>,
                 WithPublicIPAddress<ParentT>,
                 WithLoadBalancer<ParentT>,
-                WithApplicationGateway<ParentT> {
+                WithApplicationGateway<ParentT>,
+                WithPublicIPAddressDeleteOptions<ParentT> {
         }
     }
 
@@ -396,7 +430,8 @@ public interface NicIpConfiguration
             UpdateStages.WithPrivateIP,
             UpdateStages.WithPublicIPAddress,
             UpdateStages.WithLoadBalancer,
-            UpdateStages.WithApplicationGateway {
+            UpdateStages.WithApplicationGateway,
+            UpdateStages.WithPublicIPAddressDeleteOptions {
     }
 
     /** Grouping of network interface IP configuration update stages. */
@@ -485,6 +520,17 @@ public interface NicIpConfiguration
              * @return the next stage of the update
              */
             Update withoutApplicationGatewayBackends();
+        }
+
+        /** The stage of the network interface update allowing to specify delete options for the public ip address. */
+        interface WithPublicIPAddressDeleteOptions {
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the update
+             */
+            Update withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
         }
     }
 }

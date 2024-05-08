@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.1.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,36 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.4 (2024-03-27)
+
+- Azure Resource Manager Batch client library for Java. This package contains Microsoft Azure SDK for Batch Management SDK. Batch Client. Package tag package-2024-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.UpgradePolicy` was added
+
+* `models.RollingUpgradePolicy` was added
+
+* `models.UpgradeMode` was added
+
+* `models.AutomaticOSUpgradePolicy` was added
+
+#### `models.SupportedSku` was modified
+
+* `batchSupportEndOfLife()` was added
+
+#### `models.Pool$Definition` was modified
+
+* `withUpgradePolicy(models.UpgradePolicy)` was added
+
+#### `models.Pool` was modified
+
+* `upgradePolicy()` was added
+
+#### `models.Pool$Update` was modified
+
+* `withUpgradePolicy(models.UpgradePolicy)` was added
 
 ## 1.1.0-beta.3 (2023-12-22)
 

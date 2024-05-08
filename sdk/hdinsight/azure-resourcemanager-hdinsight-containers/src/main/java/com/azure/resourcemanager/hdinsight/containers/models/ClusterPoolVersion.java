@@ -4,55 +4,51 @@
 
 package com.azure.resourcemanager.hdinsight.containers.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterPoolVersionInner;
 
-/** An immutable client-side representation of ClusterPoolVersion. */
+/**
+ * An immutable client-side representation of ClusterPoolVersion.
+ */
 public interface ClusterPoolVersion {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the clusterPoolVersion property: Cluster pool version is a 2-part version.
-     *
-     * @return the clusterPoolVersion value.
+     * Gets the properties property: Cluster pool version properties.
+     * 
+     * @return the properties value.
      */
-    String clusterPoolVersion();
+    ClusterPoolVersionProperties properties();
 
     /**
-     * Gets the aksVersion property: AKS version.
-     *
-     * @return the aksVersion value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    String aksVersion();
-
-    /**
-     * Gets the isPreview property: Indicate if this version is in preview or not.
-     *
-     * @return the isPreview value.
-     */
-    Boolean isPreview();
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterPoolVersionInner object.
-     *
+     * 
      * @return the inner object.
      */
     ClusterPoolVersionInner innerModel();

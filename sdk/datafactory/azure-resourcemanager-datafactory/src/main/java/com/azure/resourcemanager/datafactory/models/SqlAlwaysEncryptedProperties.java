@@ -20,8 +20,7 @@ public final class SqlAlwaysEncryptedProperties {
     private SqlAlwaysEncryptedAkvAuthType alwaysEncryptedAkvAuthType;
 
     /*
-     * The client ID of the application in Azure Active Directory used for Azure Key Vault authentication. Type: string
-     * (or Expression with resultType string).
+     * The client ID of the application in Azure Active Directory used for Azure Key Vault authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
@@ -136,8 +135,9 @@ public final class SqlAlwaysEncryptedProperties {
      */
     public void validate() {
         if (alwaysEncryptedAkvAuthType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property alwaysEncryptedAkvAuthType in model SqlAlwaysEncryptedProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property alwaysEncryptedAkvAuthType in model SqlAlwaysEncryptedProperties"));
         }
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();

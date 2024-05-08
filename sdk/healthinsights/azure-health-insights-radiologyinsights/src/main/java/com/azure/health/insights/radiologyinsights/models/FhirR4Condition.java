@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,22 @@ import java.util.List;
  * Detailed information about conditions, problems or diagnoses
  * Based on [FHIR Condition](https://www.hl7.org/fhir/R4/condition.html).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "resourceType",
+    defaultImpl = FhirR4Condition.class,
+    visible = true)
 @JsonTypeName("Condition")
 @Fluent
 public final class FhirR4Condition extends FhirR4DomainResource {
+
+    /*
+     * resourceType
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "resourceType")
+    private String resourceType = "Condition";
 
     /*
      * External Ids for this condition
@@ -77,35 +90,35 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     private FhirR4Reference encounter;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetDateTime")
     private String onsetDateTime;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetAge")
     private FhirR4Quantity onsetAge;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetPeriod")
     private FhirR4Period onsetPeriod;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetRange")
     private FhirR4Range onsetRange;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetString")
@@ -176,6 +189,17 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     @JsonCreator
     public FhirR4Condition(@JsonProperty(value = "resourceType") String resourceType) {
         super(resourceType);
+    }
+
+    /**
+     * Get the resourceType property: resourceType.
+     *
+     * @return the resourceType value.
+     */
+    @Generated
+    @Override
+    public String getResourceType() {
+        return this.resourceType;
     }
 
     /**

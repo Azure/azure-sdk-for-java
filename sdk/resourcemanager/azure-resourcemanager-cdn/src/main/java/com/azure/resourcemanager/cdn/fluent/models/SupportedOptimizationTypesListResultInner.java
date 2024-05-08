@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cdn.models.OptimizationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of the GetSupportedOptimizationTypes API. */
+/**
+ * The result of the GetSupportedOptimizationTypes API.
+ */
 @Immutable
 public final class SupportedOptimizationTypesListResultInner {
     /*
@@ -18,13 +20,15 @@ public final class SupportedOptimizationTypesListResultInner {
     @JsonProperty(value = "supportedOptimizationTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<OptimizationType> supportedOptimizationTypes;
 
-    /** Creates an instance of SupportedOptimizationTypesListResultInner class. */
+    /**
+     * Creates an instance of SupportedOptimizationTypesListResultInner class.
+     */
     public SupportedOptimizationTypesListResultInner() {
     }
 
     /**
      * Get the supportedOptimizationTypes property: Supported optimization types for a profile.
-     *
+     * 
      * @return the supportedOptimizationTypes value.
      */
     public List<OptimizationType> supportedOptimizationTypes() {
@@ -33,7 +37,7 @@ public final class SupportedOptimizationTypesListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

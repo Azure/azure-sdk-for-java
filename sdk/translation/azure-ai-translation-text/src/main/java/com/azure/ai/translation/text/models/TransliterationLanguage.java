@@ -22,21 +22,21 @@ public final class TransliterationLanguage {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * Display name of the language in the locale native for this language.
      */
     @Generated
     @JsonProperty(value = "nativeName")
-    private String nativeName;
+    private final String nativeName;
 
     /*
      * List of scripts to convert from.
      */
     @Generated
     @JsonProperty(value = "scripts")
-    private List<TransliterableScript> scripts;
+    private final List<TransliterableScript> scripts;
 
     /**
      * Creates an instance of TransliterationLanguage class.

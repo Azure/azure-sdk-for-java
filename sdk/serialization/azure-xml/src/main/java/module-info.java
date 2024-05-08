@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.xml {
-    requires java.xml;
+    requires transitive java.xml;
 
     exports com.azure.xml;
 }

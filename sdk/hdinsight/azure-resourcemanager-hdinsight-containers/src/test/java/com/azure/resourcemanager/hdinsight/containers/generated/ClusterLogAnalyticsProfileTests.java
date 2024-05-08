@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterLogAnalyticsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterLogAnalyticsProfile model =
-            BinaryData
-                .fromString(
-                    "{\"enabled\":true,\"applicationLogs\":{\"stdOutEnabled\":false,\"stdErrorEnabled\":false},\"metricsEnabled\":true}")
-                .toObject(ClusterLogAnalyticsProfile.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals(false, model.applicationLogs().stdOutEnabled());
-        Assertions.assertEquals(false, model.applicationLogs().stdErrorEnabled());
+        ClusterLogAnalyticsProfile model = BinaryData.fromString(
+            "{\"enabled\":false,\"applicationLogs\":{\"stdOutEnabled\":true,\"stdErrorEnabled\":true},\"metricsEnabled\":true}")
+            .toObject(ClusterLogAnalyticsProfile.class);
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.applicationLogs().stdOutEnabled());
+        Assertions.assertEquals(true, model.applicationLogs().stdErrorEnabled());
         Assertions.assertEquals(true, model.metricsEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterLogAnalyticsProfile model =
-            new ClusterLogAnalyticsProfile()
-                .withEnabled(true)
-                .withApplicationLogs(
-                    new ClusterLogAnalyticsApplicationLogs().withStdOutEnabled(false).withStdErrorEnabled(false))
-                .withMetricsEnabled(true);
+        ClusterLogAnalyticsProfile model = new ClusterLogAnalyticsProfile().withEnabled(false)
+            .withApplicationLogs(
+                new ClusterLogAnalyticsApplicationLogs().withStdOutEnabled(true).withStdErrorEnabled(true))
+            .withMetricsEnabled(true);
         model = BinaryData.fromObject(model).toObject(ClusterLogAnalyticsProfile.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals(false, model.applicationLogs().stdOutEnabled());
-        Assertions.assertEquals(false, model.applicationLogs().stdErrorEnabled());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.applicationLogs().stdOutEnabled());
+        Assertions.assertEquals(true, model.applicationLogs().stdErrorEnabled());
         Assertions.assertEquals(true, model.metricsEnabled());
     }
 }

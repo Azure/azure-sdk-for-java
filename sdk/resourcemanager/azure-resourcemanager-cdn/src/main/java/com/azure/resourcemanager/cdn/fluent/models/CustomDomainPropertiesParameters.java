@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties of the custom domain to create. */
+/**
+ * The JSON object that contains the properties of the custom domain to create.
+ */
 @Fluent
 public final class CustomDomainPropertiesParameters {
     /*
@@ -17,13 +19,15 @@ public final class CustomDomainPropertiesParameters {
     @JsonProperty(value = "hostName", required = true)
     private String hostname;
 
-    /** Creates an instance of CustomDomainPropertiesParameters class. */
+    /**
+     * Creates an instance of CustomDomainPropertiesParameters class.
+     */
     public CustomDomainPropertiesParameters() {
     }
 
     /**
      * Get the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -32,7 +36,7 @@ public final class CustomDomainPropertiesParameters {
 
     /**
      * Set the hostname property: The host name of the custom domain. Must be a domain name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the CustomDomainPropertiesParameters object itself.
      */
@@ -43,15 +47,13 @@ public final class CustomDomainPropertiesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hostname() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hostname in model CustomDomainPropertiesParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property hostname in model CustomDomainPropertiesParameters"));
         }
     }
 

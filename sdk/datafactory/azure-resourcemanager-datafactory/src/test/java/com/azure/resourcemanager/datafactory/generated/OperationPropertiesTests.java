@@ -53,23 +53,36 @@ public final class OperationPropertiesTests {
         OperationProperties model
             = new OperationProperties().withServiceSpecification(new OperationServiceSpecification()
                 .withLogSpecifications(Arrays.asList(
-                    new OperationLogSpecification().withName("atscmd").withDisplayName("jhulsuuvmkjo")
+                    new OperationLogSpecification().withName("atscmd")
+                        .withDisplayName("jhulsuuvmkjo")
                         .withBlobDuration("rwfndiod"),
-                    new OperationLogSpecification().withName("slwejdpvw").withDisplayName("oqpsoa")
+                    new OperationLogSpecification().withName("slwejdpvw")
+                        .withDisplayName("oqpsoa")
                         .withBlobDuration("tazak")))
-                .withMetricSpecifications(Arrays.asList(new OperationMetricSpecification().withName("hbcryffdfdosyge")
-                    .withDisplayName("aojakhmsbzjhcrz").withDisplayDescription("dphlxaolt").withUnit("trg")
-                    .withAggregationType("bpf").withEnableRegionalMdmAccount("s").withSourceMdmAccount("zgvfcjrwz")
-                    .withSourceMdmNamespace("xjtfelluwfzit")
-                    .withAvailabilities(Arrays.asList(
-                        new OperationMetricAvailability().withTimeGrain("qfpjk").withBlobDuration("xofpdvhpfxxypi"),
-                        new OperationMetricAvailability().withTimeGrain("nmayhuybb").withBlobDuration("odepoogin"),
-                        new OperationMetricAvailability().withTimeGrain("amiheognarxz").withBlobDuration("heotusiv")))
-                    .withDimensions(Arrays.asList(new OperationMetricDimension().withName("ciqihnhung")
-                        .withDisplayName("jzrnf").withToBeExportedForShoebox(true))),
-                    new OperationMetricSpecification().withName("ispe").withDisplayName("tzfkufubl")
-                        .withDisplayDescription("fxqeof").withUnit("e").withAggregationType("hqjbasvmsmj")
-                        .withEnableRegionalMdmAccount("lngsntnbybkzgcwr").withSourceMdmAccount("lxxwrljdouskc")
+                .withMetricSpecifications(Arrays.asList(
+                    new OperationMetricSpecification().withName("hbcryffdfdosyge")
+                        .withDisplayName("aojakhmsbzjhcrz")
+                        .withDisplayDescription("dphlxaolt")
+                        .withUnit("trg")
+                        .withAggregationType("bpf")
+                        .withEnableRegionalMdmAccount("s")
+                        .withSourceMdmAccount("zgvfcjrwz")
+                        .withSourceMdmNamespace("xjtfelluwfzit")
+                        .withAvailabilities(Arrays.asList(
+                            new OperationMetricAvailability().withTimeGrain("qfpjk").withBlobDuration("xofpdvhpfxxypi"),
+                            new OperationMetricAvailability().withTimeGrain("nmayhuybb").withBlobDuration("odepoogin"),
+                            new OperationMetricAvailability().withTimeGrain("amiheognarxz")
+                                .withBlobDuration("heotusiv")))
+                        .withDimensions(Arrays.asList(new OperationMetricDimension().withName("ciqihnhung")
+                            .withDisplayName("jzrnf")
+                            .withToBeExportedForShoebox(true))),
+                    new OperationMetricSpecification().withName("ispe")
+                        .withDisplayName("tzfkufubl")
+                        .withDisplayDescription("fxqeof")
+                        .withUnit("e")
+                        .withAggregationType("hqjbasvmsmj")
+                        .withEnableRegionalMdmAccount("lngsntnbybkzgcwr")
+                        .withSourceMdmAccount("lxxwrljdouskc")
                         .withSourceMdmNamespace("kocrcjdkwtnhx")
                         .withAvailabilities(Arrays.asList(
                             new OperationMetricAvailability().withTimeGrain("iksqr").withBlobDuration("ssainqpjwnzll"),
@@ -78,15 +91,22 @@ public final class OperationPropertiesTests {
                             new OperationMetricAvailability().withTimeGrain("czdzev").withBlobDuration("hkr"),
                             new OperationMetricAvailability().withTimeGrain("d").withBlobDuration("p")))
                         .withDimensions(Arrays.asList(
-                            new OperationMetricDimension().withName("kvwrwjfeu").withDisplayName("hutje")
+                            new OperationMetricDimension().withName("kvwrwjfeu")
+                                .withDisplayName("hutje")
                                 .withToBeExportedForShoebox(false),
-                            new OperationMetricDimension().withName("ldhugjzzdatqxh").withDisplayName("dgeablgphu")
+                            new OperationMetricDimension().withName("ldhugjzzdatqxh")
+                                .withDisplayName("dgeablgphu")
                                 .withToBeExportedForShoebox(true),
-                            new OperationMetricDimension().withName("dvkaozw").withDisplayName("ftyhxhurokf")
+                            new OperationMetricDimension().withName("dvkaozw")
+                                .withDisplayName("ftyhxhurokf")
                                 .withToBeExportedForShoebox(true))),
-                    new OperationMetricSpecification().withName("lniwpwcukjfkgiaw").withDisplayName("lryplwckbasyy")
-                        .withDisplayDescription("ddhsgcbacphe").withUnit("ot").withAggregationType("qgoulznd")
-                        .withEnableRegionalMdmAccount("kwy").withSourceMdmAccount("gfgibm")
+                    new OperationMetricSpecification().withName("lniwpwcukjfkgiaw")
+                        .withDisplayName("lryplwckbasyy")
+                        .withDisplayDescription("ddhsgcbacphe")
+                        .withUnit("ot")
+                        .withAggregationType("qgoulznd")
+                        .withEnableRegionalMdmAccount("kwy")
+                        .withSourceMdmAccount("gfgibm")
                         .withSourceMdmNamespace("gakeqsr")
                         .withAvailabilities(Arrays.asList(
                             new OperationMetricAvailability().withTimeGrain("qqedqytbciqfou")
@@ -96,7 +116,8 @@ public final class OperationPropertiesTests {
                             new OperationMetricAvailability().withTimeGrain("kdosvqw").withBlobDuration("mdgbbjfdd"),
                             new OperationMetricAvailability().withTimeGrain("bmbexppbhtqqro").withBlobDuration("p")))
                         .withDimensions(Arrays.asList(new OperationMetricDimension().withName("lgbquxig")
-                            .withDisplayName("jgzjaoyfhrtx").withToBeExportedForShoebox(false))))));
+                            .withDisplayName("jgzjaoyfhrtx")
+                            .withToBeExportedForShoebox(false))))));
         model = BinaryData.fromObject(model).toObject(OperationProperties.class);
         Assertions.assertEquals("atscmd", model.serviceSpecification().logSpecifications().get(0).name());
         Assertions.assertEquals("jhulsuuvmkjo", model.serviceSpecification().logSpecifications().get(0).displayName());

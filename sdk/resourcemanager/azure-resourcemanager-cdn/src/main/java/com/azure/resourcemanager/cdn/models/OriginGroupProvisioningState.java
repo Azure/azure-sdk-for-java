@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning status of the origin group. */
+/**
+ * Provisioning status of the origin group.
+ */
 public final class OriginGroupProvisioningState extends ExpandableStringEnum<OriginGroupProvisioningState> {
-    /** Static value Succeeded for OriginGroupProvisioningState. */
+    /**
+     * Static value Succeeded for OriginGroupProvisioningState.
+     */
     public static final OriginGroupProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for OriginGroupProvisioningState. */
+    /**
+     * Static value Failed for OriginGroupProvisioningState.
+     */
     public static final OriginGroupProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Updating for OriginGroupProvisioningState. */
+    /**
+     * Static value Updating for OriginGroupProvisioningState.
+     */
     public static final OriginGroupProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for OriginGroupProvisioningState. */
+    /**
+     * Static value Deleting for OriginGroupProvisioningState.
+     */
     public static final OriginGroupProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Creating for OriginGroupProvisioningState. */
+    /**
+     * Static value Creating for OriginGroupProvisioningState.
+     */
     public static final OriginGroupProvisioningState CREATING = fromString("Creating");
 
     /**
      * Creates a new instance of OriginGroupProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class OriginGroupProvisioningState extends ExpandableStringEnum<Ori
 
     /**
      * Creates or finds a OriginGroupProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OriginGroupProvisioningState.
      */
@@ -47,7 +59,7 @@ public final class OriginGroupProvisioningState extends ExpandableStringEnum<Ori
 
     /**
      * Gets known OriginGroupProvisioningState values.
-     *
+     * 
      * @return known OriginGroupProvisioningState values.
      */
     public static Collection<OriginGroupProvisioningState> values() {

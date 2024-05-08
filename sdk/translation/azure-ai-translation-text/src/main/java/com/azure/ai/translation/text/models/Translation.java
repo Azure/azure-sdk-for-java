@@ -19,14 +19,14 @@ public final class Translation {
      */
     @Generated
     @JsonProperty(value = "to")
-    private String to;
+    private final String to;
 
     /*
      * A string giving the translated text.
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * An object giving the translated text in the script specified by the toScript parameter.

@@ -8,8 +8,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeReference;
 import com.azure.resourcemanager.datafactory.models.ParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.ParameterType;
+import com.azure.resourcemanager.datafactory.models.WebAnonymousAuthentication;
 import com.azure.resourcemanager.datafactory.models.WebLinkedService;
-import com.azure.resourcemanager.datafactory.models.WebLinkedServiceTypeProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,36 +19,32 @@ public final class WebLinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebLinkedService model = BinaryData.fromString(
-            "{\"type\":\"Web\",\"typeProperties\":{\"authenticationType\":\"WebLinkedServiceTypeProperties\",\"url\":\"dataalkqlvbkz\"},\"connectVia\":{\"referenceName\":\"yrnww\",\"parameters\":{\"crigbjbelnqalbs\":\"datainiyoizuww\",\"bwxuypcuriwll\":\"dataqxajsiueaibqjbi\",\"lwjxrymiysgh\":\"datatclveqdqtzsh\",\"vdulmka\":\"datacmqdlkkwbdek\"}},\"description\":\"n\",\"parameters\":{\"fvoz\":{\"type\":\"Float\",\"defaultValue\":\"datatpialrqhwcxxccf\"},\"nosclujywwumbus\":{\"type\":\"SecureString\",\"defaultValue\":\"datavrexitpzri\"},\"uahokiclrmmudv\":{\"type\":\"Array\",\"defaultValue\":\"databncljkhmso\"},\"tlizdoys\":{\"type\":\"Array\",\"defaultValue\":\"databscidkwznw\"}},\"annotations\":[\"databogdj\",\"datauybcp\",\"datadvuotkvkbpmk\",\"datapbnkcwauylkbdsk\"],\"\":{\"zylemp\":\"datafrtlukaf\",\"npw\":\"datahyuxxeike\"}}")
+            "{\"type\":\"kd\",\"typeProperties\":{\"authenticationType\":\"Anonymous\",\"url\":\"datamffcttkprxypxt\"},\"connectVia\":{\"referenceName\":\"bafiqxomevketa\",\"parameters\":{\"toai\":\"datancxtnbut\",\"hzqgbaqvqeyla\":\"dataign\",\"yfnbxw\":\"datakobkrg\",\"szhxothfyifjufzl\":\"datalh\"}},\"description\":\"jsmtghm\",\"parameters\":{\"zprycixjgyamo\":{\"type\":\"SecureString\",\"defaultValue\":\"datacqsxyrywd\"},\"wqvckhmoudmca\":{\"type\":\"String\",\"defaultValue\":\"datawwykfytjkztdc\"}},\"annotations\":[\"datajfuvmjtxwazyvibn\",\"dataebffkgfiyd\",\"datarjmwaa\"],\"\":{\"jnaotavwmrfqt\":\"datakhptyhziqeo\",\"cyrwvoohmcw\":\"datagdfecju\"}}")
             .toObject(WebLinkedService.class);
-        Assertions.assertEquals("yrnww", model.connectVia().referenceName());
-        Assertions.assertEquals("n", model.description());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("fvoz").type());
+        Assertions.assertEquals("bafiqxomevketa", model.connectVia().referenceName());
+        Assertions.assertEquals("jsmtghm", model.description());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("zprycixjgyamo").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebLinkedService model
-            = new WebLinkedService()
-                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("yrnww")
-                    .withParameters(mapOf("crigbjbelnqalbs", "datainiyoizuww", "bwxuypcuriwll", "dataqxajsiueaibqjbi",
-                        "lwjxrymiysgh", "datatclveqdqtzsh", "vdulmka", "datacmqdlkkwbdek")))
-                .withDescription("n")
-                .withParameters(mapOf("fvoz",
-                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datatpialrqhwcxxccf"),
-                    "nosclujywwumbus",
+        WebLinkedService model = new WebLinkedService()
+            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("bafiqxomevketa")
+                .withParameters(mapOf("toai", "datancxtnbut", "hzqgbaqvqeyla", "dataign", "yfnbxw", "datakobkrg",
+                    "szhxothfyifjufzl", "datalh")))
+            .withDescription("jsmtghm")
+            .withParameters(
+                mapOf("zprycixjgyamo",
                     new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                        .withDefaultValue("datavrexitpzri"),
-                    "uahokiclrmmudv",
-                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("databncljkhmso"),
-                    "tlizdoys",
-                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("databscidkwznw")))
-                .withAnnotations(Arrays.asList("databogdj", "datauybcp", "datadvuotkvkbpmk", "datapbnkcwauylkbdsk"))
-                .withTypeProperties(new WebLinkedServiceTypeProperties().withUrl("dataalkqlvbkz"));
+                        .withDefaultValue("datacqsxyrywd"),
+                    "wqvckhmoudmca",
+                    new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datawwykfytjkztdc")))
+            .withAnnotations(Arrays.asList("datajfuvmjtxwazyvibn", "dataebffkgfiyd", "datarjmwaa"))
+            .withTypeProperties(new WebAnonymousAuthentication().withUrl("datamffcttkprxypxt"));
         model = BinaryData.fromObject(model).toObject(WebLinkedService.class);
-        Assertions.assertEquals("yrnww", model.connectVia().referenceName());
-        Assertions.assertEquals("n", model.description());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("fvoz").type());
+        Assertions.assertEquals("bafiqxomevketa", model.connectVia().referenceName());
+        Assertions.assertEquals("jsmtghm", model.description());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("zprycixjgyamo").type());
     }
 
     // Use "Map.of" if available

@@ -6,21 +6,23 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Bounding polygon on a specific page of the input.
  */
 @Immutable
-public final class BoundingRegion {
+public final class BoundingRegion implements JsonSerializable<BoundingRegion> {
     /*
      * 1-based page number of page containing the bounding region.
      */
     @Generated
-    @JsonProperty(value = "pageNumber")
-    private int pageNumber;
+    private final int pageNumber;
 
     /*
      * Bounding polygon on the page, or the entire page if not specified.
@@ -29,8 +31,7 @@ public final class BoundingRegion {
      * (-180 degrees inclusive) relative to the element orientation.
      */
     @Generated
-    @JsonProperty(value = "polygon")
-    private List<Double> polygon;
+    private final List<Double> polygon;
 
     /**
      * Creates an instance of BoundingRegion class.
@@ -39,9 +40,7 @@ public final class BoundingRegion {
      * @param polygon the polygon value to set.
      */
     @Generated
-    @JsonCreator
-    private BoundingRegion(@JsonProperty(value = "pageNumber") int pageNumber,
-        @JsonProperty(value = "polygon") List<Double> polygon) {
+    private BoundingRegion(int pageNumber, List<Double> polygon) {
         this.pageNumber = pageNumber;
         this.polygon = polygon;
     }
@@ -67,5 +66,47 @@ public final class BoundingRegion {
     @Generated
     public List<Double> getPolygon() {
         return this.polygon;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("pageNumber", this.pageNumber);
+        jsonWriter.writeArrayField("polygon", this.polygon, (writer, element) -> writer.writeDouble(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BoundingRegion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BoundingRegion if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BoundingRegion.
+     */
+    @Generated
+    public static BoundingRegion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int pageNumber = 0;
+            List<Double> polygon = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pageNumber".equals(fieldName)) {
+                    pageNumber = reader.getInt();
+                } else if ("polygon".equals(fieldName)) {
+                    polygon = reader.readArray(reader1 -> reader1.getDouble());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new BoundingRegion(pageNumber, polygon);
+        });
     }
 }

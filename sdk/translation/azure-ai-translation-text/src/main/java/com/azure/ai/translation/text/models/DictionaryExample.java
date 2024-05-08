@@ -21,7 +21,7 @@ public final class DictionaryExample {
      */
     @Generated
     @JsonProperty(value = "sourcePrefix")
-    private String sourcePrefix;
+    private final String sourcePrefix;
 
     /*
      * A string equal to the actual term looked up. The string is added with sourcePrefix
@@ -30,7 +30,7 @@ public final class DictionaryExample {
      */
     @Generated
     @JsonProperty(value = "sourceTerm")
-    private String sourceTerm;
+    private final String sourceTerm;
 
     /*
      * The string to concatenate after the value of sourceTerm to form a complete example.
@@ -39,28 +39,28 @@ public final class DictionaryExample {
      */
     @Generated
     @JsonProperty(value = "sourceSuffix")
-    private String sourceSuffix;
+    private final String sourceSuffix;
 
     /*
      * A string similar to sourcePrefix but for the target.
      */
     @Generated
     @JsonProperty(value = "targetPrefix")
-    private String targetPrefix;
+    private final String targetPrefix;
 
     /*
      * A string similar to sourceTerm but for the target.
      */
     @Generated
     @JsonProperty(value = "targetTerm")
-    private String targetTerm;
+    private final String targetTerm;
 
     /*
      * A string similar to sourceSuffix but for the target.
      */
     @Generated
     @JsonProperty(value = "targetSuffix")
-    private String targetSuffix;
+    private final String targetSuffix;
 
     /**
      * Creates an instance of DictionaryExample class.

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cluster pool compute profile. */
+/**
+ * Cluster pool compute profile.
+ */
 @Fluent
 public class ClusterPoolComputeProfile {
     /*
@@ -23,13 +25,15 @@ public class ClusterPoolComputeProfile {
     @JsonProperty(value = "count", access = JsonProperty.Access.WRITE_ONLY)
     private Integer count;
 
-    /** Creates an instance of ClusterPoolComputeProfile class. */
+    /**
+     * Creates an instance of ClusterPoolComputeProfile class.
+     */
     public ClusterPoolComputeProfile() {
     }
 
     /**
      * Get the vmSize property: The virtual machine SKU.
-     *
+     * 
      * @return the vmSize value.
      */
     public String vmSize() {
@@ -38,7 +42,7 @@ public class ClusterPoolComputeProfile {
 
     /**
      * Set the vmSize property: The virtual machine SKU.
-     *
+     * 
      * @param vmSize the vmSize value to set.
      * @return the ClusterPoolComputeProfile object itself.
      */
@@ -49,7 +53,7 @@ public class ClusterPoolComputeProfile {
 
     /**
      * Get the count property: The number of virtual machines.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -58,15 +62,13 @@ public class ClusterPoolComputeProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vmSize() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmSize in model ClusterPoolComputeProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vmSize in model ClusterPoolComputeProfile"));
         }
     }
 

@@ -32,49 +32,30 @@ public final class ImagesListByCatalogMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"image\":\"xbxwa\",\"imageId\":\"ogqxndlkzgxhuri\",\"imageName\":\"bpodxunkbebxm\",\"regionalDataBoundary\":\"None\",\"uri\":\"ntwlrbqtkoie\",\"description\":\"eotg\",\"componentId\":\"l\",\"imageType\":\"RecoveryManifest\",\"provisioningState\":\"Canceled\"},\"id\":\"lauwzizxbmpgcjef\",\"name\":\"zmuvpbttdumorppx\",\"type\":\"bmnzbtbhjpgl\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"image\":\"tfz\",\"imageId\":\"hhvh\",\"imageName\":\"r\",\"regionalDataBoundary\":\"EU\",\"uri\":\"wobdagxtibqdx\",\"description\":\"wakbogqxndl\",\"componentId\":\"gxhuriplbp\",\"imageType\":\"Services\",\"provisioningState\":\"Deleting\"},\"id\":\"bebxmubyyntwl\",\"name\":\"bqtkoievseotgqr\",\"type\":\"ltmuwlauwzizx\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureSphereManager manager =
-            AzureSphereManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Image> response =
-            manager
-                .images()
-                .listByCatalog(
-                    "dltfz",
-                    "mhhv",
-                    "gureodkwobdag",
-                    933543231,
-                    1861593827,
-                    1583051460,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<Image> response = manager.images().listByCatalog("mwmbes", "dnkwwtppjflcxog", "okonzmnsikvmkqz",
+            1984679669, 1625673068, 1138945921, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xbxwa", response.iterator().next().image());
-        Assertions.assertEquals("ogqxndlkzgxhuri", response.iterator().next().imageId());
-        Assertions.assertEquals(RegionalDataBoundary.NONE, response.iterator().next().regionalDataBoundary());
+        Assertions.assertEquals("tfz", response.iterator().next().properties().image());
+        Assertions.assertEquals("hhvh", response.iterator().next().properties().imageId());
+        Assertions.assertEquals(RegionalDataBoundary.EU,
+            response.iterator().next().properties().regionalDataBoundary());
     }
 }

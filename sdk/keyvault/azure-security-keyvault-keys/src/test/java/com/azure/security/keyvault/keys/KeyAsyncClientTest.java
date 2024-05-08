@@ -7,6 +7,8 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
@@ -41,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyAsyncClientTest extends KeyClientTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(KeyAsyncClientTest.class);
     protected KeyAsyncClient keyAsyncClient;
 
     @Override
@@ -69,7 +72,10 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
         createKeyRunner((keyToCreate) ->
             StepVerifier.create(keyAsyncClient.createKey(keyToCreate))
-                .assertNext(response -> assertKeyEquals(keyToCreate, response))
+                .assertNext(createdKey -> {
+                    assertKeyEquals(keyToCreate, createdKey);
+                    assertEquals("0", createdKey.getProperties().getHsmPlatform());
+                })
                 .verifyComplete());
     }
 
@@ -205,11 +211,17 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
         getKeyRunner((keyToSetAndGet) -> {
             StepVerifier.create(keyAsyncClient.createKey(keyToSetAndGet))
-                .assertNext(response -> assertKeyEquals(keyToSetAndGet, response))
+                .assertNext(createdKey -> {
+                    assertKeyEquals(keyToSetAndGet, createdKey);
+                    assertEquals("0", createdKey.getProperties().getHsmPlatform());
+                })
                 .verifyComplete();
 
             StepVerifier.create(keyAsyncClient.getKey(keyToSetAndGet.getName()))
-                .assertNext(response -> assertKeyEquals(keyToSetAndGet, response))
+                .assertNext(retrievedKey -> {
+                    assertKeyEquals(keyToSetAndGet, retrievedKey);
+                    assertEquals("0", retrievedKey.getProperties().getHsmPlatform());
+                })
                 .verifyComplete();
         });
     }
@@ -829,7 +841,7 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
             }
         }
 
-        System.err.printf("Deleted Key %s was not purged \n", keyName);
+        LOGGER.log(LogLevel.VERBOSE, () -> "Deleted Key " + keyName + " was not purged");
     }
 }
 

@@ -39,6 +39,9 @@ public class SecondaryTestRepositoryConfig {
     @Value("${cosmos.secondary.queryMetricsEnabled}")
     private boolean queryMetricsEnabled;
 
+    @Value("${cosmos.secondary.indexMetricsEnabled}")
+    private boolean indexMetricsEnabled;
+
     @Value("${cosmos.secondary.maxDegreeOfParallelism}")
     private int maxDegreeOfParallelism;
 
@@ -93,6 +96,7 @@ public class SecondaryTestRepositoryConfig {
 
             CosmosConfig config =  CosmosConfig.builder()
                 .enableQueryMetrics(queryMetricsEnabled)
+                .enableIndexMetrics(indexMetricsEnabled)
                 .maxDegreeOfParallelism(maxDegreeOfParallelism)
                 .maxBufferedItemCount(maxBufferedItemCount)
                 .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
@@ -112,6 +116,7 @@ public class SecondaryTestRepositoryConfig {
 
             CosmosConfig config =  CosmosConfig.builder()
                 .enableQueryMetrics(queryMetricsEnabled)
+                .enableIndexMetrics(indexMetricsEnabled)
                 .maxDegreeOfParallelism(maxDegreeOfParallelism)
                 .maxBufferedItemCount(maxBufferedItemCount)
                 .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)

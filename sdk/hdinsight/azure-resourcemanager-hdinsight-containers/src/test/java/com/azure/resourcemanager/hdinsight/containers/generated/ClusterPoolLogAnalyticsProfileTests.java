@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPoolLogAnalyticsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolLogAnalyticsProfile model =
-            BinaryData
-                .fromString("{\"enabled\":false,\"workspaceId\":\"ahbc\"}")
+        ClusterPoolLogAnalyticsProfile model
+            = BinaryData.fromString("{\"enabled\":false,\"workspaceId\":\"gispemvtzfkufubl\"}")
                 .toObject(ClusterPoolLogAnalyticsProfile.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("ahbc", model.workspaceId());
+        Assertions.assertEquals("gispemvtzfkufubl", model.workspaceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolLogAnalyticsProfile model =
-            new ClusterPoolLogAnalyticsProfile().withEnabled(false).withWorkspaceId("ahbc");
+        ClusterPoolLogAnalyticsProfile model
+            = new ClusterPoolLogAnalyticsProfile().withEnabled(false).withWorkspaceId("gispemvtzfkufubl");
         model = BinaryData.fromObject(model).toObject(ClusterPoolLogAnalyticsProfile.class);
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("ahbc", model.workspaceId());
+        Assertions.assertEquals("gispemvtzfkufubl", model.workspaceId());
     }
 }
