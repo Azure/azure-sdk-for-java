@@ -134,8 +134,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     @Override
-    public Flux<Lease> getAllLeases(int count) {
-        return this.listDocuments(this.getPartitionLeasePrefix(), count)
+    public Flux<Lease> getTopLeases(int topCount) {
+        return this.listDocuments(this.getPartitionLeasePrefix(), topCount)
             .map(documentServiceLease -> documentServiceLease);
     }
 
@@ -493,9 +493,9 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             .map(ServiceItemLease::fromDocument);
     }
 
-    private Flux<ServiceItemLeaseV1> listDocuments(String prefix, int top) {
+    private Flux<ServiceItemLeaseV1> listDocuments(String prefix, Integer top) {
         if (prefix == null || prefix.isEmpty()) {
-            throw new IllegalArgumentException("prefix");
+            throw new IllegalArgumentException("prefix cannot be null or empty!");
         }
 
         SqlParameter topParam = new SqlParameter();

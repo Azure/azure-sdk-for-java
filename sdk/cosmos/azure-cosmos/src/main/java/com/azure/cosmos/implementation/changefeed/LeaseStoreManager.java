@@ -42,7 +42,7 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
     /**
      * @return Get top {@code count} leases.
      * */
-    Flux<Lease> getAllLeases(int count);
+    Flux<Lease> getTopLeases(int topCount);
 
     /**
      * @return all leases owned by the current host.

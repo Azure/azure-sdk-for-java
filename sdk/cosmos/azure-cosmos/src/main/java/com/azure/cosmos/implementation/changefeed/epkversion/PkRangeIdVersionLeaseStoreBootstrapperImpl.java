@@ -152,9 +152,9 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
 
     private Mono<Void> validateLeaseChangeFeedModeInteroperabilityForEpkRangeBasedLease() {
 
-        // fetches all epk-based leases for a given lease prefix
+        // fetches only 1 epk-based leases for a given lease prefix
         return this.epkRangeVersionLeaseStoreManager
-            .getAllLeases(1)
+            .getTopLeases(1)
             // pick one lease corresponding to a lease prefix (lease prefix denotes a unique feed)
             .next()
             .flatMap(lease -> {

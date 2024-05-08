@@ -21,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
 
 public class BootstrapperImplTests {
@@ -81,7 +80,7 @@ public class BootstrapperImplTests {
         Mockito.when(leaseStoreMock.releaseInitializationLock()).thenReturn(Mono.empty());
 
         LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
-        Mockito.when(epkRangeVersionLeaseStoreManagerMock.getAllLeases(Mockito.eq(1))).thenReturn(Flux.just(lease));
+        Mockito.when(epkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1))).thenReturn(Flux.just(lease));
         Bootstrapper bootstrapper = new BootstrapperImpl(
             partitionSynchronizerMock,
             leaseStoreMock,
@@ -96,7 +95,7 @@ public class BootstrapperImplTests {
             bootstrapper.initialize().block();
         }
 
-        Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getAllLeases(Mockito.eq(1));
+        Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases();
         Mockito.verify(leaseStoreMock, times(2)).isInitialized();
     }

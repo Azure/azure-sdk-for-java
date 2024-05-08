@@ -136,8 +136,8 @@ class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManager.Leas
     }
 
     @Override
-    public Flux<Lease> getAllLeases(int top) {
-        return this.listDocuments(this.getPartitionLeasePrefix(), top)
+    public Flux<Lease> getTopLeases(int topCount) {
+        return this.listDocuments(this.getPartitionLeasePrefix(), topCount)
             .map(documentServiceLease -> documentServiceLease);
     }
 
