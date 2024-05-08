@@ -61,8 +61,6 @@ public class MetricDataMapper {
         // Application Insights pre-aggregated standard metrics
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.request.duration");
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.request.duration");
-        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.duration"); // pre-stable HTTP semconv
-        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.duration"); // pre-stable HTTP semconv
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.client.duration");
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.server.duration");
     }
