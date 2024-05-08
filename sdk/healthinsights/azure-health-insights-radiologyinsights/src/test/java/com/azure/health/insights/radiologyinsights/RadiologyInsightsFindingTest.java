@@ -12,9 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Observation;
-import com.azure.health.insights.radiologyinsights.models.FhirR4ObservationComponent;
 import com.azure.health.insights.radiologyinsights.models.FindingInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
@@ -72,30 +69,7 @@ public class RadiologyInsightsFindingTest extends RadiologyInsightsClientTestBas
                 
                 RadiologyInsightsInference inference = inferences.get(0);
                 assertTrue(inference instanceof FindingInference, "Inference should be an instance of FindingInference");
-                
-                FindingInference findingInference = (FindingInference) inference;
 
-                FhirR4Observation finding = findingInference.getFinding();
-//                System.out.println("   Code: ");
-                FhirR4CodeableConcept code = finding.getCode();
-//                displayCodes(code, 2);
-//                System.out.println("   Interpretation: ");
-                List<FhirR4CodeableConcept> interpretationList = finding.getInterpretation();
-//                if (interpretationList != null) {
-//                    for (FhirR4CodeableConcept interpretation : interpretationList) {
-//                       displayCodes(interpretation, 2);
-//                    }
-//                }
-//                System.out.println("   Component: ");
-                List<FhirR4ObservationComponent> componentList = finding.getComponent();
-                for (FhirR4ObservationComponent component : componentList) {
-                    FhirR4CodeableConcept componentCode = component.getCode();
-//                    displayCodes(componentCode, 2);
-//                    System.out.println("      Value codeable concept: ");
-                    FhirR4CodeableConcept valueCodeableConcept = component.getValueCodeableConcept();
-//                    displayCodes(valueCodeableConcept, 4);
-                }
-//                displaySectionInfo(findingInference);
             });
 
         } catch (Throwable t) {
