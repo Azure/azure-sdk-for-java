@@ -3108,7 +3108,7 @@ public final class AssistantsClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * byte[]
      * }</pre>
@@ -3163,7 +3163,7 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data representing a single evaluation run of an assistant thread.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<StreamUpdate> submitToolOutputsToRunStream(String threadId, String runId,
         List<ToolOutput> toolOutputs) {
         RequestOptions requestOptions = new RequestOptions();
