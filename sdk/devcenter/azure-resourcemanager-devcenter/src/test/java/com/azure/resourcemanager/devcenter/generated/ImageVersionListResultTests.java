@@ -10,11 +10,9 @@ import com.azure.resourcemanager.devcenter.models.ImageVersionListResult;
 public final class ImageVersionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageVersionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"name\":\"c\",\"publishedDate\":\"2021-06-22T17:35:49Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":61418624,\"provisioningState\":\"StorageProvisioningFailed\"},\"id\":\"vccfw\",\"name\":\"fnba\",\"type\":\"fionl\"},{\"properties\":{\"name\":\"etqgtzxdpnq\",\"publishedDate\":\"2021-10-04T00:28:42Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":588288126,\"provisioningState\":\"MovingResources\"},\"id\":\"llnwsubi\",\"name\":\"njampm\",\"type\":\"gnzscxaqwo\"}],\"nextLink\":\"hcbonqvpkvlr\"}")
-                .toObject(ImageVersionListResult.class);
+        ImageVersionListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"name\":\"upqsx\",\"publishedDate\":\"2021-01-21T16:22:25Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":1892680320,\"provisioningState\":\"Failed\"},\"id\":\"o\",\"name\":\"eil\",\"type\":\"vnotyfjfcnj\"},{\"properties\":{\"name\":\"nxdhbt\",\"publishedDate\":\"2020-12-23T07:25:08Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":1501927720,\"provisioningState\":\"MovingResources\"},\"id\":\"t\",\"name\":\"qnermclfplphoxu\",\"type\":\"crpab\"},{\"properties\":{\"name\":\"psbjta\",\"publishedDate\":\"2021-10-14T16:25:44Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":2007801220,\"provisioningState\":\"Created\"},\"id\":\"eef\",\"name\":\"zwfqkqujidsuyon\",\"type\":\"bglaocqxtccm\"}],\"nextLink\":\"udxytlmoyrx\"}")
+            .toObject(ImageVersionListResult.class);
     }
 
     @org.junit.jupiter.api.Test

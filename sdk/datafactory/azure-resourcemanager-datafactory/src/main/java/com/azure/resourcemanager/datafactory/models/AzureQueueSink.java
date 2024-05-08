@@ -5,20 +5,39 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Azure Queue sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzureQueueSink.class, visible = true)
 @JsonTypeName("AzureQueueSink")
 @Fluent
 public final class AzureQueueSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureQueueSink";
+
     /**
      * Creates an instance of AzureQueueSink class.
      */
     public AzureQueueSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

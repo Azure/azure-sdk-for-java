@@ -92,7 +92,7 @@ public class DistributionPolicyAsyncLiveTests extends JobRouterTestBase {
         ((BestWorkerMode) deserialized.getMode()).getScoringRuleOptions().setScoringParameters(new ArrayList<>());
         deserialized.setOfferExpiresAfter(Duration.ofMinutes(5));
         DistributionPolicy updatedPolicy = administrationAsyncClient.updateDistributionPolicy(
-            deserialized.getId(), deserialized, null).block();
+            deserialized.getId(), deserialized).block();
 
         assertEquals(bestWorkerModeDistributionPolicyId, updatedPolicy.getId());
         assertNotEquals(result.getEtag(), updatedPolicy.getEtag());

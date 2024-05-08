@@ -101,12 +101,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.48.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.49.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <!-- Unit Test -->
@@ -312,7 +312,7 @@
       <plugin>
         <groupId>com.azure.tools</groupId>
         <artifactId>codesnippet-maven-plugin</artifactId>
-        <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+        <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
           <readmeGlob>**/*.md</readmeGlob>
         </configuration>

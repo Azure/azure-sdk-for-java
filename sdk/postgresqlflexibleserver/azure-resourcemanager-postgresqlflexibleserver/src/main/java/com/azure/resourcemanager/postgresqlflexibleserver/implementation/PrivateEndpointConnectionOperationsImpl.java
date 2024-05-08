@@ -37,8 +37,8 @@ public final class PrivateEndpointConnectionOperationsImpl implements PrivateEnd
 
     public PrivateEndpointConnection update(String resourceGroupName, String serverName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context) {
-        PrivateEndpointConnectionInner inner = this.serviceClient().update(resourceGroupName, serverName,
-            privateEndpointConnectionName, parameters, context);
+        PrivateEndpointConnectionInner inner = this.serviceClient()
+            .update(resourceGroupName, serverName, privateEndpointConnectionName, parameters, context);
         if (inner != null) {
             return new PrivateEndpointConnectionImpl(inner, this.manager());
         } else {

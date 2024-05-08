@@ -230,6 +230,7 @@
     "amqp",
     "Amqp",
     "AMQP",
+    "AOAI",
     "apacheavro",
     "Apim",
     "AUHours",
@@ -359,6 +360,7 @@
     "netapp",
     "Netezza",
     "odata",
+    "OAI",
     "ODBC",
     "okhttp",
     "OTLP",
@@ -452,7 +454,12 @@
         "mylocation",
         "myloc",
         "dari",
-        "hitel"
+        "hitel",
+        "AISERVICES",
+        "AICLIP",
+        "TLARGE",
+        "TBASE",
+        "TGIANT"
       ]
     },
     {

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.CosmosDbLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * Microsoft Azure Cosmos Database (CosmosDB) linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = CosmosDbLinkedService.class, visible = true)
 @JsonTypeName("CosmosDb")
 @Fluent
 public final class CosmosDbLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "CosmosDb";
+
     /*
      * CosmosDB linked service properties.
      */
@@ -30,6 +38,16 @@ public final class CosmosDbLinkedService extends LinkedService {
      * Creates an instance of CosmosDbLinkedService class.
      */
     public CosmosDbLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -201,9 +219,8 @@ public final class CosmosDbLinkedService extends LinkedService {
     }
 
     /**
-     * Get the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string.
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string.
      * 
      * @return the servicePrincipalCredentialType value.
      */
@@ -212,9 +229,8 @@ public final class CosmosDbLinkedService extends LinkedService {
     }
 
     /**
-     * Set the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string.
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string.
      * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the CosmosDbLinkedService object itself.
@@ -282,9 +298,9 @@ public final class CosmosDbLinkedService extends LinkedService {
     }
 
     /**
-     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
-     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
-     * type. Type: string (or Expression with resultType string).
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
      * 
      * @return the azureCloudType value.
      */
@@ -293,9 +309,9 @@ public final class CosmosDbLinkedService extends LinkedService {
     }
 
     /**
-     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values
-     * are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud
-     * type. Type: string (or Expression with resultType string).
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
      * 
      * @param azureCloudType the azureCloudType value to set.
      * @return the CosmosDbLinkedService object itself.
@@ -332,8 +348,8 @@ public final class CosmosDbLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -342,8 +358,8 @@ public final class CosmosDbLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CosmosDbLinkedService object itself.
@@ -388,8 +404,9 @@ public final class CosmosDbLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model CosmosDbLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model CosmosDbLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

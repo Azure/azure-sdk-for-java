@@ -27,10 +27,7 @@ import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import org.bouncycastle.asn1.x509.BasicConstraints;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.provider.Arguments;
 
@@ -85,6 +82,9 @@ public class AttestationClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         super.beforeTest();
 
+        GlobalOpenTelemetry.resetForTest();
+        tracer = configureLoggingExporter(testContextManager.getTestName());
+
         if (interceptorManager.isPlaybackMode()) {
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Collections.singletonList("Authorization"))));
@@ -122,21 +122,8 @@ public class AttestationClientTestBase extends TestProxyTestBase {
     }
 
     @Override
-    @BeforeEach
-    public void setupTest(TestInfo testInfo) {
+    public void afterTest() {
         GlobalOpenTelemetry.resetForTest();
-        super.setupTest(testInfo);
-        String testMethod = testInfo.getTestMethod().isPresent()
-            ? testInfo.getTestMethod().get().getName()
-            : testInfo.getDisplayName();
-        tracer = configureLoggingExporter(testMethod);
-    }
-
-    @Override
-    @AfterEach
-    public void teardownTest(TestInfo testInfo) {
-        GlobalOpenTelemetry.resetForTest();
-        super.teardownTest(testInfo);
     }
 
     @SuppressWarnings({"deprecation", "resource"})

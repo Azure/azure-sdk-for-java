@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Azure MySQL source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzureMySqlSource.class, visible = true)
 @JsonTypeName("AzureMySqlSource")
 @Fluent
 public final class AzureMySqlSource extends TabularSource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureMySqlSource";
+
     /*
      * Database query. Type: string (or Expression with resultType string).
      */
@@ -26,6 +34,16 @@ public final class AzureMySqlSource extends TabularSource {
      * Creates an instance of AzureMySqlSource class.
      */
     public AzureMySqlSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

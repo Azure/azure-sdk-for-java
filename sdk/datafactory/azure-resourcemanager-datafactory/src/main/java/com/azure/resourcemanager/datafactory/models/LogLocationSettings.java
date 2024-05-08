@@ -20,8 +20,7 @@ public final class LogLocationSettings {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType
-     * string).
+     * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "path")
     private Object path;
@@ -81,8 +80,9 @@ public final class LogLocationSettings {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property linkedServiceName in model LogLocationSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model LogLocationSettings"));
         } else {
             linkedServiceName().validate();
         }

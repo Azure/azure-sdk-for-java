@@ -13,6 +13,11 @@ import java.time.Duration;
 /** Policy governing how jobs are distributed to workers. */
 @Fluent
 public final class DistributionPolicy {
+    /**
+     * Create new instance
+     */
+    public DistributionPolicy() {
+    }
 
     /*
      * The unique identifier of the policy.

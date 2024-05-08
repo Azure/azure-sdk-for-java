@@ -501,6 +501,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Class<T> domainType = entityInformation.getJavaType();
 
         Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.map(entity -> {
+            markAuditedIfConfigured(entity);
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
             JsonNode originalItem = mappingCosmosConverter.writeJsonNode(entity);
             PartitionKey partitionKey = new PartitionKey(entityInformation.getPartitionKeyFieldValue(entity));
@@ -849,7 +850,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
      */
     public Mono<Boolean> existsById(Object id, Class<?> domainType, String containerName) {
         return findById(containerName, id, domainType)
-            .flatMap(o -> Mono.just(o != null));
+            .flatMap(o -> Mono.just(o != null))
+            .switchIfEmpty(Mono.just(false));
     }
 
     /**

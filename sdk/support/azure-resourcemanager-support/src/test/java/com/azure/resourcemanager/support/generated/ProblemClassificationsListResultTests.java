@@ -15,31 +15,35 @@ public final class ProblemClassificationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProblemClassificationsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"w\",\"name\":\"m\",\"type\":\"hrzayvvtpgvdf\",\"properties\":{\"displayName\":\"tkftutqxlngx\",\"secondaryConsentEnabled\":[{\"description\":\"ugnxkrxdqmi\",\"type\":\"thz\"},{\"description\":\"qdrabhjybigehoqf\",\"type\":\"wska\"},{\"description\":\"ktzlcuiywg\",\"type\":\"wgndrvynhzgpp\"},{\"description\":\"cgyncocpecf\",\"type\":\"mcoo\"}],\"metadata\":{\"y\":\"lzevgbmqjqab\",\"wnfnbacf\":\"mivkwlzuvcc\",\"bqqwxrj\":\"onlebxetqgtzxdpn\",\"mpmngnzscxaqwoo\":\"eallnwsubisnj\"},\"parentProblemClassification\":{\"id\":\"bonqvpkvlrxnjeas\",\"name\":\"pheoflokeyy\",\"type\":\"nj\",\"properties\":{\"displayName\":\"wtgrhpdjpj\",\"secondaryConsentEnabled\":[{},{},{},{}],\"metadata\":{\"jj\":\"azjpqyegualhbxxh\",\"ynpwlbj\":\"zvdudgwdslfhotwm\",\"sop\":\"pgacftadehxnlty\"},\"parentProblemClassification\":{}}}}}]}")
+            "{\"value\":[{\"id\":\"ypininm\",\"name\":\"huyb\",\"type\":\"podepoo\",\"properties\":{\"displayName\":\"uvamiheognarxzxt\",\"secondaryConsentEnabled\":[{\"description\":\"usivye\",\"type\":\"ciqihnhung\"}]}},{\"id\":\"jzrnf\",\"name\":\"xgispemvtzfkufu\",\"type\":\"jofxqe\",\"properties\":{\"displayName\":\"aeqjhqjbasvms\",\"secondaryConsentEnabled\":[{\"description\":\"lngsntnbybkzgcwr\",\"type\":\"lxxwrljdouskc\"},{\"description\":\"kocrcjdkwtnhx\",\"type\":\"jbiksqrglssai\"},{\"description\":\"p\",\"type\":\"nzl\"},{\"description\":\"fmppe\",\"type\":\"vmgxsab\"}]}},{\"id\":\"qduujitcjczdz\",\"name\":\"ndhkrw\",\"type\":\"appd\",\"properties\":{\"displayName\":\"kvwrwjfeu\",\"secondaryConsentEnabled\":[{\"description\":\"tjelt\",\"type\":\"ldhugjzzdatqxh\"},{\"description\":\"dgeablgphu\",\"type\":\"cndvkaozwyiftyhx\"}]}}]}")
             .toObject(ProblemClassificationsListResult.class);
-        Assertions.assertEquals("tkftutqxlngx", model.value().get(0).displayName());
-        Assertions.assertEquals("ugnxkrxdqmi", model.value().get(0).secondaryConsentEnabled().get(0).description());
-        Assertions.assertEquals("thz", model.value().get(0).secondaryConsentEnabled().get(0).type());
-        Assertions.assertEquals("wtgrhpdjpj", model.value().get(0).parentProblemClassification().displayName());
+        Assertions.assertEquals("uvamiheognarxzxt", model.value().get(0).displayName());
+        Assertions.assertEquals("usivye", model.value().get(0).secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("ciqihnhung", model.value().get(0).secondaryConsentEnabled().get(0).type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProblemClassificationsListResult model = new ProblemClassificationsListResult()
-            .withValue(Arrays.asList(new ProblemClassificationInner().withDisplayName("tkftutqxlngx")
-                .withSecondaryConsentEnabled(Arrays.asList(
-                    new SecondaryConsentEnabled().withDescription("ugnxkrxdqmi").withType("thz"),
-                    new SecondaryConsentEnabled().withDescription("qdrabhjybigehoqf").withType("wska"),
-                    new SecondaryConsentEnabled().withDescription("ktzlcuiywg").withType("wgndrvynhzgpp"),
-                    new SecondaryConsentEnabled().withDescription("cgyncocpecf").withType("mcoo")))
-                .withParentProblemClassification(new ProblemClassificationInner().withDisplayName("wtgrhpdjpj")
-                    .withSecondaryConsentEnabled(Arrays.asList(new SecondaryConsentEnabled(),
-                        new SecondaryConsentEnabled(), new SecondaryConsentEnabled(), new SecondaryConsentEnabled()))
-                    .withParentProblemClassification(new ProblemClassificationInner()))));
+        ProblemClassificationsListResult model
+            = new ProblemClassificationsListResult()
+                .withValue(Arrays.asList(
+                    new ProblemClassificationInner().withDisplayName("uvamiheognarxzxt")
+                        .withSecondaryConsentEnabled(Arrays
+                            .asList(new SecondaryConsentEnabled().withDescription("usivye").withType("ciqihnhung"))),
+                    new ProblemClassificationInner().withDisplayName("aeqjhqjbasvms")
+                        .withSecondaryConsentEnabled(Arrays.asList(
+                            new SecondaryConsentEnabled().withDescription("lngsntnbybkzgcwr").withType("lxxwrljdouskc"),
+                            new SecondaryConsentEnabled().withDescription("kocrcjdkwtnhx").withType("jbiksqrglssai"),
+                            new SecondaryConsentEnabled().withDescription("p").withType("nzl"),
+                            new SecondaryConsentEnabled().withDescription("fmppe").withType("vmgxsab"))),
+                    new ProblemClassificationInner().withDisplayName("kvwrwjfeu")
+                        .withSecondaryConsentEnabled(Arrays.asList(
+                            new SecondaryConsentEnabled().withDescription("tjelt").withType("ldhugjzzdatqxh"),
+                            new SecondaryConsentEnabled().withDescription("dgeablgphu")
+                                .withType("cndvkaozwyiftyhx")))));
         model = BinaryData.fromObject(model).toObject(ProblemClassificationsListResult.class);
-        Assertions.assertEquals("tkftutqxlngx", model.value().get(0).displayName());
-        Assertions.assertEquals("ugnxkrxdqmi", model.value().get(0).secondaryConsentEnabled().get(0).description());
-        Assertions.assertEquals("thz", model.value().get(0).secondaryConsentEnabled().get(0).type());
-        Assertions.assertEquals("wtgrhpdjpj", model.value().get(0).parentProblemClassification().displayName());
+        Assertions.assertEquals("uvamiheognarxzxt", model.value().get(0).displayName());
+        Assertions.assertEquals("usivye", model.value().get(0).secondaryConsentEnabled().get(0).description());
+        Assertions.assertEquals("ciqihnhung", model.value().get(0).secondaryConsentEnabled().get(0).type());
     }
 }

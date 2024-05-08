@@ -9,9 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class TriggerRunsCancelSamples {
     /*
-     * x-ms-original-file:
-     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Cancel.
-     * json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/TriggerRuns_Cancel.json
      */
     /**
      * Sample code: Triggers_Cancel.
@@ -19,7 +17,8 @@ public final class TriggerRunsCancelSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void triggersCancel(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.triggerRuns().cancelWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
-            "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
+        manager.triggerRuns()
+            .cancelWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleTrigger",
+                "2f7fdb90-5df1-4b8e-ac2f-064cfa58202b", com.azure.core.util.Context.NONE);
     }
 }

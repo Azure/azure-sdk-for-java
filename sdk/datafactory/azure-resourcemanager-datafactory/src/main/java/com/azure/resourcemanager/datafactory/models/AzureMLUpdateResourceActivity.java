@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureMLUpdateResourceActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,21 @@ import java.util.List;
 /**
  * Azure ML Update Resource management activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureMLUpdateResourceActivity.class,
+    visible = true)
 @JsonTypeName("AzureMLUpdateResource")
 @Fluent
 public final class AzureMLUpdateResourceActivity extends ExecutionActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureMLUpdateResource";
+
     /*
      * Azure ML Update Resource management activity properties.
      */
@@ -30,6 +42,16 @@ public final class AzureMLUpdateResourceActivity extends ExecutionActivity {
      * Creates an instance of AzureMLUpdateResourceActivity class.
      */
     public AzureMLUpdateResourceActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -200,8 +222,9 @@ public final class AzureMLUpdateResourceActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AzureMLUpdateResourceActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzureMLUpdateResourceActivity"));
         } else {
             innerTypeProperties().validate();
         }

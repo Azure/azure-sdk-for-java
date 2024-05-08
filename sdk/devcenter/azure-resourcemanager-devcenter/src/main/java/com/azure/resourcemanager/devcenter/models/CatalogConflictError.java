@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An individual conflict error. */
+/**
+ * An individual conflict error.
+ */
 @Immutable
 public final class CatalogConflictError {
     /*
@@ -22,13 +24,15 @@ public final class CatalogConflictError {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
-    /** Creates an instance of CatalogConflictError class. */
+    /**
+     * Creates an instance of CatalogConflictError class.
+     */
     public CatalogConflictError() {
     }
 
     /**
      * Get the path property: The path of the file that has a conflicting name.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -37,7 +41,7 @@ public final class CatalogConflictError {
 
     /**
      * Get the name property: Name of the conflicting catalog item.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -46,7 +50,7 @@ public final class CatalogConflictError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

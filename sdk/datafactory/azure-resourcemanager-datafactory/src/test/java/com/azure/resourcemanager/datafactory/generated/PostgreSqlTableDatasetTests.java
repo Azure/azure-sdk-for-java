@@ -19,31 +19,36 @@ public final class PostgreSqlTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PostgreSqlTableDataset model = BinaryData.fromString(
-            "{\"type\":\"PostgreSqlTable\",\"typeProperties\":{\"tableName\":\"databgwzhbhflj\",\"table\":\"dataod\",\"schema\":\"dataovnlhrwya\"},\"description\":\"uafapwxsvdeatjio\",\"structure\":\"datairgoextqdn\",\"schema\":\"datagntimz\",\"linkedServiceName\":{\"referenceName\":\"upbmtbsetkods\",\"parameters\":{\"jyvdhdgdiwmlg\":\"dataedaakghcrzmm\",\"fkakhgkrvtyycvy\":\"datatmfetqjisjmolzca\",\"ejqaw\":\"datav\",\"pbbimh\":\"datausqpfzxkczbd\"}},\"parameters\":{\"zl\":{\"type\":\"Float\",\"defaultValue\":\"dataoortclnhbjcy\"},\"lkv\":{\"type\":\"SecureString\",\"defaultValue\":\"datascibv\"}},\"annotations\":[\"dataafnwqh\"],\"folder\":{\"name\":\"cnviulby\"},\"\":{\"umwhmxpuck\":\"datajzrycwpb\"}}")
+            "{\"type\":\"fdyfao\",\"typeProperties\":{\"tableName\":\"datahfxa\",\"table\":\"datayihjcwwvaosckfa\",\"schema\":\"datakhpspww\"},\"description\":\"ng\",\"structure\":\"datanrdpuzlaihsujt\",\"schema\":\"dataybsz\",\"linkedServiceName\":{\"referenceName\":\"mijxejpd\",\"parameters\":{\"rnhhjtvh\":\"dataqwzutiye\",\"toqwrnfc\":\"datasznsyovqmqcud\",\"awfubkngejjxu\":\"datajthlokmx\"}},\"parameters\":{\"drsjtmn\":{\"type\":\"String\",\"defaultValue\":\"datajmoozmxuk\"},\"w\":{\"type\":\"Object\",\"defaultValue\":\"datao\"},\"tia\":{\"type\":\"String\",\"defaultValue\":\"datafdt\"}},\"annotations\":[\"datarnuhcfhepisqbc\",\"datalr\",\"datai\",\"datammemsoqgblcye\"],\"folder\":{\"name\":\"bobaqca\"},\"\":{\"wnlpjcxbjg\":\"datackcesrsi\"}}")
             .toObject(PostgreSqlTableDataset.class);
-        Assertions.assertEquals("uafapwxsvdeatjio", model.description());
-        Assertions.assertEquals("upbmtbsetkods", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("zl").type());
-        Assertions.assertEquals("cnviulby", model.folder().name());
+        Assertions.assertEquals("ng", model.description());
+        Assertions.assertEquals("mijxejpd", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("drsjtmn").type());
+        Assertions.assertEquals("bobaqca", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PostgreSqlTableDataset model = new PostgreSqlTableDataset().withDescription("uafapwxsvdeatjio")
-            .withStructure("datairgoextqdn").withSchema("datagntimz")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("upbmtbsetkods")
-                .withParameters(mapOf("jyvdhdgdiwmlg", "dataedaakghcrzmm", "fkakhgkrvtyycvy", "datatmfetqjisjmolzca",
-                    "ejqaw", "datav", "pbbimh", "datausqpfzxkczbd")))
-            .withParameters(mapOf("zl",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataoortclnhbjcy"), "lkv",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datascibv")))
-            .withAnnotations(Arrays.asList("dataafnwqh")).withFolder(new DatasetFolder().withName("cnviulby"))
-            .withTableName("databgwzhbhflj").withTable("dataod").withSchemaTypePropertiesSchema("dataovnlhrwya");
+        PostgreSqlTableDataset model = new PostgreSqlTableDataset().withDescription("ng")
+            .withStructure("datanrdpuzlaihsujt")
+            .withSchema("dataybsz")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("mijxejpd")
+                .withParameters(mapOf("rnhhjtvh", "dataqwzutiye", "toqwrnfc", "datasznsyovqmqcud", "awfubkngejjxu",
+                    "datajthlokmx")))
+            .withParameters(mapOf("drsjtmn",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datajmoozmxuk"), "w",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datao"), "tia",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datafdt")))
+            .withAnnotations(Arrays.asList("datarnuhcfhepisqbc", "datalr", "datai", "datammemsoqgblcye"))
+            .withFolder(new DatasetFolder().withName("bobaqca"))
+            .withTableName("datahfxa")
+            .withTable("datayihjcwwvaosckfa")
+            .withSchemaTypePropertiesSchema("datakhpspww");
         model = BinaryData.fromObject(model).toObject(PostgreSqlTableDataset.class);
-        Assertions.assertEquals("uafapwxsvdeatjio", model.description());
-        Assertions.assertEquals("upbmtbsetkods", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("zl").type());
-        Assertions.assertEquals("cnviulby", model.folder().name());
+        Assertions.assertEquals("ng", model.description());
+        Assertions.assertEquals("mijxejpd", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("drsjtmn").type());
+        Assertions.assertEquals("bobaqca", model.folder().name());
     }
 
     // Use "Map.of" if available

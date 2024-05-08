@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class IntegrationRuntimeObjectMetadataRefreshSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * IntegrationRuntimeObjectMetadata_Refresh.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimeObjectMetadata_Refresh.json
      */
     /**
      * Sample code: IntegrationRuntimeObjectMetadata_Refresh.
@@ -19,7 +18,7 @@ public final class IntegrationRuntimeObjectMetadataRefreshSamples {
      */
     public static void
         integrationRuntimeObjectMetadataRefresh(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimeObjectMetadatas().refresh("exampleResourceGroup", "exampleFactoryName",
-            "testactivityv2", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimeObjectMetadatas()
+            .refresh("exampleResourceGroup", "exampleFactoryName", "testactivityv2", com.azure.core.util.Context.NONE);
     }
 }

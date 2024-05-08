@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for an Office 365 service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = Office365Source.class, visible = true)
 @JsonTypeName("Office365Source")
 @Fluent
 public final class Office365Source extends CopySource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Office365Source";
+
     /*
      * The groups containing all the users. Type: array of strings (or Expression with resultType array of strings).
      */
@@ -29,8 +37,7 @@ public final class Office365Source extends CopySource {
     private Object userScopeFilterUri;
 
     /*
-     * The Column to apply the <paramref name="StartTime"/> and <paramref name="EndTime"/>. Type: string (or Expression
-     * with resultType string).
+     * The Column to apply the <paramref name="StartTime"/> and <paramref name="EndTime"/>. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "dateFilterColumn")
     private Object dateFilterColumn;
@@ -48,8 +55,7 @@ public final class Office365Source extends CopySource {
     private Object endTime;
 
     /*
-     * The columns to be read out from the Office 365 table. Type: array of objects (or Expression with resultType
-     * array of objects). itemType: OutputColumn. Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
+     * The columns to be read out from the Office 365 table. Type: array of objects (or Expression with resultType array of objects). itemType: OutputColumn. Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
      */
     @JsonProperty(value = "outputColumns")
     private Object outputColumns;
@@ -58,6 +64,16 @@ public final class Office365Source extends CopySource {
      * Creates an instance of Office365Source class.
      */
     public Office365Source() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

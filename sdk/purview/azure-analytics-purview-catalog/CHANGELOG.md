@@ -1,9 +1,10 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.5 (2024-04-17)
 
 ### Breaking Changes
 
+- Please note, this package has been deprecated and will no longer be maintained after 06/01/2024. We encourage you to upgrade to the replacement package, `com.azure/azure-analytics-purview-datamap`, to continue receiving updates. Refer to the migration guide (https://aka.ms/azsdk/java/migrate/purview-datamap) for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 - Modified `getSampleBusinessMetadataTemplate` method, method returns `BinaryData`.
 - Modified `exportGlossaryTermsAsCsv` method, method returns `BinaryData`.
 - Removed `importGlossaryTermsViaCsvByGlossaryName` and `importGlossaryTermsViaCsv` method. Please use `beginImportGlossaryTermsViaCsvByGlossaryName` and `beginImportGlossaryTermsViaCsv`, respectively.

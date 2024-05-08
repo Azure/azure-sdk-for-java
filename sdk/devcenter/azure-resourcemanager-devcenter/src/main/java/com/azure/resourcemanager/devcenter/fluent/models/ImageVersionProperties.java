@@ -9,7 +9,9 @@ import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of an image version. */
+/**
+ * Properties of an image version.
+ */
 @Immutable
 public final class ImageVersionProperties {
     /*
@@ -42,13 +44,15 @@ public final class ImageVersionProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ImageVersionProperties class. */
+    /**
+     * Creates an instance of ImageVersionProperties class.
+     */
     public ImageVersionProperties() {
     }
 
     /**
      * Get the name property: The semantic version string.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +61,7 @@ public final class ImageVersionProperties {
 
     /**
      * Get the publishedDate property: The datetime that the backing image version was published.
-     *
+     * 
      * @return the publishedDate value.
      */
     public OffsetDateTime publishedDate() {
@@ -66,7 +70,7 @@ public final class ImageVersionProperties {
 
     /**
      * Get the excludeFromLatest property: If the version should be excluded from being treated as the latest version.
-     *
+     * 
      * @return the excludeFromLatest value.
      */
     public Boolean excludeFromLatest() {
@@ -75,7 +79,7 @@ public final class ImageVersionProperties {
 
     /**
      * Get the osDiskImageSizeInGb property: The size of the OS disk image, in GB.
-     *
+     * 
      * @return the osDiskImageSizeInGb value.
      */
     public Integer osDiskImageSizeInGb() {
@@ -84,7 +88,7 @@ public final class ImageVersionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -93,7 +97,7 @@ public final class ImageVersionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -36,7 +36,7 @@ public class GetChatCompletionsStreamAsyncSample {
     public static void main(String[] args) throws InterruptedException {
         String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
-        String deploymentOrModelId = Configuration.getGlobalConfiguration().get("OPENAI_DEPLOYMENT_OR_MODEL_ID");
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)

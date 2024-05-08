@@ -9,7 +9,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the schedule list operation. */
+/**
+ * Result of the schedule list operation.
+ */
 @Immutable
 public final class ScheduleListResult {
     /*
@@ -24,13 +26,15 @@ public final class ScheduleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ScheduleListResult class. */
+    /**
+     * Creates an instance of ScheduleListResult class.
+     */
     public ScheduleListResult() {
     }
 
     /**
      * Get the value property: Current page of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ScheduleInner> value() {
@@ -39,7 +43,7 @@ public final class ScheduleListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ScheduleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

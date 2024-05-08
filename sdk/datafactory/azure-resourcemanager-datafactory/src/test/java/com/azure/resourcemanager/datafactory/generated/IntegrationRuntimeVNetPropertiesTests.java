@@ -15,24 +15,26 @@ public final class IntegrationRuntimeVNetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeVNetProperties model = BinaryData.fromString(
-            "{\"vNetId\":\"lwyoxzuhellitpqv\",\"subnet\":\"vrsgqbm\",\"publicIPs\":[\"eomebz\"],\"subnetId\":\"vxxfsfo\",\"\":{\"edybkbgdwbmi\":\"datagihnalpc\",\"i\":\"datazikatywedb\"}}")
+            "{\"vNetId\":\"oiihrfcowlas\",\"subnet\":\"ifywxjjylaqhx\",\"publicIPs\":[\"dar\",\"jhwgkyn\",\"lwrjgotdtmcktkal\",\"piybfnkylzri\"],\"subnetId\":\"qlwogqnbjuaiuvem\",\"\":{\"ywyfcenkbfxqcap\":\"datankivexiathmar\",\"cxzayvcse\":\"datageciradmxokbutbb\",\"eddjtgoppybse\":\"datadhrodyiit\"}}")
             .toObject(IntegrationRuntimeVNetProperties.class);
-        Assertions.assertEquals("lwyoxzuhellitpqv", model.vNetId());
-        Assertions.assertEquals("vrsgqbm", model.subnet());
-        Assertions.assertEquals("eomebz", model.publicIPs().get(0));
-        Assertions.assertEquals("vxxfsfo", model.subnetId());
+        Assertions.assertEquals("oiihrfcowlas", model.vNetId());
+        Assertions.assertEquals("ifywxjjylaqhx", model.subnet());
+        Assertions.assertEquals("dar", model.publicIPs().get(0));
+        Assertions.assertEquals("qlwogqnbjuaiuvem", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeVNetProperties model
-            = new IntegrationRuntimeVNetProperties().withVNetId("lwyoxzuhellitpqv").withSubnet("vrsgqbm")
-                .withPublicIPs(Arrays.asList("eomebz")).withSubnetId("vxxfsfo").withAdditionalProperties(mapOf());
+        IntegrationRuntimeVNetProperties model = new IntegrationRuntimeVNetProperties().withVNetId("oiihrfcowlas")
+            .withSubnet("ifywxjjylaqhx")
+            .withPublicIPs(Arrays.asList("dar", "jhwgkyn", "lwrjgotdtmcktkal", "piybfnkylzri"))
+            .withSubnetId("qlwogqnbjuaiuvem")
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeVNetProperties.class);
-        Assertions.assertEquals("lwyoxzuhellitpqv", model.vNetId());
-        Assertions.assertEquals("vrsgqbm", model.subnet());
-        Assertions.assertEquals("eomebz", model.publicIPs().get(0));
-        Assertions.assertEquals("vxxfsfo", model.subnetId());
+        Assertions.assertEquals("oiihrfcowlas", model.vNetId());
+        Assertions.assertEquals("ifywxjjylaqhx", model.subnet());
+        Assertions.assertEquals("dar", model.publicIPs().get(0));
+        Assertions.assertEquals("qlwogqnbjuaiuvem", model.subnetId());
     }
 
     // Use "Map.of" if available

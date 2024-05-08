@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.HDInsightStreamingActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * HDInsight streaming activity type.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = HDInsightStreamingActivity.class,
+    visible = true)
 @JsonTypeName("HDInsightStreaming")
 @Fluent
 public final class HDInsightStreamingActivity extends ExecutionActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "HDInsightStreaming";
+
     /*
      * HDInsight streaming activity properties.
      */
@@ -31,6 +43,16 @@ public final class HDInsightStreamingActivity extends ExecutionActivity {
      * Creates an instance of HDInsightStreamingActivity class.
      */
     public HDInsightStreamingActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -399,8 +421,9 @@ public final class HDInsightStreamingActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model HDInsightStreamingActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model HDInsightStreamingActivity"));
         } else {
             innerTypeProperties().validate();
         }

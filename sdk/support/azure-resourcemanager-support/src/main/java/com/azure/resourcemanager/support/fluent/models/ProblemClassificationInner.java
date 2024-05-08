@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.support.models.SecondaryConsentEnabled;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 
 /**
  * ProblemClassification resource object.
@@ -37,7 +36,7 @@ public final class ProblemClassificationInner {
      * Properties of the resource.
      */
     @JsonProperty(value = "properties")
-    private ProblemClassificationPropertiesInner innerProperties;
+    private ProblemClassificationProperties innerProperties;
 
     /**
      * Creates an instance of ProblemClassificationInner class.
@@ -77,7 +76,7 @@ public final class ProblemClassificationInner {
      * 
      * @return the innerProperties value.
      */
-    private ProblemClassificationPropertiesInner innerProperties() {
+    private ProblemClassificationProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -98,7 +97,7 @@ public final class ProblemClassificationInner {
      */
     public ProblemClassificationInner withDisplayName(String displayName) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ProblemClassificationPropertiesInner();
+            this.innerProperties = new ProblemClassificationProperties();
         }
         this.innerProperties().withDisplayName(displayName);
         return this;
@@ -124,44 +123,9 @@ public final class ProblemClassificationInner {
     public ProblemClassificationInner
         withSecondaryConsentEnabled(List<SecondaryConsentEnabled> secondaryConsentEnabled) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new ProblemClassificationPropertiesInner();
+            this.innerProperties = new ProblemClassificationProperties();
         }
         this.innerProperties().withSecondaryConsentEnabled(secondaryConsentEnabled);
-        return this;
-    }
-
-    /**
-     * Get the metadata property: String-to-string dictionary for additional metadata.
-     * 
-     * @return the metadata value.
-     */
-    public Map<String, String> metadata() {
-        return this.innerProperties() == null ? null : this.innerProperties().metadata();
-    }
-
-    /**
-     * Get the parentProblemClassification property: Reference to the parent problem classification which has same
-     * structure as problem classification.
-     * 
-     * @return the parentProblemClassification value.
-     */
-    public ProblemClassificationInner parentProblemClassification() {
-        return this.innerProperties() == null ? null : this.innerProperties().parentProblemClassification();
-    }
-
-    /**
-     * Set the parentProblemClassification property: Reference to the parent problem classification which has same
-     * structure as problem classification.
-     * 
-     * @param parentProblemClassification the parentProblemClassification value to set.
-     * @return the ProblemClassificationInner object itself.
-     */
-    public ProblemClassificationInner
-        withParentProblemClassification(ProblemClassificationInner parentProblemClassification) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ProblemClassificationPropertiesInner();
-        }
-        this.innerProperties().withParentProblemClassification(parentProblemClassification);
         return this;
     }
 

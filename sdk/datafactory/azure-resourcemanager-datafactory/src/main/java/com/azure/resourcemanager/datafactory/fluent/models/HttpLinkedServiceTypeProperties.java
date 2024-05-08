@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HttpLinkedServiceTypeProperties {
     /*
-     * The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or Expression with resultType
-     * string).
+     * The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
@@ -41,38 +40,31 @@ public final class HttpLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The additional HTTP headers in the request to RESTful API used for authorization. Type: key value pairs (value
-     * should be string type).
+     * The additional HTTP headers in the request to RESTful API used for authorization. Type: key value pairs (value should be string type).
      */
     @JsonProperty(value = "authHeaders")
     private Object authHeaders;
 
     /*
-     * Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with
-     * ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type:
-     * string (or Expression with resultType string).
+     * Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "embeddedCertData")
     private Object embeddedCertData;
 
     /*
-     * Thumbprint of certificate for ClientCertificate authentication. Only valid for on-premises copy. For on-premises
-     * copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be
-     * specified. Type: string (or Expression with resultType string).
+     * Thumbprint of certificate for ClientCertificate authentication. Only valid for on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "certThumbprint")
     private Object certThumbprint;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
-     * If true, validate the HTTPS server SSL certificate. Default value is true. Type: boolean (or Expression with
-     * resultType boolean).
+     * If true, validate the HTTPS server SSL certificate. Default value is true. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
@@ -193,8 +185,8 @@ public final class HttpLinkedServiceTypeProperties {
 
     /**
      * Get the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType string).
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
      * 
      * @return the embeddedCertData value.
      */
@@ -204,8 +196,8 @@ public final class HttpLinkedServiceTypeProperties {
 
     /**
      * Set the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType string).
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
      * 
      * @param embeddedCertData the embeddedCertData value to set.
      * @return the HttpLinkedServiceTypeProperties object itself.
@@ -240,8 +232,8 @@ public final class HttpLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -250,8 +242,8 @@ public final class HttpLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HttpLinkedServiceTypeProperties object itself.
@@ -291,8 +283,9 @@ public final class HttpLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model HttpLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model HttpLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

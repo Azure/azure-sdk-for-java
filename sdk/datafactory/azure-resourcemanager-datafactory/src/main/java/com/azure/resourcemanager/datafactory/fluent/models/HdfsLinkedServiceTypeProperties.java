@@ -15,22 +15,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class HdfsLinkedServiceTypeProperties {
     /*
-     * The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with
-     * resultType string).
+     * The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
-     * Type of authentication used to connect to the HDFS. Possible values are: Anonymous and Windows. Type: string (or
-     * Expression with resultType string).
+     * Type of authentication used to connect to the HDFS. Possible values are: Anonymous and Windows. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -98,8 +95,8 @@ public final class HdfsLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -108,8 +105,8 @@ public final class HdfsLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HdfsLinkedServiceTypeProperties object itself.
@@ -168,8 +165,9 @@ public final class HdfsLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property url in model HdfsLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property url in model HdfsLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();

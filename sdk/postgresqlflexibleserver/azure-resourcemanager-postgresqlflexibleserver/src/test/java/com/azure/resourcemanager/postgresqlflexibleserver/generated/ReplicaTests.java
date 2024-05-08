@@ -25,7 +25,8 @@ public final class ReplicaTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Replica model = new Replica().withRole(ReplicationRole.ASYNC_REPLICA)
-            .withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER).withPromoteOption(ReplicationPromoteOption.PLANNED);
+            .withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER)
+            .withPromoteOption(ReplicationPromoteOption.PLANNED);
         model = BinaryData.fromObject(model).toObject(Replica.class);
         Assertions.assertEquals(ReplicationRole.ASYNC_REPLICA, model.role());
         Assertions.assertEquals(ReadReplicaPromoteMode.SWITCHOVER, model.promoteMode());

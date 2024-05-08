@@ -5,29 +5,30 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A content line object consisting of an adjacent sequence of content elements, such as words and selection marks.
  */
 @Immutable
-public final class AzureGroundingEnhancementLine {
+public final class AzureGroundingEnhancementLine implements JsonSerializable<AzureGroundingEnhancementLine> {
 
     /*
      * The text within the line.
      */
     @Generated
-    @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * An array of spans that represent detected objects and its bounding box information.
      */
     @Generated
-    @JsonProperty(value = "spans")
-    private List<AzureGroundingEnhancementLineSpan> spans;
+    private final List<AzureGroundingEnhancementLineSpan> spans;
 
     /**
      * Creates an instance of AzureGroundingEnhancementLine class.
@@ -36,9 +37,7 @@ public final class AzureGroundingEnhancementLine {
      * @param spans the spans value to set.
      */
     @Generated
-    @JsonCreator
-    private AzureGroundingEnhancementLine(@JsonProperty(value = "text") String text,
-        @JsonProperty(value = "spans") List<AzureGroundingEnhancementLineSpan> spans) {
+    private AzureGroundingEnhancementLine(String text, List<AzureGroundingEnhancementLineSpan> spans) {
         this.text = text;
         this.spans = spans;
     }
@@ -61,5 +60,46 @@ public final class AzureGroundingEnhancementLine {
     @Generated
     public List<AzureGroundingEnhancementLineSpan> getSpans() {
         return this.spans;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureGroundingEnhancementLine from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureGroundingEnhancementLine if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureGroundingEnhancementLine.
+     */
+    @Generated
+    public static AzureGroundingEnhancementLine fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String text = null;
+            List<AzureGroundingEnhancementLineSpan> spans = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else if ("spans".equals(fieldName)) {
+                    spans = reader.readArray(reader1 -> AzureGroundingEnhancementLineSpan.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new AzureGroundingEnhancementLine(text, spans);
+        });
     }
 }

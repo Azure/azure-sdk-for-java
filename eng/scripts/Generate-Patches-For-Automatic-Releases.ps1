@@ -21,6 +21,11 @@ try {
     # Generate the list of artifacts to update for a patch release.
     . "${PSScriptRoot}/Update-Artifacts-List-For-Patch-Release.ps1" -SourcesDirectory $SourcesDirectory -YmlToUpdate $PackagesYmlPath
 
+    # Update local repository with all the latest changes from remote repository
+    # And clean up any references that have been deleted on the remote side.
+    Write-Host "git fetch --all --prune"
+    git fetch --all --prune
+
     # Checkout a branch to work on based off of main in upstream.
     if ($currentBranchName -ne $branchName) {
         Write-Host "git checkout -b $branchName $remoteName/main"

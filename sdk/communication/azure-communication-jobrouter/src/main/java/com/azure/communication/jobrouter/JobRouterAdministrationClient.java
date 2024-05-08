@@ -223,16 +223,66 @@ public final class JobRouterAdministrationClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     distributionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     offerExpiresAfterSeconds: Double (Optional)
+     *     mode (Optional): {
+     *         minConcurrentOffers: Integer (Optional)
+     *         maxConcurrentOffers: Integer (Optional)
+     *         bypassSelectors: Boolean (Optional)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param distributionPolicyId The unique identifier of the policy.
+     * @param resource The resource instance.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return policy governing how jobs are distributed to workers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData updateDistributionPolicy(String distributionPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient.upsertDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions)
+            .getValue();
+    }
+
+    /**
+     * Updates a distribution policy.
+     *
      * @param distributionPolicyId The unique identifier of the policy.
      * @param distributionPolicy The distribution policy to update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return result object.
+     * @return the updated distribution policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DistributionPolicy updateDistributionPolicy(String distributionPolicyId,
-        DistributionPolicy distributionPolicy, RequestOptions requestOptions) {
+        DistributionPolicy distributionPolicy) {
         return updateDistributionPolicyWithResponse(distributionPolicyId, BinaryData.fromObject(distributionPolicy),
-            requestOptions).getValue().toObject(DistributionPolicy.class);
+            null).getValue().toObject(DistributionPolicy.class);
     }
 
     /**
@@ -603,16 +653,34 @@ public final class JobRouterAdministrationClient {
      * }</pre>
      *
      * @param classificationPolicyId Unique identifier of this policy.
-     * @param classificationPolicy The classification policy to update.
+     * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return result object.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a container for the rules that govern how jobs are classified.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BinaryData updateClassificationPolicy(String classificationPolicyId, BinaryData resource,
+        RequestOptions requestOptions) {
+        return this.serviceClient
+            .upsertClassificationPolicyWithResponse(classificationPolicyId, resource, requestOptions)
+            .getValue();
+    }
+
+    /**
+     * Updates a classification policy.
+     *
+     * @param classificationPolicyId Unique identifier of this policy.
+     * @param classificationPolicy The classification policy to update.
+     * @return the updated classification policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ClassificationPolicy updateClassificationPolicy(String classificationPolicyId,
-        ClassificationPolicy classificationPolicy, RequestOptions requestOptions) {
+        ClassificationPolicy classificationPolicy) {
         return updateClassificationPolicyWithResponse(classificationPolicyId,
-            BinaryData.fromObject(classificationPolicy), requestOptions).getValue()
-            .toObject(ClassificationPolicy.class);
+            BinaryData.fromObject(classificationPolicy), null).getValue().toObject(ClassificationPolicy.class);
     }
 
     /**
@@ -951,17 +1019,72 @@ public final class JobRouterAdministrationClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String (Required): {
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     exceptionPolicyId: String (Required)
+     *     name: String (Optional)
+     *     exceptionRules (Optional): {
+     *         String (Optional): {
+     *             trigger (Required): {
+     *             }
+     *             actions (Required): {
+     *                 String (Required): {
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }</pre>
+     *
      * @param exceptionPolicyId The Id of the exception policy.
-     * @param exceptionPolicy The exception policy to update.
+     * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return result object.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a policy that defines actions to execute when exception are triggered.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ExceptionPolicy updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy,
+    public BinaryData updateExceptionPolicy(String exceptionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        return this
-            .updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy),
-                requestOptions)
+        return this.serviceClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions)
+            .getValue();
+    }
+
+    /**
+     * Updates a exception policy.
+     *
+     * @param exceptionPolicyId The Id of the exception policy.
+     * @param exceptionPolicy The exception policy to update.
+     * @return the updated exception policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ExceptionPolicy updateExceptionPolicy(String exceptionPolicyId, ExceptionPolicy exceptionPolicy) {
+        return this.updateExceptionPolicyWithResponse(exceptionPolicyId, BinaryData.fromObject(exceptionPolicy), null)
             .getValue()
             .toObject(ExceptionPolicy.class);
     }
@@ -1281,14 +1404,60 @@ public final class JobRouterAdministrationClient {
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p>
+     * <strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     queueId: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * <p>
+     * <strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     queueId: String (Required)
+     *     name: String (Optional)
+     *     distributionPolicyId: String (Optional)
+     *     labels (Optional): {
+     *         String: Object (Optional)
+     *     }
+     *     exceptionPolicyId: String (Optional)
+     * }
+     * }</pre>
+     *
      * @param queueId The Id of this queue.
-     * @param queue The queue to update.
+     * @param resource RouterQueue resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @return a queue that can contain jobs to be routed along with {@link Response}.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a queue that can contain jobs to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterQueue updateQueue(String queueId, RouterQueue queue, RequestOptions requestOptions) {
-        return updateQueueWithResponse(queueId, BinaryData.fromObject(queue), requestOptions).getValue()
+    public BinaryData updateQueue(String queueId, BinaryData resource, RequestOptions requestOptions) {
+        return this.serviceClient.upsertQueueWithResponse(queueId, resource, requestOptions).getValue();
+    }
+
+    /**
+     * Updates a queue.
+     *
+     * @param queueId The Id of this queue.
+     * @param queue The queue to update.
+     * @return the updated queue.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RouterQueue updateQueue(String queueId, RouterQueue queue) {
+        return updateQueueWithResponse(queueId, BinaryData.fromObject(queue), null).getValue()
             .toObject(RouterQueue.class);
     }
 

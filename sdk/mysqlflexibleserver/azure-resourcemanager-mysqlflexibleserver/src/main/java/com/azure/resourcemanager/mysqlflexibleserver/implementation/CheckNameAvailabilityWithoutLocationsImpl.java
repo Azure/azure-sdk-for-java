@@ -21,22 +21,18 @@ public final class CheckNameAvailabilityWithoutLocationsImpl implements CheckNam
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    public CheckNameAvailabilityWithoutLocationsImpl(
-        CheckNameAvailabilityWithoutLocationsClient innerClient,
+    public CheckNameAvailabilityWithoutLocationsImpl(CheckNameAvailabilityWithoutLocationsClient innerClient,
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<NameAvailability> executeWithResponse(
-        NameAvailabilityRequest nameAvailabilityRequest, Context context) {
-        Response<NameAvailabilityInner> inner =
-            this.serviceClient().executeWithResponse(nameAvailabilityRequest, context);
+    public Response<NameAvailability> executeWithResponse(NameAvailabilityRequest nameAvailabilityRequest,
+        Context context) {
+        Response<NameAvailabilityInner> inner
+            = this.serviceClient().executeWithResponse(nameAvailabilityRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NameAvailabilityImpl(inner.getValue(), this.manager()));
         } else {
             return null;

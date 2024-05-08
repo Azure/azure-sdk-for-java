@@ -50,21 +50,23 @@ public interface FileDetails {
     OffsetDateTime createdOn();
 
     /**
-     * Gets the chunkSize property: Size of each chunk.
+     * Gets the chunkSize property: Size of each chunk. The size of each chunk should be provided in bytes and must not
+     * exceed 2.5 megabytes (MB).
      * 
      * @return the chunkSize value.
      */
     Integer chunkSize();
 
     /**
-     * Gets the fileSize property: Size of the file to be uploaded.
+     * Gets the fileSize property: Size of the file to be uploaded. The file size must not exceed 5 MB and should be
+     * provided in bytes.
      * 
      * @return the fileSize value.
      */
     Integer fileSize();
 
     /**
-     * Gets the numberOfChunks property: Number of chunks to be uploaded.
+     * Gets the numberOfChunks property: Number of chunks to be uploaded. The maximum number of allowed chunks is 2.
      * 
      * @return the numberOfChunks value.
      */
@@ -134,9 +136,11 @@ public interface FileDetails {
          */
         interface WithChunkSize {
             /**
-             * Specifies the chunkSize property: Size of each chunk.
+             * Specifies the chunkSize property: Size of each chunk. The size of each chunk should be provided in bytes
+             * and must not exceed 2.5 megabytes (MB)..
              * 
-             * @param chunkSize Size of each chunk.
+             * @param chunkSize Size of each chunk. The size of each chunk should be provided in bytes and must not
+             * exceed 2.5 megabytes (MB).
              * @return the next definition stage.
              */
             WithCreate withChunkSize(Integer chunkSize);
@@ -147,9 +151,11 @@ public interface FileDetails {
          */
         interface WithFileSize {
             /**
-             * Specifies the fileSize property: Size of the file to be uploaded.
+             * Specifies the fileSize property: Size of the file to be uploaded. The file size must not exceed 5 MB and
+             * should be provided in bytes..
              * 
-             * @param fileSize Size of the file to be uploaded.
+             * @param fileSize Size of the file to be uploaded. The file size must not exceed 5 MB and should be
+             * provided in bytes.
              * @return the next definition stage.
              */
             WithCreate withFileSize(Integer fileSize);
@@ -160,9 +166,10 @@ public interface FileDetails {
          */
         interface WithNumberOfChunks {
             /**
-             * Specifies the numberOfChunks property: Number of chunks to be uploaded.
+             * Specifies the numberOfChunks property: Number of chunks to be uploaded. The maximum number of allowed
+             * chunks is 2..
              * 
-             * @param numberOfChunks Number of chunks to be uploaded.
+             * @param numberOfChunks Number of chunks to be uploaded. The maximum number of allowed chunks is 2.
              * @return the next definition stage.
              */
             WithCreate withNumberOfChunks(Integer numberOfChunks);

@@ -6,8 +6,8 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpChannelProcessor;
 import com.azure.core.amqp.implementation.RetryUtil;
-import com.azure.core.util.logging.ClientLogger;
 
+import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -20,8 +20,8 @@ public class ServiceBusConnectionProcessor extends AmqpChannelProcessor<ServiceB
     private final AmqpRetryOptions retryOptions;
 
     public ServiceBusConnectionProcessor(String fullyQualifiedNamespace, AmqpRetryOptions retryOptions) {
-        super(fullyQualifiedNamespace, "N/A", channel -> channel.getEndpointStates(),
-            RetryUtil.getRetryPolicy(retryOptions), new ClientLogger(ServiceBusConnectionProcessor.class));
+        super(fullyQualifiedNamespace, channel -> channel.getEndpointStates(),
+            RetryUtil.getRetryPolicy(retryOptions), Collections.emptyMap());
 
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");

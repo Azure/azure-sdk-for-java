@@ -52,8 +52,9 @@ public final class DomainRegenerateKeyRequest {
      */
     public void validate() {
         if (keyName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property keyName in model DomainRegenerateKeyRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyName in model DomainRegenerateKeyRequest"));
         }
     }
 

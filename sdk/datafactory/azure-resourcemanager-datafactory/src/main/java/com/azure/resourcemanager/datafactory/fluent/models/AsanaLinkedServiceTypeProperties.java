@@ -21,8 +21,7 @@ public final class AsanaLinkedServiceTypeProperties {
     private SecretBase apiToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -54,8 +53,8 @@ public final class AsanaLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -64,8 +63,8 @@ public final class AsanaLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AsanaLinkedServiceTypeProperties object itself.
@@ -82,8 +81,9 @@ public final class AsanaLinkedServiceTypeProperties {
      */
     public void validate() {
         if (apiToken() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property apiToken in model AsanaLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property apiToken in model AsanaLinkedServiceTypeProperties"));
         } else {
             apiToken().validate();
         }

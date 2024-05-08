@@ -11,6 +11,11 @@ import java.util.List;
 /** A policy that defines actions to execute when exception are triggered. */
 @Fluent
 public final class ExceptionPolicy {
+    /**
+     * Create new instance
+     */
+    public ExceptionPolicy() {
+    }
 
     /*
      * The Id of the exception policy

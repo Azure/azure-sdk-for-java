@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInstallPatch
 public final class MachineInstallPatchesResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MachineInstallPatchesResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Succeeded\",\"installationActivityId\":\"azzmhjrunmpxt\",\"rebootStatus\":\"Completed\",\"maintenanceWindowExceeded\":true,\"excludedPatchCount\":826548714,\"notSelectedPatchCount\":1474388654,\"pendingPatchCount\":307935551,\"installedPatchCount\":1850668583,\"failedPatchCount\":1795094625,\"startDateTime\":\"2021-11-21T19:18Z\",\"lastModifiedDateTime\":\"2021-04-01T15:14:17Z\",\"startedBy\":\"Platform\",\"patchServiceUsed\":\"Zypper\",\"osType\":\"Windows\"}")
-                .toObject(MachineInstallPatchesResultInner.class);
+        MachineInstallPatchesResultInner model = BinaryData.fromString(
+            "{\"status\":\"CompletedWithWarnings\",\"installationActivityId\":\"m\",\"rebootStatus\":\"Required\",\"maintenanceWindowExceeded\":false,\"excludedPatchCount\":865900212,\"notSelectedPatchCount\":1971435113,\"pendingPatchCount\":435215346,\"installedPatchCount\":746279797,\"failedPatchCount\":996509936,\"startDateTime\":\"2021-09-17T17:08:43Z\",\"lastModifiedDateTime\":\"2021-11-20T16:21:10Z\",\"startedBy\":\"Platform\",\"patchServiceUsed\":\"WU_WSUS\",\"osType\":\"Linux\"}")
+            .toObject(MachineInstallPatchesResultInner.class);
     }
 
     @org.junit.jupiter.api.Test

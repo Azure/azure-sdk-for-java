@@ -13,6 +13,11 @@ import java.util.List;
  */
 @Fluent
 public final class ClassificationPolicy {
+    /**
+     * Create new instance
+     */
+    public ClassificationPolicy() {
+    }
 
     /*
      * Id of a classification policy.

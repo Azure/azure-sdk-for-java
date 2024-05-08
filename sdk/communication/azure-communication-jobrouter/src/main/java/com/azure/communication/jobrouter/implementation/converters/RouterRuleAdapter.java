@@ -49,9 +49,9 @@ public class RouterRuleAdapter {
             } else if (routerRule.getClass() == WebhookRouterRule.class) {
                 WebhookRouterRule webhookRouterRule = (WebhookRouterRule) routerRule;
                 prioritizationRuleInternal = new WebhookRouterRuleInternal()
-                    .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri())
+                    .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUrl())
                     .setClientCredential(webhookRouterRule.getClientCredential())
-                    .setWebhookUri(webhookRouterRule.getWebhookUri());
+                    .setWebhookUri(webhookRouterRule.getWebhookUrl());
             }
         }
 
@@ -75,11 +75,11 @@ public class RouterRuleAdapter {
             return new StaticRouterRuleInternal().setValue(RouterValueAdapter.getValue(((StaticRouterRule) rule).getValue()));
         } else if (rule instanceof WebhookRouterRule) {
             WebhookRouterRule webhookRouterRule = (WebhookRouterRule) rule;
-            return new WebhookRouterRuleInternal().setWebhookUri(webhookRouterRule.getWebhookUri())
+            return new WebhookRouterRuleInternal().setWebhookUri(webhookRouterRule.getWebhookUrl())
                 .setClientCredential(new OAuth2WebhookClientCredential()
                     .setClientId(webhookRouterRule.getClientCredential().getClientId())
                     .setClientSecret(webhookRouterRule.getClientCredential().getClientSecret()))
-                .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUri());
+                .setAuthorizationServerUri(webhookRouterRule.getAuthorizationServerUrl());
         }
 
         return null;

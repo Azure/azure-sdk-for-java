@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The synchronization state of the catalog. */
+/**
+ * The synchronization state of the catalog.
+ */
 public final class CatalogSyncState extends ExpandableStringEnum<CatalogSyncState> {
-    /** Static value Succeeded for CatalogSyncState. */
+    /**
+     * Static value Succeeded for CatalogSyncState.
+     */
     public static final CatalogSyncState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value InProgress for CatalogSyncState. */
+    /**
+     * Static value InProgress for CatalogSyncState.
+     */
     public static final CatalogSyncState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Failed for CatalogSyncState. */
+    /**
+     * Static value Failed for CatalogSyncState.
+     */
     public static final CatalogSyncState FAILED = fromString("Failed");
 
-    /** Static value Canceled for CatalogSyncState. */
+    /**
+     * Static value Canceled for CatalogSyncState.
+     */
     public static final CatalogSyncState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of CatalogSyncState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class CatalogSyncState extends ExpandableStringEnum<CatalogSyncStat
 
     /**
      * Creates or finds a CatalogSyncState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CatalogSyncState.
      */
@@ -44,7 +54,7 @@ public final class CatalogSyncState extends ExpandableStringEnum<CatalogSyncStat
 
     /**
      * Gets known CatalogSyncState values.
-     *
+     * 
      * @return known CatalogSyncState values.
      */
     public static Collection<CatalogSyncState> values() {

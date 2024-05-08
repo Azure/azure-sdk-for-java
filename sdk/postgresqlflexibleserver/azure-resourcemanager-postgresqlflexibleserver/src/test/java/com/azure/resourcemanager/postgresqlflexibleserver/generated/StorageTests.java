@@ -27,8 +27,11 @@ public final class StorageTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Storage model = new Storage().withStorageSizeGB(378740699).withAutoGrow(StorageAutoGrow.ENABLED)
-            .withTier(AzureManagedDiskPerformanceTiers.P30).withIops(838222488).withThroughput(1787960878)
+        Storage model = new Storage().withStorageSizeGB(378740699)
+            .withAutoGrow(StorageAutoGrow.ENABLED)
+            .withTier(AzureManagedDiskPerformanceTiers.P30)
+            .withIops(838222488)
+            .withThroughput(1787960878)
             .withType(StorageType.PREMIUM_V2_LRS);
         model = BinaryData.fromObject(model).toObject(Storage.class);
         Assertions.assertEquals(378740699, model.storageSizeGB());

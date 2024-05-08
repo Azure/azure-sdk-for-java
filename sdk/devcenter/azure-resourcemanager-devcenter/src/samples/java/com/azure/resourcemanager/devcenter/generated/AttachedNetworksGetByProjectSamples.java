@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-/** Samples for AttachedNetworks GetByProject. */
+/**
+ * Samples for AttachedNetworks GetByProject.
+ */
 public final class AttachedNetworksGetByProjectSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/AttachedNetworks_GetByProject.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/AttachedNetworks_GetByProject.json
      */
     /**
      * Sample code: AttachedNetworks_GetByProject.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void attachedNetworksGetByProject(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager
-            .attachedNetworks()
+        manager.attachedNetworks()
             .getByProjectWithResponse("rg1", "DevProject", "network-uswest3", com.azure.core.util.Context.NONE);
     }
 }

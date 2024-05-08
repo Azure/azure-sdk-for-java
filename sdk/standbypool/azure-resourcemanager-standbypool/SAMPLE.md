@@ -34,9 +34,6 @@
  * Samples for Operations List.
  */
 public final class OperationsListSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/Operations_List.json
-     */
     /**
      * Sample code: Operations_List.
      * 
@@ -65,9 +62,6 @@ import java.util.Map;
  * Samples for StandbyContainerGroupPools CreateOrUpdate.
  */
 public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyContainerGroupPools_CreateOrUpdate.json
-     */
     /**
      * Sample code: StandbyContainerGroupPools_CreateOrUpdate.
      * 
@@ -113,9 +107,6 @@ public final class StandbyContainerGroupPoolsCreateOrUpdateSamples {
  * Samples for StandbyContainerGroupPools Delete.
  */
 public final class StandbyContainerGroupPoolsDeleteSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyContainerGroupPools_Delete.json
-     */
     /**
      * Sample code: StandbyContainerGroupPools_Delete.
      * 
@@ -135,9 +126,6 @@ public final class StandbyContainerGroupPoolsDeleteSamples {
  * Samples for StandbyContainerGroupPools GetByResourceGroup.
  */
 public final class StandbyContainerGroupPoolsGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyContainerGroupPools_Get.json
-     */
     /**
      * Sample code: StandbyContainerGroupPools_Get.
      * 
@@ -157,9 +145,6 @@ public final class StandbyContainerGroupPoolsGetByResourceGroupSamples {
  * Samples for StandbyContainerGroupPools List.
  */
 public final class StandbyContainerGroupPoolsListSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyContainerGroupPools_ListBySubscription.json
-     */
     /**
      * Sample code: StandbyContainerGroupPools_ListBySubscription.
      * 
@@ -179,9 +164,6 @@ public final class StandbyContainerGroupPoolsListSamples {
  * Samples for StandbyContainerGroupPools ListByResourceGroup.
  */
 public final class StandbyContainerGroupPoolsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyContainerGroupPools_ListByResourceGroup.json
-     */
     /**
      * Sample code: StandbyContainerGroupPools_ListByResourceGroup.
      * 
@@ -197,10 +179,10 @@ public final class StandbyContainerGroupPoolsListByResourceGroupSamples {
 ### StandbyContainerGroupPools_Update
 
 ```java
-import com.azure.resourcemanager.standbypool.models.ContainerGroupProfileUpdate;
-import com.azure.resourcemanager.standbypool.models.ContainerGroupPropertiesUpdate;
+import com.azure.resourcemanager.standbypool.models.ContainerGroupProfile;
+import com.azure.resourcemanager.standbypool.models.ContainerGroupProperties;
 import com.azure.resourcemanager.standbypool.models.RefillPolicy;
-import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolElasticityProfileUpdate;
+import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResource;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolResourceUpdateProperties;
 import com.azure.resourcemanager.standbypool.models.Subnet;
@@ -212,9 +194,6 @@ import java.util.Map;
  * Samples for StandbyContainerGroupPools Update.
  */
 public final class StandbyContainerGroupPoolsUpdateSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyContainerGroupPools_Update.json
-     */
     /**
      * Sample code: StandbyContainerGroupPools_Update.
      * 
@@ -228,11 +207,10 @@ public final class StandbyContainerGroupPoolsUpdateSamples {
         resource.update()
             .withTags(mapOf())
             .withProperties(new StandbyContainerGroupPoolResourceUpdateProperties()
-                .withElasticityProfile(
-                    new StandbyContainerGroupPoolElasticityProfileUpdate().withMaxReadyCapacity(1743L)
-                        .withRefillPolicy(RefillPolicy.ALWAYS))
-                .withContainerGroupProperties(new ContainerGroupPropertiesUpdate()
-                    .withContainerGroupProfile(new ContainerGroupProfileUpdate().withId(
+                .withElasticityProfile(new StandbyContainerGroupPoolElasticityProfile().withMaxReadyCapacity(1743L)
+                    .withRefillPolicy(RefillPolicy.ALWAYS))
+                .withContainerGroupProperties(new ContainerGroupProperties()
+                    .withContainerGroupProfile(new ContainerGroupProfile().withId(
                         "/subscriptions/8CC31D61-82D7-4B2B-B9DC-6B924DE7D229/resourceGroups/rgstandbypool/providers/Microsoft.ContainerInstance/containerGroupProfiles/cgProfile")
                         .withRevision(2L))
                     .withSubnetIds(Arrays.asList(new Subnet().withId(
@@ -267,9 +245,6 @@ import java.util.Map;
  * Samples for StandbyVirtualMachinePools CreateOrUpdate.
  */
 public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyVirtualMachinePools_CreateOrUpdate.json
-     */
     /**
      * Sample code: StandbyVirtualMachinePools_CreateOrUpdate.
      * 
@@ -311,9 +286,6 @@ public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
  * Samples for StandbyVirtualMachinePools Delete.
  */
 public final class StandbyVirtualMachinePoolsDeleteSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyVirtualMachinePools_Delete.json
-     */
     /**
      * Sample code: StandbyVirtualMachinePools_Delete.
      * 
@@ -333,9 +305,6 @@ public final class StandbyVirtualMachinePoolsDeleteSamples {
  * Samples for StandbyVirtualMachinePools GetByResourceGroup.
  */
 public final class StandbyVirtualMachinePoolsGetByResourceGroupSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyVirtualMachinePools_Get.json
-     */
     /**
      * Sample code: StandbyVirtualMachinePools_Get.
      * 
@@ -355,9 +324,6 @@ public final class StandbyVirtualMachinePoolsGetByResourceGroupSamples {
  * Samples for StandbyVirtualMachinePools List.
  */
 public final class StandbyVirtualMachinePoolsListSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyVirtualMachinePools_ListBySubscription.json
-     */
     /**
      * Sample code: StandbyVirtualMachinePools_ListBySubscription.
      * 
@@ -377,9 +343,6 @@ public final class StandbyVirtualMachinePoolsListSamples {
  * Samples for StandbyVirtualMachinePools ListByResourceGroup.
  */
 public final class StandbyVirtualMachinePoolsListByResourceGroupSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyVirtualMachinePools_ListByResourceGroup.json
-     */
     /**
      * Sample code: StandbyVirtualMachinePools_ListByResourceGroup.
      * 
@@ -395,7 +358,7 @@ public final class StandbyVirtualMachinePoolsListByResourceGroupSamples {
 ### StandbyVirtualMachinePools_Update
 
 ```java
-import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfileUpdate;
+import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResource;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceUpdateProperties;
 import com.azure.resourcemanager.standbypool.models.VirtualMachineState;
@@ -406,9 +369,6 @@ import java.util.Map;
  * Samples for StandbyVirtualMachinePools Update.
  */
 public final class StandbyVirtualMachinePoolsUpdateSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyVirtualMachinePools_Update.json
-     */
     /**
      * Sample code: StandbyVirtualMachinePools_Update.
      * 
@@ -422,8 +382,7 @@ public final class StandbyVirtualMachinePoolsUpdateSamples {
         resource.update()
             .withTags(mapOf())
             .withProperties(new StandbyVirtualMachinePoolResourceUpdateProperties()
-                .withElasticityProfile(
-                    new StandbyVirtualMachinePoolElasticityProfileUpdate().withMaxReadyCapacity(304L))
+                .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(304L))
                 .withVirtualMachineState(VirtualMachineState.RUNNING)
                 .withAttachedVirtualMachineScaleSetId(
                     "/subscriptions/8CC31D61-82D7-4B2B-B9DC-6B924DE7D229/resourceGroups/rgstandbypool/providers/Microsoft.Compute/virtualMachineScaleSets/myVmss"))
@@ -451,9 +410,6 @@ public final class StandbyVirtualMachinePoolsUpdateSamples {
  * Samples for StandbyVirtualMachines Get.
  */
 public final class StandbyVirtualMachinesGetSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyVirtualMachines_Get.json
-     */
     /**
      * Sample code: StandbyVirtualMachines_Get.
      * 
@@ -473,9 +429,6 @@ public final class StandbyVirtualMachinesGetSamples {
  * Samples for StandbyVirtualMachines ListByStandbyVirtualMachinePoolResource.
  */
 public final class StandbyVirtualMachinesListByStandbyVirtualMachinePoolResourceSamples {
-    /*
-     * x-ms-original-file: specification/standbypool/resource-manager/Microsoft.StandbyPool/preview/2023-12-01-preview/examples/StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.json
-     */
     /**
      * Sample code: StandbyVirtualMachines_ListByStandbyVirtualMachinePoolResource.
      * 

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
 import org.sourcelab.kafka.connect.apiclient.KafkaConnectClient;
 import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorDefinition;
+import org.sourcelab.kafka.connect.apiclient.request.dto.ConnectorStatus;
 import org.sourcelab.kafka.connect.apiclient.request.dto.NewConnectorDefinition;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.KafkaContainer;
@@ -20,6 +21,7 @@ import org.testcontainers.utility.DockerImageName;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 
 public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosConnectContainer> {
     private static final Logger logger = LoggerFactory.getLogger(KafkaCosmosConnectContainer.class);
@@ -180,16 +182,25 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         }
     }
 
+    public ConnectorStatus getConnectorStatus(String name) {
+        KafkaConnectClient kafkaConnectClient = new KafkaConnectClient(new Configuration(getTarget()));
+        return kafkaConnectClient.getConnectorStatus(name);
+    }
+
     public String getTarget() {
         return "http://" + getContainerIpAddress() + ":" + getMappedPort(KAFKA_CONNECT_PORT);
     }
 
     public Properties getProducerProperties() {
-        return (Properties) producerProperties.clone();
+        Properties properties = (Properties) producerProperties.clone();
+        properties.put(ProducerConfig.CLIENT_ID_CONFIG, "IntegrationTest-producer-" + UUID.randomUUID());
+        return properties;
     }
 
     public Properties getConsumerProperties() {
-        return (Properties) consumerProperties.clone();
+        Properties properties = (Properties) consumerProperties.clone();
+        properties.put("group.id", "IntegrationTest-consumer-" + UUID.randomUUID());
+        return properties;
     }
 
     public void createTopic(String topicName, int numPartitions) {

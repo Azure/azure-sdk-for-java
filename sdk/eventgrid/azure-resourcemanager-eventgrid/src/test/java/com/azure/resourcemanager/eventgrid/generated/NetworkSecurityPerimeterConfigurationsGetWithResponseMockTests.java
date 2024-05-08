@@ -6,11 +6,9 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterAssociationAccessMode;
 import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfigProvisioningState;
@@ -18,67 +16,51 @@ import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfig
 import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfigurationIssueSeverity;
 import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfigurationIssueType;
 import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterResourceType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkSecurityPerimeterConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Creating\",\"provisioningIssues\":[{\"name\":\"kegtyc\",\"properties\":{\"issueType\":\"ConfigurationPropagationFailure\",\"severity\":\"Warning\",\"description\":\"lzmiyddeeq\",\"suggestedResourceIds\":[\"abm\"],\"suggestedAccessRules\":[\"exduetbapfczew\"]}},{\"name\":\"rlqbpxyazkjpir\",\"properties\":{\"issueType\":\"ConfigurationPropagationFailure\",\"severity\":\"Warning\",\"description\":\"wh\",\"suggestedResourceIds\":[\"bthmsritj\"],\"suggestedAccessRules\":[\"ggrunozfvualjt\",\"oivsdwsngkrf\"]}},{\"name\":\"sc\",\"properties\":{\"issueType\":\"MissingIdentityConfiguration\",\"severity\":\"Error\",\"description\":\"bhwahfbwih\",\"suggestedResourceIds\":[\"x\"],\"suggestedAccessRules\":[\"ynuqqkotauratnic\",\"pfzsclefyrl\",\"tndqlmf\",\"ggnbbuypwovvvsfl\"]}},{\"name\":\"vnoqayrehju\",\"properties\":{\"issueType\":\"Other\",\"severity\":\"Error\",\"description\":\"lzhpzihacenq\",\"suggestedResourceIds\":[\"xnq\",\"ubfonfdbgmkf\",\"mjcwtewfhxwyrkbr\",\"hzlrynjpchamkae\"],\"suggestedAccessRules\":[\"ajubo\",\"uywevtjrieikmwl\",\"oklf\",\"isyxgucbmtredsc\"]}}],\"networkSecurityPerimeter\":{\"id\":\"tjcyyuv\",\"perimeterGuid\":\"rx\",\"location\":\"cl\"},\"resourceAssociation\":{\"name\":\"wtzqzcloyhy\",\"accessMode\":\"Enforced\"},\"profile\":{\"name\":\"hzgyresgzsd\",\"accessRulesVersion\":\"wbyorjplbchych\",\"accessRules\":[{\"fullyQualifiedArmId\":\"rfbqvumkxqjsiuep\",\"name\":\"xfnzlpq\",\"type\":\"ft\",\"properties\":{}},{\"fullyQualifiedArmId\":\"vulb\",\"name\":\"rtux\",\"type\":\"rhfcaeooifqdyw\",\"properties\":{}},{\"fullyQualifiedArmId\":\"obhahqmomf\",\"name\":\"o\",\"type\":\"fr\",\"properties\":{}}],\"diagnosticSettingsVersion\":\"bmx\",\"enabledLogCategories\":[\"mzezbjesylslu\"]}},\"id\":\"bqfy\",\"name\":\"pnyh\",\"type\":\"dzuqscag\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updating\",\"provisioningIssues\":[{\"name\":\"qwqajqu\",\"properties\":{\"issueType\":\"Other\",\"severity\":\"Error\",\"description\":\"oipnfdb\",\"suggestedResourceIds\":[\"sci\",\"nezfvbennmfkbpj\",\"rtek\"],\"suggestedAccessRules\":[\"thr\",\"pmdudsyiurzt\",\"ktjhffe\",\"q\"]}},{\"name\":\"qyouerg\",\"properties\":{\"issueType\":\"Other\",\"severity\":\"Error\",\"description\":\"kpyehhfdyldh\",\"suggestedResourceIds\":[\"d\",\"fzqiyuq\",\"tdereunokakzw\",\"pjlwyxe\"],\"suggestedAccessRules\":[\"mxrfomckew\",\"my\",\"fopxf\",\"jt\"]}}],\"networkSecurityPerimeter\":{\"id\":\"z\",\"perimeterGuid\":\"txfp\",\"location\":\"fhgnuywezygv\"},\"resourceAssociation\":{\"name\":\"aaqwvkg\",\"accessMode\":\"Enforced\"},\"profile\":{\"name\":\"mpvdnogeh\",\"accessRulesVersion\":\"fbortbnukk\",\"accessRules\":[{\"fullyQualifiedArmId\":\"svbxxyjisskob\",\"name\":\"clflioe\",\"type\":\"hxessmvrk\",\"properties\":{}},{\"fullyQualifiedArmId\":\"qeq\",\"name\":\"dxmdses\",\"type\":\"ujbjppp\",\"properties\":{}},{\"fullyQualifiedArmId\":\"pdibfmthi\",\"name\":\"tnejrnminzqp\",\"type\":\"tkihonikzs\",\"properties\":{}}],\"diagnosticSettingsVersion\":\"ffjilzfbpnt\",\"enabledLogCategories\":[\"ensckhbmcarm\",\"yfxxkwykuqdnd\"]}},\"id\":\"lykhkg\",\"name\":\"apvd\",\"type\":\"t\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkSecurityPerimeterConfiguration response = manager.networkSecurityPerimeterConfigurations()
-            .getWithResponse("hdcfm", NetworkSecurityPerimeterResourceType.TOPICS, "cfasfodropal", "ngtwyuskwgq",
-                "ntaumd", com.azure.core.util.Context.NONE)
+            .getWithResponse("fwkztsms", NetworkSecurityPerimeterResourceType.TOPICS, "evyllznfhkqyt", "ztadopgfz",
+                "gjfcycrsvloyyh", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(NetworkSecurityPerimeterConfigProvisioningState.CREATING, response.provisioningState());
-        Assertions.assertEquals("kegtyc", response.provisioningIssues().get(0).name());
-        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.CONFIGURATION_PROPAGATION_FAILURE,
+        Assertions.assertEquals(NetworkSecurityPerimeterConfigProvisioningState.UPDATING, response.provisioningState());
+        Assertions.assertEquals("qwqajqu", response.provisioningIssues().get(0).name());
+        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueType.OTHER,
             response.provisioningIssues().get(0).issueType());
-        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.WARNING,
+        Assertions.assertEquals(NetworkSecurityPerimeterConfigurationIssueSeverity.ERROR,
             response.provisioningIssues().get(0).severity());
-        Assertions.assertEquals("lzmiyddeeq", response.provisioningIssues().get(0).description());
-        Assertions.assertEquals("abm", response.provisioningIssues().get(0).suggestedResourceIds().get(0));
-        Assertions.assertEquals("exduetbapfczew", response.provisioningIssues().get(0).suggestedAccessRules().get(0));
-        Assertions.assertEquals("tjcyyuv", response.networkSecurityPerimeter().id());
-        Assertions.assertEquals("rx", response.networkSecurityPerimeter().perimeterGuid());
-        Assertions.assertEquals("cl", response.networkSecurityPerimeter().location());
-        Assertions.assertEquals("wtzqzcloyhy", response.resourceAssociation().name());
+        Assertions.assertEquals("oipnfdb", response.provisioningIssues().get(0).description());
+        Assertions.assertEquals("sci", response.provisioningIssues().get(0).suggestedResourceIds().get(0));
+        Assertions.assertEquals("thr", response.provisioningIssues().get(0).suggestedAccessRules().get(0));
+        Assertions.assertEquals("z", response.networkSecurityPerimeter().id());
+        Assertions.assertEquals("txfp", response.networkSecurityPerimeter().perimeterGuid());
+        Assertions.assertEquals("fhgnuywezygv", response.networkSecurityPerimeter().location());
+        Assertions.assertEquals("aaqwvkg", response.resourceAssociation().name());
         Assertions.assertEquals(NetworkSecurityPerimeterAssociationAccessMode.ENFORCED,
             response.resourceAssociation().accessMode());
-        Assertions.assertEquals("hzgyresgzsd", response.profile().name());
-        Assertions.assertEquals("wbyorjplbchych", response.profile().accessRulesVersion());
-        Assertions.assertEquals("rfbqvumkxqjsiuep", response.profile().accessRules().get(0).fullyQualifiedArmId());
-        Assertions.assertEquals("xfnzlpq", response.profile().accessRules().get(0).name());
-        Assertions.assertEquals("ft", response.profile().accessRules().get(0).type());
-        Assertions.assertEquals("bmx", response.profile().diagnosticSettingsVersion());
-        Assertions.assertEquals("mzezbjesylslu", response.profile().enabledLogCategories().get(0));
+        Assertions.assertEquals("mpvdnogeh", response.profile().name());
+        Assertions.assertEquals("fbortbnukk", response.profile().accessRulesVersion());
+        Assertions.assertEquals("svbxxyjisskob", response.profile().accessRules().get(0).fullyQualifiedArmId());
+        Assertions.assertEquals("clflioe", response.profile().accessRules().get(0).name());
+        Assertions.assertEquals("hxessmvrk", response.profile().accessRules().get(0).type());
+        Assertions.assertEquals("ffjilzfbpnt", response.profile().diagnosticSettingsVersion());
+        Assertions.assertEquals("ensckhbmcarm", response.profile().enabledLogCategories().get(0));
     }
 }
