@@ -194,14 +194,10 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) {
         if (isRecording()) {
-            sanitizers.forEach(sanitizer -> {
-                HttpRequest request = createAddSanitizersRequest(List.of(sanitizer), proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
-                client.sendSync(request, Context.NONE).close();
-            });
-//            HttpRequest request
-//                = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
-//
-//            client.sendSync(request, Context.NONE).close();
+            HttpRequest request
+                = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
+
+            client.sendSync(request, Context.NONE).close();
         } else {
             this.sanitizers.addAll(sanitizers);
         }

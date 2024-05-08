@@ -231,7 +231,7 @@ public class TestProxyTests extends TestProxyTestBase {
             assertEquals(REDACTED, record.getHeaders().get("Ocp-Apim-Subscription-Key"));
             assertTrue(record.getResponseHeaders()
                 .get("Operation-Location")
-                .startsWith("https://REDACTED"));
+                .startsWith("https://REDACTED/fr/models//905a58f9-131e-42b8-8410-493ab1517d62"));
             // custom sanitizers
             assertEquals(REDACTED, record.getResponse().get("modelId"));
             assertEquals(REDACTED, record.getResponse().get("client_secret"));
