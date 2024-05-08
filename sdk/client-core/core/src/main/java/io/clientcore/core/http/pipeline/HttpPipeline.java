@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -39,18 +40,18 @@ public final class HttpPipeline {
 
         this.httpClient = httpClient;
 
-        List<HttpPipelinePolicy> clonedPolicies = new ArrayList<>(pipelinePolicies.size());
-
-        for (HttpPipelinePolicy policy : pipelinePolicies) {
-            clonedPolicies.add(policy.clone());
-        }
+        HttpPipelinePolicy[] clonedPolicies = new HttpPipelinePolicy[pipelinePolicies.size()];
 
         // Set each policy's next policy.
-        for (int i = 0; i < clonedPolicies.size() - 1; i++) {
-            clonedPolicies.get(i).setNextPolicy(clonedPolicies.get(i + 1));
+        for (int i = pipelinePolicies.size() - 1; i >= 0; i--) {
+            clonedPolicies[i] = pipelinePolicies.get(i).clone();
+
+            if (i < pipelinePolicies.size() - 1) {
+                clonedPolicies[i].setNextPolicy(clonedPolicies[i + 1]);
+            }
         }
 
-        this.pipelinePolicies = Collections.unmodifiableList(clonedPolicies);
+        this.pipelinePolicies = Collections.unmodifiableList(Arrays.asList(clonedPolicies));
     }
 
     /**
