@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.LoadBalancerBackend;
 import com.azure.resourcemanager.network.models.LoadBalancerInboundNatRule;
 import com.azure.resourcemanager.network.models.Network;
@@ -15,6 +17,8 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 
 public class TestNetworkInterface extends TestTemplate<NetworkInterface, NetworkInterfaces> {
+    private static final ClientLogger LOGGER = new ClientLogger(TestNetworkInterface.class);
+
     @Override
     public NetworkInterface createResource(NetworkInterfaces networkInterfaces) throws Exception {
 
@@ -199,7 +203,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             }
         }
 
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 
     @Override

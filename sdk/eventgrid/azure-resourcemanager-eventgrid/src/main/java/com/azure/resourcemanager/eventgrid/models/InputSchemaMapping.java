@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -16,17 +18,34 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "inputSchemaMappingType",
-    defaultImpl = InputSchemaMapping.class)
+    defaultImpl = InputSchemaMapping.class,
+    visible = true)
 @JsonTypeName("InputSchemaMapping")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "Json", value = JsonInputSchemaMapping.class) })
 @Immutable
 public class InputSchemaMapping {
+    /*
+     * Type of the custom mapping
+     */
+    @JsonTypeId
+    @JsonProperty(value = "inputSchemaMappingType", required = true)
+    private InputSchemaMappingType inputSchemaMappingType;
+
     /**
      * Creates an instance of InputSchemaMapping class.
      */
     public InputSchemaMapping() {
+        this.inputSchemaMappingType = InputSchemaMappingType.fromString("InputSchemaMapping");
+    }
+
+    /**
+     * Get the inputSchemaMappingType property: Type of the custom mapping.
+     * 
+     * @return the inputSchemaMappingType value.
+     */
+    public InputSchemaMappingType inputSchemaMappingType() {
+        return this.inputSchemaMappingType;
     }
 
     /**

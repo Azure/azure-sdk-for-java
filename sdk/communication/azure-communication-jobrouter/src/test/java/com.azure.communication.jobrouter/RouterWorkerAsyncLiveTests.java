@@ -14,7 +14,6 @@ import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -132,9 +131,7 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
         assertEquals(channels.size(), deserialized.getChannels().size());
         assertEquals(deserialized.getEtag(), result.getEtag());
 
-        if (this.getTestMode() != TestMode.PLAYBACK) {
-            Thread.sleep(2000);
-        }
+        sleepIfRunningAgainstService(2000);
 
         deserialized.setAvailableForOffers(true);
         deserialized.setChannels(new ArrayList<RouterChannel>() {

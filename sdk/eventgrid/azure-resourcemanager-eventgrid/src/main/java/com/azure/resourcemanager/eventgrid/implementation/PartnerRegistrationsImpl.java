@@ -59,33 +59,33 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
 
     public PagedIterable<PartnerRegistration> list() {
         PagedIterable<PartnerRegistrationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PartnerRegistrationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerRegistrationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PartnerRegistration> list(String filter, Integer top, Context context) {
         PagedIterable<PartnerRegistrationInner> inner = this.serviceClient().list(filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new PartnerRegistrationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerRegistrationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PartnerRegistration> listByResourceGroup(String resourceGroupName) {
         PagedIterable<PartnerRegistrationInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new PartnerRegistrationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerRegistrationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PartnerRegistration> listByResourceGroup(String resourceGroupName, String filter, Integer top,
         Context context) {
         PagedIterable<PartnerRegistrationInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new PartnerRegistrationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerRegistrationImpl(inner1, this.manager()));
     }
 
     public PartnerRegistration getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String partnerRegistrationName = Utils.getValueFromIdByName(id, "partnerRegistrations");
+        String partnerRegistrationName = ResourceManagerUtils.getValueFromIdByName(id, "partnerRegistrations");
         if (partnerRegistrationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'partnerRegistrations'.", id)));
@@ -94,12 +94,12 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
     }
 
     public Response<PartnerRegistration> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String partnerRegistrationName = Utils.getValueFromIdByName(id, "partnerRegistrations");
+        String partnerRegistrationName = ResourceManagerUtils.getValueFromIdByName(id, "partnerRegistrations");
         if (partnerRegistrationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'partnerRegistrations'.", id)));
@@ -108,12 +108,12 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String partnerRegistrationName = Utils.getValueFromIdByName(id, "partnerRegistrations");
+        String partnerRegistrationName = ResourceManagerUtils.getValueFromIdByName(id, "partnerRegistrations");
         if (partnerRegistrationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'partnerRegistrations'.", id)));
@@ -122,12 +122,12 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String partnerRegistrationName = Utils.getValueFromIdByName(id, "partnerRegistrations");
+        String partnerRegistrationName = ResourceManagerUtils.getValueFromIdByName(id, "partnerRegistrations");
         if (partnerRegistrationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'partnerRegistrations'.", id)));

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.eventgrid.models.DeliverySchema;
 import com.azure.resourcemanager.eventgrid.models.FiltersConfiguration;
 import com.azure.resourcemanager.eventgrid.models.SubscriptionProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
 /**
  * Event Subscription.
@@ -129,6 +130,29 @@ public final class SubscriptionInner extends ProxyResource {
             this.innerProperties = new SubscriptionProperties();
         }
         this.innerProperties().withFiltersConfiguration(filtersConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the expirationTimeUtc property: Expiration time of the event subscription.
+     * 
+     * @return the expirationTimeUtc value.
+     */
+    public OffsetDateTime expirationTimeUtc() {
+        return this.innerProperties() == null ? null : this.innerProperties().expirationTimeUtc();
+    }
+
+    /**
+     * Set the expirationTimeUtc property: Expiration time of the event subscription.
+     * 
+     * @param expirationTimeUtc the expirationTimeUtc value to set.
+     * @return the SubscriptionInner object itself.
+     */
+    public SubscriptionInner withExpirationTimeUtc(OffsetDateTime expirationTimeUtc) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionProperties();
+        }
+        this.innerProperties().withExpirationTimeUtc(expirationTimeUtc);
         return this;
     }
 

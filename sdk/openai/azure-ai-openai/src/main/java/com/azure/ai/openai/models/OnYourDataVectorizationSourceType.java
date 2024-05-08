@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,7 +52,6 @@ public final class OnYourDataVectorizationSourceType extends ExpandableStringEnu
      * @return the corresponding OnYourDataVectorizationSourceType.
      */
     @Generated
-    @JsonCreator
     public static OnYourDataVectorizationSourceType fromString(String name) {
         return fromString(name, OnYourDataVectorizationSourceType.class);
     }

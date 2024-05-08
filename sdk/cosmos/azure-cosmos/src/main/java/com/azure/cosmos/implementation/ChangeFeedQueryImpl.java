@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
@@ -75,7 +74,7 @@ class ChangeFeedQueryImpl<T> {
         this.klass = klass;
         this.documentsLink = Utils.joinPath(collectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
         this.options = requestOptions;
-        this.itemSerializer = client.getEffectiveItemSerializer(requestOptions.getCustomSerializer());
+        this.itemSerializer = client.getEffectiveItemSerializer(requestOptions.getCustomItemSerializer());
         this.operationContextAndListener = ImplementationBridgeHelpers
                 .CosmosChangeFeedRequestOptionsHelper
                 .getCosmosChangeFeedRequestOptionsAccessor()

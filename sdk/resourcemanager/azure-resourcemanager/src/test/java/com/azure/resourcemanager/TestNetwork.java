@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeering;
 import com.azure.resourcemanager.network.models.NetworkPeeringGatewayUse;
@@ -23,6 +25,8 @@ import org.junit.jupiter.api.Assertions;
 
 /** Test of virtual network management. */
 public class TestNetwork {
+    private static final ClientLogger LOGGER = new ClientLogger(TestNetwork.class);
+
     /** Test of network with subnets. */
     public class WithSubnets extends TestTemplate<Network, Networks> {
         @Override
@@ -484,13 +488,13 @@ public class TestNetwork {
 
             // Output services with access
             Map<ServiceEndpointType, List<Region>> services = subnet.servicesWithAccess();
-            if (services.size() > 0) {
+            if (!services.isEmpty()) {
                 info.append("\n\tServices with access");
                 for (Map.Entry<ServiceEndpointType, List<Region>> service : services.entrySet()) {
-                    info
-                        .append("\n\t\tService: ")
+                    info.append("\n\t\tService: ")
                         .append(service.getKey())
-                        .append(" Regions: " + service.getValue() + "");
+                        .append(" Regions: ")
+                        .append(service.getValue());
                 }
             }
         }
@@ -512,6 +516,6 @@ public class TestNetwork {
                 .append(peering.gatewayUse());
         }
 
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 }

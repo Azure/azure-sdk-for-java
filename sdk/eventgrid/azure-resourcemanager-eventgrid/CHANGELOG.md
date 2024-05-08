@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.6 (Unreleased)
+## 1.2.0-beta.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,368 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.6 (2024-04-28)
+
+- Azure Resource Manager EventGrid client library for Java. This package contains Microsoft Azure SDK for EventGrid Management SDK. Azure EventGrid Management Client. Package tag package-2024-06-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.UpdateTopicsConfigurationInfo` was added
+
+* `models.CustomJwtAuthenticationManagedIdentityType` was added
+
+* `models.CustomJwtAuthenticationSettings` was added
+
+* `models.CustomDomainConfiguration` was added
+
+* `models.CustomDomainValidationState` was added
+
+* `models.CustomJwtAuthenticationManagedIdentity` was added
+
+* `models.CustomDomainOwnershipValidationResult` was added
+
+* `models.SubscriptionFullUrl` was added
+
+* `models.NetworkSecurityPerimeterSubscription` was added
+
+* `models.CustomDomainIdentity` was added
+
+* `models.CustomDomainIdentityType` was added
+
+* `models.IssuerCertificateInfo` was added
+
+#### `models.PartnerDestinationInfo` was modified
+
+* `endpointType()` was added
+
+#### `models.PartnerUpdateDestinationInfo` was modified
+
+* `endpointType()` was added
+
+#### `models.Subscription$Definition` was modified
+
+* `withExpirationTimeUtc(java.time.OffsetDateTime)` was added
+
+#### `models.StringNotBeginsWithAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StringEndsWithFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.Namespaces` was modified
+
+* `validateCustomDomainOwnership(java.lang.String,java.lang.String)` was added
+* `validateCustomDomainOwnership(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.WebhookEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.StringEndsWithAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NumberInRangeAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.IsNotNullAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.BoolEqualsFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.UpdateTopicSpacesConfigurationInfo` was modified
+
+* `withCustomDomains(java.util.List)` was added
+* `customDomains()` was added
+
+#### `models.StringNotEndsWithFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.ServiceBusQueueEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.IsNullOrUndefinedAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NumberLessThanFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StringNotBeginsWithFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StringContainsFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.Filter` was modified
+
+* `operatorType()` was added
+
+#### `models.StringNotInFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.PartnerClientAuthentication` was modified
+
+* `clientAuthenticationType()` was added
+
+#### `models.Namespace` was modified
+
+* `validateCustomDomainOwnership()` was added
+* `validateCustomDomainOwnership(com.azure.core.util.Context)` was added
+
+#### `models.NamespaceTopicEventSubscriptions` was modified
+
+* `getFullUrl(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getFullUrlWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.NumberNotInFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StringBeginsWithAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.TopicsConfiguration` was modified
+
+* `customDomains()` was added
+* `withCustomDomains(java.util.List)` was added
+
+#### `models.DeliveryAttributeMapping` was modified
+
+* `type()` was added
+
+#### `models.StringNotEndsWithAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NumberGreaterThanAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StringBeginsWithFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.BoolEqualsAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StringNotInAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NumberLessThanAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StringInFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.TopicSpacesConfiguration` was modified
+
+* `customDomains()` was added
+* `withCustomDomains(java.util.List)` was added
+
+#### `models.StaticDeliveryAttributeMapping` was modified
+
+* `type()` was added
+
+#### `models.EventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.AzureFunctionEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.DeadLetterDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.DynamicDeliveryAttributeMapping` was modified
+
+* `type()` was added
+
+#### `models.NumberInFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StorageBlobDeadLetterDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.NumberLessThanOrEqualsFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StaticStringRoutingEnrichment` was modified
+
+* `valueType()` was added
+
+#### `models.StringNotContainsFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.WebhookPartnerDestinationInfo` was modified
+
+* `endpointType()` was added
+
+#### `models.Subscription$Update` was modified
+
+* `withExpirationTimeUtc(java.time.OffsetDateTime)` was added
+
+#### `models.NumberGreaterThanOrEqualsFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.JsonInputSchemaMapping` was modified
+
+* `inputSchemaMappingType()` was added
+
+#### `models.PartnerEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.StorageQueueEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.IsNotNullFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.StringInAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.ClientAuthenticationSettings` was modified
+
+* `withCustomJwtAuthentication(models.CustomJwtAuthenticationSettings)` was added
+* `customJwtAuthentication()` was added
+
+#### `models.PushInfo` was modified
+
+* `withDestination(models.EventSubscriptionDestination)` was added
+* `destination()` was added
+
+#### `models.StringContainsAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.Namespace$Update` was modified
+
+* `withTopicsConfiguration(models.UpdateTopicsConfigurationInfo)` was added
+
+#### `models.NumberNotInRangeAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NamespaceUpdateParameters` was modified
+
+* `topicsConfiguration()` was added
+* `withTopicsConfiguration(models.UpdateTopicsConfigurationInfo)` was added
+
+#### `models.NumberGreaterThanFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NumberNotInAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.MonitorAlertEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.Subscription` was modified
+
+* `getFullUrl()` was added
+* `getFullUrlWithResponse(com.azure.core.util.Context)` was added
+* `expirationTimeUtc()` was added
+
+#### `models.ServiceBusTopicEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.WebhookUpdatePartnerDestinationInfo` was modified
+
+* `endpointType()` was added
+
+#### `models.NamespaceTopicEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.AdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.SubscriptionUpdateParameters` was modified
+
+* `expirationTimeUtc()` was added
+* `withExpirationTimeUtc(java.time.OffsetDateTime)` was added
+
+#### `models.StaticRoutingEnrichment` was modified
+
+* `valueType()` was added
+
+#### `models.AzureADPartnerClientAuthentication` was modified
+
+* `clientAuthenticationType()` was added
+
+#### `models.NumberGreaterThanOrEqualsAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.HybridConnectionEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.NumberInRangeFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.IsNullOrUndefinedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.InputSchemaMapping` was modified
+
+* `inputSchemaMappingType()` was added
+
+#### `models.StringNotContainsAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.EventHubEventSubscriptionDestination` was modified
+
+* `endpointType()` was added
+
+#### `models.NumberLessThanOrEqualsAdvancedFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NumberNotInRangeFilter` was modified
+
+* `operatorType()` was added
+
+#### `models.NumberInAdvancedFilter` was modified
+
+* `operatorType()` was added
 
 ## 1.2.0-beta.5 (2023-11-16)
 

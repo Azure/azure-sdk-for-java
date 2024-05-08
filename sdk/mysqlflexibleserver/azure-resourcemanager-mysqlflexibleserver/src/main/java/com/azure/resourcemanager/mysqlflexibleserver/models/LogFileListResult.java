@@ -9,7 +9,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.LogFileInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A List of logFiles. */
+/**
+ * A List of logFiles.
+ */
 @Fluent
 public final class LogFileListResult {
     /*
@@ -24,13 +26,15 @@ public final class LogFileListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LogFileListResult class. */
+    /**
+     * Creates an instance of LogFileListResult class.
+     */
     public LogFileListResult() {
     }
 
     /**
      * Get the value property: The list of logFiles in a server.
-     *
+     * 
      * @return the value value.
      */
     public List<LogFileInner> value() {
@@ -39,7 +43,7 @@ public final class LogFileListResult {
 
     /**
      * Set the value property: The list of logFiles in a server.
-     *
+     * 
      * @param value the value value to set.
      * @return the LogFileListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class LogFileListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class LogFileListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LogFileListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class LogFileListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

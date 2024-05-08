@@ -177,7 +177,7 @@ public final class CosmosBulkExecutionOptions {
      * Gets the custom item serializer defined for this instance of request options
      * @return the custom item serializer
      */
-    public CosmosItemSerializer getCustomSerializer() {
+    public CosmosItemSerializer getCustomItemSerializer() {
         return this.customSerializer;
     }
 
@@ -185,11 +185,11 @@ public final class CosmosBulkExecutionOptions {
      * Allows specifying a custom item serializer to be used for this operation. If the serializer
      * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
      * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
-     * @param itemSerializerOverride the custom item serializer for this operation
+     * @param customItemSerializer the custom item serializer for this operation
      * @return  the CosmosItemRequestOptions.
      */
-    public CosmosBulkExecutionOptions setCustomSerializer(CosmosItemSerializer itemSerializerOverride) {
-        this.customSerializer = itemSerializerOverride;
+    public CosmosBulkExecutionOptions setCustomItemSerializer(CosmosItemSerializer customItemSerializer) {
+        this.customSerializer = customItemSerializer;
 
         return this;
     }

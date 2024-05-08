@@ -9,29 +9,23 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationListFor
 import com.azure.resourcemanager.mysqlflexibleserver.models.ResetAllToDefault;
 import java.util.Arrays;
 
-/** Samples for Configurations BatchUpdate. */
+/**
+ * Samples for Configurations BatchUpdate.
+ */
 public final class ConfigurationsBatchUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2021-12-01-preview/examples/ConfigurationsBatchUpdate.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2023-06-01-preview/examples/ConfigurationsBatchUpdate.json
      */
     /**
      * Sample code: ConfigurationList.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void configurationList(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager
-            .configurations()
-            .batchUpdate(
-                "testrg",
-                "mysqltestserver",
-                new ConfigurationListForBatchUpdate()
-                    .withValue(
-                        Arrays
-                            .asList(
-                                new ConfigurationForBatchUpdate().withName("event_scheduler").withValue("OFF"),
-                                new ConfigurationForBatchUpdate().withName("div_precision_increment").withValue("8")))
-                    .withResetAllToDefault(ResetAllToDefault.FALSE),
-                com.azure.core.util.Context.NONE);
+        manager.configurations()
+            .batchUpdate("testrg", "mysqltestserver", new ConfigurationListForBatchUpdate()
+                .withValue(Arrays.asList(new ConfigurationForBatchUpdate().withName("event_scheduler").withValue("OFF"),
+                    new ConfigurationForBatchUpdate().withName("div_precision_increment").withValue("8")))
+                .withResetAllToDefault(ResetAllToDefault.FALSE), com.azure.core.util.Context.NONE);
     }
 }

@@ -3400,7 +3400,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions) {
 
         CosmosItemSerializer requestOptionsItemSerializer =
-            queryRequestOptions != null ? queryRequestOptions.getCustomSerializer() :  null;
+            queryRequestOptions != null ? queryRequestOptions.getCustomItemSerializer() :  null;
 
         return this.getEffectiveItemSerializer(requestOptionsItemSerializer);
     }
@@ -3408,7 +3408,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosItemRequestOptions itemRequestOptions) {
 
         CosmosItemSerializer requestOptionsItemSerializer =
-            itemRequestOptions != null ? itemRequestOptions.getCustomSerializer() :  null;
+            itemRequestOptions != null ? itemRequestOptions.getCustomItemSerializer() :  null;
 
         return this.getEffectiveItemSerializer(requestOptionsItemSerializer);
     }
