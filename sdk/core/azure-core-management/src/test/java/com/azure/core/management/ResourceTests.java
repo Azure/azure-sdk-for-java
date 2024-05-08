@@ -6,6 +6,7 @@ package com.azure.core.management;
 import com.azure.core.management.implementation.ProxyResourceAccessHelper;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.json.ReadValueCallback;
@@ -13,7 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 public class ResourceTests {
 
@@ -127,6 +134,55 @@ public class ResourceTests {
         }
     }
 
+    private static class SubResourceResource extends SubResource {
+        private SubResource subResource;
+        private List<SubResource> subResourceList;
+        private SubResourceResource subResourceResource;
+        private List<SubResourceResource> subResourceResourceList;
+
+        public SubResource subResource() {
+            return subResource;
+        }
+
+        public SubResourceResource withSubResource(SubResource subResource) {
+            this.subResource = subResource;
+            return this;
+        }
+
+        public List<SubResource> subResourceList() {
+            return subResourceList;
+        }
+
+        public SubResourceResource withSubResourceList(List<SubResource> subResourceList) {
+            this.subResourceList = subResourceList;
+            return this;
+        }
+
+        public SubResourceResource subResourceResource() {
+            return subResourceResource;
+        }
+
+        public SubResourceResource withSubResourceResource(SubResourceResource subResourceResource) {
+            this.subResourceResource = subResourceResource;
+            return this;
+        }
+
+        public List<SubResourceResource> subResourceResourceList() {
+            return subResourceResourceList;
+        }
+
+        public SubResourceResource withSubResourceResourceList(List<SubResourceResource> subResourceResourceList) {
+            this.subResourceResourceList = subResourceResourceList;
+            return this;
+        }
+
+        @Override
+        public SubResourceResource withId(String id) {
+            super.withId(id);
+            return this;
+        }
+    }
+
     @Test
     public void testSerialization() throws IOException {
         String cosmosAccountJson
@@ -190,6 +246,29 @@ public class ResourceTests {
         Assertions.assertEquals("Microsoft.KeyVault/vaults", vaultResource.type());
         Assertions.assertEquals(0, vaultResource.tags().size());
         Assertions.assertNull(vaultResource.systemData());
+
+        // test SubResource
+        SubResourceResource subResourceResourceRoot = new SubResourceResource();
+        SubResource subResource = new SubResource().withId(UUID.randomUUID().toString());
+        SubResourceResource subResourceResourceNest = new SubResourceResource().withId(UUID.randomUUID().toString());
+        subResourceResourceRoot
+            .withSubResource(subResource)
+            .withSubResourceList(Collections.singletonList(subResource))
+            .withSubResourceResource(subResourceResourceNest)
+            .withSubResourceResourceList(Collections.singletonList(subResourceResourceNest));
+
+        String json = serializeToString(subResourceResourceRoot);
+        SubResourceResource subResourceResourceRootDeserialized = deserialize(json, SubResourceResource::fromJson);
+        Assertions.assertEquals(subResource.id(), subResourceResourceRootDeserialized.subResource().id());
+        Assertions.assertEquals(subResource.id(), subResourceResourceRootDeserialized.subResourceList().iterator().next().id());
+        Assertions.assertEquals(subResourceResourceNest.id(), subResourceResourceRootDeserialized.subResourceResource().id());
+        Assertions.assertEquals(subResourceResourceNest.id(), subResourceResourceRootDeserialized.subResourceResourceList().iterator().next().id());
+    }
+
+    private static <T extends JsonSerializable<T>> String serializeToString(T serializable) throws IOException {
+        StringWriter writer = new StringWriter();
+        serializable.toJson(JsonProviders.createWriter(writer));
+        return writer.toString();
     }
 
     private static <T> T deserialize(String json, ReadValueCallback<JsonReader, T> reader) throws IOException {
