@@ -7,6 +7,7 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -37,12 +38,19 @@ public final class HttpPipeline {
         Objects.requireNonNull(pipelinePolicies, "'pipelinePolicies' cannot be null.");
 
         this.httpClient = httpClient;
-        this.pipelinePolicies = Collections.unmodifiableList(pipelinePolicies);
+
+        List<HttpPipelinePolicy> clonedPolicies = new ArrayList<>(pipelinePolicies.size());
+
+        for (HttpPipelinePolicy policy : pipelinePolicies) {
+            clonedPolicies.add(policy.clone());
+        }
 
         // Set each policy's next policy.
-        for (int i = 0; i < pipelinePolicies.size() - 1; i++) {
-            pipelinePolicies.get(i).setNextPolicy(pipelinePolicies.get(i + 1));
+        for (int i = 0; i < clonedPolicies.size() - 1; i++) {
+            clonedPolicies.get(i).setNextPolicy(clonedPolicies.get(i + 1));
         }
+
+        this.pipelinePolicies = Collections.unmodifiableList(clonedPolicies);
     }
 
     /**

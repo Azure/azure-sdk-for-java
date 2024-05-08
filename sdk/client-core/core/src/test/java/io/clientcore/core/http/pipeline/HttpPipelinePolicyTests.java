@@ -23,36 +23,31 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class HttpPipelinePolicyTests {
     @Test
     public void verifySend() throws IOException {
-        SyncPolicy policy1 = new SyncPolicy();
-        SyncPolicy policy2 = new SyncPolicy();
         URL url = createUrl("http://localhost/");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
-            .policies(policy1, policy2)
+            .policies(new SyncPolicy(), new SyncPolicy())
             .build();
 
-
         pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
-
-        assertEquals(1, policy1.syncCalls.get());
-        assertEquals(1, policy2.syncCalls.get());
+        pipeline.getPolicies()
+            .forEach(policy -> assertEquals(1, ((SyncPolicy) policy).syncCalls.get()));
     }
 
     @Test
     public void defaultImplementationShouldCallRightStack() throws IOException {
-        DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
         URL url = createUrl("http://localhost/");
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
-            .policies(policyWithDefaultSyncImplementation)
+            .policies(new DefaultImplementationSyncPolicy())
             .build();
 
         pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
 
-        assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
-        assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
+        pipeline.getPolicies()
+            .forEach(policy -> assertEquals(1, ((DefaultImplementationSyncPolicy) policy).syncCalls.get()));
     }
 
     /**

@@ -28,7 +28,7 @@ public abstract class HttpPipelinePolicy implements Cloneable {
      * @return A response produced from sending the HTTP request.
      */
     public Response<?> process(HttpRequest httpRequest, HttpPipeline httpPipeline) {
-        if (this.nextPolicy == null) {
+        if (nextPolicy == null) {
             try {
                 return httpPipeline.getHttpClient().send(httpRequest);
             } catch (IOException e) {
