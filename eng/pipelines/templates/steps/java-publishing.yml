@@ -107,10 +107,14 @@ steps:
           -Path ${{ parameters.OutputDirectory }}
           -InformationAction Continue
     - ${{if and(eq(parameters.ShouldPublish, 'true'), ne(parameters.StageOnly, 'true'))}}:
-      - task: EsrpRelease@4
+      - task: EsrpRelease@7
         displayName: 'Publish to ESRP'
         inputs:
-          ConnectedServiceName: 'ESRP Release Service'
+          ConnectedServiceName: 'Azure SDK Engineering System'
+          ClientId: '5f81938c-2544-4f1f-9251-dd9de5b8a81b'
+          KeyVaultName: 'AzureSDKEngKeyVault'
+          AuthCertName: 'azure-sdk-esrp-release-auth-certificate'
+          SignCertName: 'azure-sdk-esrp-release-sign-certificate'
           Intent: 'PackageDistribution'
           ContentType: 'Maven'
           FolderLocation: ${{ parameters.OutputDirectory }}
