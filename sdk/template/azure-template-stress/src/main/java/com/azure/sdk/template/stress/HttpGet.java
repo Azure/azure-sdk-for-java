@@ -3,28 +3,26 @@
 
 package com.azure.sdk.template.stress;
 
-import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.sdk.template.stress.util.TelemetryHelper;
-import io.clientcore.core.http.client.DefaultHttpClientBuilder;
-import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpLogOptions;
-import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
-import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.http.pipeline.HttpRetryPolicy;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
-import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -61,40 +59,41 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     private void runInternal() {
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
-        HttpRequest request = createRequest();
-        try (Response<?> response = pipeline.send(request)) {
-            response.getBody().toBytes();
-        } catch (IOException e) {
-            new UncheckedIOException(e);
+        try (HttpResponse response = pipeline.sendSync(createRequest(), Context.NONE)) {
+            response.getBodyAsBinaryData().toBytes();
         }
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.error(new UnsupportedOperationException("Not implemented"));
+        return TELEMETRY_HELPER.instrumentRunAsync(runInternalAsync());
+    }
+
+    private Mono<Void> runInternalAsync() {
+        // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
+        return Mono.usingWhen(pipeline.send(createRequest()),
+                response -> response.getBody().then(),
+                response -> Mono.fromRunnable(response::close));
     }
 
     private HttpRequest createRequest() {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-stress");
-        request.getHeaders().set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
+        request.getHeaders().set(HttpHeaderName.X_MS_CLIENT_REQUEST_ID, String.valueOf(clientRequestId.incrementAndGet()));
         return request;
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {
         HttpLogOptions logOptions = new HttpLogOptions()
-            .setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
+            .setLogLevel(HttpLogDetailLevel.HEADERS);
 
-        HttpPipelineBuilder builder = new HttpPipelineBuilder()
-            .policies(new HttpRetryPolicy(), new HttpLoggingPolicy(logOptions));
+        ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
-            builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());
-        } else if (options.getHttpClient() == PerfStressOptions.HttpClientType.JDK) {
-            builder.httpClient(new JdkHttpClientProvider().getSharedInstance());
-        } else {
-            builder.httpClient(new DefaultHttpClientBuilder().build());
-        }
-        return builder;
+        policies.add(new RetryPolicy());
+        policies.add(new HttpLoggingPolicy(logOptions));
+
+        return new HttpPipelineBuilder()
+            .httpClient(super.httpClient)
+            .policies(policies.toArray(new HttpPipelinePolicy[0]));
     }
 }

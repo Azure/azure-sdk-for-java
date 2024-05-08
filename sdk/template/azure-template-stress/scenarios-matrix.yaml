@@ -8,7 +8,8 @@ matrix:
   image:
     - dockerfiles/java11
     - dockerfiles/java21
-  httpClient: [default, okhttp, jdk]
+  httpClient: [netty, okhttp, jdk, vertx]
+  sync: [true, false]
   scenarios:
     get:
       imageBuildDir: ..\..\..\
