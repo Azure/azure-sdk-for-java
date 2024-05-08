@@ -51,6 +51,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     private volatile List<String> excludeRegions;
     private volatile List<String> unavailableRegionsForPartition;
     private volatile boolean isRequestHedged = false;
+    public volatile boolean isRequestSendingStarted = false;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();

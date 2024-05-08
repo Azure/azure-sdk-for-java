@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IGlobalPartitionEndpointManager;
@@ -192,8 +193,8 @@ public class StoreClient implements IStoreClient {
             new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
         rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
 
-        IGlobalPartitionEndpointManager globalPartitionEndpointManager = addressResolver.getGlobalPartitionEndpointManager();
-        globalPartitionEndpointManager.tryBookmarkRegionSuccessForPartitionKeyRange(request);
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker = addressResolver.getGlobalPartitionEndpointManagerForCircuitBreaker();
+        globalPartitionEndpointManagerForCircuitBreaker.tryBookmarkRegionSuccessForPartitionKeyRange(request);
 
         return rxDocumentServiceResponse;
     }

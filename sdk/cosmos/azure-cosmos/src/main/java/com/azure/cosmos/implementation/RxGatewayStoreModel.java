@@ -61,7 +61,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     private final HttpClient httpClient;
     private final QueryCompatibilityMode queryCompatibilityMode;
     private final GlobalEndpointManager globalEndpointManager;
-    private final IGlobalPartitionEndpointManager globalPartitionEndpointManager;
+    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager;
     private ConsistencyLevel defaultConsistencyLevel;
     private ISessionContainer sessionContainer;
     private ThroughputControlStore throughputControlStore;
@@ -80,7 +80,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
         ApiType apiType,
-        IGlobalPartitionEndpointManager globalPartitionEndpointManager) {
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager) {
         this.clientContext = clientContext;
         this.defaultHeaders = new HashMap<>();
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
@@ -248,7 +248,9 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
-            Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
+            Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux().doOnSubscribe(ignore -> {
+                request.requestContext.isRequestSendingStarted = true;
+            });
 
             HttpRequest httpRequest = new HttpRequest(method,
                 requestUri,

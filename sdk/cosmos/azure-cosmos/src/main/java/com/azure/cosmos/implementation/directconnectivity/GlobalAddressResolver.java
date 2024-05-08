@@ -11,8 +11,8 @@ import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.IGlobalPartitionEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -48,7 +48,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private final static int MaxBackupReadRegions = 3;
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final GlobalEndpointManager endpointManager;
-    private final IGlobalPartitionEndpointManager globalPartitionEndpointManager;
+    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
     private final Protocol protocol;
     private final IAuthorizationTokenProvider tokenProvider;
     private final UserAgentContainer userAgentContainer;
@@ -76,7 +76,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         GatewayServiceConfigurationReader serviceConfigReader,
         ConnectionPolicy connectionPolicy,
         ApiType apiType,
-        IGlobalPartitionEndpointManager globalPartitionEndpointManager) {
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.httpClient = httpClient;
         this.endpointManager = endpointManager;
@@ -93,7 +93,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
         this.apiType = apiType;
-        this.globalPartitionEndpointManager = globalPartitionEndpointManager;
+        this.globalPartitionEndpointManagerForCircuitBreaker = globalPartitionEndpointManagerForCircuitBreaker;
 
         for (URI endpoint : endpointManager.getWriteEndpoints()) {
             this.getOrAddEndpoint(endpoint);
@@ -250,8 +250,8 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     @Override
-    public IGlobalPartitionEndpointManager getGlobalPartitionEndpointManager() {
-        return this.globalPartitionEndpointManager;
+    public GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
+        return this.globalPartitionEndpointManagerForCircuitBreaker;
     }
 
     @Override
@@ -299,7 +299,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.connectionPolicy,
                 this.proactiveOpenConnectionsProcessor,
                 this.gatewayServerErrorInjector);
-            AddressResolver addressResolver = new AddressResolver(this.globalPartitionEndpointManager);
+            AddressResolver addressResolver = new AddressResolver(this.globalPartitionEndpointManagerForCircuitBreaker);
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();
             cache.addressCache = gatewayAddressCache;

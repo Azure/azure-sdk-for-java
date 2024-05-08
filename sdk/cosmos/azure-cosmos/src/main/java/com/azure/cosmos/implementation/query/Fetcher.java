@@ -3,8 +3,14 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -13,11 +19,15 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -33,6 +43,9 @@ abstract class Fetcher<T> {
     private final AtomicInteger maxItemCount;
     private final AtomicInteger top;
     private final List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker;
+    private final Set<PartitionKeyRange> pkRangesWithSuccessfulRequests;
+    private final GlobalEndpointManager globalEndpointManager;
+    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
 
     public Fetcher(
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
@@ -40,7 +53,10 @@ abstract class Fetcher<T> {
         int top,
         int maxItemCount,
         OperationContextAndListenerTuple operationContext,
-        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
+        Set<PartitionKeyRange> pkRangesWithSuccessfulRequests,
+        GlobalEndpointManager globalEndpointManager,
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
         checkNotNull(executeFunc, "Argument 'executeFunc' must not be null.");
 
@@ -64,6 +80,9 @@ abstract class Fetcher<T> {
         }
         this.shouldFetchMore = new AtomicBoolean(true);
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
+        this.pkRangesWithSuccessfulRequests = pkRangesWithSuccessfulRequests;
+        this.globalEndpointManager = globalEndpointManager;
+        this.globalPartitionEndpointManagerForCircuitBreaker = globalPartitionEndpointManagerForCircuitBreaker;
     }
 
     public final boolean shouldFetchMore() {
@@ -154,7 +173,10 @@ abstract class Fetcher<T> {
                 updateState(rsp, request);
                 return rsp;
             })
-            .doOnNext(response -> completed.set(true))
+            .doOnNext(response -> {
+                completed.set(true);
+                this.pkRangesWithSuccessfulRequests.add(request.requestContext.resolvedPartitionKeyRange);
+            })
             .doOnError(throwable -> completed.set(true))
             .doFinally(signalType -> {
                 // If the signal type is not cancel(which means success or error), we do not need to tracking the diagnostics here
@@ -167,6 +189,22 @@ abstract class Fetcher<T> {
                     || this.cancelledRequestDiagnosticsTracker == null
                     || completed.get()) {
                     return;
+                }
+
+                if (request.requestContext.isRequestCancelledOnTimeout().get() &&
+                    Configs.isPartitionLevelCircuitBreakerEnabled() &&
+                    !request.requestContext.isRequestHedged() &&
+//                    request.requestContext.isRequestSendingStarted &&
+                    !this.pkRangesWithSuccessfulRequests.contains(request.requestContext.resolvedPartitionKeyRange)) {
+
+                    if (this.globalEndpointManager != null && this.globalPartitionEndpointManagerForCircuitBreaker != null) {
+                        Optional<String> firstContactedRegion = request.requestContext.cosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames().stream().findFirst();
+
+                        UnmodifiableList<URI> endpoints = request.isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
+                        List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, request.getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
+
+                        this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(request, filteredEndpoint.get(0));
+                    }
                 }
 
                 if (request.requestContext != null && request.requestContext.cosmosDiagnostics != null) {

@@ -3,7 +3,10 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -19,6 +22,7 @@ import reactor.util.concurrent.Queues;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -35,7 +39,9 @@ public class Paginator {
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
-        int maxPageSize) {
+        int maxPageSize,
+        GlobalEndpointManager globalEndpointManager,
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
         int top = -1;
         return getPaginatedQueryResultAsObservable(
@@ -52,7 +58,13 @@ public class Paginator {
             ImplementationBridgeHelpers
                 .CosmosQueryRequestOptionsHelper
                 .getCosmosQueryRequestOptionsAccessor()
-                .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions));
+                .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .getPkRangesWithSuccessfulRequests(cosmosQueryRequestOptions),
+            globalEndpointManager,
+            globalPartitionEndpointManagerForCircuitBreaker);
     }
 
     public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
@@ -63,7 +75,10 @@ public class Paginator {
         int maxPageSize,
         int maxPreFetchCount,
         OperationContextAndListenerTuple operationContext,
-        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
+        Set<PartitionKeyRange> pkRangesWithSuccessfulRequests,
+        GlobalEndpointManager globalEndpointManager,
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
         return getPaginatedQueryResultAsObservable(
             continuationToken,
@@ -74,7 +89,10 @@ public class Paginator {
             maxPreFetchCount,
             false,
             operationContext,
-            cancelledRequestDiagnosticsTracker);
+            cancelledRequestDiagnosticsTracker,
+            pkRangesWithSuccessfulRequests,
+            globalEndpointManager,
+            globalPartitionEndpointManagerForCircuitBreaker);
     }
 
     public static <T> Flux<FeedResponse<T>> getChangeFeedQueryResultAsObservable(
@@ -137,7 +155,10 @@ public class Paginator {
         int preFetchCount,
         boolean isChangeFeed,
         OperationContextAndListenerTuple operationContext,
-        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
+        Set<PartitionKeyRange> pkRangesWithSuccessfulRequests,
+        GlobalEndpointManager globalEndpointManager,
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
         return getPaginatedQueryResultAsObservable(
             () -> new ServerSideOnlyContinuationFetcherImpl<>(
@@ -148,7 +169,10 @@ public class Paginator {
                 top,
                 maxPageSize,
                 operationContext,
-                cancelledRequestDiagnosticsTracker),
+                cancelledRequestDiagnosticsTracker,
+                pkRangesWithSuccessfulRequests,
+                globalEndpointManager,
+                globalPartitionEndpointManagerForCircuitBreaker),
             preFetchCount);
     }
 

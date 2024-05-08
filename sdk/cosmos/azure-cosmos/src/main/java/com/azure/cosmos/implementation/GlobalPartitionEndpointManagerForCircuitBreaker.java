@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalPartitionEndpointManager {
+public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
@@ -36,65 +36,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
 
     public void init() {
         this.updateStaleLocationInfo().subscribeOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE).subscribe();
-    }
-
-    @Override
-    public boolean tryMarkRegionAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request) {
-
-        if (request == null) {
-            throw new IllegalArgumentException("request cannot be null!");
-        }
-
-        if (request.requestContext == null) {
-
-            if (logger.isDebugEnabled()) {
-                logger.warn("requestContext is null!");
-            }
-
-            return false;
-        }
-
-        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
-        URI failedLocation = request.requestContext.locationEndpointToRoute;
-
-        if (partitionKeyRange == null) {
-            return false;
-        }
-
-        AtomicBoolean isFailoverPossible = new AtomicBoolean(true);
-        AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
-
-        this.partitionKeyRangeToFailoverInfo.compute(partitionKeyRange, (partitionKeyRangeAsKey, partitionKeyRangeFailoverInfoAsVal) -> {
-
-            if (partitionKeyRangeFailoverInfoAsVal == null) {
-                partitionKeyRangeFailoverInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
-            }
-
-            isFailureThresholdBreached.set(partitionKeyRangeFailoverInfoAsVal.isFailureThresholdBreachedForLocation(request));
-
-            if (isFailureThresholdBreached.get()) {
-
-                UnmodifiableList<URI> applicableEndpoints = request.isReadOnly() ?
-                    this.globalEndpointManager.getApplicableReadEndpoints(request.requestContext.getExcludeRegions()) :
-                    this.globalEndpointManager.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
-
-                isFailoverPossible.set(
-                    partitionKeyRangeFailoverInfoAsVal.areLocationsAvailableForPartitionKeyRange(applicableEndpoints));
-            }
-
-            return partitionKeyRangeFailoverInfoAsVal;
-        });
-
-        // set to true if and only if failure threshold exceeded for the region
-        // and if failover is possible
-        // a failover is only possible when there are available regions left to fail over to
-        if (isFailoverPossible.get()) {
-            return true;
-        }
-
-        // no regions to fail over to
-        this.partitionKeyRangeToFailoverInfo.remove(partitionKeyRange);
-        return false;
     }
 
     public boolean tryMarkRegionAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request, URI failedLocation) {
@@ -127,7 +68,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                 partitionKeyRangeFailoverInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
             }
 
-            isFailureThresholdBreached.set(partitionKeyRangeFailoverInfoAsVal.isFailureThresholdBreachedForLocation(request));
+            isFailureThresholdBreached.set(partitionKeyRangeFailoverInfoAsVal.isFailureThresholdBreachedForLocation(failedLocation));
 
             if (isFailureThresholdBreached.get()) {
 
@@ -154,7 +95,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         return false;
     }
 
-    @Override
     public boolean tryBookmarkRegionSuccessForPartitionKeyRange(RxDocumentServiceRequest request) {
 
         if (request == null) {
@@ -251,39 +191,21 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
             this.locationEndpointToFailureMetricsForPartition = new ConcurrentHashMap<>();
         }
 
-        public boolean isFailureThresholdBreachedForLocation(RxDocumentServiceRequest request) {
+        public boolean isFailureThresholdBreachedForLocation(URI locationWithFailure) {
 
             AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
 
-            if (request.locationLevelCircuitBreakerRequestContext == null) {
-                return false;
-            }
+            this.locationEndpointToFailureMetricsForPartition.compute(locationWithFailure, (locationAsKey, failureMetricsForPartitionAsVal) -> {
 
-            if (!request.locationLevelCircuitBreakerRequestContext.getFailuresForAllLocations().isEmpty()) {
-
-                ConcurrentHashMap<URI, ConcurrentHashMap<ErrorKey, Integer>> failuresForAllLocations
-                    = request.locationLevelCircuitBreakerRequestContext.getFailuresForAllLocations();
-
-                for (Map.Entry<URI, ConcurrentHashMap<ErrorKey, Integer>> failuresPerLocation : failuresForAllLocations.entrySet()) {
-
-                    URI location = failuresPerLocation.getKey();
-                    ConcurrentHashMap<ErrorKey, Integer> errorCounts = failuresPerLocation.getValue();
-
-                    this.locationEndpointToFailureMetricsForPartition.compute(location, (locationAsKey, failureMetricsForPartitionAsVal) -> {
-
-                        if (failureMetricsForPartitionAsVal == null) {
-                            failureMetricsForPartitionAsVal = new FailureMetricsForPartition();
-                        }
-
-                        for (Map.Entry<ErrorKey, Integer> countForError : errorCounts.entrySet()) {
-                            failureMetricsForPartitionAsVal.handleFailure(countForError.getValue());
-                        }
-
-                        isFailureThresholdBreached.set(failureMetricsForPartitionAsVal.isFailureThresholdBreached());
-                        return failureMetricsForPartitionAsVal;
-                    });
+                if (failureMetricsForPartitionAsVal == null) {
+                    failureMetricsForPartitionAsVal = new FailureMetricsForPartition();
                 }
-            }
+
+                failureMetricsForPartitionAsVal.handleFailure(1);
+
+                isFailureThresholdBreached.set(failureMetricsForPartitionAsVal.isFailureThresholdBreached());
+                return failureMetricsForPartitionAsVal;
+            });
 
             return isFailureThresholdBreached.get();
         }

@@ -732,7 +732,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                              GlobalEndpointManager globalEndpointManager,
                                              HttpClient httpClient,
                                              ApiType apiType,
-                                             IGlobalPartitionEndpointManager globalPartitionEndpointManager) {
+                                             GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager) {
         return new RxGatewayStoreModel(
                 this,
                 sessionContainer,
@@ -3651,6 +3651,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return Mono.just(request);
                 }
             }
+
+            @Override
+            public GlobalEndpointManager getGlobalEndpointManager() {
+                return RxDocumentClientImpl.this.getGlobalEndpointManager();
+            }
+
+            @Override
+            public GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
+                return RxDocumentClientImpl.this.globalPartitionEndpointManagerForCircuitBreaker;
+            }
         };
     }
 
@@ -5145,7 +5155,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 nonNullOptions,
                 createRequestFunc,
                 executeFunc,
-                maxPageSize);
+                maxPageSize,
+                this.globalEndpointManager,
+                this.globalPartitionEndpointManagerForCircuitBreaker);
     }
 
     @Override

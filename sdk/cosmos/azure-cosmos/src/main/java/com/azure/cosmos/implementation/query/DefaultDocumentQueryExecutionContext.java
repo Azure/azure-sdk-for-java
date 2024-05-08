@@ -125,7 +125,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
 
         return Paginator
     			.getPaginatedQueryResultAsObservable(
-    			    newCosmosQueryRequestOptions, createRequestFunc, executeFunc, maxPageSize);
+    			    newCosmosQueryRequestOptions, createRequestFunc, executeFunc, maxPageSize, null, null);
     }
 
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {

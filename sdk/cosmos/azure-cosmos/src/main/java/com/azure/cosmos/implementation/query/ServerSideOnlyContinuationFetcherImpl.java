@@ -5,6 +5,9 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -12,6 +15,7 @@ import com.azure.cosmos.models.FeedResponse;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -29,9 +33,12 @@ class ServerSideOnlyContinuationFetcherImpl<T> extends Fetcher<T> {
                                                  int top,
                                                  int maxItemCount,
                                                  OperationContextAndListenerTuple operationContext,
-                                                 List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+                                                 List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
+                                                 Set<PartitionKeyRange> pkRangesWithSuccessfulRequests,
+                                                 GlobalEndpointManager globalEndpointManager,
+                                                 GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
-        super(executeFunc, isChangeFeed, top, maxItemCount, operationContext, cancelledRequestDiagnosticsTracker);
+        super(executeFunc, isChangeFeed, top, maxItemCount, operationContext, cancelledRequestDiagnosticsTracker, pkRangesWithSuccessfulRequests, globalEndpointManager, globalPartitionEndpointManagerForCircuitBreaker);
 
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
         this.createRequestFunc = createRequestFunc;

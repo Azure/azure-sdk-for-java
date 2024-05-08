@@ -79,7 +79,7 @@ public class RxGatewayStoreModelTest {
         QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        IGlobalPartitionEndpointManager globalPartitionEndpointManager = Mockito.mock(IGlobalPartitionEndpointManager.class);
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
         Mockito.doReturn(new URI("https://localhost"))
                 .when(globalEndpointManager).resolveServiceEndpoint(any());
@@ -124,7 +124,7 @@ public class RxGatewayStoreModelTest {
         QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        IGlobalPartitionEndpointManager globalPartitionEndpointManager = Mockito.mock(IGlobalPartitionEndpointManager.class);
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
         Mockito.doReturn(new URI("https://localhost"))
                .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -178,7 +178,7 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(any());
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        IGlobalPartitionEndpointManager globalPartitionEndpointManager = Mockito.mock(IGlobalPartitionEndpointManager.class);
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
         Mockito.doReturn(new URI("https://localhost"))
             .when(globalEndpointManager).resolveServiceEndpoint(any());
@@ -250,7 +250,7 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(any());
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        IGlobalPartitionEndpointManager globalPartitionEndpointManager = Mockito.mock(IGlobalPartitionEndpointManager.class);
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
         Mockito.doReturn(new URI("https://localhost"))
             .when(globalEndpointManager).resolveServiceEndpoint(any());

@@ -52,14 +52,14 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private RxDocumentServiceRequest request;
     private RxCollectionCache rxCollectionCache;
     private final FaultInjectionRequestContext faultInjectionRequestContext;
-    private final IGlobalPartitionEndpointManager globalPartitionEndpointManager;
+    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager;
 
     public ClientRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
                              GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
                              ThrottlingRetryOptions throttlingRetryOptions,
                              RxCollectionCache rxCollectionCache,
-                             IGlobalPartitionEndpointManager globalPartitionEndpointManager) {
+                             GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager) {
 
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
@@ -322,7 +322,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // if partition-level circuit breaker is enabled
         if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
-            this.globalPartitionEndpointManager.tryMarkRegionAsUnavailableForPartitionKeyRange(this.request);
+            this.globalPartitionEndpointManager.tryMarkRegionAsUnavailableForPartitionKeyRange(this.request, this.request.requestContext.locationEndpointToRoute);
         }
 
         // The request has failed with 503, SDK need to decide whether it is safe to retry for write operations

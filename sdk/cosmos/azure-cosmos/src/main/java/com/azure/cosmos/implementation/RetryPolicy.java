@@ -15,7 +15,7 @@ import com.azure.cosmos.implementation.caches.RxCollectionCache;
 public class RetryPolicy implements IRetryPolicyFactory {
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final GlobalEndpointManager globalEndpointManager;
-    private final IGlobalPartitionEndpointManager globalPartitionEndpointManager;
+    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager;
     private final boolean enableEndpointDiscovery;
     private final ThrottlingRetryOptions throttlingRetryOptions;
     private RxCollectionCache rxCollectionCache;
@@ -24,7 +24,7 @@ public class RetryPolicy implements IRetryPolicyFactory {
         DiagnosticsClientContext diagnosticsClientContext,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
-        IGlobalPartitionEndpointManager globalPartitionEndpointManager) {
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager) {
 
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.enableEndpointDiscovery = connectionPolicy.isEndpointDiscoveryEnabled();

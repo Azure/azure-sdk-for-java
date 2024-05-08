@@ -81,6 +81,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
@@ -298,6 +299,10 @@ public class ImplementationBridgeHelpers {
             void setCollectionRid(CosmosQueryRequestOptions options, String collectionRid);
 
             String getCollectionRid(CosmosQueryRequestOptions options);
+
+            void setPkRangesWithSuccessfulRequests(CosmosQueryRequestOptions options, Set<PartitionKeyRange> pkRangesWithSuccessfulRequests);
+
+            Set<PartitionKeyRange> getPkRangesWithSuccessfulRequests(CosmosQueryRequestOptions options);
         }
     }
 

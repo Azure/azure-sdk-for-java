@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -18,8 +19,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -62,6 +65,7 @@ public class CosmosQueryRequestOptions {
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
     private PartitionKeyDefinition partitionKeyDefinition;
     private String collectionRid;
+    private Set<PartitionKeyRange> pkRangesWithSuccessfulRequests = new HashSet<>();
 
     /**
      * Instantiates a new query request options.
@@ -109,6 +113,7 @@ public class CosmosQueryRequestOptions {
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
         this.partitionKeyDefinition = options.partitionKeyDefinition;
         this.collectionRid = options.collectionRid;
+        this.pkRangesWithSuccessfulRequests = options.pkRangesWithSuccessfulRequests;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -723,6 +728,14 @@ public class CosmosQueryRequestOptions {
         this.collectionRid = collectionRid;
     }
 
+    public Set<PartitionKeyRange> getPkRangesWithSuccessfulRequests() {
+        return pkRangesWithSuccessfulRequests;
+    }
+
+    public void setPkRangesWithSuccessfulRequests(Set<PartitionKeyRange> pkRangesWithSuccessfulRequests) {
+        this.pkRangesWithSuccessfulRequests = pkRangesWithSuccessfulRequests;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -901,6 +914,16 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public String getCollectionRid(CosmosQueryRequestOptions options) {
                     return options.getCollectionRid();
+                }
+
+                @Override
+                public void setPkRangesWithSuccessfulRequests(CosmosQueryRequestOptions options, Set<PartitionKeyRange> pkRangesWithSuccessfulRequests) {
+                    options.setPkRangesWithSuccessfulRequests(pkRangesWithSuccessfulRequests);
+                }
+
+                @Override
+                public Set<PartitionKeyRange> getPkRangesWithSuccessfulRequests(CosmosQueryRequestOptions options) {
+                    return options.getPkRangesWithSuccessfulRequests();
                 }
 
                 @Override

@@ -759,6 +759,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
+    @Test(groups = {"multi-master"})
+    public void readHits408InFirstPreferredRegion() {
+
+    }
+
     private static Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();

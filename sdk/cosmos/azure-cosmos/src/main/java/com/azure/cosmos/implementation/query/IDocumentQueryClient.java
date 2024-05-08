@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
@@ -90,4 +92,8 @@ public interface IDocumentQueryClient {
     Mono<RxDocumentServiceRequest> populateFeedRangeHeader(RxDocumentServiceRequest request);
 
     Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions);
+
+    GlobalEndpointManager getGlobalEndpointManager();
+
+    GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
 }

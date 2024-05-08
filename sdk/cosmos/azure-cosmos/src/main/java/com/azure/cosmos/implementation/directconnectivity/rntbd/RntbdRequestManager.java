@@ -636,6 +636,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             if (!record.isCancelled()) {
                 record.setSendingRequestHasStarted();
+                record.args().serviceRequest().requestContext.isRequestSendingStarted = true;
                 this.timestamps.channelWriteAttempted();
 
                 if (this.serverErrorInjector != null) {

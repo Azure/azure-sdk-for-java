@@ -211,8 +211,14 @@ class DocumentProducer<T> {
                         ImplementationBridgeHelpers
                             .CosmosQueryRequestOptionsHelper
                             .getCosmosQueryRequestOptionsAccessor()
-                            .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions)
-                )
+                            .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
+                        ImplementationBridgeHelpers
+                            .CosmosQueryRequestOptionsHelper
+                            .getCosmosQueryRequestOptionsAccessor()
+                            .getPkRangesWithSuccessfulRequests(cosmosQueryRequestOptions),
+                        client.getGlobalEndpointManager(),
+                        client.getGlobalPartitionEndpointManagerForCircuitBreaker()
+                    )
                 .map(rsp -> {
                     this.lastResponseContinuationToken = rsp.getContinuationToken();
                     this.fetchExecutionRangeAccumulator.endFetchRange(rsp.getActivityId(),
