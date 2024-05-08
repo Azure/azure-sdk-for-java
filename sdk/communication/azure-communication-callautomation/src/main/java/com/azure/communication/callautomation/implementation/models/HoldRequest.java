@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for holding participant from the call. */
+/**
+ * The request payload for holding participant from the call.
+ */
 @Fluent
 public final class HoldRequest {
     /*
@@ -23,24 +25,28 @@ public final class HoldRequest {
     private PlaySourceInternal playSourceInfo;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /**
+     * Creates an instance of HoldRequest class.
+     */
+    public HoldRequest() {
+    }
+
+    /**
      * Get the targetParticipant property: Participant to be held from the call.
-     *
+     * 
      * @return the targetParticipant value.
      */
     public CommunicationIdentifierModel getTargetParticipant() {
@@ -49,7 +55,7 @@ public final class HoldRequest {
 
     /**
      * Set the targetParticipant property: Participant to be held from the call.
-     *
+     * 
      * @param targetParticipant the targetParticipant value to set.
      * @return the HoldRequest object itself.
      */
@@ -60,7 +66,7 @@ public final class HoldRequest {
 
     /**
      * Get the playSourceInfo property: Prompt to play while in hold.
-     *
+     * 
      * @return the playSourceInfo value.
      */
     public PlaySourceInternal getPlaySourceInfo() {
@@ -69,7 +75,7 @@ public final class HoldRequest {
 
     /**
      * Set the playSourceInfo property: Prompt to play while in hold.
-     *
+     * 
      * @param playSourceInfo the playSourceInfo value to set.
      * @return the HoldRequest object itself.
      */
@@ -81,7 +87,7 @@ public final class HoldRequest {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -91,7 +97,7 @@ public final class HoldRequest {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the HoldRequest object itself.
      */
@@ -102,9 +108,10 @@ public final class HoldRequest {
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -113,9 +120,10 @@ public final class HoldRequest {
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the HoldRequest object itself.
      */

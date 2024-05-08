@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StartTranscriptionRequestInternal model. */
+/**
+ * The StartTranscriptionRequestInternal model.
+ */
 @Fluent
 public final class StartTranscriptionRequestInternal {
     /*
@@ -17,14 +19,26 @@ public final class StartTranscriptionRequestInternal {
     private String locale;
 
     /*
+     * Endpoint where the custom model was deployed.
+     */
+    @JsonProperty(value = "speechRecognitionModelEndpointId")
+    private String speechRecognitionModelEndpointId;
+
+    /*
      * The value to identify context of the operation.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
+     * Creates an instance of StartTranscriptionRequestInternal class.
+     */
+    public StartTranscriptionRequestInternal() {
+    }
+
+    /**
      * Get the locale property: Defines Locale for the transcription e,g en-US.
-     *
+     * 
      * @return the locale value.
      */
     public String getLocale() {
@@ -33,7 +47,7 @@ public final class StartTranscriptionRequestInternal {
 
     /**
      * Set the locale property: Defines Locale for the transcription e,g en-US.
-     *
+     * 
      * @param locale the locale value to set.
      * @return the StartTranscriptionRequestInternal object itself.
      */
@@ -43,8 +57,29 @@ public final class StartTranscriptionRequestInternal {
     }
 
     /**
+     * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * 
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
+     * 
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the StartTranscriptionRequestInternal object itself.
+     */
+    public StartTranscriptionRequestInternal
+        setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
+        return this;
+    }
+
+    /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -53,7 +88,7 @@ public final class StartTranscriptionRequestInternal {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the StartTranscriptionRequestInternal object itself.
      */

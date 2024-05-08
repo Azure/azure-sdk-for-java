@@ -372,32 +372,6 @@ public class CallMediaAsyncUnitTests {
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
-
-    @Test
-    public void startHoldMusicWithResponseTest() {
-
-        callMedia = getMockCallMedia(200);
-        StartHoldMusicOptions options = new StartHoldMusicOptions(
-            new CommunicationUserIdentifier("id"),
-            new TextSource().setText("audio to play"));
-        StepVerifier.create(
-                callMedia.startHoldMusicWithResponse(options))
-            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void stopHoldMusicWithResponseTest() {
-
-        callMedia = getMockCallMedia(200);
-        StepVerifier.create(
-                callMedia.stopHoldMusicWithResponse(
-                    new CommunicationUserIdentifier("id"),
-                    "operationalContext"
-                ))
-            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-    }
     
     @Test
     public void holdWithResponseTest() {

@@ -4,66 +4,53 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HoldFailed model. */
-@Immutable
+/**
+ * The HoldFailed model.
+ */
+@Fluent
 public final class HoldFailed {
-    /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
-     */
-    @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
-    private String operationContext;
-
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
-    private ResultInformation resultInformation;
-
     /*
      * Call connection ID.
      */
-    @JsonProperty(value = "callConnectionId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "callConnectionId")
     private String callConnectionId;
 
     /*
      * Server call ID.
      */
-    @JsonProperty(value = "serverCallId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "serverCallId")
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation.
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "correlationId")
     private String correlationId;
 
-    /**
-     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
-     * the response event.
-     *
-     * @return the operationContext value.
+    /*
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
-    public String getOperationContext() {
-        return this.operationContext;
-    }
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
+
+    /*
+     * Contains the resulting SIP code, sub-code and message.
+     */
+    @JsonProperty(value = "resultInformation")
+    private ResultInformation resultInformation;
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
+     * Creates an instance of HoldFailed class.
      */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
+    public HoldFailed() {
     }
 
     /**
      * Get the callConnectionId property: Call connection ID.
-     *
+     * 
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
@@ -71,8 +58,19 @@ public final class HoldFailed {
     }
 
     /**
+     * Set the callConnectionId property: Call connection ID.
+     * 
+     * @param callConnectionId the callConnectionId value to set.
+     * @return the HoldFailed object itself.
+     */
+    public HoldFailed setCallConnectionId(String callConnectionId) {
+        this.callConnectionId = callConnectionId;
+        return this;
+    }
+
+    /**
      * Get the serverCallId property: Server call ID.
-     *
+     * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -80,12 +78,75 @@ public final class HoldFailed {
     }
 
     /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
-     *
+     * Set the serverCallId property: Server call ID.
+     * 
+     * @param serverCallId the serverCallId value to set.
+     * @return the HoldFailed object itself.
+     */
+    public HoldFailed setServerCallId(String serverCallId) {
+        this.serverCallId = serverCallId;
+        return this;
+    }
+
+    /**
+     * Get the correlationId property: Correlation ID for event to call correlation.
+     * 
      * @return the correlationId value.
      */
     public String getCorrelationId() {
         return this.correlationId;
+    }
+
+    /**
+     * Set the correlationId property: Correlation ID for event to call correlation.
+     * 
+     * @param correlationId the correlationId value to set.
+     * @return the HoldFailed object itself.
+     */
+    public HoldFailed setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     * 
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
+     * 
+     * @param operationContext the operationContext value to set.
+     * @return the HoldFailed object itself.
+     */
+    public HoldFailed setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * 
+     * @return the resultInformation value.
+     */
+    public ResultInformation getResultInformation() {
+        return this.resultInformation;
+    }
+
+    /**
+     * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * 
+     * @param resultInformation the resultInformation value to set.
+     * @return the HoldFailed object itself.
+     */
+    public HoldFailed setResultInformation(ResultInformation resultInformation) {
+        this.resultInformation = resultInformation;
+        return this;
     }
 }

@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaStreamingUpdate model. */
+/**
+ * The MediaStreamingUpdate model.
+ */
 @Fluent
 public final class MediaStreamingUpdate {
     /*
@@ -29,8 +31,14 @@ public final class MediaStreamingUpdate {
     private MediaStreamingStatusDetails mediaStreamingStatusDetails;
 
     /**
+     * Creates an instance of MediaStreamingUpdate class.
+     */
+    public MediaStreamingUpdate() {
+    }
+
+    /**
      * Get the contentType property: The contentType property.
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -39,7 +47,7 @@ public final class MediaStreamingUpdate {
 
     /**
      * Set the contentType property: The contentType property.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the MediaStreamingUpdate object itself.
      */
@@ -50,7 +58,7 @@ public final class MediaStreamingUpdate {
 
     /**
      * Get the mediaStreamingStatus property: The mediaStreamingStatus property.
-     *
+     * 
      * @return the mediaStreamingStatus value.
      */
     public MediaStreamingStatus getMediaStreamingStatus() {
@@ -59,7 +67,7 @@ public final class MediaStreamingUpdate {
 
     /**
      * Set the mediaStreamingStatus property: The mediaStreamingStatus property.
-     *
+     * 
      * @param mediaStreamingStatus the mediaStreamingStatus value to set.
      * @return the MediaStreamingUpdate object itself.
      */
@@ -70,7 +78,7 @@ public final class MediaStreamingUpdate {
 
     /**
      * Get the mediaStreamingStatusDetails property: The mediaStreamingStatusDetails property.
-     *
+     * 
      * @return the mediaStreamingStatusDetails value.
      */
     public MediaStreamingStatusDetails getMediaStreamingStatusDetails() {
@@ -79,12 +87,12 @@ public final class MediaStreamingUpdate {
 
     /**
      * Set the mediaStreamingStatusDetails property: The mediaStreamingStatusDetails property.
-     *
+     * 
      * @param mediaStreamingStatusDetails the mediaStreamingStatusDetails value to set.
      * @return the MediaStreamingUpdate object itself.
      */
-    public MediaStreamingUpdate setMediaStreamingStatusDetails(
-            MediaStreamingStatusDetails mediaStreamingStatusDetails) {
+    public MediaStreamingUpdate
+        setMediaStreamingStatusDetails(MediaStreamingStatusDetails mediaStreamingStatusDetails) {
         this.mediaStreamingStatusDetails = mediaStreamingStatusDetails;
         return this;
     }

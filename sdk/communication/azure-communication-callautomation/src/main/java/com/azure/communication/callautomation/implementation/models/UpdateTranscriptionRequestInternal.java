@@ -7,18 +7,32 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UpdateTranscriptionRequestInternal model. */
+/**
+ * The UpdateTranscriptionRequestInternal model.
+ */
 @Fluent
 public final class UpdateTranscriptionRequestInternal {
     /*
-     * Defines new locale for transcription.
+     * Sets new locale for transcription.
      */
     @JsonProperty(value = "locale", required = true)
     private String locale;
 
+    /*
+     * Sets Endpoint id where the custom model was deployed.
+     */
+    @JsonProperty(value = "speechRecognitionModelEndpointId")
+    private String speechRecognitionModelEndpointId;
+
     /**
-     * Get the locale property: Defines new locale for transcription.
-     *
+     * Creates an instance of UpdateTranscriptionRequestInternal class.
+     */
+    public UpdateTranscriptionRequestInternal() {
+    }
+
+    /**
+     * Get the locale property: Sets new locale for transcription.
+     * 
      * @return the locale value.
      */
     public String getLocale() {
@@ -26,13 +40,34 @@ public final class UpdateTranscriptionRequestInternal {
     }
 
     /**
-     * Set the locale property: Defines new locale for transcription.
-     *
+     * Set the locale property: Sets new locale for transcription.
+     * 
      * @param locale the locale value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
      */
     public UpdateTranscriptionRequestInternal setLocale(String locale) {
         this.locale = locale;
+        return this;
+    }
+
+    /**
+     * Get the speechRecognitionModelEndpointId property: Sets Endpoint id where the custom model was deployed.
+     * 
+     * @return the speechRecognitionModelEndpointId value.
+     */
+    public String getSpeechRecognitionModelEndpointId() {
+        return this.speechRecognitionModelEndpointId;
+    }
+
+    /**
+     * Set the speechRecognitionModelEndpointId property: Sets Endpoint id where the custom model was deployed.
+     * 
+     * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
+     * @return the UpdateTranscriptionRequestInternal object itself.
+     */
+    public UpdateTranscriptionRequestInternal
+        setSpeechRecognitionModelEndpointId(String speechRecognitionModelEndpointId) {
+        this.speechRecognitionModelEndpointId = speechRecognitionModelEndpointId;
         return this;
     }
 }
