@@ -10,7 +10,6 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
 
@@ -54,7 +53,7 @@ public final class DefaultLogger {
      * name passes in.
      */
     public DefaultLogger(String className) {
-        this(getClassPathFromClassName(className), System.out, fromEnvironment());
+        this(className, System.out, fromEnvironment());
     }
 
     /**
@@ -66,7 +65,7 @@ public final class DefaultLogger {
      * @param logLevel The log level supported by the logger.
      */
     public DefaultLogger(String className, PrintStream logLocation, ClientLogger.LogLevel logLevel) {
-        this.classPath = getClassPathFromClassName(className);
+        this.classPath = className;
         this.logLocation = logLocation;
         this.level = logLevel;
     }
@@ -204,16 +203,6 @@ public final class DefaultLogger {
             int high = value / 10;
             bytes[index++] = (byte) ('0' + high);
             bytes[index] = (byte) ('0' + (value - (10 * high)));
-        }
-    }
-
-    private static String getClassPathFromClassName(String className) {
-        try {
-            return Class.forName(className).getCanonicalName();
-        } catch (ClassNotFoundException | InvalidPathException e) {
-            // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
-            // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
-            return className;
         }
     }
 

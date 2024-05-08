@@ -14,6 +14,7 @@ import io.clientcore.core.util.configuration.Configuration;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.InvalidPathException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -49,7 +50,7 @@ public class ClientLogger {
      * @param clazz Class creating the logger.
      */
     public ClientLogger(Class<?> clazz) {
-        this(clazz.getName());
+        this(clazz, null);
     }
 
     /**
@@ -59,18 +60,8 @@ public class ClientLogger {
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className) {
-        this(className, Collections.emptyMap());
-    }
-
-    /**
-     * Retrieves a logger for the passed class.
-     *
-     * @param clazz Class creating the logger.
-     * @param context Context to be populated on every log record written with this logger.
-     * Objects are serialized with {@code toString()} method.
-     */
-    public ClientLogger(Class<?> clazz, Map<String, Object> context) {
-        this(clazz.getName(), context);
+        logger = new Slf4jLoggerShim(getClassPathFromClassName(className));
+        globalContext = null;
     }
 
     /**
@@ -90,13 +81,13 @@ public class ClientLogger {
      * </pre>
      * <!-- end io.clientcore.core.util.logging.clientlogger#globalcontext -->
      *
-     * @param className Class name creating the logger.
+     * @param clazz Class creating the logger.
      * @param context Context to be populated on every log record written with this logger.
      * Objects are serialized with {@code toString()} method.
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
-    public ClientLogger(String className, Map<String, Object> context) {
-        logger = new Slf4jLoggerShim(className);
+    public ClientLogger(Class<?> clazz, Map<String, Object> context) {
+        logger = new Slf4jLoggerShim(clazz);
         globalContext = context == null ? null : Collections.unmodifiableMap(context);
     }
 
@@ -257,6 +248,16 @@ public class ClientLogger {
      */
     public LoggingEventBuilder atLevel(LogLevel level) {
         return LoggingEventBuilder.create(logger, level, globalContext);
+    }
+
+    private static String getClassPathFromClassName(String className) {
+        try {
+            return Class.forName(className).getCanonicalName();
+        } catch (ClassNotFoundException | InvalidPathException e) {
+            // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
+            // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
+            return className;
+        }
     }
 
     /**
