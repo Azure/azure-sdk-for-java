@@ -73,4 +73,13 @@ public class RecurrenceRange {
     public void setNumberOfRecurrences(int numberOfRecurrences) {
         this.numberOfRecurrences = numberOfRecurrences;
     }
+
+    @Override
+    public String toString() {
+        return "RecurrenceRange{" +
+            "type=" + type +
+            ", endDate=" + endDate +
+            ", numberOfRecurrences=" + numberOfRecurrences +
+            '}';
+    }
 }

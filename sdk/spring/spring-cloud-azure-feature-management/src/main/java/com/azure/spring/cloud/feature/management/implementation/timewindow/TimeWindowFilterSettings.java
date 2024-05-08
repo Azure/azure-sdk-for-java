@@ -64,4 +64,13 @@ public class TimeWindowFilterSettings {
     public Recurrence getRecurrence() {
         return recurrence;
     }
+
+    @Override
+    public String toString() {
+        return "TimeWindowFilterSettings{" +
+            "start=" + start +
+            ", end=" + end +
+            ", recurrence=" + recurrence +
+            '}';
+    }
 }

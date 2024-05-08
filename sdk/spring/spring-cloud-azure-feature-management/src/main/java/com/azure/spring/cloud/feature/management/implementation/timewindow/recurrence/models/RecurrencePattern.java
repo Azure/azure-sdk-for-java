@@ -93,4 +93,14 @@ public class RecurrencePattern {
             this.firstDayOfWeek = firstDayOfWeek;
         }
     }
+
+    @Override
+    public String toString() {
+        return "RecurrencePattern{" +
+            "type=" + type +
+            ", interval=" + interval +
+            ", daysOfWeek=" + daysOfWeek +
+            ", firstDayOfWeek='" + firstDayOfWeek + '\'' +
+            '}';
+    }
 }

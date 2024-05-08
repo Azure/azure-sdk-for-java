@@ -47,4 +47,12 @@ public class Recurrence {
             this.range = range;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Recurrence{" +
+            "pattern=" + pattern +
+            ", range=" + range +
+            '}';
+    }
 }
