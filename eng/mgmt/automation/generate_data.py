@@ -336,6 +336,7 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
     logging.info(command)
     if os.system(command) != 0:
         error_message = ('[COMPILE] Maven build fail.\n'
+                         'One reason of the compilation failure is that the existing code customization in SDK repository being incompatible with the class generated from updated TypeSpec source. In such case, you can ignore the failure, and fix the customization in SDK repository.\n'
                          'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.')
         logging.error(error_message)
         print(error_message, file=sys.stderr)
