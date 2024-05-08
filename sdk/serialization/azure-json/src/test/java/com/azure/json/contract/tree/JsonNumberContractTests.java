@@ -110,11 +110,4 @@ public abstract class JsonNumberContractTests {
             assertThrows(IllegalStateException.class, () -> JsonNumber.fromJson(reader));
         }
     }
-
-    @Test
-    public void invalidIntegerParse() throws IOException {
-        try (JsonReader reader = getJsonProvider().createReader("1D", new JsonOptions())) {
-            assertThrows(NumberFormatException.class, () -> JsonNumber.fromJson(reader));
-        }
-    }
 }

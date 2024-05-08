@@ -44,6 +44,13 @@ public final class JsonNumber extends JsonElement {
     JsonNumber(String value) throws IllegalArgumentException {
         int length = value.length();
         boolean floatingPoint = false;
+        boolean infinity = value.contains("Infinity");
+        if (infinity) {
+            // Use Double.parseDouble to handle Infinity.
+            this.value = Double.parseDouble(value);
+            return;
+        }
+
         for (int i = 0; i < length; i++) {
             char c = value.charAt(i);
             if (c == '.' || c == 'e' || c == 'E') {
@@ -61,12 +68,6 @@ public final class JsonNumber extends JsonElement {
         // numeric type.
         // Additionally, due to the handling of values that can't fit into the numeric type, the only time floating
         // point parsing will throw is when the string value is invalid.
-        boolean infinity = value.contains("Infinity");
-        if (infinity) {
-            // Use Double.parseDouble to handle Infinity.
-            return Double.parseDouble(value);
-        }
-
         float f = Float.parseFloat(value);
 
         // If the float wasn't infinite, return it.
