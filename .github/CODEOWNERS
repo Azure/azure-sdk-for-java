@@ -558,7 +558,7 @@
 # ServiceOwners:                                     @ambhatna @savjani
 
 # PRLabel:  %OpenTelemetry
-/sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
+/sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti @harsimar
 
 # ServiceLabel: %Network
 # ServiceOwners:                                     @aznetsuppgithub
@@ -793,13 +793,13 @@
 /sdk/spring-experimental/                            @chenrujun @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams
+/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams @harsimar
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams
+/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams @harsimar
 
 # ServiceLabel:  %Monitor - Spring
-# AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams
+# AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams @harsimar
 
 # PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
@@ -850,3 +850,4 @@
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles
+/eng/common/pipelines/codeowners-linter.yml          @alzimmermsft @srnagar @lmolkova
