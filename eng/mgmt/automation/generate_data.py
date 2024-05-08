@@ -335,7 +335,10 @@ def compile_package(sdk_root: str, group_id: str, module: str) -> bool:
         sdk_root, group_id, module)
     logging.info(command)
     if os.system(command) != 0:
-        logging.error('[COMPILE] Maven build fail')
+        error_message = ('[COMPILE] Maven build fail.\n'
+                         'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.')
+        logging.error(error_message)
+        print(error_message, file=sys.stderr)
         return False
     return True
 
