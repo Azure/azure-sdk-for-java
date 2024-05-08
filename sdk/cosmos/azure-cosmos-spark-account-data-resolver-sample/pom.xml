@@ -46,14 +46,7 @@
       <name>Microsoft</name>
     </developer>
   </developers>
-
-
   <dependencies>
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-all</artifactId>
-      <version>4.1.108.Final</version> <!-- {x-version-update;io.netty:netty-all;external_dependency} -->
-    </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.12</artifactId>
@@ -250,8 +243,6 @@
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
                 <include>com.globalmentor:hadoop-bare-naked-local-fs:[0.1.0]</include> <!-- {x-include-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
-                <include>io.netty:netty-all:[4.1.108.Final]</include> <!-- {x-include-update;io.netty:netty-all;external_dependency} -->
-                <include>com.azure.cosmos.spark:*:*</include>
               </includes>
             </bannedDependencies>
           </rules>
@@ -576,8 +567,6 @@
                         https://issues.apache.org/jira/browse/MSHADE-371 -->
                       <resource>META-INF/LICENSE.md</resource>
                     </transformer>
-
-                    <!-- TODO moderakh validate that netty native libs e.g, boringssl actually is used. -->
                   </transformers>
 
                   <!-- When true, it will attempt to shade the contents of the java source files when creating the sources jar. -->
