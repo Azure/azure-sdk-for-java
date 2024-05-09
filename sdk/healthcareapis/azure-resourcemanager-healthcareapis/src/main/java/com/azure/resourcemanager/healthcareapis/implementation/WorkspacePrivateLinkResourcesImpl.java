@@ -31,14 +31,16 @@ public final class WorkspacePrivateLinkResourcesImpl implements WorkspacePrivate
         String workspaceName) {
         PagedIterable<PrivateLinkResourceDescriptionInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PrivateLinkResourceDescriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateLinkResourceDescription> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
         PagedIterable<PrivateLinkResourceDescriptionInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PrivateLinkResourceDescriptionImpl(inner1, this.manager()));
     }
 
     public Response<PrivateLinkResourceDescription> getWithResponse(String resourceGroupName, String workspaceName,

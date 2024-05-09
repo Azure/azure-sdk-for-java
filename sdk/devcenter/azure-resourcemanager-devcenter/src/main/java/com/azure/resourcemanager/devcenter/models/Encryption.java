@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Encryption model. */
+/**
+ * The Encryption model.
+ */
 @Fluent
 public final class Encryption {
     /*
@@ -16,13 +18,15 @@ public final class Encryption {
     @JsonProperty(value = "customerManagedKeyEncryption")
     private CustomerManagedKeyEncryption customerManagedKeyEncryption;
 
-    /** Creates an instance of Encryption class. */
+    /**
+     * Creates an instance of Encryption class.
+     */
     public Encryption() {
     }
 
     /**
      * Get the customerManagedKeyEncryption property: All Customer-managed key encryption properties for the resource.
-     *
+     * 
      * @return the customerManagedKeyEncryption value.
      */
     public CustomerManagedKeyEncryption customerManagedKeyEncryption() {
@@ -31,7 +35,7 @@ public final class Encryption {
 
     /**
      * Set the customerManagedKeyEncryption property: All Customer-managed key encryption properties for the resource.
-     *
+     * 
      * @param customerManagedKeyEncryption the customerManagedKeyEncryption value to set.
      * @return the Encryption object itself.
      */
@@ -42,7 +46,7 @@ public final class Encryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

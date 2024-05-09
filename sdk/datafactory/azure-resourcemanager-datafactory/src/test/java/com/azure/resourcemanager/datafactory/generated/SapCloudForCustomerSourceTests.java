@@ -11,16 +11,20 @@ public final class SapCloudForCustomerSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapCloudForCustomerSource model = BinaryData.fromString(
-            "{\"type\":\"SapCloudForCustomerSource\",\"query\":\"datadgem\",\"httpRequestTimeout\":\"datayddzjtxlvgsl\",\"queryTimeout\":\"datalys\",\"additionalColumns\":\"datav\",\"sourceRetryCount\":\"dataak\",\"sourceRetryWait\":\"datapaexllt\",\"maxConcurrentConnections\":\"datakkaei\",\"disableMetricsCollection\":\"datahr\",\"\":{\"lta\":\"datagvsrt\",\"lnwiwrubxey\":\"datajkraleglpyns\",\"w\":\"dataalhbrwaltvky\"}}")
+            "{\"type\":\"kympwquu\",\"query\":\"dataujshcsnk\",\"httpRequestTimeout\":\"datagpqxqevt\",\"queryTimeout\":\"datakjirvjogsalvjl\",\"additionalColumns\":\"dataimua\",\"sourceRetryCount\":\"dataz\",\"sourceRetryWait\":\"datau\",\"maxConcurrentConnections\":\"datahszjyanhsliqeftg\",\"disableMetricsCollection\":\"dataro\",\"\":{\"zxj\":\"dataufqsdt\",\"gibog\":\"dataxolmehquqi\",\"lxcwrszwa\":\"dataojupenoupc\"}}")
             .toObject(SapCloudForCustomerSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapCloudForCustomerSource model = new SapCloudForCustomerSource().withSourceRetryCount("dataak")
-            .withSourceRetryWait("datapaexllt").withMaxConcurrentConnections("datakkaei")
-            .withDisableMetricsCollection("datahr").withQueryTimeout("datalys").withAdditionalColumns("datav")
-            .withQuery("datadgem").withHttpRequestTimeout("datayddzjtxlvgsl");
+        SapCloudForCustomerSource model = new SapCloudForCustomerSource().withSourceRetryCount("dataz")
+            .withSourceRetryWait("datau")
+            .withMaxConcurrentConnections("datahszjyanhsliqeftg")
+            .withDisableMetricsCollection("dataro")
+            .withQueryTimeout("datakjirvjogsalvjl")
+            .withAdditionalColumns("dataimua")
+            .withQuery("dataujshcsnk")
+            .withHttpRequestTimeout("datagpqxqevt");
         model = BinaryData.fromObject(model).toObject(SapCloudForCustomerSource.class);
     }
 }

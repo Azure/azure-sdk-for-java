@@ -5,6 +5,7 @@ package com.azure.core.http;
 
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.policy.InstrumentationPolicy;
+import com.azure.core.implementation.http.UrlSanitizer;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.TracingOptions;
@@ -14,6 +15,7 @@ import com.azure.core.util.tracing.TracerProvider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link HttpPipeline},
@@ -86,22 +88,30 @@ public class HttpPipelineBuilder {
             client = HttpClient.createDefault();
         }
 
-        configureTracing(policies);
+        configureTracing(policies, clientOptions);
 
         return new HttpPipeline(client, policies, tracer);
     }
 
-    private void configureTracing(List<HttpPipelinePolicy> policies) {
+    private void configureTracing(List<HttpPipelinePolicy> policies, ClientOptions clientOptions) {
         if (tracer == null) {
             TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
             tracer = TracerProvider.getDefaultProvider().createTracer("azure-core", null, null, tracingOptions);
         }
-
         for (HttpPipelinePolicy policy : policies) {
             if (policy instanceof InstrumentationPolicy) {
-                ((InstrumentationPolicy) policy).initialize(tracer);
+                UrlSanitizer sanitizer = new UrlSanitizer(getAllowedQueryParams(clientOptions));
+                ((InstrumentationPolicy) policy).initialize(tracer, sanitizer);
             }
         }
+    }
+
+    private static Set<String> getAllowedQueryParams(ClientOptions options) {
+        if (options == null || options.getTracingOptions() == null) {
+            return null;
+        }
+
+        return options.getTracingOptions().getAllowedTracingQueryParamNames();
     }
 
     /**

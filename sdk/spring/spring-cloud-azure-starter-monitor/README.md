@@ -30,7 +30,7 @@ by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/ins
 <dependency>
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-  <version>1.0.0-beta.4</version>
+  <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

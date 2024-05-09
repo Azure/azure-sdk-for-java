@@ -12,15 +12,22 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Properties of a project environment type. These properties can be updated after the resource has been created. */
+/**
+ * Properties of a project environment type. These properties can be updated after the resource has been created.
+ */
 @Fluent
 public class ProjectEnvironmentTypeUpdateProperties {
     /*
-     * Id of a subscription that the environment type will be mapped to. The environment's resources will be deployed
-     * into this subscription.
+     * Id of a subscription that the environment type will be mapped to. The environment's resources will be deployed into this subscription.
      */
     @JsonProperty(value = "deploymentTargetId")
     private String deploymentTargetId;
+
+    /*
+     * The display name of the project environment type.
+     */
+    @JsonProperty(value = "displayName")
+    private String displayName;
 
     /*
      * Defines whether this Environment Type can be used in this Project.
@@ -35,21 +42,22 @@ public class ProjectEnvironmentTypeUpdateProperties {
     private ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment;
 
     /*
-     * Role Assignments created on environment backing resources. This is a mapping from a user object ID to an object
-     * of role definition IDs.
+     * Role Assignments created on environment backing resources. This is a mapping from a user object ID to an object of role definition IDs.
      */
     @JsonProperty(value = "userRoleAssignments")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserRoleAssignmentValue> userRoleAssignments;
 
-    /** Creates an instance of ProjectEnvironmentTypeUpdateProperties class. */
+    /**
+     * Creates an instance of ProjectEnvironmentTypeUpdateProperties class.
+     */
     public ProjectEnvironmentTypeUpdateProperties() {
     }
 
     /**
      * Get the deploymentTargetId property: Id of a subscription that the environment type will be mapped to. The
      * environment's resources will be deployed into this subscription.
-     *
+     * 
      * @return the deploymentTargetId value.
      */
     public String deploymentTargetId() {
@@ -59,7 +67,7 @@ public class ProjectEnvironmentTypeUpdateProperties {
     /**
      * Set the deploymentTargetId property: Id of a subscription that the environment type will be mapped to. The
      * environment's resources will be deployed into this subscription.
-     *
+     * 
      * @param deploymentTargetId the deploymentTargetId value to set.
      * @return the ProjectEnvironmentTypeUpdateProperties object itself.
      */
@@ -69,8 +77,28 @@ public class ProjectEnvironmentTypeUpdateProperties {
     }
 
     /**
+     * Get the displayName property: The display name of the project environment type.
+     * 
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the displayName property: The display name of the project environment type.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the ProjectEnvironmentTypeUpdateProperties object itself.
+     */
+    public ProjectEnvironmentTypeUpdateProperties withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
      * Get the status property: Defines whether this Environment Type can be used in this Project.
-     *
+     * 
      * @return the status value.
      */
     public EnvironmentTypeEnableStatus status() {
@@ -79,7 +107,7 @@ public class ProjectEnvironmentTypeUpdateProperties {
 
     /**
      * Set the status property: Defines whether this Environment Type can be used in this Project.
-     *
+     * 
      * @param status the status value to set.
      * @return the ProjectEnvironmentTypeUpdateProperties object itself.
      */
@@ -91,7 +119,7 @@ public class ProjectEnvironmentTypeUpdateProperties {
     /**
      * Get the creatorRoleAssignment property: The role definition assigned to the environment creator on backing
      * resources.
-     *
+     * 
      * @return the creatorRoleAssignment value.
      */
     public ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment() {
@@ -101,12 +129,12 @@ public class ProjectEnvironmentTypeUpdateProperties {
     /**
      * Set the creatorRoleAssignment property: The role definition assigned to the environment creator on backing
      * resources.
-     *
+     * 
      * @param creatorRoleAssignment the creatorRoleAssignment value to set.
      * @return the ProjectEnvironmentTypeUpdateProperties object itself.
      */
-    public ProjectEnvironmentTypeUpdateProperties withCreatorRoleAssignment(
-        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment) {
+    public ProjectEnvironmentTypeUpdateProperties
+        withCreatorRoleAssignment(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment creatorRoleAssignment) {
         this.creatorRoleAssignment = creatorRoleAssignment;
         return this;
     }
@@ -114,7 +142,7 @@ public class ProjectEnvironmentTypeUpdateProperties {
     /**
      * Get the userRoleAssignments property: Role Assignments created on environment backing resources. This is a
      * mapping from a user object ID to an object of role definition IDs.
-     *
+     * 
      * @return the userRoleAssignments value.
      */
     public Map<String, UserRoleAssignmentValue> userRoleAssignments() {
@@ -124,19 +152,19 @@ public class ProjectEnvironmentTypeUpdateProperties {
     /**
      * Set the userRoleAssignments property: Role Assignments created on environment backing resources. This is a
      * mapping from a user object ID to an object of role definition IDs.
-     *
+     * 
      * @param userRoleAssignments the userRoleAssignments value to set.
      * @return the ProjectEnvironmentTypeUpdateProperties object itself.
      */
-    public ProjectEnvironmentTypeUpdateProperties withUserRoleAssignments(
-        Map<String, UserRoleAssignmentValue> userRoleAssignments) {
+    public ProjectEnvironmentTypeUpdateProperties
+        withUserRoleAssignments(Map<String, UserRoleAssignmentValue> userRoleAssignments) {
         this.userRoleAssignments = userRoleAssignments;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -144,14 +172,11 @@ public class ProjectEnvironmentTypeUpdateProperties {
             creatorRoleAssignment().validate();
         }
         if (userRoleAssignments() != null) {
-            userRoleAssignments()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userRoleAssignments().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

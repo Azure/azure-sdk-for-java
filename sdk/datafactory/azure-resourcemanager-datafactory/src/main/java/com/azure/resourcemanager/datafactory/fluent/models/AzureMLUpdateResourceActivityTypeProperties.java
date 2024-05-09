@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureMLUpdateResourceActivityTypeProperties {
     /*
-     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with
-     * resultType string).
+     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "trainedModelName", required = true)
     private Object trainedModelName;
@@ -28,8 +27,7 @@ public final class AzureMLUpdateResourceActivityTypeProperties {
     private LinkedServiceReference trainedModelLinkedServiceName;
 
     /*
-     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the
-     * update operation. Type: string (or Expression with resultType string).
+     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the update operation.  Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "trainedModelFilePath", required = true)
     private Object trainedModelFilePath;
@@ -116,18 +114,21 @@ public final class AzureMLUpdateResourceActivityTypeProperties {
      */
     public void validate() {
         if (trainedModelName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property trainedModelName in model AzureMLUpdateResourceActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trainedModelName in model AzureMLUpdateResourceActivityTypeProperties"));
         }
         if (trainedModelLinkedServiceName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property trainedModelLinkedServiceName in model AzureMLUpdateResourceActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trainedModelLinkedServiceName in model AzureMLUpdateResourceActivityTypeProperties"));
         } else {
             trainedModelLinkedServiceName().validate();
         }
         if (trainedModelFilePath() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property trainedModelFilePath in model AzureMLUpdateResourceActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trainedModelFilePath in model AzureMLUpdateResourceActivityTypeProperties"));
         }
     }
 

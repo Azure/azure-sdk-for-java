@@ -14,6 +14,7 @@ import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -46,7 +47,6 @@ import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.EncryptionKeyWrapMetadata;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -103,7 +103,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
     protected final static ConsistencyLevel accountConsistency;
     protected static final ImmutableList<String> preferredLocations;
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
-    private static final ImmutableList<Protocol> protocols;
+    protected static final ImmutableList<Protocol> protocols;
 
     protected static final AzureKeyCredential credential;
 
@@ -136,8 +136,18 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         return encryptionAsyncDatabase.getCosmosEncryptionAsyncContainer(SHARED_ENCRYPTION_CONTAINER.getCosmosAsyncContainer().getId());
     }
 
+    protected static CosmosEncryptionContainer getSharedEncryptionContainer(CosmosEncryptionClient client) {
+        CosmosEncryptionDatabase encryptionDatabase =
+            client.getCosmosEncryptionDatabase(SHARED_ENCRYPTION_DATABASE.getCosmosAsyncDatabase().getId());
+        return encryptionDatabase.getCosmosEncryptionContainer(SHARED_ENCRYPTION_CONTAINER.getCosmosAsyncContainer().getId());
+    }
+
     protected static CosmosEncryptionAsyncDatabase getSharedEncryptionDatabase(CosmosEncryptionAsyncClient client) {
         return client.getCosmosEncryptionAsyncDatabase(SHARED_ENCRYPTION_DATABASE.getCosmosAsyncDatabase().getId());
+    }
+
+    protected static CosmosEncryptionDatabase getSharedEncryptionDatabase(CosmosEncryptionClient client) {
+        return client.getCosmosEncryptionDatabase(SHARED_ENCRYPTION_DATABASE.getCosmosAsyncDatabase().getId());
     }
 
     protected static CosmosEncryptionContainer getSharedSyncEncryptionContainer(CosmosEncryptionClient client) {
@@ -282,7 +292,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
                            Object propertyValue = null;
                            if (paths != null && !paths.isEmpty()) {
                                List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                               propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
+                               propertyValue = doc.getObjectByPath(pkPath);
                                if (propertyValue == null) {
                                    partitionKey = PartitionKey.NONE;
                                } else {
@@ -734,10 +744,44 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         }
     }
 
+    static protected void safeDeleteAllCollections(CosmosDatabase database) {
+        if (database != null) {
+            List<CosmosContainerProperties> collections =
+                database.readAllContainers().stream().collect(Collectors.toList());
+
+            for (CosmosContainerProperties collection : collections) {
+                safeDeleteCollection(database.getContainer(collection.getId()));
+            }
+        }
+    }
+
+    static protected void safeDeleteAllCollectionsWithPrefix(CosmosDatabase database, String prefix) {
+        if (database != null) {
+            List<CosmosContainerProperties> collections =
+                database.readAllContainers().stream().collect(Collectors.toList());
+
+            for (CosmosContainerProperties collection : collections) {
+                if (!collection.getId().startsWith(prefix)) {
+                    continue;
+                }
+                safeDeleteCollection(database.getContainer(collection.getId()));
+            }
+        }
+    }
+
     static protected void safeDeleteCollection(CosmosAsyncContainer collection) {
         if (collection != null) {
             try {
                 collection.delete().block();
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    static protected void safeDeleteCollection(CosmosContainer collection) {
+        if (collection != null) {
+            try {
+                collection.delete();
             } catch (Exception e) {
             }
         }
@@ -1025,7 +1069,7 @@ public class TestSuiteBase extends CosmosEncryptionAsyncClientTest {
         return protocols.toArray(new Protocol[protocols.size()]);
     }
 
-    private static Object[][] clientBuildersWithDirectSession(boolean contentResponseOnWriteEnabled, Protocol... protocols) {
+    protected static Object[][] clientBuildersWithDirectSession(boolean contentResponseOnWriteEnabled, Protocol... protocols) {
         return clientBuildersWithDirect(new ArrayList<ConsistencyLevel>() {{
             add(ConsistencyLevel.SESSION);
         }}, contentResponseOnWriteEnabled, protocols);

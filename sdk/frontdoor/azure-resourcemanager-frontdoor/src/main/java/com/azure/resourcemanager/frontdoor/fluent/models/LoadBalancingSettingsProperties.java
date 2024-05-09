@@ -9,47 +9,57 @@ import com.azure.resourcemanager.frontdoor.models.FrontDoorResourceState;
 import com.azure.resourcemanager.frontdoor.models.LoadBalancingSettingsUpdateParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties required to create load balancing settings. */
+/**
+ * The JSON object that contains the properties required to create load balancing settings.
+ */
 @Fluent
 public final class LoadBalancingSettingsProperties extends LoadBalancingSettingsUpdateParameters {
     /*
      * Resource status of the Front Door or Front Door SubResource.
-     *
+     * 
      * Resource status.
      */
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private FrontDoorResourceState resourceState;
 
-    /** Creates an instance of LoadBalancingSettingsProperties class. */
+    /**
+     * Creates an instance of LoadBalancingSettingsProperties class.
+     */
     public LoadBalancingSettingsProperties() {
     }
 
     /**
      * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * 
+     * Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
         return this.resourceState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LoadBalancingSettingsProperties withSampleSize(Integer sampleSize) {
         super.withSampleSize(sampleSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LoadBalancingSettingsProperties withSuccessfulSamplesRequired(Integer successfulSamplesRequired) {
         super.withSuccessfulSamplesRequired(successfulSamplesRequired);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LoadBalancingSettingsProperties withAdditionalLatencyMilliseconds(Integer additionalLatencyMilliseconds) {
         super.withAdditionalLatencyMilliseconds(additionalLatencyMilliseconds);
@@ -58,7 +68,7 @@ public final class LoadBalancingSettingsProperties extends LoadBalancingSettings
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

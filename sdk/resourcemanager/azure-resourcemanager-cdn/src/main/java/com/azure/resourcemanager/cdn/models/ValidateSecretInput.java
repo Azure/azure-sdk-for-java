@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input of the secret to be validated. */
+/**
+ * Input of the secret to be validated.
+ */
 @Fluent
 public final class ValidateSecretInput {
     /*
@@ -19,7 +21,10 @@ public final class ValidateSecretInput {
 
     /*
      * Resource reference to the Azure Key Vault secret. Expected to be in format of
-     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}
+     * ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
     @JsonProperty(value = "secretSource", required = true)
     private ResourceReference secretSource;
@@ -30,13 +35,15 @@ public final class ValidateSecretInput {
     @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
-    /** Creates an instance of ValidateSecretInput class. */
+    /**
+     * Creates an instance of ValidateSecretInput class.
+     */
     public ValidateSecretInput() {
     }
 
     /**
      * Get the secretType property: The secret type.
-     *
+     * 
      * @return the secretType value.
      */
     public SecretType secretType() {
@@ -45,7 +52,7 @@ public final class ValidateSecretInput {
 
     /**
      * Set the secretType property: The secret type.
-     *
+     * 
      * @param secretType the secretType value to set.
      * @return the ValidateSecretInput object itself.
      */
@@ -57,7 +64,7 @@ public final class ValidateSecretInput {
     /**
      * Get the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     *
+     * 
      * @return the secretSource value.
      */
     public ResourceReference secretSource() {
@@ -67,7 +74,7 @@ public final class ValidateSecretInput {
     /**
      * Set the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
      * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
-     *
+     * 
      * @param secretSource the secretSource value to set.
      * @return the ValidateSecretInput object itself.
      */
@@ -78,7 +85,7 @@ public final class ValidateSecretInput {
 
     /**
      * Get the secretVersion property: Secret version, if customer is using a specific version.
-     *
+     * 
      * @return the secretVersion value.
      */
     public String secretVersion() {
@@ -87,7 +94,7 @@ public final class ValidateSecretInput {
 
     /**
      * Set the secretVersion property: Secret version, if customer is using a specific version.
-     *
+     * 
      * @param secretVersion the secretVersion value to set.
      * @return the ValidateSecretInput object itself.
      */
@@ -98,20 +105,17 @@ public final class ValidateSecretInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (secretType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property secretType in model ValidateSecretInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property secretType in model ValidateSecretInput"));
         }
         if (secretSource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property secretSource in model ValidateSecretInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property secretSource in model ValidateSecretInput"));
         } else {
             secretSource().validate();
         }

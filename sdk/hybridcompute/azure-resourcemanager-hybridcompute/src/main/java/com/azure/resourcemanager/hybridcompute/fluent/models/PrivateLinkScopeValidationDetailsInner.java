@@ -10,7 +10,9 @@ import com.azure.resourcemanager.hybridcompute.models.PublicNetworkAccessType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PrivateLinkScopeValidationDetails model. */
+/**
+ * The PrivateLinkScopeValidationDetails model.
+ */
 @Fluent
 public final class PrivateLinkScopeValidationDetailsInner {
     /*
@@ -20,8 +22,7 @@ public final class PrivateLinkScopeValidationDetailsInner {
     private String id;
 
     /*
-     * Indicates whether machines associated with the private link scope can also use public Azure Arc service
-     * endpoints.
+     * Indicates whether machines associated with the private link scope can also use public Azure Arc service endpoints.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccessType publicNetworkAccess;
@@ -32,13 +33,15 @@ public final class PrivateLinkScopeValidationDetailsInner {
     @JsonProperty(value = "connectionDetails")
     private List<ConnectionDetail> connectionDetails;
 
-    /** Creates an instance of PrivateLinkScopeValidationDetailsInner class. */
+    /**
+     * Creates an instance of PrivateLinkScopeValidationDetailsInner class.
+     */
     public PrivateLinkScopeValidationDetailsInner() {
     }
 
     /**
      * Get the id property: Azure resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -48,7 +51,7 @@ public final class PrivateLinkScopeValidationDetailsInner {
     /**
      * Get the publicNetworkAccess property: Indicates whether machines associated with the private link scope can also
      * use public Azure Arc service endpoints.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessType publicNetworkAccess() {
@@ -58,7 +61,7 @@ public final class PrivateLinkScopeValidationDetailsInner {
     /**
      * Set the publicNetworkAccess property: Indicates whether machines associated with the private link scope can also
      * use public Azure Arc service endpoints.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the PrivateLinkScopeValidationDetailsInner object itself.
      */
@@ -69,7 +72,7 @@ public final class PrivateLinkScopeValidationDetailsInner {
 
     /**
      * Get the connectionDetails property: List of Private Endpoint Connection details.
-     *
+     * 
      * @return the connectionDetails value.
      */
     public List<ConnectionDetail> connectionDetails() {
@@ -78,7 +81,7 @@ public final class PrivateLinkScopeValidationDetailsInner {
 
     /**
      * Set the connectionDetails property: List of Private Endpoint Connection details.
-     *
+     * 
      * @param connectionDetails the connectionDetails value to set.
      * @return the PrivateLinkScopeValidationDetailsInner object itself.
      */
@@ -89,7 +92,7 @@ public final class PrivateLinkScopeValidationDetailsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

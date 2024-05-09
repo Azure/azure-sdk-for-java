@@ -3,13 +3,22 @@
 
 package com.azure.cosmos.implementation.faultinjection;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import reactor.core.publisher.Mono;
@@ -25,12 +34,23 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class GatewayServerErrorInjector {
 
     private final Configs configs;
+    private final RxCollectionCache collectionCache;
+    private final RxPartitionKeyRangeCache partitionKeyRangeCache;
 
     private List<IServerErrorInjector> faultInjectors = new ArrayList<>();
 
-    public GatewayServerErrorInjector(Configs configs) {
+    public GatewayServerErrorInjector(
+        Configs configs,
+        RxCollectionCache collectionCache,
+        RxPartitionKeyRangeCache partitionKeyRangeCache) {
         checkNotNull(configs, "Argument 'configs' can not be null");
         this.configs = configs;
+        this.collectionCache = collectionCache;
+        this.partitionKeyRangeCache = partitionKeyRangeCache;
+    }
+
+    public GatewayServerErrorInjector(Configs configs) {
+        this(configs, null, null);
     }
 
     public void registerServerErrorInjector(IServerErrorInjector serverErrorInjector) {
@@ -38,18 +58,74 @@ public class GatewayServerErrorInjector {
         this.faultInjectors.add(serverErrorInjector);
     }
 
+    private Mono<Utils.ValueHolder<PartitionKeyRange>> resolvePartitionKeyRange(RxDocumentServiceRequest request) {
+        // faultInjection rule can be configured to only apply for a certain partition
+        // but in the normal flow, only session consistency will populate the resolvePartitionKey when apply session token
+        // so for other consistencies, we need to calculate here
+        if (request.getResourceType() != ResourceType.Document) {
+            return Mono.just(Utils.ValueHolder.initialize(null));
+        }
+
+        if (this.collectionCache == null || this.partitionKeyRangeCache == null) {
+            return Mono.just(Utils.ValueHolder.initialize(null));
+        }
+
+        if (request == null || request.requestContext == null) {
+            return Mono.just(Utils.ValueHolder.initialize(null));
+        }
+
+        if (request.requestContext.resolvedPartitionKeyRange != null) {
+            return Mono.just(Utils.ValueHolder.initialize(request.requestContext.resolvedPartitionKeyRange));
+        }
+
+        return this.collectionCache
+            .resolveCollectionAsync(
+                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request)
+            .flatMap(collectionValueHolder -> {
+                return partitionKeyRangeCache
+                    .tryLookupAsync(
+                        BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                        collectionValueHolder.v.getResourceId(),
+                        null,
+                        null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
+                        String partitionKeyRangeId =
+                            request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+                        PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+                        if (StringUtils.isNotEmpty(partitionKeyRangeId)) {
+                            PartitionKeyRange range =
+                                collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId);
+                            request.requestContext.resolvedPartitionKeyRange = range;
+                        } else if (partitionKeyInternal != null) {
+                            String effectivePartitionKeyString = PartitionKeyInternalHelper
+                                .getEffectivePartitionKeyString(
+                                    partitionKeyInternal,
+                                    collectionValueHolder.v.getPartitionKey());
+                            PartitionKeyRange range =
+                                collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                            request.requestContext.resolvedPartitionKeyRange = range;
+                        }
+
+                        return Mono.just(Utils.ValueHolder.initialize(request.requestContext.resolvedPartitionKeyRange));
+                    });
+            });
+    }
+
     public Mono<HttpResponse> injectGatewayErrors(
         Duration responseTimeout,
         HttpRequest httpRequest,
         RxDocumentServiceRequest serviceRequest,
         Mono<HttpResponse> originalResponseMono) {
-        return injectGatewayErrors(
-            responseTimeout,
-            httpRequest,
-            serviceRequest,
-            originalResponseMono,
-            serviceRequest.requestContext.resolvedPartitionKeyRange != null
-                ? Arrays.asList(serviceRequest.requestContext.resolvedPartitionKeyRange.getId()) : null);
+
+        return this.resolvePartitionKeyRange(serviceRequest)
+            .flatMap(resolvedPartitionKeyRangeValueHolder -> {
+                return injectGatewayErrors(
+                    responseTimeout,
+                    httpRequest,
+                    serviceRequest,
+                    originalResponseMono,
+                    resolvedPartitionKeyRangeValueHolder.v == null ? null : Arrays.asList(resolvedPartitionKeyRangeValueHolder.v.getId()));
+            });
     }
 
     public Mono<HttpResponse> injectGatewayErrors(

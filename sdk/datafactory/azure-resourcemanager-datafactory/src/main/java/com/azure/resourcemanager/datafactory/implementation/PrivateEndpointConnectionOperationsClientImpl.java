@@ -30,8 +30,7 @@ import com.azure.resourcemanager.datafactory.models.PrivateLinkConnectionApprova
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * PrivateEndpointConnectionOperationsClient.
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionOperationsClient.
  */
 public final class PrivateEndpointConnectionOperationsClientImpl implements PrivateEndpointConnectionOperationsClient {
     /**

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.DataLakeAnalyticsUsqlActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Data Lake Analytics U-SQL activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = DataLakeAnalyticsUsqlActivity.class,
+    visible = true)
 @JsonTypeName("DataLakeAnalyticsU-SQL")
 @Fluent
 public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "DataLakeAnalyticsU-SQL";
+
     /*
      * Data Lake Analytics U-SQL activity properties.
      */
@@ -31,6 +43,16 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
      * Creates an instance of DataLakeAnalyticsUsqlActivity class.
      */
     public DataLakeAnalyticsUsqlActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -296,8 +318,9 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model DataLakeAnalyticsUsqlActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model DataLakeAnalyticsUsqlActivity"));
         } else {
             innerTypeProperties().validate();
         }

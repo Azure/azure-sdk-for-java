@@ -23,7 +23,15 @@ import java.util.List;
     visible = true)
 @JsonTypeName("followupRecommendation")
 @Immutable
-public final class FollowupRecommendationInference extends FhirR4Extendible1 {
+public final class FollowupRecommendationInference extends RadiologyInsightsInference {
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION;
 
     /*
      * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
@@ -44,7 +52,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "findings")
-    private List<FhirR4Extendible2> findings;
+    private List<RecommendationFinding> findings;
 
     /*
      * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
@@ -104,6 +112,17 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at a
      * specific point in time.
      *
@@ -131,7 +150,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      * @return the findings value.
      */
     @Generated
-    public List<FhirR4Extendible2> getFindings() {
+    public List<RecommendationFinding> getFindings() {
         return this.findings;
     }
 
@@ -189,24 +208,5 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     @Generated
     public ProcedureRecommendation getRecommendedProcedure() {
         return this.recommendedProcedure;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION;
-
-    /**
-     * Get the kind property: Inference type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
     }
 }

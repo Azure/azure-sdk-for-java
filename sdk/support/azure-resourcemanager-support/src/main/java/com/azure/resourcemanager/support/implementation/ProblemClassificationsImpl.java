@@ -11,11 +11,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.support.fluent.ProblemClassificationsClient;
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner;
-import com.azure.resourcemanager.support.fluent.models.ProblemClassificationsClassificationOutputInner;
 import com.azure.resourcemanager.support.models.ProblemClassification;
 import com.azure.resourcemanager.support.models.ProblemClassifications;
-import com.azure.resourcemanager.support.models.ProblemClassificationsClassificationInput;
-import com.azure.resourcemanager.support.models.ProblemClassificationsClassificationOutput;
 
 public final class ProblemClassificationsImpl implements ProblemClassifications {
     private static final ClientLogger LOGGER = new ClientLogger(ProblemClassificationsImpl.class);
@@ -28,29 +25,6 @@ public final class ProblemClassificationsImpl implements ProblemClassifications 
         com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public Response<ProblemClassificationsClassificationOutput> classifyProblemsWithResponse(String problemServiceName,
-        ProblemClassificationsClassificationInput problemClassificationsClassificationInput, Context context) {
-        Response<ProblemClassificationsClassificationOutputInner> inner = this.serviceClient()
-            .classifyProblemsWithResponse(problemServiceName, problemClassificationsClassificationInput, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ProblemClassificationsClassificationOutputImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public ProblemClassificationsClassificationOutput classifyProblems(String problemServiceName,
-        ProblemClassificationsClassificationInput problemClassificationsClassificationInput) {
-        ProblemClassificationsClassificationOutputInner inner
-            = this.serviceClient().classifyProblems(problemServiceName, problemClassificationsClassificationInput);
-        if (inner != null) {
-            return new ProblemClassificationsClassificationOutputImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public PagedIterable<ProblemClassification> list(String serviceName) {

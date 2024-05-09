@@ -23,7 +23,8 @@ public final class NetworkTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Network model = new Network().withPublicNetworkAccess(ServerPublicNetworkAccessState.DISABLED)
-            .withDelegatedSubnetResourceId("akauha").withPrivateDnsZoneArmResourceId("sfwxosowzxc");
+            .withDelegatedSubnetResourceId("akauha")
+            .withPrivateDnsZoneArmResourceId("sfwxosowzxc");
         model = BinaryData.fromObject(model).toObject(Network.class);
         Assertions.assertEquals(ServerPublicNetworkAccessState.DISABLED, model.publicNetworkAccess());
         Assertions.assertEquals("akauha", model.delegatedSubnetResourceId());

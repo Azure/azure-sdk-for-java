@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.hybridcompute.fluent.models.PatchSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the windows configuration for update management. */
+/**
+ * Specifies the windows configuration for update management.
+ */
 @Fluent
 public final class OSProfileWindowsConfiguration {
     /*
@@ -17,13 +19,15 @@ public final class OSProfileWindowsConfiguration {
     @JsonProperty(value = "patchSettings")
     private PatchSettings innerPatchSettings;
 
-    /** Creates an instance of OSProfileWindowsConfiguration class. */
+    /**
+     * Creates an instance of OSProfileWindowsConfiguration class.
+     */
     public OSProfileWindowsConfiguration() {
     }
 
     /**
      * Get the innerPatchSettings property: Specifies the patch settings.
-     *
+     * 
      * @return the innerPatchSettings value.
      */
     private PatchSettings innerPatchSettings() {
@@ -32,7 +36,7 @@ public final class OSProfileWindowsConfiguration {
 
     /**
      * Get the assessmentMode property: Specifies the assessment mode.
-     *
+     * 
      * @return the assessmentMode value.
      */
     public AssessmentModeTypes assessmentMode() {
@@ -41,7 +45,7 @@ public final class OSProfileWindowsConfiguration {
 
     /**
      * Set the assessmentMode property: Specifies the assessment mode.
-     *
+     * 
      * @param assessmentMode the assessmentMode value to set.
      * @return the OSProfileWindowsConfiguration object itself.
      */
@@ -55,7 +59,7 @@ public final class OSProfileWindowsConfiguration {
 
     /**
      * Get the patchMode property: Specifies the patch mode.
-     *
+     * 
      * @return the patchMode value.
      */
     public PatchModeTypes patchMode() {
@@ -64,7 +68,7 @@ public final class OSProfileWindowsConfiguration {
 
     /**
      * Set the patchMode property: Specifies the patch mode.
-     *
+     * 
      * @param patchMode the patchMode value to set.
      * @return the OSProfileWindowsConfiguration object itself.
      */
@@ -78,7 +82,7 @@ public final class OSProfileWindowsConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

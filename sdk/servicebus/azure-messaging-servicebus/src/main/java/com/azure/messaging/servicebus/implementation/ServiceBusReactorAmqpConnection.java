@@ -31,6 +31,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A proton-j AMQP connection to an Azure Service Bus instance.
@@ -95,9 +96,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     @Override
     public Mono<ServiceBusManagementNode> getManagementNode(String entityPath, MessagingEntityType entityType) {
         if (isDisposed()) {
-            return Mono.error(LOGGER.logExceptionAsError(new IllegalStateException(String.format(
+            return monoError(LOGGER.atWarning(), new IllegalStateException(String.format(
                 "connectionId[%s]: Connection is disposed. Cannot get management instance for '%s'",
-                connectionId, entityPath))));
+                connectionId, entityPath)));
         }
 
         final String entityTypePath = String.join("-", entityType.toString(), entityPath);

@@ -612,10 +612,10 @@ public class ReadmeSamples {
         String getId() {
             return id;
         }
-        String getEmail() { return email; }
-        String getName() { return name; }
-        String getDeparture() { return departure; }
-        String getDestination() { return destination; }
+        public String getEmail() { return email; }
+        public String getName() { return name; }
+        public String getDeparture() { return departure; }
+        public String getDestination() { return destination; }
 
         void setDestination(String destination) {
             this.destination = destination;

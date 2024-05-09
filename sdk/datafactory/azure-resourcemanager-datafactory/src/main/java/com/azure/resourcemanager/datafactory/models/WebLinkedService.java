@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.Map;
 /**
  * Web linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = WebLinkedService.class, visible = true)
 @JsonTypeName("Web")
 @Fluent
 public final class WebLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Web";
+
     /*
      * Web linked service properties.
      */
@@ -29,6 +37,16 @@ public final class WebLinkedService extends LinkedService {
      * Creates an instance of WebLinkedService class.
      */
     public WebLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -96,8 +114,9 @@ public final class WebLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (typeProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property typeProperties in model WebLinkedService"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property typeProperties in model WebLinkedService"));
         } else {
             typeProperties().validate();
         }

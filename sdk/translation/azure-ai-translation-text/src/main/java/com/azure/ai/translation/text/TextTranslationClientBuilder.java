@@ -63,7 +63,13 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
 
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
 
+    private static final String OCP_APIM_SUBSCRIPTION_REGION = "Ocp-Apim-Subscription-Region";
+
+    private static final String OCP_APIM_RESOURCE_ID_KEY = "Ocp-Apim-ResourceId";
+
     private String region;
+
+    private String resourceId;
 
     private KeyCredential credential;
 
@@ -266,11 +272,24 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
      *
      * @param region where the Translator resource is created.
      * @return The updated {@link TextTranslationClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is null.
+     * @throws NullPointerException If {@code region} is null.
      */
     public TextTranslationClientBuilder region(String region) {
         Objects.requireNonNull(region, "'region' cannot be null.");
         this.region = region;
+        return this;
+    }
+
+    /**
+     * Sets the Azure Resource Id used to authorize requests sent to the service.
+     *
+     * @param resourceId Id of the Translator Resource.
+     * @return The updated {@link TextTranslationClientBuilder} object.
+     * @throws NullPointerException If {@code resourceId} is null.
+     */
+    public TextTranslationClientBuilder resourceId(String resourceId) {
+        Objects.requireNonNull(resourceId, "'resourceId' cannot be null.");
+        this.resourceId = resourceId;
         return this;
     }
 
@@ -312,6 +331,18 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         } else {
             serviceEndpoint = endpoint;
         }
+        if (tokenCredential != null && (this.region != null || this.resourceId != null)) {
+            Objects.requireNonNull(this.region, "'region' cannot be null.");
+            Objects.requireNonNull(this.resourceId, "'resourceId' cannot be null.");
+        }
+        if (this.credential != null && !CoreUtils.isNullOrEmpty(this.resourceId)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Resource Id cannot be used with key credential. Set resourceId to null."));
+        }
+        if (tokenCredential != null && this.credential != null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Both token credential and key credential cannot be set."));
+        }
         TextTranslationClientImpl client = new TextTranslationClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), serviceEndpoint, localServiceVersion);
         return client;
@@ -343,11 +374,19 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+            if (this.region != null || this.resourceId != null) {
+                HttpHeaders aadHeaders = new HttpHeaders();
+                aadHeaders.put(OCP_APIM_RESOURCE_ID_KEY, this.resourceId);
+                aadHeaders.put(OCP_APIM_SUBSCRIPTION_REGION, this.region);
+                policies.add(new AddHeadersPolicy(aadHeaders));
+            }
         }
         if (this.credential != null) {
             policies.add(new KeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
             if (this.region != null) {
-                policies.add(new TranslatorRegionAuthenticationPolicy(this.region));
+                HttpHeaders regionHeaders = new HttpHeaders();
+                regionHeaders.put(OCP_APIM_SUBSCRIPTION_REGION, this.region);
+                policies.add(new AddHeadersPolicy(regionHeaders));
             }
         }
         this.pipelinePolicies.stream()

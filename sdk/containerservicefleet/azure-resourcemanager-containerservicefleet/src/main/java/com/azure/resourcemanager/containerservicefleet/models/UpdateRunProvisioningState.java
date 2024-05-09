@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of the UpdateRun resource. */
+/**
+ * The provisioning state of the UpdateRun resource.
+ */
 public final class UpdateRunProvisioningState extends ExpandableStringEnum<UpdateRunProvisioningState> {
-    /** Static value Succeeded for UpdateRunProvisioningState. */
+    /**
+     * Static value Succeeded for UpdateRunProvisioningState.
+     */
     public static final UpdateRunProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for UpdateRunProvisioningState. */
+    /**
+     * Static value Failed for UpdateRunProvisioningState.
+     */
     public static final UpdateRunProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for UpdateRunProvisioningState. */
+    /**
+     * Static value Canceled for UpdateRunProvisioningState.
+     */
     public static final UpdateRunProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of UpdateRunProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class UpdateRunProvisioningState extends ExpandableStringEnum<Updat
 
     /**
      * Creates or finds a UpdateRunProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UpdateRunProvisioningState.
      */
@@ -41,7 +49,7 @@ public final class UpdateRunProvisioningState extends ExpandableStringEnum<Updat
 
     /**
      * Gets known UpdateRunProvisioningState values.
-     *
+     * 
      * @return known UpdateRunProvisioningState values.
      */
     public static Collection<UpdateRunProvisioningState> values() {

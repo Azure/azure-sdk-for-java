@@ -11,22 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkSecurityPerimeterInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkSecurityPerimeterInfo model = BinaryData
-            .fromString(
-                "{\"id\":\"cjkgdirazftxej\",\"perimeterGuid\":\"bmdujtmvcopexc\",\"location\":\"urbuhhlkyqltq\"}")
-            .toObject(NetworkSecurityPerimeterInfo.class);
-        Assertions.assertEquals("cjkgdirazftxej", model.id());
-        Assertions.assertEquals("bmdujtmvcopexc", model.perimeterGuid());
-        Assertions.assertEquals("urbuhhlkyqltq", model.location());
+        NetworkSecurityPerimeterInfo model
+            = BinaryData.fromString("{\"id\":\"usuckzmkwklsno\",\"perimeterGuid\":\"xmqeqalh\",\"location\":\"nhg\"}")
+                .toObject(NetworkSecurityPerimeterInfo.class);
+        Assertions.assertEquals("usuckzmkwklsno", model.id());
+        Assertions.assertEquals("xmqeqalh", model.perimeterGuid());
+        Assertions.assertEquals("nhg", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkSecurityPerimeterInfo model = new NetworkSecurityPerimeterInfo().withId("cjkgdirazftxej")
-            .withPerimeterGuid("bmdujtmvcopexc").withLocation("urbuhhlkyqltq");
+        NetworkSecurityPerimeterInfo model = new NetworkSecurityPerimeterInfo().withId("usuckzmkwklsno")
+            .withPerimeterGuid("xmqeqalh")
+            .withLocation("nhg");
         model = BinaryData.fromObject(model).toObject(NetworkSecurityPerimeterInfo.class);
-        Assertions.assertEquals("cjkgdirazftxej", model.id());
-        Assertions.assertEquals("bmdujtmvcopexc", model.perimeterGuid());
-        Assertions.assertEquals("urbuhhlkyqltq", model.location());
+        Assertions.assertEquals("usuckzmkwklsno", model.id());
+        Assertions.assertEquals("xmqeqalh", model.perimeterGuid());
+        Assertions.assertEquals("nhg", model.location());
     }
 }

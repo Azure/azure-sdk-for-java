@@ -279,8 +279,8 @@ public final class SelfHostedIntegrationRuntimeNodeInner {
     }
 
     /**
-     * Get the isActiveDispatcher property: Indicates whether this node is the active dispatcher for integration
-     * runtime requests.
+     * Get the isActiveDispatcher property: Indicates whether this node is the active dispatcher for integration runtime
+     * requests.
      * 
      * @return the isActiveDispatcher value.
      */

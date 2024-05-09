@@ -19,8 +19,7 @@ public final class QuotaProperties {
     private LimitJsonObject limit;
 
     /*
-     * The quota units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET
-     * response in the request body of your PUT operation.
+     *  The quota units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET response in the request body of your PUT operation.
      */
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;

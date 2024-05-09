@@ -11,9 +11,9 @@ public class CosmosAadAuthConfig implements CosmosAuthConfig {
     private final String clientId;
     private final String clientSecret;
     private final String tenantId;
-    private final CosmosAzureEnvironments azureEnvironment;
+    private final CosmosAzureEnvironment azureEnvironment;
 
-    public CosmosAadAuthConfig(String clientId, String clientSecret, String tenantId, CosmosAzureEnvironments azureEnvironment) {
+    public CosmosAadAuthConfig(String clientId, String clientSecret, String tenantId, CosmosAzureEnvironment azureEnvironment) {
         checkArgument(StringUtils.isNotEmpty(clientId), "Argument 'clientId' should not be null");
         checkArgument(StringUtils.isNotEmpty(clientSecret), "Argument 'clientSecret' should not be null");
         checkArgument(StringUtils.isNotEmpty(tenantId), "Argument 'tenantId' should not be null");
@@ -36,7 +36,7 @@ public class CosmosAadAuthConfig implements CosmosAuthConfig {
         return tenantId;
     }
 
-    public CosmosAzureEnvironments getAzureEnvironment() {
+    public CosmosAzureEnvironment getAzureEnvironment() {
         return azureEnvironment;
     }
 }

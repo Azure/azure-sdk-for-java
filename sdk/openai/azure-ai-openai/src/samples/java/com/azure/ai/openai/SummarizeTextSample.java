@@ -5,6 +5,7 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.Choice;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,8 +17,8 @@ public class SummarizeTextSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) throws InterruptedException {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)

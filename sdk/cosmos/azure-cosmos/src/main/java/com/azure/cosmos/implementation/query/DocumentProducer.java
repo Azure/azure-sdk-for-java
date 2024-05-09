@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -267,7 +268,7 @@ class DocumentProducer<T> {
                                         + " last continuation token is [{}]. - Context: {}",
                                     feedRange,
                                     partitionKeyRangesValueHolder.v.stream()
-                                        .map(ModelBridgeInternal::toJsonFromJsonSerializable)
+                                        .map(JsonSerializable::toJson)
                                         .collect(Collectors.joining(", ")),
                                     lastResponseContinuationToken,
                                     this.operationContextTextProvider.get());

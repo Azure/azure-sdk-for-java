@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appservice;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.appservice.models.DeploymentSlot;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
+import com.azure.resourcemanager.appservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.PythonVersion;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -102,5 +103,32 @@ public class DeploymentSlotsTests extends AppServiceTest {
         DeploymentSlot slot3Swapped = slot3Refreshed;
         slot3Swapped.swap(slot2.name());
         Assertions.assertFalse(slot3Swapped.getAppSettings().containsKey("slot2key"));
+    }
+
+    @Test
+    public void canCreateAndUpdatePublicNetworkAccess() {
+        WebApp webApp =
+            appServiceManager
+                .webApps()
+                .define(webappName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withNewWindowsPlan(PricingTier.STANDARD_S2)
+                .withJavaVersion(JavaVersion.JAVA_1_7_0_51)
+                .withWebContainer(WebContainer.TOMCAT_7_0_50)
+                .create();
+        DeploymentSlot slot = webApp.deploymentSlots()
+            .define(slotName2).withConfigurationFromParent().disablePublicNetworkAccess().create();
+
+        slot.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, slot.publicNetworkAccess());
+
+        slot.update().enablePublicNetworkAccess().apply();
+        slot.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, slot.publicNetworkAccess());
+
+        slot.update().disablePublicNetworkAccess().apply();
+        slot.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, slot.publicNetworkAccess());
     }
 }

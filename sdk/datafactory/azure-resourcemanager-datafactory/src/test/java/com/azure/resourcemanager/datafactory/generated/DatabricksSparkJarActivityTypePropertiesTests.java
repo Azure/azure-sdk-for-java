@@ -14,20 +14,21 @@ public final class DatabricksSparkJarActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabricksSparkJarActivityTypeProperties model = BinaryData.fromString(
-            "{\"mainClassName\":\"dataxhfphawjov\",\"parameters\":[\"databusyqyf\",\"datatdprbmmf\",\"datateoxgikdcjmb\",\"datar\"],\"libraries\":[{\"dsrwhjhivgeran\":\"dataudegykzdspbjks\",\"r\":\"dataxnafojtqqqc\"},{\"mvzqcgyvz\":\"dataduspxijrr\",\"ybjucfs\":\"datavzsduz\",\"poywymtwh\":\"datapkqpgfyjwx\",\"x\":\"datadgbg\"},{\"gia\":\"datarzhkhmw\",\"nlzalsuj\":\"datarftpgqxnyoakd\"},{\"ekbcedbmfejtdb\":\"datagz\",\"ykjorlrjgrzxaa\":\"dataacnyacjypgbhfzy\",\"eyhalb\":\"dataibhkaqzahjqslsh\"}]}")
+            "{\"mainClassName\":\"dataaz\",\"parameters\":[\"databpysgzgi\",\"dataoahektwgiumcco\",\"datajxxjaafr\",\"datadhrkhfyaxi\"],\"libraries\":[{\"ogzwwyubkppo\":\"datasimbgvrksjjqqpar\",\"byjfeanbnw\":\"datajyjqemgbkjxuxmkk\",\"fkzlv\":\"dataekpgllezvrvjws\",\"jynvguhqugnqs\":\"datajbsvk\"},{\"wcfinsoi\":\"datarvquwhmnc\",\"gcl\":\"dataxxsybtpqgxz\"},{\"i\":\"dataicnckdxflg\",\"l\":\"datatcer\",\"mrsbgjjuhzf\":\"dataerrpal\"},{\"kwlmittpbivhkdxh\":\"datanabyvmch\",\"jbgvdzzukhlwvvh\":\"datavybxplbdaz\"}]}")
             .toObject(DatabricksSparkJarActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabricksSparkJarActivityTypeProperties model
-            = new DatabricksSparkJarActivityTypeProperties().withMainClassName("dataxhfphawjov")
-                .withParameters(Arrays.asList("databusyqyf", "datatdprbmmf", "datateoxgikdcjmb", "datar"))
-                .withLibraries(Arrays.asList(mapOf("dsrwhjhivgeran", "dataudegykzdspbjks", "r", "dataxnafojtqqqc"),
-                    mapOf("mvzqcgyvz", "dataduspxijrr", "ybjucfs", "datavzsduz", "poywymtwh", "datapkqpgfyjwx", "x",
-                        "datadgbg"),
-                    mapOf("gia", "datarzhkhmw", "nlzalsuj", "datarftpgqxnyoakd"), mapOf("ekbcedbmfejtdb", "datagz",
-                        "ykjorlrjgrzxaa", "dataacnyacjypgbhfzy", "eyhalb", "dataibhkaqzahjqslsh")));
+            = new DatabricksSparkJarActivityTypeProperties().withMainClassName("dataaz")
+                .withParameters(Arrays.asList("databpysgzgi", "dataoahektwgiumcco", "datajxxjaafr", "datadhrkhfyaxi"))
+                .withLibraries(Arrays.asList(
+                    mapOf("ogzwwyubkppo", "datasimbgvrksjjqqpar", "byjfeanbnw", "datajyjqemgbkjxuxmkk", "fkzlv",
+                        "dataekpgllezvrvjws", "jynvguhqugnqs", "datajbsvk"),
+                    mapOf("wcfinsoi", "datarvquwhmnc", "gcl", "dataxxsybtpqgxz"),
+                    mapOf("i", "dataicnckdxflg", "l", "datatcer", "mrsbgjjuhzf", "dataerrpal"),
+                    mapOf("kwlmittpbivhkdxh", "datanabyvmch", "jbgvdzzukhlwvvh", "datavybxplbdaz")));
         model = BinaryData.fromObject(model).toObject(DatabricksSparkJarActivityTypeProperties.class);
     }
 

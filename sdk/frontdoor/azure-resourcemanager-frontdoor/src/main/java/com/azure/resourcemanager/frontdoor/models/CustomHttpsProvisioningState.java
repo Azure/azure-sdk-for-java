@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Provisioning status of Custom Https of the frontendEndpoint. */
+/**
+ * Provisioning status of Custom Https of the frontendEndpoint.
+ */
 public final class CustomHttpsProvisioningState extends ExpandableStringEnum<CustomHttpsProvisioningState> {
-    /** Static value Enabling for CustomHttpsProvisioningState. */
+    /**
+     * Static value Enabling for CustomHttpsProvisioningState.
+     */
     public static final CustomHttpsProvisioningState ENABLING = fromString("Enabling");
 
-    /** Static value Enabled for CustomHttpsProvisioningState. */
+    /**
+     * Static value Enabled for CustomHttpsProvisioningState.
+     */
     public static final CustomHttpsProvisioningState ENABLED = fromString("Enabled");
 
-    /** Static value Disabling for CustomHttpsProvisioningState. */
+    /**
+     * Static value Disabling for CustomHttpsProvisioningState.
+     */
     public static final CustomHttpsProvisioningState DISABLING = fromString("Disabling");
 
-    /** Static value Disabled for CustomHttpsProvisioningState. */
+    /**
+     * Static value Disabled for CustomHttpsProvisioningState.
+     */
     public static final CustomHttpsProvisioningState DISABLED = fromString("Disabled");
 
-    /** Static value Failed for CustomHttpsProvisioningState. */
+    /**
+     * Static value Failed for CustomHttpsProvisioningState.
+     */
     public static final CustomHttpsProvisioningState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of CustomHttpsProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class CustomHttpsProvisioningState extends ExpandableStringEnum<Cus
 
     /**
      * Creates or finds a CustomHttpsProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CustomHttpsProvisioningState.
      */
@@ -47,7 +59,7 @@ public final class CustomHttpsProvisioningState extends ExpandableStringEnum<Cus
 
     /**
      * Gets known CustomHttpsProvisioningState values.
-     *
+     * 
      * @return known CustomHttpsProvisioningState values.
      */
     public static Collection<CustomHttpsProvisioningState> values() {

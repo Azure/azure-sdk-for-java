@@ -8,8 +8,8 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Error response indicates CDN service is not able to process the incoming request. The reason is provided in the error
- * message.
+ * Error response indicates CDN service is not able to process the incoming request. The reason is provided in the
+ * error message.
  */
 @Immutable
 public final class MigrationErrorType {
@@ -37,13 +37,15 @@ public final class MigrationErrorType {
     @JsonProperty(value = "nextSteps", access = JsonProperty.Access.WRITE_ONLY)
     private String nextSteps;
 
-    /** Creates an instance of MigrationErrorType class. */
+    /**
+     * Creates an instance of MigrationErrorType class.
+     */
     public MigrationErrorType() {
     }
 
     /**
      * Get the code property: Error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -52,7 +54,7 @@ public final class MigrationErrorType {
 
     /**
      * Get the resourceName property: Resource which has the problem.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -61,7 +63,7 @@ public final class MigrationErrorType {
 
     /**
      * Get the errorMessage property: Error message indicating why the operation failed.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -70,7 +72,7 @@ public final class MigrationErrorType {
 
     /**
      * Get the nextSteps property: Describes what needs to be done to fix the problem.
-     *
+     * 
      * @return the nextSteps value.
      */
     public String nextSteps() {
@@ -79,7 +81,7 @@ public final class MigrationErrorType {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

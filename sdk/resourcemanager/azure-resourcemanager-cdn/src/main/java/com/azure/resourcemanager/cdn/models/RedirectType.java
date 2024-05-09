@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The redirect type the rule will use when redirecting traffic. */
+/**
+ * The redirect type the rule will use when redirecting traffic.
+ */
 public final class RedirectType extends ExpandableStringEnum<RedirectType> {
-    /** Static value Moved for RedirectType. */
+    /**
+     * Static value Moved for RedirectType.
+     */
     public static final RedirectType MOVED = fromString("Moved");
 
-    /** Static value Found for RedirectType. */
+    /**
+     * Static value Found for RedirectType.
+     */
     public static final RedirectType FOUND = fromString("Found");
 
-    /** Static value TemporaryRedirect for RedirectType. */
+    /**
+     * Static value TemporaryRedirect for RedirectType.
+     */
     public static final RedirectType TEMPORARY_REDIRECT = fromString("TemporaryRedirect");
 
-    /** Static value PermanentRedirect for RedirectType. */
+    /**
+     * Static value PermanentRedirect for RedirectType.
+     */
     public static final RedirectType PERMANENT_REDIRECT = fromString("PermanentRedirect");
 
     /**
      * Creates a new instance of RedirectType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class RedirectType extends ExpandableStringEnum<RedirectType> {
 
     /**
      * Creates or finds a RedirectType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RedirectType.
      */
@@ -44,7 +54,7 @@ public final class RedirectType extends ExpandableStringEnum<RedirectType> {
 
     /**
      * Gets known RedirectType values.
-     *
+     * 
      * @return known RedirectType values.
      */
     public static Collection<RedirectType> values() {

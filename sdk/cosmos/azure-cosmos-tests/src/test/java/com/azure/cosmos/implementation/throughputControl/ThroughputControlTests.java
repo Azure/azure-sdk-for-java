@@ -686,7 +686,7 @@ public class ThroughputControlTests extends TestSuiteBase {
                 container.read().block();
             } catch (CosmosException error) {
                 if (error.getStatusCode() == 404) {
-                    TestSuiteBase.beforeSuite();
+                    this.beforeSuite();
                 }
 
                 throw error;

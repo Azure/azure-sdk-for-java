@@ -10,6 +10,7 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
+import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
@@ -1199,6 +1200,29 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withNetworkProfile(networkProfile);
+        return this;
+    }
+
+    /**
+     * Get the windowsProfile property: The Windows agent pool's specific profile.
+     * 
+     * @return the windowsProfile value.
+     */
+    public AgentPoolWindowsProfile windowsProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().windowsProfile();
+    }
+
+    /**
+     * Set the windowsProfile property: The Windows agent pool's specific profile.
+     * 
+     * @param windowsProfile the windowsProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withWindowsProfile(AgentPoolWindowsProfile windowsProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withWindowsProfile(windowsProfile);
         return this;
     }
 

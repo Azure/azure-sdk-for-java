@@ -6,68 +6,39 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mysqlflexibleserver.MySqlManager;
 import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorType;
 import com.azure.resourcemanager.mysqlflexibleserver.models.AzureADAdministrator;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AzureADAdministratorsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"srhnjivo\",\"sid\":\"tnovqfzgemjdftul\",\"tenantId\":\"tduceamt\",\"identityResourceId\":\"zuo\"},\"id\":\"jw\",\"name\":\"w\",\"type\":\"qioknssxmojm\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"wpn\",\"sid\":\"t\",\"tenantId\":\"nermcl\",\"identityResourceId\":\"lphox\"},\"id\":\"crpab\",\"name\":\"ye\",\"type\":\"sbj\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MySqlManager manager = MySqlManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        MySqlManager manager =
-            MySqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<AzureADAdministrator> response =
-            manager.azureADAdministrators().listByServer("ovnotyfjfcnjbkcn", "dhbt", com.azure.core.util.Context.NONE);
+        PagedIterable<AzureADAdministrator> response = manager.azureADAdministrators()
+            .listByServer("ykqgaifmvik", "bydvkhbejdz", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, response.iterator().next().administratorType());
-        Assertions.assertEquals("wpn", response.iterator().next().login());
-        Assertions.assertEquals("t", response.iterator().next().sid());
-        Assertions.assertEquals("nermcl", response.iterator().next().tenantId());
-        Assertions.assertEquals("lphox", response.iterator().next().identityResourceId());
+        Assertions.assertEquals("srhnjivo", response.iterator().next().login());
+        Assertions.assertEquals("tnovqfzgemjdftul", response.iterator().next().sid());
+        Assertions.assertEquals("tduceamt", response.iterator().next().tenantId());
+        Assertions.assertEquals("zuo", response.iterator().next().identityResourceId());
     }
 }

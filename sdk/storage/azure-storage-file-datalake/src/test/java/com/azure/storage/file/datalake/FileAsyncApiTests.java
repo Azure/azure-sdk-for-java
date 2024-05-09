@@ -62,6 +62,8 @@ import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptio
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
+import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
+import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient;
@@ -4621,6 +4623,98 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(aadFileClient.exists())
             .expectNext(true)
             .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-05-04")
+    @Test
+    public void aclHeaderTests() {
+        dataLakeFileSystemClient = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName());
+        dataLakeFileSystemClient.create();
+        dataLakeFileSystemClient.getDirectoryClient(generatePathName()).create();
+        fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
+
+        //getProperties
+        StepVerifier.create(fc.createWithResponse(options).then(fc.getProperties()))
+            .assertNext(r -> assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(r.getAccessControlList())))
+            .verifyComplete();
+
+        //readWithResponse
+        StepVerifier.create(fc.readWithResponse(null, null, null, false))
+            .assertNext(r -> assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(r.getDeserializedHeaders().getAccessControlList())))
+            .verifyComplete();
+
+        //readToFileWithResponse
+        File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
+        outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+
+        StepVerifier.create(fc.readToFileWithResponse(outFile.getPath(), null,
+            null, null, null, false, null))
+            .assertNext(r -> assertTrue(PATH_ACCESS_CONTROL_ENTRIES.containsAll(r.getValue().getAccessControlList())))
+            .verifyComplete();
+
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-05-04")
+    @ParameterizedTest
+    @MethodSource("upnHeaderTestSupplier")
+    public void upnHeaderTest(Boolean upnHeader) {
+        //feature currently doesn't work in preprod - test uses methods that send the request header. verified in fiddler
+        //that the header is being sent and is properly assigned.
+        dataLakeFileSystemAsyncClient = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
+        dataLakeFileSystemAsyncClient.create().block();
+        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
+        fc = dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName());
+
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions()
+            .setAccessControlList(PATH_ACCESS_CONTROL_ENTRIES);
+        fc.createWithResponse(options).block();
+
+        //getProperties
+        PathGetPropertiesOptions propertiesOptions = new PathGetPropertiesOptions().setUserPrincipalName(upnHeader);
+
+        StepVerifier.create(fc.getProperties(propertiesOptions))
+            .assertNext(r -> assertNotNull(r.getAccessControlList()))
+            .verifyComplete();
+
+        //readToFile
+        File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
+        outFile.deleteOnExit();
+        createdFiles.add(outFile);
+
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+        ReadToFileOptions readToFileOptions = new ReadToFileOptions();
+        readToFileOptions.setUserPrincipalName(upnHeader).setFilePath(outFile.getPath()).setRange(null)
+            .setParallelTransferOptions(null).setDownloadRetryOptions(null).setDataLakeRequestConditions(null)
+            .setRangeGetContentMd5(false).setOpenOptions(null);
+
+        StepVerifier.create(fc.readToFile(readToFileOptions))
+            .assertNext(r -> assertNotNull(r.getAccessControlList()))
+            .verifyComplete();
+
+        if (outFile.exists()) {
+            assertTrue(outFile.delete());
+        }
+
+        StepVerifier.create(fc.readToFileWithResponse(readToFileOptions))
+            .assertNext(r -> assertNotNull(r.getValue().getAccessControlList()))
+            .verifyComplete();
+    }
+
+    private static Stream<Arguments> upnHeaderTestSupplier() {
+        return Stream.of(
+            Arguments.of(false),
+            Arguments.of(true),
+            Arguments.of((Boolean) null));
     }
 
 

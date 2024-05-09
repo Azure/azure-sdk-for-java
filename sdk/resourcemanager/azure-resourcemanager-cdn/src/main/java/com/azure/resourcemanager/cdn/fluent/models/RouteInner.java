@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cdn.models.ActivatedResourceReference;
 import com.azure.resourcemanager.cdn.models.AfdEndpointProtocols;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
@@ -19,7 +20,9 @@ import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Friendly Routes name mapping to the any Routes or secret related information. */
+/**
+ * Friendly Routes name mapping to the any Routes or secret related information.
+ */
 @Fluent
 public final class RouteInner extends ProxyResource {
     /*
@@ -28,13 +31,21 @@ public final class RouteInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RouteProperties innerProperties;
 
-    /** Creates an instance of RouteInner class. */
+    /*
+     * Read only system data
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of RouteInner class.
+     */
     public RouteInner() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the Routes to create.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RouteProperties innerProperties() {
@@ -42,8 +53,17 @@ public final class RouteInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -52,7 +72,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
@@ -61,7 +81,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Get the endpointName property: The name of the endpoint which holds the route.
-     *
+     * 
      * @return the endpointName value.
      */
     public String endpointName() {
@@ -70,7 +90,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Get the customDomains property: Domains referenced by this endpoint.
-     *
+     * 
      * @return the customDomains value.
      */
     public List<ActivatedResourceReference> customDomains() {
@@ -79,7 +99,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Set the customDomains property: Domains referenced by this endpoint.
-     *
+     * 
      * @param customDomains the customDomains value to set.
      * @return the RouteInner object itself.
      */
@@ -93,7 +113,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Get the originGroup property: A reference to the origin group.
-     *
+     * 
      * @return the originGroup value.
      */
     public ResourceReference originGroup() {
@@ -102,7 +122,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Set the originGroup property: A reference to the origin group.
-     *
+     * 
      * @param originGroup the originGroup value to set.
      * @return the RouteInner object itself.
      */
@@ -115,9 +135,9 @@ public final class RouteInner extends ProxyResource {
     }
 
     /**
-     * Get the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content from,
-     * e.g. contoso.cloudapp.net/originpath.
-     *
+     * Get the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content
+     * from, e.g. contoso.cloudapp.net/originpath.
+     * 
      * @return the originPath value.
      */
     public String originPath() {
@@ -125,9 +145,9 @@ public final class RouteInner extends ProxyResource {
     }
 
     /**
-     * Set the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content from,
-     * e.g. contoso.cloudapp.net/originpath.
-     *
+     * Set the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content
+     * from, e.g. contoso.cloudapp.net/originpath.
+     * 
      * @param originPath the originPath value to set.
      * @return the RouteInner object itself.
      */
@@ -141,7 +161,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Get the ruleSets property: rule sets referenced by this endpoint.
-     *
+     * 
      * @return the ruleSets value.
      */
     public List<ResourceReference> ruleSets() {
@@ -150,7 +170,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Set the ruleSets property: rule sets referenced by this endpoint.
-     *
+     * 
      * @param ruleSets the ruleSets value to set.
      * @return the RouteInner object itself.
      */
@@ -164,7 +184,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Get the supportedProtocols property: List of supported protocols for this route.
-     *
+     * 
      * @return the supportedProtocols value.
      */
     public List<AfdEndpointProtocols> supportedProtocols() {
@@ -173,7 +193,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Set the supportedProtocols property: List of supported protocols for this route.
-     *
+     * 
      * @param supportedProtocols the supportedProtocols value to set.
      * @return the RouteInner object itself.
      */
@@ -187,7 +207,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Get the patternsToMatch property: The route patterns of the rule.
-     *
+     * 
      * @return the patternsToMatch value.
      */
     public List<String> patternsToMatch() {
@@ -196,7 +216,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Set the patternsToMatch property: The route patterns of the rule.
-     *
+     * 
      * @param patternsToMatch the patternsToMatch value to set.
      * @return the RouteInner object itself.
      */
@@ -209,9 +229,9 @@ public final class RouteInner extends ProxyResource {
     }
 
     /**
-     * Get the cacheConfiguration property: The caching configuration for this route. To disable caching, do not provide
-     * a cacheConfiguration object.
-     *
+     * Get the cacheConfiguration property: The caching configuration for this route. To disable caching, do not
+     * provide a cacheConfiguration object.
+     * 
      * @return the cacheConfiguration value.
      */
     public AfdRouteCacheConfiguration cacheConfiguration() {
@@ -219,9 +239,9 @@ public final class RouteInner extends ProxyResource {
     }
 
     /**
-     * Set the cacheConfiguration property: The caching configuration for this route. To disable caching, do not provide
-     * a cacheConfiguration object.
-     *
+     * Set the cacheConfiguration property: The caching configuration for this route. To disable caching, do not
+     * provide a cacheConfiguration object.
+     * 
      * @param cacheConfiguration the cacheConfiguration value to set.
      * @return the RouteInner object itself.
      */
@@ -235,7 +255,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Get the forwardingProtocol property: Protocol this rule will use when forwarding traffic to backends.
-     *
+     * 
      * @return the forwardingProtocol value.
      */
     public ForwardingProtocol forwardingProtocol() {
@@ -244,7 +264,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Set the forwardingProtocol property: Protocol this rule will use when forwarding traffic to backends.
-     *
+     * 
      * @param forwardingProtocol the forwardingProtocol value to set.
      * @return the RouteInner object itself.
      */
@@ -258,7 +278,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Get the linkToDefaultDomain property: whether this route will be linked to the default endpoint domain.
-     *
+     * 
      * @return the linkToDefaultDomain value.
      */
     public LinkToDefaultDomain linkToDefaultDomain() {
@@ -267,7 +287,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Set the linkToDefaultDomain property: whether this route will be linked to the default endpoint domain.
-     *
+     * 
      * @param linkToDefaultDomain the linkToDefaultDomain value to set.
      * @return the RouteInner object itself.
      */
@@ -282,7 +302,7 @@ public final class RouteInner extends ProxyResource {
     /**
      * Get the httpsRedirect property: Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this
      * is a easy way to set up this rule and it will be the first rule that gets executed.
-     *
+     * 
      * @return the httpsRedirect value.
      */
     public HttpsRedirect httpsRedirect() {
@@ -292,7 +312,7 @@ public final class RouteInner extends ProxyResource {
     /**
      * Set the httpsRedirect property: Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this
      * is a easy way to set up this rule and it will be the first rule that gets executed.
-     *
+     * 
      * @param httpsRedirect the httpsRedirect value to set.
      * @return the RouteInner object itself.
      */
@@ -306,7 +326,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Get the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the enabledState value.
      */
     public EnabledState enabledState() {
@@ -315,7 +335,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Set the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the RouteInner object itself.
      */
@@ -329,7 +349,7 @@ public final class RouteInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

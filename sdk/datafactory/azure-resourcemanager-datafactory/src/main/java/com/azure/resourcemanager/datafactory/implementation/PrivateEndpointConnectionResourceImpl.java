@@ -70,17 +70,19 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource create() {
-        this.innerObject = serviceManager
-            .serviceClient().getPrivateEndpointConnectionOperations().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, privateEndpointConnectionName, createPrivateEndpointWrapper, createIfMatch, Context.NONE)
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnectionOperations()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName,
+                createPrivateEndpointWrapper, createIfMatch, Context.NONE)
             .getValue();
         return this;
     }
 
     public PrivateEndpointConnectionResource create(Context context) {
-        this.innerObject = serviceManager
-            .serviceClient().getPrivateEndpointConnectionOperations().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, privateEndpointConnectionName, createPrivateEndpointWrapper, createIfMatch, context)
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnectionOperations()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName,
+                createPrivateEndpointWrapper, createIfMatch, context)
             .getValue();
         return this;
     }
@@ -101,17 +103,19 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource apply() {
-        this.innerObject = serviceManager
-            .serviceClient().getPrivateEndpointConnectionOperations().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, privateEndpointConnectionName, updatePrivateEndpointWrapper, updateIfMatch, Context.NONE)
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnectionOperations()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName,
+                updatePrivateEndpointWrapper, updateIfMatch, Context.NONE)
             .getValue();
         return this;
     }
 
     public PrivateEndpointConnectionResource apply(Context context) {
-        this.innerObject = serviceManager
-            .serviceClient().getPrivateEndpointConnectionOperations().createOrUpdateWithResponse(resourceGroupName,
-                factoryName, privateEndpointConnectionName, updatePrivateEndpointWrapper, updateIfMatch, context)
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnectionOperations()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName,
+                updatePrivateEndpointWrapper, updateIfMatch, context)
             .getValue();
         return this;
     }
@@ -128,15 +132,18 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
 
     public PrivateEndpointConnectionResource refresh() {
         String localIfNoneMatch = null;
-        this.innerObject
-            = serviceManager.serviceClient().getPrivateEndpointConnectionOperations().getWithResponse(resourceGroupName,
-                factoryName, privateEndpointConnectionName, localIfNoneMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnectionOperations()
+            .getWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName, localIfNoneMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpointConnectionResource refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnectionOperations()
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnectionOperations()
             .getWithResponse(resourceGroupName, factoryName, privateEndpointConnectionName, localIfNoneMatch, context)
             .getValue();
         return this;

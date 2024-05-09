@@ -21,22 +21,18 @@ public final class ExtensionMetadatasImpl implements ExtensionMetadatas {
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    public ExtensionMetadatasImpl(
-        ExtensionMetadatasClient innerClient,
+    public ExtensionMetadatasImpl(ExtensionMetadatasClient innerClient,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ExtensionValue> getWithResponse(
-        String location, String publisher, String extensionType, String version, Context context) {
-        Response<ExtensionValueInner> inner =
-            this.serviceClient().getWithResponse(location, publisher, extensionType, version, context);
+    public Response<ExtensionValue> getWithResponse(String location, String publisher, String extensionType,
+        String version, Context context) {
+        Response<ExtensionValueInner> inner
+            = this.serviceClient().getWithResponse(location, publisher, extensionType, version, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ExtensionValueImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -54,14 +50,14 @@ public final class ExtensionMetadatasImpl implements ExtensionMetadatas {
 
     public PagedIterable<ExtensionValue> list(String location, String publisher, String extensionType) {
         PagedIterable<ExtensionValueInner> inner = this.serviceClient().list(location, publisher, extensionType);
-        return Utils.mapPage(inner, inner1 -> new ExtensionValueImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExtensionValueImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ExtensionValue> list(
-        String location, String publisher, String extensionType, Context context) {
-        PagedIterable<ExtensionValueInner> inner =
-            this.serviceClient().list(location, publisher, extensionType, context);
-        return Utils.mapPage(inner, inner1 -> new ExtensionValueImpl(inner1, this.manager()));
+    public PagedIterable<ExtensionValue> list(String location, String publisher, String extensionType,
+        Context context) {
+        PagedIterable<ExtensionValueInner> inner
+            = this.serviceClient().list(location, publisher, extensionType, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExtensionValueImpl(inner1, this.manager()));
     }
 
     private ExtensionMetadatasClient serviceClient() {

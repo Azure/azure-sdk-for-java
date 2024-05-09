@@ -12,17 +12,17 @@ public final class MessagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MessageProperties model = BinaryData.fromString(
-            "{\"communicationDirection\":\"inbound\",\"sender\":\"cciuqgbdbutau\",\"body\":\"fbtkuwhhmhyk\",\"createdDate\":\"2021-03-16T21:09:25Z\"}")
+            "{\"communicationDirection\":\"outbound\",\"sender\":\"dsslswt\",\"body\":\"eriofzpyqs\",\"createdDate\":\"2021-06-06T05:20:48Z\"}")
             .toObject(MessageProperties.class);
-        Assertions.assertEquals("cciuqgbdbutau", model.sender());
-        Assertions.assertEquals("fbtkuwhhmhyk", model.body());
+        Assertions.assertEquals("dsslswt", model.sender());
+        Assertions.assertEquals("eriofzpyqs", model.body());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MessageProperties model = new MessageProperties().withSender("cciuqgbdbutau").withBody("fbtkuwhhmhyk");
+        MessageProperties model = new MessageProperties().withSender("dsslswt").withBody("eriofzpyqs");
         model = BinaryData.fromObject(model).toObject(MessageProperties.class);
-        Assertions.assertEquals("cciuqgbdbutau", model.sender());
-        Assertions.assertEquals("fbtkuwhhmhyk", model.body());
+        Assertions.assertEquals("dsslswt", model.sender());
+        Assertions.assertEquals("eriofzpyqs", model.body());
     }
 }

@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * MemberIdentityCertificate
- *
- * <p>Object representing MemberIdentityCertificate for Managed CCF.
+ * 
+ * Object representing MemberIdentityCertificate for Managed CCF.
  */
 @Fluent
 public final class MemberIdentityCertificate {
@@ -32,13 +32,15 @@ public final class MemberIdentityCertificate {
     @JsonProperty(value = "tags")
     private Object tags;
 
-    /** Creates an instance of MemberIdentityCertificate class. */
+    /**
+     * Creates an instance of MemberIdentityCertificate class.
+     */
     public MemberIdentityCertificate() {
     }
 
     /**
      * Get the certificate property: Member Identity Certificate.
-     *
+     * 
      * @return the certificate value.
      */
     public String certificate() {
@@ -47,7 +49,7 @@ public final class MemberIdentityCertificate {
 
     /**
      * Set the certificate property: Member Identity Certificate.
-     *
+     * 
      * @param certificate the certificate value to set.
      * @return the MemberIdentityCertificate object itself.
      */
@@ -58,7 +60,7 @@ public final class MemberIdentityCertificate {
 
     /**
      * Get the encryptionkey property: Member Identity Certificate Encryption Key.
-     *
+     * 
      * @return the encryptionkey value.
      */
     public String encryptionkey() {
@@ -67,7 +69,7 @@ public final class MemberIdentityCertificate {
 
     /**
      * Set the encryptionkey property: Member Identity Certificate Encryption Key.
-     *
+     * 
      * @param encryptionkey the encryptionkey value to set.
      * @return the MemberIdentityCertificate object itself.
      */
@@ -78,7 +80,7 @@ public final class MemberIdentityCertificate {
 
     /**
      * Get the tags property: Anything.
-     *
+     * 
      * @return the tags value.
      */
     public Object tags() {
@@ -87,7 +89,7 @@ public final class MemberIdentityCertificate {
 
     /**
      * Set the tags property: Anything.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the MemberIdentityCertificate object itself.
      */
@@ -98,7 +100,7 @@ public final class MemberIdentityCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -42,23 +42,20 @@ public final class CustomActivityTypeProperties {
     private CustomActivityReferenceObject referenceObjects;
 
     /*
-     * User defined property bag. There is no restriction on the keys or values that can be used. The user specified
-     * custom activity has the full responsibility to consume and interpret the content defined.
+     * User defined property bag. There is no restriction on the keys or values that can be used. The user specified custom activity has the full responsibility to consume and interpret the content defined.
      */
     @JsonProperty(value = "extendedProperties")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> extendedProperties;
 
     /*
-     * The retention time for the files submitted for custom activity. Type: double (or Expression with resultType
-     * double).
+     * The retention time for the files submitted for custom activity. Type: double (or Expression with resultType double).
      */
     @JsonProperty(value = "retentionTimeInDays")
     private Object retentionTimeInDays;
 
     /*
-     * Elevation level and scope for the user, default is nonadmin task. Type: string (or Expression with resultType
-     * double).
+     * Elevation level and scope for the user, default is nonadmin task. Type: string (or Expression with resultType double).
      */
     @JsonProperty(value = "autoUserSpecification")
     private Object autoUserSpecification;
@@ -224,8 +221,9 @@ public final class CustomActivityTypeProperties {
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property command in model CustomActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property command in model CustomActivityTypeProperties"));
         }
         if (resourceLinkedService() != null) {
             resourceLinkedService().validate();

@@ -78,12 +78,12 @@ public final class TriggerReference {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model TriggerReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model TriggerReference"));
         }
         if (referenceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property referenceName in model TriggerReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property referenceName in model TriggerReference"));
         }
     }
 

@@ -13,18 +13,19 @@ public final class UpdateIntegrationRuntimeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateIntegrationRuntimeRequest model
-            = BinaryData.fromString("{\"autoUpdate\":\"On\",\"updateDelayOffset\":\"cwscwsvlx\"}")
+            = BinaryData.fromString("{\"autoUpdate\":\"Off\",\"updateDelayOffset\":\"gmgsxnkjzkde\"}")
                 .toObject(UpdateIntegrationRuntimeRequest.class);
-        Assertions.assertEquals(IntegrationRuntimeAutoUpdate.ON, model.autoUpdate());
-        Assertions.assertEquals("cwscwsvlx", model.updateDelayOffset());
+        Assertions.assertEquals(IntegrationRuntimeAutoUpdate.OFF, model.autoUpdate());
+        Assertions.assertEquals("gmgsxnkjzkde", model.updateDelayOffset());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateIntegrationRuntimeRequest model = new UpdateIntegrationRuntimeRequest()
-            .withAutoUpdate(IntegrationRuntimeAutoUpdate.ON).withUpdateDelayOffset("cwscwsvlx");
+        UpdateIntegrationRuntimeRequest model
+            = new UpdateIntegrationRuntimeRequest().withAutoUpdate(IntegrationRuntimeAutoUpdate.OFF)
+                .withUpdateDelayOffset("gmgsxnkjzkde");
         model = BinaryData.fromObject(model).toObject(UpdateIntegrationRuntimeRequest.class);
-        Assertions.assertEquals(IntegrationRuntimeAutoUpdate.ON, model.autoUpdate());
-        Assertions.assertEquals("cwscwsvlx", model.updateDelayOffset());
+        Assertions.assertEquals(IntegrationRuntimeAutoUpdate.OFF, model.autoUpdate());
+        Assertions.assertEquals("gmgsxnkjzkde", model.updateDelayOffset());
     }
 }

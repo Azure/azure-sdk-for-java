@@ -14,6 +14,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
@@ -66,6 +67,7 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -77,7 +79,6 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -115,18 +116,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.BridgeInternal.documentFromObject;
 import static com.azure.cosmos.BridgeInternal.getAltLink;
-import static com.azure.cosmos.BridgeInternal.toFeedResponsePage;
 import static com.azure.cosmos.BridgeInternal.toResourceResponse;
 import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuffer;
 
 /**
  * While this class is public, it is not part of our published public APIs.
@@ -144,6 +143,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private final static
+    ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+
+    private final static
     ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor telemetryCfgAccessor =
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
 
@@ -154,6 +157,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final static
     ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
+    private final static
+    ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor =
+        ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
 
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
@@ -166,7 +173,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private static final String DUMMY_SQL_QUERY = "this is dummy and only used in creating " +
         "ParallelDocumentQueryExecutioncontext, but not used";
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
-    private final ItemDeserializer itemDeserializer = new ItemDeserializer.JsonDeserializer();
+    private final CosmosItemSerializer defaultCustomSerializer;
     private final static Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;
     private final URI serviceEndpoint;
@@ -250,7 +257,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                CosmosItemSerializer defaultCustomSerializer) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -269,7 +277,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                defaultCustomSerializer);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -291,7 +300,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                CosmosItemSerializer defaultCustomSerializer) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -310,7 +320,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                defaultCustomSerializer);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -331,7 +342,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                CosmosItemSerializer defaultCustomSerializer) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -349,7 +361,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                defaultCustomSerializer);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -409,7 +422,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          String clientCorrelationId,
                          CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                          SessionRetryOptions sessionRetryOptions,
-                         CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                         CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                         CosmosItemSerializer defaultCustomSerializer) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
@@ -433,6 +447,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         this.diagnosticsClientConfig.withEndToEndOperationLatencyPolicy(cosmosEndToEndOperationLatencyPolicyConfig);
         this.sessionRetryOptions = sessionRetryOptions;
+        this.defaultCustomSerializer = defaultCustomSerializer;
 
         logger.info(
             "Initializing DocumentClient [{}] with"
@@ -829,7 +844,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Database, OperationType.Create);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(database);
+            ByteBuffer byteBuffer = database.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1236,7 +1251,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Create);
 
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1287,7 +1302,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String path = Utils.joinPath(collection.getSelfLink(), null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Replace);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1474,7 +1489,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         for (int i = 0; i < objectArray.size(); ++i) {
             Object object = objectArray.get(i);
             if (object instanceof JsonSerializable) {
-                stringArray[i] = ModelBridgeInternal.toJsonFromJsonSerializable((JsonSerializable) object);
+                stringArray[i] = ((JsonSerializable) object).toJson();
             } else {
 
                 // POJO, ObjectNode, number, STRING or Boolean
@@ -1604,7 +1619,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, String.valueOf(offer.getThroughput()));
                 } else if (offer.getOfferAutoScaleSettings() != null) {
                     headers.put(HttpConstants.HttpHeaders.OFFER_AUTOPILOT_SETTINGS,
-                        ModelBridgeInternal.toJsonFromJsonSerializable(offer.getOfferAutoScaleSettings()));
+                        offer.getOfferAutoScaleSettings().toJson());
                 }
             }
         }
@@ -1731,7 +1746,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             trackingId = options.getTrackingId();
         }
-        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, mapper, trackingId);
+        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, options.getEffectiveItemSerializer(), trackingId);
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -2385,7 +2400,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 throw new IllegalArgumentException("document");
             }
 
-            Document typedDocument = documentFromObject(document, mapper);
+            Document typedDocument = Document.fromObject(document, options.getEffectiveItemSerializer());
 
             return this.replaceDocumentInternal(
                 documentLink,
@@ -2480,15 +2495,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         final Map<String, String> requestHeaders =
             getRequestHeaders(options, ResourceType.Document, OperationType.Replace);
         Instant serializationStartTimeUTC = Instant.now();
+        Consumer<Map<String, Object>> onAfterSerialization = null;
         if (options != null) {
             String trackingId = options.getTrackingId();
 
             if (trackingId != null && !trackingId.isEmpty()) {
-                document.set(Constants.Properties.TRACKING_ID, trackingId);
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
         }
 
-        ByteBuffer content = serializeJsonToByteBuffer(document);
+        ByteBuffer content = document.serializeJsonToByteBuffer(options.getEffectiveItemSerializer(), onAfterSerialization);
         Instant serializationEndTime = Instant.now();
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics =
             new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -3296,7 +3312,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // if there is any factory method being passed in, use the factory method to deserializ the object
         // else fallback to use the original way
         // typically used by spark trying to convert into SparkRowItem
-        ItemDeserializer effectiveItemDeserializer = getEffectiveItemDeserializer(queryRequestOptions, klass);
+        CosmosItemSerializer effectiveItemSerializer = getEffectiveItemSerializer(queryRequestOptions);
 
         return Flux.fromIterable(singleItemPartitionRequestMap.values())
             .flatMap(cosmosItemIdentityList -> {
@@ -3345,7 +3361,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             BridgeInternal.getClientSideRequestStatics(cosmosException.getDiagnostics())));
                 } else {
                     CosmosItemResponse<T> cosmosItemResponse =
-                        ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, effectiveItemDeserializer);
+                        itemResponseAccessor.createCosmosItemResponse(resourceResponse, klass, effectiveItemSerializer);
+
                     feedResponse = ModelBridgeInternal.createFeedResponse(
                             Arrays.asList(cosmosItemResponse.getItem()),
                             cosmosItemResponse.getResponseHeaders());
@@ -3367,18 +3384,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return queryDocuments(collectionLink, new SqlQuerySpec(query), state, classOfT);
     }
 
-    private <T> ItemDeserializer getEffectiveItemDeserializer(
-            CosmosQueryRequestOptions queryRequestOptions,
-            Class<T> klass) {
-
-        Function<JsonNode, T> factoryMethod = queryRequestOptions == null ?
-                null : qryOptAccessor.getImpl(queryRequestOptions).getItemFactoryMethod(klass);
-
-        if (factoryMethod == null) {
-            return this.itemDeserializer; // using default itemDeserializer
+    @Override
+    public CosmosItemSerializer getEffectiveItemSerializer(CosmosItemSerializer requestOptionsItemSerializer) {
+        if (requestOptionsItemSerializer != null) {
+            return requestOptionsItemSerializer;
         }
 
-        return new ItemDeserializer.JsonDeserializer(factoryMethod);
+        if (this.defaultCustomSerializer != null) {
+            return this.defaultCustomSerializer;
+        }
+
+        return CosmosItemSerializer.DEFAULT_SERIALIZER;
+    }
+
+    private <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions) {
+
+        CosmosItemSerializer requestOptionsItemSerializer =
+            queryRequestOptions != null ? queryRequestOptions.getCustomItemSerializer() :  null;
+
+        return this.getEffectiveItemSerializer(requestOptionsItemSerializer);
+    }
+
+    private <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosItemRequestOptions itemRequestOptions) {
+
+        CosmosItemSerializer requestOptionsItemSerializer =
+            itemRequestOptions != null ? itemRequestOptions.getCustomItemSerializer() :  null;
+
+        return this.getEffectiveItemSerializer(requestOptionsItemSerializer);
     }
 
     private IDocumentQueryClient documentQueryClientImpl(RxDocumentClientImpl rxDocumentClientImpl, OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -3451,6 +3483,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     req,
                     feedOperation
                 );
+            }
+
+            @Override
+            public <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions) {
+                return RxDocumentClientImpl.this.getEffectiveItemSerializer(queryRequestOptions);
             }
 
             @Override
@@ -4939,9 +4976,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc =
             request -> readFeed(request)
-                .map(response -> toFeedResponsePage(
+                .map(response -> feedResponseAccessor.createFeedResponse(
                                     response,
-                                    qryOptAccessor.getImpl(nonNullOptions).getItemFactoryMethod(klass),
+                                    CosmosItemSerializer.DEFAULT_SERIALIZER,
                                     klass));
 
         return Paginator
@@ -5130,12 +5167,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.warn("Already shutdown!");
         }
     }
-
-    @Override
-    public ItemDeserializer getItemDeserializer() {
-        return this.itemDeserializer;
-    }
-
     @Override
     public synchronized void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group can not be null");

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureBlobDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.Map;
 /**
  * The Azure Blob storage.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzureBlobDataset.class, visible = true)
 @JsonTypeName("AzureBlob")
 @Fluent
 public final class AzureBlobDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureBlob";
+
     /*
      * Azure Blob dataset properties.
      */
@@ -29,6 +37,16 @@ public final class AzureBlobDataset extends Dataset {
      * Creates an instance of AzureBlobDataset class.
      */
     public AzureBlobDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -200,8 +218,8 @@ public final class AzureBlobDataset extends Dataset {
     }
 
     /**
-     * Get the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * Get the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the modifiedDatetimeEnd value.
      */
@@ -210,8 +228,8 @@ public final class AzureBlobDataset extends Dataset {
     }
 
     /**
-     * Set the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * Set the modifiedDatetimeEnd property: The end of Azure Blob's modified datetime. Type: string (or Expression with
+     * resultType string).
      * 
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the AzureBlobDataset object itself.

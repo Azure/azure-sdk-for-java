@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the PostArgs condition for the delivery rule. */
+/**
+ * Defines the PostArgs condition for the delivery rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("PostArgs")
 @Fluent
@@ -21,13 +23,15 @@ public final class DeliveryRulePostArgsCondition extends DeliveryRuleCondition {
     @JsonProperty(value = "parameters", required = true)
     private PostArgsMatchConditionParameters parameters;
 
-    /** Creates an instance of DeliveryRulePostArgsCondition class. */
+    /**
+     * Creates an instance of DeliveryRulePostArgsCondition class.
+     */
     public DeliveryRulePostArgsCondition() {
     }
 
     /**
      * Get the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @return the parameters value.
      */
     public PostArgsMatchConditionParameters parameters() {
@@ -36,7 +40,7 @@ public final class DeliveryRulePostArgsCondition extends DeliveryRuleCondition {
 
     /**
      * Set the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRulePostArgsCondition object itself.
      */
@@ -47,17 +51,15 @@ public final class DeliveryRulePostArgsCondition extends DeliveryRuleCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRulePostArgsCondition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model DeliveryRulePostArgsCondition"));
         } else {
             parameters().validate();
         }

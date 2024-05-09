@@ -31,6 +31,14 @@ import java.util.List;
 public class FhirR4DomainResource extends FhirR4Resource {
 
     /*
+     * resourceType
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "resourceType")
+    private String resourceType;
+
+    /*
      * Text summary of the resource, for human interpretation
      */
     @Generated
@@ -67,6 +75,17 @@ public class FhirR4DomainResource extends FhirR4Resource {
     @JsonCreator
     public FhirR4DomainResource(@JsonProperty(value = "resourceType") String resourceType) {
         super(resourceType);
+    }
+
+    /**
+     * Get the resourceType property: resourceType.
+     *
+     * @return the resourceType value.
+     */
+    @Generated
+    @Override
+    public String getResourceType() {
+        return this.resourceType;
     }
 
     /**
@@ -195,24 +214,5 @@ public class FhirR4DomainResource extends FhirR4Resource {
     public FhirR4DomainResource setLanguage(String language) {
         super.setLanguage(language);
         return this;
-    }
-
-    /*
-     * resourceType
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "resourceType")
-    private String resourceType;
-
-    /**
-     * Get the resourceType property: resourceType.
-     *
-     * @return the resourceType value.
-     */
-    @Generated
-    @Override
-    public String getResourceType() {
-        return this.resourceType;
     }
 }

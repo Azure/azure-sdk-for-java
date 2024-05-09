@@ -77,20 +77,24 @@ public enum NtfsFileAttributes {
             return null;
         }
 
+        if (ntfsAttributes.isEmpty()) {
+            // If there are no attributes the following code does nothing.
+            // TODO (alzimmer): Should this return null instead? Returning "" as it matches current behavior.
+            return "";
+        }
+
         final StringBuilder builder = new StringBuilder();
 
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.READ_ONLY, "ReadOnly|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.HIDDEN, "Hidden|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.SYSTEM, "System|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.NORMAL, "None|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.DIRECTORY, "Directory|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.ARCHIVE, "Archive|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.TEMPORARY, "Temporary|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.OFFLINE, "Offline|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.NOT_CONTENT_INDEXED, "NotContentIndexed|");
-        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.NO_SCRUB_DATA, "NoScrubData|");
-
-        builder.deleteCharAt(builder.lastIndexOf("|"));
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.READ_ONLY, "ReadOnly");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.HIDDEN, "Hidden");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.SYSTEM, "System");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.NORMAL, "None");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.DIRECTORY, "Directory");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.ARCHIVE, "Archive");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.TEMPORARY, "Temporary");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.OFFLINE, "Offline");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.NOT_CONTENT_INDEXED, "NotContentIndexed");
+        toStringHelper(builder, ntfsAttributes, NtfsFileAttributes.NO_SCRUB_DATA, "NoScrubData");
 
         return builder.toString();
     }
@@ -98,6 +102,11 @@ public enum NtfsFileAttributes {
     private static void toStringHelper(StringBuilder sb, EnumSet<NtfsFileAttributes> ntfsAttributes,
         NtfsFileAttributes attributes, String toAdd) {
         if (ntfsAttributes.contains(attributes)) {
+            if (sb.length() > 0) {
+                // Already appended an attribute, so append the delimiter before appending the next attribute.
+                sb.append("|");
+            }
+
             sb.append(toAdd);
         }
     }
@@ -106,7 +115,7 @@ public enum NtfsFileAttributes {
      * Creates an enum set of {@code NtfsFileAttributes} from a valid String .
      *
      * @param ntfsAttributes A <code>String</code> that represents the ntfs attributes. The string must contain one or
-     * more of the following values delimited by a |. Note they are case sensitive.
+     * more of the following values delimited by a |. Note they are case-sensitive.
      * <ul>
      * <li><code>ReadOnly</code></li>
      * <li><code>Hidden</code></li>

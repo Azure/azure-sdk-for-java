@@ -10,11 +10,9 @@ import com.azure.resourcemanager.containerservicefleet.models.UpdateStatus;
 public final class UpdateStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateStatus model =
-            BinaryData
-                .fromString(
-                    "{\"startTime\":\"2020-12-29T19:47:48Z\",\"completedTime\":\"2021-11-07T20:31:54Z\",\"state\":\"Failed\"}")
-                .toObject(UpdateStatus.class);
+        UpdateStatus model = BinaryData.fromString(
+            "{\"startTime\":\"2021-01-29T02:12:36Z\",\"completedTime\":\"2021-10-23T12:01:36Z\",\"state\":\"Stopped\"}")
+            .toObject(UpdateStatus.class);
     }
 
     @org.junit.jupiter.api.Test

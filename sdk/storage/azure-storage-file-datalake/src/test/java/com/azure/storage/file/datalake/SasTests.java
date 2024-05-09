@@ -139,7 +139,7 @@ public class SasTests extends DataLakeTestBase {
 
         DataLakeDirectoryClient client = getDirectoryClient(sas, getFileSystemUrl(), pathName);
 
-        PathProperties properties = assertDoesNotThrow(client::getProperties);
+        PathProperties properties = assertDoesNotThrow(() -> client.getProperties());
         validateSasProperties(properties);
 
         assertDoesNotThrow(() -> client.createSubdirectory(generatePathName()));
@@ -257,7 +257,7 @@ public class SasTests extends DataLakeTestBase {
 
         DataLakeDirectoryClient client = getDirectoryClient(sas, getFileSystemUrl(), pathName);
 
-        PathProperties properties = assertDoesNotThrow(client::getProperties);
+        PathProperties properties = assertDoesNotThrow(() -> client.getProperties());
         validateSasProperties(properties);
 
         assertDoesNotThrow(() -> client.createSubdirectory(generatePathName()));

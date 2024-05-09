@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes properties that can identify extensions. */
+/**
+ * Describes properties that can identify extensions.
+ */
 @Immutable
 public final class ConfigurationExtension {
     /*
@@ -22,13 +24,15 @@ public final class ConfigurationExtension {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ConfigurationExtension class. */
+    /**
+     * Creates an instance of ConfigurationExtension class.
+     */
     public ConfigurationExtension() {
     }
 
     /**
      * Get the publisher property: Publisher of the extension.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -37,7 +41,7 @@ public final class ConfigurationExtension {
 
     /**
      * Get the type property: Type of the extension.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -46,7 +50,7 @@ public final class ConfigurationExtension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

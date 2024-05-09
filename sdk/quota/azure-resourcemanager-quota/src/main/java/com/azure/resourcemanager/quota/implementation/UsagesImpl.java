@@ -48,12 +48,12 @@ public final class UsagesImpl implements Usages {
 
     public PagedIterable<CurrentUsagesBase> list(String scope) {
         PagedIterable<CurrentUsagesBaseInner> inner = this.serviceClient().list(scope);
-        return Utils.mapPage(inner, inner1 -> new CurrentUsagesBaseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CurrentUsagesBaseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CurrentUsagesBase> list(String scope, Context context) {
         PagedIterable<CurrentUsagesBaseInner> inner = this.serviceClient().list(scope, context);
-        return Utils.mapPage(inner, inner1 -> new CurrentUsagesBaseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CurrentUsagesBaseImpl(inner1, this.manager()));
     }
 
     private UsagesClient serviceClient() {

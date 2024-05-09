@@ -20,8 +20,7 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { EventGridManagementClientImpl.class })
 public final class EventGridManagementClientBuilder {
     /*
-     * Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part
-     * of the URI for every service call.
+     * Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      */
     private String subscriptionId;
 
@@ -125,11 +124,13 @@ public final class EventGridManagementClientBuilder {
     public EventGridManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
             : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
         Duration localDefaultPollInterval
             = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter = (serializerAdapter != null) ? serializerAdapter
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         EventGridManagementClientImpl client = new EventGridManagementClientImpl(localPipeline, localSerializerAdapter,
             localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);

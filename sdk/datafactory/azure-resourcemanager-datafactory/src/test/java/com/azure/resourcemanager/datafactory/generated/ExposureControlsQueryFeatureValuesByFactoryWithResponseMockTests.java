@@ -6,56 +6,36 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.ExposureControlBatchRequest;
 import com.azure.resourcemanager.datafactory.models.ExposureControlBatchResponse;
 import com.azure.resourcemanager.datafactory.models.ExposureControlRequest;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ExposureControlsQueryFeatureValuesByFactoryWithResponseMockTests {
     @Test
     public void testQueryFeatureValuesByFactoryWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"exposureControlResponses\":[{\"featureName\":\"dgzfqs\",\"value\":\"yuillrrqw\"},{\"featureName\":\"hiqjegea\",\"value\":\"oqg\"}]}";
+            = "{\"exposureControlResponses\":[{\"featureName\":\"zcnpsdpfw\",\"value\":\"wwbunfymbwi\"},{\"featureName\":\"rajtbmjok\",\"value\":\"qgokha\"},{\"featureName\":\"ylkflf\",\"value\":\"fjskndwywbptvym\"},{\"featureName\":\"pdcddbeozhprlxxb\",\"value\":\"z\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ExposureControlBatchResponse response = manager.exposureControls()
-            .queryFeatureValuesByFactoryWithResponse("vvbsilahskesea", "g",
-                new ExposureControlBatchRequest().withExposureControlRequests(Arrays.asList(
-                    new ExposureControlRequest().withFeatureName("essiielbtge").withFeatureType("wcqeihuyrzi"),
-                    new ExposureControlRequest().withFeatureName("yvquufplmpbvzbt").withFeatureType("totpvoe"),
-                    new ExposureControlRequest().withFeatureName("fwrao").withFeatureType("r"))),
+            .queryFeatureValuesByFactoryWithResponse("k", "dtofakmopqfzvvti",
+                new ExposureControlBatchRequest().withExposureControlRequests(Arrays
+                    .asList(new ExposureControlRequest().withFeatureName("suemewfut").withFeatureType("bpnrfucxt"))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

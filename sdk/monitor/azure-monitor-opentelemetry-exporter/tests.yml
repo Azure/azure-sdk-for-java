@@ -8,7 +8,3 @@ extends:
       - name: azure-monitor-opentelemetry-exporter
         groupId: com.azure
         safeName: azuremonitoropentelemetryexporter
-    EnvVars:
-      AZURE_CLIENT_ID: $(MONITOR_CLIENT_ID)
-      AZURE_TENANT_ID: $(MONITOR_TENANT_ID)
-      AZURE_CLIENT_SECRET: $(MONITOR_CLIENT_SECRET)

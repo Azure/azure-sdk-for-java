@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaChangeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaChangeRequest model = BinaryData.fromString("{\"region\":\"nayqi\",\"payload\":\"nduhavhqlkthum\"}")
+        QuotaChangeRequest model = BinaryData.fromString("{\"region\":\"ldawkzbaliourqha\",\"payload\":\"uhashsfwx\"}")
             .toObject(QuotaChangeRequest.class);
-        Assertions.assertEquals("nayqi", model.region());
-        Assertions.assertEquals("nduhavhqlkthum", model.payload());
+        Assertions.assertEquals("ldawkzbaliourqha", model.region());
+        Assertions.assertEquals("uhashsfwx", model.payload());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaChangeRequest model = new QuotaChangeRequest().withRegion("nayqi").withPayload("nduhavhqlkthum");
+        QuotaChangeRequest model = new QuotaChangeRequest().withRegion("ldawkzbaliourqha").withPayload("uhashsfwx");
         model = BinaryData.fromObject(model).toObject(QuotaChangeRequest.class);
-        Assertions.assertEquals("nayqi", model.region());
-        Assertions.assertEquals("nduhavhqlkthum", model.payload());
+        Assertions.assertEquals("ldawkzbaliourqha", model.region());
+        Assertions.assertEquals("uhashsfwx", model.payload());
     }
 }
