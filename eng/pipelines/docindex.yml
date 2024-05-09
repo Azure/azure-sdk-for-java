@@ -90,7 +90,7 @@ jobs:
         parameters:
           DailyBranchVariableName: DailyDocsBranchName
 
-      - template: /eng/pipelines/templates/steps/mvn-linux-settings-for-docs.yml
+      - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
 
       - task: Powershell@2
         inputs:
