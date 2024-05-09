@@ -95,11 +95,11 @@ public class RecurrencePattern {
 
     @Override
     public String toString() {
-        return "RecurrencePattern{" +
-            "type=" + type +
-            ", interval=" + interval +
-            ", daysOfWeek=" + daysOfWeek +
-            ", firstDayOfWeek='" + firstDayOfWeek + '\'' +
-            '}';
+        return "RecurrencePattern{"
+            + "type=" + type
+            + ", interval=" + interval
+            + ", daysOfWeek=" + daysOfWeek
+            + ", firstDayOfWeek='" + firstDayOfWeek + '\''
+            + '}';
     }
 }
