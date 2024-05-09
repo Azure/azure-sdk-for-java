@@ -208,13 +208,13 @@ public class ResourceTests {
 
                     if ("id".equals(fieldName)) {
                         subResource.withId(reader.getString());
-                    } else if("subResource".equals(fieldName)) {
+                    } else if ("subResource".equals(fieldName)) {
                         subResource.withSubResource(reader.readObject(reader1 -> SubResource.fromJson(reader1)));
-                    } else if("subResourceList".equals(fieldName)) {
+                    } else if ("subResourceList".equals(fieldName)) {
                         subResource.withSubResourceList(reader.readArray(reader1 -> SubResource.fromJson(reader1)));
-                    } else if("subResourceResource".equals(fieldName)) {
+                    } else if ("subResourceResource".equals(fieldName)) {
                         subResource.withSubResourceResource(reader.readObject(reader1 -> SubResourceResource.fromJson(reader1)));
-                    } else if("subResourceResourceList".equals(fieldName)) {
+                    } else if ("subResourceResourceList".equals(fieldName)) {
                         subResource.withSubResourceResourceList(reader.readArray(reader1 -> SubResourceResource.fromJson(reader1)));
                     } else {
                         reader.skipChildren();
