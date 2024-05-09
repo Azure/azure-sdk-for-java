@@ -29,6 +29,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -45,6 +46,9 @@ public class TestProxyUtils {
     private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
     private static final String REDACTED_VALUE = "REDACTED";
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
+    // Removing `Operation-Location` and `$..id` from the default list of sanitizers as they are used in the SDK.
+    public static final List<String> DEFAULT_REMOVE_SANITIZER_LIST
+        = Collections.unmodifiableList(Arrays.asList("AZSDK2030", "AZSDK3430"));
 
     // These are prepended with "$.." creating a Jsonpath expression.
     private static final List<String> JSON_BODY_KEYS_TO_REDACT = Arrays.asList("authHeader", "accountKey",
