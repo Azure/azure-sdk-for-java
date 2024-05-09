@@ -182,7 +182,7 @@ feature-management:
 
 ### TimeWindowFilter
 
-This filter provides the capability to enable a feature based on a time window. If only `time-window-filter-setting-end` is specified, the feature will be considered on until that time. If only start is specified, the feature will be considered on at all points after that time. If both are specified the feature will be considered valid between the two times.
+This filter provides the capability to enable a feature based on a time window. If only `End` is specified, the feature will be considered on until that time. If only `Start` is specified, the feature will be considered on at all points after that time.
 
 ```yaml
 feature-management:
@@ -192,9 +192,135 @@ feature-management:
         -
          name: TimeWindowFilter
           parameters:
-            time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT",
-            time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+            Start: "Wed, 01 May 2019 13:59:59 GMT",
+            End: "Mon, 01 July 2019 00:00:00 GMT"
 ```
+
+The time window can be configured to recur periodically. This can be useful for the scenarios where one may need to turn on a feature during a low or high traffic period of a day or certain days of a week. To expand the individual time window to recurring time windows, the recurrence rule should be specified in the `Recurrence` parameter.
+
+**Note:** `Start` and `End` must be both specified to enable `Recurrence`.
+
+```yaml
+feature-management:
+  feature-flags:
+    feature-v:
+      enabled-for:
+        -
+         name: TimeWindowFilter
+          parameters:
+            start: "Fri, 22 Mar 2024 20:00:00 GMT",
+            end: "Mon, 01 July 2019 00:00:00 GMT",
+            recurrence:
+              pattern:
+                type: "Daily",
+                interval: 1
+              range:
+                type: "NoEnd"
+```
+
+The `Recurrence` settings is made up of two parts: `Pattern` (how often the time window will repeat) and `Range` (for how long the recurrence pattern will repeat).
+#### Recurrence Pattern
+
+There are two possible recurrence pattern types: `Daily` and `Weekly`. For example, a time window could repeat "every day", "every 3 days", "every Monday" or "on Friday per 2 weeks".
+
+Depending on the type, certain fields of the `Pattern` are required, optional, or ignored.
+
+- `Daily`
+
+  The daily recurrence pattern causes the time window to repeat based on a number of days between each occurrence.
+
+  | Property | Relevance | Description |
+      |----------|-----------|-------------|
+  | **Type** | Required | Must be set to `Daily`. |
+  | **Interval** | Optional | Specifies the number of days between each occurrence. Default value is 1. |
+
+- `Weekly`
+
+  The weekly recurrence pattern causes the time window to repeat on the same day or days of the week, based on the number of weeks between each set of occurrences.
+
+  | Property | Relevance | Description |
+      |----------|-----------|-------------|
+  | **Type** | Required | Must be set to `Weekly`. |
+  | **DaysOfWeek** | Required | Specifies on which day(s) of the week the event occurs. |
+  | **Interval** | Optional | Specifies the number of weeks between each set of occurrences. Default value is 1. |
+  | **FirstDayOfWeek** | Optional | Specifies which day is considered the first day of the week. Default value is `Sunday`. |
+
+  The following example will repeat the time window every other Monday and Tuesday
+
+    ```yaml
+    pattern:
+        type: "Weekly",
+        interval: 1,
+        daysOfWeek: 
+          - Monday
+          - TuesDay
+    ```
+  **Note:** `Start` must be a valid first occurrence which fits the recurrence pattern. Additionally, the duration of the time window cannot be longer than how frequently it occurs. For example, it is invalid to have a 25-hour time window recur every day.
+
+#### Recurrence Range
+
+There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered`.
+
+- `NoEnd`
+
+  The `NoEnd` range causes the recurrence to occur indefinitely.
+
+  | Property | Relevance | Description |
+      |----------|-----------|-------------|
+  | **Type** | Required | Must be set to `NoEnd`. |
+
+- `EndDate`
+
+  The `EndDate` range causes the time window to occur on all days that fit the applicable pattern until the end date.
+
+  | Property | Relevance | Description |
+      |----------|-----------|-------------|
+  | **Type** | Required | Must be set to `EndDate`. |
+  | **EndDate** | Required | 	Specifies the date time to stop applying the pattern. Note that as long as the start time of the last occurrence falls before the end date, the end time of that occurrence is allowed to extend beyond it. |
+
+  The following example will repeat the time window every day until the last occurrence happens on April 1st, 2024.
+
+    ``` yaml
+    start: "Fri, 22 Mar 2024 18:00:00 GMT",
+    end: "Fri, 22 Mar 2024 20:00:00 GMT",
+    recurrence:
+      pattern:
+        type: "Daily",
+        interval: 1
+      range:
+        type: "EndDate",
+        endDate: "Mon, 1 Apr 2024 20:00:00 GMT"
+    ```
+
+- `Numbered`
+
+  The `Numbered` range causes the time window to occur a fixed number of times (based on the pattern).
+
+  | Property | Relevance | Description |
+      |----------|-----------|-------------|
+  | **Type** | Required | Must be set to `Numbered`. |
+  | **NumberOfOccurrences** | Required | 	Specifies the number of occurrences. |
+
+  The following example will repeat the time window on Monday and Tuesday until the there are 3 occurrences, which respectively happens on April 1st(Mon), April 2nd(Tue) and April 8th(Mon).
+
+    ``` yaml
+    start: "Mon, 1 Apr 2024 18:00:00 GMT",
+    end: "Mon, 1 Apr 2024 20:00:00 GMT",
+    recurrence:
+      pattern:
+        type: "Weekly",
+        interval: 1
+        daysOfWeek:
+            - Monday
+            - TuesDay
+      range:
+        type: "Numbered",
+        numberOfOccurrences: 3
+    ```
+
+To create a recurrence rule, you must specify both `Pattern` and `Range`. Any pattern type can work with any range type.
+
+**Advanced:** The time zone offset of the `Start` property will apply to the recurrence settings.
 
 ### TargetingFilter
 
