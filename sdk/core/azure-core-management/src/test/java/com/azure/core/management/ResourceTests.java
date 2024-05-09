@@ -213,9 +213,11 @@ public class ResourceTests {
                     } else if ("subResourceList".equals(fieldName)) {
                         subResource.withSubResourceList(reader.readArray(reader1 -> SubResource.fromJson(reader1)));
                     } else if ("subResourceResource".equals(fieldName)) {
-                        subResource.withSubResourceResource(reader.readObject(reader1 -> SubResourceResource.fromJson(reader1)));
+                        subResource.withSubResourceResource(
+                            reader.readObject(reader1 -> SubResourceResource.fromJson(reader1)));
                     } else if ("subResourceResourceList".equals(fieldName)) {
-                        subResource.withSubResourceResourceList(reader.readArray(reader1 -> SubResourceResource.fromJson(reader1)));
+                        subResource.withSubResourceResourceList(
+                            reader.readArray(reader1 -> SubResourceResource.fromJson(reader1)));
                     } else {
                         reader.skipChildren();
                     }
@@ -294,8 +296,7 @@ public class ResourceTests {
         SubResourceResource subResourceResourceRoot = new SubResourceResource();
         SubResource subResource = new SubResource().withId(UUID.randomUUID().toString());
         SubResourceResource subResourceResourceNest = new SubResourceResource().withId(UUID.randomUUID().toString());
-        subResourceResourceRoot
-            .withSubResource(subResource)
+        subResourceResourceRoot.withSubResource(subResource)
             .withSubResourceList(Collections.singletonList(subResource))
             .withSubResourceResource(subResourceResourceNest)
             .withSubResourceResourceList(Collections.singletonList(subResourceResourceNest));
@@ -303,9 +304,12 @@ public class ResourceTests {
         String json = serializeToString(subResourceResourceRoot);
         SubResourceResource subResourceResourceRootDeserialized = deserialize(json, SubResourceResource::fromJson);
         Assertions.assertEquals(subResource.id(), subResourceResourceRootDeserialized.subResource().id());
-        Assertions.assertEquals(subResource.id(), subResourceResourceRootDeserialized.subResourceList().iterator().next().id());
-        Assertions.assertEquals(subResourceResourceNest.id(), subResourceResourceRootDeserialized.subResourceResource().id());
-        Assertions.assertEquals(subResourceResourceNest.id(), subResourceResourceRootDeserialized.subResourceResourceList().iterator().next().id());
+        Assertions.assertEquals(subResource.id(),
+            subResourceResourceRootDeserialized.subResourceList().iterator().next().id());
+        Assertions.assertEquals(subResourceResourceNest.id(),
+            subResourceResourceRootDeserialized.subResourceResource().id());
+        Assertions.assertEquals(subResourceResourceNest.id(),
+            subResourceResourceRootDeserialized.subResourceResourceList().iterator().next().id());
     }
 
     private static <T extends JsonSerializable<T>> String serializeToString(T serializable) throws IOException {

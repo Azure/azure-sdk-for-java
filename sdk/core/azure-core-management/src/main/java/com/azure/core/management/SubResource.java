@@ -47,9 +47,7 @@ public class SubResource implements JsonSerializable<SubResource> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("id", id)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("id", id).writeEndObject();
     }
 
     /**
