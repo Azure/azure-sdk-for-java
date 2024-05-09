@@ -278,7 +278,7 @@ public class ServiceBusMessageChannelBinder extends
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });
             this.serviceBusTemplate = new ServiceBusTemplate(factory);
-            if(producerProperties.getExtension() != null) {
+            if (producerProperties.getExtension() != null) {
                 this.serviceBusTemplate.setDefaultEntityType(producerProperties.getExtension().getEntityType());
             }
         }
