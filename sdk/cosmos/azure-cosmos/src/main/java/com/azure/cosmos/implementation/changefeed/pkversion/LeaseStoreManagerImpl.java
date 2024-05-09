@@ -472,42 +472,35 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     private Flux<ServiceItemLease> listDocuments(String prefix) {
-        if (prefix == null || prefix.isEmpty())  {
-            throw new IllegalArgumentException("prefix");
-        }
-
-        SqlParameter param = new SqlParameter();
-        param.setName("@PartitionLeasePrefix");
-        param.setValue(prefix);
-        SqlQuerySpec querySpec = new SqlQuerySpec(
-            "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
-            Collections.singletonList(param));
-
-        Flux<FeedResponse<InternalObjectNode>> query = this.leaseDocumentClient.queryItems(
-            this.settings.getLeaseCollectionLink(),
-            querySpec,
-            this.requestOptionsFactory.createQueryRequestOptions(),
-            InternalObjectNode.class);
-
-        return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
-            .map(ServiceItemLease::fromDocument);
+        return listDocuments(prefix);
     }
 
-    private Flux<ServiceItemLeaseV1> listDocuments(String prefix, Integer top) {
+    private Flux<ServiceItemLease> listDocuments(String prefix, Integer top) {
         if (prefix == null || prefix.isEmpty()) {
             throw new IllegalArgumentException("prefix cannot be null or empty!");
         }
 
-        SqlParameter topParam = new SqlParameter();
-        topParam.setName("@Top");
-        topParam.setValue(top);
+        SqlQuerySpec querySpec;
 
-        SqlParameter param = new SqlParameter();
-        param.setName("@PartitionLeasePrefix");
-        param.setValue(prefix);
-        SqlQuerySpec querySpec = new SqlQuerySpec(
-            "SELECT TOP @Top * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
-            Arrays.asList(topParam, param));
+        if (top == null) {
+            SqlParameter param = new SqlParameter();
+            param.setName("@PartitionLeasePrefix");
+            param.setValue(prefix);
+            querySpec = new SqlQuerySpec(
+                "SELECT * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
+                Collections.singletonList(param));
+        } else {
+            SqlParameter topParam = new SqlParameter();
+            topParam.setName("@Top");
+            topParam.setValue(top);
+
+            SqlParameter param = new SqlParameter();
+            param.setName("@PartitionLeasePrefix");
+            param.setValue(prefix);
+            querySpec = new SqlQuerySpec(
+                "SELECT TOP @Top * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix)",
+                Arrays.asList(topParam, param));
+        }
 
         Flux<FeedResponse<InternalObjectNode>> query = this.leaseDocumentClient.queryItems(
             this.settings.getLeaseCollectionLink(),
@@ -515,8 +508,8 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             this.requestOptionsFactory.createQueryRequestOptions(),
             InternalObjectNode.class);
 
-        return query.flatMap( documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
-            .map(ServiceItemLeaseV1::fromDocument);
+        return query.flatMap(documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
+            .map(ServiceItemLease::fromDocument);
     }
 
     private String getDocumentId(String leaseToken)
