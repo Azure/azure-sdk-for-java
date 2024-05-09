@@ -25,6 +25,7 @@ public class Slf4jLoggerShim {
     private static final MethodHandle LOGGER_IS_WARN_ENABLED_METHOD_HANDLE;
     private static final MethodHandle LOGGER_IS_ERROR_ENABLED_METHOD_HANDLE;
     private static final Class<?> NOP_LOGGER_CLASS;
+    private static boolean slf4jErrorLogged = false;
     private final DefaultLogger defaultLogger;
 
     private Object slf4jLogger;
@@ -214,7 +215,10 @@ public class Slf4jLoggerShim {
     }
 
     private static void writeSlf4jDisabledError(ClientLogger.LogLevel level, String message, Throwable throwable) {
-        DEFAULT_LOGGER.log(level, String.format("[DefaultLogger]: %s. SLF4J logging will be disabled.", message),
-            throwable);
+        if (!slf4jErrorLogged) {
+            slf4jErrorLogged = true;
+            DEFAULT_LOGGER.log(level, String.format("[DefaultLogger]: %s. SLF4J logging will be disabled.", message),
+                throwable);
+        }
     }
 }
