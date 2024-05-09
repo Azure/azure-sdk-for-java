@@ -67,10 +67,10 @@ public class TimeWindowFilterSettings {
 
     @Override
     public String toString() {
-        return "TimeWindowFilterSettings{" +
-            "start=" + start +
-            ", end=" + end +
-            ", recurrence=" + recurrence +
-            '}';
+        return "TimeWindowFilterSettings{"
+            + "start=" + start
+            + ", end=" + end
+            + ", recurrence=" + recurrence
+            + '}';
     }
 }

@@ -76,10 +76,10 @@ public class RecurrenceRange {
 
     @Override
     public String toString() {
-        return "RecurrenceRange{" +
-            "type=" + type +
-            ", endDate=" + endDate +
-            ", numberOfRecurrences=" + numberOfRecurrences +
-            '}';
+        return "RecurrenceRange{"
+            + "type=" + type
+            + ", endDate=" + endDate
+            + ", numberOfRecurrences=" + numberOfRecurrences
+            + '}';
     }
 }

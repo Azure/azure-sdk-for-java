@@ -30,9 +30,9 @@ public class RecurrenceValidator {
     }
 
     public boolean validateSettings() {
-        if (validateRecurrenceRequiredParameter() &&
-            validateRecurrencePattern() &&
-            validateRecurrenceRange()) {
+        if (validateRecurrenceRequiredParameter()
+            && validateRecurrencePattern()
+            && validateRecurrenceRange()) {
             return true;
         } else {
             throw new IllegalArgumentException(String.format(reason, paramName));
