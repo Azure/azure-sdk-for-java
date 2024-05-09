@@ -10,26 +10,15 @@ import org.springframework.cache.annotation.Cacheable;
 import java.time.ZonedDateTime;
 
 public class RecurrenceCachedService {
-    @Cacheable(key = "settings")
+    @Cacheable(value = "settings", key = "#settings")
     public static ZonedDateTime getClosestTime(TimeWindowFilterSettings settings, ZonedDateTime now) {
         final RecurrenceEvaluator evaluator = new RecurrenceEvaluator(settings, now);
-        simulateSlowService();
         return evaluator.getClosestStart();
     }
 
-    @CachePut(key = "settings")
+    @CachePut(value = "settings", key = "#settings")
     public static ZonedDateTime updateClosestTime(TimeWindowFilterSettings settings, ZonedDateTime now) {
         final RecurrenceEvaluator evaluator = new RecurrenceEvaluator(settings, now);
-        simulateSlowService();
         return evaluator.getClosestStart();
-    }
-
-    private static void simulateSlowService() {
-        try {
-            long time = 3000L;
-            Thread.sleep(time);
-        } catch (InterruptedException e) {
-            throw new IllegalStateException(e);
-        }
     }
 }
