@@ -5,10 +5,6 @@ package com.azure.spring.cloud.feature.management.implementation.timewindow.recu
 
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowUtils;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.models.Recurrence;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.models.RecurrencePattern;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.models.RecurrencePatternType;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.models.RecurrenceRangeType;
 
 import java.time.DayOfWeek;
 import java.time.Duration;

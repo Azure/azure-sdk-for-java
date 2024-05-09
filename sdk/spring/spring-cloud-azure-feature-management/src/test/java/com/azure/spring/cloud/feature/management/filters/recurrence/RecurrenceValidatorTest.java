@@ -6,9 +6,9 @@ package com.azure.spring.cloud.feature.management.filters.recurrence;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceValidator;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.models.Recurrence;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.models.RecurrencePattern;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.models.RecurrenceRange;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.Recurrence;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrencePattern;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceRange;
 import com.azure.spring.cloud.feature.management.models.FilterParameters;
 import org.junit.jupiter.api.Test;
 
