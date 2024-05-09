@@ -396,10 +396,10 @@
 # ServiceOwners:                                     @raedJarrar @jifems
 
 # PRLabel: %DevCenter
-/sdk/devcenter/                                      @sebrenna @mharlan
+/sdk/devcenter/                                      @sebrenna
 
 # ServiceLabel: %DevCenter
-# ServiceOwners:                                     @sebrenna @mharlan
+# ServiceOwners:                                     @sebrenna
 
 # ServiceLabel: %Device Provisioning Service
 # ServiceOwners:                                     @nberdy
@@ -430,7 +430,7 @@
 
 # ServiceLabel: %Event Grid
 # AzureSdkOwners:                                   @billwert
-# ServiceOwners:                                    @jfggdl
+# ServiceOwners:                                    @Kishp01 @ahamad-MS
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                      @conniey @anuchandy @lmolkova
@@ -558,7 +558,7 @@
 # ServiceOwners:                                     @ambhatna @savjani
 
 # PRLabel:  %OpenTelemetry
-/sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti
+/sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti @harsimar
 
 # ServiceLabel: %Network
 # ServiceOwners:                                     @aznetsuppgithub
@@ -646,9 +646,6 @@
 
 # ServiceLabel: %Redis Cache
 # ServiceOwners:                                     @yegu-ms
-
-# ServiceLabel: %Relay
-# ServiceOwners:                                     @jfggdl
 
 # PRLabel: %Remote Rendering
 /sdk/remoterendering/                                @MichaelZp0 @ChristopherManthei
@@ -796,13 +793,13 @@
 /sdk/spring-experimental/                            @chenrujun @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams
+/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams @harsimar
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams
+/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams @harsimar
 
 # ServiceLabel:  %Monitor - Spring
-# AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams
+# AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams @harsimar
 
 # PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
@@ -853,3 +850,4 @@
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles
+/eng/common/pipelines/codeowners-linter.yml          @alzimmermsft @srnagar @lmolkova

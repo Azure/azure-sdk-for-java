@@ -9,6 +9,8 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
@@ -46,6 +48,8 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationGatewayTests.class);
+
     private AzureResourceManager azureResourceManager;
 
     @Override
@@ -228,7 +232,7 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
                     }
                 }
             }
-            System.out.println(info.toString());
+            LOGGER.log(LogLevel.VERBOSE, () -> info.toString());
 
             // Verify app gateway
             Assertions.assertEquals(2, appGateway.backends().size());
@@ -247,8 +251,8 @@ public class ApplicationGatewayTests extends ResourceManagerTestProxyTestBase {
             ApplicationGatewayBackendHealth backendHealth1 = backendHealths.get(backend1.name());
             Assertions.assertNotNull(backendHealth1);
             Assertions.assertNotNull(backendHealth1.backend());
-            for (int i = 0; i < ipAddresses.length; i++) {
-                Assertions.assertTrue(backend1.containsIPAddress(ipAddresses[i]));
+            for (String ipAddress : ipAddresses) {
+                Assertions.assertTrue(backend1.containsIPAddress(ipAddress));
             }
 
             // Verify second backend (NIC based)

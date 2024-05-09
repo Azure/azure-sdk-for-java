@@ -15,6 +15,8 @@ import reactor.core.publisher.Flux;
 
 import java.util.function.BiFunction;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
@@ -53,12 +55,17 @@ public class PipelinedDocumentQueryExecutionContext<T>
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
                 CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
                     qryOptAccessor.clone(requestOptions);
-                ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
-                qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
-
-                documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
-
-                return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
+                if (queryInfo.hasNonStreamingOrderBy()) {
+                    checkNotNull(continuationToken, "Can not use a continuation token for a vector search query ");
+                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
+                    documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
+                    return NonStreamingOrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
+                } else {
+                    ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
+                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
+                    documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
+                    return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
+                }
             };
         } else {
 

@@ -4,6 +4,8 @@
 
 #### Features Added
 
+* Added support for non-streaming OrderBy query and a query feature `NonStreamingOrderBy` to support Vector Search queries. - See [PR 39897](https://github.com/Azure/azure-sdk-for-java/pull/39897/) 
+
 #### Breaking Changes
 
 #### Bugs Fixed
