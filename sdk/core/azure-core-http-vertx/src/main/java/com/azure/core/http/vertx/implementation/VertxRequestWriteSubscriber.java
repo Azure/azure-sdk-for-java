@@ -23,7 +23,7 @@ import java.nio.ByteBuffer;
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
 public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     private final HttpClientRequest request;
-    private final io.vertx.core.Promise<?> promise;
+    private final io.vertx.core.Promise<HttpResponse> promise;
     private final ProgressReporter progressReporter;
     private final ContextView contextView;
 
@@ -42,7 +42,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
      * @param progressReporter The {@link ProgressReporter} to report progress to.
      * @param contextView The {@link ContextView} to use when dropping errors.
      */
-    public VertxRequestWriteSubscriber(HttpClientRequest request, io.vertx.core.Promise<?> promise,
+    public VertxRequestWriteSubscriber(HttpClientRequest request, io.vertx.core.Promise<HttpResponse> promise,
         ProgressReporter progressReporter, ContextView contextView) {
         this.request = request.exceptionHandler(this::onError).drainHandler(ignored -> requestNext());
         this.promise = promise;
@@ -155,13 +155,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     }
 
     private void endRequest() {
-        request.end(result -> {
-            if (result.failed()) {
-                promise.fail(result.cause());
-            } else {
-                promise.complete();
-            }
-        });
+        request.end().onFailure(promise::fail);
     }
 
     private enum State {

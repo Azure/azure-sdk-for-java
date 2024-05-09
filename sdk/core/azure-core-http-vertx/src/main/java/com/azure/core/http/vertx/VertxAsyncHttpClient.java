@@ -133,22 +133,32 @@ class VertxAsyncHttpClient implements HttpClient {
                 vertxRequest.setChunked(true);
             }
 
-            Future<HttpClientResponse> responseFuture
-                = sendBody(contextView, request, progressReporter, vertxRequest).onFailure(promise::fail);
-
+            Future<HttpClientResponse> responseFuture;
             if (!perCallTimeout.isZero() && !perCallTimeout.isNegative()) {
-                responseFuture = responseFuture.timeout(perCallTimeout.toMillis(), TimeUnit.MILLISECONDS);
+                responseFuture = vertxRequest.response().timeout(perCallTimeout.toMillis(), TimeUnit.MILLISECONDS);
+            } else {
+                responseFuture = vertxRequest.response();
             }
 
+            responseFuture = responseFuture.onFailure(promise::fail);
+
             if (eagerlyReadResponse || ignoreResponseBody) {
-                responseFuture.compose(vertxHttpResponse -> vertxHttpResponse.body().andThen(responseResult -> {
-                    if (responseResult.succeeded()) {
-                        promise.complete(
-                            new BufferedVertxHttpResponse(request, vertxHttpResponse, responseResult.result()));
-                    } else {
+                responseFuture.andThen(responseResult -> {
+                    if (responseResult.failed()) {
                         promise.fail(responseResult.cause());
+                        return;
                     }
-                }));
+
+                    HttpClientResponse vertxHttpResponse = responseResult.result();
+                    vertxHttpResponse.body().andThen(bodyResult -> {
+                        if (bodyResult.succeeded()) {
+                            promise.complete(
+                                new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyResult.result()));
+                        } else {
+                            promise.fail(bodyResult.cause());
+                        }
+                    });
+                });
             } else {
                 responseFuture.andThen(responseResult -> {
                     if (responseResult.succeeded()) {
@@ -158,19 +168,20 @@ class VertxAsyncHttpClient implements HttpClient {
                     }
                 });
             }
+
+            sendBody(contextView, request, progressReporter, vertxRequest, promise);
         });
 
         return promise.future().toCompletionStage().toCompletableFuture();
     }
 
     @SuppressWarnings("deprecation")
-    private io.vertx.core.Future<HttpClientResponse> sendBody(ContextView contextView, HttpRequest azureRequest,
-        ProgressReporter progressReporter, HttpClientRequest vertxRequest) {
+    private void sendBody(ContextView contextView, HttpRequest azureRequest, ProgressReporter progressReporter,
+        HttpClientRequest vertxRequest, Promise<HttpResponse> promise) {
         BinaryData body = azureRequest.getBodyAsBinaryData();
 
-        io.vertx.core.Future<?> writeAndEnd;
         if (body == null) {
-            writeAndEnd = vertxRequest.end();
+            vertxRequest.send().onFailure(promise::fail);
         } else {
             BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
             if (bodyContent instanceof ByteArrayContent
@@ -178,19 +189,15 @@ class VertxAsyncHttpClient implements HttpClient {
                 || bodyContent instanceof StringContent
                 || bodyContent instanceof SerializableContent) {
                 long contentLength = bodyContent.getLength();
-                writeAndEnd = vertxRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bodyContent.toByteBuffer())))
+                vertxRequest.send(Buffer.buffer(Unpooled.wrappedBuffer(bodyContent.toByteBuffer())))
                     .onSuccess(ignored -> reportProgress(contentLength, progressReporter))
-                    .compose(ignored -> vertxRequest.end());
+                    .onFailure(promise::fail);
             } else {
                 // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
-                io.vertx.core.Promise<Void> promise = io.vertx.core.Promise.promise();
                 azureRequest.getBody()
                     .subscribe(new VertxRequestWriteSubscriber(vertxRequest, promise, progressReporter, contextView));
-                writeAndEnd = promise.future();
             }
         }
-
-        return writeAndEnd.compose(ignored -> vertxRequest.response());
     }
 
     private static void reportProgress(long progress, ProgressReporter progressReporter) {
