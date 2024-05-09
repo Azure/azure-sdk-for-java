@@ -17,8 +17,6 @@ import reactor.util.context.ContextView;
 
 import java.nio.ByteBuffer;
 
-import static com.azure.core.http.vertx.implementation.VertxUtils.wrapVertxException;
-
 /**
  * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link HttpClientRequest Vert.x request}.
  */
@@ -136,7 +134,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
 
     private void resetRequest(Throwable throwable) {
         subscription.cancel();
-        promise.fail(wrapVertxException(throwable));
+        promise.fail(throwable);
         request.reset(0, throwable);
     }
 
@@ -159,7 +157,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     private void endRequest() {
         request.end(result -> {
             if (result.failed()) {
-                promise.fail(wrapVertxException(result.cause()));
+                promise.fail(result.cause());
             } else {
                 promise.complete();
             }

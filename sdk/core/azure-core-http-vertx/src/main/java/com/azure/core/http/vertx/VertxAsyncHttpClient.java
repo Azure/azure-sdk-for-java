@@ -23,8 +23,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
@@ -33,14 +35,20 @@ import io.vertx.core.http.RequestOptions;
 import reactor.core.publisher.Mono;
 import reactor.util.context.ContextView;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
 class VertxAsyncHttpClient implements HttpClient {
+    private static final ClientLogger LOGGER = new ClientLogger(VertxAsyncHttpClient.class);
+
     final io.vertx.core.http.HttpClient client;
     private final Duration responseTimeout;
 
@@ -61,6 +69,35 @@ class VertxAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
+        return Mono.deferContextual(contextView -> Mono.fromFuture(sendInternal(request, context, contextView)))
+            .onErrorMap(VertxUtils::wrapVertxException);
+    }
+
+    @Override
+    public HttpResponse sendSync(HttpRequest request, Context context) {
+        try {
+            return sendInternal(request, context, reactor.util.context.Context.empty()).get();
+        } catch (Exception e) {
+            Throwable mapped = e;
+            if (e instanceof ExecutionException) {
+                mapped = e.getCause();
+            }
+
+            mapped = VertxUtils.wrapVertxException(mapped);
+            if (mapped instanceof Error) {
+                throw LOGGER.logThrowableAsError((Error) mapped);
+            } else if (mapped instanceof IOException) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException((IOException) mapped));
+            } else if (mapped instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) mapped);
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException(mapped));
+            }
+        }
+    }
+
+    private CompletableFuture<HttpResponse> sendInternal(HttpRequest request, Context context,
+        ContextView contextView) {
         boolean eagerlyReadResponse = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE).orElse(false);
         boolean ignoreResponseBody = (boolean) context.getData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY).orElse(false);
         Duration perCallTimeout = (Duration) context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
@@ -72,73 +109,85 @@ class VertxAsyncHttpClient implements HttpClient {
         RequestOptions options = new RequestOptions().setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
             .setAbsoluteURI(request.getUrl());
 
-        return Mono.deferContextual(contextView -> {
-            // Design change for VertxAsyncHttpClient.
-            // Previously, we were using Mono.create with a MonoSink that controlled the reactive flow. Instead, use
-            // Vert.x's Future and composition pattern to control the flow. This allows for the request-response flow to be
-            // completely controlled by Vert.x's patterns and upon completion, we can convert the result to a Mono.
-            Future<HttpClientResponse> responseFuture = client.request(options).compose(vertxRequest -> {
-                for (HttpHeader header : request.getHeaders()) {
-                    // Potential optimization here would be creating a MultiMap wrapper around azure-core's
-                    // HttpHeaders and using RequestOptions.setHeaders(MultiMap)
-                    vertxRequest.putHeader(header.getName(), header.getValuesList());
-                }
-                if (request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) {
-                    vertxRequest.setChunked(true);
-                }
+        // This is the shared design for sending a request and receiving a response in Vert.x. The design relies on
+        // using a Vert.x Promise and the handler methods to control the flow of the request-response cycle. The Promise
+        // will be completed upon failure during the request-response cycle or upon completion of the response. This can
+        // be shared between sync and async as Reactor can use Mono.fromCompletionStage to convert the Promise to a Mono
+        // and the sync path can convert the Promise to a Future and block it.
 
-                return sendBody(contextView, request, progressReporter, vertxRequest);
-            });
+        // Create the Promise that will be returned. Promise.promise() is an uncompleted Promise.
+        Promise<HttpResponse> promise = Promise.promise();
+        client.request(options, requestResult -> {
+            if (requestResult.failed()) {
+                promise.fail(requestResult.cause());
+                return;
+            }
+
+            HttpClientRequest vertxRequest = requestResult.result();
+            for (HttpHeader header : request.getHeaders()) {
+                // Potential optimization here would be creating a MultiMap wrapper around azure-core's
+                // HttpHeaders and using RequestOptions.setHeaders(MultiMap)
+                vertxRequest.putHeader(header.getName(), header.getValuesList());
+            }
+            if (request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) {
+                vertxRequest.setChunked(true);
+            }
+
+            Future<HttpClientResponse> responseFuture
+                = sendBody(contextView, request, progressReporter, vertxRequest).onFailure(promise::fail);
 
             if (!perCallTimeout.isZero() && !perCallTimeout.isNegative()) {
                 responseFuture = responseFuture.timeout(perCallTimeout.toMillis(), TimeUnit.MILLISECONDS);
             }
 
-            Mono<HttpResponse> responseMono;
             if (eagerlyReadResponse || ignoreResponseBody) {
-                responseMono = Mono.fromCompletionStage(responseFuture
-                    .compose(vertxHttpResponse -> vertxHttpResponse.body()
-                        .map(body -> new BufferedVertxHttpResponse(request, vertxHttpResponse, body)))
-                    .toCompletionStage());
+                responseFuture.compose(vertxHttpResponse -> vertxHttpResponse.body().andThen(responseResult -> {
+                    if (responseResult.succeeded()) {
+                        promise.complete(
+                            new BufferedVertxHttpResponse(request, vertxHttpResponse, responseResult.result()));
+                    } else {
+                        promise.fail(responseResult.cause());
+                    }
+                }));
             } else {
-                responseMono = Mono.fromCompletionStage(
-                    responseFuture.map(vertxHttpResponse -> new VertxHttpAsyncResponse(request, vertxHttpResponse))
-                        .toCompletionStage());
+                responseFuture.andThen(responseResult -> {
+                    if (responseResult.succeeded()) {
+                        promise.complete(new VertxHttpAsyncResponse(request, responseResult.result()));
+                    } else {
+                        promise.fail(responseResult.cause());
+                    }
+                });
             }
-
-            return responseMono.onErrorMap(VertxUtils::wrapVertxException);
         });
-    }
 
-    @Override
-    public HttpResponse sendSync(HttpRequest request, Context context) {
-        return send(request, context).block();
+        return promise.future().toCompletionStage().toCompletableFuture();
     }
 
     @SuppressWarnings("deprecation")
     private io.vertx.core.Future<HttpClientResponse> sendBody(ContextView contextView, HttpRequest azureRequest,
         ProgressReporter progressReporter, HttpClientRequest vertxRequest) {
         BinaryData body = azureRequest.getBodyAsBinaryData();
-        if (body == null) {
-            return vertxRequest.send();
-        }
 
         io.vertx.core.Future<?> writeAndEnd;
-        BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
-        if (bodyContent instanceof ByteArrayContent
-            || bodyContent instanceof ByteBufferContent
-            || bodyContent instanceof StringContent
-            || bodyContent instanceof SerializableContent) {
-            long contentLength = bodyContent.getLength();
-            writeAndEnd = vertxRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bodyContent.toByteBuffer())))
-                .onSuccess(ignored -> reportProgress(contentLength, progressReporter))
-                .compose(ignored -> vertxRequest.end());
+        if (body == null) {
+            writeAndEnd = vertxRequest.end();
         } else {
-            // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
-            io.vertx.core.Promise<Void> promise = io.vertx.core.Promise.promise();
-            azureRequest.getBody()
-                .subscribe(new VertxRequestWriteSubscriber(vertxRequest, promise, progressReporter, contextView));
-            writeAndEnd = promise.future();
+            BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
+            if (bodyContent instanceof ByteArrayContent
+                || bodyContent instanceof ByteBufferContent
+                || bodyContent instanceof StringContent
+                || bodyContent instanceof SerializableContent) {
+                long contentLength = bodyContent.getLength();
+                writeAndEnd = vertxRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bodyContent.toByteBuffer())))
+                    .onSuccess(ignored -> reportProgress(contentLength, progressReporter))
+                    .compose(ignored -> vertxRequest.end());
+            } else {
+                // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
+                io.vertx.core.Promise<Void> promise = io.vertx.core.Promise.promise();
+                azureRequest.getBody()
+                    .subscribe(new VertxRequestWriteSubscriber(vertxRequest, promise, progressReporter, contextView));
+                writeAndEnd = promise.future();
+            }
         }
 
         return writeAndEnd.compose(ignored -> vertxRequest.response());

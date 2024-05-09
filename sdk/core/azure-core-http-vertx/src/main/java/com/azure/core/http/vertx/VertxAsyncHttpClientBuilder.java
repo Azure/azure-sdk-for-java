@@ -20,11 +20,11 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
-import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 
 /**
  * Builds a {@link VertxAsyncHttpClient}.
@@ -35,24 +35,6 @@ public class VertxAsyncHttpClientBuilder {
     private static final Pattern NON_PROXY_HOSTS_SPLIT = Pattern.compile("(?<!\\\\)\\|");
     private static final Pattern NON_PROXY_HOST_DESANITIZE = Pattern.compile("(\\?|\\\\|\\(|\\)|\\\\E|\\\\Q|\\.\\.)");
     private static final Pattern NON_PROXY_HOST_DOT_STAR = Pattern.compile("(\\.\\*)");
-
-    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-    private static final Duration DEFAULT_CONNECT_TIMEOUT;
-    private static final Duration DEFAULT_WRITE_TIMEOUT;
-    private static final Duration DEFAULT_RESPONSE_TIMEOUT;
-    private static final Duration DEFAULT_READ_TIMEOUT;
-
-    static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER);
-        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER);
-        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-    }
 
     private Duration connectTimeout;
     private Duration writeTimeout;
@@ -219,9 +201,9 @@ public class VertxAsyncHttpClientBuilder {
         HttpClientOptions buildOptions = this.httpClientOptions;
         if (buildOptions == null) {
             buildOptions = new HttpClientOptions().setIdleTimeoutUnit(TimeUnit.MILLISECONDS)
-                .setConnectTimeout((int) getTimeout(this.connectTimeout, DEFAULT_CONNECT_TIMEOUT).toMillis())
-                .setReadIdleTimeout((int) getTimeout(this.readTimeout, DEFAULT_READ_TIMEOUT).toMillis())
-                .setWriteIdleTimeout((int) getTimeout(this.writeTimeout, DEFAULT_WRITE_TIMEOUT).toMillis());
+                .setConnectTimeout((int) getTimeout(this.connectTimeout, getDefaultConnectTimeout()).toMillis())
+                .setReadIdleTimeout((int) getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis())
+                .setWriteIdleTimeout((int) getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis());
 
             Configuration buildConfiguration
                 = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -268,7 +250,7 @@ public class VertxAsyncHttpClientBuilder {
         }
 
         io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(buildOptions);
-        return new VertxAsyncHttpClient(client, getTimeout(this.responseTimeout, DEFAULT_RESPONSE_TIMEOUT));
+        return new VertxAsyncHttpClient(client, getTimeout(this.responseTimeout, getDefaultResponseTimeout()));
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {
@@ -348,30 +330,5 @@ public class VertxAsyncHttpClientBuilder {
                 Thread.currentThread().interrupt();
             }
         };
-    }
-
-    /*
-     * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.
-     *
-     * If the timeout is {@code null} the default timeout will be used. If the timeout is less than or equal to zero
-     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
-     */
-    static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
-        // Timeout is null, use the default timeout.
-        if (configuredTimeout == null) {
-            return defaultTimeout;
-        }
-
-        // Timeout is less than or equal to zero, return no timeout.
-        if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
-            return Duration.ZERO;
-        }
-
-        // Return the maximum of the timeout period and the minimum allowed timeout period.
-        if (configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0) {
-            return MINIMUM_TIMEOUT;
-        } else {
-            return configuredTimeout;
-        }
     }
 }
