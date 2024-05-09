@@ -472,7 +472,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
     }
 
     private Flux<ServiceItemLease> listDocuments(String prefix) {
-        return listDocuments(prefix);
+        return listDocuments(prefix, null);
     }
 
     private Flux<ServiceItemLease> listDocuments(String prefix, Integer top) {
