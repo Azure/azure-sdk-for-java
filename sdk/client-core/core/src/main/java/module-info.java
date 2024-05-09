@@ -5,7 +5,6 @@ import io.clientcore.core.http.client.HttpClientProvider;
 
 module io.clientcore.core {
     requires transitive io.clientcore.core.json;
-    requires transitive org.slf4j;
 
     // public API surface area
     exports io.clientcore.core.annotation;

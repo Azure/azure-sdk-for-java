@@ -85,11 +85,6 @@
       <artifactId>core-json</artifactId>
       <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core-json;dependency} -->
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
-    </dependency>
 
     <!-- Test dependencies -->
     <dependency>
@@ -174,9 +169,6 @@
         <configuration>
           <rules>
             <bannedDependencies>
-              <includes>
-                <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
-              </includes>
             </bannedDependencies>
           </rules>
         </configuration>

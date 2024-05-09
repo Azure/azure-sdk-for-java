@@ -5,24 +5,18 @@ package io.clientcore.core.util;
 
 import io.clientcore.core.annotation.Metadata;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.DefaultLogger;
+import io.clientcore.core.implementation.util.Slf4jLoggerShim;
 import io.clientcore.core.json.JsonProviders;
 import io.clientcore.core.json.JsonWriter;
 import io.clientcore.core.util.configuration.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.slf4j.helpers.NOPLogger;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.nio.file.InvalidPathException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -31,7 +25,8 @@ import java.util.function.Supplier;
 import static io.clientcore.core.annotation.TypeConditions.FLUENT;
 
 /**
- * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
+ * This is a fluent logger helper class that wraps an SLF4J Logger (if available) or a default implementation of the
+ * logger.
  *
  * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a {@link Throwable throwable}
  * is the last argument of the format varargs and the logger is enabled for the stack trace for the throwable is
@@ -46,43 +41,31 @@ import static io.clientcore.core.annotation.TypeConditions.FLUENT;
  * @see Configuration
  */
 public class ClientLogger {
-    private final Logger logger;
-    private final String globalContextSerialized;
-    private static final char CR = '\r';
-    private static final char LF = '\n';
+    private final Slf4jLoggerShim logger;
+    private final Map<String, Object> globalContext;
 
     /**
-     * Retrieves a logger for the passed class using the {@link LoggerFactory}.
+     * Retrieves a logger for the passed class.
      *
      * @param clazz Class creating the logger.
      */
     public ClientLogger(Class<?> clazz) {
-        this(clazz.getName());
+        this(clazz, null);
     }
 
     /**
-     * Retrieves a logger for the passed class name using the {@link LoggerFactory}.
+     * Retrieves a logger for the passed class name.
      *
      * @param className Class name creating the logger.
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className) {
-        this(className, Collections.emptyMap());
+        logger = new Slf4jLoggerShim(getClassPathFromClassName(className));
+        globalContext = null;
     }
 
     /**
-     * Retrieves a logger for the passed class using the {@link LoggerFactory}.
-     *
-     * @param clazz Class creating the logger.
-     * @param context Context to be populated on every log record written with this logger.
-     * Objects are serialized with {@code toString()} method.
-     */
-    public ClientLogger(Class<?> clazz, Map<String, Object> context) {
-        this(clazz.getName(), context);
-    }
-
-    /**
-     * Retrieves a logger for the passed class name using the {@link LoggerFactory} with
+     * Retrieves a logger for the passed class name with
      * context that will be populated on all log records produced with this logger.
      *
      * <p><strong>Code samples</strong></p>
@@ -98,20 +81,19 @@ public class ClientLogger {
      * </pre>
      * <!-- end io.clientcore.core.util.logging.clientlogger#globalcontext -->
      *
-     * @param className Class name creating the logger.
+     * @param clazz Class creating the logger.
      * @param context Context to be populated on every log record written with this logger.
      * Objects are serialized with {@code toString()} method.
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
-    public ClientLogger(String className, Map<String, Object> context) {
-        Logger initLogger = LoggerFactory.getLogger(className);
-        logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
-        globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
+    public ClientLogger(Class<?> clazz, Map<String, Object> context) {
+        logger = new Slf4jLoggerShim(clazz);
+        globalContext = context == null ? null : Collections.unmodifiableMap(context);
     }
 
-    ClientLogger(Logger logger, Map<String, Object> context) {
-        this.logger = logger;
-        this.globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
+    ClientLogger(DefaultLogger defaultLogger, Map<String, Object> context) {
+        logger = new Slf4jLoggerShim(defaultLogger);
+        globalContext = context == null ? null : Collections.unmodifiableMap(context);
     }
 
     /**
@@ -126,10 +108,7 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        if (logger.isWarnEnabled()) {
-            LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContextSerialized, true)
-                .log(throwable.getMessage(), throwable);
-        }
+        LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContext).log(throwable.getMessage(), throwable);
 
         return throwable;
     }
@@ -146,10 +125,7 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsError(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        if (logger.isErrorEnabled()) {
-            LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized, true)
-                .log(throwable.getMessage(), throwable);
-        }
+        LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContext).log(throwable.getMessage(), throwable);
         return throwable;
     }
 
@@ -160,21 +136,7 @@ public class ClientLogger {
      * @return Flag indicating if the environment and logger are configured to support logging at the given log level.
      */
     public boolean canLogAtLevel(LogLevel logLevel) {
-        if (logLevel == null) {
-            return false;
-        }
-        switch (logLevel) {
-            case VERBOSE:
-                return logger.isDebugEnabled();
-            case INFORMATIONAL:
-                return logger.isInfoEnabled();
-            case WARNING:
-                return logger.isWarnEnabled();
-            case ERROR:
-                return logger.isErrorEnabled();
-            default:
-                return false;
-        }
+        return logger.canLogAtLevel(logLevel);
     }
 
     /**
@@ -195,13 +157,12 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
     public LoggingEventBuilder atError() {
-        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized, canLogAtLevel(LogLevel.ERROR));
+        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContext);
     }
 
     /**
      * Creates {@link LoggingEventBuilder} for {@code warning} log level that can be
      * used to enrich log with additional context.
-
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at warning level.</p>
@@ -217,8 +178,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
      */
     public LoggingEventBuilder atWarning() {
-        return LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContextSerialized,
-            canLogAtLevel(LogLevel.WARNING));
+        return LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContext);
     }
 
     /**
@@ -241,8 +201,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
      */
     public LoggingEventBuilder atInfo() {
-        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, globalContextSerialized,
-            canLogAtLevel(LogLevel.INFORMATIONAL));
+        return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, globalContext);
     }
 
     /**
@@ -263,8 +222,7 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
     public LoggingEventBuilder atVerbose() {
-        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, globalContextSerialized,
-            canLogAtLevel(LogLevel.VERBOSE));
+        return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, globalContext);
     }
 
     /**
@@ -289,8 +247,17 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if logging at provided level is disabled.
      */
     public LoggingEventBuilder atLevel(LogLevel level) {
-        return LoggingEventBuilder.create(logger, level, globalContextSerialized,
-            canLogAtLevel(level));
+        return LoggingEventBuilder.create(logger, level, globalContext);
+    }
+
+    private static String getClassPathFromClassName(String className) {
+        try {
+            return Class.forName(className).getCanonicalName();
+        } catch (ClassNotFoundException | InvalidPathException e) {
+            // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
+            // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
+            return className;
+        }
     }
 
     /**
@@ -315,33 +282,30 @@ public class ClientLogger {
     public static final class LoggingEventBuilder {
         private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
 
-        private final Logger logger;
+        private final Slf4jLoggerShim logger;
         private final LogLevel level;
-        private List<ContextKeyValuePair> context;
-        private final String globalContextCached;
-        private final boolean hasGlobalContext;
-        // Flag for no-op instance instead of inheritance
+        private final Map<String, Object> globalPairs;
         private final boolean isEnabled;
+        private Map<String, Object> keyValuePairs;
 
         /**
          * Creates {@code LoggingEventBuilder} for provided level and  {@link ClientLogger}.
          * If level is disabled, returns no-op instance.
          */
-        static LoggingEventBuilder create(Logger logger, LogLevel level, String globalContextSerialized,
-                                          boolean canLogAtLevel) {
-            if (canLogAtLevel) {
-                return new LoggingEventBuilder(logger, level, globalContextSerialized, true);
+        static LoggingEventBuilder create(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext) {
+            if (logger.canLogAtLevel(level)) {
+                return new LoggingEventBuilder(logger, level, globalContext, true);
             }
 
             return NOOP;
         }
 
-        private LoggingEventBuilder(Logger logger, LogLevel level, String globalContextSerialized, boolean isEnabled) {
+        private LoggingEventBuilder(Slf4jLoggerShim logger, LogLevel level, Map<String, Object> globalContext,
+            boolean isEnabled) {
             this.logger = logger;
             this.level = level;
             this.isEnabled = isEnabled;
-            this.globalContextCached = globalContextSerialized == null ? "" : globalContextSerialized;
-            this.hasGlobalContext = !this.globalContextCached.isEmpty();
+            this.globalPairs = globalContext;
         }
 
         /**
@@ -396,8 +360,6 @@ public class ClientLogger {
          */
         public LoggingEventBuilder addKeyValue(String key, Object value) {
             if (this.isEnabled) {
-                // Previously this eagerly called toString() on the value, but that can be expensive and unnecessary.
-                // This is now deferred until the value is being logged, which was calling toString() anyway.
                 addKeyValueInternal(key, value);
             }
 
@@ -452,12 +414,8 @@ public class ClientLogger {
          * @return The updated {@code LoggingEventBuilder} object.
          */
         public LoggingEventBuilder addKeyValue(String key, Supplier<String> valueSupplier) {
-            if (this.isEnabled) {
-                if (this.context == null) {
-                    this.context = new ArrayList<>();
-                }
-
-                this.context.add(new ContextKeyValuePair(key, valueSupplier));
+            if (this.isEnabled && valueSupplier != null) {
+                this.addKeyValue(key, valueSupplier.get());
             }
             return this;
         }
@@ -469,12 +427,7 @@ public class ClientLogger {
          */
         public void log(String message) {
             if (this.isEnabled) {
-                message = removeNewLinesFromLogMessage(message);
-                if (isEmptyMessage(message)) {
-                    return;
-                }
-
-                performLogging(level, getMessageWithContext(message), (Throwable) null);
+                logger.performLogging(level, getMessageWithContext(message), null);
             }
         }
 
@@ -489,30 +442,18 @@ public class ClientLogger {
          */
         public <T extends Throwable> T log(String message, T throwable) {
             if (this.isEnabled) {
-                message = removeNewLinesFromLogMessage(message);
+                boolean isDebugEnabled = logger.canLogAtLevel(LogLevel.VERBOSE);
                 if (throwable != null) {
                     addKeyValueInternal("exception.message", throwable.getMessage());
-                    if (logger instanceof DefaultLogger && logger.isDebugEnabled()) {
-                        addKeyValue("exception.stacktrace", getStackTrace(throwable));
+                    if (isDebugEnabled) {
+                        StringBuilder stackTrace = new StringBuilder();
+                        DefaultLogger.appendThrowable(stackTrace, throwable);
+                        addKeyValue("exception.stacktrace", stackTrace.toString());
                     }
                 }
-                String messageWithContext = getMessageWithContext(message);
-                performLogging(level, messageWithContext, logger.isDebugEnabled() ? throwable : null);
+                logger.performLogging(level, getMessageWithContext(message), isDebugEnabled ? throwable : null);
             }
             return throwable;
-        }
-
-        private String getStackTrace(Throwable t) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            t.printStackTrace(pw);
-            return sw.toString().trim();
-        }
-
-        private boolean isEmptyMessage(String message) {
-            return CoreUtils.isNullOrEmpty(message)
-                && CoreUtils.isNullOrEmpty(context)
-                && !hasGlobalContext;
         }
 
         private String getMessageWithContext(String message) {
@@ -520,23 +461,23 @@ public class ClientLogger {
                 message = "";
             }
 
-            int speculatedSize = 20 + (context == null ? 0 : context.size()) * 20 + message.length()
-                + globalContextCached.length();
+            int pairsCount = (keyValuePairs == null ? 0 : keyValuePairs.size()) + (globalPairs == null
+                                                                                       ? 0
+                                                                                       : globalPairs.size());
+            int speculatedSize = 20 + pairsCount * 20 + message.length();
             try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
-                 JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
-                jsonWriter.writeStartObject()
-                    .writeStringField("message", message)
-                    .flush();
+                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                jsonWriter.writeStartObject().writeStringField("message", message);
 
-                if (hasGlobalContext) {
-                    // Hack for now as writeRawValue only works for locations where a String could be written.
-                    outputStream.write(',');
-                    outputStream.write(globalContextCached.getBytes(StandardCharsets.UTF_8));
+                if (globalPairs != null) {
+                    for (Map.Entry<String, Object> kvp : globalPairs.entrySet()) {
+                        jsonWriter.writeUntypedField(kvp.getKey(), kvp.getValue());
+                    }
                 }
 
-                if (context != null) {
-                    for (ContextKeyValuePair contextKeyValuePair : context) {
-                        contextKeyValuePair.write(jsonWriter);
+                if (keyValuePairs != null) {
+                    for (Map.Entry<String, Object> kvp : keyValuePairs.entrySet()) {
+                        jsonWriter.writeUntypedField(kvp.getKey(), kvp.getValue());
                     }
                 }
 
@@ -549,88 +490,11 @@ public class ClientLogger {
         }
 
         private void addKeyValueInternal(String key, Object value) {
-            if (this.context == null) {
-                this.context = new ArrayList<>();
+            if (this.keyValuePairs == null) {
+                this.keyValuePairs = new HashMap<>();
             }
 
-            this.context.add(new ContextKeyValuePair(key, value));
-        }
-
-        private void performLogging(LogLevel logLevel, String message, Throwable throwable) {
-            switch (logLevel) {
-                case VERBOSE:
-                    logger.debug(message, throwable);
-                    break;
-                case INFORMATIONAL:
-                    logger.info(message, throwable);
-                    break;
-                case WARNING:
-                    logger.warn(message, throwable);
-                    break;
-                case ERROR:
-                    logger.error(message, throwable);
-                    break;
-                default:
-                    // Don't do anything, this state shouldn't be possible.
-                    break;
-            }
-        }
-
-        /**
-         * Serializes passed map to string containing valid JSON fragment:
-         * e.g. "k1":"v1","k2":"v2", properly escaped and without trailing comma.
-         * <p>
-         * For complex object serialization, it calls {@code toString()} guarded with null check.
-         *
-         * @param context to serialize.
-         *
-         * @return Serialized JSON fragment or an empty string.
-         */
-        static String writeJsonFragment(Map<String, Object> context) {
-            if (CoreUtils.isNullOrEmpty(context)) {
-                return "";
-            }
-
-            int speculatedSize = context.size() * 20;
-            try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
-                 JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
-                jsonWriter.writeMap(context, JsonWriter::writeUntyped).flush();
-
-                // Will have opening '{' and trailing '}' which we don't want to include.
-                return outputStream.toString(StandardCharsets.UTF_8).substring(1, outputStream.size() - 1);
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-        }
-
-        private static final class ContextKeyValuePair {
-            private final String key;
-            private final Object value;
-            private final Supplier<String> valueSupplier;
-
-            ContextKeyValuePair(String key, Object value) {
-                this.key = key;
-                this.value = value;
-                this.valueSupplier = null;
-            }
-
-            ContextKeyValuePair(String key, Supplier<String> valueSupplier) {
-                this.key = key;
-                this.value = null;
-                this.valueSupplier = valueSupplier;
-            }
-
-            /**
-             * Writes "key":"value" json string to provided StringBuilder.
-             */
-            void write(JsonWriter jsonWriter) throws IOException {
-                if (valueSupplier == null) {
-                    jsonWriter.writeUntypedField(key, value);
-                } else {
-                    // Use writeUntypedField as we want null values to be written.
-                    jsonWriter.writeUntypedField(key, valueSupplier.get());
-                }
-            }
+            this.keyValuePairs.put(key, value);
         }
     }
 
@@ -668,8 +532,8 @@ public class ClientLogger {
         private final String caseSensitive;
 
         static {
-            for (LogLevel logLevel: LogLevel.values()) {
-                for (String val: logLevel.allowedLogLevelVariables) {
+            for (LogLevel logLevel : LogLevel.values()) {
+                for (String val : logLevel.allowedLogLevelVariables) {
                     LOG_LEVEL_STRING_MAPPER.put(val, logLevel);
                 }
             }
@@ -721,8 +585,8 @@ public class ClientLogger {
             }
             String caseInsensitiveLogLevel = logLevelVal.toLowerCase(Locale.ROOT);
             if (!LOG_LEVEL_STRING_MAPPER.containsKey(caseInsensitiveLogLevel)) {
-                throw new IllegalArgumentException("We currently do not support the log level you set. LogLevel: "
-                    + logLevelVal);
+                throw new IllegalArgumentException(
+                    "We currently do not support the log level you set. LogLevel: " + logLevelVal);
             }
             return LOG_LEVEL_STRING_MAPPER.get(caseInsensitiveLogLevel);
         }
@@ -735,39 +599,5 @@ public class ClientLogger {
         public String toString() {
             return caseSensitive;
         }
-    }
-
-    /**
-     * Removes CR, LF or CRLF pattern in the {@code logMessage}.
-     *
-     * @param logMessage The log message to sanitize.
-     * @return The updated logMessage.
-     */
-    private static String removeNewLinesFromLogMessage(String logMessage) {
-        if (CoreUtils.isNullOrEmpty(logMessage)) {
-            return logMessage;
-        }
-
-        StringBuilder sb = null;
-        int prevStart = 0;
-
-        for (int i = 0; i < logMessage.length(); i++) {
-            if (logMessage.charAt(i) == CR || logMessage.charAt(i) == LF) {
-                if (sb == null) {
-                    sb = new StringBuilder(logMessage.length());
-                }
-
-                if (prevStart != i) {
-                    sb.append(logMessage, prevStart, i);
-                }
-                prevStart = i + 1;
-            }
-        }
-
-        if (sb == null) {
-            return logMessage;
-        }
-        sb.append(logMessage, prevStart, logMessage.length());
-        return sb.toString();
     }
 }
