@@ -349,7 +349,7 @@ public final class DocumentIntelligenceClientImpl {
     public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
-            new FinalResultViaPropertyPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+            new OperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
@@ -400,7 +400,7 @@ public final class DocumentIntelligenceClientImpl {
     public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-            new SyncFinalResultViaPropertyPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+            new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
@@ -452,7 +452,7 @@ public final class DocumentIntelligenceClientImpl {
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
-            new FinalResultViaPropertyPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+            new OperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
@@ -505,7 +505,7 @@ public final class DocumentIntelligenceClientImpl {
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-            new SyncFinalResultViaPropertyPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
+            new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
                 .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
                 .setContext(requestOptions != null && requestOptions.getContext() != null
                     ? requestOptions.getContext()
