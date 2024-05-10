@@ -29,7 +29,14 @@ public final class QueueLengthExceptionTrigger extends ExceptionTrigger {
     @JsonCreator
     public QueueLengthExceptionTrigger(@JsonProperty(value = "threshold") int threshold) {
         this.threshold = threshold;
-        this.kind = ExceptionTriggerKind.QUEUE_LENGTH;
+    }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public ExceptionTriggerKind getKind() {
+        return ExceptionTriggerKind.QUEUE_LENGTH;
     }
 
     /**

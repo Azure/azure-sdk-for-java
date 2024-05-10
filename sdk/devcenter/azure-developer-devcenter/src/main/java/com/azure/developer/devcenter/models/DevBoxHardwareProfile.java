@@ -29,12 +29,6 @@ public final class DevBoxHardwareProfile implements JsonSerializable<DevBoxHardw
     @Generated
     private Integer vCpus;
 
-    /*
-     * The amount of memory available for the Dev Box.
-     */
-    @Generated
-    private Integer memoryGb;
-
     /**
      * Creates an instance of DevBoxHardwareProfile class.
      */
@@ -60,16 +54,6 @@ public final class DevBoxHardwareProfile implements JsonSerializable<DevBoxHardw
     @Generated
     public Integer getVCpus() {
         return this.vCpus;
-    }
-
-    /**
-     * Get the memoryGb property: The amount of memory available for the Dev Box.
-     *
-     * @return the memoryGb value.
-     */
-    @Generated
-    public Integer getMemoryGb() {
-        return this.memoryGb;
     }
 
     /**
@@ -102,12 +86,28 @@ public final class DevBoxHardwareProfile implements JsonSerializable<DevBoxHardw
                 } else if ("vCPUs".equals(fieldName)) {
                     deserializedDevBoxHardwareProfile.vCpus = reader.getNullable(JsonReader::getInt);
                 } else if ("memoryGB".equals(fieldName)) {
-                    deserializedDevBoxHardwareProfile.memoryGb = reader.getNullable(JsonReader::getInt);
+                    deserializedDevBoxHardwareProfile.memoryInGb = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedDevBoxHardwareProfile;
         });
+    }
+
+    /*
+     * The amount of memory available for the Dev Box.
+     */
+    @Generated
+    private Integer memoryInGb;
+
+    /**
+     * Get the memoryInGb property: The amount of memory available for the Dev Box.
+     *
+     * @return the memoryInGb value.
+     */
+    @Generated
+    public Integer getMemoryInGb() {
+        return this.memoryInGb;
     }
 }

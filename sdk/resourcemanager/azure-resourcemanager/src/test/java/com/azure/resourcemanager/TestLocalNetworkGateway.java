@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
 import com.azure.resourcemanager.network.models.LocalNetworkGateways;
 import com.azure.core.management.Region;
@@ -10,6 +12,8 @@ import org.junit.jupiter.api.Assertions;
 
 /** Tests Local Network Gateway. */
 public class TestLocalNetworkGateway extends TestTemplate<LocalNetworkGateway, LocalNetworkGateways> {
+    private static final ClientLogger LOGGER = new ClientLogger(TestLocalNetworkGateway.class);
+
     private String testId = "";
     private static final Region REGION = Region.US_NORTH_CENTRAL;
     private String groupName;
@@ -51,7 +55,7 @@ public class TestLocalNetworkGateway extends TestTemplate<LocalNetworkGateway, L
         Assertions.assertFalse(gateway.addressSpaces().contains("192.168.3.0/24"));
         Assertions.assertEquals("40.71.184.216", gateway.ipAddress());
         Assertions.assertTrue(gateway.tags().containsKey("tag2"));
-        Assertions.assertTrue(!gateway.tags().containsKey("tag1"));
+        Assertions.assertFalse(gateway.tags().containsKey("tag1"));
         gateway.updateTags().withoutTag("tag2").withTag("tag3", "value3").applyTags();
         Assertions.assertFalse(gateway.tags().containsKey("tag2"));
         Assertions.assertEquals("value3", gateway.tags().get("tag3"));
@@ -75,10 +79,10 @@ public class TestLocalNetworkGateway extends TestTemplate<LocalNetworkGateway, L
         if (!gateway.addressSpaces().isEmpty()) {
             info.append("\n\tAddress spaces:");
             for (String addressSpace : gateway.addressSpaces()) {
-                info.append("\n\t\t" + addressSpace);
+                info.append("\n\t\t").append(addressSpace);
             }
         }
         info.append("\n\tTags: ").append(gateway.tags());
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 }

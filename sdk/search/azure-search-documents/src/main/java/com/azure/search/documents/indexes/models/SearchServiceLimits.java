@@ -39,6 +39,11 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
      */
     private Integer maxComplexObjectsInCollectionsPerDocument;
 
+    /*
+     * The maximum amount of storage in bytes allowed per index.
+     */
+    private Long maxStoragePerIndexInBytes;
+
     /**
      * Creates an instance of SearchServiceLimits class.
      */
@@ -47,7 +52,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
 
     /**
      * Get the maxFieldsPerIndex property: The maximum allowed fields per index.
-     * 
+     *
      * @return the maxFieldsPerIndex value.
      */
     public Integer getMaxFieldsPerIndex() {
@@ -56,7 +61,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
 
     /**
      * Set the maxFieldsPerIndex property: The maximum allowed fields per index.
-     * 
+     *
      * @param maxFieldsPerIndex the maxFieldsPerIndex value to set.
      * @return the SearchServiceLimits object itself.
      */
@@ -68,7 +73,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     /**
      * Get the maxFieldNestingDepthPerIndex property: The maximum depth which you can nest sub-fields in an index,
      * including the top-level complex field. For example, a/b/c has a nesting depth of 3.
-     * 
+     *
      * @return the maxFieldNestingDepthPerIndex value.
      */
     public Integer getMaxFieldNestingDepthPerIndex() {
@@ -78,7 +83,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     /**
      * Set the maxFieldNestingDepthPerIndex property: The maximum depth which you can nest sub-fields in an index,
      * including the top-level complex field. For example, a/b/c has a nesting depth of 3.
-     * 
+     *
      * @param maxFieldNestingDepthPerIndex the maxFieldNestingDepthPerIndex value to set.
      * @return the SearchServiceLimits object itself.
      */
@@ -90,7 +95,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     /**
      * Get the maxComplexCollectionFieldsPerIndex property: The maximum number of fields of type
      * Collection(Edm.ComplexType) allowed in an index.
-     * 
+     *
      * @return the maxComplexCollectionFieldsPerIndex value.
      */
     public Integer getMaxComplexCollectionFieldsPerIndex() {
@@ -100,7 +105,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     /**
      * Set the maxComplexCollectionFieldsPerIndex property: The maximum number of fields of type
      * Collection(Edm.ComplexType) allowed in an index.
-     * 
+     *
      * @param maxComplexCollectionFieldsPerIndex the maxComplexCollectionFieldsPerIndex value to set.
      * @return the SearchServiceLimits object itself.
      */
@@ -112,7 +117,7 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     /**
      * Get the maxComplexObjectsInCollectionsPerDocument property: The maximum number of objects in complex collections
      * allowed per document.
-     * 
+     *
      * @return the maxComplexObjectsInCollectionsPerDocument value.
      */
     public Integer getMaxComplexObjectsInCollectionsPerDocument() {
@@ -122,13 +127,33 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
     /**
      * Set the maxComplexObjectsInCollectionsPerDocument property: The maximum number of objects in complex collections
      * allowed per document.
-     * 
+     *
      * @param maxComplexObjectsInCollectionsPerDocument the maxComplexObjectsInCollectionsPerDocument value to set.
      * @return the SearchServiceLimits object itself.
      */
     public SearchServiceLimits
         setMaxComplexObjectsInCollectionsPerDocument(Integer maxComplexObjectsInCollectionsPerDocument) {
         this.maxComplexObjectsInCollectionsPerDocument = maxComplexObjectsInCollectionsPerDocument;
+        return this;
+    }
+
+    /**
+     * Get the maxStoragePerIndexInBytes property: The maximum amount of storage in bytes allowed per index.
+     *
+     * @return the maxStoragePerIndexInBytes value.
+     */
+    public Long getMaxStoragePerIndexInBytes() {
+        return this.maxStoragePerIndexInBytes;
+    }
+
+    /**
+     * Set the maxStoragePerIndexInBytes property: The maximum amount of storage in bytes allowed per index.
+     *
+     * @param maxStoragePerIndexInBytes the maxStoragePerIndexInBytes value to set.
+     * @return the SearchServiceLimits object itself.
+     */
+    public SearchServiceLimits setMaxStoragePerIndexInBytes(Long maxStoragePerIndexInBytes) {
+        this.maxStoragePerIndexInBytes = maxStoragePerIndexInBytes;
         return this;
     }
 
@@ -140,12 +165,13 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
         jsonWriter.writeNumberField("maxComplexCollectionFieldsPerIndex", this.maxComplexCollectionFieldsPerIndex);
         jsonWriter.writeNumberField("maxComplexObjectsInCollectionsPerDocument",
             this.maxComplexObjectsInCollectionsPerDocument);
+        jsonWriter.writeNumberField("maxStoragePerIndex", this.maxStoragePerIndexInBytes);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of SearchServiceLimits from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchServiceLimits if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -169,6 +195,8 @@ public final class SearchServiceLimits implements JsonSerializable<SearchService
                 } else if ("maxComplexObjectsInCollectionsPerDocument".equals(fieldName)) {
                     deserializedSearchServiceLimits.maxComplexObjectsInCollectionsPerDocument
                         = reader.getNullable(JsonReader::getInt);
+                } else if ("maxStoragePerIndex".equals(fieldName)) {
+                    deserializedSearchServiceLimits.maxStoragePerIndexInBytes = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

@@ -145,7 +145,7 @@ public class ActiveClientTokenManager implements TokenManager {
                 (amqpException, interval) -> {
                     final Duration lastRefresh = lastRefreshInterval.get();
 
-                    LOGGER.atError()
+                    LOGGER.atWarning()
                         .addKeyValue("scopes", scopes)
                         .addKeyValue(INTERVAL_KEY, interval)
                         .log("Error is transient. Rescheduling authorization task.", amqpException);

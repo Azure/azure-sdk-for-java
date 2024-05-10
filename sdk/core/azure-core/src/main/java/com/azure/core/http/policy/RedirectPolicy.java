@@ -89,7 +89,6 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
         return next.clone().process().flatMap(httpResponse -> {
             if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
-
                 HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
                 return attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
             } else {
@@ -111,7 +110,6 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         HttpResponse httpResponse = next.clone().processSync();
 
         if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt, attemptedRedirectUrls)) {
-
             HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
             return attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
         } else {

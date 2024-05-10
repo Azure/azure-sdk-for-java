@@ -17,27 +17,11 @@ import java.io.IOException;
 @Immutable
 public final class OsDisk implements JsonSerializable<OsDisk> {
 
-    /*
-     * The size of the OS Disk in gigabytes.
-     */
-    @Generated
-    private Integer diskSizeGb;
-
     /**
      * Creates an instance of OsDisk class.
      */
     @Generated
     private OsDisk() {
-    }
-
-    /**
-     * Get the diskSizeGb property: The size of the OS Disk in gigabytes.
-     *
-     * @return the diskSizeGb value.
-     */
-    @Generated
-    public Integer getDiskSizeGb() {
-        return this.diskSizeGb;
     }
 
     /**
@@ -66,12 +50,28 @@ public final class OsDisk implements JsonSerializable<OsDisk> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("diskSizeGB".equals(fieldName)) {
-                    deserializedOsDisk.diskSizeGb = reader.getNullable(JsonReader::getInt);
+                    deserializedOsDisk.diskSizeInGb = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedOsDisk;
         });
+    }
+
+    /*
+     * The size of the OS Disk in gigabytes.
+     */
+    @Generated
+    private Integer diskSizeInGb;
+
+    /**
+     * Get the diskSizeInGb property: The size of the OS Disk in gigabytes.
+     *
+     * @return the diskSizeInGb value.
+     */
+    @Generated
+    public Integer getDiskSizeInGb() {
+        return this.diskSizeInGb;
     }
 }
