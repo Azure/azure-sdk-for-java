@@ -12,6 +12,7 @@ import java.time.Duration;
 /**
  * Code snippets for {@link VertxHttpClientBuilderJavaDocCodeSnippets}
  */
+@SuppressWarnings("unused")
 public class VertxHttpClientBuilderJavaDocCodeSnippets {
 
     /**
@@ -55,25 +56,15 @@ public class VertxHttpClientBuilderJavaDocCodeSnippets {
 
     }
 
-    public void connectionTimeoutSample() {
-
-        // BEGIN: com.azure.core.http.vertx.vertxAsyncHttpClientBuilder#connextTimeout
-        final Duration connextTimeout = Duration.ofSeconds(250); // connection timeout of 250 seconds
+    public void timeoutSample() {
+        // BEGIN: com.azure.core.http.vertx.VertxAsyncHttpClientBuilder#timeoutSample
         HttpClient client = new VertxAsyncHttpClientBuilder()
-                .connectTimeout(connextTimeout)
-                .build();
-        // END: com.azure.core.http.vertx.vertxAsyncHttpClientBuilder#connextTimeout
-
-    }
-
-    public void readTimeoutSample() {
-
-        // BEGIN: com.azure.core.http.vertx.vertxAsyncHttpClientBuilder#readTimeout
-        final Duration readIdleTimeout = Duration.ofSeconds(100); // read timeout of 100 seconds
-        HttpClient client = new VertxAsyncHttpClientBuilder()
-                .readIdleTimeout(readIdleTimeout)
-                .build();
-        // END: com.azure.core.http.vertx.vertxAsyncHttpClientBuilder#readTimeout
+            .connectTimeout(Duration.ofSeconds(10)) // Timeout of 10 seconds for establishing a connection
+            .writeTimeout(Duration.ofSeconds(100)) // Timeout of 100 seconds when network writing is idle
+            .responseTimeout(Duration.ofSeconds(30)) // Timeout of 30 seconds for the server to return a response
+            .readTimeout(Duration.ofSeconds(100)) // Timeout of 100 seconds when network reading is idle
+            .build();
+        // END: com.azure.core.http.vertx.VertxAsyncHttpClientBuilder#timeoutSample
 
     }
 }

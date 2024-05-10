@@ -74,7 +74,10 @@ public class KeyClientTest extends KeyClientTestBase {
             KeyVaultKey createdKey = keyClient.createKey(keyToCreate);
 
             assertKeyEquals(keyToCreate, createdKey);
-            assertEquals("0", createdKey.getProperties().getHsmPlatform());
+
+            if (!isHsmEnabled) {
+                assertEquals("0", createdKey.getProperties().getHsmPlatform());
+            }
         });
     }
 
@@ -196,7 +199,10 @@ public class KeyClientTest extends KeyClientTestBase {
             KeyVaultKey retrievedKey = keyClient.getKey(keyToSetAndGet.getName());
 
             assertKeyEquals(keyToSetAndGet, retrievedKey);
-            assertEquals("0", retrievedKey.getProperties().getHsmPlatform());
+
+            if (!isHsmEnabled) {
+                assertEquals("0", retrievedKey.getProperties().getHsmPlatform());
+            }
         });
     }
 
