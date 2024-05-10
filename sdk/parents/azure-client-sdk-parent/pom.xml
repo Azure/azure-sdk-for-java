@@ -904,7 +904,7 @@
               </offlineLink>
             </offlineLinks>
             <failOnError>true</failOnError>
-            <failOnWarnings>false</failOnWarnings>
+            <failOnWarnings>true</failOnWarnings>
             <doclint>${doclint}</doclint>
             <quiet>true</quiet>
             <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>

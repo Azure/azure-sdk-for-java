@@ -193,7 +193,6 @@ jobs:
             -TargetDirectory $(Build.ArtifactStagingDirectory)
             -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
             -InformationAction Continue
-        condition: ne('${{parameters.ServiceDirectory}}','client-core')
 
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:
