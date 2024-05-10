@@ -26,7 +26,7 @@ public final class IndexingPolicy {
     private List<List<CompositePath>> compositeIndexes;
     private List<SpatialSpec> spatialIndexes;
 
-    private final JsonSerializable jsonSerializable;
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
