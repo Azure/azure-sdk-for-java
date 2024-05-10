@@ -46,7 +46,7 @@ public final class CosmosVectorEmbeddingPolicy {
      */
     public void setCosmosVectorEmbeddings(List<CosmosVectorEmbedding> cosmosVectorEmbeddings) {
         cosmosVectorEmbeddings.forEach(embedding -> {
-            checkNotNull(embedding, "Embedding cannot be null.");
+            checkNotNull(embedding, "Null values are not allowed in cosmosVectorEmbeddings list.");
         });
         this.cosmosVectorEmbeddings = cosmosVectorEmbeddings;
     }

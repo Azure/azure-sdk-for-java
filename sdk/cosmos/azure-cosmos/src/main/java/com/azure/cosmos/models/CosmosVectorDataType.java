@@ -53,6 +53,7 @@ public enum CosmosVectorDataType {
         return Arrays.stream(CosmosVectorDataType.values())
             .filter(vectorDataType -> vectorDataType.toString().equalsIgnoreCase(value))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Invalid vector data type for the vector embedding policy."));
+            .orElseThrow(() -> new IllegalArgumentException(String.format(
+                "Invalid vector data type with value {%s} for the vector embedding policy.", value)));
     }
 }

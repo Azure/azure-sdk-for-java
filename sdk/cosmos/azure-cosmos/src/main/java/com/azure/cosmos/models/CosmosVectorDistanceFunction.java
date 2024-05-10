@@ -48,6 +48,7 @@ public enum CosmosVectorDistanceFunction {
         return Arrays.stream(CosmosVectorDistanceFunction.values())
             .filter(vectorDistanceFunction -> vectorDistanceFunction.toString().equalsIgnoreCase(value))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Invalid distance function for the vector embedding policy."));
+            .orElseThrow(() -> new IllegalArgumentException(String.format(
+                "Invalid distance function with value {%s} for the vector embedding policy.", value )));
     }
 }

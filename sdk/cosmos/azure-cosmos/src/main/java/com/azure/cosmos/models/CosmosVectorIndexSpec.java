@@ -14,13 +14,15 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class CosmosVectorIndexSpec {
 
-    private JsonSerializable jsonSerializable;
+    private final JsonSerializable jsonSerializable;
     private String type;
 
     /**
      * Constructor
      */
-    public CosmosVectorIndexSpec() { this.jsonSerializable = new JsonSerializable(); }
+    public CosmosVectorIndexSpec() {
+        this.jsonSerializable = new JsonSerializable();
+    }
 
     /**
      * Gets path.
