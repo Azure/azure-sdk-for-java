@@ -20,12 +20,13 @@ import java.util.List;
  */
 public final class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
-    private final JsonSerializable jsonSerializable;
+
     private List<IncludedPath> includedPaths;
     private List<ExcludedPath> excludedPaths;
     private List<List<CompositePath>> compositeIndexes;
     private List<SpatialSpec> spatialIndexes;
     private List<CosmosVectorIndexSpec> vectorIndexes;
+    private final JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
