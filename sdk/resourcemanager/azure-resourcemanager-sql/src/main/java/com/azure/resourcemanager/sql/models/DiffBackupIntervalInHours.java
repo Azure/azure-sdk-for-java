@@ -13,15 +13,28 @@ import java.util.Collection;
  * supported. This is only applicable to live databases but not dropped databases.
  */
 public final class DiffBackupIntervalInHours extends ExpandableStringEnum<DiffBackupIntervalInHours> {
-    /** Static value 12 for DiffBackupIntervalInHours. */
+    /**
+     * Static value 12 for DiffBackupIntervalInHours.
+     */
     public static final DiffBackupIntervalInHours ONE_TWO = fromInt(12);
 
-    /** Static value 24 for DiffBackupIntervalInHours. */
+    /**
+     * Static value 24 for DiffBackupIntervalInHours.
+     */
     public static final DiffBackupIntervalInHours TWO_FOUR = fromInt(24);
 
     /**
+     * Creates a new instance of DiffBackupIntervalInHours value.
+     * 
+     * @deprecated Use the {@link #fromInt(int)} factory method.
+     */
+    @Deprecated
+    public DiffBackupIntervalInHours() {
+    }
+
+    /**
      * Creates or finds a DiffBackupIntervalInHours from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiffBackupIntervalInHours.
      */
@@ -32,7 +45,7 @@ public final class DiffBackupIntervalInHours extends ExpandableStringEnum<DiffBa
 
     /**
      * Gets known DiffBackupIntervalInHours values.
-     *
+     * 
      * @return known DiffBackupIntervalInHours values.
      */
     public static Collection<DiffBackupIntervalInHours> values() {

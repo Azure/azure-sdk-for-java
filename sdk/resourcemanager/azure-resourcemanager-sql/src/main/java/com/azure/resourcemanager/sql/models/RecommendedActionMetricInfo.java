@@ -44,13 +44,15 @@ public final class RecommendedActionMetricInfo {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private Double value;
 
-    /** Creates an instance of RecommendedActionMetricInfo class. */
+    /**
+     * Creates an instance of RecommendedActionMetricInfo class.
+     */
     public RecommendedActionMetricInfo() {
     }
 
     /**
      * Get the metricName property: Gets the name of the metric. e.g., CPU, Number of Queries.
-     *
+     * 
      * @return the metricName value.
      */
     public String metricName() {
@@ -59,7 +61,7 @@ public final class RecommendedActionMetricInfo {
 
     /**
      * Get the unit property: Gets the unit in which metric is measured. e.g., DTU, Frequency.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -69,7 +71,7 @@ public final class RecommendedActionMetricInfo {
     /**
      * Get the timeGrain property: Gets the duration of time interval for the value given by this MetricInfo. e.g., PT1H
      * (1 hour).
-     *
+     * 
      * @return the timeGrain value.
      */
     public String timeGrain() {
@@ -78,7 +80,7 @@ public final class RecommendedActionMetricInfo {
 
     /**
      * Get the startTime property: Gets the start time of time interval given by this MetricInfo.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -87,7 +89,7 @@ public final class RecommendedActionMetricInfo {
 
     /**
      * Get the value property: Gets the value of the metric in the time interval given by this MetricInfo.
-     *
+     * 
      * @return the value value.
      */
     public Double value() {
@@ -96,7 +98,7 @@ public final class RecommendedActionMetricInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

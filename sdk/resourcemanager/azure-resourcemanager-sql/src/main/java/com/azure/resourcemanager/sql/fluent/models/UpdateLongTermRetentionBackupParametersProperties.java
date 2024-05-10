@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the properties to perform long term retention backup copy operation. */
+/**
+ * Contains the properties to perform long term retention backup copy operation.
+ */
 @Fluent
 public final class UpdateLongTermRetentionBackupParametersProperties {
     /*
@@ -17,13 +19,15 @@ public final class UpdateLongTermRetentionBackupParametersProperties {
     @JsonProperty(value = "requestedBackupStorageRedundancy")
     private BackupStorageRedundancy requestedBackupStorageRedundancy;
 
-    /** Creates an instance of UpdateLongTermRetentionBackupParametersProperties class. */
+    /**
+     * Creates an instance of UpdateLongTermRetentionBackupParametersProperties class.
+     */
     public UpdateLongTermRetentionBackupParametersProperties() {
     }
 
     /**
      * Get the requestedBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @return the requestedBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy requestedBackupStorageRedundancy() {
@@ -32,19 +36,19 @@ public final class UpdateLongTermRetentionBackupParametersProperties {
 
     /**
      * Set the requestedBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
      * @return the UpdateLongTermRetentionBackupParametersProperties object itself.
      */
-    public UpdateLongTermRetentionBackupParametersProperties withRequestedBackupStorageRedundancy(
-        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+    public UpdateLongTermRetentionBackupParametersProperties
+        withRequestedBackupStorageRedundancy(BackupStorageRedundancy requestedBackupStorageRedundancy) {
         this.requestedBackupStorageRedundancy = requestedBackupStorageRedundancy;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

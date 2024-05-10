@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.fluent.models.RecommendedSensitivityLabelUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A recommended sensitivity label update operation. */
+/**
+ * A recommended sensitivity label update operation.
+ */
 @Fluent
 public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
     @JsonProperty(value = "properties")
     private RecommendedSensitivityLabelUpdateProperties innerProperties;
 
-    /** Creates an instance of RecommendedSensitivityLabelUpdate class. */
+    /**
+     * Creates an instance of RecommendedSensitivityLabelUpdate class.
+     */
     public RecommendedSensitivityLabelUpdate() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RecommendedSensitivityLabelUpdateProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
 
     /**
      * Get the op property: The op property.
-     *
+     * 
      * @return the op value.
      */
     public RecommendedSensitivityLabelUpdateKind op() {
@@ -42,7 +46,7 @@ public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
 
     /**
      * Set the op property: The op property.
-     *
+     * 
      * @param op the op value to set.
      * @return the RecommendedSensitivityLabelUpdate object itself.
      */
@@ -56,7 +60,7 @@ public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
 
     /**
      * Get the schema property: Schema name of the column to update.
-     *
+     * 
      * @return the schema value.
      */
     public String schema() {
@@ -65,7 +69,7 @@ public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
 
     /**
      * Set the schema property: Schema name of the column to update.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the RecommendedSensitivityLabelUpdate object itself.
      */
@@ -79,7 +83,7 @@ public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
 
     /**
      * Get the table property: Table name of the column to update.
-     *
+     * 
      * @return the table value.
      */
     public String table() {
@@ -88,7 +92,7 @@ public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
 
     /**
      * Set the table property: Table name of the column to update.
-     *
+     * 
      * @param table the table value to set.
      * @return the RecommendedSensitivityLabelUpdate object itself.
      */
@@ -102,7 +106,7 @@ public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
 
     /**
      * Get the column property: Column name to update.
-     *
+     * 
      * @return the column value.
      */
     public String column() {
@@ -111,7 +115,7 @@ public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
 
     /**
      * Set the column property: Column name to update.
-     *
+     * 
      * @param column the column value to set.
      * @return the RecommendedSensitivityLabelUpdate object itself.
      */
@@ -125,7 +129,7 @@ public final class RecommendedSensitivityLabelUpdate extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

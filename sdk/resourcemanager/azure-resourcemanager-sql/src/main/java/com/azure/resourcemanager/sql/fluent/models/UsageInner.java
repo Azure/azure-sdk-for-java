@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.sql.models.Name;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ARM usage. */
+/**
+ * ARM usage.
+ */
 @Immutable
 public final class UsageInner {
     /*
@@ -53,13 +55,15 @@ public final class UsageInner {
     @JsonProperty(value = "requestedLimit", access = JsonProperty.Access.WRITE_ONLY)
     private Integer requestedLimit;
 
-    /** Creates an instance of UsageInner class. */
+    /**
+     * Creates an instance of UsageInner class.
+     */
     public UsageInner() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -68,7 +72,7 @@ public final class UsageInner {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public Name name() {
@@ -77,7 +81,7 @@ public final class UsageInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -86,7 +90,7 @@ public final class UsageInner {
 
     /**
      * Get the unit property: Usage unit.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -95,7 +99,7 @@ public final class UsageInner {
 
     /**
      * Get the currentValue property: Usage current value.
-     *
+     * 
      * @return the currentValue value.
      */
     public Integer currentValue() {
@@ -104,7 +108,7 @@ public final class UsageInner {
 
     /**
      * Get the limit property: Usage limit.
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -113,7 +117,7 @@ public final class UsageInner {
 
     /**
      * Get the requestedLimit property: Usage requested limit.
-     *
+     * 
      * @return the requestedLimit value.
      */
     public Integer requestedLimit() {
@@ -122,7 +126,7 @@ public final class UsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

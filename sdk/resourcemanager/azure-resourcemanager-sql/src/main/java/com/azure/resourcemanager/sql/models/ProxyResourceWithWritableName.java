@@ -6,14 +6,20 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** ARM proxy resource. */
+/**
+ * ARM proxy resource.
+ */
 @Fluent
 public class ProxyResourceWithWritableName extends ResourceWithWritableName {
-    /** Creates an instance of ProxyResourceWithWritableName class. */
+    /**
+     * Creates an instance of ProxyResourceWithWritableName class.
+     */
     public ProxyResourceWithWritableName() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProxyResourceWithWritableName withName(String name) {
         super.withName(name);
@@ -22,7 +28,7 @@ public class ProxyResourceWithWritableName extends ResourceWithWritableName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

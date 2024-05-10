@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A server key. */
+/**
+ * A server key.
+ */
 @Fluent
 public final class ServerKeyInner extends ProxyResource {
     /*
@@ -31,13 +33,15 @@ public final class ServerKeyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ServerKeyProperties innerProperties;
 
-    /** Creates an instance of ServerKeyInner class. */
+    /**
+     * Creates an instance of ServerKeyInner class.
+     */
     public ServerKeyInner() {
     }
 
     /**
      * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -46,7 +50,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -55,7 +59,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerKeyProperties innerProperties() {
@@ -64,7 +68,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the subregion property: Subregion of the server key.
-     *
+     * 
      * @return the subregion value.
      */
     public String subregion() {
@@ -73,7 +77,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the serverKeyType property: The server key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -82,7 +86,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Set the serverKeyType property: The server key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the ServerKeyInner object itself.
      */
@@ -96,9 +100,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     * The AKV URI is required to be in this format:
-     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -107,9 +109,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Set the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     * The AKV URI is required to be in this format:
-     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ServerKeyInner object itself.
      */
@@ -123,7 +123,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the thumbprint property: Thumbprint of the server key.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -132,7 +132,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the creationDate property: The server key creation date.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -141,7 +141,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @return the autoRotationEnabled value.
      */
     public Boolean autoRotationEnabled() {
@@ -150,7 +150,7 @@ public final class ServerKeyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

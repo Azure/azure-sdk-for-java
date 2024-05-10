@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.JobVersionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of job versions. */
+/**
+ * A list of job versions.
+ */
 @Immutable
 public final class JobVersionListResult {
     /*
@@ -24,13 +26,15 @@ public final class JobVersionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of JobVersionListResult class. */
+    /**
+     * Creates an instance of JobVersionListResult class.
+     */
     public JobVersionListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<JobVersionInner> value() {
@@ -39,7 +43,7 @@ public final class JobVersionListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class JobVersionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

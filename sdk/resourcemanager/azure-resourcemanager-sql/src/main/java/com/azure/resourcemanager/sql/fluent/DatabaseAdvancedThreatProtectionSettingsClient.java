@@ -21,9 +21,9 @@ import reactor.core.publisher.Mono;
 public interface DatabaseAdvancedThreatProtectionSettingsClient {
     /**
      * Gets a list of database's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,14 +32,14 @@ public interface DatabaseAdvancedThreatProtectionSettingsClient {
      * @return a list of database's Advanced Threat Protection states as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DatabaseAdvancedThreatProtectionInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    PagedFlux<DatabaseAdvancedThreatProtectionInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Gets a list of database's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,14 +48,14 @@ public interface DatabaseAdvancedThreatProtectionSettingsClient {
      * @return a list of database's Advanced Threat Protection states as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseAdvancedThreatProtectionInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName);
+    PagedIterable<DatabaseAdvancedThreatProtectionInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Gets a list of database's Advanced Threat Protection states.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -65,14 +65,14 @@ public interface DatabaseAdvancedThreatProtectionSettingsClient {
      * @return a list of database's Advanced Threat Protection states as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseAdvancedThreatProtectionInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    PagedIterable<DatabaseAdvancedThreatProtectionInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName, Context context);
 
     /**
      * Gets a database's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
@@ -80,20 +80,17 @@ public interface DatabaseAdvancedThreatProtectionSettingsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a database's Advanced Threat Protection state along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseAdvancedThreatProtectionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        AdvancedThreatProtectionName advancedThreatProtectionName);
+    Mono<Response<DatabaseAdvancedThreatProtectionInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName);
 
     /**
      * Gets a database's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
@@ -103,17 +100,14 @@ public interface DatabaseAdvancedThreatProtectionSettingsClient {
      * @return a database's Advanced Threat Protection state on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseAdvancedThreatProtectionInner> getAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        AdvancedThreatProtectionName advancedThreatProtectionName);
+    Mono<DatabaseAdvancedThreatProtectionInner> getAsync(String resourceGroupName, String serverName,
+        String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName);
 
     /**
      * Gets a database's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
@@ -124,18 +118,14 @@ public interface DatabaseAdvancedThreatProtectionSettingsClient {
      * @return a database's Advanced Threat Protection state along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseAdvancedThreatProtectionInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        Context context);
+    Response<DatabaseAdvancedThreatProtectionInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName, Context context);
 
     /**
      * Gets a database's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
@@ -145,17 +135,14 @@ public interface DatabaseAdvancedThreatProtectionSettingsClient {
      * @return a database's Advanced Threat Protection state.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAdvancedThreatProtectionInner get(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
+    DatabaseAdvancedThreatProtectionInner get(String resourceGroupName, String serverName, String databaseName,
         AdvancedThreatProtectionName advancedThreatProtectionName);
 
     /**
      * Creates or updates a database's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
@@ -163,22 +150,19 @@ public interface DatabaseAdvancedThreatProtectionSettingsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database Advanced Threat Protection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a database Advanced Threat Protection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DatabaseAdvancedThreatProtectionInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
+    Mono<Response<DatabaseAdvancedThreatProtectionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName,
         DatabaseAdvancedThreatProtectionInner parameters);
 
     /**
      * Creates or updates a database's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
@@ -189,18 +173,15 @@ public interface DatabaseAdvancedThreatProtectionSettingsClient {
      * @return a database Advanced Threat Protection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DatabaseAdvancedThreatProtectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
+    Mono<DatabaseAdvancedThreatProtectionInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName,
         DatabaseAdvancedThreatProtectionInner parameters);
 
     /**
      * Creates or updates a database's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
@@ -212,19 +193,15 @@ public interface DatabaseAdvancedThreatProtectionSettingsClient {
      * @return a database Advanced Threat Protection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseAdvancedThreatProtectionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
-        DatabaseAdvancedThreatProtectionInner parameters,
-        Context context);
+    Response<DatabaseAdvancedThreatProtectionInner> createOrUpdateWithResponse(String resourceGroupName,
+        String serverName, String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName,
+        DatabaseAdvancedThreatProtectionInner parameters, Context context);
 
     /**
      * Creates or updates a database's Advanced Threat Protection state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param advancedThreatProtectionName The name of the Advanced Threat Protection state.
@@ -235,10 +212,7 @@ public interface DatabaseAdvancedThreatProtectionSettingsClient {
      * @return a database Advanced Threat Protection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAdvancedThreatProtectionInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        AdvancedThreatProtectionName advancedThreatProtectionName,
+    DatabaseAdvancedThreatProtectionInner createOrUpdate(String resourceGroupName, String serverName,
+        String databaseName, AdvancedThreatProtectionName advancedThreatProtectionName,
         DatabaseAdvancedThreatProtectionInner parameters);
 }

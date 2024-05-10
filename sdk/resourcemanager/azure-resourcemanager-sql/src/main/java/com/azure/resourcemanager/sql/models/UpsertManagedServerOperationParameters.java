@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UpsertManagedServerOperationParameters model. */
+/**
+ * The UpsertManagedServerOperationParameters model.
+ */
 @Fluent
 public final class UpsertManagedServerOperationParameters {
     /*
@@ -34,13 +36,15 @@ public final class UpsertManagedServerOperationParameters {
     @JsonProperty(value = "storageSizeInGB")
     private Integer storageSizeInGB;
 
-    /** Creates an instance of UpsertManagedServerOperationParameters class. */
+    /**
+     * Creates an instance of UpsertManagedServerOperationParameters class.
+     */
     public UpsertManagedServerOperationParameters() {
     }
 
     /**
      * Get the family property: The family property.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -49,7 +53,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Set the family property: The family property.
-     *
+     * 
      * @param family the family value to set.
      * @return the UpsertManagedServerOperationParameters object itself.
      */
@@ -60,7 +64,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Get the tier property: The tier property.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -69,7 +73,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Set the tier property: The tier property.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the UpsertManagedServerOperationParameters object itself.
      */
@@ -80,7 +84,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Get the vCores property: The vCores property.
-     *
+     * 
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -89,7 +93,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Set the vCores property: The vCores property.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the UpsertManagedServerOperationParameters object itself.
      */
@@ -100,7 +104,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Get the storageSizeInGB property: The storageSizeInGB property.
-     *
+     * 
      * @return the storageSizeInGB value.
      */
     public Integer storageSizeInGB() {
@@ -109,7 +113,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Set the storageSizeInGB property: The storageSizeInGB property.
-     *
+     * 
      * @param storageSizeInGB the storageSizeInGB value to set.
      * @return the UpsertManagedServerOperationParameters object itself.
      */
@@ -120,7 +124,7 @@ public final class UpsertManagedServerOperationParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

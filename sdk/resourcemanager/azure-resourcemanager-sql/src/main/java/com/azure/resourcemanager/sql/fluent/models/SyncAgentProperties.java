@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.models.SyncAgentState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of an Azure SQL Database sync agent. */
+/**
+ * Properties of an Azure SQL Database sync agent.
+ */
 @Fluent
 public final class SyncAgentProperties {
     /*
@@ -54,13 +56,15 @@ public final class SyncAgentProperties {
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Creates an instance of SyncAgentProperties class. */
+    /**
+     * Creates an instance of SyncAgentProperties class.
+     */
     public SyncAgentProperties() {
     }
 
     /**
      * Get the name property: Name of the sync agent.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -69,7 +73,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the syncDatabaseId property: ARM resource id of the sync database in the sync agent.
-     *
+     * 
      * @return the syncDatabaseId value.
      */
     public String syncDatabaseId() {
@@ -78,7 +82,7 @@ public final class SyncAgentProperties {
 
     /**
      * Set the syncDatabaseId property: ARM resource id of the sync database in the sync agent.
-     *
+     * 
      * @param syncDatabaseId the syncDatabaseId value to set.
      * @return the SyncAgentProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the lastAliveTime property: Last alive time of the sync agent.
-     *
+     * 
      * @return the lastAliveTime value.
      */
     public OffsetDateTime lastAliveTime() {
@@ -98,7 +102,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the state property: State of the sync agent.
-     *
+     * 
      * @return the state value.
      */
     public SyncAgentState state() {
@@ -107,7 +111,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the isUpToDate property: If the sync agent version is up to date.
-     *
+     * 
      * @return the isUpToDate value.
      */
     public Boolean isUpToDate() {
@@ -116,7 +120,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the expiryTime property: Expiration time of the sync agent version.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -125,7 +129,7 @@ public final class SyncAgentProperties {
 
     /**
      * Get the version property: Version of the sync agent.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -134,7 +138,7 @@ public final class SyncAgentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

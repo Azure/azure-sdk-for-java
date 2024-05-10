@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.sql.models.DiffBackupIntervalInHours;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a short term retention policy. */
+/**
+ * Properties of a short term retention policy.
+ */
 @Fluent
 public final class BackupShortTermRetentionPolicyProperties {
     /*
@@ -18,20 +20,21 @@ public final class BackupShortTermRetentionPolicyProperties {
     private Integer retentionDays;
 
     /*
-     * The differential backup interval in hours. This is how many interval hours between each differential backup will
-     * be supported. This is only applicable to live databases but not dropped databases.
+     * The differential backup interval in hours. This is how many interval hours between each differential backup will be supported. This is only applicable to live databases but not dropped databases.
      */
     @JsonProperty(value = "diffBackupIntervalInHours")
     private DiffBackupIntervalInHours diffBackupIntervalInHours;
 
-    /** Creates an instance of BackupShortTermRetentionPolicyProperties class. */
+    /**
+     * Creates an instance of BackupShortTermRetentionPolicyProperties class.
+     */
     public BackupShortTermRetentionPolicyProperties() {
     }
 
     /**
      * Get the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -41,7 +44,7 @@ public final class BackupShortTermRetentionPolicyProperties {
     /**
      * Set the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the BackupShortTermRetentionPolicyProperties object itself.
      */
@@ -54,7 +57,7 @@ public final class BackupShortTermRetentionPolicyProperties {
      * Get the diffBackupIntervalInHours property: The differential backup interval in hours. This is how many interval
      * hours between each differential backup will be supported. This is only applicable to live databases but not
      * dropped databases.
-     *
+     * 
      * @return the diffBackupIntervalInHours value.
      */
     public DiffBackupIntervalInHours diffBackupIntervalInHours() {
@@ -65,19 +68,19 @@ public final class BackupShortTermRetentionPolicyProperties {
      * Set the diffBackupIntervalInHours property: The differential backup interval in hours. This is how many interval
      * hours between each differential backup will be supported. This is only applicable to live databases but not
      * dropped databases.
-     *
+     * 
      * @param diffBackupIntervalInHours the diffBackupIntervalInHours value to set.
      * @return the BackupShortTermRetentionPolicyProperties object itself.
      */
-    public BackupShortTermRetentionPolicyProperties withDiffBackupIntervalInHours(
-        DiffBackupIntervalInHours diffBackupIntervalInHours) {
+    public BackupShortTermRetentionPolicyProperties
+        withDiffBackupIntervalInHours(DiffBackupIntervalInHours diffBackupIntervalInHours) {
         this.diffBackupIntervalInHours = diffBackupIntervalInHours;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

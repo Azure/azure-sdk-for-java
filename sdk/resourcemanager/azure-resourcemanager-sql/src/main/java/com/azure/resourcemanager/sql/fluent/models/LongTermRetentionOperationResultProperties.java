@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** Contains the operation result properties for long term retention backup operation. */
+/**
+ * Contains the operation result properties for long term retention backup operation.
+ */
 @Immutable
 public final class LongTermRetentionOperationResultProperties {
     /*
@@ -54,13 +56,15 @@ public final class LongTermRetentionOperationResultProperties {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of LongTermRetentionOperationResultProperties class. */
+    /**
+     * Creates an instance of LongTermRetentionOperationResultProperties class.
+     */
     public LongTermRetentionOperationResultProperties() {
     }
 
     /**
      * Get the requestId property: Request Id.
-     *
+     * 
      * @return the requestId value.
      */
     public UUID requestId() {
@@ -69,7 +73,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the operationType property: Operation type.
-     *
+     * 
      * @return the operationType value.
      */
     public String operationType() {
@@ -78,7 +82,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the fromBackupResourceId property: Source backup resource id.
-     *
+     * 
      * @return the fromBackupResourceId value.
      */
     public String fromBackupResourceId() {
@@ -87,7 +91,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the toBackupResourceId property: Target backup resource id.
-     *
+     * 
      * @return the toBackupResourceId value.
      */
     public String toBackupResourceId() {
@@ -96,7 +100,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the targetBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @return the targetBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy targetBackupStorageRedundancy() {
@@ -105,7 +109,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -114,7 +118,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Get the message property: Progress message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -123,7 +127,7 @@ public final class LongTermRetentionOperationResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

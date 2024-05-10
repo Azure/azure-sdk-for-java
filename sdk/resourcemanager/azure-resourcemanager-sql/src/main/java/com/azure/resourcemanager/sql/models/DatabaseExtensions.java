@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseExtensionsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Import, Export, or PolybaseImport resource. */
+/**
+ * An export managed database operation result resource.
+ */
 @Fluent
 public final class DatabaseExtensions extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class DatabaseExtensions extends ProxyResource {
     @JsonProperty(value = "properties")
     private DatabaseExtensionsProperties innerProperties;
 
-    /** Creates an instance of DatabaseExtensions class. */
+    /**
+     * Creates an instance of DatabaseExtensions class.
+     */
     public DatabaseExtensions() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DatabaseExtensionsProperties innerProperties() {
@@ -32,8 +36,8 @@ public final class DatabaseExtensions extends ProxyResource {
     }
 
     /**
-     * Get the operationMode property: Operation mode of the operation: Import, Export, or PolybaseImport.
-     *
+     * Get the operationMode property: Operation Mode.
+     * 
      * @return the operationMode value.
      */
     public OperationMode operationMode() {
@@ -41,8 +45,8 @@ public final class DatabaseExtensions extends ProxyResource {
     }
 
     /**
-     * Set the operationMode property: Operation mode of the operation: Import, Export, or PolybaseImport.
-     *
+     * Set the operationMode property: Operation Mode.
+     * 
      * @param operationMode the operationMode value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -55,8 +59,8 @@ public final class DatabaseExtensions extends ProxyResource {
     }
 
     /**
-     * Get the storageKeyType property: Storage key type: StorageAccessKey or SharedAccessKey.
-     *
+     * Get the storageKeyType property: Storage key type.
+     * 
      * @return the storageKeyType value.
      */
     public StorageKeyType storageKeyType() {
@@ -64,8 +68,8 @@ public final class DatabaseExtensions extends ProxyResource {
     }
 
     /**
-     * Set the storageKeyType property: Storage key type: StorageAccessKey or SharedAccessKey.
-     *
+     * Set the storageKeyType property: Storage key type.
+     * 
      * @param storageKeyType the storageKeyType value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -78,8 +82,8 @@ public final class DatabaseExtensions extends ProxyResource {
     }
 
     /**
-     * Get the storageKey property: Storage key for the storage account.
-     *
+     * Get the storageKey property: Storage key.
+     * 
      * @return the storageKey value.
      */
     public String storageKey() {
@@ -87,8 +91,8 @@ public final class DatabaseExtensions extends ProxyResource {
     }
 
     /**
-     * Set the storageKey property: Storage key for the storage account.
-     *
+     * Set the storageKey property: Storage key.
+     * 
      * @param storageKey the storageKey value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -101,8 +105,8 @@ public final class DatabaseExtensions extends ProxyResource {
     }
 
     /**
-     * Get the storageUri property: Storage Uri for the storage account.
-     *
+     * Get the storageUri property: Storage Uri.
+     * 
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -110,8 +114,8 @@ public final class DatabaseExtensions extends ProxyResource {
     }
 
     /**
-     * Set the storageUri property: Storage Uri for the storage account.
-     *
+     * Set the storageUri property: Storage Uri.
+     * 
      * @param storageUri the storageUri value to set.
      * @return the DatabaseExtensions object itself.
      */
@@ -124,175 +128,8 @@ public final class DatabaseExtensions extends ProxyResource {
     }
 
     /**
-     * Get the administratorLogin property: Administrator login name.
-     *
-     * @return the administratorLogin value.
-     */
-    public String administratorLogin() {
-        return this.innerProperties() == null ? null : this.innerProperties().administratorLogin();
-    }
-
-    /**
-     * Set the administratorLogin property: Administrator login name.
-     *
-     * @param administratorLogin the administratorLogin value to set.
-     * @return the DatabaseExtensions object itself.
-     */
-    public DatabaseExtensions withAdministratorLogin(String administratorLogin) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseExtensionsProperties();
-        }
-        this.innerProperties().withAdministratorLogin(administratorLogin);
-        return this;
-    }
-
-    /**
-     * Get the administratorLoginPassword property: Administrator login password.
-     *
-     * @return the administratorLoginPassword value.
-     */
-    public String administratorLoginPassword() {
-        return this.innerProperties() == null ? null : this.innerProperties().administratorLoginPassword();
-    }
-
-    /**
-     * Set the administratorLoginPassword property: Administrator login password.
-     *
-     * @param administratorLoginPassword the administratorLoginPassword value to set.
-     * @return the DatabaseExtensions object itself.
-     */
-    public DatabaseExtensions withAdministratorLoginPassword(String administratorLoginPassword) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseExtensionsProperties();
-        }
-        this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
-        return this;
-    }
-
-    /**
-     * Get the authenticationType property: Authentication type: SQL authentication or AD password.
-     *
-     * @return the authenticationType value.
-     */
-    public String authenticationType() {
-        return this.innerProperties() == null ? null : this.innerProperties().authenticationType();
-    }
-
-    /**
-     * Set the authenticationType property: Authentication type: SQL authentication or AD password.
-     *
-     * @param authenticationType the authenticationType value to set.
-     * @return the DatabaseExtensions object itself.
-     */
-    public DatabaseExtensions withAuthenticationType(String authenticationType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseExtensionsProperties();
-        }
-        this.innerProperties().withAuthenticationType(authenticationType);
-        return this;
-    }
-
-    /**
-     * Get the databaseEdition property: Database edition for the newly created database in the case of an import
-     * operation.
-     *
-     * @return the databaseEdition value.
-     */
-    public String databaseEdition() {
-        return this.innerProperties() == null ? null : this.innerProperties().databaseEdition();
-    }
-
-    /**
-     * Set the databaseEdition property: Database edition for the newly created database in the case of an import
-     * operation.
-     *
-     * @param databaseEdition the databaseEdition value to set.
-     * @return the DatabaseExtensions object itself.
-     */
-    public DatabaseExtensions withDatabaseEdition(String databaseEdition) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseExtensionsProperties();
-        }
-        this.innerProperties().withDatabaseEdition(databaseEdition);
-        return this;
-    }
-
-    /**
-     * Get the serviceObjectiveName property: Database service level objective for the newly created database in the
-     * case of an import operation.
-     *
-     * @return the serviceObjectiveName value.
-     */
-    public String serviceObjectiveName() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceObjectiveName();
-    }
-
-    /**
-     * Set the serviceObjectiveName property: Database service level objective for the newly created database in the
-     * case of an import operation.
-     *
-     * @param serviceObjectiveName the serviceObjectiveName value to set.
-     * @return the DatabaseExtensions object itself.
-     */
-    public DatabaseExtensions withServiceObjectiveName(String serviceObjectiveName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseExtensionsProperties();
-        }
-        this.innerProperties().withServiceObjectiveName(serviceObjectiveName);
-        return this;
-    }
-
-    /**
-     * Get the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an import
-     * operation.
-     *
-     * @return the maxSizeBytes value.
-     */
-    public String maxSizeBytes() {
-        return this.innerProperties() == null ? null : this.innerProperties().maxSizeBytes();
-    }
-
-    /**
-     * Set the maxSizeBytes property: Database max size in bytes for the newly created database in the case of an import
-     * operation.
-     *
-     * @param maxSizeBytes the maxSizeBytes value to set.
-     * @return the DatabaseExtensions object itself.
-     */
-    public DatabaseExtensions withMaxSizeBytes(String maxSizeBytes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseExtensionsProperties();
-        }
-        this.innerProperties().withMaxSizeBytes(maxSizeBytes);
-        return this;
-    }
-
-    /**
-     * Get the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
-     * @return the networkIsolation value.
-     */
-    public NetworkIsolationSettings networkIsolation() {
-        return this.innerProperties() == null ? null : this.innerProperties().networkIsolation();
-    }
-
-    /**
-     * Set the networkIsolation property: Optional resource information to enable network isolation for request.
-     *
-     * @param networkIsolation the networkIsolation value to set.
-     * @return the DatabaseExtensions object itself.
-     */
-    public DatabaseExtensions withNetworkIsolation(NetworkIsolationSettings networkIsolation) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DatabaseExtensionsProperties();
-        }
-        this.innerProperties().withNetworkIsolation(networkIsolation);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

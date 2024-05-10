@@ -8,23 +8,42 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The unit of the metric. */
+/**
+ * The unit of the metric.
+ */
 public final class QueryMetricUnitType extends ExpandableStringEnum<QueryMetricUnitType> {
-    /** Static value percentage for QueryMetricUnitType. */
+    /**
+     * Static value percentage for QueryMetricUnitType.
+     */
     public static final QueryMetricUnitType PERCENTAGE = fromString("percentage");
 
-    /** Static value KB for QueryMetricUnitType. */
+    /**
+     * Static value KB for QueryMetricUnitType.
+     */
     public static final QueryMetricUnitType KB = fromString("KB");
 
-    /** Static value microseconds for QueryMetricUnitType. */
+    /**
+     * Static value microseconds for QueryMetricUnitType.
+     */
     public static final QueryMetricUnitType MICROSECONDS = fromString("microseconds");
 
-    /** Static value count for QueryMetricUnitType. */
+    /**
+     * Static value count for QueryMetricUnitType.
+     */
     public static final QueryMetricUnitType COUNT = fromString("count");
 
     /**
+     * Creates a new instance of QueryMetricUnitType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueryMetricUnitType() {
+    }
+
+    /**
      * Creates or finds a QueryMetricUnitType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QueryMetricUnitType.
      */
@@ -35,7 +54,7 @@ public final class QueryMetricUnitType extends ExpandableStringEnum<QueryMetricU
 
     /**
      * Gets known QueryMetricUnitType values.
-     *
+     * 
      * @return known QueryMetricUnitType values.
      */
     public static Collection<QueryMetricUnitType> values() {
