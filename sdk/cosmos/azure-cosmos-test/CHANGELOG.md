@@ -6,6 +6,10 @@
 
 #### Breaking Changes
 
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 1.0.0-beta.7 (2024-05-03)
 
 #### Bugs Fixed

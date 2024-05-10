@@ -24,7 +24,6 @@ public final class IndexingPolicy {
     private List<ExcludedPath> excludedPaths;
     private List<List<CompositePath>> compositeIndexes;
     private List<SpatialSpec> spatialIndexes;
-    private List<CosmosVectorIndexSpec> vectorIndexes;
     private final JsonSerializable jsonSerializable;
 
     /**
@@ -262,50 +261,6 @@ public final class IndexingPolicy {
             Constants.Properties.SPATIAL_INDEXES,
             this.spatialIndexes,
             CosmosItemSerializer.DEFAULT_SERIALIZER);
-        return this;
-    }
-
-    /**
-     * Gets the vector indexes.
-     *
-     * @return the vector indexes
-     */
-    public List<CosmosVectorIndexSpec> getVectorIndexes() {
-        if (this.vectorIndexes == null) {
-            this.vectorIndexes = this.jsonSerializable.getList(Constants.Properties.VECTOR_INDEXES, CosmosVectorIndexSpec.class);
-
-            if (this.vectorIndexes == null) {
-                this.vectorIndexes = new ArrayList<CosmosVectorIndexSpec>();
-            }
-        }
-
-        return this.vectorIndexes;
-    }
-
-    /**
-     * Sets the vector indexes.
-     *
-     * Example of the vectorIndexes:
-     * "vectorIndexes": [
-     *      {
-     *          "path": "/vector1",
-     *          "type": "diskANN"
-     *      },
-     *      {
-     *          "path": "/vector1",
-     *          "type": "flat"
-     *      },
-     *      {
-     *          "path": "/vector2",
-     *          "type": "quantizedFlat"
-     *      }]
-     *
-     * @param vectorIndexes the vector indexes
-     * @return the Indexing Policy.
-     */
-    public IndexingPolicy setVectorIndexes(List<CosmosVectorIndexSpec> vectorIndexes) {
-        this.vectorIndexes = vectorIndexes;
-        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXES,this.vectorIndexes, CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 
