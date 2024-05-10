@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "endpointType",
-    defaultImpl = EventSubscriptionDestination.class)
+    defaultImpl = EventSubscriptionDestination.class,
+    visible = true)
 @JsonTypeName("EventSubscriptionDestination")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "WebHook", value = WebhookEventSubscriptionDestination.class),
@@ -31,10 +33,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "NamespaceTopic", value = NamespaceTopicEventSubscriptionDestination.class) })
 @Immutable
 public class EventSubscriptionDestination {
+    /*
+     * Type of the endpoint for the event subscription destination.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "endpointType", required = true)
+    private EndpointType endpointType;
+
     /**
      * Creates an instance of EventSubscriptionDestination class.
      */
     public EventSubscriptionDestination() {
+        this.endpointType = EndpointType.fromString("EventSubscriptionDestination");
+    }
+
+    /**
+     * Get the endpointType property: Type of the endpoint for the event subscription destination.
+     * 
+     * @return the endpointType value.
+     */
+    public EndpointType endpointType() {
+        return this.endpointType;
     }
 
     /**

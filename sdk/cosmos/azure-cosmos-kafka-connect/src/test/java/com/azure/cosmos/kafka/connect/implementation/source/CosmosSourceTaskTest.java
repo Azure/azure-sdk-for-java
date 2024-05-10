@@ -35,15 +35,18 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = { "kafka" }, timeOut = 60 * TIMEOUT)
     public void poll() throws InterruptedException {
         String testContainerName = "KafkaCosmosTestPoll-" + UUID.randomUUID();
+        String connectorName = "kafka-test-poll";
         Map<String, String> sourceConfigMap = new HashMap<>();
+        sourceConfigMap.put("name", connectorName);
         sourceConfigMap.put("azure.cosmos.account.endpoint", TestConfigurations.HOST);
         sourceConfigMap.put("azure.cosmos.account.key", TestConfigurations.MASTER_KEY);
         sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(testContainerName);
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
+        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig(), "testKafkaConnector");
 
         // create a new container as we are going to trigger split as well, isolate the possible impact for other tests
         CosmosContainerProperties testContainer =
@@ -64,6 +67,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             Map<String, List<FeedRange>> containersEffectiveRangesMap = new HashMap<>();
             containersEffectiveRangesMap.put(testContainer.getResourceId(), Arrays.asList(FeedRange.forFullRange()));
             MetadataTaskUnit metadataTaskUnit = new MetadataTaskUnit(
+                connectorName,
                 databaseName,
                 Arrays.asList(testContainer.getResourceId()),
                 containersEffectiveRangesMap,
@@ -140,9 +144,10 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("azure.cosmos.source.database.name", databaseName);
         List<String> containersIncludedList = Arrays.asList(multiPartitionContainerName);
         sourceConfigMap.put("azure.cosmos.source.containers.includedList", containersIncludedList.toString());
+        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig(), "testKafkaConnector");
 
         try {
             Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
@@ -212,9 +217,10 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughput", "100");
         sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", databaseName);
         sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
+        sourceConfigMap.put("azure.cosmos.source.task.id", UUID.randomUUID().toString());
 
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig(), "testKafkaConnector");
         CosmosAsyncContainer throughputControlContainer = client.getDatabase(databaseName).getContainer(throughputControlContainerName);
         CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(client);
         try {
@@ -266,13 +272,15 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
         }
     }
 
-    private void validateMetadataRecords(List<SourceRecord> sourceRecords, MetadataTaskUnit metadataTaskUnit) {
+    private void validateMetadataRecords(
+        List<SourceRecord> sourceRecords,
+        MetadataTaskUnit metadataTaskUnit) {
         // one containers metadata
         // one feedRanges metadata record for each container
         assertThat(sourceRecords.size()).isEqualTo(metadataTaskUnit.getContainerRids().size() + 1);
 
         ContainersMetadataTopicPartition containersMetadataTopicPartition =
-            new ContainersMetadataTopicPartition(metadataTaskUnit.getDatabaseName());
+            new ContainersMetadataTopicPartition(metadataTaskUnit.getDatabaseName(), metadataTaskUnit.getConnectorName());
         ContainersMetadataTopicOffset containersMetadataTopicOffset =
             new ContainersMetadataTopicOffset(metadataTaskUnit.getContainerRids());
         assertThat(sourceRecords.get(0).sourcePartition()).isEqualTo(ContainersMetadataTopicPartition.toMap(containersMetadataTopicPartition));
@@ -286,7 +294,7 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             assertThat(containerFeedRanges).isNotNull();
 
             FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
-                new FeedRangesMetadataTopicPartition(metadataTaskUnit.getDatabaseName(), containerRid);
+                new FeedRangesMetadataTopicPartition(metadataTaskUnit.getDatabaseName(), containerRid, metadataTaskUnit.getConnectorName());
             FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
                 new FeedRangesMetadataTopicOffset(containerFeedRanges);
             assertThat(sourceRecord.sourcePartition()).isEqualTo(FeedRangesMetadataTopicPartition.toMap(feedRangesMetadataTopicPartition));

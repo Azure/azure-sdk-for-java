@@ -6,64 +6,46 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestination;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestinationActivationState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PartnerDestinationsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"168a51ac-2a1e-4bd4-824e-8534d5ad2cb8\",\"endpointServiceContext\":\"hbrj\",\"expirationTimeIfNotActivatedUtc\":\"2021-12-01T18:40:03Z\",\"provisioningState\":\"Deleting\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"jrholuqw\",\"messageForActivation\":\"sxxhdodp\"},\"location\":\"yblvtbdmvsbyi\",\"tags\":{\"jfb\":\"lqpvekmk\",\"gdusxurs\":\"tlo\",\"iqrizfwihvaan\":\"ivuxcjkcoqwczs\"},\"id\":\"qtnhjrfd\",\"name\":\"fdvbbaexxjfwtg\",\"type\":\"fkkauigvmua\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"1eb1053c-ddb5-4db5-be49-d19e0ad07882\",\"endpointServiceContext\":\"xttpfs\",\"expirationTimeIfNotActivatedUtc\":\"2021-03-03T22:20:24Z\",\"provisioningState\":\"Canceled\",\"activationState\":\"Activated\",\"endpointBaseUrl\":\"cum\",\"messageForActivation\":\"dau\"},\"location\":\"llfeothx\",\"tags\":{\"uast\":\"igrjdljlkqhvkrbz\",\"pruulhg\":\"xk\",\"izwxvs\":\"t\"},\"id\":\"ksgfyyskyekg\",\"name\":\"fxcz\",\"type\":\"fcck\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PartnerDestination> response
-            = manager.partnerDestinations().list("pffmnoii", 1210132200, com.azure.core.util.Context.NONE);
+            = manager.partnerDestinations().list("juypwyiulaynosu", 2064621352, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yblvtbdmvsbyi", response.iterator().next().location());
-        Assertions.assertEquals("lqpvekmk", response.iterator().next().tags().get("jfb"));
-        Assertions.assertEquals(UUID.fromString("168a51ac-2a1e-4bd4-824e-8534d5ad2cb8"),
+        Assertions.assertEquals("llfeothx", response.iterator().next().location());
+        Assertions.assertEquals("igrjdljlkqhvkrbz", response.iterator().next().tags().get("uast"));
+        Assertions.assertEquals(UUID.fromString("1eb1053c-ddb5-4db5-be49-d19e0ad07882"),
             response.iterator().next().partnerRegistrationImmutableId());
-        Assertions.assertEquals("hbrj", response.iterator().next().endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-01T18:40:03Z"),
+        Assertions.assertEquals("xttpfs", response.iterator().next().endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-03T22:20:24Z"),
             response.iterator().next().expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerDestinationActivationState.ACTIVATED,
             response.iterator().next().activationState());
-        Assertions.assertEquals("jrholuqw", response.iterator().next().endpointBaseUrl());
-        Assertions.assertEquals("sxxhdodp", response.iterator().next().messageForActivation());
+        Assertions.assertEquals("cum", response.iterator().next().endpointBaseUrl());
+        Assertions.assertEquals("dau", response.iterator().next().messageForActivation());
     }
 }

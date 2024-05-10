@@ -29,8 +29,7 @@ public final class PartnerDestinationProperties {
     private String endpointServiceContext;
 
     /*
-     * Expiration time of the partner destination. If this timer expires and the partner destination was never
-     * activated,
+     * Expiration time of the partner destination. If this timer expires and the partner destination was never activated,
      * the partner destination and corresponding channel are deleted.
      */
     @JsonProperty(value = "expirationTimeIfNotActivatedUtc")

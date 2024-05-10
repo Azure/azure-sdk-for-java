@@ -30,12 +30,14 @@ public final class ClientInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientInner model = new ClientInner().withDescription("xnj").withAuthenticationName("seiphe")
+        ClientInner model = new ClientInner().withDescription("xnj")
+            .withAuthenticationName("seiphe")
             .withClientCertificateAuthentication(new ClientCertificateAuthentication()
                 .withValidationScheme(ClientCertificateValidationScheme.THUMBPRINT_MATCH)
                 .withAllowedThumbprints(Arrays.asList("yyien")))
-            .withState(ClientState.DISABLED).withAttributes(mapOf("azjpqyegualhbxxh", "datatgrhpdjpjumas",
-                "zvdudgwdslfhotwm", "datajj", "pgacftadehxnlty", "dataynpwlbj"));
+            .withState(ClientState.DISABLED)
+            .withAttributes(mapOf("azjpqyegualhbxxh", "datatgrhpdjpjumas", "zvdudgwdslfhotwm", "datajj",
+                "pgacftadehxnlty", "dataynpwlbj"));
         model = BinaryData.fromObject(model).toObject(ClientInner.class);
         Assertions.assertEquals("xnj", model.description());
         Assertions.assertEquals("seiphe", model.authenticationName());

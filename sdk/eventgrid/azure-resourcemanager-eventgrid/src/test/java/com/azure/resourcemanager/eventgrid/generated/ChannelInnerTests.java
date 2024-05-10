@@ -61,18 +61,25 @@ public final class ChannelInnerTests {
     public void testSerialize() throws Exception {
         ChannelInner model = new ChannelInner().withChannelType(ChannelType.PARTNER_TOPIC)
             .withPartnerTopicInfo(new PartnerTopicInfo().withAzureSubscriptionId("oizh")
-                .withResourceGroupName("rxybqsoq").withName("gkdmb")
+                .withResourceGroupName("rxybqsoq")
+                .withName("gkdmb")
                 .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
                     .withInlineEventTypes(mapOf("qes",
-                        new InlineEventProperties().withDescription("ufpdznrbtcqq").withDisplayName("qglhq")
-                            .withDocumentationUrl("ufo").withDataSchemaUrl("jywif"))))
+                        new InlineEventProperties().withDescription("ufpdznrbtcqq")
+                            .withDisplayName("qglhq")
+                            .withDocumentationUrl("ufo")
+                            .withDataSchemaUrl("jywif"))))
                 .withSource("gdf"))
             .withPartnerDestinationInfo(new PartnerDestinationInfo().withAzureSubscriptionId("zlhjxrifkwmrvkt")
-                .withResourceGroupName("zntocipaouajps").withName("cmpoyfdkfogkny").withEndpointServiceContext("ofjdde")
-                .withResourceMoveChangeHistory(Arrays.asList(new ResourceMoveChangeHistory()
-                    .withAzureSubscriptionId("eupewnwreitjz").withResourceGroupName("lusarh")
-                    .withChangedTimeUtc(OffsetDateTime.parse("2021-11-04T00:37:18Z")))))
-            .withMessageForActivation("qhsmyurkdtml").withProvisioningState(ChannelProvisioningState.SUCCEEDED)
+                .withResourceGroupName("zntocipaouajps")
+                .withName("cmpoyfdkfogkny")
+                .withEndpointServiceContext("ofjdde")
+                .withResourceMoveChangeHistory(
+                    Arrays.asList(new ResourceMoveChangeHistory().withAzureSubscriptionId("eupewnwreitjz")
+                        .withResourceGroupName("lusarh")
+                        .withChangedTimeUtc(OffsetDateTime.parse("2021-11-04T00:37:18Z")))))
+            .withMessageForActivation("qhsmyurkdtml")
+            .withProvisioningState(ChannelProvisioningState.SUCCEEDED)
             .withReadinessState(ReadinessState.ACTIVATED)
             .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-01-05T18:43:06Z"));
         model = BinaryData.fromObject(model).toObject(ChannelInner.class);

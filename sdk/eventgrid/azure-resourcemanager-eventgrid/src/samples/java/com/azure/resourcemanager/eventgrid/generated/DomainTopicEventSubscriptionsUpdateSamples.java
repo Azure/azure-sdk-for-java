@@ -14,9 +14,7 @@ import java.util.Arrays;
  */
 public final class DomainTopicEventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * DomainTopicEventSubscriptions_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/DomainTopicEventSubscriptions_Update.json
      */
     /**
      * Sample code: DomainTopicEventSubscriptions_Update.
@@ -25,14 +23,15 @@ public final class DomainTopicEventSubscriptionsUpdateSamples {
      */
     public static void
         domainTopicEventSubscriptionsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.domainTopicEventSubscriptions().update("examplerg", "exampleDomain1", "exampleDomainTopic1",
-            "exampleEventSubscriptionName1",
-            new EventSubscriptionUpdateParameters()
-                .withDestination(
-                    new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
-                .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("existingPrefix")
-                    .withSubjectEndsWith("newSuffix").withIsSubjectCaseSensitive(true))
-                .withLabels(Arrays.asList("label1", "label2")),
-            com.azure.core.util.Context.NONE);
+        manager.domainTopicEventSubscriptions()
+            .update("examplerg", "exampleDomain1", "exampleDomainTopic1", "exampleEventSubscriptionName1",
+                new EventSubscriptionUpdateParameters()
+                    .withDestination(
+                        new WebhookEventSubscriptionDestination().withEndpointUrl("https://requestb.in/15ksip71"))
+                    .withFilter(new EventSubscriptionFilter().withSubjectBeginsWith("existingPrefix")
+                        .withSubjectEndsWith("newSuffix")
+                        .withIsSubjectCaseSensitive(true))
+                    .withLabels(Arrays.asList("label1", "label2")),
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of CheckVirtualNetworkSubnetUsages. */
+/**
+ * Resource collection API of CheckVirtualNetworkSubnetUsages.
+ */
 public interface CheckVirtualNetworkSubnetUsages {
     /**
      * Get virtual network subnet usage for a given vNet resource id.
-     *
+     * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @param context The context to associate with this operation.
@@ -20,12 +22,12 @@ public interface CheckVirtualNetworkSubnetUsages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual network subnet usage for a given vNet resource id along with {@link Response}.
      */
-    Response<VirtualNetworkSubnetUsageResult> executeWithResponse(
-        String locationName, VirtualNetworkSubnetUsageParameter parameters, Context context);
+    Response<VirtualNetworkSubnetUsageResult> executeWithResponse(String locationName,
+        VirtualNetworkSubnetUsageParameter parameters, Context context);
 
     /**
      * Get virtual network subnet usage for a given vNet resource id.
-     *
+     * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

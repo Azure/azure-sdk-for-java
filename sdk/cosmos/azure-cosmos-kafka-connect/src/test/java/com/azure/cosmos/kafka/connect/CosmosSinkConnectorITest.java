@@ -5,10 +5,10 @@ package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategyType;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,6 +23,8 @@ import org.apache.kafka.connect.json.JsonSerializer;
 import org.apache.kafka.connect.storage.StringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -39,6 +41,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
 public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBase {
     private static final Logger logger = LoggerFactory.getLogger(CosmosSinkConnectorITest.class);
+    private CosmosAsyncClient client;
 
     @DataProvider(name = "sinkAuthParameterProvider")
     public static Object[][] sinkAuthParameterProvider() {
@@ -49,8 +52,25 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         };
     }
 
+    @BeforeClass(groups = { "kafka-integration" })
+    public void before_CosmosSinkConnectorITest() {
+        this.client = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .endpointDiscoveryEnabled(true)
+            .buildAsyncClient();
+    }
+
+    @AfterClass(groups = { "kafka-integration" }, alwaysRun = true)
+    public void afterClass() {
+        if (this.client != null) {
+            this.client.close();
+        }
+    }
+
     @Test(groups = { "kafka-integration" }, dataProvider = "sinkAuthParameterProvider", timeOut = TIMEOUT)
     public void sinkToSingleContainer(boolean useMasterKey) throws InterruptedException {
+        logger.info("sinkToSingleContainer " + useMasterKey);
         Map<String, String> sinkConnectorConfig = new HashMap<>();
         String topicName = singlePartitionContainerName + "-" + UUID.randomUUID();
 
@@ -75,14 +95,13 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
 
         // Create topic ahead of time
         kafkaCosmosConnectContainer.createTopic(topicName, 1);
-
-        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConnectorConfig);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig());
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
 
         String connectorName = "simpleTest-" + UUID.randomUUID();
         try {
             // register the sink connector
+            logger.info("Registering connector " + connectorName);
+            Thread.sleep(5000); // before registering the connector give it some time
             kafkaCosmosConnectContainer.registerConnector(connectorName, sinkConnectorConfig);
 
             Properties producerProperties = kafkaCosmosConnectContainer.getProducerProperties();
@@ -118,7 +137,6 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
             if (client != null) {
                 logger.info("cleaning container {}", singlePartitionContainerName);
                 cleanUpContainer(client, databaseName, singlePartitionContainerName);
-                client.close();
             }
 
             // IMPORTANT: remove the connector after use
@@ -146,9 +164,6 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
 
         // Create topic ahead of time
         kafkaCosmosConnectContainer.createTopic(topicName, 1);
-
-        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConnectorConfig);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig());
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
 
         String connectorName = "simpleTest-" + UUID.randomUUID();
@@ -196,7 +211,6 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         } finally {
             if (client != null) {
                 cleanUpContainer(client, databaseName, singlePartitionContainerName);
-                client.close();
             }
 
             // IMPORTANT: remove the connector after use
@@ -228,8 +242,6 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         // Create topic ahead of time
         kafkaCosmosConnectContainer.createTopic(topicName, 1);
 
-        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConnectorConfig);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig());
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
 
         String connectorName = "simpleTest-" + UUID.randomUUID();
@@ -268,7 +280,6 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         } finally {
             if (client != null) {
                 cleanUpContainer(client, databaseName, singlePartitionContainerName);
-                client.close();
             }
 
             // IMPORTANT: remove the connector after use
@@ -299,9 +310,6 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
 
         // Create topic ahead of time
         kafkaCosmosConnectContainer.createTopic(topicName, 1);
-
-        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConnectorConfig);
-        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sinkConfig.getAccountConfig());
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);
 
         String connectorName = "simpleTest-" + UUID.randomUUID();
@@ -339,7 +347,6 @@ public class CosmosSinkConnectorITest extends KafkaCosmosIntegrationTestSuiteBas
         } finally {
             if (client != null) {
                 cleanUpContainer(client, databaseName, singlePartitionContainerName);
-                client.close();
             }
 
             // IMPORTANT: remove the connector after use

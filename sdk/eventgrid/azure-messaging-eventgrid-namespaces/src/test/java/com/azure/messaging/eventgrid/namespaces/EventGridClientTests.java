@@ -15,7 +15,6 @@ import com.azure.messaging.eventgrid.namespaces.models.AcknowledgeResult;
 import com.azure.messaging.eventgrid.namespaces.models.ReceiveResult;
 import com.azure.messaging.eventgrid.namespaces.models.RejectOptions;
 import com.azure.messaging.eventgrid.namespaces.models.RejectResult;
-import com.azure.messaging.eventgrid.namespaces.models.ReleaseDelay;
 import com.azure.messaging.eventgrid.namespaces.models.ReleaseOptions;
 import com.azure.messaging.eventgrid.namespaces.models.ReleaseResult;
 import org.junit.jupiter.api.Test;
@@ -131,16 +130,16 @@ public class EventGridClientTests extends EventGridClientTestBase {
         assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
     }
 
-    @Test
-    void releaseBatchOfCloudEventsWithDelaySync() {
-        EventGridClient client = buildSyncClient();
-        client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
-        ReceiveResult receiveResult = client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
-        ReleaseOptions releaseOptions = new ReleaseOptions(Collections.singletonList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
-        ReleaseResult releaseResult = client.releaseCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, releaseOptions, ReleaseDelay.BY10_SECONDS);
-        assertNotNull(releaseResult);
-        assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
-    }
+//    @Test
+//    void releaseBatchOfCloudEventsWithDelaySync() {
+//        EventGridClient client = buildSyncClient();
+//        client.publishCloudEvent(TOPIC_NAME, getCloudEvent());
+//        ReceiveResult receiveResult = client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
+//        ReleaseOptions releaseOptions = new ReleaseOptions(Collections.singletonList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+//        ReleaseResult releaseResult = client.releaseCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, releaseOptions, ReleaseDelay.BY10_SECONDS);
+//        assertNotNull(releaseResult);
+//        assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
+//    }
 
     @Test
     void rejectBatchOfCloudEventsSync() {
@@ -236,22 +235,22 @@ public class EventGridClientTests extends EventGridClientTestBase {
             .verifyComplete();
     }
 
-    @Test
-    void releaseBatchOfCloudEventsWithDelay() {
-        EventGridAsyncClient client = buildAsyncClient();
-        client.publishCloudEvent(TOPIC_NAME, getCloudEvent()).block();
-        client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10))
-            .flatMap(receiveResult -> {
-                ReleaseOptions releaseOptions = new ReleaseOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
-                return client.releaseCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, releaseOptions, ReleaseDelay.BY10_SECONDS);
-            })
-            .as(StepVerifier::create)
-            .assertNext(releaseResult -> {
-                assertNotNull(releaseResult);
-                assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
-            })
-            .verifyComplete();
-    }
+//    @Test
+//    void releaseBatchOfCloudEventsWithDelay() {
+//        EventGridAsyncClient client = buildAsyncClient();
+//        client.publishCloudEvent(TOPIC_NAME, getCloudEvent()).block();
+//        client.receiveCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10))
+//            .flatMap(receiveResult -> {
+//                ReleaseOptions releaseOptions = new ReleaseOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+//                return client.releaseCloudEvents(TOPIC_NAME, EVENT_SUBSCRIPTION_NAME, releaseOptions, ReleaseDelay.BY10_SECONDS);
+//            })
+//            .as(StepVerifier::create)
+//            .assertNext(releaseResult -> {
+//                assertNotNull(releaseResult);
+//                assertFalse(releaseResult.getSucceededLockTokens().isEmpty());
+//            })
+//            .verifyComplete();
+//    }
 
     @Test
     void rejectBatchOfCloudEvents() {

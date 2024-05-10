@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
+import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTaskConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategyType;
 import com.azure.cosmos.kafka.connect.implementation.sink.ItemWriteStrategy;
 import com.azure.cosmos.kafka.connect.implementation.sink.patch.KafkaCosmosPatchOperationType;
@@ -89,6 +90,8 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = "unit")
     public void taskConfigs() {
         CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
+        String connectorName = "test";
+        KafkaCosmosReflectionUtils.setConnectorName(sinkConnector, connectorName);
 
         Map<String, String> sinkConfigMap = new HashMap<>();
         sinkConfigMap.put("azure.cosmos.account.endpoint", KafkaCosmosTestConfigurations.HOST);
@@ -100,6 +103,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         int maxTask = 2;
         List<Map<String, String>> taskConfigs = sinkConnector.taskConfigs(maxTask);
         assertThat(taskConfigs.size()).isEqualTo(maxTask);
+        validateTaskConfigsTaskId(taskConfigs, connectorName);
 
         for (Map<String, String> taskConfig : taskConfigs) {
             assertThat(taskConfig.get("azure.cosmos.account.endpoint")).isEqualTo(KafkaCosmosTestConfigurations.HOST);
@@ -263,6 +267,13 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             assertThat(errorMessages.get("azure.cosmos.sink.write.patch.property.configs").size()).isEqualTo(0);
         } else {
             assertThat(errorMessages.get("azure.cosmos.sink.write.patch.property.configs").size()).isGreaterThan(0);
+        }
+    }
+
+    private void validateTaskConfigsTaskId(List<Map<String, String>> taskConfigs, String connectorName) {
+        for (Map<String, String> configs : taskConfigs) {
+            assertThat(configs.containsKey(CosmosSinkTaskConfig.SINK_TASK_ID));
+            assertThat(configs.get(CosmosSinkTaskConfig.SINK_TASK_ID).startsWith("sink-" + connectorName));
         }
     }
 
