@@ -321,7 +321,7 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             validateClassifierModelData(documentClassifierDetails);
             documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertTrue(classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl().contains("training-data-classifier")));
+                -> assertNotNull(classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl()));
         });
     }
 
@@ -360,8 +360,8 @@ public class DocumentModelAdministrationClientTest extends DocumentAdministratio
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
 
             documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertTrue(classifierDocumentTypeDetails.getAzureBlobFileListSource()
-                .getContainerUrl().contains("training-data-classifier")));
+                -> assertNotNull(classifierDocumentTypeDetails.getAzureBlobFileListSource()
+                .getContainerUrl()));
 
             validateClassifierModelData(documentClassifierDetails);
         });

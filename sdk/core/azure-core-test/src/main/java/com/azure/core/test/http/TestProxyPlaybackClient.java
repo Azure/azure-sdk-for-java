@@ -224,7 +224,7 @@ public class TestProxyPlaybackClient implements HttpClient {
             HttpRequest request
                 = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
 
-            client.sendSync(request, Context.NONE).close();
+            sendRequestWithRetries(request);
         } else {
             this.sanitizers.addAll(sanitizers);
         }
@@ -250,11 +250,7 @@ public class TestProxyPlaybackClient implements HttpClient {
                 throw new RuntimeException(e);
             }
 
-            HttpResponse response = client.sendSync(request, Context.NONE);
-            if (response.getStatusCode() != 200) {
-                throw new RuntimeException("Failed to remove sanitizers. " + response.getBodyAsBinaryData().toString());
-            }
-            response.close();
+            sendRequestWithRetries(request);
         }
     }
 

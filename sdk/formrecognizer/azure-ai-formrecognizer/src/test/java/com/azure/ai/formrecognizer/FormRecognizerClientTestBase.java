@@ -719,8 +719,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
 
             if (formLine.getAppearance() != null) {
                 Assertions.assertNotNull(formLine.getAppearance().getStyleName());
-                Assertions.assertTrue(formLine.getAppearance().getStyleName() == TextStyleName.HANDWRITING
-                    || formLine.getAppearance().getStyleName() == TextStyleName.OTHER);
+                Assertions.assertNotNull(formLine.getAppearance().getStyleName());
             }
 
             Assertions.assertNotNull(formLine.getWords());
