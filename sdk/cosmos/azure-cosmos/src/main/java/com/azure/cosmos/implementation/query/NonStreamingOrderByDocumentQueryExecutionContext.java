@@ -29,6 +29,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -125,10 +126,13 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
         // Since the continuation token will always be null,
         // we don't need to handle any initialization based on continuationToken.
         // We can directly initialize without any consideration for continuationToken.
+        Map<FeedRangeEpkImpl, String> partitionKeyRangeToContinuationToken = new HashMap<>();
+        for (FeedRangeEpkImpl feedRangeEpk : feedRanges) {
+            partitionKeyRangeToContinuationToken.put(feedRangeEpk,
+                null);
+        }
         super.initialize(collection,
-            feedRanges.stream().collect(Collectors.toMap(
-                feedRangeEpk -> feedRangeEpk,
-                feedRangeEpk -> null)),
+            partitionKeyRangeToContinuationToken,
             initialPageSize,
             new SqlQuerySpec(querySpec.getQueryText().replace(FormatPlaceHolder, True),
                 querySpec.getParameters()));
