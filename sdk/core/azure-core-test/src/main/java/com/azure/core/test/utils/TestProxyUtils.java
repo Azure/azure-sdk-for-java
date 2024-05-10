@@ -48,7 +48,7 @@ public class TestProxyUtils {
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
     // Removing `Operation-Location`, `$..id` and `$..name` from the default list of sanitizers as they are used in the SDK.
     public static final List<String> DEFAULT_REMOVE_SANITIZER_LIST
-        = Collections.unmodifiableList(Arrays.asList("AZSDK2030", "AZSDK3430", "AZSDK3493"));
+        = Collections.unmodifiableList(Arrays.asList("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493"));
 
     // These are prepended with "$.." creating a Jsonpath expression.
     private static final List<String> JSON_BODY_KEYS_TO_REDACT = Arrays.asList("authHeader", "accountKey",
