@@ -6,8 +6,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.SerializableWrapper;
-import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -23,7 +23,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
 import java.util.Collections;
-
 
 /**
  * Represents a document collection in the Azure Cosmos DB database service. A collection is a named logical container
