@@ -235,7 +235,7 @@ public class VectorIndexTest extends TestSuiteBase {
             embedding.setDistanceFunction(null);
             fail("Embedding creation failed because cosmosVectorDistanceFunction argument is empty");
         } catch (NullPointerException ex) {
-            assertThat(ex.getMessage()).isEqualTo("cosmosVectorDistanceFunction cannot be empty");
+            assertThat(ex.getMessage()).isEqualTo("cosmosVectorDistanceFunction cannot be null");
         }
 
         try {

@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Vector Embedding Policy
  */
@@ -44,12 +46,9 @@ public final class CosmosVectorEmbeddingPolicy {
      */
     public void setCosmosVectorEmbeddings(List<CosmosVectorEmbedding> cosmosVectorEmbeddings) {
         cosmosVectorEmbeddings.forEach(embedding -> {
-            if (embedding == null) {
-                throw new NullPointerException("Embedding cannot be null.");
-            }
+            checkNotNull(embedding, "Embedding cannot be null.");
         });
         this.cosmosVectorEmbeddings = cosmosVectorEmbeddings;
-//        this.jsonSerializable.set(Constants.Properties.VECTOR_EMBEDDINGS, cosmosVectorEmbeddings);
     }
 
 }

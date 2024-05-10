@@ -47,7 +47,7 @@ public final class CosmosVectorEmbedding {
      */
     public CosmosVectorEmbedding setPath(String path) {
         if (StringUtils.isEmpty(path)) {
-            throw new NullPointerException("embedding path is empty");
+            throw new NullPointerException("embedding path is either null or empty");
         }
 
         if (path.charAt(0) != '/' || path.lastIndexOf('/') != 0) {
@@ -121,7 +121,7 @@ public final class CosmosVectorEmbedding {
      * @return CosmosVectorEmbedding
      */
     public CosmosVectorEmbedding setDistanceFunction(CosmosVectorDistanceFunction distanceFunction) {
-        checkNotNull(distanceFunction, "cosmosVectorDistanceFunction cannot be empty");
+        checkNotNull(distanceFunction, "cosmosVectorDistanceFunction cannot be null");
         this.distanceFunction = distanceFunction.toString();
         return this;
     }
