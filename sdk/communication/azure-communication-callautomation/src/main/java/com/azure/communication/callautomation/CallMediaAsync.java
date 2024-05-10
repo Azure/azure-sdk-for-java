@@ -24,6 +24,8 @@ import com.azure.communication.callautomation.implementation.models.SpeechOption
 import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
 import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StartMediaStreamingRequest;
+import com.azure.communication.callautomation.implementation.models.StopMediaStreamingRequest;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.implementation.models.UnholdRequest;
 import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionRequestInternal;
@@ -46,6 +48,8 @@ import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
+import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -869,5 +873,74 @@ public final class CallMediaAsync {
         }
     }
 
+     /**
+     * Starts media streaming in the call.
+     *
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startMediaStreaming() {
+        return startMediaStreamingWithResponseAsync(null).then();
+    }
 
+    /**
+     * Starts media streaming in the call with options.
+     *
+     * @param options Options for the Start media streaming operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startMediaStreamingWithResponseAsync(StartMediaStreamingOptions options) {
+        return withContext(context -> startMediaStreamingWithResponseInternal(options, context));
+    }
+
+    Mono<Response<Void>> startMediaStreamingWithResponseInternal(StartMediaStreamingOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            StartMediaStreamingRequest request = new StartMediaStreamingRequest();
+            if (options != null) {
+                request.setOperationCallbackUri(options.getOperationCallbackUrl());
+                request.setOperationContext(options.getOperationContext());
+            }
+            return contentsInternal
+                .startMediaStreamingWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Stops media streaming in the call.
+     *
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopMediaStreaming() {
+        return stopMediaStreamingWithResponseAsync(null).then();
+    }
+
+    /**
+     * Stops media streaming in the call with options.
+     *
+     * @param options Options for the Stop media streaming operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopMediaStreamingWithResponseAsync(StopMediaStreamingOptions options) {
+        return withContext(context -> stopMediaStreamingWithResponseInternal(options, context));
+    }
+
+    Mono<Response<Void>> stopMediaStreamingWithResponseInternal(StopMediaStreamingOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            StopMediaStreamingRequest request = new StopMediaStreamingRequest();
+            if (options != null) {
+                request.setOperationCallbackUri(options.getOperationCallbackUrl());
+            }
+            return contentsInternal
+                .stopMediaStreamingWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
 }

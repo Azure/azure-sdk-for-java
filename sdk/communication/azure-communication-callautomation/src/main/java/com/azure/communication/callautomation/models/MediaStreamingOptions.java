@@ -45,6 +45,7 @@ public final class MediaStreamingOptions {
      * @param transportType - Transport type
      * @param contentType - Content Type
      * @param audioChannelType - Audio Channel Type
+     * @param startMediaStreaming - Start media streaming
      */
     public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType, MediaStreamingContentType contentType, MediaStreamingAudioChannel audioChannelType, Boolean startMediaStreaming) {
         this.transportUrl = transportUrl;
