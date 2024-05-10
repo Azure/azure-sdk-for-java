@@ -18,7 +18,6 @@ import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
-import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;

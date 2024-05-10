@@ -46,9 +46,9 @@ public class TestProxyUtils {
     private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
     private static final String REDACTED_VALUE = "REDACTED";
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
-    // Removing `Operation-Location` and `$..id` from the default list of sanitizers as they are used in the SDK.
+    // Removing `Operation-Location`, `$..id` and `$..name` from the default list of sanitizers as they are used in the SDK.
     public static final List<String> DEFAULT_REMOVE_SANITIZER_LIST
-        = Collections.unmodifiableList(Arrays.asList("AZSDK2030", "AZSDK3430"));
+        = Collections.unmodifiableList(Arrays.asList("AZSDK2030", "AZSDK3430", "AZSDK3493"));
 
     // These are prepended with "$.." creating a Jsonpath expression.
     private static final List<String> JSON_BODY_KEYS_TO_REDACT = Arrays.asList("authHeader", "accountKey",
