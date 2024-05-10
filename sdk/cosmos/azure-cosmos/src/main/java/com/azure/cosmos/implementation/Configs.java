@@ -166,6 +166,13 @@ public class Configs {
     public static final String MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = "COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED";
     private static final int DEFAULT_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
+    private static final String MAX_ITEM_SIZE_FOR_VECTOR_SEARCH = "COSMOS.MAX_ITEM_SIZE_FOR_VECTOR_SEARCH";
+    private static final int DEFAULT_MAX_ITEM_SIZE_FOR_VECTOR_SEARCH = 50000;
+
+    private static final String MAX_ITEM_SIZE_FOR_VECTOR_SEARCH_ENABLED = "COSMOS.MAX_ITEM_SIZE_FOR_VECTOR_SEARCH_ENABLED";
+
+    private static final boolean DEFAULT_MAX_ITEM_SIZE_FOR_VECTOR_SEARCH_ENABLED = true;
+
     public static final int MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
     public static final String TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS = "COSMOS.TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS";
@@ -482,6 +489,14 @@ public class Configs {
                     System.getProperty(MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED),
                     DEFAULT_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED),
                 MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED);
+    }
+
+    public static int getMaxItemSizeForVectorSearch() {
+        return getJVMConfigAsInt(MAX_ITEM_SIZE_FOR_VECTOR_SEARCH, DEFAULT_MAX_ITEM_SIZE_FOR_VECTOR_SEARCH);
+    }
+
+    public static boolean getMaxItemSizeForVectorSearchEnabled() {
+        return getJVMConfigAsBoolean(MAX_ITEM_SIZE_FOR_VECTOR_SEARCH_ENABLED, DEFAULT_MAX_ITEM_SIZE_FOR_VECTOR_SEARCH_ENABLED);
     }
 
     public static Duration getMinRetryTimeInLocalRegionWhenRemoteRegionPreferred() {
