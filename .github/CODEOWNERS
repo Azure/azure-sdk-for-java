@@ -451,10 +451,10 @@
 # ServiceLabel: %Functions
 # ServiceOwners:                                     @ahmedelnably @fabiocav
 
-# PRLabel: %client-core
-/sdk/client-core/                                    @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
+# PRLabel: %clientcore
+/sdk/clientcore/                                    @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
 
-# ServiceLabel: %client-core
+# ServiceLabel: %clientcore
 # AzureSdkOwners:                                    @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
 
 # ServiceLabel: %Graph.Microsoft
