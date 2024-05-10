@@ -25,11 +25,11 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
-import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 
 /**
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
@@ -37,12 +37,6 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  */
 public class JdkHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
-
-    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-    private static final Duration DEFAULT_CONNECTION_TIMEOUT;
-    private static final Duration DEFAULT_WRITE_TIMEOUT;
-    private static final Duration DEFAULT_RESPONSE_TIMEOUT;
-    private static final Duration DEFAULT_READ_TIMEOUT;
 
     private static final String JAVA_HOME = System.getProperty("java.home");
     private static final String JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS = "jdk.httpclient.allowRestrictedHeaders";
@@ -57,17 +51,6 @@ public class JdkHttpClientBuilder {
     static final Set<String> DEFAULT_RESTRICTED_HEADERS;
 
     static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-
-        DEFAULT_CONNECTION_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER);
-        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER);
-        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-
         DEFAULT_RESTRICTED_HEADERS = Set.of("connection", "content-length", "expect", "host", "upgrade");
     }
 
@@ -248,11 +231,11 @@ public class JdkHttpClientBuilder {
         // Azure JDK http client supports HTTP 1.1 by default.
         httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
 
-        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, DEFAULT_CONNECTION_TIMEOUT));
+        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, getDefaultConnectTimeout()));
 
-        Duration writeTimeout = getTimeout(this.writeTimeout, DEFAULT_WRITE_TIMEOUT);
-        Duration responseTimeout = getTimeout(this.responseTimeout, DEFAULT_RESPONSE_TIMEOUT);
-        Duration readTimeout = getTimeout(this.readTimeout, DEFAULT_READ_TIMEOUT);
+        Duration writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout());
+        Duration responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout());
+        Duration readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout());
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -330,13 +313,5 @@ public class JdkHttpClientBuilder {
         protected PasswordAuthentication getPasswordAuthentication() {
             return new PasswordAuthentication(this.userName, password.toCharArray());
         }
-    }
-
-    private static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
-        if (configuredTimeout == null) {
-            return defaultTimeout;
-        }
-
-        return configuredTimeout.compareTo(MINIMUM_TIMEOUT) < 0 ? MINIMUM_TIMEOUT : configuredTimeout;
     }
 }

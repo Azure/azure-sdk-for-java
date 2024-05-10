@@ -74,7 +74,10 @@ public class NonStreamingOrderByUtils {
 
         @Override
         public Flux<OrderByRowResult<Document>> apply(Flux<DocumentProducer<Document>.DocumentProducerFeedResponse> source) {
-            PriorityBlockingQueue<OrderByRowResult<Document>> priorityQueue = new PriorityBlockingQueue<>(initialPageSize, consumeComparer);
+            // the size of the priority queue is set to size+1, because when the pq reaches the max size we add that
+            // item and then remove the element. If we don't do this, then when adding this element the size of the pq
+            // will be increased automatically by 50% and then there would be inconsistent results for later pages.
+            PriorityBlockingQueue<OrderByRowResult<Document>> priorityQueue = new PriorityBlockingQueue<>(initialPageSize + 1, consumeComparer);
 
             return source.flatMap(documentProducerFeedResponse -> {
                     clientSideRequestStatistics.addAll(

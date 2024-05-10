@@ -17,7 +17,7 @@ import java.util.Objects;
 @Fluent
 public final class LifetimeActionsType implements JsonSerializable<LifetimeActionsType> {
     /*
-     * The type of the action.
+     * The type of the action. The value should be compared case-insensitively.
      */
     private KeyRotationPolicyAction type;
 
@@ -25,7 +25,7 @@ public final class LifetimeActionsType implements JsonSerializable<LifetimeActio
     public LifetimeActionsType() {}
 
     /**
-     * Get the type property: The type of the action.
+     * Get the type property: The type of the action. The value should be compared case-insensitively.
      *
      * @return the type value.
      */
@@ -34,7 +34,7 @@ public final class LifetimeActionsType implements JsonSerializable<LifetimeActio
     }
 
     /**
-     * Set the type property: The type of the action.
+     * Set the type property: The type of the action. The value should be compared case-insensitively.
      *
      * @param type the type value to set.
      * @return the LifetimeActionsType object itself.

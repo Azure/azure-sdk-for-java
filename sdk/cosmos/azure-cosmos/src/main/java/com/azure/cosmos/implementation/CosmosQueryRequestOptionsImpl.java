@@ -204,7 +204,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @return the max number of items for vector search.
      */
     public Integer getMaxItemSizeForVectorSearch() {
-        return maxItemSizeForVectorSearch;
+        return this.maxItemSizeForVectorSearch;
     }
 
     /**
