@@ -13,27 +13,27 @@ public final class DataPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataPoint model = BinaryData.fromString(
-            "{\"name\":\"rlyxwjkcprbnw\",\"dataSource\":\"xgjvtbv\",\"capabilityId\":\"sszdnru\",\"observabilityMode\":\"gauge\",\"dataPointConfiguration\":\"hmuouqfprwzwbn\"}")
+            "{\"name\":\"iy\",\"dataSource\":\"pjxsqwpgrjbznor\",\"capabilityId\":\"xv\",\"observabilityMode\":\"gauge\",\"dataPointConfiguration\":\"xqabnmocpcysh\"}")
             .toObject(DataPoint.class);
-        Assertions.assertEquals("rlyxwjkcprbnw", model.name());
-        Assertions.assertEquals("xgjvtbv", model.dataSource());
-        Assertions.assertEquals("sszdnru", model.capabilityId());
+        Assertions.assertEquals("iy", model.name());
+        Assertions.assertEquals("pjxsqwpgrjbznor", model.dataSource());
+        Assertions.assertEquals("xv", model.capabilityId());
         Assertions.assertEquals(DataPointsObservabilityMode.GAUGE, model.observabilityMode());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.dataPointConfiguration());
+        Assertions.assertEquals("xqabnmocpcysh", model.dataPointConfiguration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataPoint model = new DataPoint().withName("rlyxwjkcprbnw")
-            .withDataSource("xgjvtbv")
-            .withCapabilityId("sszdnru")
+        DataPoint model = new DataPoint().withName("iy")
+            .withDataSource("pjxsqwpgrjbznor")
+            .withCapabilityId("xv")
             .withObservabilityMode(DataPointsObservabilityMode.GAUGE)
-            .withDataPointConfiguration("hmuouqfprwzwbn");
+            .withDataPointConfiguration("xqabnmocpcysh");
         model = BinaryData.fromObject(model).toObject(DataPoint.class);
-        Assertions.assertEquals("rlyxwjkcprbnw", model.name());
-        Assertions.assertEquals("xgjvtbv", model.dataSource());
-        Assertions.assertEquals("sszdnru", model.capabilityId());
+        Assertions.assertEquals("iy", model.name());
+        Assertions.assertEquals("pjxsqwpgrjbznor", model.dataSource());
+        Assertions.assertEquals("xv", model.capabilityId());
         Assertions.assertEquals(DataPointsObservabilityMode.GAUGE, model.observabilityMode());
-        Assertions.assertEquals("hmuouqfprwzwbn", model.dataPointConfiguration());
+        Assertions.assertEquals("xqabnmocpcysh", model.dataPointConfiguration());
     }
 }

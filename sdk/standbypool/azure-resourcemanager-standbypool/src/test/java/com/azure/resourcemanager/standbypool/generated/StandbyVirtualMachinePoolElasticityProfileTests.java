@@ -12,16 +12,16 @@ public final class StandbyVirtualMachinePoolElasticityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyVirtualMachinePoolElasticityProfile model
-            = BinaryData.fromString("{\"maxReadyCapacity\":4068506387778200139}")
+            = BinaryData.fromString("{\"maxReadyCapacity\":7956589332292140825}")
                 .toObject(StandbyVirtualMachinePoolElasticityProfile.class);
-        Assertions.assertEquals(4068506387778200139L, model.maxReadyCapacity());
+        Assertions.assertEquals(7956589332292140825L, model.maxReadyCapacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StandbyVirtualMachinePoolElasticityProfile model
-            = new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(4068506387778200139L);
+            = new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(7956589332292140825L);
         model = BinaryData.fromObject(model).toObject(StandbyVirtualMachinePoolElasticityProfile.class);
-        Assertions.assertEquals(4068506387778200139L, model.maxReadyCapacity());
+        Assertions.assertEquals(7956589332292140825L, model.maxReadyCapacity());
     }
 }
