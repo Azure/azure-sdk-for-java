@@ -13,15 +13,15 @@ public final class StandbyVirtualMachinePoolResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyVirtualMachinePoolResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":795979604807829548},\"virtualMachineState\":\"Deallocated\",\"attachedVirtualMachineScaleSetId\":\"jsprozvcpute\",\"provisioningState\":\"Succeeded\"},\"location\":\"mfdatscmdvpj\",\"tags\":{\"kjozkrwfnd\":\"suuv\",\"vwryoqpso\":\"odjpslwejd\",\"yffdfdos\":\"cctazakljlahbc\",\"hcrzevd\":\"gexpaojakhmsbz\"},\"id\":\"hlxaolthqtr\",\"name\":\"qjbpfzfsin\",\"type\":\"gvfcj\"},{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":4223016472097191780},\"virtualMachineState\":\"Deallocated\",\"attachedVirtualMachineScaleSetId\":\"tfell\",\"provisioningState\":\"Failed\"},\"location\":\"it\",\"tags\":{\"jlxofpdvhpfxxyp\":\"eqfpj\",\"kpode\":\"ninmayhuyb\",\"ognarxzxtheotus\":\"ooginuvamih\"},\"id\":\"vyevcciqi\",\"name\":\"nhungbw\",\"type\":\"zrnf\"},{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":9010569490634453588},\"virtualMachineState\":\"Deallocated\",\"attachedVirtualMachineScaleSetId\":\"emv\",\"provisioningState\":\"Failed\"},\"location\":\"ufubl\",\"tags\":{\"v\":\"xqeofjaeqjhqjba\",\"zgcwrw\":\"smjqulngsntnbyb\"},\"id\":\"lxxwrljdouskc\",\"name\":\"vkocrcjdkwtn\",\"type\":\"xbnjbiksq\"}],\"nextLink\":\"lssai\"}")
+            "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":6350015487998990980},\"virtualMachineState\":\"Deallocated\",\"attachedVirtualMachineScaleSetId\":\"ocrcjdk\",\"provisioningState\":\"Succeeded\"},\"location\":\"xbnjbiksq\",\"tags\":{\"fmppe\":\"ssainqpjwnzll\",\"c\":\"bvmgxsabkyqduuji\"},\"id\":\"czdzev\",\"name\":\"dhkrwpdappdsbdk\",\"type\":\"wrwjfeu\"},{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":6185918312550234885},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"ltmrldh\",\"provisioningState\":\"Succeeded\"},\"location\":\"zdatqxhocdg\",\"tags\":{\"icndvkaozwyifty\":\"lgphu\",\"tyxolniwpwc\":\"xhurok\",\"awxklr\":\"kjfkg\"},\"id\":\"plwckbas\",\"name\":\"ypnddhsgcb\",\"type\":\"cph\"},{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":1592886583482291968},\"virtualMachineState\":\"Deallocated\",\"attachedVirtualMachineScaleSetId\":\"qgoulznd\",\"provisioningState\":\"Succeeded\"},\"location\":\"yqkgfg\",\"tags\":{\"qedqytbciqfoufl\":\"adgakeqsrxybz\",\"glougpbk\":\"mnkzsmod\",\"uqktap\":\"tmut\",\"kdosvqw\":\"pwgcuertu\"},\"id\":\"bmdg\",\"name\":\"bjf\",\"type\":\"dgmb\"}],\"nextLink\":\"ex\"}")
             .toObject(StandbyVirtualMachinePoolResourceListResult.class);
-        Assertions.assertEquals("mfdatscmdvpj", model.value().get(0).location());
-        Assertions.assertEquals("suuv", model.value().get(0).tags().get("kjozkrwfnd"));
-        Assertions.assertEquals(795979604807829548L,
+        Assertions.assertEquals("xbnjbiksq", model.value().get(0).location());
+        Assertions.assertEquals("ssainqpjwnzll", model.value().get(0).tags().get("fmppe"));
+        Assertions.assertEquals(6350015487998990980L,
             model.value().get(0).properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(VirtualMachineState.DEALLOCATED,
             model.value().get(0).properties().virtualMachineState());
-        Assertions.assertEquals("jsprozvcpute", model.value().get(0).properties().attachedVirtualMachineScaleSetId());
-        Assertions.assertEquals("lssai", model.nextLink());
+        Assertions.assertEquals("ocrcjdk", model.value().get(0).properties().attachedVirtualMachineScaleSetId());
+        Assertions.assertEquals("ex", model.nextLink());
     }
 }

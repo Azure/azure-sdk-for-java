@@ -12,8 +12,8 @@ public final class StandbyVirtualMachineResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyVirtualMachineResourceProperties model
-            = BinaryData.fromString("{\"virtualMachineResourceId\":\"jczdzevndh\",\"provisioningState\":\"Canceled\"}")
+            = BinaryData.fromString("{\"virtualMachineResourceId\":\"kkvnipjox\",\"provisioningState\":\"Failed\"}")
                 .toObject(StandbyVirtualMachineResourceProperties.class);
-        Assertions.assertEquals("jczdzevndh", model.virtualMachineResourceId());
+        Assertions.assertEquals("kkvnipjox", model.virtualMachineResourceId());
     }
 }

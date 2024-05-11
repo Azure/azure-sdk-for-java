@@ -26,7 +26,7 @@ public final class StandbyVirtualMachinePoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":8219003189774073818},\"virtualMachineState\":\"Deallocated\",\"attachedVirtualMachineScaleSetId\":\"jnpg\",\"provisioningState\":\"Succeeded\"},\"location\":\"adehxnltyfsopp\",\"tags\":{\"bavo\":\"esnzwde\",\"vudwx\":\"xzdmohctb\",\"gujjugwdkcglh\":\"ndnvo\",\"ofqweykhmenevfye\":\"lazjdyggdtjixhbk\"},\"id\":\"fwhybcibvy\",\"name\":\"dcsi\",\"type\":\"ynnaam\"}";
+            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":8963352586461588270},\"virtualMachineState\":\"Deallocated\",\"attachedVirtualMachineScaleSetId\":\"czvyifq\",\"provisioningState\":\"Succeeded\"},\"location\":\"vjsllrmvvdfw\",\"tags\":{\"iqzbq\":\"pnpulexxbczwtru\",\"pkwlhz\":\"vsovmyokac\",\"hrk\":\"obpxjmflbvvn\",\"ajiwkuo\":\"ciwwzjuqkhr\"},\"id\":\"oskg\",\"name\":\"sauuimj\",\"type\":\"vxieduugidyj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,22 +36,22 @@ public final class StandbyVirtualMachinePoolsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         StandbyVirtualMachinePoolResource response = manager.standbyVirtualMachinePools()
-            .define("ebxetqgtzxdp")
-            .withRegion("ngnzscxaqwoochc")
-            .withExistingResourceGroup("ccfwnfnbacfion")
-            .withTags(mapOf("eo", "qvpkvlrxnjeaseip", "enjbdlwtgrhp", "lokeyy", "umasxazjpq", "jp"))
+            .define("xodpuozmyzydagfu")
+            .withRegion("mbsureximo")
+            .withExistingResourceGroup("uaodsfcpk")
+            .withTags(mapOf("s", "cfsf"))
             .withProperties(new StandbyVirtualMachinePoolResourceProperties()
                 .withElasticityProfile(
-                    new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(3640331879972668788L))
+                    new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(6931093425272136577L))
                 .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
-                .withAttachedVirtualMachineScaleSetId("rjfeallnwsubisnj"))
+                .withAttachedVirtualMachineScaleSetId("uokktwhrdxwz"))
             .create();
 
-        Assertions.assertEquals("adehxnltyfsopp", response.location());
-        Assertions.assertEquals("esnzwde", response.tags().get("bavo"));
-        Assertions.assertEquals(8219003189774073818L, response.properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals("vjsllrmvvdfw", response.location());
+        Assertions.assertEquals("pnpulexxbczwtru", response.tags().get("iqzbq"));
+        Assertions.assertEquals(8963352586461588270L, response.properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(VirtualMachineState.DEALLOCATED, response.properties().virtualMachineState());
-        Assertions.assertEquals("jnpg", response.properties().attachedVirtualMachineScaleSetId());
+        Assertions.assertEquals("czvyifq", response.properties().attachedVirtualMachineScaleSetId());
     }
 
     // Use "Map.of" if available
