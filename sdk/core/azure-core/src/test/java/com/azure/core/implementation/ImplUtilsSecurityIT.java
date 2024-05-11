@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.util;
+package com.azure.core.implementation;
 
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -16,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Tests {@link CoreUtils} functionality when there is a SecurityManager.
+ * Tests {@link ImplUtils} functionality when there is a SecurityManager.
  */
 @SuppressWarnings("removal")
 @Execution(ExecutionMode.SAME_THREAD)
 @Isolated("Mutates the global SecurityManager")
-public class CoreUtilsSecurityIT {
+public class ImplUtilsSecurityIT {
     private static final Duration SHUTDOWN_TIMEOUT = Duration.ofSeconds(5);
 
     private boolean originalShutdownHookAccessHelper;
@@ -29,7 +30,7 @@ public class CoreUtilsSecurityIT {
     private java.security.Policy originalPolicy;
 
     public void captureDefaultConfigurations() {
-        originalShutdownHookAccessHelper = CoreUtils.isShutdownHookAccessHelper();
+        originalShutdownHookAccessHelper = ImplUtils.isShutdownHookAccessHelper();
         originalManager = java.lang.System.getSecurityManager();
         originalPolicy = java.security.Policy.getPolicy();
 
@@ -40,7 +41,7 @@ public class CoreUtilsSecurityIT {
     }
 
     public void revertDefaultConfigurations() {
-        CoreUtils.setShutdownHookAccessHelper(originalShutdownHookAccessHelper);
+        ImplUtils.setShutdownHookAccessHelper(originalShutdownHookAccessHelper);
         java.lang.System.setSecurityManager(originalManager);
         java.security.Policy.setPolicy(originalPolicy);
 
@@ -75,7 +76,7 @@ public class CoreUtilsSecurityIT {
         captureDefaultConfigurations();
 
         try {
-            CoreUtils.setShutdownHookAccessHelper(true);
+            ImplUtils.setShutdownHookAccessHelper(true);
 
             java.security.Policy
                 .setPolicy(java.security.Policy.getInstance("JavaPolicy", getUriParameter("basic-permissions.policy")));
@@ -96,7 +97,7 @@ public class CoreUtilsSecurityIT {
         captureDefaultConfigurations();
 
         try {
-            CoreUtils.setShutdownHookAccessHelper(true);
+            ImplUtils.setShutdownHookAccessHelper(true);
 
             java.security.Policy.setPolicy(
                 java.security.Policy.getInstance("JavaPolicy", getUriParameter("access-helper-succeeds.policy")));
@@ -117,7 +118,7 @@ public class CoreUtilsSecurityIT {
         captureDefaultConfigurations();
 
         try {
-            CoreUtils.setShutdownHookAccessHelper(false);
+            ImplUtils.setShutdownHookAccessHelper(false);
 
             assertDoesNotThrow(
                 () -> CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(), SHUTDOWN_TIMEOUT));
@@ -128,6 +129,6 @@ public class CoreUtilsSecurityIT {
 
     private static URIParameter getUriParameter(String policyFile) throws URISyntaxException {
         return new URIParameter(
-            CoreUtilsSecurityIT.class.getResource("/CoreUtilsSecurityPolicies/" + policyFile).toURI());
+            ImplUtilsSecurityIT.class.getResource("/CoreUtilsSecurityPolicies/" + policyFile).toURI());
     }
 }

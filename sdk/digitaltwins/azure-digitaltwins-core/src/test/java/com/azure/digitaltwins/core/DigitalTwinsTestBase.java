@@ -10,7 +10,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
@@ -141,9 +140,7 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
     }
 
     void waitIfLive(int waitTimeInSeconds) throws InterruptedException {
-        if (this.getTestMode() == TestMode.LIVE || this.getTestMode() == TestMode.RECORD) {
-            Thread.sleep(waitTimeInSeconds * 1000);
-        }
+        sleepIfRunningAgainstService(waitTimeInSeconds * 1000L);
     }
 
     void waitIfLive() throws InterruptedException {

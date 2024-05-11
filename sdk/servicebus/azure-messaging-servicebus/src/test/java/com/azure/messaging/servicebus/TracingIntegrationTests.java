@@ -593,6 +593,62 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void sendAndProcessSessionNoAutoComplete() throws InterruptedException {
+        String sessionQueueName = getSessionQueueName(0);
+        String sessionId = UUID.randomUUID().toString();
+        ServiceBusMessage message = new ServiceBusMessage(CONTENTS_BYTES).setSessionId(sessionId);
+
+        OpenTelemetry otel = configureOTel(getFullyQualifiedDomainName(), sessionQueueName);
+        clientOptions = new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel));
+        sender = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
+            .sender()
+            .queueName(sessionQueueName)
+            .buildAsyncClient());
+
+        StepVerifier.create(sender.sendMessage(message)).expectComplete().verify(TIMEOUT);
+
+        CountDownLatch processFound = new CountDownLatch(2);
+        spanProcessor.notifyIfCondition(processFound, span -> span.getName().equals("ServiceBus.process") || span.getName().equals("ServiceBus.complete"));
+
+        AtomicReference<Span> currentInProcess = new AtomicReference<>();
+        AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
+        processor = toClose(new ServiceBusClientBuilder()
+            .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
+            .sessionProcessor()
+            .maxConcurrentSessions(1)
+            .queueName(sessionQueueName)
+            .disableAutoComplete()
+            .processMessage(mc -> {
+                currentInProcess.compareAndSet(null, Span.current());
+                receivedMessage.compareAndSet(null, mc.getMessage());
+                mc.complete();
+            })
+            .processError(e -> fail("unexpected error", e.getException()))
+            .buildProcessorClient());
+
+        toClose((AutoCloseable) () -> processor.stop());
+        processor.start();
+        assertTrue(processFound.await(20, TimeUnit.SECONDS));
+        processor.stop();
+
+        assertTrue(currentInProcess.get().getSpanContext().isValid());
+        List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+
+        List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process")
+            .stream().filter(p -> p.equals(currentInProcess.get())).collect(Collectors.toList());
+        assertEquals(1, processed.size());
+        assertConsumerSpan(processed.get(0), receivedMessage.get(), "ServiceBus.process");
+
+        List<ReadableSpan> completed = findSpans(spans, "ServiceBus.complete");
+        assertEquals(1, completed.size());
+        assertClientSpan(completed.get(0), Collections.singletonList(receivedMessage.get()), "ServiceBus.complete", "settle");
+        assertSettledVsProcessed(completed, processed, 1);
+    }
+
+    @Test
     public void sendAndProcessParallel() throws InterruptedException {
         int messageCount = 10;
         StepVerifier.create(sender.createMessageBatch()

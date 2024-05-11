@@ -30,7 +30,14 @@ public final class StaticQueueSelectorAttachment extends QueueSelectorAttachment
     @JsonCreator
     public StaticQueueSelectorAttachment(@JsonProperty(value = "queueSelector") RouterQueueSelector queueSelector) {
         this.queueSelector = queueSelector;
-        this.kind = QueueSelectorAttachmentKind.STATIC;
+    }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public QueueSelectorAttachmentKind getKind() {
+        return QueueSelectorAttachmentKind.STATIC;
     }
 
     /**

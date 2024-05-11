@@ -257,8 +257,6 @@ stages:
 
               variables:
                 - template: /eng/pipelines/templates/variables/globals.yml
-                - name: DocValidationImageId
-                  value: azuresdkimages.azurecr.io/javarefautocr:latest
 
               strategy:
                 runOnce:
@@ -275,9 +273,10 @@ stages:
                       - download: current
                         displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
                         artifact: ${{parameters.ArtifactName}}
-                      # Pull and build the docker image.
 
                       - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
+                      - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
                       - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
@@ -290,7 +289,6 @@ stages:
                           SparseCheckoutPaths:
                             - docs-ref-services/
                             - metadata/
-                          DocValidationImageId: "$(DocValidationImageId)"
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
@@ -446,8 +444,6 @@ stages:
           os: linux
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
-          - name: DocValidationImageId
-            value: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
@@ -466,6 +462,8 @@ stages:
 
           - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
 
+          - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
+
           - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
             parameters:
               PackageInfoLocations:
@@ -480,6 +478,5 @@ stages:
               SparseCheckoutPaths:
                 - docs-ref-services/
                 - metadata/
-              DocValidationImageId: "$(DocValidationImageId)"
 
           - template: /eng/common/pipelines/templates/steps/docsms-ensure-validation.yml

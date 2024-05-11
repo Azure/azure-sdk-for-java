@@ -9,7 +9,7 @@ os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
 from generate import update_parameters
 from generate_utils import get_version
-from generate import compile_package
+from generate_utils import compile_arm_package
 from generate import compare_with_maven_package
 
 os.chdir(pwd)
@@ -31,7 +31,7 @@ def main():
     update_parameters(args.get('suffix'))
 
     if args.get('compile'):
-        compile_package(sdk_root, service)
+        compile_arm_package(sdk_root, service)
 
     versions = get_version(sdk_root, service).split(';')
     stable_version = versions[1]
