@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.FeedOperationContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -43,7 +44,6 @@ abstract class Fetcher<T> {
     private final AtomicInteger maxItemCount;
     private final AtomicInteger top;
     private final List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker;
-    private final Set<PartitionKeyRange> pkRangesWithSuccessfulRequests;
     private final GlobalEndpointManager globalEndpointManager;
     private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
 
@@ -54,7 +54,6 @@ abstract class Fetcher<T> {
         int maxItemCount,
         OperationContextAndListenerTuple operationContext,
         List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
-        Set<PartitionKeyRange> pkRangesWithSuccessfulRequests,
         GlobalEndpointManager globalEndpointManager,
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
@@ -80,7 +79,6 @@ abstract class Fetcher<T> {
         }
         this.shouldFetchMore = new AtomicBoolean(true);
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
-        this.pkRangesWithSuccessfulRequests = pkRangesWithSuccessfulRequests;
         this.globalEndpointManager = globalEndpointManager;
         this.globalPartitionEndpointManagerForCircuitBreaker = globalPartitionEndpointManagerForCircuitBreaker;
     }
@@ -175,7 +173,9 @@ abstract class Fetcher<T> {
             })
             .doOnNext(response -> {
                 completed.set(true);
-                this.pkRangesWithSuccessfulRequests.add(request.requestContext.resolvedPartitionKeyRange);
+
+                FeedOperationContext feedOperationContext = request.requestContext.getFeedOperationContext();
+                feedOperationContext.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRange);
             })
             .doOnError(throwable -> completed.set(true))
             .doFinally(signalType -> {
@@ -191,11 +191,9 @@ abstract class Fetcher<T> {
                     return;
                 }
 
-                if (request.requestContext.isRequestCancelledOnTimeout().get() &&
-                    Configs.isPartitionLevelCircuitBreakerEnabled() &&
-                    !request.requestContext.isRequestHedged() &&
-//                    request.requestContext.isRequestSendingStarted &&
-                    !this.pkRangesWithSuccessfulRequests.contains(request.requestContext.resolvedPartitionKeyRange)) {
+                FeedOperationContext feedOperationContext = request.requestContext.getFeedOperationContext();
+
+                if (!feedOperationContext.getIsRequestHedged() && feedOperationContext.hasPartitionKeyRangeSeenSuccess(request.requestContext.resolvedPartitionKeyRange)) {
 
                     if (this.globalEndpointManager != null && this.globalPartitionEndpointManagerForCircuitBreaker != null) {
                         Optional<String> firstContactedRegion = request.requestContext.cosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames().stream().findFirst();

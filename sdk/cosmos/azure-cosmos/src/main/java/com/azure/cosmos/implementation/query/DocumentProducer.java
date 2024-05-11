@@ -212,10 +212,6 @@ class DocumentProducer<T> {
                             .CosmosQueryRequestOptionsHelper
                             .getCosmosQueryRequestOptionsAccessor()
                             .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getPkRangesWithSuccessfulRequests(cosmosQueryRequestOptions),
                         client.getGlobalEndpointManager(),
                         client.getGlobalPartitionEndpointManagerForCircuitBreaker()
                     )

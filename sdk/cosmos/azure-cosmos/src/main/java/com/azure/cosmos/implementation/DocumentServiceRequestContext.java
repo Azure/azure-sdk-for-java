@@ -56,6 +56,10 @@ public class DocumentServiceRequestContext implements Cloneable {
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
 
+    private PointOperationContext pointOperationContext;
+
+    private FeedOperationContext feedOperationContext;
+
     public DocumentServiceRequestContext() {}
 
     /**
@@ -179,6 +183,22 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setUnavailableRegionsForPartition(List<String> unavailableRegionsForPartition) {
         this.unavailableRegionsForPartition = unavailableRegionsForPartition;
+    }
+
+    public PointOperationContext getPointOperationContext() {
+        return pointOperationContext;
+    }
+
+    public void setPointOperationContext(PointOperationContext pointOperationContext) {
+        this.pointOperationContext = pointOperationContext;
+    }
+
+    public FeedOperationContext getFeedOperationContext() {
+        return feedOperationContext;
+    }
+
+    public void setFeedOperationContext(FeedOperationContext feedOperationContext) {
+        this.feedOperationContext = feedOperationContext;
     }
 }
 

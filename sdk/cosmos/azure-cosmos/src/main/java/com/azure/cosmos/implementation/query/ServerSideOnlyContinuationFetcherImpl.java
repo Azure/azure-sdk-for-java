@@ -34,11 +34,10 @@ class ServerSideOnlyContinuationFetcherImpl<T> extends Fetcher<T> {
                                                  int maxItemCount,
                                                  OperationContextAndListenerTuple operationContext,
                                                  List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
-                                                 Set<PartitionKeyRange> pkRangesWithSuccessfulRequests,
                                                  GlobalEndpointManager globalEndpointManager,
                                                  GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
-        super(executeFunc, isChangeFeed, top, maxItemCount, operationContext, cancelledRequestDiagnosticsTracker, pkRangesWithSuccessfulRequests, globalEndpointManager, globalPartitionEndpointManagerForCircuitBreaker);
+        super(executeFunc, isChangeFeed, top, maxItemCount, operationContext, cancelledRequestDiagnosticsTracker, globalEndpointManager, globalPartitionEndpointManagerForCircuitBreaker);
 
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
         this.createRequestFunc = createRequestFunc;

@@ -59,10 +59,6 @@ public class Paginator {
                 .CosmosQueryRequestOptionsHelper
                 .getCosmosQueryRequestOptionsAccessor()
                 .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getPkRangesWithSuccessfulRequests(cosmosQueryRequestOptions),
             globalEndpointManager,
             globalPartitionEndpointManagerForCircuitBreaker);
     }
@@ -76,7 +72,6 @@ public class Paginator {
         int maxPreFetchCount,
         OperationContextAndListenerTuple operationContext,
         List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
-        Set<PartitionKeyRange> pkRangesWithSuccessfulRequests,
         GlobalEndpointManager globalEndpointManager,
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
@@ -90,7 +85,6 @@ public class Paginator {
             false,
             operationContext,
             cancelledRequestDiagnosticsTracker,
-            pkRangesWithSuccessfulRequests,
             globalEndpointManager,
             globalPartitionEndpointManagerForCircuitBreaker);
     }
@@ -156,7 +150,6 @@ public class Paginator {
         boolean isChangeFeed,
         OperationContextAndListenerTuple operationContext,
         List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker,
-        Set<PartitionKeyRange> pkRangesWithSuccessfulRequests,
         GlobalEndpointManager globalEndpointManager,
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
 
@@ -170,7 +163,6 @@ public class Paginator {
                 maxPageSize,
                 operationContext,
                 cancelledRequestDiagnosticsTracker,
-                pkRangesWithSuccessfulRequests,
                 globalEndpointManager,
                 globalPartitionEndpointManagerForCircuitBreaker),
             preFetchCount);
