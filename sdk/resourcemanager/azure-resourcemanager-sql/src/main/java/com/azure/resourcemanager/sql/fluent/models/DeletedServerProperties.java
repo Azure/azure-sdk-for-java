@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The properties of a deleted server. */
+/**
+ * The properties of a deleted server.
+ */
 @Immutable
 public final class DeletedServerProperties {
     /*
@@ -35,13 +37,15 @@ public final class DeletedServerProperties {
     @JsonProperty(value = "fullyQualifiedDomainName", access = JsonProperty.Access.WRITE_ONLY)
     private String fullyQualifiedDomainName;
 
-    /** Creates an instance of DeletedServerProperties class. */
+    /**
+     * Creates an instance of DeletedServerProperties class.
+     */
     public DeletedServerProperties() {
     }
 
     /**
      * Get the version property: The version of the deleted server.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -50,7 +54,7 @@ public final class DeletedServerProperties {
 
     /**
      * Get the deletionTime property: The deletion time of the deleted server.
-     *
+     * 
      * @return the deletionTime value.
      */
     public OffsetDateTime deletionTime() {
@@ -59,7 +63,7 @@ public final class DeletedServerProperties {
 
     /**
      * Get the originalId property: The original ID of the server before deletion.
-     *
+     * 
      * @return the originalId value.
      */
     public String originalId() {
@@ -68,7 +72,7 @@ public final class DeletedServerProperties {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of the server.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -77,7 +81,7 @@ public final class DeletedServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

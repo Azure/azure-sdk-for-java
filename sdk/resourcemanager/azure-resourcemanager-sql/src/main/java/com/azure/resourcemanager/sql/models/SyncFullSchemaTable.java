@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the table in the database full schema. */
+/**
+ * Properties of the table in the database full schema.
+ */
 @Immutable
 public final class SyncFullSchemaTable {
     /*
@@ -41,13 +43,15 @@ public final class SyncFullSchemaTable {
     @JsonProperty(value = "quotedName", access = JsonProperty.Access.WRITE_ONLY)
     private String quotedName;
 
-    /** Creates an instance of SyncFullSchemaTable class. */
+    /**
+     * Creates an instance of SyncFullSchemaTable class.
+     */
     public SyncFullSchemaTable() {
     }
 
     /**
      * Get the columns property: List of columns in the table of database full schema.
-     *
+     * 
      * @return the columns value.
      */
     public List<SyncFullSchemaTableColumn> columns() {
@@ -56,7 +60,7 @@ public final class SyncFullSchemaTable {
 
     /**
      * Get the errorId property: Error id of the table.
-     *
+     * 
      * @return the errorId value.
      */
     public String errorId() {
@@ -65,7 +69,7 @@ public final class SyncFullSchemaTable {
 
     /**
      * Get the hasError property: If there is error in the table.
-     *
+     * 
      * @return the hasError value.
      */
     public Boolean hasError() {
@@ -74,7 +78,7 @@ public final class SyncFullSchemaTable {
 
     /**
      * Get the name property: Name of the table.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -83,7 +87,7 @@ public final class SyncFullSchemaTable {
 
     /**
      * Get the quotedName property: Quoted name of the table.
-     *
+     * 
      * @return the quotedName value.
      */
     public String quotedName() {
@@ -92,7 +96,7 @@ public final class SyncFullSchemaTable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

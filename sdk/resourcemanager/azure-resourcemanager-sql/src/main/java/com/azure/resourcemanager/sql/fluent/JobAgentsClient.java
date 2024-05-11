@@ -19,13 +19,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobAgentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobAgentsClient.
+ */
 public interface JobAgentsClient {
     /**
      * Gets a list of job agents in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,9 +39,9 @@ public interface JobAgentsClient {
 
     /**
      * Gets a list of job agents in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,9 +53,9 @@ public interface JobAgentsClient {
 
     /**
      * Gets a list of job agents in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,9 +68,9 @@ public interface JobAgentsClient {
 
     /**
      * Gets a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,14 +79,14 @@ public interface JobAgentsClient {
      * @return a job agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<JobAgentInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName);
+    Mono<Response<JobAgentInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName);
 
     /**
      * Gets a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,9 +99,9 @@ public interface JobAgentsClient {
 
     /**
      * Gets a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be retrieved.
      * @param context The context to associate with this operation.
@@ -109,14 +111,14 @@ public interface JobAgentsClient {
      * @return a job agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobAgentInner> getWithResponse(
-        String resourceGroupName, String serverName, String jobAgentName, Context context);
+    Response<JobAgentInner> getWithResponse(String resourceGroupName, String serverName, String jobAgentName,
+        Context context);
 
     /**
      * Gets a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,9 +131,9 @@ public interface JobAgentsClient {
 
     /**
      * Creates or updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
      * @param parameters The requested job agent resource state.
@@ -141,14 +143,14 @@ public interface JobAgentsClient {
      * @return an Azure SQL job agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, JobAgentInner parameters);
 
     /**
      * Creates or updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
      * @param parameters The requested job agent resource state.
@@ -158,14 +160,14 @@ public interface JobAgentsClient {
      * @return the {@link PollerFlux} for polling of an Azure SQL job agent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters);
+    PollerFlux<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serverName, String jobAgentName, JobAgentInner parameters);
 
     /**
      * Creates or updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
      * @param parameters The requested job agent resource state.
@@ -175,14 +177,14 @@ public interface JobAgentsClient {
      * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters);
+    SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String jobAgentName, JobAgentInner parameters);
 
     /**
      * Creates or updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
      * @param parameters The requested job agent resource state.
@@ -193,14 +195,14 @@ public interface JobAgentsClient {
      * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters, Context context);
+    SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String jobAgentName, JobAgentInner parameters, Context context);
 
     /**
      * Creates or updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
      * @param parameters The requested job agent resource state.
@@ -210,14 +212,14 @@ public interface JobAgentsClient {
      * @return an Azure SQL job agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<JobAgentInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters);
+    Mono<JobAgentInner> createOrUpdateAsync(String resourceGroupName, String serverName, String jobAgentName,
+        JobAgentInner parameters);
 
     /**
      * Creates or updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
      * @param parameters The requested job agent resource state.
@@ -227,14 +229,14 @@ public interface JobAgentsClient {
      * @return an Azure SQL job agent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobAgentInner createOrUpdate(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters);
+    JobAgentInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName,
+        JobAgentInner parameters);
 
     /**
      * Creates or updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be created or updated.
      * @param parameters The requested job agent resource state.
@@ -245,14 +247,14 @@ public interface JobAgentsClient {
      * @return an Azure SQL job agent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobAgentInner createOrUpdate(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentInner parameters, Context context);
+    JobAgentInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName,
+        JobAgentInner parameters, Context context);
 
     /**
      * Deletes a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,14 +263,14 @@ public interface JobAgentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName);
 
     /**
      * Deletes a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,14 +279,14 @@ public interface JobAgentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String jobAgentName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String jobAgentName);
 
     /**
      * Deletes a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,9 +299,9 @@ public interface JobAgentsClient {
 
     /**
      * Deletes a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be deleted.
      * @param context The context to associate with this operation.
@@ -309,14 +311,14 @@ public interface JobAgentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String jobAgentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String jobAgentName,
+        Context context);
 
     /**
      * Deletes a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -329,9 +331,9 @@ public interface JobAgentsClient {
 
     /**
      * Deletes a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -343,9 +345,9 @@ public interface JobAgentsClient {
 
     /**
      * Deletes a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be deleted.
      * @param context The context to associate with this operation.
@@ -358,9 +360,9 @@ public interface JobAgentsClient {
 
     /**
      * Updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
      * @param parameters The update to the job agent.
@@ -370,14 +372,14 @@ public interface JobAgentsClient {
      * @return an Azure SQL job agent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, JobAgentUpdate parameters);
 
     /**
      * Updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
      * @param parameters The update to the job agent.
@@ -387,14 +389,14 @@ public interface JobAgentsClient {
      * @return the {@link PollerFlux} for polling of an Azure SQL job agent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<JobAgentInner>, JobAgentInner> beginUpdateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters);
+    PollerFlux<PollResult<JobAgentInner>, JobAgentInner> beginUpdateAsync(String resourceGroupName, String serverName,
+        String jobAgentName, JobAgentUpdate parameters);
 
     /**
      * Updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
      * @param parameters The update to the job agent.
@@ -404,14 +406,14 @@ public interface JobAgentsClient {
      * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginUpdate(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters);
+    SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginUpdate(String resourceGroupName, String serverName,
+        String jobAgentName, JobAgentUpdate parameters);
 
     /**
      * Updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
      * @param parameters The update to the job agent.
@@ -422,14 +424,14 @@ public interface JobAgentsClient {
      * @return the {@link SyncPoller} for polling of an Azure SQL job agent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginUpdate(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters, Context context);
+    SyncPoller<PollResult<JobAgentInner>, JobAgentInner> beginUpdate(String resourceGroupName, String serverName,
+        String jobAgentName, JobAgentUpdate parameters, Context context);
 
     /**
      * Updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
      * @param parameters The update to the job agent.
@@ -439,14 +441,14 @@ public interface JobAgentsClient {
      * @return an Azure SQL job agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<JobAgentInner> updateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters);
+    Mono<JobAgentInner> updateAsync(String resourceGroupName, String serverName, String jobAgentName,
+        JobAgentUpdate parameters);
 
     /**
      * Updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
      * @param parameters The update to the job agent.
@@ -460,9 +462,9 @@ public interface JobAgentsClient {
 
     /**
      * Updates a job agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent to be updated.
      * @param parameters The update to the job agent.
@@ -473,6 +475,6 @@ public interface JobAgentsClient {
      * @return an Azure SQL job agent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobAgentInner update(
-        String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters, Context context);
+    JobAgentInner update(String resourceGroupName, String serverName, String jobAgentName, JobAgentUpdate parameters,
+        Context context);
 }

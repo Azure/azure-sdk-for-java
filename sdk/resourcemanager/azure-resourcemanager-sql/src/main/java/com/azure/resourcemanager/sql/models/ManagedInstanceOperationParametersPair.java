@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters of a managed instance operation. */
+/**
+ * The parameters of a managed instance operation.
+ */
 @Immutable
 public final class ManagedInstanceOperationParametersPair {
     /*
@@ -22,13 +24,15 @@ public final class ManagedInstanceOperationParametersPair {
     @JsonProperty(value = "requestedParameters", access = JsonProperty.Access.WRITE_ONLY)
     private UpsertManagedServerOperationParameters requestedParameters;
 
-    /** Creates an instance of ManagedInstanceOperationParametersPair class. */
+    /**
+     * Creates an instance of ManagedInstanceOperationParametersPair class.
+     */
     public ManagedInstanceOperationParametersPair() {
     }
 
     /**
      * Get the currentParameters property: The current parameters.
-     *
+     * 
      * @return the currentParameters value.
      */
     public UpsertManagedServerOperationParameters currentParameters() {
@@ -37,7 +41,7 @@ public final class ManagedInstanceOperationParametersPair {
 
     /**
      * Get the requestedParameters property: The requested parameters.
-     *
+     * 
      * @return the requestedParameters value.
      */
     public UpsertManagedServerOperationParameters requestedParameters() {
@@ -46,7 +50,7 @@ public final class ManagedInstanceOperationParametersPair {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

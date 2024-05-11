@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The target that a job execution is executed on. */
+/**
+ * The target that a job execution is executed on.
+ */
 @Immutable
 public final class JobExecutionTarget {
     /*
@@ -28,13 +30,15 @@ public final class JobExecutionTarget {
     @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
-    /** Creates an instance of JobExecutionTarget class. */
+    /**
+     * Creates an instance of JobExecutionTarget class.
+     */
     public JobExecutionTarget() {
     }
 
     /**
      * Get the type property: The type of the target.
-     *
+     * 
      * @return the type value.
      */
     public JobTargetType type() {
@@ -43,7 +47,7 @@ public final class JobExecutionTarget {
 
     /**
      * Get the serverName property: The server name.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -52,7 +56,7 @@ public final class JobExecutionTarget {
 
     /**
      * Get the databaseName property: The database name.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -61,7 +65,7 @@ public final class JobExecutionTarget {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

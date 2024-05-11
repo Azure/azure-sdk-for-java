@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the information necessary to start a managed database move. */
+/**
+ * Contains the information necessary to start a managed database move.
+ */
 @Fluent
 public final class ManagedDatabaseStartMoveDefinition {
     /*
@@ -23,13 +25,15 @@ public final class ManagedDatabaseStartMoveDefinition {
     @JsonProperty(value = "operationMode")
     private MoveOperationMode operationMode;
 
-    /** Creates an instance of ManagedDatabaseStartMoveDefinition class. */
+    /**
+     * Creates an instance of ManagedDatabaseStartMoveDefinition class.
+     */
     public ManagedDatabaseStartMoveDefinition() {
     }
 
     /**
      * Get the destinationManagedDatabaseId property: The destination managed database ID.
-     *
+     * 
      * @return the destinationManagedDatabaseId value.
      */
     public String destinationManagedDatabaseId() {
@@ -38,7 +42,7 @@ public final class ManagedDatabaseStartMoveDefinition {
 
     /**
      * Set the destinationManagedDatabaseId property: The destination managed database ID.
-     *
+     * 
      * @param destinationManagedDatabaseId the destinationManagedDatabaseId value to set.
      * @return the ManagedDatabaseStartMoveDefinition object itself.
      */
@@ -49,7 +53,7 @@ public final class ManagedDatabaseStartMoveDefinition {
 
     /**
      * Get the operationMode property: The move operation mode.
-     *
+     * 
      * @return the operationMode value.
      */
     public MoveOperationMode operationMode() {
@@ -58,7 +62,7 @@ public final class ManagedDatabaseStartMoveDefinition {
 
     /**
      * Set the operationMode property: The move operation mode.
-     *
+     * 
      * @param operationMode the operationMode value to set.
      * @return the ManagedDatabaseStartMoveDefinition object itself.
      */
@@ -69,16 +73,14 @@ public final class ManagedDatabaseStartMoveDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (destinationManagedDatabaseId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destinationManagedDatabaseId in model"
-                            + " ManagedDatabaseStartMoveDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destinationManagedDatabaseId in model ManagedDatabaseStartMoveDefinition"));
         }
     }
 

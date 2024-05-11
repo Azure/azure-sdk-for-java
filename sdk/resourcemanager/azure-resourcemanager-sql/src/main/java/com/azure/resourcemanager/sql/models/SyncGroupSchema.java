@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of sync group schema. */
+/**
+ * Properties of sync group schema.
+ */
 @Fluent
 public final class SyncGroupSchema {
     /*
@@ -23,13 +25,15 @@ public final class SyncGroupSchema {
     @JsonProperty(value = "masterSyncMemberName")
     private String masterSyncMemberName;
 
-    /** Creates an instance of SyncGroupSchema class. */
+    /**
+     * Creates an instance of SyncGroupSchema class.
+     */
     public SyncGroupSchema() {
     }
 
     /**
      * Get the tables property: List of tables in sync group schema.
-     *
+     * 
      * @return the tables value.
      */
     public List<SyncGroupSchemaTable> tables() {
@@ -38,7 +42,7 @@ public final class SyncGroupSchema {
 
     /**
      * Set the tables property: List of tables in sync group schema.
-     *
+     * 
      * @param tables the tables value to set.
      * @return the SyncGroupSchema object itself.
      */
@@ -49,7 +53,7 @@ public final class SyncGroupSchema {
 
     /**
      * Get the masterSyncMemberName property: Name of master sync member where the schema is from.
-     *
+     * 
      * @return the masterSyncMemberName value.
      */
     public String masterSyncMemberName() {
@@ -58,7 +62,7 @@ public final class SyncGroupSchema {
 
     /**
      * Set the masterSyncMemberName property: Name of master sync member where the schema is from.
-     *
+     * 
      * @param masterSyncMemberName the masterSyncMemberName value to set.
      * @return the SyncGroupSchema object itself.
      */
@@ -69,7 +73,7 @@ public final class SyncGroupSchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

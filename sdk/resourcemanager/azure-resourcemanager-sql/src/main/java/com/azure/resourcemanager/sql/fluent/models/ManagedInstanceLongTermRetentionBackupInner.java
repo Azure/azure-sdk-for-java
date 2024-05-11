@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A long term retention backup for a managed database. */
+/**
+ * A long term retention backup for a managed database.
+ */
 @Immutable
 public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
     @JsonProperty(value = "properties")
     private ManagedInstanceLongTermRetentionBackupProperties innerProperties;
 
-    /** Creates an instance of ManagedInstanceLongTermRetentionBackupInner class. */
+    /**
+     * Creates an instance of ManagedInstanceLongTermRetentionBackupInner class.
+     */
     public ManagedInstanceLongTermRetentionBackupInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedInstanceLongTermRetentionBackupProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the managedInstanceName property: The managed instance that the backup database belongs to.
-     *
+     * 
      * @return the managedInstanceName value.
      */
     public String managedInstanceName() {
@@ -43,7 +47,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the managedInstanceCreateTime property: The create time of the instance.
-     *
+     * 
      * @return the managedInstanceCreateTime value.
      */
     public OffsetDateTime managedInstanceCreateTime() {
@@ -52,7 +56,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the databaseName property: The name of the database the backup belong to.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -61,7 +65,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the databaseDeletionTime property: The delete time of the database.
-     *
+     * 
      * @return the databaseDeletionTime value.
      */
     public OffsetDateTime databaseDeletionTime() {
@@ -70,7 +74,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the backupTime property: The time the backup was taken.
-     *
+     * 
      * @return the backupTime value.
      */
     public OffsetDateTime backupTime() {
@@ -79,7 +83,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the backupExpirationTime property: The time the long term retention backup will expire.
-     *
+     * 
      * @return the backupExpirationTime value.
      */
     public OffsetDateTime backupExpirationTime() {
@@ -88,7 +92,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Get the backupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -97,7 +101,7 @@ public final class ManagedInstanceLongTermRetentionBackupInner extends ProxyReso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,16 +7,20 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 
-/** A database schema resource. */
+/**
+ * A database schema resource.
+ */
 @Immutable
 public final class DatabaseSchemaInner extends ProxyResource {
-    /** Creates an instance of DatabaseSchemaInner class. */
+    /**
+     * Creates an instance of DatabaseSchemaInner class.
+     */
     public DatabaseSchemaInner() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

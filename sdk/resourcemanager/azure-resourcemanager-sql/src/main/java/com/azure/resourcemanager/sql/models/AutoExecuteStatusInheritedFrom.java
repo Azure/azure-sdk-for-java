@@ -13,22 +13,34 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * 'ElasticPool', 'Database' and 'Default' (when status is not explicitly set on any level).
  */
 public enum AutoExecuteStatusInheritedFrom {
-    /** Enum value Default. */
+    /**
+     * Enum value Default.
+     */
     DEFAULT("Default"),
 
-    /** Enum value Subscription. */
+    /**
+     * Enum value Subscription.
+     */
     SUBSCRIPTION("Subscription"),
 
-    /** Enum value Server. */
+    /**
+     * Enum value Server.
+     */
     SERVER("Server"),
 
-    /** Enum value ElasticPool. */
+    /**
+     * Enum value ElasticPool.
+     */
     ELASTIC_POOL("ElasticPool"),
 
-    /** Enum value Database. */
+    /**
+     * Enum value Database.
+     */
     DATABASE("Database");
 
-    /** The actual serialized value for a AutoExecuteStatusInheritedFrom instance. */
+    /**
+     * The actual serialized value for a AutoExecuteStatusInheritedFrom instance.
+     */
     private final String value;
 
     AutoExecuteStatusInheritedFrom(String value) {
@@ -37,7 +49,7 @@ public enum AutoExecuteStatusInheritedFrom {
 
     /**
      * Parses a serialized value to a AutoExecuteStatusInheritedFrom instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AutoExecuteStatusInheritedFrom object, or null if unable to parse.
      */
@@ -55,7 +67,9 @@ public enum AutoExecuteStatusInheritedFrom {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

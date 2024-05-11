@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.models.QueryMetricInterval;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a query execution statistics. */
+/**
+ * Properties of a query execution statistics.
+ */
 @Fluent
 public final class QueryStatisticsProperties {
     /*
@@ -42,13 +44,15 @@ public final class QueryStatisticsProperties {
     @JsonProperty(value = "intervals")
     private List<QueryMetricInterval> intervals;
 
-    /** Creates an instance of QueryStatisticsProperties class. */
+    /**
+     * Creates an instance of QueryStatisticsProperties class.
+     */
     public QueryStatisticsProperties() {
     }
 
     /**
      * Get the databaseName property: Database name of the database in which this query was executed.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -57,7 +61,7 @@ public final class QueryStatisticsProperties {
 
     /**
      * Get the queryId property: Unique query id (unique within one database).
-     *
+     * 
      * @return the queryId value.
      */
     public String queryId() {
@@ -66,7 +70,7 @@ public final class QueryStatisticsProperties {
 
     /**
      * Get the startTime property: The start time for the metric (ISO-8601 format).
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -75,7 +79,7 @@ public final class QueryStatisticsProperties {
 
     /**
      * Get the endTime property: The end time for the metric (ISO-8601 format).
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -84,7 +88,7 @@ public final class QueryStatisticsProperties {
 
     /**
      * Get the intervals property: List of intervals with appropriate metric data.
-     *
+     * 
      * @return the intervals value.
      */
     public List<QueryMetricInterval> intervals() {
@@ -93,7 +97,7 @@ public final class QueryStatisticsProperties {
 
     /**
      * Set the intervals property: List of intervals with appropriate metric data.
-     *
+     * 
      * @param intervals the intervals value to set.
      * @return the QueryStatisticsProperties object itself.
      */
@@ -104,7 +108,7 @@ public final class QueryStatisticsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

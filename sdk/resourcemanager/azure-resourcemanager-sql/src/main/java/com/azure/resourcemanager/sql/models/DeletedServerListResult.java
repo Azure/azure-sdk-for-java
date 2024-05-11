@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.DeletedServerInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of deleted servers. */
+/**
+ * A list of deleted servers.
+ */
 @Immutable
 public final class DeletedServerListResult {
     /*
@@ -24,13 +26,15 @@ public final class DeletedServerListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DeletedServerListResult class. */
+    /**
+     * Creates an instance of DeletedServerListResult class.
+     */
     public DeletedServerListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<DeletedServerInner> value() {
@@ -39,7 +43,7 @@ public final class DeletedServerListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class DeletedServerListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

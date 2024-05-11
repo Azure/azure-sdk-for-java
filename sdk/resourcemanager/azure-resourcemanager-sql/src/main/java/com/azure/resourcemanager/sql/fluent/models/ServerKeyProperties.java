@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties for a server key execution. */
+/**
+ * Properties for a server key execution.
+ */
 @Fluent
 public final class ServerKeyProperties {
     /*
@@ -26,8 +28,7 @@ public final class ServerKeyProperties {
     private ServerKeyType serverKeyType;
 
     /*
-     * The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required. The AKV URI is
-     * required to be in this format: 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'
+     * The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
      */
     @JsonProperty(value = "uri")
     private String uri;
@@ -50,13 +51,15 @@ public final class ServerKeyProperties {
     @JsonProperty(value = "autoRotationEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean autoRotationEnabled;
 
-    /** Creates an instance of ServerKeyProperties class. */
+    /**
+     * Creates an instance of ServerKeyProperties class.
+     */
     public ServerKeyProperties() {
     }
 
     /**
      * Get the subregion property: Subregion of the server key.
-     *
+     * 
      * @return the subregion value.
      */
     public String subregion() {
@@ -65,7 +68,7 @@ public final class ServerKeyProperties {
 
     /**
      * Get the serverKeyType property: The server key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -74,7 +77,7 @@ public final class ServerKeyProperties {
 
     /**
      * Set the serverKeyType property: The server key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the ServerKeyProperties object itself.
      */
@@ -85,9 +88,7 @@ public final class ServerKeyProperties {
 
     /**
      * Get the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     * The AKV URI is required to be in this format:
-     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -96,9 +97,7 @@ public final class ServerKeyProperties {
 
     /**
      * Set the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     * The AKV URI is required to be in this format:
-     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ServerKeyProperties object itself.
      */
@@ -109,7 +108,7 @@ public final class ServerKeyProperties {
 
     /**
      * Get the thumbprint property: Thumbprint of the server key.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -118,7 +117,7 @@ public final class ServerKeyProperties {
 
     /**
      * Get the creationDate property: The server key creation date.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -127,7 +126,7 @@ public final class ServerKeyProperties {
 
     /**
      * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @return the autoRotationEnabled value.
      */
     public Boolean autoRotationEnabled() {
@@ -136,15 +135,14 @@ public final class ServerKeyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serverKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverKeyType in model ServerKeyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverKeyType in model ServerKeyProperties"));
         }
     }
 

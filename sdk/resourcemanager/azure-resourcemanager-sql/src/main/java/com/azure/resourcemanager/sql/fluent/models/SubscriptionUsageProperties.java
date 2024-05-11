@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a subscription usage. */
+/**
+ * Properties of a subscription usage.
+ */
 @Immutable
 public final class SubscriptionUsageProperties {
     /*
@@ -34,13 +36,15 @@ public final class SubscriptionUsageProperties {
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
-    /** Creates an instance of SubscriptionUsageProperties class. */
+    /**
+     * Creates an instance of SubscriptionUsageProperties class.
+     */
     public SubscriptionUsageProperties() {
     }
 
     /**
      * Get the displayName property: User-readable name of the metric.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -49,7 +53,7 @@ public final class SubscriptionUsageProperties {
 
     /**
      * Get the currentValue property: Current value of the metric.
-     *
+     * 
      * @return the currentValue value.
      */
     public Double currentValue() {
@@ -58,7 +62,7 @@ public final class SubscriptionUsageProperties {
 
     /**
      * Get the limit property: Boundary value of the metric.
-     *
+     * 
      * @return the limit value.
      */
     public Double limit() {
@@ -67,7 +71,7 @@ public final class SubscriptionUsageProperties {
 
     /**
      * Get the unit property: Unit of the metric.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -76,7 +80,7 @@ public final class SubscriptionUsageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

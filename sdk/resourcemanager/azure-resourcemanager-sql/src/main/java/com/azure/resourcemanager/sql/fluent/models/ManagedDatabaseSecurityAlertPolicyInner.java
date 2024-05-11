@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** A managed database security alert policy. */
+/**
+ * A managed database security alert policy.
+ */
 @Fluent
 public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource {
     /*
@@ -20,13 +22,15 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
     @JsonProperty(value = "properties")
     private SecurityAlertPolicyProperties innerProperties;
 
-    /** Creates an instance of ManagedDatabaseSecurityAlertPolicyInner class. */
+    /**
+     * Creates an instance of ManagedDatabaseSecurityAlertPolicyInner class.
+     */
     public ManagedDatabaseSecurityAlertPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityAlertPolicyProperties innerProperties() {
@@ -36,7 +40,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
     /**
      * Get the state property: Specifies the state of the policy, whether it is enabled or disabled or a policy has not
      * been applied yet on the specific database.
-     *
+     * 
      * @return the state value.
      */
     public SecurityAlertPolicyState state() {
@@ -46,7 +50,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
     /**
      * Set the state property: Specifies the state of the policy, whether it is enabled or disabled or a policy has not
      * been applied yet on the specific database.
-     *
+     * 
      * @param state the state value to set.
      * @return the ManagedDatabaseSecurityAlertPolicyInner object itself.
      */
@@ -61,7 +65,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
     /**
      * Get the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
      * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force.
-     *
+     * 
      * @return the disabledAlerts value.
      */
     public List<String> disabledAlerts() {
@@ -71,7 +75,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
     /**
      * Set the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values are:
      * Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force.
-     *
+     * 
      * @param disabledAlerts the disabledAlerts value to set.
      * @return the ManagedDatabaseSecurityAlertPolicyInner object itself.
      */
@@ -85,7 +89,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
 
     /**
      * Get the emailAddresses property: Specifies an array of e-mail addresses to which the alert is sent.
-     *
+     * 
      * @return the emailAddresses value.
      */
     public List<String> emailAddresses() {
@@ -94,7 +98,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
 
     /**
      * Set the emailAddresses property: Specifies an array of e-mail addresses to which the alert is sent.
-     *
+     * 
      * @param emailAddresses the emailAddresses value to set.
      * @return the ManagedDatabaseSecurityAlertPolicyInner object itself.
      */
@@ -108,7 +112,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
 
     /**
      * Get the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
-     *
+     * 
      * @return the emailAccountAdmins value.
      */
     public Boolean emailAccountAdmins() {
@@ -117,7 +121,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
 
     /**
      * Set the emailAccountAdmins property: Specifies that the alert is sent to the account administrators.
-     *
+     * 
      * @param emailAccountAdmins the emailAccountAdmins value to set.
      * @return the ManagedDatabaseSecurityAlertPolicyInner object itself.
      */
@@ -132,7 +136,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
     /**
      * Get the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
-     *
+     * 
      * @return the storageEndpoint value.
      */
     public String storageEndpoint() {
@@ -142,7 +146,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
     /**
      * Set the storageEndpoint property: Specifies the blob storage endpoint (e.g.
      * https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
-     *
+     * 
      * @param storageEndpoint the storageEndpoint value to set.
      * @return the ManagedDatabaseSecurityAlertPolicyInner object itself.
      */
@@ -157,7 +161,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
     /**
      * Get the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
      * account.
-     *
+     * 
      * @return the storageAccountAccessKey value.
      */
     public String storageAccountAccessKey() {
@@ -167,7 +171,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
     /**
      * Set the storageAccountAccessKey property: Specifies the identifier key of the Threat Detection audit storage
      * account.
-     *
+     * 
      * @param storageAccountAccessKey the storageAccountAccessKey value to set.
      * @return the ManagedDatabaseSecurityAlertPolicyInner object itself.
      */
@@ -181,7 +185,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
 
     /**
      * Get the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -190,7 +194,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
 
     /**
      * Set the retentionDays property: Specifies the number of days to keep in the Threat Detection audit logs.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the ManagedDatabaseSecurityAlertPolicyInner object itself.
      */
@@ -204,7 +208,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
 
     /**
      * Get the creationTime property: Specifies the UTC creation time of the policy.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -213,7 +217,7 @@ public final class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

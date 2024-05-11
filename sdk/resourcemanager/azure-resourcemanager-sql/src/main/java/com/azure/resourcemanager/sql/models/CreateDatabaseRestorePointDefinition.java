@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the information necessary to perform a create database restore point operation. */
+/**
+ * Contains the information necessary to perform a create database restore point operation.
+ */
 @Fluent
 public final class CreateDatabaseRestorePointDefinition {
     /*
@@ -17,13 +19,15 @@ public final class CreateDatabaseRestorePointDefinition {
     @JsonProperty(value = "restorePointLabel", required = true)
     private String restorePointLabel;
 
-    /** Creates an instance of CreateDatabaseRestorePointDefinition class. */
+    /**
+     * Creates an instance of CreateDatabaseRestorePointDefinition class.
+     */
     public CreateDatabaseRestorePointDefinition() {
     }
 
     /**
      * Get the restorePointLabel property: The restore point label to apply.
-     *
+     * 
      * @return the restorePointLabel value.
      */
     public String restorePointLabel() {
@@ -32,7 +36,7 @@ public final class CreateDatabaseRestorePointDefinition {
 
     /**
      * Set the restorePointLabel property: The restore point label to apply.
-     *
+     * 
      * @param restorePointLabel the restorePointLabel value to set.
      * @return the CreateDatabaseRestorePointDefinition object itself.
      */
@@ -43,15 +47,14 @@ public final class CreateDatabaseRestorePointDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (restorePointLabel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property restorePointLabel in model CreateDatabaseRestorePointDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property restorePointLabel in model CreateDatabaseRestorePointDefinition"));
         }
     }
 
