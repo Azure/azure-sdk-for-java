@@ -43,8 +43,8 @@ feature-management:
         -
           name: TimeWindowFilter
           parameters:
-            time-window-filter-setting-start: "Wed, 01 May 2019 13:59:59 GMT"
-            time-window-filter-setting-end: "Mon, 01 July 2019 00:00:00 GMT"
+            start: "Wed, 01 May 2019 13:59:59 GMT"
+            end: "Mon, 01 July 2019 00:00:00 GMT"
     feature-w:
       evaluate: false
       enabled-for:
@@ -182,7 +182,7 @@ feature-management:
 
 ### TimeWindowFilter
 
-This filter provides the capability to enable a feature based on a time window. If only `End` is specified, the feature will be considered on until that time. If only `Start` is specified, the feature will be considered on at all points after that time.
+This filter provides the capability to enable a feature based on a time window. If only `End` is specified, the feature will be considered on until that time. If only `Start` is specified, the feature will be considered on at all points after that time. If both are specified the feature will be considered valid between the two times.
 
 ```yaml
 feature-management:
@@ -209,7 +209,7 @@ feature-management:
          name: TimeWindowFilter
           parameters:
             start: "Fri, 22 Mar 2024 20:00:00 GMT",
-            end: "Mon, 01 July 2019 00:00:00 GMT",
+            end: "Sat, 23 Mar 2024 02:00:00 GMT",
             recurrence:
               pattern:
                 type: "Daily",
@@ -219,9 +219,10 @@ feature-management:
 ```
 
 The `Recurrence` settings is made up of two parts: `Pattern` (how often the time window will repeat) and `Range` (for how long the recurrence pattern will repeat).
+
 #### Recurrence Pattern
 
-There are two possible recurrence pattern types: `Daily` and `Weekly`. For example, a time window could repeat "every day", "every 3 days", "every Monday" or "on Friday per 2 weeks".
+There are two possible recurrence pattern types: `Daily` and `Weekly`. For example, a time window could repeat "every day", "every 3 days", "every Monday" or "every other Friday".
 
 Depending on the type, certain fields of the `Pattern` are required, optional, or ignored.
 
@@ -229,33 +230,37 @@ Depending on the type, certain fields of the `Pattern` are required, optional, o
 
   The daily recurrence pattern causes the time window to repeat based on a number of days between each occurrence.
 
-  | Property | Relevance | Description |
-      |----------|-----------|-------------|
-  | **Type** | Required | Must be set to `Daily`. |
-  | **Interval** | Optional | Specifies the number of days between each occurrence. Default value is 1. |
+  | Property | Relevance | Description                                                                                                                                                                                                                                              |
+      |----------|-----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+  | **Type** | Required | Must be set to `Daily`.                                                                                                                                                                                                                                  |
+  | **Interval** | Optional | Specifies the number of days between each start time of occurrence. Default value is 1. <br/>For example, if the interval is 1, and current occurrence is 2:00 AM ~ 3:00 AM on 2024/05/11, then the next occurrence should be 2:00 AM ~ 3:00 AM on 2024/05/12 |
 
-- `Weekly`
+  - `Weekly`
 
-  The weekly recurrence pattern causes the time window to repeat on the same day or days of the week, based on the number of weeks between each set of occurrences.
+    The weekly recurrence pattern causes the time window to repeat on the same day or days of the week, based on the number of weeks between each set of occurrences.
 
-  | Property | Relevance | Description |
-      |----------|-----------|-------------|
-  | **Type** | Required | Must be set to `Weekly`. |
-  | **DaysOfWeek** | Required | Specifies on which day(s) of the week the event occurs. |
-  | **Interval** | Optional | Specifies the number of weeks between each set of occurrences. Default value is 1. |
-  | **FirstDayOfWeek** | Optional | Specifies which day is considered the first day of the week. Default value is `Sunday`. |
+    | Property | Relevance | Description |
+        |----------|-----------|-------------|
+    | **Type** | Required | Must be set to `Weekly`. |
+    | **DaysOfWeek** | Required | Specifies on which day(s) of the week the event occurs. |
+    | **Interval** | Optional | Specifies the number of weeks between each set of occurrences. Default value is 1. |
+    | **FirstDayOfWeek** | Optional | Specifies which day is considered the first day of the week. Default value is `Sunday`. |
 
-  The following example will repeat the time window every other Monday and Tuesday
+    The following example will repeat from 2:00 AM to 3:00 AM on every other Monday and Tuesday
 
-    ```yaml
-    pattern:
-        type: "Weekly",
-        interval: 1,
-        daysOfWeek: 
-          - Monday
-          - TuesDay
-    ```
-  **Note:** `Start` must be a valid first occurrence which fits the recurrence pattern. Additionally, the duration of the time window cannot be longer than how frequently it occurs. For example, it is invalid to have a 25-hour time window recur every day.
+      ```yaml
+      start: "Mon, 13 May 2024 02:00:00 GMT",
+      end: "Mon, 13 May 2024 03:00:00 GMT","
+      pattern:
+          type: "Weekly",
+          interval: 1,
+          daysOfWeek: 
+            - Monday
+            - Tuesday
+      range:
+        type: "NoEnd"
+      ```
+    **Note:** `Start` must be a valid first occurrence which fits the recurrence pattern. For example, if we define to repeat on every other Monday and Tuesday, then the start time should be in Monday or Tuesday. </br> Additionally, the duration of the time window cannot be longer than how frequently it occurs. For example, it is invalid to have a 25-hour time window recur every day.
 
 #### Recurrence Range
 
@@ -312,7 +317,7 @@ There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered
         interval: 1
         daysOfWeek:
             - Monday
-            - TuesDay
+            - Tuesday
       range:
         type: "Numbered",
         numberOfOccurrences: 3
