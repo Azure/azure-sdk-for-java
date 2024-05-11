@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.ServerConnectionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a server connection policy. */
+/**
+ * The properties of a server connection policy.
+ */
 @Fluent
 public final class ServerConnectionPolicyProperties {
     /*
@@ -18,13 +20,15 @@ public final class ServerConnectionPolicyProperties {
     @JsonProperty(value = "connectionType", required = true)
     private ServerConnectionType connectionType;
 
-    /** Creates an instance of ServerConnectionPolicyProperties class. */
+    /**
+     * Creates an instance of ServerConnectionPolicyProperties class.
+     */
     public ServerConnectionPolicyProperties() {
     }
 
     /**
      * Get the connectionType property: The server connection type.
-     *
+     * 
      * @return the connectionType value.
      */
     public ServerConnectionType connectionType() {
@@ -33,7 +37,7 @@ public final class ServerConnectionPolicyProperties {
 
     /**
      * Set the connectionType property: The server connection type.
-     *
+     * 
      * @param connectionType the connectionType value to set.
      * @return the ServerConnectionPolicyProperties object itself.
      */
@@ -44,15 +48,14 @@ public final class ServerConnectionPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionType in model ServerConnectionPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionType in model ServerConnectionPolicyProperties"));
         }
     }
 

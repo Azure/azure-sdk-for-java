@@ -11,12 +11,21 @@ import com.azure.resourcemanager.sql.models.InstanceFailoverGroupReadWriteEndpoi
 import com.azure.resourcemanager.sql.models.InstanceFailoverGroupReplicationRole;
 import com.azure.resourcemanager.sql.models.ManagedInstancePairInfo;
 import com.azure.resourcemanager.sql.models.PartnerRegionInfo;
+import com.azure.resourcemanager.sql.models.SecondaryInstanceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a instance failover group. */
+/**
+ * Properties of a instance failover group.
+ */
 @Fluent
 public final class InstanceFailoverGroupProperties {
+    /*
+     * Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR option only.
+     */
+    @JsonProperty(value = "secondaryType")
+    private SecondaryInstanceType secondaryType;
+
     /*
      * Read-write endpoint of the failover group instance.
      */
@@ -53,13 +62,37 @@ public final class InstanceFailoverGroupProperties {
     @JsonProperty(value = "managedInstancePairs", required = true)
     private List<ManagedInstancePairInfo> managedInstancePairs;
 
-    /** Creates an instance of InstanceFailoverGroupProperties class. */
+    /**
+     * Creates an instance of InstanceFailoverGroupProperties class.
+     */
     public InstanceFailoverGroupProperties() {
     }
 
     /**
+     * Get the secondaryType property: Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR
+     * option only.
+     * 
+     * @return the secondaryType value.
+     */
+    public SecondaryInstanceType secondaryType() {
+        return this.secondaryType;
+    }
+
+    /**
+     * Set the secondaryType property: Type of the geo-secondary instance. Set 'Standby' if the instance is used as a DR
+     * option only.
+     * 
+     * @param secondaryType the secondaryType value to set.
+     * @return the InstanceFailoverGroupProperties object itself.
+     */
+    public InstanceFailoverGroupProperties withSecondaryType(SecondaryInstanceType secondaryType) {
+        this.secondaryType = secondaryType;
+        return this;
+    }
+
+    /**
      * Get the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @return the readWriteEndpoint value.
      */
     public InstanceFailoverGroupReadWriteEndpoint readWriteEndpoint() {
@@ -68,19 +101,19 @@ public final class InstanceFailoverGroupProperties {
 
     /**
      * Set the readWriteEndpoint property: Read-write endpoint of the failover group instance.
-     *
+     * 
      * @param readWriteEndpoint the readWriteEndpoint value to set.
      * @return the InstanceFailoverGroupProperties object itself.
      */
-    public InstanceFailoverGroupProperties withReadWriteEndpoint(
-        InstanceFailoverGroupReadWriteEndpoint readWriteEndpoint) {
+    public InstanceFailoverGroupProperties
+        withReadWriteEndpoint(InstanceFailoverGroupReadWriteEndpoint readWriteEndpoint) {
         this.readWriteEndpoint = readWriteEndpoint;
         return this;
     }
 
     /**
      * Get the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @return the readOnlyEndpoint value.
      */
     public InstanceFailoverGroupReadOnlyEndpoint readOnlyEndpoint() {
@@ -89,19 +122,19 @@ public final class InstanceFailoverGroupProperties {
 
     /**
      * Set the readOnlyEndpoint property: Read-only endpoint of the failover group instance.
-     *
+     * 
      * @param readOnlyEndpoint the readOnlyEndpoint value to set.
      * @return the InstanceFailoverGroupProperties object itself.
      */
-    public InstanceFailoverGroupProperties withReadOnlyEndpoint(
-        InstanceFailoverGroupReadOnlyEndpoint readOnlyEndpoint) {
+    public InstanceFailoverGroupProperties
+        withReadOnlyEndpoint(InstanceFailoverGroupReadOnlyEndpoint readOnlyEndpoint) {
         this.readOnlyEndpoint = readOnlyEndpoint;
         return this;
     }
 
     /**
      * Get the replicationRole property: Local replication role of the failover group instance.
-     *
+     * 
      * @return the replicationRole value.
      */
     public InstanceFailoverGroupReplicationRole replicationRole() {
@@ -110,7 +143,7 @@ public final class InstanceFailoverGroupProperties {
 
     /**
      * Get the replicationState property: Replication state of the failover group instance.
-     *
+     * 
      * @return the replicationState value.
      */
     public String replicationState() {
@@ -119,7 +152,7 @@ public final class InstanceFailoverGroupProperties {
 
     /**
      * Get the partnerRegions property: Partner region information for the failover group.
-     *
+     * 
      * @return the partnerRegions value.
      */
     public List<PartnerRegionInfo> partnerRegions() {
@@ -128,7 +161,7 @@ public final class InstanceFailoverGroupProperties {
 
     /**
      * Set the partnerRegions property: Partner region information for the failover group.
-     *
+     * 
      * @param partnerRegions the partnerRegions value to set.
      * @return the InstanceFailoverGroupProperties object itself.
      */
@@ -139,7 +172,7 @@ public final class InstanceFailoverGroupProperties {
 
     /**
      * Get the managedInstancePairs property: List of managed instance pairs in the failover group.
-     *
+     * 
      * @return the managedInstancePairs value.
      */
     public List<ManagedInstancePairInfo> managedInstancePairs() {
@@ -148,27 +181,26 @@ public final class InstanceFailoverGroupProperties {
 
     /**
      * Set the managedInstancePairs property: List of managed instance pairs in the failover group.
-     *
+     * 
      * @param managedInstancePairs the managedInstancePairs value to set.
      * @return the InstanceFailoverGroupProperties object itself.
      */
-    public InstanceFailoverGroupProperties withManagedInstancePairs(
-        List<ManagedInstancePairInfo> managedInstancePairs) {
+    public InstanceFailoverGroupProperties
+        withManagedInstancePairs(List<ManagedInstancePairInfo> managedInstancePairs) {
         this.managedInstancePairs = managedInstancePairs;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (readWriteEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property readWriteEndpoint in model InstanceFailoverGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property readWriteEndpoint in model InstanceFailoverGroupProperties"));
         } else {
             readWriteEndpoint().validate();
         }
@@ -176,18 +208,16 @@ public final class InstanceFailoverGroupProperties {
             readOnlyEndpoint().validate();
         }
         if (partnerRegions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property partnerRegions in model InstanceFailoverGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property partnerRegions in model InstanceFailoverGroupProperties"));
         } else {
             partnerRegions().forEach(e -> e.validate());
         }
         if (managedInstancePairs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managedInstancePairs in model InstanceFailoverGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property managedInstancePairs in model InstanceFailoverGroupProperties"));
         } else {
             managedInstancePairs().forEach(e -> e.validate());
         }

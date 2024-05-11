@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** An Azure SQL virtual cluster. */
+/**
+ * An Azure SQL virtual cluster.
+ */
 @Fluent
 public final class VirtualClusterInner extends Resource {
     /*
@@ -19,27 +21,33 @@ public final class VirtualClusterInner extends Resource {
     @JsonProperty(value = "properties")
     private VirtualClusterProperties innerProperties;
 
-    /** Creates an instance of VirtualClusterInner class. */
+    /**
+     * Creates an instance of VirtualClusterInner class.
+     */
     public VirtualClusterInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualClusterProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class VirtualClusterInner extends Resource {
 
     /**
      * Get the subnetId property: Subnet resource ID for the virtual cluster.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -56,33 +64,31 @@ public final class VirtualClusterInner extends Resource {
     }
 
     /**
-     * Get the family property: If the service has different generations of hardware, for the same SKU, then that can be
-     * captured here.
-     *
-     * @return the family value.
+     * Get the version property: Virtual cluster version.
+     * 
+     * @return the version value.
      */
-    public String family() {
-        return this.innerProperties() == null ? null : this.innerProperties().family();
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
-     * Set the family property: If the service has different generations of hardware, for the same SKU, then that can be
-     * captured here.
-     *
-     * @param family the family value to set.
+     * Set the version property: Virtual cluster version.
+     * 
+     * @param version the version value to set.
      * @return the VirtualClusterInner object itself.
      */
-    public VirtualClusterInner withFamily(String family) {
+    public VirtualClusterInner withVersion(String version) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualClusterProperties();
         }
-        this.innerProperties().withFamily(family);
+        this.innerProperties().withVersion(version);
         return this;
     }
 
     /**
      * Get the childResources property: List of resources in this virtual cluster.
-     *
+     * 
      * @return the childResources value.
      */
     public List<String> childResources() {
@@ -90,33 +96,8 @@ public final class VirtualClusterInner extends Resource {
     }
 
     /**
-     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
-     * cluster.
-     *
-     * @return the maintenanceConfigurationId value.
-     */
-    public String maintenanceConfigurationId() {
-        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
-    }
-
-    /**
-     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this virtual
-     * cluster.
-     *
-     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
-     * @return the VirtualClusterInner object itself.
-     */
-    public VirtualClusterInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VirtualClusterProperties();
-        }
-        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

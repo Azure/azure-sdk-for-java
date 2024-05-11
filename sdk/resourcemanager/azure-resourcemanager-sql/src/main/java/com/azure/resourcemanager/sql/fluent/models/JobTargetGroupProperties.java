@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.JobTarget;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of job target group. */
+/**
+ * Properties of job target group.
+ */
 @Fluent
 public final class JobTargetGroupProperties {
     /*
@@ -19,13 +21,15 @@ public final class JobTargetGroupProperties {
     @JsonProperty(value = "members", required = true)
     private List<JobTarget> members;
 
-    /** Creates an instance of JobTargetGroupProperties class. */
+    /**
+     * Creates an instance of JobTargetGroupProperties class.
+     */
     public JobTargetGroupProperties() {
     }
 
     /**
      * Get the members property: Members of the target group.
-     *
+     * 
      * @return the members value.
      */
     public List<JobTarget> members() {
@@ -34,7 +38,7 @@ public final class JobTargetGroupProperties {
 
     /**
      * Set the members property: Members of the target group.
-     *
+     * 
      * @param members the members value to set.
      * @return the JobTargetGroupProperties object itself.
      */
@@ -45,15 +49,14 @@ public final class JobTargetGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (members() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property members in model JobTargetGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property members in model JobTargetGroupProperties"));
         } else {
             members().forEach(e -> e.validate());
         }

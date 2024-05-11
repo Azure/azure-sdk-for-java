@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.TopQueriesInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of top resource consuming queries on managed instance. */
+/**
+ * A list of top resource consuming queries on managed instance.
+ */
 @Immutable
 public final class TopQueriesListResult {
     /*
@@ -24,13 +26,15 @@ public final class TopQueriesListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of TopQueriesListResult class. */
+    /**
+     * Creates an instance of TopQueriesListResult class.
+     */
     public TopQueriesListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<TopQueriesInner> value() {
@@ -39,7 +43,7 @@ public final class TopQueriesListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class TopQueriesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

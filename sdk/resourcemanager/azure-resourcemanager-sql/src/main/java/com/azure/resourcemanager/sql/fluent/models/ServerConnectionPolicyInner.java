@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.ServerConnectionType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A server connection policy. */
+/**
+ * A server connection policy.
+ */
 @Fluent
 public final class ServerConnectionPolicyInner extends ProxyResource {
     /*
@@ -30,13 +32,15 @@ public final class ServerConnectionPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ServerConnectionPolicyProperties innerProperties;
 
-    /** Creates an instance of ServerConnectionPolicyInner class. */
+    /**
+     * Creates an instance of ServerConnectionPolicyInner class.
+     */
     public ServerConnectionPolicyInner() {
     }
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -45,7 +49,7 @@ public final class ServerConnectionPolicyInner extends ProxyResource {
 
     /**
      * Get the kind property: Metadata used for the Azure portal experience.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -54,7 +58,7 @@ public final class ServerConnectionPolicyInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerConnectionPolicyProperties innerProperties() {
@@ -63,7 +67,7 @@ public final class ServerConnectionPolicyInner extends ProxyResource {
 
     /**
      * Get the connectionType property: The server connection type.
-     *
+     * 
      * @return the connectionType value.
      */
     public ServerConnectionType connectionType() {
@@ -72,7 +76,7 @@ public final class ServerConnectionPolicyInner extends ProxyResource {
 
     /**
      * Set the connectionType property: The server connection type.
-     *
+     * 
      * @param connectionType the connectionType value to set.
      * @return the ServerConnectionPolicyInner object itself.
      */
@@ -86,7 +90,7 @@ public final class ServerConnectionPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

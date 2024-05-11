@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.IPv6FirewallRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response to a list IPv6 firewall rules request. */
+/**
+ * The response to a list IPv6 firewall rules request.
+ */
 @Immutable
 public final class IPv6FirewallRuleListResult {
     /*
@@ -24,13 +26,15 @@ public final class IPv6FirewallRuleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of IPv6FirewallRuleListResult class. */
+    /**
+     * Creates an instance of IPv6FirewallRuleListResult class.
+     */
     public IPv6FirewallRuleListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<IPv6FirewallRuleInner> value() {
@@ -39,7 +43,7 @@ public final class IPv6FirewallRuleListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class IPv6FirewallRuleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

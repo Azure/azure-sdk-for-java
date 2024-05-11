@@ -13,35 +13,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties for a Database, Server or Elastic Pool Advisor. */
+/**
+ * Properties for a Database, Server or Elastic Pool Advisor.
+ */
 @Fluent
 public final class AdvisorProperties {
     /*
-     * Gets the status of availability of this advisor to customers. Possible values are 'GA', 'PublicPreview',
-     * 'LimitedPublicPreview' and 'PrivatePreview'.
+     * Gets the status of availability of this advisor to customers. Possible values are 'GA', 'PublicPreview', 'LimitedPublicPreview' and 'PrivatePreview'.
      */
     @JsonProperty(value = "advisorStatus", access = JsonProperty.Access.WRITE_ONLY)
     private AdvisorStatus advisorStatus;
 
     /*
-     * Gets the auto-execute status (whether to let the system execute the recommendations) of this advisor. Possible
-     * values are 'Enabled' and 'Disabled'
+     * Gets the auto-execute status (whether to let the system execute the recommendations) of this advisor. Possible values are 'Enabled' and 'Disabled'
      */
     @JsonProperty(value = "autoExecuteStatus", required = true)
     private AutoExecuteStatus autoExecuteStatus;
 
     /*
-     * Gets the resource from which current value of auto-execute status is inherited. Auto-execute status can be set
-     * on (and inherited from) different levels in the resource hierarchy. Possible values are 'Subscription',
-     * 'Server', 'ElasticPool', 'Database' and 'Default' (when status is not explicitly set on any level).
+     * Gets the resource from which current value of auto-execute status is inherited. Auto-execute status can be set on (and inherited from) different levels in the resource hierarchy. Possible values are 'Subscription', 'Server', 'ElasticPool', 'Database' and 'Default' (when status is not explicitly set on any level).
      */
     @JsonProperty(value = "autoExecuteStatusInheritedFrom", access = JsonProperty.Access.WRITE_ONLY)
     private AutoExecuteStatusInheritedFrom autoExecuteStatusInheritedFrom;
 
     /*
-     * Gets that status of recommendations for this advisor and reason for not having any recommendations. Possible
-     * values include, but are not limited to, 'Ok' (Recommendations available),LowActivity (not enough workload to
-     * analyze), 'DbSeemsTuned' (Database is doing well), etc.
+     * Gets that status of recommendations for this advisor and reason for not having any recommendations. Possible values include, but are not limited to, 'Ok' (Recommendations available),LowActivity (not enough workload to analyze), 'DbSeemsTuned' (Database is doing well), etc.
      */
     @JsonProperty(value = "recommendationsStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String recommendationsStatus;
@@ -58,14 +54,16 @@ public final class AdvisorProperties {
     @JsonProperty(value = "recommendedActions", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecommendedActionInner> recommendedActions;
 
-    /** Creates an instance of AdvisorProperties class. */
+    /**
+     * Creates an instance of AdvisorProperties class.
+     */
     public AdvisorProperties() {
     }
 
     /**
      * Get the advisorStatus property: Gets the status of availability of this advisor to customers. Possible values are
      * 'GA', 'PublicPreview', 'LimitedPublicPreview' and 'PrivatePreview'.
-     *
+     * 
      * @return the advisorStatus value.
      */
     public AdvisorStatus advisorStatus() {
@@ -75,7 +73,7 @@ public final class AdvisorProperties {
     /**
      * Get the autoExecuteStatus property: Gets the auto-execute status (whether to let the system execute the
      * recommendations) of this advisor. Possible values are 'Enabled' and 'Disabled'.
-     *
+     * 
      * @return the autoExecuteStatus value.
      */
     public AutoExecuteStatus autoExecuteStatus() {
@@ -85,7 +83,7 @@ public final class AdvisorProperties {
     /**
      * Set the autoExecuteStatus property: Gets the auto-execute status (whether to let the system execute the
      * recommendations) of this advisor. Possible values are 'Enabled' and 'Disabled'.
-     *
+     * 
      * @param autoExecuteStatus the autoExecuteStatus value to set.
      * @return the AdvisorProperties object itself.
      */
@@ -99,7 +97,7 @@ public final class AdvisorProperties {
      * status is inherited. Auto-execute status can be set on (and inherited from) different levels in the resource
      * hierarchy. Possible values are 'Subscription', 'Server', 'ElasticPool', 'Database' and 'Default' (when status is
      * not explicitly set on any level).
-     *
+     * 
      * @return the autoExecuteStatusInheritedFrom value.
      */
     public AutoExecuteStatusInheritedFrom autoExecuteStatusInheritedFrom() {
@@ -110,7 +108,7 @@ public final class AdvisorProperties {
      * Get the recommendationsStatus property: Gets that status of recommendations for this advisor and reason for not
      * having any recommendations. Possible values include, but are not limited to, 'Ok' (Recommendations
      * available),LowActivity (not enough workload to analyze), 'DbSeemsTuned' (Database is doing well), etc.
-     *
+     * 
      * @return the recommendationsStatus value.
      */
     public String recommendationsStatus() {
@@ -120,7 +118,7 @@ public final class AdvisorProperties {
     /**
      * Get the lastChecked property: Gets the time when the current resource was analyzed for recommendations by this
      * advisor.
-     *
+     * 
      * @return the lastChecked value.
      */
     public OffsetDateTime lastChecked() {
@@ -129,7 +127,7 @@ public final class AdvisorProperties {
 
     /**
      * Get the recommendedActions property: Gets the recommended actions for this advisor.
-     *
+     * 
      * @return the recommendedActions value.
      */
     public List<RecommendedActionInner> recommendedActions() {
@@ -138,15 +136,14 @@ public final class AdvisorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (autoExecuteStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property autoExecuteStatus in model AdvisorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property autoExecuteStatus in model AdvisorProperties"));
         }
         if (recommendedActions() != null) {
             recommendedActions().forEach(e -> e.validate());

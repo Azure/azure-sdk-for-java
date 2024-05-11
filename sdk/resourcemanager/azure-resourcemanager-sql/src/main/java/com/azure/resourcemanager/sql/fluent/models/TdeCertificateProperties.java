@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a TDE certificate. */
+/**
+ * Properties of a TDE certificate.
+ */
 @Fluent
 public final class TdeCertificateProperties {
     /*
@@ -23,13 +25,15 @@ public final class TdeCertificateProperties {
     @JsonProperty(value = "certPassword")
     private String certPassword;
 
-    /** Creates an instance of TdeCertificateProperties class. */
+    /**
+     * Creates an instance of TdeCertificateProperties class.
+     */
     public TdeCertificateProperties() {
     }
 
     /**
      * Get the privateBlob property: The base64 encoded certificate private blob.
-     *
+     * 
      * @return the privateBlob value.
      */
     public String privateBlob() {
@@ -38,7 +42,7 @@ public final class TdeCertificateProperties {
 
     /**
      * Set the privateBlob property: The base64 encoded certificate private blob.
-     *
+     * 
      * @param privateBlob the privateBlob value to set.
      * @return the TdeCertificateProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class TdeCertificateProperties {
 
     /**
      * Get the certPassword property: The certificate password.
-     *
+     * 
      * @return the certPassword value.
      */
     public String certPassword() {
@@ -58,7 +62,7 @@ public final class TdeCertificateProperties {
 
     /**
      * Set the certPassword property: The certificate password.
-     *
+     * 
      * @param certPassword the certPassword value to set.
      * @return the TdeCertificateProperties object itself.
      */
@@ -69,15 +73,14 @@ public final class TdeCertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (privateBlob() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateBlob in model TdeCertificateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property privateBlob in model TdeCertificateProperties"));
         }
     }
 

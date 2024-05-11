@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a managed server DNS alias. */
+/**
+ * Properties of a managed server DNS alias.
+ */
 @Immutable
 public final class ManagedServerDnsAliasProperties {
     /*
@@ -22,13 +24,15 @@ public final class ManagedServerDnsAliasProperties {
     @JsonProperty(value = "publicAzureDnsRecord", access = JsonProperty.Access.WRITE_ONLY)
     private String publicAzureDnsRecord;
 
-    /** Creates an instance of ManagedServerDnsAliasProperties class. */
+    /**
+     * Creates an instance of ManagedServerDnsAliasProperties class.
+     */
     public ManagedServerDnsAliasProperties() {
     }
 
     /**
      * Get the azureDnsRecord property: The fully qualified DNS record for managed server alias.
-     *
+     * 
      * @return the azureDnsRecord value.
      */
     public String azureDnsRecord() {
@@ -37,7 +41,7 @@ public final class ManagedServerDnsAliasProperties {
 
     /**
      * Get the publicAzureDnsRecord property: The fully qualified public DNS record for managed server alias.
-     *
+     * 
      * @return the publicAzureDnsRecord value.
      */
     public String publicAzureDnsRecord() {
@@ -46,7 +50,7 @@ public final class ManagedServerDnsAliasProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

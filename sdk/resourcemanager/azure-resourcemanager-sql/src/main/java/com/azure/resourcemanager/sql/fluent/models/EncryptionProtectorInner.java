@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The server encryption protector. */
+/**
+ * The server encryption protector.
+ */
 @Fluent
 public final class EncryptionProtectorInner extends ProxyResource {
     /*
@@ -30,13 +32,15 @@ public final class EncryptionProtectorInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private EncryptionProtectorProperties innerProperties;
 
-    /** Creates an instance of EncryptionProtectorInner class. */
+    /**
+     * Creates an instance of EncryptionProtectorInner class.
+     */
     public EncryptionProtectorInner() {
     }
 
     /**
      * Get the kind property: Kind of encryption protector. This is metadata used for the Azure portal experience.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -45,7 +49,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -54,7 +58,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EncryptionProtectorProperties innerProperties() {
@@ -63,7 +67,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Get the subregion property: Subregion of the encryption protector.
-     *
+     * 
      * @return the subregion value.
      */
     public String subregion() {
@@ -72,7 +76,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Get the serverKeyName property: The name of the server key.
-     *
+     * 
      * @return the serverKeyName value.
      */
     public String serverKeyName() {
@@ -81,7 +85,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Set the serverKeyName property: The name of the server key.
-     *
+     * 
      * @param serverKeyName the serverKeyName value to set.
      * @return the EncryptionProtectorInner object itself.
      */
@@ -95,7 +99,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Get the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -104,7 +108,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Set the serverKeyType property: The encryption protector type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the EncryptionProtectorInner object itself.
      */
@@ -118,7 +122,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Get the uri property: The URI of the server key.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -127,7 +131,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Get the thumbprint property: Thumbprint of the server key.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -136,7 +140,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @return the autoRotationEnabled value.
      */
     public Boolean autoRotationEnabled() {
@@ -145,7 +149,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Set the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @param autoRotationEnabled the autoRotationEnabled value to set.
      * @return the EncryptionProtectorInner object itself.
      */
@@ -159,7 +163,7 @@ public final class EncryptionProtectorInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
