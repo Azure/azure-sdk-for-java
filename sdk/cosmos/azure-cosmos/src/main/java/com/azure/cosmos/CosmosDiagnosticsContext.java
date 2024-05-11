@@ -314,7 +314,7 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
-    public Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics() {
+    Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics() {
         DistinctClientSideRequestStatisticsCollection combinedClientSideRequestStatistics =
             new DistinctClientSideRequestStatisticsCollection();
         for (CosmosDiagnostics diagnostics: this.getDiagnostics()) {
