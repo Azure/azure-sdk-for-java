@@ -270,7 +270,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             Utils.ValueHolder<ResourceId> resourceId = Utils.ValueHolder.initialize(null);
             Utils.ValueHolder<String> collectionName = Utils.ValueHolder.initialize(null);
 
-            if (shouldUpdateSessionToken(request, responseHeaders, resourceId, collectionName)) {
+            if (SessionContainerUtil.shouldUpdateSessionToken(request, responseHeaders, resourceId, collectionName)) {
                 this.setSessionToken(request, resourceId.v, collectionName.v, token);
             }
         }
@@ -482,41 +482,6 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         }
 
         return result.toString();
-    }
-
-    private boolean shouldUpdateSessionToken(
-        RxDocumentServiceRequest request,
-        Map<String, String> responseHeaders,
-        Utils.ValueHolder<ResourceId> resourceId,
-        Utils.ValueHolder<String> collectionName) {
-
-        resourceId.v = null;
-        String ownerFullName = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
-
-        if (Strings.isNullOrEmpty(ownerFullName)) {
-            ownerFullName = request.getResourceAddress();
-        }
-
-        collectionName.v = PathsHelper.getCollectionPath(ownerFullName);
-        String resourceIdString;
-
-        if (!request.getIsNameBased()) {
-            resourceIdString = request.getResourceId();
-        } else {
-            resourceIdString = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
-            if (Strings.isNullOrEmpty(resourceIdString)) resourceIdString = request.getResourceId();
-        }
-
-        if (!Strings.isNullOrEmpty(resourceIdString)) {
-            resourceId.v = ResourceId.parse(resourceIdString);
-
-            if (resourceId.v.getDocumentCollection() != 0
-                && !ReplicatedResourceClientUtils.isReadingFromMaster(request.getResourceType(), request.getOperationType())) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     // validate whether the request can be scoped to a logical partition

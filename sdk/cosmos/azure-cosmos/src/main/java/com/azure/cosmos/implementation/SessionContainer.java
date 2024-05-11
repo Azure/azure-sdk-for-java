@@ -183,7 +183,7 @@ public final class SessionContainer implements ISessionContainer {
             ValueHolder<ResourceId> resourceId = ValueHolder.initialize(null);
             ValueHolder<String> collectionName = ValueHolder.initialize(null);
 
-            if (shouldUpdateSessionToken(request, responseHeaders, resourceId, collectionName)) {
+            if (SessionContainerUtil.shouldUpdateSessionToken(request, responseHeaders, resourceId, collectionName)) {
                 this.setSessionToken(resourceId.v, collectionName.v, token);
             }
         }
@@ -312,36 +312,5 @@ public final class SessionContainer implements ISessionContainer {
         }
 
         return result.toString();
-    }
-
-    private static boolean shouldUpdateSessionToken(
-            RxDocumentServiceRequest request,
-            Map<String, String> responseHeaders,
-            ValueHolder<ResourceId> resourceId,
-            ValueHolder<String> collectionName) {
-        resourceId.v = null;
-        String ownerFullName = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
-        if (Strings.isNullOrEmpty(ownerFullName)) ownerFullName = request.getResourceAddress();
-
-        collectionName.v = PathsHelper.getCollectionPath(ownerFullName);
-        String resourceIdString;
-
-        if (!request.getIsNameBased()) {
-            resourceIdString = request.getResourceId();
-        } else {
-            resourceIdString = responseHeaders.get(HttpConstants.HttpHeaders.OWNER_ID);
-            if (Strings.isNullOrEmpty(resourceIdString)) resourceIdString = request.getResourceId();
-        }
-
-        if (!Strings.isNullOrEmpty(resourceIdString)) {
-            resourceId.v = ResourceId.parse(resourceIdString);
-
-            if (resourceId.v.getDocumentCollection() != 0
-                && !ReplicatedResourceClientUtils.isReadingFromMaster(request.getResourceType(), request.getOperationType())) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
