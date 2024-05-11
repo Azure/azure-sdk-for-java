@@ -17,28 +17,28 @@ public final class StandbyVirtualMachinePoolResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyVirtualMachinePoolResourceUpdate model = BinaryData.fromString(
-            "{\"tags\":{\"ciqihnhung\":\"v\",\"mvtzfkufub\":\"wjzrnfygxgisp\",\"fjaeq\":\"jofxqe\"},\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":7676897181515650802},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"msmjqulngsntn\"}}")
+            "{\"tags\":{\"tnapczwlokjyemkk\":\"ejhkry\",\"joxzjnchgejspodm\":\"ni\"},\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":3873613065529551563},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"o\"}}")
             .toObject(StandbyVirtualMachinePoolResourceUpdate.class);
-        Assertions.assertEquals("v", model.tags().get("ciqihnhung"));
-        Assertions.assertEquals(7676897181515650802L, model.properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals("ejhkry", model.tags().get("tnapczwlokjyemkk"));
+        Assertions.assertEquals(3873613065529551563L, model.properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(VirtualMachineState.RUNNING, model.properties().virtualMachineState());
-        Assertions.assertEquals("msmjqulngsntn", model.properties().attachedVirtualMachineScaleSetId());
+        Assertions.assertEquals("o", model.properties().attachedVirtualMachineScaleSetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StandbyVirtualMachinePoolResourceUpdate model = new StandbyVirtualMachinePoolResourceUpdate()
-            .withTags(mapOf("ciqihnhung", "v", "mvtzfkufub", "wjzrnfygxgisp", "fjaeq", "jofxqe"))
+            .withTags(mapOf("tnapczwlokjyemkk", "ejhkry", "joxzjnchgejspodm", "ni"))
             .withProperties(new StandbyVirtualMachinePoolResourceUpdateProperties()
                 .withElasticityProfile(
-                    new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(7676897181515650802L))
+                    new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(3873613065529551563L))
                 .withVirtualMachineState(VirtualMachineState.RUNNING)
-                .withAttachedVirtualMachineScaleSetId("msmjqulngsntn"));
+                .withAttachedVirtualMachineScaleSetId("o"));
         model = BinaryData.fromObject(model).toObject(StandbyVirtualMachinePoolResourceUpdate.class);
-        Assertions.assertEquals("v", model.tags().get("ciqihnhung"));
-        Assertions.assertEquals(7676897181515650802L, model.properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals("ejhkry", model.tags().get("tnapczwlokjyemkk"));
+        Assertions.assertEquals(3873613065529551563L, model.properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(VirtualMachineState.RUNNING, model.properties().virtualMachineState());
-        Assertions.assertEquals("msmjqulngsntn", model.properties().attachedVirtualMachineScaleSetId());
+        Assertions.assertEquals("o", model.properties().attachedVirtualMachineScaleSetId());
     }
 
     // Use "Map.of" if available

@@ -12,9 +12,9 @@ public final class StandbyVirtualMachineResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyVirtualMachineResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"virtualMachineResourceId\":\"htqqrolfp\",\"provisioningState\":\"Succeeded\"},\"id\":\"lgbquxig\",\"name\":\"yjgzjaoyfhrtxiln\",\"type\":\"rkujy\"},{\"properties\":{\"virtualMachineResourceId\":\"l\",\"provisioningState\":\"Canceled\"},\"id\":\"fqawrlyxw\",\"name\":\"kcprbnw\",\"type\":\"xgjvtbv\"},{\"properties\":{\"virtualMachineResourceId\":\"sszdnru\",\"provisioningState\":\"Canceled\"},\"id\":\"hmuouqfprwzwbn\",\"name\":\"uitnwuiz\",\"type\":\"a\"},{\"properties\":{\"virtualMachineResourceId\":\"ufizuckyf\",\"provisioningState\":\"Canceled\"},\"id\":\"idf\",\"name\":\"zwdzuh\",\"type\":\"ymwisdkft\"}],\"nextLink\":\"xmnteiwaop\"}")
+            "{\"value\":[{\"properties\":{\"virtualMachineResourceId\":\"appd\",\"provisioningState\":\"Canceled\"},\"id\":\"vwrwj\",\"name\":\"eusnhutj\",\"type\":\"ltmrldh\"},{\"properties\":{\"virtualMachineResourceId\":\"jzzd\",\"provisioningState\":\"Deleting\"},\"id\":\"hocdgeab\",\"name\":\"gphuticndvka\",\"type\":\"zwyiftyhxhur\"}],\"nextLink\":\"ftyxolniw\"}")
             .toObject(StandbyVirtualMachineResourceListResult.class);
-        Assertions.assertEquals("htqqrolfp", model.value().get(0).properties().virtualMachineResourceId());
-        Assertions.assertEquals("xmnteiwaop", model.nextLink());
+        Assertions.assertEquals("appd", model.value().get(0).properties().virtualMachineResourceId());
+        Assertions.assertEquals("ftyxolniw", model.nextLink());
     }
 }

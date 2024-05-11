@@ -22,7 +22,7 @@ public final class StandbyContainerGroupPoolsGetByResourceGroupWithResponseMockT
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":4532715785375119177,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"deyeamdphagalpbu\",\"revision\":2600796918340989976},\"subnetIds\":[{\"id\":\"honowkgshwank\"},{\"id\":\"xzbinjeputt\"}]},\"provisioningState\":\"Failed\"},\"location\":\"nuzo\",\"tags\":{\"qvyxlwhzlsicoho\":\"iyqzrnk\",\"w\":\"qnwvlrya\",\"mqhgyxzkonocuk\":\"heun\"},\"id\":\"klyaxuconu\",\"name\":\"szfkbe\",\"type\":\"pewr\"}";
+            = "{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":2005682789733735628,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"fuaxbe\",\"revision\":1834993457183141824},\"subnetIds\":[{\"id\":\"ktwh\"},{\"id\":\"dxwzywqsmbsurexi\"},{\"id\":\"o\"}]},\"provisioningState\":\"Succeeded\"},\"location\":\"fsfksymddyst\",\"tags\":{\"yudxorrqnbp\":\"uxh\",\"vkd\":\"czvyifq\",\"d\":\"jsllrmv\"},\"id\":\"watkpnpulexxb\",\"name\":\"zwtruwiqzbqjvsov\",\"type\":\"yokacspkw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,18 +32,17 @@ public final class StandbyContainerGroupPoolsGetByResourceGroupWithResponseMockT
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         StandbyContainerGroupPoolResource response = manager.standbyContainerGroupPools()
-            .getByResourceGroupWithResponse("yhxdeoejzicwi", "sjttgzfbish", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("atuokthfuiu", "odsfcpkvxodpuozm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("nuzo", response.location());
-        Assertions.assertEquals("iyqzrnk", response.tags().get("qvyxlwhzlsicoho"));
-        Assertions.assertEquals(4532715785375119177L, response.properties().elasticityProfile().maxReadyCapacity());
+        Assertions.assertEquals("fsfksymddyst", response.location());
+        Assertions.assertEquals("uxh", response.tags().get("yudxorrqnbp"));
+        Assertions.assertEquals(2005682789733735628L, response.properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS, response.properties().elasticityProfile().refillPolicy());
-        Assertions.assertEquals("deyeamdphagalpbu",
+        Assertions.assertEquals("fuaxbe",
             response.properties().containerGroupProperties().containerGroupProfile().id());
-        Assertions.assertEquals(2600796918340989976L,
+        Assertions.assertEquals(1834993457183141824L,
             response.properties().containerGroupProperties().containerGroupProfile().revision());
-        Assertions.assertEquals("honowkgshwank",
-            response.properties().containerGroupProperties().subnetIds().get(0).id());
+        Assertions.assertEquals("ktwh", response.properties().containerGroupProperties().subnetIds().get(0).id());
     }
 }

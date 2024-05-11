@@ -23,7 +23,7 @@ public final class StandbyVirtualMachinePoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":4708234215753447149},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"xyqj\",\"provisioningState\":\"Deleting\"},\"location\":\"t\",\"tags\":{\"ajvnysounqe\":\"gjcrcczsqpjhvm\"},\"id\":\"a\",\"name\":\"oaeupfhyhltrpmo\",\"type\":\"jmcmatuokthfu\"}]}";
+            = "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":87946417642997689},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"a\",\"provisioningState\":\"Failed\"},\"location\":\"ayvvtpgvdf\",\"tags\":{\"efgugnxk\":\"tkftutqxlngx\",\"hjybigehoqfbo\":\"xdqmidtthzrvqdra\",\"zlcuiywgqywgndrv\":\"skanyk\",\"ocpecfvmmco\":\"nhzgpphrcgyn\"},\"id\":\"fsxlzevgbmqjqa\",\"name\":\"c\",\"type\":\"pmivkwlzu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,12 +35,12 @@ public final class StandbyVirtualMachinePoolsListMockTests {
         PagedIterable<StandbyVirtualMachinePoolResource> response
             = manager.standbyVirtualMachinePools().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("t", response.iterator().next().location());
-        Assertions.assertEquals("gjcrcczsqpjhvm", response.iterator().next().tags().get("ajvnysounqe"));
-        Assertions.assertEquals(4708234215753447149L,
+        Assertions.assertEquals("ayvvtpgvdf", response.iterator().next().location());
+        Assertions.assertEquals("tkftutqxlngx", response.iterator().next().tags().get("efgugnxk"));
+        Assertions.assertEquals(87946417642997689L,
             response.iterator().next().properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(VirtualMachineState.RUNNING,
             response.iterator().next().properties().virtualMachineState());
-        Assertions.assertEquals("xyqj", response.iterator().next().properties().attachedVirtualMachineScaleSetId());
+        Assertions.assertEquals("a", response.iterator().next().properties().attachedVirtualMachineScaleSetId());
     }
 }

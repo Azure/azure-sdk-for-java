@@ -12,14 +12,14 @@ public final class X509CredentialsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         X509Credentials model
-            = BinaryData.fromString("{\"certificateReference\":\"uitnwuiz\"}").toObject(X509Credentials.class);
-        Assertions.assertEquals("uitnwuiz", model.certificateReference());
+            = BinaryData.fromString("{\"certificateReference\":\"ehoqfbowskan\"}").toObject(X509Credentials.class);
+        Assertions.assertEquals("ehoqfbowskan", model.certificateReference());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        X509Credentials model = new X509Credentials().withCertificateReference("uitnwuiz");
+        X509Credentials model = new X509Credentials().withCertificateReference("ehoqfbowskan");
         model = BinaryData.fromObject(model).toObject(X509Credentials.class);
-        Assertions.assertEquals("uitnwuiz", model.certificateReference());
+        Assertions.assertEquals("ehoqfbowskan", model.certificateReference());
     }
 }

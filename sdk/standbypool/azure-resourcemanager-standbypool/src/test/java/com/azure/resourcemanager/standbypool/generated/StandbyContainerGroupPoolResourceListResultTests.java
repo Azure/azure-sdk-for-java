@@ -13,20 +13,20 @@ public final class StandbyContainerGroupPoolResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyContainerGroupPoolResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":5230040712627920734,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"dtqajzyulpkudj\",\"revision\":5090033425355731207},\"subnetIds\":[{\"id\":\"z\"},{\"id\":\"fepgzgq\"},{\"id\":\"xzlocxscp\"},{\"id\":\"ierhhbcsglummaj\"}]},\"provisioningState\":\"Failed\"},\"location\":\"dxob\",\"tags\":{\"ajionpimexgstxg\":\"xkqpxo\",\"gmaajrm\":\"po\"},\"id\":\"djwzrlov\",\"name\":\"clwhijcoejctbz\",\"type\":\"qsqsy\"},{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":5593632114623401437,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"gukdkexxppo\",\"revision\":9103317770697974666},\"subnetIds\":[{\"id\":\"fjpgddtocjjxhvp\"}]},\"provisioningState\":\"Failed\"},\"location\":\"xhdzxibqeojnx\",\"tags\":{\"eic\":\"vddntwn\",\"cyddglmjthjqk\":\"twnpzaoqvuhrhcf\",\"ciwqvhk\":\"pyeicxm\",\"ghmewuam\":\"ixuigdtopbobj\"},\"id\":\"uhrzayvvt\",\"name\":\"gvdfgiotkftutq\",\"type\":\"ln\"},{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":1115498747802266446,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"ugnxkrxdqmi\",\"revision\":2903451662374924947},\"subnetIds\":[{\"id\":\"vqdra\"},{\"id\":\"hjybigehoqfbo\"}]},\"provisioningState\":\"Deleting\"},\"location\":\"nyktzlcuiy\",\"tags\":{\"nhzgpphrcgyn\":\"ywgndrv\"},\"id\":\"ocpecfvmmco\",\"name\":\"fsxlzevgbmqjqa\",\"type\":\"c\"}],\"nextLink\":\"mivkwlzuvcc\"}")
+            "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":2296241037768956178,\"refillPolicy\":\"always\"},\"containerGroupProperties\":{\"containerGroupProfile\":{\"id\":\"dzuhtymwi\",\"revision\":2965143483329278673},\"subnetIds\":[{\"id\":\"wxmnteiwao\"},{\"id\":\"vkmijcmmxdcuf\"},{\"id\":\"fsrpymzidnse\"}]},\"provisioningState\":\"Deleting\"},\"location\":\"bzsgfyccsne\",\"tags\":{\"oosflnr\":\"wzjeiach\",\"vypyqrimzinpv\":\"sfqpteehz\",\"rsoodqxhcrmnoh\":\"wjdk\"},\"id\":\"t\",\"name\":\"kwh\",\"type\":\"soifiyipjxsqw\"}],\"nextLink\":\"rjb\"}")
             .toObject(StandbyContainerGroupPoolResourceListResult.class);
-        Assertions.assertEquals("dxob", model.value().get(0).location());
-        Assertions.assertEquals("xkqpxo", model.value().get(0).tags().get("ajionpimexgstxg"));
-        Assertions.assertEquals(5230040712627920734L,
+        Assertions.assertEquals("bzsgfyccsne", model.value().get(0).location());
+        Assertions.assertEquals("wzjeiach", model.value().get(0).tags().get("oosflnr"));
+        Assertions.assertEquals(2296241037768956178L,
             model.value().get(0).properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(RefillPolicy.ALWAYS,
             model.value().get(0).properties().elasticityProfile().refillPolicy());
-        Assertions.assertEquals("dtqajzyulpkudj",
+        Assertions.assertEquals("dzuhtymwi",
             model.value().get(0).properties().containerGroupProperties().containerGroupProfile().id());
-        Assertions.assertEquals(5090033425355731207L,
+        Assertions.assertEquals(2965143483329278673L,
             model.value().get(0).properties().containerGroupProperties().containerGroupProfile().revision());
-        Assertions.assertEquals("z",
+        Assertions.assertEquals("wxmnteiwao",
             model.value().get(0).properties().containerGroupProperties().subnetIds().get(0).id());
-        Assertions.assertEquals("mivkwlzuvcc", model.nextLink());
+        Assertions.assertEquals("rjb", model.nextLink());
     }
 }

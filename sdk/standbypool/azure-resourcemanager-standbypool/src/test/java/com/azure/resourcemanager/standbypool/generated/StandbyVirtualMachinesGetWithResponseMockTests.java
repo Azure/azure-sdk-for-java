@@ -21,7 +21,7 @@ public final class StandbyVirtualMachinesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"virtualMachineResourceId\":\"feiithlvmez\",\"provisioningState\":\"Deleting\"},\"id\":\"xmzsbbzogg\",\"name\":\"grxwbu\",\"type\":\"vjxxjnsp\"}";
+            = "{\"properties\":{\"virtualMachineResourceId\":\"c\",\"provisioningState\":\"Failed\"},\"id\":\"o\",\"name\":\"gm\",\"type\":\"qsl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class StandbyVirtualMachinesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         StandbyVirtualMachineResource response = manager.standbyVirtualMachines()
-            .getWithResponse("rfbyaosvexcso", "pclhocohslk", "vleggzfbuhfmvfax", com.azure.core.util.Context.NONE)
+            .getWithResponse("ectehf", "qsc", "eypvhezrkg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("feiithlvmez", response.properties().virtualMachineResourceId());
+        Assertions.assertEquals("c", response.properties().virtualMachineResourceId());
     }
 }

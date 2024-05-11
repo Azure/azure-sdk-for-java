@@ -15,22 +15,22 @@ public final class ContainerGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContainerGroupProperties model = BinaryData.fromString(
-            "{\"containerGroupProfile\":{\"id\":\"wzo\",\"revision\":482662408665248434},\"subnetIds\":[{\"id\":\"lluwfzitonpeq\"},{\"id\":\"pjkjlxofpdv\"},{\"id\":\"pfxxy\"}]}")
+            "{\"containerGroupProfile\":{\"id\":\"xppbhtqqro\",\"revision\":683948345631958154},\"subnetIds\":[{\"id\":\"algbquxigjyjg\"}]}")
             .toObject(ContainerGroupProperties.class);
-        Assertions.assertEquals("wzo", model.containerGroupProfile().id());
-        Assertions.assertEquals(482662408665248434L, model.containerGroupProfile().revision());
-        Assertions.assertEquals("lluwfzitonpeq", model.subnetIds().get(0).id());
+        Assertions.assertEquals("xppbhtqqro", model.containerGroupProfile().id());
+        Assertions.assertEquals(683948345631958154L, model.containerGroupProfile().revision());
+        Assertions.assertEquals("algbquxigjyjg", model.subnetIds().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContainerGroupProperties model = new ContainerGroupProperties()
-            .withContainerGroupProfile(new ContainerGroupProfile().withId("wzo").withRevision(482662408665248434L))
-            .withSubnetIds(Arrays.asList(new Subnet().withId("lluwfzitonpeq"), new Subnet().withId("pjkjlxofpdv"),
-                new Subnet().withId("pfxxy")));
+            .withContainerGroupProfile(
+                new ContainerGroupProfile().withId("xppbhtqqro").withRevision(683948345631958154L))
+            .withSubnetIds(Arrays.asList(new Subnet().withId("algbquxigjyjg")));
         model = BinaryData.fromObject(model).toObject(ContainerGroupProperties.class);
-        Assertions.assertEquals("wzo", model.containerGroupProfile().id());
-        Assertions.assertEquals(482662408665248434L, model.containerGroupProfile().revision());
-        Assertions.assertEquals("lluwfzitonpeq", model.subnetIds().get(0).id());
+        Assertions.assertEquals("xppbhtqqro", model.containerGroupProfile().id());
+        Assertions.assertEquals(683948345631958154L, model.containerGroupProfile().revision());
+        Assertions.assertEquals("algbquxigjyjg", model.subnetIds().get(0).id());
     }
 }
