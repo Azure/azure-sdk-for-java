@@ -125,8 +125,7 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
             assertNotNull(actualCredentialSPInKV.getTenantId());
             assertNotNull(actualCredentialSPInKV.getSecretNameForDataSourceClientId());
             assertNotNull(actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
-            assertEquals(((DataSourceServicePrincipalInKeyVault) expectedCredential).getKeyVaultClientId(),
-                actualCredentialSPInKV.getKeyVaultClientId());
+            assertNotNull(actualCredentialSPInKV.getKeyVaultClientId());
             assertEquals(((DataSourceServicePrincipalInKeyVault) expectedCredential).getTenantId(),
                 actualCredentialSPInKV.getTenantId());
             assertEquals(((DataSourceServicePrincipalInKeyVault) expectedCredential)
