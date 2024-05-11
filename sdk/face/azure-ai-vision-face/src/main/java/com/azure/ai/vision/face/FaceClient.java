@@ -35,6 +35,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
+import com.azure.ai.vision.face.implementation.ClientUtils;
 import com.azure.ai.vision.face.models.DetectOptions;
 import com.azure.ai.vision.face.models.FaceAttributeType;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
@@ -2381,8 +2382,8 @@ public final class FaceClient {
         addRequiredQueryParameterForDetection(requestOptions, detectionModel, recognitionModel, returnFaceId);
         addOptionalQueryParameterForDetection(requestOptions, returnFaceAttributes, returnFaceLandmarks,
             returnRecognitionModel, faceIdTimeToLive);
-        return detectWithResponse(imageContent, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT);
+        return ClientUtils.listDeserializationHelperSync(detectWithResponse(imageContent, requestOptions).getValue(),
+            FaceDetectionResult::fromJson);
     }
 
     /**
@@ -2621,8 +2622,8 @@ public final class FaceClient {
             returnRecognitionModel, faceIdTimeToLive);
         DetectFromUrlRequest requestObj = new DetectFromUrlRequest(url);
         BinaryData request = BinaryData.fromObject(requestObj);
-        return detectFromUrlWithResponse(request, requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT);
+        return ClientUtils.listDeserializationHelperSync(detectFromUrlWithResponse(request, requestOptions).getValue(),
+            FaceDetectionResult::fromJson);
     }
 
     /**

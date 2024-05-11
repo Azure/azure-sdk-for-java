@@ -37,6 +37,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
 import reactor.core.publisher.Mono;
+import com.azure.ai.vision.face.implementation.ClientUtils;
 import com.azure.ai.vision.face.models.DetectOptions;
 import com.azure.ai.vision.face.models.FaceAttributeType;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
@@ -2393,7 +2394,8 @@ public final class FaceAsyncClient {
         addOptionalQueryParameterForDetection(requestOptions, returnFaceAttributes, returnFaceLandmarks,
             returnRecognitionModel, faceIdTimeToLive);
         return detectWithResponse(imageContent, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));
+            .flatMap(
+                binaryData -> ClientUtils.listDeserializationHelperAsync(binaryData, FaceDetectionResult::fromJson));
     }
 
     /**
@@ -2633,7 +2635,8 @@ public final class FaceAsyncClient {
         DetectFromUrlRequest requestObj = new DetectFromUrlRequest(url);
         BinaryData request = BinaryData.fromObject(requestObj);
         return detectFromUrlWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));
+            .flatMap(
+                binaryData -> ClientUtils.listDeserializationHelperAsync(binaryData, FaceDetectionResult::fromJson));
     }
 
     /**
