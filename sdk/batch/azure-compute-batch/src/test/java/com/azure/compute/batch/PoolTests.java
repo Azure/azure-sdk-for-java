@@ -136,8 +136,8 @@ public class PoolTests extends BatchClientTestBase {
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
             NetworkConfiguration netConfig = createNetworkConfiguration();
-            List<InboundNATPool> inbounds = new ArrayList<>();
-            inbounds.add(new InboundNATPool("testinbound", InboundEndpointProtocol.TCP, 5000, 60000, 60040));
+            List<InboundNatPool> inbounds = new ArrayList<>();
+            inbounds.add(new InboundNatPool("testinbound", InboundEndpointProtocol.TCP, 5000, 60000, 60040));
 
             BatchPoolEndpointConfiguration endpointConfig = new BatchPoolEndpointConfiguration(inbounds);
             netConfig.setEndpointConfiguration(endpointConfig);
