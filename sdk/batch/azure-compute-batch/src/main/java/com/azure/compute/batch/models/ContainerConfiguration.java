@@ -34,7 +34,7 @@ public final class ContainerConfiguration implements JsonSerializable<ContainerC
      * Additional private registries from which containers can be pulled. If any Images must be downloaded from a private registry which requires credentials, then those credentials must be provided here.
      */
     @Generated
-    private List<ContainerRegistry> containerRegistries;
+    private List<ContainerRegistryReference> containerRegistries;
 
     /**
      * Creates an instance of ContainerConfiguration class.
@@ -90,7 +90,7 @@ public final class ContainerConfiguration implements JsonSerializable<ContainerC
      * @return the containerRegistries value.
      */
     @Generated
-    public List<ContainerRegistry> getContainerRegistries() {
+    public List<ContainerRegistryReference> getContainerRegistries() {
         return this.containerRegistries;
     }
 
@@ -103,7 +103,7 @@ public final class ContainerConfiguration implements JsonSerializable<ContainerC
      * @return the ContainerConfiguration object itself.
      */
     @Generated
-    public ContainerConfiguration setContainerRegistries(List<ContainerRegistry> containerRegistries) {
+    public ContainerConfiguration setContainerRegistries(List<ContainerRegistryReference> containerRegistries) {
         this.containerRegistries = containerRegistries;
         return this;
     }
@@ -137,7 +137,7 @@ public final class ContainerConfiguration implements JsonSerializable<ContainerC
         return jsonReader.readObject(reader -> {
             ContainerType type = null;
             List<String> containerImageNames = null;
-            List<ContainerRegistry> containerRegistries = null;
+            List<ContainerRegistryReference> containerRegistries = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -146,7 +146,7 @@ public final class ContainerConfiguration implements JsonSerializable<ContainerC
                 } else if ("containerImageNames".equals(fieldName)) {
                     containerImageNames = reader.readArray(reader1 -> reader1.getString());
                 } else if ("containerRegistries".equals(fieldName)) {
-                    containerRegistries = reader.readArray(reader1 -> ContainerRegistry.fromJson(reader1));
+                    containerRegistries = reader.readArray(reader1 -> ContainerRegistryReference.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }

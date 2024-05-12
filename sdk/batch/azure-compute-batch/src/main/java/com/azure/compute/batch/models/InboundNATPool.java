@@ -17,7 +17,7 @@ import java.util.List;
  * in a Batch Pool externally.
  */
 @Fluent
-public final class InboundNATPool implements JsonSerializable<InboundNATPool> {
+public final class InboundNatPool implements JsonSerializable<InboundNatPool> {
 
     /*
      * The name of the endpoint. The name must be unique within a Batch Pool, can contain letters, numbers, underscores, periods, and hyphens. Names must start with a letter or number, must end with a letter, number, or underscore, and cannot exceed 77 characters.  If any invalid values are provided the request fails with HTTP status code 400.
@@ -54,25 +54,6 @@ public final class InboundNATPool implements JsonSerializable<InboundNATPool> {
      */
     @Generated
     private List<NetworkSecurityGroupRule> networkSecurityGroupRules;
-
-    /**
-     * Creates an instance of InboundNATPool class.
-     *
-     * @param name the name value to set.
-     * @param protocol the protocol value to set.
-     * @param backendPort the backendPort value to set.
-     * @param frontendPortRangeStart the frontendPortRangeStart value to set.
-     * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
-     */
-    @Generated
-    public InboundNATPool(String name, InboundEndpointProtocol protocol, int backendPort, int frontendPortRangeStart,
-        int frontendPortRangeEnd) {
-        this.name = name;
-        this.protocol = protocol;
-        this.backendPort = backendPort;
-        this.frontendPortRangeStart = frontendPortRangeStart;
-        this.frontendPortRangeEnd = frontendPortRangeEnd;
-    }
 
     /**
      * Get the name property: The name of the endpoint. The name must be unique within a Batch Pool, can contain
@@ -159,10 +140,10 @@ public final class InboundNATPool implements JsonSerializable<InboundNATPool> {
      * HTTP status code 400.
      *
      * @param networkSecurityGroupRules the networkSecurityGroupRules value to set.
-     * @return the InboundNATPool object itself.
+     * @return the InboundNatPool object itself.
      */
     @Generated
-    public InboundNATPool setNetworkSecurityGroupRules(List<NetworkSecurityGroupRule> networkSecurityGroupRules) {
+    public InboundNatPool setNetworkSecurityGroupRules(List<NetworkSecurityGroupRule> networkSecurityGroupRules) {
         this.networkSecurityGroupRules = networkSecurityGroupRules;
         return this;
     }
@@ -185,16 +166,16 @@ public final class InboundNATPool implements JsonSerializable<InboundNATPool> {
     }
 
     /**
-     * Reads an instance of InboundNATPool from the JsonReader.
+     * Reads an instance of InboundNatPool from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of InboundNATPool if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of InboundNatPool if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the InboundNATPool.
+     * @throws IOException If an error occurs while reading the InboundNatPool.
      */
     @Generated
-    public static InboundNATPool fromJson(JsonReader jsonReader) throws IOException {
+    public static InboundNatPool fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             InboundEndpointProtocol protocol = null;
@@ -221,10 +202,29 @@ public final class InboundNATPool implements JsonSerializable<InboundNATPool> {
                     reader.skipChildren();
                 }
             }
-            InboundNATPool deserializedInboundNATPool
-                = new InboundNATPool(name, protocol, backendPort, frontendPortRangeStart, frontendPortRangeEnd);
-            deserializedInboundNATPool.networkSecurityGroupRules = networkSecurityGroupRules;
-            return deserializedInboundNATPool;
+            InboundNatPool deserializedInboundNatPool
+                = new InboundNatPool(name, protocol, backendPort, frontendPortRangeStart, frontendPortRangeEnd);
+            deserializedInboundNatPool.networkSecurityGroupRules = networkSecurityGroupRules;
+            return deserializedInboundNatPool;
         });
+    }
+
+    /**
+     * Creates an instance of InboundNatPool class.
+     *
+     * @param name the name value to set.
+     * @param protocol the protocol value to set.
+     * @param backendPort the backendPort value to set.
+     * @param frontendPortRangeStart the frontendPortRangeStart value to set.
+     * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
+     */
+    @Generated
+    public InboundNatPool(String name, InboundEndpointProtocol protocol, int backendPort, int frontendPortRangeStart,
+        int frontendPortRangeEnd) {
+        this.name = name;
+        this.protocol = protocol;
+        this.backendPort = backendPort;
+        this.frontendPortRangeStart = frontendPortRangeStart;
+        this.frontendPortRangeEnd = frontendPortRangeEnd;
     }
 }

@@ -33,7 +33,7 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
      * The private registry which contains the container Image. This setting can be omitted if was already provided at Pool creation.
      */
     @Generated
-    private ContainerRegistry registry;
+    private ContainerRegistryReference registry;
 
     /*
      * The location of the container Task working directory. The default is 'taskWorkingDirectory'.
@@ -96,21 +96,8 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
      * @return the registry value.
      */
     @Generated
-    public ContainerRegistry getRegistry() {
+    public ContainerRegistryReference getRegistry() {
         return this.registry;
-    }
-
-    /**
-     * Set the registry property: The private registry which contains the container Image. This setting can be omitted
-     * if was already provided at Pool creation.
-     *
-     * @param registry the registry value to set.
-     * @return the BatchTaskContainerSettings object itself.
-     */
-    @Generated
-    public BatchTaskContainerSettings setRegistry(ContainerRegistry registry) {
-        this.registry = registry;
-        return this;
     }
 
     /**
@@ -166,7 +153,7 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
         return jsonReader.readObject(reader -> {
             String imageName = null;
             String containerRunOptions = null;
-            ContainerRegistry registry = null;
+            ContainerRegistryReference registry = null;
             ContainerWorkingDirectory workingDirectory = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -176,7 +163,7 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
                 } else if ("containerRunOptions".equals(fieldName)) {
                     containerRunOptions = reader.getString();
                 } else if ("registry".equals(fieldName)) {
-                    registry = ContainerRegistry.fromJson(reader);
+                    registry = ContainerRegistryReference.fromJson(reader);
                 } else if ("workingDirectory".equals(fieldName)) {
                     workingDirectory = ContainerWorkingDirectory.fromString(reader.getString());
                 } else {
@@ -190,5 +177,18 @@ public final class BatchTaskContainerSettings implements JsonSerializable<BatchT
             deserializedBatchTaskContainerSettings.workingDirectory = workingDirectory;
             return deserializedBatchTaskContainerSettings;
         });
+    }
+
+    /**
+     * Set the registry property: The private registry which contains the container Image. This setting can be omitted
+     * if was already provided at Pool creation.
+     *
+     * @param registry the registry value to set.
+     * @return the BatchTaskContainerSettings object itself.
+     */
+    @Generated
+    public BatchTaskContainerSettings setRegistry(ContainerRegistryReference registry) {
+        this.registry = registry;
+        return this;
     }
 }

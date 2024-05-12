@@ -22,7 +22,7 @@ public final class BatchPoolEndpointConfiguration implements JsonSerializable<Ba
      * A list of inbound NAT Pools that can be used to address specific ports on an individual Compute Node externally. The maximum number of inbound NAT Pools per Batch Pool is 5. If the maximum number of inbound NAT Pools is exceeded the request fails with HTTP status code 400. This cannot be specified if the IPAddressProvisioningType is NoPublicIPAddresses.
      */
     @Generated
-    private final List<InboundNATPool> inboundNatPools;
+    private final List<InboundNatPool> inboundNatPools;
 
     /**
      * Creates an instance of BatchPoolEndpointConfiguration class.
@@ -30,7 +30,7 @@ public final class BatchPoolEndpointConfiguration implements JsonSerializable<Ba
      * @param inboundNatPools the inboundNatPools value to set.
      */
     @Generated
-    public BatchPoolEndpointConfiguration(List<InboundNATPool> inboundNatPools) {
+    public BatchPoolEndpointConfiguration(List<InboundNatPool> inboundNatPools) {
         this.inboundNatPools = inboundNatPools;
     }
 
@@ -43,7 +43,7 @@ public final class BatchPoolEndpointConfiguration implements JsonSerializable<Ba
      * @return the inboundNatPools value.
      */
     @Generated
-    public List<InboundNATPool> getInboundNatPools() {
+    public List<InboundNatPool> getInboundNatPools() {
         return this.inboundNatPools;
     }
 
@@ -71,12 +71,12 @@ public final class BatchPoolEndpointConfiguration implements JsonSerializable<Ba
     @Generated
     public static BatchPoolEndpointConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<InboundNATPool> inboundNatPools = null;
+            List<InboundNatPool> inboundNatPools = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("inboundNATPools".equals(fieldName)) {
-                    inboundNatPools = reader.readArray(reader1 -> InboundNATPool.fromJson(reader1));
+                    inboundNatPools = reader.readArray(reader1 -> InboundNatPool.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
