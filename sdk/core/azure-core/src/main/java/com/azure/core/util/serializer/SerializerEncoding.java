@@ -9,9 +9,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * Supported serialization encoding formats.
  */
@@ -32,20 +29,6 @@ public enum SerializerEncoding {
     TEXT;
 
     private static final ClientLogger LOGGER = new ClientLogger(SerializerEncoding.class);
-    private static final Map<String, SerializerEncoding> SUPPORTED_MIME_TYPES;
-
-    static {
-        // Encodings and suffixes from: https://tools.ietf.org/html/rfc6838
-        SUPPORTED_MIME_TYPES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        SUPPORTED_MIME_TYPES.put("text/xml", XML);
-        SUPPORTED_MIME_TYPES.put("application/xml", XML);
-        SUPPORTED_MIME_TYPES.put("application/json", JSON);
-        SUPPORTED_MIME_TYPES.put("text/css", TEXT);
-        SUPPORTED_MIME_TYPES.put("text/csv", TEXT);
-        SUPPORTED_MIME_TYPES.put("text/html", TEXT);
-        SUPPORTED_MIME_TYPES.put("text/javascript", TEXT);
-        SUPPORTED_MIME_TYPES.put("text/plain", TEXT);
-    }
 
     /**
      * Determines the serializer encoding to use based on the Content-Type header.
@@ -63,7 +46,7 @@ public enum SerializerEncoding {
 
         int contentTypeEnd = mimeContentType.indexOf(';');
         String contentType = (contentTypeEnd == -1) ? mimeContentType : mimeContentType.substring(0, contentTypeEnd);
-        final SerializerEncoding encoding = SUPPORTED_MIME_TYPES.get(contentType);
+        SerializerEncoding encoding = checkForKnownEncoding(contentType);
         if (encoding != null) {
             return encoding;
         }
@@ -96,5 +79,44 @@ public enum SerializerEncoding {
             () -> "Content-Type '" + mimeTypeSuffix + "' does not match any supported one. Returning default: JSON");
 
         return JSON;
+    }
+
+    /*
+     * There is a limited set of serialization encodings that are known ahead of time. Instead of using a TreeMap with
+     * a case-insensitive comparator, use an optimized search specifically for the known encodings.
+     */
+    private static SerializerEncoding checkForKnownEncoding(String contentType) {
+        int length = contentType.length();
+
+        // Check the length of the content type first as it is a quick check.
+        if (length != 8 && length != 9 && length != 10 && length != 15 && length != 16) {
+            return null;
+        }
+
+        if ("text/".regionMatches(true, 0, contentType, 0, 5)) {
+            if (length == 8) {
+                if ("xml".regionMatches(true, 0, contentType, 5, 3)) {
+                    return XML;
+                } else if ("csv".regionMatches(true, 0, contentType, 5, 3)) {
+                    return TEXT;
+                } else if ("css".regionMatches(true, 0, contentType, 5, 3)) {
+                    return TEXT;
+                }
+            } else if (length == 9 && "html".regionMatches(true, 0, contentType, 5, 4)) {
+                return TEXT;
+            } else if (length == 10 && "plain".regionMatches(true, 0, contentType, 5, 5)) {
+                return TEXT;
+            } else if (length == 15 && "javascript".regionMatches(true, 0, contentType, 5, 10)) {
+                return TEXT;
+            }
+        } else if ("application/".regionMatches(true, 0, contentType, 0, 12)) {
+            if (length == 16 && "json".regionMatches(true, 0, contentType, 12, 4)) {
+                return JSON;
+            } else if (length == 15 && "xml".regionMatches(true, 0, contentType, 12, 3)) {
+                return XML;
+            }
+        }
+
+        return null;
     }
 }

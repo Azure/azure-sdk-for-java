@@ -17,7 +17,7 @@ trait AccountDataResolver {
 
   /**
    * This method will be invoked by the Cosmos DB Spark connector to retrieve access tokens. It will only
-   * be sued when the config `spark.cosmos.auth.type` is set to `AccessToken` - and in this case
+   * be used when the config `spark.cosmos.auth.type` is set to `AccessToken` - and in this case
    * the implementation of this trait will need to provide a function that can be used to produce
    * access tokens or None in the case that for the specified configuration no auth can be provided.
    * @param configs the user configuration originally provided
