@@ -13,13 +13,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * created with ruleState set to enabled, regardless of the provided value of ruleState.
  */
 public enum DataMaskingRuleState {
-    /** Enum value Enabled. */
-    ENABLED("Enabled"),
+    /**
+     * Enum value Disabled.
+     */
+    DISABLED("Disabled"),
 
-    /** Enum value Disabled. */
-    DISABLED("Disabled");
+    /**
+     * Enum value Enabled.
+     */
+    ENABLED("Enabled");
 
-    /** The actual serialized value for a DataMaskingRuleState instance. */
+    /**
+     * The actual serialized value for a DataMaskingRuleState instance.
+     */
     private final String value;
 
     DataMaskingRuleState(String value) {
@@ -28,7 +34,7 @@ public enum DataMaskingRuleState {
 
     /**
      * Parses a serialized value to a DataMaskingRuleState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DataMaskingRuleState object, or null if unable to parse.
      */
@@ -46,7 +52,9 @@ public enum DataMaskingRuleState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

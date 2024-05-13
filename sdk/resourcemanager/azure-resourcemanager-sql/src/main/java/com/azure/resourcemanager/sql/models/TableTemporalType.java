@@ -8,20 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The table temporal type. */
+/**
+ * The table temporal type.
+ */
 public final class TableTemporalType extends ExpandableStringEnum<TableTemporalType> {
-    /** Static value NonTemporalTable for TableTemporalType. */
+    /**
+     * Static value NonTemporalTable for TableTemporalType.
+     */
     public static final TableTemporalType NON_TEMPORAL_TABLE = fromString("NonTemporalTable");
 
-    /** Static value HistoryTable for TableTemporalType. */
+    /**
+     * Static value HistoryTable for TableTemporalType.
+     */
     public static final TableTemporalType HISTORY_TABLE = fromString("HistoryTable");
 
-    /** Static value SystemVersionedTemporalTable for TableTemporalType. */
+    /**
+     * Static value SystemVersionedTemporalTable for TableTemporalType.
+     */
     public static final TableTemporalType SYSTEM_VERSIONED_TEMPORAL_TABLE = fromString("SystemVersionedTemporalTable");
 
     /**
+     * Creates a new instance of TableTemporalType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TableTemporalType() {
+    }
+
+    /**
      * Creates or finds a TableTemporalType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TableTemporalType.
      */
@@ -32,7 +49,7 @@ public final class TableTemporalType extends ExpandableStringEnum<TableTemporalT
 
     /**
      * Gets known TableTemporalType values.
-     *
+     * 
      * @return known TableTemporalType values.
      */
     public static Collection<TableTemporalType> values() {

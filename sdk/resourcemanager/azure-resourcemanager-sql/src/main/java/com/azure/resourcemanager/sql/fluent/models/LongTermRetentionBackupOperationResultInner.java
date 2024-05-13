@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** A LongTermRetentionBackup operation result resource. */
+/**
+ * A LongTermRetentionBackup operation result resource.
+ */
 @Immutable
 public final class LongTermRetentionBackupOperationResultInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
     @JsonProperty(value = "properties")
     private LongTermRetentionOperationResultProperties innerProperties;
 
-    /** Creates an instance of LongTermRetentionBackupOperationResultInner class. */
+    /**
+     * Creates an instance of LongTermRetentionBackupOperationResultInner class.
+     */
     public LongTermRetentionBackupOperationResultInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LongTermRetentionOperationResultProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the requestId property: Request Id.
-     *
+     * 
      * @return the requestId value.
      */
     public UUID requestId() {
@@ -43,7 +47,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the operationType property: Operation type.
-     *
+     * 
      * @return the operationType value.
      */
     public String operationType() {
@@ -52,7 +56,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the fromBackupResourceId property: Source backup resource id.
-     *
+     * 
      * @return the fromBackupResourceId value.
      */
     public String fromBackupResourceId() {
@@ -61,7 +65,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the toBackupResourceId property: Target backup resource id.
-     *
+     * 
      * @return the toBackupResourceId value.
      */
     public String toBackupResourceId() {
@@ -70,7 +74,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the targetBackupStorageRedundancy property: The storage redundancy type of the copied backup.
-     *
+     * 
      * @return the targetBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy targetBackupStorageRedundancy() {
@@ -79,7 +83,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -88,7 +92,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Get the message property: Progress message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -97,7 +101,7 @@ public final class LongTermRetentionBackupOperationResultInner extends ProxyReso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

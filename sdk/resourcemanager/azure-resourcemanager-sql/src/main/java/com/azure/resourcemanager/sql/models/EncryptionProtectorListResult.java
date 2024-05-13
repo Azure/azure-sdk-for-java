@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.EncryptionProtectorInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of server encryption protectors. */
+/**
+ * A list of server encryption protectors.
+ */
 @Immutable
 public final class EncryptionProtectorListResult {
     /*
@@ -24,13 +26,15 @@ public final class EncryptionProtectorListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of EncryptionProtectorListResult class. */
+    /**
+     * Creates an instance of EncryptionProtectorListResult class.
+     */
     public EncryptionProtectorListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<EncryptionProtectorInner> value() {
@@ -39,7 +43,7 @@ public final class EncryptionProtectorListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class EncryptionProtectorListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

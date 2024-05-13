@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Elastic Pool performance level capability. */
+/**
+ * The Elastic Pool performance level capability.
+ */
 @Fluent
 public final class ElasticPoolPerformanceLevelCapability {
     /*
@@ -83,13 +85,15 @@ public final class ElasticPoolPerformanceLevelCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ElasticPoolPerformanceLevelCapability class. */
+    /**
+     * Creates an instance of ElasticPoolPerformanceLevelCapability class.
+     */
     public ElasticPoolPerformanceLevelCapability() {
     }
 
     /**
      * Get the performanceLevel property: The performance level for the pool.
-     *
+     * 
      * @return the performanceLevel value.
      */
     public PerformanceLevelCapability performanceLevel() {
@@ -98,7 +102,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Get the sku property: The sku.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -107,7 +111,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Get the supportedLicenseTypes property: List of supported license types.
-     *
+     * 
      * @return the supportedLicenseTypes value.
      */
     public List<LicenseTypeCapability> supportedLicenseTypes() {
@@ -116,7 +120,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Get the maxDatabaseCount property: The maximum number of databases supported.
-     *
+     * 
      * @return the maxDatabaseCount value.
      */
     public Integer maxDatabaseCount() {
@@ -125,7 +129,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Get the includedMaxSize property: The included (free) max size for this performance level.
-     *
+     * 
      * @return the includedMaxSize value.
      */
     public MaxSizeCapability includedMaxSize() {
@@ -134,7 +138,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Get the supportedMaxSizes property: The list of supported max sizes.
-     *
+     * 
      * @return the supportedMaxSizes value.
      */
     public List<MaxSizeRangeCapability> supportedMaxSizes() {
@@ -143,7 +147,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Get the supportedPerDatabaseMaxSizes property: The list of supported per database max sizes.
-     *
+     * 
      * @return the supportedPerDatabaseMaxSizes value.
      */
     public List<MaxSizeRangeCapability> supportedPerDatabaseMaxSizes() {
@@ -153,7 +157,7 @@ public final class ElasticPoolPerformanceLevelCapability {
     /**
      * Get the supportedPerDatabaseMaxPerformanceLevels property: The list of supported per database max performance
      * levels.
-     *
+     * 
      * @return the supportedPerDatabaseMaxPerformanceLevels value.
      */
     public List<ElasticPoolPerDatabaseMaxPerformanceLevelCapability> supportedPerDatabaseMaxPerformanceLevels() {
@@ -162,7 +166,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Get the zoneRedundant property: Whether or not zone redundancy is supported for the performance level.
-     *
+     * 
      * @return the zoneRedundant value.
      */
     public Boolean zoneRedundant() {
@@ -171,7 +175,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Get the supportedMaintenanceConfigurations property: List of supported maintenance configurations.
-     *
+     * 
      * @return the supportedMaintenanceConfigurations value.
      */
     public List<MaintenanceConfigurationCapability> supportedMaintenanceConfigurations() {
@@ -180,7 +184,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -189,7 +193,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -198,7 +202,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ElasticPoolPerformanceLevelCapability object itself.
      */
@@ -209,7 +213,7 @@ public final class ElasticPoolPerformanceLevelCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

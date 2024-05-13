@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The identity type. */
+/**
+ * The identity type.
+ */
 public final class DatabaseIdentityType extends ExpandableStringEnum<DatabaseIdentityType> {
-    /** Static value None for DatabaseIdentityType. */
+    /**
+     * Static value None for DatabaseIdentityType.
+     */
     public static final DatabaseIdentityType NONE = fromString("None");
 
-    /** Static value UserAssigned for DatabaseIdentityType. */
+    /**
+     * Static value UserAssigned for DatabaseIdentityType.
+     */
     public static final DatabaseIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
     /**
+     * Creates a new instance of DatabaseIdentityType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseIdentityType() {
+    }
+
+    /**
      * Creates or finds a DatabaseIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatabaseIdentityType.
      */
@@ -29,7 +44,7 @@ public final class DatabaseIdentityType extends ExpandableStringEnum<DatabaseIde
 
     /**
      * Gets known DatabaseIdentityType values.
-     *
+     * 
      * @return known DatabaseIdentityType values.
      */
     public static Collection<DatabaseIdentityType> values() {

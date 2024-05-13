@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.DatabaseSchemaInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of database schemas. */
+/**
+ * A list of database schemas.
+ */
 @Immutable
 public final class DatabaseSchemaListResult {
     /*
@@ -24,13 +26,15 @@ public final class DatabaseSchemaListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DatabaseSchemaListResult class. */
+    /**
+     * Creates an instance of DatabaseSchemaListResult class.
+     */
     public DatabaseSchemaListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<DatabaseSchemaInner> value() {
@@ -39,7 +43,7 @@ public final class DatabaseSchemaListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class DatabaseSchemaListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.SyncAgentInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of sync agents. */
+/**
+ * A list of sync agents.
+ */
 @Immutable
 public final class SyncAgentListResult {
     /*
@@ -24,13 +26,15 @@ public final class SyncAgentListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SyncAgentListResult class. */
+    /**
+     * Creates an instance of SyncAgentListResult class.
+     */
     public SyncAgentListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<SyncAgentInner> value() {
@@ -39,7 +43,7 @@ public final class SyncAgentListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class SyncAgentListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Automatic tuning properties for individual advisors. */
+/**
+ * Automatic tuning properties for individual advisors.
+ */
 @Fluent
 public final class AutomaticTuningOptions {
     /*
@@ -34,13 +36,15 @@ public final class AutomaticTuningOptions {
     @JsonProperty(value = "reasonDesc", access = JsonProperty.Access.WRITE_ONLY)
     private AutomaticTuningDisabledReason reasonDesc;
 
-    /** Creates an instance of AutomaticTuningOptions class. */
+    /**
+     * Creates an instance of AutomaticTuningOptions class.
+     */
     public AutomaticTuningOptions() {
     }
 
     /**
      * Get the desiredState property: Automatic tuning option desired state.
-     *
+     * 
      * @return the desiredState value.
      */
     public AutomaticTuningOptionModeDesired desiredState() {
@@ -49,7 +53,7 @@ public final class AutomaticTuningOptions {
 
     /**
      * Set the desiredState property: Automatic tuning option desired state.
-     *
+     * 
      * @param desiredState the desiredState value to set.
      * @return the AutomaticTuningOptions object itself.
      */
@@ -60,7 +64,7 @@ public final class AutomaticTuningOptions {
 
     /**
      * Get the actualState property: Automatic tuning option actual state.
-     *
+     * 
      * @return the actualState value.
      */
     public AutomaticTuningOptionModeActual actualState() {
@@ -69,7 +73,7 @@ public final class AutomaticTuningOptions {
 
     /**
      * Get the reasonCode property: Reason code if desired and actual state are different.
-     *
+     * 
      * @return the reasonCode value.
      */
     public Integer reasonCode() {
@@ -78,7 +82,7 @@ public final class AutomaticTuningOptions {
 
     /**
      * Get the reasonDesc property: Reason description if desired and actual state are different.
-     *
+     * 
      * @return the reasonDesc value.
      */
     public AutomaticTuningDisabledReason reasonDesc() {
@@ -87,7 +91,7 @@ public final class AutomaticTuningOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

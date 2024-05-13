@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A short term retention policy. */
+/**
+ * A short term retention policy.
+ */
 @Fluent
 public final class ManagedBackupShortTermRetentionPolicyInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class ManagedBackupShortTermRetentionPolicyInner extends ProxyResou
     @JsonProperty(value = "properties")
     private ManagedBackupShortTermRetentionPolicyProperties innerProperties;
 
-    /** Creates an instance of ManagedBackupShortTermRetentionPolicyInner class. */
+    /**
+     * Creates an instance of ManagedBackupShortTermRetentionPolicyInner class.
+     */
     public ManagedBackupShortTermRetentionPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedBackupShortTermRetentionPolicyProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class ManagedBackupShortTermRetentionPolicyInner extends ProxyResou
     /**
      * Get the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -43,7 +47,7 @@ public final class ManagedBackupShortTermRetentionPolicyInner extends ProxyResou
     /**
      * Set the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
      * will be supported.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the ManagedBackupShortTermRetentionPolicyInner object itself.
      */
@@ -57,7 +61,7 @@ public final class ManagedBackupShortTermRetentionPolicyInner extends ProxyResou
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

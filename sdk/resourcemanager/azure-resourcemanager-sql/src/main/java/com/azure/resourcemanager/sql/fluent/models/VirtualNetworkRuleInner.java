@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.VirtualNetworkRuleState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A virtual network rule. */
+/**
+ * A virtual network rule.
+ */
 @Fluent
 public final class VirtualNetworkRuleInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private VirtualNetworkRuleProperties innerProperties;
 
-    /** Creates an instance of VirtualNetworkRuleInner class. */
+    /**
+     * Creates an instance of VirtualNetworkRuleInner class.
+     */
     public VirtualNetworkRuleInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualNetworkRuleProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
 
     /**
      * Get the virtualNetworkSubnetId property: The ARM resource id of the virtual network subnet.
-     *
+     * 
      * @return the virtualNetworkSubnetId value.
      */
     public String virtualNetworkSubnetId() {
@@ -42,7 +46,7 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
 
     /**
      * Set the virtualNetworkSubnetId property: The ARM resource id of the virtual network subnet.
-     *
+     * 
      * @param virtualNetworkSubnetId the virtualNetworkSubnetId value to set.
      * @return the VirtualNetworkRuleInner object itself.
      */
@@ -57,7 +61,7 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
     /**
      * Get the ignoreMissingVnetServiceEndpoint property: Create firewall rule before the virtual network has vnet
      * service endpoint enabled.
-     *
+     * 
      * @return the ignoreMissingVnetServiceEndpoint value.
      */
     public Boolean ignoreMissingVnetServiceEndpoint() {
@@ -67,7 +71,7 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
     /**
      * Set the ignoreMissingVnetServiceEndpoint property: Create firewall rule before the virtual network has vnet
      * service endpoint enabled.
-     *
+     * 
      * @param ignoreMissingVnetServiceEndpoint the ignoreMissingVnetServiceEndpoint value to set.
      * @return the VirtualNetworkRuleInner object itself.
      */
@@ -81,7 +85,7 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
 
     /**
      * Get the state property: Virtual Network Rule State.
-     *
+     * 
      * @return the state value.
      */
     public VirtualNetworkRuleState state() {
@@ -90,7 +94,7 @@ public final class VirtualNetworkRuleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

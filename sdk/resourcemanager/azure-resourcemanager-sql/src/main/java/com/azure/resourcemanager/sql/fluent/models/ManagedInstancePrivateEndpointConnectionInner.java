@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.ManagedInstancePrivateEndpointProper
 import com.azure.resourcemanager.sql.models.ManagedInstancePrivateLinkServiceConnectionStateProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A private endpoint connection. */
+/**
+ * A private endpoint connection.
+ */
 @Fluent
 public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
     @JsonProperty(value = "properties")
     private ManagedInstancePrivateEndpointConnectionProperties innerProperties;
 
-    /** Creates an instance of ManagedInstancePrivateEndpointConnectionInner class. */
+    /**
+     * Creates an instance of ManagedInstancePrivateEndpointConnectionInner class.
+     */
     public ManagedInstancePrivateEndpointConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedInstancePrivateEndpointConnectionProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
 
     /**
      * Get the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public ManagedInstancePrivateEndpointProperty privateEndpoint() {
@@ -43,12 +47,12 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
 
     /**
      * Set the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the ManagedInstancePrivateEndpointConnectionInner object itself.
      */
-    public ManagedInstancePrivateEndpointConnectionInner withPrivateEndpoint(
-        ManagedInstancePrivateEndpointProperty privateEndpoint) {
+    public ManagedInstancePrivateEndpointConnectionInner
+        withPrivateEndpoint(ManagedInstancePrivateEndpointProperty privateEndpoint) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedInstancePrivateEndpointConnectionProperties();
         }
@@ -58,7 +62,7 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
 
     /**
      * Get the privateLinkServiceConnectionState property: Connection State of the Private Endpoint Connection.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public ManagedInstancePrivateLinkServiceConnectionStateProperty privateLinkServiceConnectionState() {
@@ -67,7 +71,7 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
 
     /**
      * Set the privateLinkServiceConnectionState property: Connection State of the Private Endpoint Connection.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the ManagedInstancePrivateEndpointConnectionInner object itself.
      */
@@ -82,7 +86,7 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
 
     /**
      * Get the provisioningState property: State of the Private Endpoint Connection.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -91,7 +95,7 @@ public final class ManagedInstancePrivateEndpointConnectionInner extends ProxyRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

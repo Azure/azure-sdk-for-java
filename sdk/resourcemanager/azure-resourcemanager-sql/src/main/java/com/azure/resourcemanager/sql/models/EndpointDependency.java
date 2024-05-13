@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A domain name that the managed instance service needs to communicate with, along with additional details. */
+/**
+ * A domain name that the managed instance service needs to communicate with, along with additional details.
+ */
 @Immutable
 public final class EndpointDependency {
     /*
@@ -23,13 +25,15 @@ public final class EndpointDependency {
     @JsonProperty(value = "endpointDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<EndpointDetail> endpointDetails;
 
-    /** Creates an instance of EndpointDependency class. */
+    /**
+     * Creates an instance of EndpointDependency class.
+     */
     public EndpointDependency() {
     }
 
     /**
      * Get the domainName property: The domain name of the dependency.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -38,7 +42,7 @@ public final class EndpointDependency {
 
     /**
      * Get the endpointDetails property: The IP Addresses and Ports used when connecting to DomainName.
-     *
+     * 
      * @return the endpointDetails value.
      */
     public List<EndpointDetail> endpointDetails() {
@@ -47,7 +51,7 @@ public final class EndpointDependency {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

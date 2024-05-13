@@ -10,9 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import java.util.UUID;
 
-/** Azure Active Directory identity configuration for a resource. */
+/**
+ * Azure Active Directory identity configuration for a resource.
+ */
 @Fluent
-public class DatabaseIdentity {
+public final class DatabaseIdentity {
     /*
      * The identity type
      */
@@ -32,13 +34,15 @@ public class DatabaseIdentity {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, DatabaseUserIdentity> userAssignedIdentities;
 
-    /** Creates an instance of DatabaseIdentity class. */
+    /**
+     * Creates an instance of DatabaseIdentity class.
+     */
     public DatabaseIdentity() {
     }
 
     /**
      * Get the type property: The identity type.
-     *
+     * 
      * @return the type value.
      */
     public DatabaseIdentityType type() {
@@ -47,7 +51,7 @@ public class DatabaseIdentity {
 
     /**
      * Set the type property: The identity type.
-     *
+     * 
      * @param type the type value to set.
      * @return the DatabaseIdentity object itself.
      */
@@ -58,7 +62,7 @@ public class DatabaseIdentity {
 
     /**
      * Get the tenantId property: The Azure Active Directory tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -67,7 +71,7 @@ public class DatabaseIdentity {
 
     /**
      * Get the userAssignedIdentities property: The resource ids of the user assigned identities to use.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, DatabaseUserIdentity> userAssignedIdentities() {
@@ -76,7 +80,7 @@ public class DatabaseIdentity {
 
     /**
      * Set the userAssignedIdentities property: The resource ids of the user assigned identities to use.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the DatabaseIdentity object itself.
      */
@@ -87,19 +91,16 @@ public class DatabaseIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

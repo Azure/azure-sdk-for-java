@@ -11,7 +11,9 @@ import com.azure.resourcemanager.sql.models.ServerTrustGroupPropertiesTrustScope
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A server trust group. */
+/**
+ * A server trust group.
+ */
 @Fluent
 public final class ServerTrustGroupInner extends ProxyResource {
     /*
@@ -20,13 +22,15 @@ public final class ServerTrustGroupInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ServerTrustGroupProperties innerProperties;
 
-    /** Creates an instance of ServerTrustGroupInner class. */
+    /**
+     * Creates an instance of ServerTrustGroupInner class.
+     */
     public ServerTrustGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerTrustGroupProperties innerProperties() {
@@ -35,7 +39,7 @@ public final class ServerTrustGroupInner extends ProxyResource {
 
     /**
      * Get the groupMembers property: Group members information for the server trust group.
-     *
+     * 
      * @return the groupMembers value.
      */
     public List<ServerInfo> groupMembers() {
@@ -44,7 +48,7 @@ public final class ServerTrustGroupInner extends ProxyResource {
 
     /**
      * Set the groupMembers property: Group members information for the server trust group.
-     *
+     * 
      * @param groupMembers the groupMembers value to set.
      * @return the ServerTrustGroupInner object itself.
      */
@@ -58,7 +62,7 @@ public final class ServerTrustGroupInner extends ProxyResource {
 
     /**
      * Get the trustScopes property: Trust scope of the server trust group.
-     *
+     * 
      * @return the trustScopes value.
      */
     public List<ServerTrustGroupPropertiesTrustScopesItem> trustScopes() {
@@ -67,7 +71,7 @@ public final class ServerTrustGroupInner extends ProxyResource {
 
     /**
      * Set the trustScopes property: Trust scope of the server trust group.
-     *
+     * 
      * @param trustScopes the trustScopes value to set.
      * @return the ServerTrustGroupInner object itself.
      */
@@ -81,7 +85,7 @@ public final class ServerTrustGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

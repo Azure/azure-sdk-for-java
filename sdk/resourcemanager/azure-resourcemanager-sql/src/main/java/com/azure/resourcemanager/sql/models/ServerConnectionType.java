@@ -8,20 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The server connection type. */
+/**
+ * The server connection type.
+ */
 public final class ServerConnectionType extends ExpandableStringEnum<ServerConnectionType> {
-    /** Static value Default for ServerConnectionType. */
+    /**
+     * Static value Default for ServerConnectionType.
+     */
     public static final ServerConnectionType DEFAULT = fromString("Default");
 
-    /** Static value Redirect for ServerConnectionType. */
+    /**
+     * Static value Redirect for ServerConnectionType.
+     */
     public static final ServerConnectionType REDIRECT = fromString("Redirect");
 
-    /** Static value Proxy for ServerConnectionType. */
+    /**
+     * Static value Proxy for ServerConnectionType.
+     */
     public static final ServerConnectionType PROXY = fromString("Proxy");
 
     /**
+     * Creates a new instance of ServerConnectionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerConnectionType() {
+    }
+
+    /**
      * Creates or finds a ServerConnectionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServerConnectionType.
      */
@@ -32,7 +49,7 @@ public final class ServerConnectionType extends ExpandableStringEnum<ServerConne
 
     /**
      * Gets known ServerConnectionType values.
-     *
+     * 
      * @return known ServerConnectionType values.
      */
     public static Collection<ServerConnectionType> values() {
