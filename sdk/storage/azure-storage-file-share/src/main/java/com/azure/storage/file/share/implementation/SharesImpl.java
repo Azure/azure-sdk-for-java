@@ -81,46 +81,32 @@ public final class SharesImpl {
      * The interface defining all the services for AzureFileStorageShares to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{url}") //todo
+    @Host("{url}")
     @ServiceInterface(name = "AzureFileStorageShar")
     public interface SharesService {
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<SharesCreateHeaders, Void>> create(
-                @HostParam("url") String url,
-                @PathParam("shareName") String shareName,
-                @QueryParam("restype") String restype,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
-                @HeaderParam("x-ms-share-quota") Integer quota,
-                @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
-                @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
-                @HeaderParam("x-ms-enable-snapshot-virtual-directory-access")
-                        Boolean enableSnapshotVirtualDirectoryAccess,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<SharesCreateHeaders, Void>> create(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+            @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Put("/{shareName}") //todo
+        @Put("/{shareName}")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<Response<Void>> createNoCustomHeaders(
-                @HostParam("url") String url,
-                @PathParam("shareName") String shareName,
-                @QueryParam("restype") String restype,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-meta-") Map<String, String> metadata,
-                @HeaderParam("x-ms-share-quota") Integer quota,
-                @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
-                @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
-                @HeaderParam("x-ms-enable-snapshot-virtual-directory-access")
-                        Boolean enableSnapshotVirtualDirectoryAccess,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> createNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+            @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
@@ -532,55 +518,36 @@ public final class SharesImpl {
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<Response<SharePermission>> getPermissionNoCustomHeaders(
-                @HostParam("url") String url,
-                @PathParam("shareName") String shareName,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
-                @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SharePermission>> getPermissionNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
+            @QueryParam("comp") String comp, @HeaderParam("x-ms-file-permission-key") String filePermissionKey,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setProperties(
-                @HostParam("url") String url,
-                @PathParam("shareName") String shareName,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-share-quota") Integer quota,
-                @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
-                @HeaderParam("x-ms-enable-snapshot-virtual-directory-access")
-                        Boolean enableSnapshotVirtualDirectoryAccess,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setProperties(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
+            @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
+            @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<Response<Void>> setPropertiesNoCustomHeaders(
-                @HostParam("url") String url,
-                @PathParam("shareName") String shareName,
-                @QueryParam("restype") String restype,
-                @QueryParam("comp") String comp,
-                @QueryParam("timeout") Integer timeout,
-                @HeaderParam("x-ms-version") String version,
-                @HeaderParam("x-ms-share-quota") Integer quota,
-                @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
-                @HeaderParam("x-ms-lease-id") String leaseId,
-                @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
-                @HeaderParam("x-ms-enable-snapshot-virtual-directory-access")
-                        Boolean enableSnapshotVirtualDirectoryAccess,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> setPropertiesNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
+            @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
+            @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -858,34 +825,15 @@ public final class SharesImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE) //todo
-    public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(
-            String shareName,
-            Integer timeout,
-            Map<String, String> metadata,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String enabledProtocols,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(String shareName, Integer timeout,
+        Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
         final String restype = "share";
         final String accept = "application/xml";
-        return FluxUtil.withContext(
-                context ->
-                        service.create(
-                                this.client.getUrl(),
-                                shareName,
-                                restype,
-                                timeout,
-                                metadata,
-                                quota,
-                                accessTier,
-                                this.client.getVersion(),
-                                enabledProtocols,
-                                rootSquash,
-                                enableSnapshotVirtualDirectoryAccess,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.create(this.client.getUrl(), shareName, restype, timeout,
+            metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, accept, context));
     }
 
     /**
@@ -908,33 +856,15 @@ public final class SharesImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)//todo
-    public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(
-            String shareName,
-            Integer timeout,
-            Map<String, String> metadata,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String enabledProtocols,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess,
-            Context context) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<SharesCreateHeaders, Void>> createWithResponseAsync(String shareName, Integer timeout,
+        Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
-        return service.create(
-                this.client.getUrl(),
-                shareName,
-                restype,
-                timeout,
-                metadata,
-                quota,
-                accessTier,
-                this.client.getVersion(),
-                enabledProtocols,
-                rootSquash,
-                enableSnapshotVirtualDirectoryAccess,
-                accept,
-                context);
+        return service.create(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
+            this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, accept,
+            context);
     }
 
     /**
@@ -957,25 +887,11 @@ public final class SharesImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createAsync(
-            String shareName,
-            Integer timeout,
-            Map<String, String> metadata,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String enabledProtocols,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess) {
-        return createWithResponseAsync(
-                        shareName,
-                        timeout,
-                        metadata,
-                        quota,
-                        accessTier,
-                        enabledProtocols,
-                        rootSquash,
-                        enableSnapshotVirtualDirectoryAccess)
-                .flatMap(ignored -> Mono.empty());
+    public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
+        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess) {
+        return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -998,28 +914,12 @@ public final class SharesImpl {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)//todo
-    public Mono<Void> createAsync(
-            String shareName,
-            Integer timeout,
-            Map<String, String> metadata,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String enabledProtocols,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess,
-            Context context) {
-        return createWithResponseAsync(
-                        shareName,
-                        timeout,
-                        metadata,
-                        quota,
-                        accessTier,
-                        enabledProtocols,
-                        rootSquash,
-                        enableSnapshotVirtualDirectoryAccess,
-                        context)
-                .flatMap(ignored -> Mono.empty());
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> createAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
+        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1042,33 +942,14 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(
-            String shareName,
-            Integer timeout,
-            Map<String, String> metadata,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String enabledProtocols,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess) {
+    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
+        Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
         final String restype = "share";
         final String accept = "application/xml";
-        return FluxUtil.withContext(
-                context ->
-                        service.createNoCustomHeaders(
-                                this.client.getUrl(),
-                                shareName,
-                                restype,
-                                timeout,
-                                metadata,
-                                quota,
-                                accessTier,
-                                this.client.getVersion(),
-                                enabledProtocols,
-                                rootSquash,
-                                enableSnapshotVirtualDirectoryAccess,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), shareName, restype,
+            timeout, metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, accept, context));
     }
 
     /**
@@ -1092,32 +973,14 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(
-            String shareName,
-            Integer timeout,
-            Map<String, String> metadata,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String enabledProtocols,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess,
-            Context context) {
+    public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
+        Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
-        return service.createNoCustomHeaders(
-                this.client.getUrl(),
-                shareName,
-                restype,
-                timeout,
-                metadata,
-                quota,
-                accessTier,
-                this.client.getVersion(),
-                enabledProtocols,
-                rootSquash,
-                enableSnapshotVirtualDirectoryAccess,
-                accept,
-                context);
+        return service.createNoCustomHeaders(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
+            accessTier, this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            accept, context);
     }
 
     /**
@@ -3665,33 +3528,15 @@ public final class SharesImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
-            String shareName,
-            Integer timeout,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String leaseId,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess) {
+    public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
+        Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
-        return FluxUtil.withContext(
-                context ->
-                        service.setProperties(
-                                this.client.getUrl(),
-                                shareName,
-                                restype,
-                                comp,
-                                timeout,
-                                this.client.getVersion(),
-                                quota,
-                                accessTier,
-                                leaseId,
-                                rootSquash,
-                                enableSnapshotVirtualDirectoryAccess,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.setProperties(this.client.getUrl(), shareName, restype, comp,
+            timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, accept, context));
     }
 
     /**
@@ -3713,32 +3558,14 @@ public final class SharesImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
-            String shareName,
-            Integer timeout,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String leaseId,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess,
-            Context context) {
+    public Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
+        Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.setProperties(
-                this.client.getUrl(),
-                shareName,
-                restype,
-                comp,
-                timeout,
-                this.client.getVersion(),
-                quota,
-                accessTier,
-                leaseId,
-                rootSquash,
-                enableSnapshotVirtualDirectoryAccess,
-                accept,
-                context);
+        return service.setProperties(this.client.getUrl(), shareName, restype, comp, timeout, this.client.getVersion(),
+            quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, accept, context);
     }
 
     /**
@@ -3759,23 +3586,10 @@ public final class SharesImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setPropertiesAsync(
-            String shareName,
-            Integer timeout,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String leaseId,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess) {
-        return setPropertiesWithResponseAsync(
-                        shareName,
-                        timeout,
-                        quota,
-                        accessTier,
-                        leaseId,
-                        rootSquash,
-                        enableSnapshotVirtualDirectoryAccess)
-                .flatMap(ignored -> Mono.empty());
+    public Mono<Void> setPropertiesAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
+        return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
+            enableSnapshotVirtualDirectoryAccess).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3797,25 +3611,10 @@ public final class SharesImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setPropertiesAsync(
-            String shareName,
-            Integer timeout,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String leaseId,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess,
-            Context context) {
-        return setPropertiesWithResponseAsync(
-                        shareName,
-                        timeout,
-                        quota,
-                        accessTier,
-                        leaseId,
-                        rootSquash,
-                        enableSnapshotVirtualDirectoryAccess,
-                        context)
-                .flatMap(ignored -> Mono.empty());
+    public Mono<Void> setPropertiesAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
+        return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3836,33 +3635,15 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(
-            String shareName,
-            Integer timeout,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String leaseId,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess) {
+    public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
+        Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
-        return FluxUtil.withContext(
-                context ->
-                        service.setPropertiesNoCustomHeaders(
-                                this.client.getUrl(),
-                                shareName,
-                                restype,
-                                comp,
-                                timeout,
-                                this.client.getVersion(),
-                                quota,
-                                accessTier,
-                                leaseId,
-                                rootSquash,
-                                enableSnapshotVirtualDirectoryAccess,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), shareName,
+            restype, comp, timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, accept, context));
     }
 
     /**
@@ -3884,32 +3665,15 @@ public final class SharesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(
-            String shareName,
-            Integer timeout,
-            Integer quota,
-            ShareAccessTier accessTier,
-            String leaseId,
-            ShareRootSquash rootSquash,
-            Boolean enableSnapshotVirtualDirectoryAccess,
-            Context context) {
+    public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
+        Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
-        return service.setPropertiesNoCustomHeaders(
-                this.client.getUrl(),
-                shareName,
-                restype,
-                comp,
-                timeout,
-                this.client.getVersion(),
-                quota,
-                accessTier,
-                leaseId,
-                rootSquash,
-                enableSnapshotVirtualDirectoryAccess,
-                accept,
-                context);
+        return service.setPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
+            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            accept, context);
     }
 
     /**
