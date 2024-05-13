@@ -406,11 +406,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             return this.partitionScopedRegionUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.Available ||
                 this.partitionScopedRegionUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.StaleUnavailable;
         }
-
-        public boolean isRegionUnavailableToProcessRequest() {
-            return this.partitionScopedRegionUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.FreshUnavailable;
-
-        }
     }
 
     private enum PartitionScopedRegionUnavailabilityStatus {
