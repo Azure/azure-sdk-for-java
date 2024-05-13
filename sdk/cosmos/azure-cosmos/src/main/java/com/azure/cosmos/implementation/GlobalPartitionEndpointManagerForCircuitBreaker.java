@@ -158,6 +158,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     doesPartitionHaveUnavailableLocations = true;
                 } else if (failureMetricsForPartition.partitionScopedRegionUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.StaleUnavailable) {
                     doesPartitionHaveUnavailableLocations = true;
+                } else if (failureMetricsForPartition.failureCount.get() >= 1) {
+                    doesPartitionHaveUnavailableLocations = true;
                 }
             }
         }
@@ -170,30 +172,33 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
     }
 
     private Flux<Object> updateStaleLocationInfo() {
-        return Flux.fromIterable(this.partitionsWithPossibleUnavailableRegions.values())
+        return Mono.just(1)
+            .delayElement(Duration.ofSeconds(60))
+            .repeat()
+            .flatMap(ignore -> Flux.fromIterable(this.partitionsWithPossibleUnavailableRegions.entrySet()))
             .publishOn(CosmosSchedulers.PARTITION_AVAILABILITY_STALENESS_CHECK_SINGLE)
-            .flatMap(partitionKeyRange -> {
+            .flatMap(partitionKeyRangeToPartitionKeyRangePair -> {
 
                 logger.info("Background updateStaleLocationInfo kicking in...");
+
+                PartitionKeyRange partitionKeyRange = partitionKeyRangeToPartitionKeyRangePair.getKey();
 
                 PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfo = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRange);
 
                 if (partitionLevelLocationUnavailabilityInfo != null) {
                     for (Map.Entry<URI, FailureMetricsForPartition> locationToLocationLevelMetrics : partitionLevelLocationUnavailabilityInfo.locationEndpointToFailureMetricsForPartition.entrySet()) {
                         FailureMetricsForPartition failureMetricsForPartition = locationToLocationLevelMetrics.getValue();
-                        failureMetricsForPartition.handleSuccess(false, partitionKeyRange);
+                        failureMetricsForPartition.handleSuccess(false, locationToLocationLevelMetrics.getKey(), partitionKeyRange);
                     }
                 } else {
                     this.partitionsWithPossibleUnavailableRegions.remove(partitionKeyRange);
                 }
 
                 return Mono.empty();
-            })
-            .repeat()
-            .delayElements(Duration.ofSeconds(60));
+            });
     }
 
-    private static class PartitionLevelLocationUnavailabilityInfo {
+    private class PartitionLevelLocationUnavailabilityInfo {
 
         private final ConcurrentHashMap<URI, FailureMetricsForPartition> locationEndpointToFailureMetricsForPartition;
 
@@ -224,7 +229,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             this.locationEndpointToFailureMetricsForPartition.compute(succeededLocation, (locationAsKey, failureMetricsForPartitionAsVal) -> {
 
                 if (failureMetricsForPartitionAsVal != null) {
-                    failureMetricsForPartitionAsVal.handleSuccess(false, partitionKeyRange);;
+                    failureMetricsForPartitionAsVal.handleSuccess(false, succeededLocation, partitionKeyRange);;
                 }
 
                 return failureMetricsForPartitionAsVal;
@@ -247,6 +252,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
             Instant mostStaleUnavailableTimeAcrossRegions = Instant.MAX;
             FailureMetricsForPartition locationLevelFailureMetadataForMostStaleLocation = null;
+            URI mostStaleUnavailableLocation = null;
 
             // find region with most 'stale' unavailability
             for (Map.Entry<URI, FailureMetricsForPartition> uriToLocationLevelFailureMetadata : this.locationEndpointToFailureMetricsForPartition.entrySet()) {
@@ -260,12 +266,13 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
                 if (mostStaleUnavailableTimeAcrossRegions.isAfter(unavailableSinceSnapshot)) {
                     mostStaleUnavailableTimeAcrossRegions = unavailableSinceSnapshot;
+                    mostStaleUnavailableLocation = uriToLocationLevelFailureMetadata.getKey();
                     locationLevelFailureMetadataForMostStaleLocation = failureMetricsForPartition;
                 }
             }
 
             if (locationLevelFailureMetadataForMostStaleLocation != null) {
-                locationLevelFailureMetadataForMostStaleLocation.handleSuccess(true, partitionKeyRange);
+                locationLevelFailureMetadataForMostStaleLocation.handleSuccess(true, mostStaleUnavailableLocation, partitionKeyRange);
                 return true;
             }
 
@@ -273,14 +280,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         }
     }
 
-    private static class FailureMetricsForPartition {
+    private class FailureMetricsForPartition {
         private final AtomicInteger failureCount = new AtomicInteger(0);
         private final AtomicInteger successCount = new AtomicInteger(0);
         private final AtomicReference<Instant> unavailableSince = new AtomicReference<>(Instant.MAX);
         private final AtomicReference<PartitionScopedRegionUnavailabilityStatus> partitionScopedRegionUnavailabilityStatus = new AtomicReference<>(PartitionScopedRegionUnavailabilityStatus.Available);
         private final AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
 
-        public void handleSuccess(boolean forceStateChange, PartitionKeyRange partitionKeyRange) {
+        public void handleSuccess(boolean forceStateChange, URI location, PartitionKeyRange partitionKeyRange) {
+
+            logger.info("Handling success");
 
             PartitionScopedRegionUnavailabilityStatus currentStatusSnapshot = this.partitionScopedRegionUnavailabilityStatus.get();
 
@@ -299,7 +308,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         successCount.incrementAndGet();
                         if (successCount.get() > 10 && (double) failureCount.get() / (double) successCount.get() < allowedFailureRatio) {
                             this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.Available);
-                            logger.info("Partition {}-{} marked as Available from StaleUnavailable", partitionKeyRange.getMinInclusive(), partitionKeyRange.getMaxExclusive());
+                            logger.info("Partition {}-{} marked as Available from StaleUnavailable for location : {}", partitionKeyRange.getMinInclusive(), partitionKeyRange.getMaxExclusive(), GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager.getRegionName(location, OperationType.Read));
                         }
                     }
                     break;
@@ -307,11 +316,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     if (!forceStateChange) {
                         if (Duration.between(this.unavailableSince.get(), Instant.now()).compareTo(Duration.ofSeconds(30)) > 0) {
                             this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
-                            logger.info("Partition {}-{} marked as StaleUnavailable from FreshAvailable", partitionKeyRange.getMinInclusive(), partitionKeyRange.getMaxExclusive());
+                            logger.info("Partition {}-{} marked as StaleUnavailable from FreshAvailable for location : {}", partitionKeyRange.getMinInclusive(), partitionKeyRange.getMaxExclusive(), GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager.getRegionName(location, OperationType.Read));
                         }
                     } else {
                         this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
-                        logger.info("Partition {}-{} marked as StaleUnavailable from FreshAvailable", partitionKeyRange.getMinInclusive(), partitionKeyRange.getMaxExclusive());
+                        logger.info("Partition {}-{} marked as StaleUnavailable from FreshAvailable for location : {}", partitionKeyRange.getMinInclusive(), partitionKeyRange.getMaxExclusive(), GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager.getRegionName(location, OperationType.Read));
                     }
                     break;
                 default:
@@ -321,6 +330,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
         public void handleFailure(PartitionKeyRange partitionKeyRange) {
 
+            logger.error("Handling failure");
+
             PartitionScopedRegionUnavailabilityStatus currentStatusSnapshot = this.partitionScopedRegionUnavailabilityStatus.get();
 
             int allowedFailureCount = getAllowedFailureCountByStatus(currentStatusSnapshot);
@@ -328,15 +339,18 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             switch (currentStatusSnapshot) {
                 case Available:
                     if (failureCount.get() < allowedFailureCount) {
-                        failureCount.incrementAndGet();
+                        failureCount.addAndGet(1);
+                        logger.error("Failure count : {}", failureCount.get());
+                        logger.error("Allowed failure count : {}", allowedFailureCount);
                     } else {
                         this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.FreshUnavailable);
+                        GlobalPartitionEndpointManagerForCircuitBreaker.this.partitionsWithPossibleUnavailableRegions.put(partitionKeyRange, partitionKeyRange);
                         logger.info("Partition {}-{} marked as FreshUnavailable from Available", partitionKeyRange.getMinInclusive(), partitionKeyRange.getMaxExclusive());
                     }
                     break;
                 case StaleUnavailable:
                     if (failureCount.get() < allowedFailureCount) {
-                        failureCount.incrementAndGet();
+                        failureCount.addAndGet(1);
                     } else {
                         this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.FreshUnavailable);
                         logger.info("Partition {}-{} marked as FreshUnavailable from StaleUnavailable", partitionKeyRange.getMinInclusive(), partitionKeyRange.getMaxExclusive());
