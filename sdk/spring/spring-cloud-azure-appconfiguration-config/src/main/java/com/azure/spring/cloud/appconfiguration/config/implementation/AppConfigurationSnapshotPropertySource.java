@@ -5,6 +5,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -39,7 +40,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * @param trim prefix to trim
      * @throws JsonProcessingException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> trim) throws JsonProcessingException {
+    public void initProperties(List<String> trim) throws IOException {
         processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName), null, trim);
     }
 

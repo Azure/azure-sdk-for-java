@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -55,5 +56,5 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
         return String.join(",", labelFilters);
     }
 
-    protected abstract void initProperties(List<String> trim) throws JsonProcessingException;
+    protected abstract void initProperties(List<String> trim) throws IOException;
 }
