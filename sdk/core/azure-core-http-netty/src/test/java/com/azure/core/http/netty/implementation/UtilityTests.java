@@ -4,7 +4,7 @@ package com.azure.core.http.netty.implementation;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class UtilityTests {
     @Test
@@ -12,6 +12,12 @@ public class UtilityTests {
         StringBuilder logger = new StringBuilder();
         Utility.validateNettyVersions(logger::append);
 
-        assertEquals(0, logger.length(), "Unexpected Netty version mismatch logs.");
+        String logMessage = logger.toString();
+
+        // Version information is always logged.
+        assertFalse(logMessage.isEmpty(), "Version logs are always expected.");
+
+        // But azure-core-http-netty shouldn't have version mismatches.
+        assertFalse(logMessage.contains(Utility.NETTY_VERSION_MISMATCH_LOG), "Unexpected Netty version mismatch logs.");
     }
 }

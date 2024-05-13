@@ -14,8 +14,10 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /**
@@ -39,6 +41,8 @@ public final class Utility {
     // List of Netty artifacts that should match the 'netty-tcnative.version' property in the pom.xml file.
     private static final List<String> NETTY_TCNATIVE_VERSION_ARTIFACTS
         = Collections.singletonList("netty-tcnative-boringssl-static");
+
+    static final String NETTY_VERSION_MISMATCH_LOG = "The versions of Netty being used are not aligned. ";
 
     /**
      * Deep copies the passed {@link ByteBuf} into a {@link ByteBuffer}.
@@ -99,6 +103,7 @@ public final class Utility {
         Map<String, Version> nettyVersions = Version.identify();
         List<String> versionInformation = new ArrayList<>(11); // There are 11 Netty dependencies in the pom.xml file.
 
+        Set<String> nonNativeNettyVersions = new HashSet<>();
         for (String artifact : REQUIRED_NETTY_VERSION_ARTIFACTS) {
             Version version = nettyVersions.get(artifact);
 
@@ -106,8 +111,10 @@ public final class Utility {
             // excluded. Include it as a warning.
             if (version == null) {
                 versionInformation.add("'io.netty:" + artifact + "' (not found and is required)");
+                nonNativeNettyVersions.add("unknown");
             } else {
                 versionInformation.add("'io.netty:" + artifact + "' version: " + version.artifactVersion());
+                nonNativeNettyVersions.add(version.artifactVersion());
             }
         }
 
@@ -118,6 +125,7 @@ public final class Utility {
             // excluded. Don't include it as a warning for native dependencies as it is optional.
             if (version != null) {
                 versionInformation.add("'io.netty:" + artifact + "' version: " + version.artifactVersion());
+                nonNativeNettyVersions.add(version.artifactVersion());
             }
         }
 
@@ -131,12 +139,25 @@ public final class Utility {
             }
         }
 
-        logger.accept("The following is Netty version information that was found on the classpath: "
-            + CoreUtils.stringJoin(", ", versionInformation) + ". The version of azure-core-http-netty being used was "
-            + "built with Netty version " + nettyVersion + " and Netty Tcnative version " + nettyTcnativeVersion + ". "
-            + "If your application runs without issue this message can be ignored, otherwise please align the Netty "
-            + "versions you are using (this doesn't need to be the versions used by azure-core-http-netty if the "
-            + "versions of Netty being used are newer).");
+        String versionInformationString = CoreUtils.stringJoin(", ", versionInformation);
+        StringBuilder stringBuilder
+            = new StringBuilder().append("The following is Netty version information that was found on the classpath: ")
+                .append(versionInformationString)
+                .append(". ");
+
+        if (nonNativeNettyVersions.size() > 1) {
+            stringBuilder.append(NETTY_VERSION_MISMATCH_LOG);
+        }
+
+        stringBuilder.append("The version of azure-core-http-netty being used was built with Netty version ")
+            .append(nettyVersion)
+            .append(" and Netty Tcnative version ")
+            .append(nettyTcnativeVersion)
+            .append(". If your application runs without issue this message can be ignored, otherwise please align the "
+                + "Netty versions you are using (this doesn't need to be the versions used by azure-core-http-netty if "
+                + "the versions of Netty being used are newer).");
+
+        logger.accept(stringBuilder.toString());
     }
 
     private Utility() {
