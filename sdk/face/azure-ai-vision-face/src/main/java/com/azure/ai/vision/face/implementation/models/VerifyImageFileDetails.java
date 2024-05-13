@@ -22,8 +22,7 @@ public final class VerifyImageFileDetails {
     /*
      * The filename of the file.
      */
-    @Generated
-    private String filename;
+    private String filename = "verify-image";
 
     /*
      * The content-type of the file.
