@@ -7130,10 +7130,8 @@ public final class FaceAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<FaceOperationResult, Void>
-        beginUpdateDynamicPersonGroupWithPersonChanges(String dynamicPersonGroupId) {
+    PollerFlux<FaceOperationResult, Void> beginUpdateDynamicPersonGroupWithPersonChanges(String dynamicPersonGroupId) {
         // Generated convenience method for beginUpdateDynamicPersonGroupWithPersonChangesWithModel
         RequestOptions requestOptions = new RequestOptions();
         UpdateDynamicPersonGroupWithPersonChangesRequest requestObj
