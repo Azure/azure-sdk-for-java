@@ -499,11 +499,10 @@ public class AttestationTokenImpl implements AttestationToken {
      * @throws RuntimeException exception that occurs at runtime.
      */
     public static AttestationToken createSecuredToken(AttestationSigningKey signingKey) {
-        ClientLogger logger = new ClientLogger(AttestationTokenImpl.class);
         try {
             signingKey.verify();
         } catch (Exception e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 
         // The NimbusDS Library Payload object must have a body, so we have to
@@ -512,7 +511,7 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             certs.add(Base64.encode(signingKey.getCertificate().getEncoded()));
         } catch (CertificateEncodingException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
@@ -535,7 +534,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 throw new RuntimeException("Assertion failure: Cannot have signer that is not either RSA or EC");
             }
         } catch (JOSEException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 
         String signedBody = header.toBase64URL() + ".";
@@ -556,11 +555,10 @@ public class AttestationTokenImpl implements AttestationToken {
      * @return Newly created secured attestation token based off the serialized body.
      */
     public static AttestationToken createSecuredToken(String stringBody, AttestationSigningKey signingKey) {
-        ClientLogger logger = new ClientLogger(AttestationTokenImpl.class);
         try {
             signingKey.verify();
         } catch (Exception e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 
         JWSObject securedObject;
@@ -570,7 +568,7 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             certs.add(Base64.encode(signingKey.getCertificate().getEncoded()));
         } catch (CertificateEncodingException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
             .x509CertChain(certs)
@@ -589,14 +587,14 @@ public class AttestationTokenImpl implements AttestationToken {
                 signer = new ECDSASigner(privateKey);
             }
         } catch (JOSEException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 
         securedObject = new JWSObject(header, payload);
         try {
             securedObject.sign(signer);
         } catch (JOSEException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
 
         return new AttestationTokenImpl(securedObject.serialize());
