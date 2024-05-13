@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.changefeed.epkversion;
+package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
@@ -45,6 +45,18 @@ public class BootstrapperImplTests {
                     "0",
                     "-FF",
                     "0"),
+                true
+            },
+            {
+                createLeaseWithContinuation(
+                    true,
+                    ChangeFeedMode.INCREMENTAL,
+                    ChangeFeedStartFromInternal.createFromNow(),
+                    "XyJKUI7=",
+                    "NO67Hq=",
+                    "0",
+                    "-FF",
+                    "0"),
                 false
             },
             {
@@ -57,39 +69,15 @@ public class BootstrapperImplTests {
                     "0",
                     "-FF",
                     "0"),
-                true
-            },
-            {
-                createLeaseWithContinuation(
-                    false,
-                    ChangeFeedMode.INCREMENTAL,
-                    ChangeFeedStartFromInternal.createFromNow(),
-                    "XyJKUI7=",
-                    "NO67Hq=",
-                    "0",
-                    "-FF",
-                    "0"),
-                false
-            },
-            {
-                createLeaseWithContinuation(
-                    false,
-                    ChangeFeedMode.FULL_FIDELITY,
-                    ChangeFeedStartFromInternal.createFromNow(),
-                    "XyJKUI7=",
-                    "NO67Hq=",
-                    "0",
-                    "-FF",
-                    "0"),
                 false
             }
         };
     }
 
     @Test(groups = {"unit"}, dataProvider = "leaseProvider")
-    public void tryInitializeStoreFromEpkVersionLeaseStoreWithExistingLeases(ServiceItemLeaseV1 lease, boolean expectIllegalStateException) {
+    public void tryInitializeStoreFromPkVersionLeaseStoreWithExistingLeases(ServiceItemLease lease, boolean expectIllegalStateException) {
         Duration lockTime = Duration.ofSeconds(5);
-        Duration expireTIme = Duration.ofSeconds(5);
+        Duration sleepTime = Duration.ofSeconds(5);
 
         PartitionSynchronizer partitionSynchronizerMock = Mockito.mock(PartitionSynchronizer.class);
         Mockito.when(partitionSynchronizerMock.createMissingLeases()).thenReturn(Mono.empty());
@@ -103,15 +91,15 @@ public class BootstrapperImplTests {
         Mockito.when(leaseStoreMock.markInitialized()).thenReturn(Mono.just(Boolean.TRUE));
         Mockito.when(leaseStoreMock.releaseInitializationLock()).thenReturn(Mono.empty());
 
-        LeaseStoreManager epkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
-        Mockito.when(epkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1))).thenReturn(Flux.just(lease));
+        LeaseStoreManager pkRangeVersionLeaseStoreManagerMock = Mockito.mock(LeaseStoreManager.class);
+        Mockito.when(pkRangeVersionLeaseStoreManagerMock.getTopLeases(Mockito.eq(1))).thenReturn(Flux.just(lease));
         Bootstrapper bootstrapper = new BootstrapperImpl(
             partitionSynchronizerMock,
             leaseStoreMock,
             lockTime,
-            expireTIme,
-            epkRangeVersionLeaseStoreManagerMock,
-            ChangeFeedMode.FULL_FIDELITY);
+            pkRangeVersionLeaseStoreManagerMock,
+            sleepTime,
+            ChangeFeedMode.INCREMENTAL);
 
         if (expectIllegalStateException) {
             Assert.assertThrows(IllegalStateException.class, () -> bootstrapper.initialize().block());
@@ -119,12 +107,13 @@ public class BootstrapperImplTests {
             bootstrapper.initialize().block();
         }
 
-        Mockito.verify(epkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
+        Mockito.verify(pkRangeVersionLeaseStoreManagerMock, times(1)).getTopLeases(Mockito.eq(1));
         Mockito.verify(partitionSynchronizerMock, times(1)).createMissingLeases();
         Mockito.verify(leaseStoreMock, times(2)).isInitialized();
     }
 
-    private static ServiceItemLeaseV1 createLeaseWithContinuation(
+
+    private static ServiceItemLease createLeaseWithContinuation(
         boolean withContinuation,
         ChangeFeedMode changeFeedMode,
         ChangeFeedStartFromInternal startFromSettings,
@@ -134,7 +123,7 @@ public class BootstrapperImplTests {
         String leaseToken,
         String continuationToken) {
 
-        ServiceItemLeaseV1 lease = new ServiceItemLeaseV1();
+        ServiceItemLease lease = new ServiceItemLease();
 
         lease.setId(String.format("%s_%s..%s", databaseRid, collectionRid, leaseToken));
         lease = lease.withLeaseToken(leaseToken);
@@ -161,4 +150,5 @@ public class BootstrapperImplTests {
 
         return lease;
     }
+
 }
