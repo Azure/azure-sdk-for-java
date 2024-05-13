@@ -4,54 +4,55 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * State of the selection mark.
  */
-public enum DocumentSelectionMarkState {
+public final class DocumentSelectionMarkState extends ExpandableStringEnum<DocumentSelectionMarkState> {
     /**
      * The selection mark is selected, often indicated by a check ✓ or cross X inside
      * the selection mark.
      */
-    SELECTED("selected"),
+    @Generated
+    public static final DocumentSelectionMarkState SELECTED = fromString("selected");
 
     /**
      * The selection mark is not selected.
      */
-    UNSELECTED("unselected");
+    @Generated
+    public static final DocumentSelectionMarkState UNSELECTED = fromString("unselected");
 
     /**
-     * The actual serialized value for a DocumentSelectionMarkState instance.
-     */
-    private final String value;
-
-    DocumentSelectionMarkState(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a DocumentSelectionMarkState instance.
+     * Creates a new instance of DocumentSelectionMarkState value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed DocumentSelectionMarkState object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static DocumentSelectionMarkState fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        DocumentSelectionMarkState[] items = DocumentSelectionMarkState.values();
-        for (DocumentSelectionMarkState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public DocumentSelectionMarkState() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a DocumentSelectionMarkState from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding DocumentSelectionMarkState.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static DocumentSelectionMarkState fromString(String name) {
+        return fromString(name, DocumentSelectionMarkState.class);
+    }
+
+    /**
+     * Gets known DocumentSelectionMarkState values.
+     * 
+     * @return known DocumentSelectionMarkState values.
+     */
+    @Generated
+    public static Collection<DocumentSelectionMarkState> values() {
+        return values(DocumentSelectionMarkState.class);
     }
 }

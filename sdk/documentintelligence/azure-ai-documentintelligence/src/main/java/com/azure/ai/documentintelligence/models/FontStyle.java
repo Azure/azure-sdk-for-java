@@ -4,53 +4,54 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Font style.
  */
-public enum FontStyle {
+public final class FontStyle extends ExpandableStringEnum<FontStyle> {
     /**
      * Characters are represented normally.
      */
-    NORMAL("normal"),
+    @Generated
+    public static final FontStyle NORMAL = fromString("normal");
 
     /**
      * Characters are visually slanted to the right.
      */
-    ITALIC("italic");
+    @Generated
+    public static final FontStyle ITALIC = fromString("italic");
 
     /**
-     * The actual serialized value for a FontStyle instance.
-     */
-    private final String value;
-
-    FontStyle(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a FontStyle instance.
+     * Creates a new instance of FontStyle value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed FontStyle object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static FontStyle fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        FontStyle[] items = FontStyle.values();
-        for (FontStyle item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public FontStyle() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a FontStyle from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding FontStyle.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static FontStyle fromString(String name) {
+        return fromString(name, FontStyle.class);
+    }
+
+    /**
+     * Gets known FontStyle values.
+     * 
+     * @return known FontStyle values.
+     */
+    @Generated
+    public static Collection<FontStyle> values() {
+        return values(FontStyle.class);
     }
 }

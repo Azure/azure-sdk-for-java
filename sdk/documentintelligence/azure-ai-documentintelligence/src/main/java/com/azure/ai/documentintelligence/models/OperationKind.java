@@ -4,64 +4,67 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Type of operation.
  */
-public enum OperationKind {
+public final class OperationKind extends ExpandableStringEnum<OperationKind> {
     /**
      * Build a new custom document model.
      */
-    DOCUMENT_MODEL_BUILD("documentModelBuild"),
+    @Generated
+    public static final OperationKind DOCUMENT_MODEL_BUILD = fromString("documentModelBuild");
 
     /**
      * Compose a new custom document model from existing models.
      */
-    DOCUMENT_MODEL_COMPOSE("documentModelCompose"),
+    @Generated
+    public static final OperationKind DOCUMENT_MODEL_COMPOSE = fromString("documentModelCompose");
 
     /**
      * Copy an existing document model to potentially a different resource, region, or
      * subscription.
      */
-    DOCUMENT_MODEL_COPY_TO("documentModelCopyTo"),
+    @Generated
+    public static final OperationKind DOCUMENT_MODEL_COPY_TO = fromString("documentModelCopyTo");
 
     /**
      * Build a new custom classifier model.
      */
-    DOCUMENT_CLASSIFIER_BUILD("documentClassifierBuild");
+    @Generated
+    public static final OperationKind DOCUMENT_CLASSIFIER_BUILD = fromString("documentClassifierBuild");
 
     /**
-     * The actual serialized value for a OperationKind instance.
-     */
-    private final String value;
-
-    OperationKind(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a OperationKind instance.
+     * Creates a new instance of OperationKind value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed OperationKind object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static OperationKind fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        OperationKind[] items = OperationKind.values();
-        for (OperationKind item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public OperationKind() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a OperationKind from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding OperationKind.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static OperationKind fromString(String name) {
+        return fromString(name, OperationKind.class);
+    }
+
+    /**
+     * Gets known OperationKind values.
+     * 
+     * @return known OperationKind values.
+     */
+    @Generated
+    public static Collection<OperationKind> values() {
+        return values(OperationKind.class);
     }
 }

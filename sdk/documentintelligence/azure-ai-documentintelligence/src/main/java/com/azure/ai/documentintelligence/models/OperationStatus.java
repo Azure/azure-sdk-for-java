@@ -4,73 +4,78 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Operation status.
  */
-public enum OperationStatus {
+public final class OperationStatus extends ExpandableStringEnum<OperationStatus> {
     /**
      * The operation has not started yet.
      */
-    NOT_STARTED("notStarted"),
+    @Generated
+    public static final OperationStatus NOT_STARTED = fromString("notStarted");
 
     /**
      * The operation is in progress.
      */
-    RUNNING("running"),
+    @Generated
+    public static final OperationStatus RUNNING = fromString("running");
 
     /**
      * The operation has failed.
      */
-    FAILED("failed"),
+    @Generated
+    public static final OperationStatus FAILED = fromString("failed");
 
     /**
      * The operation has succeeded.
      */
-    SUCCEEDED("succeeded"),
+    @Generated
+    public static final OperationStatus SUCCEEDED = fromString("succeeded");
 
     /**
      * The operation has completed.
      */
-    COMPLETED("completed"),
+    @Generated
+    public static final OperationStatus COMPLETED = fromString("completed");
 
     /**
      * The operation has been canceled.
      */
-    CANCELED("canceled");
+    @Generated
+    public static final OperationStatus CANCELED = fromString("canceled");
 
     /**
-     * The actual serialized value for a OperationStatus instance.
-     */
-    private final String value;
-
-    OperationStatus(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a OperationStatus instance.
+     * Creates a new instance of OperationStatus value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed OperationStatus object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static OperationStatus fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        OperationStatus[] items = OperationStatus.values();
-        for (OperationStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public OperationStatus() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a OperationStatus from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding OperationStatus.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static OperationStatus fromString(String name) {
+        return fromString(name, OperationStatus.class);
+    }
+
+    /**
+     * Gets known OperationStatus values.
+     * 
+     * @return known OperationStatus values.
+     */
+    @Generated
+    public static Collection<OperationStatus> values() {
+        return values(OperationStatus.class);
     }
 }

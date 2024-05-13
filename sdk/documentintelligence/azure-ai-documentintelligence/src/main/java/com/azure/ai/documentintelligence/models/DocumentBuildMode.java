@@ -4,53 +4,54 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Custom document model build mode.
  */
-public enum DocumentBuildMode {
+public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildMode> {
     /**
      * Target documents with similar visual templates.
      */
-    TEMPLATE("template"),
+    @Generated
+    public static final DocumentBuildMode TEMPLATE = fromString("template");
 
     /**
      * Support documents with diverse visual templates.
      */
-    NEURAL("neural");
+    @Generated
+    public static final DocumentBuildMode NEURAL = fromString("neural");
 
     /**
-     * The actual serialized value for a DocumentBuildMode instance.
-     */
-    private final String value;
-
-    DocumentBuildMode(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a DocumentBuildMode instance.
+     * Creates a new instance of DocumentBuildMode value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed DocumentBuildMode object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static DocumentBuildMode fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        DocumentBuildMode[] items = DocumentBuildMode.values();
-        for (DocumentBuildMode item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public DocumentBuildMode() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a DocumentBuildMode from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding DocumentBuildMode.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static DocumentBuildMode fromString(String name) {
+        return fromString(name, DocumentBuildMode.class);
+    }
+
+    /**
+     * Gets known DocumentBuildMode values.
+     * 
+     * @return known DocumentBuildMode values.
+     */
+    @Generated
+    public static Collection<DocumentBuildMode> values() {
+        return values(DocumentBuildMode.class);
     }
 }

@@ -4,68 +4,72 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Table cell kind.
  */
-public enum DocumentTableCellKind {
+public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTableCellKind> {
     /**
      * Contains the main content/data.
      */
-    CONTENT("content"),
+    @Generated
+    public static final DocumentTableCellKind CONTENT = fromString("content");
 
     /**
      * Describes the content of the row.
      */
-    ROW_HEADER("rowHeader"),
+    @Generated
+    public static final DocumentTableCellKind ROW_HEADER = fromString("rowHeader");
 
     /**
      * Describes the content of the column.
      */
-    COLUMN_HEADER("columnHeader"),
+    @Generated
+    public static final DocumentTableCellKind COLUMN_HEADER = fromString("columnHeader");
 
     /**
      * Describes the row headers, usually located at the top left corner of a table.
      */
-    STUB_HEAD("stubHead"),
+    @Generated
+    public static final DocumentTableCellKind STUB_HEAD = fromString("stubHead");
 
     /**
      * Describes the content in (parts of) the table.
      */
-    DESCRIPTION("description");
+    @Generated
+    public static final DocumentTableCellKind DESCRIPTION = fromString("description");
 
     /**
-     * The actual serialized value for a DocumentTableCellKind instance.
-     */
-    private final String value;
-
-    DocumentTableCellKind(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a DocumentTableCellKind instance.
+     * Creates a new instance of DocumentTableCellKind value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed DocumentTableCellKind object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static DocumentTableCellKind fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        DocumentTableCellKind[] items = DocumentTableCellKind.values();
-        for (DocumentTableCellKind item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public DocumentTableCellKind() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a DocumentTableCellKind from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding DocumentTableCellKind.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static DocumentTableCellKind fromString(String name) {
+        return fromString(name, DocumentTableCellKind.class);
+    }
+
+    /**
+     * Gets known DocumentTableCellKind values.
+     * 
+     * @return known DocumentTableCellKind values.
+     */
+    @Generated
+    public static Collection<DocumentTableCellKind> values() {
+        return values(DocumentTableCellKind.class);
     }
 }

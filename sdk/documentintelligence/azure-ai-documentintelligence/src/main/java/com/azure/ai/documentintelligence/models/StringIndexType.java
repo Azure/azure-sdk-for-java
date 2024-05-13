@@ -4,60 +4,62 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Method used to compute string offset and length.
  */
-public enum StringIndexType {
+public final class StringIndexType extends ExpandableStringEnum<StringIndexType> {
     /**
      * User-perceived display character, or grapheme cluster, as defined by Unicode
      * 8.0.0.
      */
-    TEXT_ELEMENTS("textElements"),
+    @Generated
+    public static final StringIndexType TEXT_ELEMENTS = fromString("textElements");
 
     /**
      * Character unit represented by a single unicode code point. Used by Python 3.
      */
-    UNICODE_CODE_POINT("unicodeCodePoint"),
+    @Generated
+    public static final StringIndexType UNICODE_CODE_POINT = fromString("unicodeCodePoint");
 
     /**
      * Character unit represented by a 16-bit Unicode code unit. Used by JavaScript,
      * Java, and .NET.
      */
-    UTF16CODE_UNIT("utf16CodeUnit");
+    @Generated
+    public static final StringIndexType UTF16CODE_UNIT = fromString("utf16CodeUnit");
 
     /**
-     * The actual serialized value for a StringIndexType instance.
-     */
-    private final String value;
-
-    StringIndexType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a StringIndexType instance.
+     * Creates a new instance of StringIndexType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed StringIndexType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static StringIndexType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        StringIndexType[] items = StringIndexType.values();
-        for (StringIndexType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public StringIndexType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a StringIndexType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding StringIndexType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static StringIndexType fromString(String name) {
+        return fromString(name, StringIndexType.class);
+    }
+
+    /**
+     * Gets known StringIndexType values.
+     * 
+     * @return known StringIndexType values.
+     */
+    @Generated
+    public static Collection<StringIndexType> values() {
+        return values(StringIndexType.class);
     }
 }

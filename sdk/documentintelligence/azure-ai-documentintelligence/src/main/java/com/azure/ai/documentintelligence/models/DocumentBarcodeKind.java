@@ -4,128 +4,144 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Barcode kind.
  */
-public enum DocumentBarcodeKind {
+public final class DocumentBarcodeKind extends ExpandableStringEnum<DocumentBarcodeKind> {
     /**
      * QR code, as defined in ISO/IEC 18004:2015.
      */
-    QRCODE("QRCode"),
+    @Generated
+    public static final DocumentBarcodeKind QRCODE = fromString("QRCode");
 
     /**
      * PDF417, as defined in ISO 15438.
      */
-    PDF417("PDF417"),
+    @Generated
+    public static final DocumentBarcodeKind PDF417 = fromString("PDF417");
 
     /**
      * GS1 12-digit Universal Product Code.
      */
-    UPCA("UPCA"),
+    @Generated
+    public static final DocumentBarcodeKind UPCA = fromString("UPCA");
 
     /**
      * GS1 6-digit Universal Product Code.
      */
-    UPCE("UPCE"),
+    @Generated
+    public static final DocumentBarcodeKind UPCE = fromString("UPCE");
 
     /**
      * Code 39 barcode, as defined in ISO/IEC 16388:2007.
      */
-    CODE39("Code39"),
+    @Generated
+    public static final DocumentBarcodeKind CODE39 = fromString("Code39");
 
     /**
      * Code 128 barcode, as defined in ISO/IEC 15417:2007.
      */
-    CODE128("Code128"),
+    @Generated
+    public static final DocumentBarcodeKind CODE128 = fromString("Code128");
 
     /**
      * GS1 8-digit International Article Number (European Article Number).
      */
-    EAN8("EAN8"),
+    @Generated
+    public static final DocumentBarcodeKind EAN8 = fromString("EAN8");
 
     /**
      * GS1 13-digit International Article Number (European Article Number).
      */
-    EAN13("EAN13"),
+    @Generated
+    public static final DocumentBarcodeKind EAN13 = fromString("EAN13");
 
     /**
      * GS1 DataBar barcode.
      */
-    DATA_BAR("DataBar"),
+    @Generated
+    public static final DocumentBarcodeKind DATA_BAR = fromString("DataBar");
 
     /**
      * Code 93 barcode, as defined in ANSI/AIM BC5-1995.
      */
-    CODE93("Code93"),
+    @Generated
+    public static final DocumentBarcodeKind CODE93 = fromString("Code93");
 
     /**
      * Codabar barcode, as defined in ANSI/AIM BC3-1995.
      */
-    CODABAR("Codabar"),
+    @Generated
+    public static final DocumentBarcodeKind CODABAR = fromString("Codabar");
 
     /**
      * GS1 DataBar Expanded barcode.
      */
-    DATA_BAR_EXPANDED("DataBarExpanded"),
+    @Generated
+    public static final DocumentBarcodeKind DATA_BAR_EXPANDED = fromString("DataBarExpanded");
 
     /**
      * Interleaved 2 of 5 barcode, as defined in ANSI/AIM BC2-1995.
      */
-    ITF("ITF"),
+    @Generated
+    public static final DocumentBarcodeKind ITF = fromString("ITF");
 
     /**
      * Micro QR code, as defined in ISO/IEC 23941:2022.
      */
-    MICRO_QRCODE("MicroQRCode"),
+    @Generated
+    public static final DocumentBarcodeKind MICRO_QRCODE = fromString("MicroQRCode");
 
     /**
      * Aztec code, as defined in ISO/IEC 24778:2008.
      */
-    AZTEC("Aztec"),
+    @Generated
+    public static final DocumentBarcodeKind AZTEC = fromString("Aztec");
 
     /**
      * Data matrix code, as defined in ISO/IEC 16022:2006.
      */
-    DATA_MATRIX("DataMatrix"),
+    @Generated
+    public static final DocumentBarcodeKind DATA_MATRIX = fromString("DataMatrix");
 
     /**
      * MaxiCode, as defined in ISO/IEC 16023:2000.
      */
-    MAXI_CODE("MaxiCode");
+    @Generated
+    public static final DocumentBarcodeKind MAXI_CODE = fromString("MaxiCode");
 
     /**
-     * The actual serialized value for a DocumentBarcodeKind instance.
-     */
-    private final String value;
-
-    DocumentBarcodeKind(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a DocumentBarcodeKind instance.
+     * Creates a new instance of DocumentBarcodeKind value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed DocumentBarcodeKind object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static DocumentBarcodeKind fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        DocumentBarcodeKind[] items = DocumentBarcodeKind.values();
-        for (DocumentBarcodeKind item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public DocumentBarcodeKind() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a DocumentBarcodeKind from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding DocumentBarcodeKind.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static DocumentBarcodeKind fromString(String name) {
+        return fromString(name, DocumentBarcodeKind.class);
+    }
+
+    /**
+     * Gets known DocumentBarcodeKind values.
+     * 
+     * @return known DocumentBarcodeKind values.
+     */
+    @Generated
+    public static Collection<DocumentBarcodeKind> values() {
+        return values(DocumentBarcodeKind.class);
     }
 }

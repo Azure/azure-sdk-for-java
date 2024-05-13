@@ -4,54 +4,55 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit is
  * "inch".
  */
-public enum LengthUnit {
+public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
     /**
      * Length unit for image files.
      */
-    PIXEL("pixel"),
+    @Generated
+    public static final LengthUnit PIXEL = fromString("pixel");
 
     /**
      * Length unit for PDF files.
      */
-    INCH("inch");
+    @Generated
+    public static final LengthUnit INCH = fromString("inch");
 
     /**
-     * The actual serialized value for a LengthUnit instance.
-     */
-    private final String value;
-
-    LengthUnit(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a LengthUnit instance.
+     * Creates a new instance of LengthUnit value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed LengthUnit object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static LengthUnit fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        LengthUnit[] items = LengthUnit.values();
-        for (LengthUnit item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public LengthUnit() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a LengthUnit from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding LengthUnit.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static LengthUnit fromString(String name) {
+        return fromString(name, LengthUnit.class);
+    }
+
+    /**
+     * Gets known LengthUnit values.
+     * 
+     * @return known LengthUnit values.
+     */
+    @Generated
+    public static Collection<LengthUnit> values() {
+        return values(LengthUnit.class);
     }
 }

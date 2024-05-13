@@ -4,53 +4,54 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Presence of signature.
  */
-public enum DocumentSignatureType {
+public final class DocumentSignatureType extends ExpandableStringEnum<DocumentSignatureType> {
     /**
      * A signature is detected.
      */
-    SIGNED("signed"),
+    @Generated
+    public static final DocumentSignatureType SIGNED = fromString("signed");
 
     /**
      * No signatures are detected.
      */
-    UNSIGNED("unsigned");
+    @Generated
+    public static final DocumentSignatureType UNSIGNED = fromString("unsigned");
 
     /**
-     * The actual serialized value for a DocumentSignatureType instance.
-     */
-    private final String value;
-
-    DocumentSignatureType(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a DocumentSignatureType instance.
+     * Creates a new instance of DocumentSignatureType value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed DocumentSignatureType object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static DocumentSignatureType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        DocumentSignatureType[] items = DocumentSignatureType.values();
-        for (DocumentSignatureType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public DocumentSignatureType() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a DocumentSignatureType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding DocumentSignatureType.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static DocumentSignatureType fromString(String name) {
+        return fromString(name, DocumentSignatureType.class);
+    }
+
+    /**
+     * Gets known DocumentSignatureType values.
+     * 
+     * @return known DocumentSignatureType values.
+     */
+    @Generated
+    public static Collection<DocumentSignatureType> values() {
+        return values(DocumentSignatureType.class);
     }
 }

@@ -4,63 +4,66 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Type of content source.
  */
-public enum ContentSourceKind {
+public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceKind> {
     /**
      * Content at a specific URL.
      */
-    URL("url"),
+    @Generated
+    public static final ContentSourceKind URL = fromString("url");
 
     /**
      * Content represented via Base64 encoding.
      */
-    BASE64("base64"),
+    @Generated
+    public static final ContentSourceKind BASE64 = fromString("base64");
 
     /**
      * Files in a path within an Azure Blob Storage container.
      */
-    AZURE_BLOB("azureBlob"),
+    @Generated
+    public static final ContentSourceKind AZURE_BLOB = fromString("azureBlob");
 
     /**
      * A file list specifying individual files in an Azure Blob Storage container.
      */
-    AZURE_BLOB_FILE_LIST("azureBlobFileList");
+    @Generated
+    public static final ContentSourceKind AZURE_BLOB_FILE_LIST = fromString("azureBlobFileList");
 
     /**
-     * The actual serialized value for a ContentSourceKind instance.
-     */
-    private final String value;
-
-    ContentSourceKind(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ContentSourceKind instance.
+     * Creates a new instance of ContentSourceKind value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ContentSourceKind object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ContentSourceKind fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ContentSourceKind[] items = ContentSourceKind.values();
-        for (ContentSourceKind item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public ContentSourceKind() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ContentSourceKind from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ContentSourceKind.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static ContentSourceKind fromString(String name) {
+        return fromString(name, ContentSourceKind.class);
+    }
+
+    /**
+     * Gets known ContentSourceKind values.
+     * 
+     * @return known ContentSourceKind values.
+     */
+    @Generated
+    public static Collection<ContentSourceKind> values() {
+        return values(ContentSourceKind.class);
     }
 }

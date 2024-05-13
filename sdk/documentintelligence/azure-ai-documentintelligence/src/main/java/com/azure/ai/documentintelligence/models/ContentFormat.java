@@ -4,54 +4,55 @@
 
 package com.azure.ai.documentintelligence.models;
 
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Format of the content in analyzed result.
  */
-public enum ContentFormat {
+public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
     /**
      * Plain text representation of the document content without any formatting.
      */
-    TEXT("text"),
+    @Generated
+    public static final ContentFormat TEXT = fromString("text");
 
     /**
      * Markdown representation of the document content with section headings, tables,
      * etc.
      */
-    MARKDOWN("markdown");
+    @Generated
+    public static final ContentFormat MARKDOWN = fromString("markdown");
 
     /**
-     * The actual serialized value for a ContentFormat instance.
-     */
-    private final String value;
-
-    ContentFormat(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a ContentFormat instance.
+     * Creates a new instance of ContentFormat value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed ContentFormat object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static ContentFormat fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        ContentFormat[] items = ContentFormat.values();
-        for (ContentFormat item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Generated
+    @Deprecated
+    public ContentFormat() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a ContentFormat from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding ContentFormat.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    @Generated
+    public static ContentFormat fromString(String name) {
+        return fromString(name, ContentFormat.class);
+    }
+
+    /**
+     * Gets known ContentFormat values.
+     * 
+     * @return known ContentFormat values.
+     */
+    @Generated
+    public static Collection<ContentFormat> values() {
+        return values(ContentFormat.class);
     }
 }
