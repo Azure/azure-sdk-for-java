@@ -3,11 +3,7 @@
 
 package com.azure.storage.file.share.models;
 
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
-
-import java.io.InputStream;
 
 /**
  * This class contains the response information returned from the server when downloading a file.

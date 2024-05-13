@@ -9,7 +9,7 @@ import com.azure.storage.file.share.FileSmbProperties;
 /**
  * Helper class to access private values of {@link FileSmbProperties} across package boundaries.
  */
-public class FileSmbPropertiesHelper {
+public final class FileSmbPropertiesHelper {
 
     private static FileSmbPropertiesAccessor accessor;
 
