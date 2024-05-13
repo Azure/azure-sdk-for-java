@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class UtilityTests {
+public class NettyUtilityTests {
     @Test
     public void validateNettyVersions() {
         StringBuilder logger = new StringBuilder();
-        Utility.validateNettyVersions(logger::append);
+        NettyUtility.validateNettyVersions(logger::append);
 
         String logMessage = logger.toString();
 
@@ -18,6 +18,6 @@ public class UtilityTests {
         assertFalse(logMessage.isEmpty(), "Version logs are always expected.");
 
         // But azure-core-http-netty shouldn't have version mismatches.
-        assertFalse(logMessage.contains(Utility.NETTY_VERSION_MISMATCH_LOG), "Unexpected Netty version mismatch logs.");
+        assertFalse(logMessage.contains(NettyUtility.NETTY_VERSION_MISMATCH_LOG), "Unexpected Netty version mismatch logs.");
     }
 }

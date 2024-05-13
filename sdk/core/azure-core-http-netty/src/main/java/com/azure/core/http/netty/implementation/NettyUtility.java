@@ -23,8 +23,8 @@ import java.util.function.Consumer;
 /**
  * Helper class containing utility methods.
  */
-public final class Utility {
-    private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+public final class NettyUtility {
+    private static final ClientLogger LOGGER = new ClientLogger(NettyUtility.class);
 
     private static final String PROPERTIES_FILE_NAME = "azure-core-http-netty.properties";
     private static final String NETTY_VERSION_PROPERTY = "netty-version";
@@ -154,13 +154,12 @@ public final class Utility {
             .append(" and Netty Tcnative version ")
             .append(nettyTcnativeVersion)
             .append(". If your application runs without issue this message can be ignored, otherwise please align the "
-                + "Netty versions you are using (this doesn't need to be the versions used by azure-core-http-netty if "
-                + "the versions of Netty being used are newer than what is used by this version of "
-                + "azure-core-http-netty).");
+                + "Netty versions used in your application. For more information, see "
+                + "https://aka.ms/azsdk/java/dependency/troubleshoot.");
 
         logger.accept(stringBuilder.toString());
     }
 
-    private Utility() {
+    private NettyUtility() {
     }
 }
