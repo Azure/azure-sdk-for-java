@@ -84,7 +84,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                 this.isInitialized = initialized;
 
                 if (initialized) {
-                    return this.validateLeaseChangeFeedModeInteroperabilityForEpkRangeBasedLease();
+                    return this.validateLeaseCFModeInteroperabilityForEpkRangeBasedLease();
                 } else {
                     logger.info("Acquire initialization lock");
                     return this.acquireInitializationLock()
@@ -150,7 +150,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
             });
     }
 
-    private Mono<Void> validateLeaseChangeFeedModeInteroperabilityForEpkRangeBasedLease() {
+    private Mono<Void> validateLeaseCFModeInteroperabilityForEpkRangeBasedLease() {
 
         // fetches only 1 epk-based leases for a given lease prefix
         return this.epkRangeVersionLeaseStoreManager
