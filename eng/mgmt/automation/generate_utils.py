@@ -52,11 +52,7 @@ def generate(
 
     require_sdk_integration = not os.path.exists(os.path.join(output_dir, 'src'))
 
-    shutil.rmtree(os.path.join(output_dir, 'src/main'), ignore_errors=True)
-    shutil.rmtree(os.path.join(output_dir, 'src/test/java', namespace.replace('.', '/'), 'generated'),
-                  ignore_errors=True)
-    shutil.rmtree(os.path.join(output_dir, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
-                  ignore_errors=True)
+    remove_generated_source_code(output_dir, namespace)
 
     if re.match(r'https?://', spec_root):
         readme = urllib.parse.urljoin(spec_root, readme)
@@ -94,6 +90,12 @@ def generate(
 
     return True
 
+def remove_generated_source_code(sdk_folder: str, namespace: str):
+    shutil.rmtree(os.path.join(sdk_folder, 'src/main'), ignore_errors=True)
+    shutil.rmtree(os.path.join(sdk_folder, 'src/test/java', namespace.replace('.', '/'), 'generated'),
+                  ignore_errors=True)
+    shutil.rmtree(os.path.join(sdk_folder, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
+                  ignore_errors=True)
 
 def compile_arm_package(sdk_root: str, module: str) -> bool:
     if os.system(
@@ -313,7 +315,9 @@ def generate_typespec_project(
     sdk_root: str,
     spec_root: str = None,
     head_sha: str = "",
-    repo_url: str = ""):
+    repo_url: str = "",
+    remove_before_regen: bool = False,
+    group_id: str = None):
 
     if not tsp_project:
         return False
@@ -334,25 +338,47 @@ def generate_typespec_project(
         tspconfig_valid = True
         if url_match:
             # generate from remote url
-            cmd = ['npx', 'tsp-client', 'init', '--debug',
+            tsp_cmd = ['npx', 'tsp-client', 'init', '--debug',
                    '--tsp-config', tsp_project]
         else:
             # sdk automation
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
             tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, 'https://github.com/')
-            cmd = ['npx', 'tsp-client', 'init', '--debug',
+            tsp_cmd = ['npx', 'tsp-client', 'init', '--debug',
                    '--tsp-config', tsp_dir,
                    '--commit', head_sha,
                    '--repo', repo,
                    '--local-spec-repo', tsp_dir]
 
         if tspconfig_valid:
-            check_call(cmd, sdk_root)
+            check_call(tsp_cmd, sdk_root)
 
             sdk_folder = find_sdk_folder(sdk_root)
             logging.info('SDK folder: ' + sdk_folder)
             if sdk_folder:
+                # parse service and module
+                match = re.match(r'sdk[\\/](.*)[\\/](.*)', sdk_folder)
+                service = match.group(1)
+                module = match.group(2)
+                # check require_sdk_integration
+                cmd = ['git', 'add', '.']
+                check_call(cmd, sdk_root)
+                cmd = ['git', 'status', '--porcelain', os.path.join(sdk_folder, 'pom.xml')]
+                logging.info('Command line: ' + ' '.join(cmd))
+                output = subprocess.check_output(cmd, cwd=sdk_root)
+                output_str = str(output, 'utf-8')
+                git_items = output_str.splitlines()
+                if len(git_items) > 0:
+                    git_pom_item = git_items[0]
+                    # new pom.xml implies new SDK
+                    require_sdk_integration = git_pom_item.startswith('A ')
+                if not require_sdk_integration and remove_before_regen and group_id:
+                    # clear existing generated source code, and regenerate
+                    drop_changes(sdk_root)
+                    remove_generated_source_code(sdk_folder, f'${group_id}.${module}')
+                    # regenerate
+                    check_call(tsp_cmd, sdk_root)
                 succeeded = True
     except subprocess.CalledProcessError as error:
         error_message = (f'[GENERATE][Error] Code generation failed. tsp-client init fails: {error}\n'
@@ -360,31 +386,17 @@ def generate_typespec_project(
         logging.error(error_message)
         print(error_message, file=sys.stderr)
 
-    if succeeded:
-        # check require_sdk_integration
-        cmd = ['git', 'add', '.']
-        check_call(cmd, sdk_root)
-        cmd = ['git', 'status', '--porcelain', os.path.join(sdk_folder, 'pom.xml')]
-        logging.info('Command line: ' + ' '.join(cmd))
-        output = subprocess.check_output(cmd, cwd=sdk_root)
-        output_str = str(output, 'utf-8')
-        git_items = output_str.splitlines()
-        if len(git_items) > 0:
-            git_pom_item = git_items[0]
-            # new pom.xml implies new SDK
-            require_sdk_integration = git_pom_item.startswith('A ')
-
-        # parse service and module
-        match = re.match(r'sdk[\\/](.*)[\\/](.*)', sdk_folder)
-        service = match.group(1)
-        module = match.group(2)
-
     return succeeded, require_sdk_integration, sdk_folder, service, module
 
 
 def check_call(cmd: List[str], work_dir: str):
     logging.info('Command line: ' + ' '.join(cmd))
     subprocess.check_call(cmd, cwd=work_dir)
+
+def drop_changes(work_dir: str):
+    check_call(['git', 'add', '.'], work_dir)
+    check_call(['git', 'stash'], work_dir)
+    check_call(['git', 'stash', 'clear'], work_dir)
 
 
 def remove_prefix(text, prefix):
