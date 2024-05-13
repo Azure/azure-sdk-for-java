@@ -1,21 +1,5 @@
 # Release History
 
-## 4.9.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 4.8.3 (2024-04-30)
-
-### Other Changes
-
-- No changes but only upgrade version to fix Microsoft Doc.
-
 ## 4.8.2 (2024-04-09)
 
 ### Bugs Fixed

@@ -4,13 +4,16 @@
 
 package com.azure.security.keyvault.keys.models;
 
-/** The type of the action. The value should be compared case-insensitively. */
+/** The type of the action. */
 public enum KeyRotationPolicyAction {
     /** Rotate the key based on the key policy. */
-    ROTATE("Rotate"),
+    ROTATE("rotate"),
 
-    /** Trigger Event Grid events. Defaults to 30 days before expiry. Key Vault only. */
-    NOTIFY("Notify");
+    /**
+     * Trigger event grid events. For preview, the notification time is not configurable and it is default to 30 days
+     * before expiry.
+     */
+    NOTIFY("notify");
 
     /** The actual serialized value for a KeyRotationPolicyAction instance. */
     private final String value;
