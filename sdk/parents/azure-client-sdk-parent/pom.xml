@@ -256,8 +256,6 @@
     <!-- Skips Spotless running code style formatting verification. -->
     <spotless.check.skip>false</spotless.check.skip>
 
-    <revapi.differences.file></revapi.differences.file>
-
     <!-- Skips animal-sniffer-maven-plugin. -->
     <animal.sniffer.skip>true</animal.sniffer.skip>
 
@@ -1818,10 +1816,10 @@
     </profile>
 
     <profile>
-      <id>standalone-revapi-differences</id>
+      <id>standalone-revapi-suppressions</id>
       <activation>
         <file>
-          <exists>${revapi.differences.file}</exists>
+          <exists>revapi-suppressions.json</exists>
         </file>
       </activation>
 
@@ -1834,7 +1832,7 @@
             <configuration>
               <analysisConfigurationFiles combine.self="append" combine.children="append">
                 <configurationFile>
-                  <path>${revapi.differences.file}</path>
+                  <path>revapi-suppressions.json</path>
                 </configurationFile>
               </analysisConfigurationFiles>
             </configuration>
