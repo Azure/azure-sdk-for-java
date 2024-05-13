@@ -3,6 +3,7 @@
 
 package com.azure.core.http.okhttp;
 
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -55,7 +56,8 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        return new OkHttpAsyncClientProvider().createInstance();
+        return new OkHttpAsyncHttpClientBuilder().dispatcher(createQuietDispatcher(UnexpectedLengthException.class, ""))
+            .build();
     }
 
     @Test
