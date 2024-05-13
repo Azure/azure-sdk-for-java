@@ -111,6 +111,8 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
             DataSourceServicePrincipal actualCredentialSP = (DataSourceServicePrincipal) actualCredential;
             assertNotNull(actualCredentialSP.getClientId());
             assertNotNull(actualCredentialSP.getTenantId());
+            assertEquals(((DataSourceServicePrincipal) expectedCredential).getClientId(),
+                actualCredentialSP.getClientId());
             assertEquals(((DataSourceServicePrincipal) expectedCredential).getTenantId(),
                 actualCredentialSP.getTenantId());
         } else if (credentialType == DataSourceAuthenticationType.SERVICE_PRINCIPAL_IN_KV) {
@@ -123,7 +125,16 @@ public abstract class DatasourceCredentialTestBase extends MetricsAdvisorAdminis
             assertNotNull(actualCredentialSPInKV.getTenantId());
             assertNotNull(actualCredentialSPInKV.getSecretNameForDataSourceClientId());
             assertNotNull(actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
-            assertNotNull(actualCredentialSPInKV.getKeyVaultClientId());
+            assertEquals(((DataSourceServicePrincipalInKeyVault) expectedCredential).getKeyVaultClientId(),
+                actualCredentialSPInKV.getKeyVaultClientId());
+            assertEquals(((DataSourceServicePrincipalInKeyVault) expectedCredential).getTenantId(),
+                actualCredentialSPInKV.getTenantId());
+            assertEquals(((DataSourceServicePrincipalInKeyVault) expectedCredential)
+                    .getSecretNameForDataSourceClientId(),
+                actualCredentialSPInKV.getSecretNameForDataSourceClientId());
+            assertEquals(((DataSourceServicePrincipalInKeyVault) expectedCredential)
+                    .getSecretNameForDataSourceClientSecret(),
+                actualCredentialSPInKV.getSecretNameForDataSourceClientSecret());
         } else {
             throw new IllegalStateException("Unexpected value for DataSourceCredentialType: " + credentialType);
         }

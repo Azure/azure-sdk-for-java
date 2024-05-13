@@ -123,10 +123,10 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .httpClient(getHttpClient(true, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
-        // Disable `("$..token")` sanitizer
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3431"));
-        }
+//        // Disable `("$..token")` sanitizer
+//        if (!interceptorManager.isLiveMode()) {
+//            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3431"));
+//        }
 
         if (interceptorManager.isPlaybackMode()) {
             addPolicies(builder);
@@ -149,11 +149,6 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         addPolicies(builder, policies);
-
-        // Disable `("$..source")` sanitizer
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3423"));
-        }
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
@@ -194,11 +189,6 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .credential(new AzureKeyCredential(API_KEY))
             .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
-
-        // Disable `("$.key")` sanitizer
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3448"));
-        }
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
