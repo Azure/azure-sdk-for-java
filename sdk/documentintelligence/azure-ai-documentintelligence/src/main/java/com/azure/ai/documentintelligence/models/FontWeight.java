@@ -4,54 +4,53 @@
 
 package com.azure.ai.documentintelligence.models;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * Font weight.
  */
-public final class FontWeight extends ExpandableStringEnum<FontWeight> {
+public enum FontWeight {
     /**
      * Characters are represented normally.
      */
-    @Generated
-    public static final FontWeight NORMAL = fromString("normal");
+    NORMAL("normal"),
 
     /**
      * Characters are represented with thicker strokes.
      */
-    @Generated
-    public static final FontWeight BOLD = fromString("bold");
+    BOLD("bold");
 
     /**
-     * Creates a new instance of FontWeight value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a FontWeight instance.
      */
-    @Generated
-    @Deprecated
-    public FontWeight() {
+    private final String value;
+
+    FontWeight(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a FontWeight from its string representation.
+     * Parses a serialized value to a FontWeight instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding FontWeight.
+     * @param value the serialized value to parse.
+     * @return the parsed FontWeight object, or null if unable to parse.
      */
-    @Generated
-    public static FontWeight fromString(String name) {
-        return fromString(name, FontWeight.class);
+    public static FontWeight fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        FontWeight[] items = FontWeight.values();
+        for (FontWeight item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known FontWeight values.
-     * 
-     * @return known FontWeight values.
+     * {@inheritDoc}
      */
-    @Generated
-    public static Collection<FontWeight> values() {
-        return values(FontWeight.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

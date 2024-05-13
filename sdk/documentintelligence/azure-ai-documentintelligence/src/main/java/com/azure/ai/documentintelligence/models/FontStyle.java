@@ -4,54 +4,53 @@
 
 package com.azure.ai.documentintelligence.models;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * Font style.
  */
-public final class FontStyle extends ExpandableStringEnum<FontStyle> {
+public enum FontStyle {
     /**
      * Characters are represented normally.
      */
-    @Generated
-    public static final FontStyle NORMAL = fromString("normal");
+    NORMAL("normal"),
 
     /**
      * Characters are visually slanted to the right.
      */
-    @Generated
-    public static final FontStyle ITALIC = fromString("italic");
+    ITALIC("italic");
 
     /**
-     * Creates a new instance of FontStyle value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a FontStyle instance.
      */
-    @Generated
-    @Deprecated
-    public FontStyle() {
+    private final String value;
+
+    FontStyle(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a FontStyle from its string representation.
+     * Parses a serialized value to a FontStyle instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding FontStyle.
+     * @param value the serialized value to parse.
+     * @return the parsed FontStyle object, or null if unable to parse.
      */
-    @Generated
-    public static FontStyle fromString(String name) {
-        return fromString(name, FontStyle.class);
+    public static FontStyle fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        FontStyle[] items = FontStyle.values();
+        for (FontStyle item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known FontStyle values.
-     * 
-     * @return known FontStyle values.
+     * {@inheritDoc}
      */
-    @Generated
-    public static Collection<FontStyle> values() {
-        return values(FontStyle.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

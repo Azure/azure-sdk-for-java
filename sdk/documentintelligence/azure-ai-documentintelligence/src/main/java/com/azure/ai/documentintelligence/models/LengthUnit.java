@@ -4,55 +4,54 @@
 
 package com.azure.ai.documentintelligence.models;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit is
  * "inch".
  */
-public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
+public enum LengthUnit {
     /**
      * Length unit for image files.
      */
-    @Generated
-    public static final LengthUnit PIXEL = fromString("pixel");
+    PIXEL("pixel"),
 
     /**
      * Length unit for PDF files.
      */
-    @Generated
-    public static final LengthUnit INCH = fromString("inch");
+    INCH("inch");
 
     /**
-     * Creates a new instance of LengthUnit value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a LengthUnit instance.
      */
-    @Generated
-    @Deprecated
-    public LengthUnit() {
+    private final String value;
+
+    LengthUnit(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a LengthUnit from its string representation.
+     * Parses a serialized value to a LengthUnit instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding LengthUnit.
+     * @param value the serialized value to parse.
+     * @return the parsed LengthUnit object, or null if unable to parse.
      */
-    @Generated
-    public static LengthUnit fromString(String name) {
-        return fromString(name, LengthUnit.class);
+    public static LengthUnit fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        LengthUnit[] items = LengthUnit.values();
+        for (LengthUnit item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known LengthUnit values.
-     * 
-     * @return known LengthUnit values.
+     * {@inheritDoc}
      */
-    @Generated
-    public static Collection<LengthUnit> values() {
-        return values(LengthUnit.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

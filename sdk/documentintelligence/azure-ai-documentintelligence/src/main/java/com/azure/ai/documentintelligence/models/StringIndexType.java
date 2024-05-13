@@ -4,62 +4,60 @@
 
 package com.azure.ai.documentintelligence.models;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * Method used to compute string offset and length.
  */
-public final class StringIndexType extends ExpandableStringEnum<StringIndexType> {
+public enum StringIndexType {
     /**
      * User-perceived display character, or grapheme cluster, as defined by Unicode
      * 8.0.0.
      */
-    @Generated
-    public static final StringIndexType TEXT_ELEMENTS = fromString("textElements");
+    TEXT_ELEMENTS("textElements"),
 
     /**
      * Character unit represented by a single unicode code point. Used by Python 3.
      */
-    @Generated
-    public static final StringIndexType UNICODE_CODE_POINT = fromString("unicodeCodePoint");
+    UNICODE_CODE_POINT("unicodeCodePoint"),
 
     /**
      * Character unit represented by a 16-bit Unicode code unit. Used by JavaScript,
      * Java, and .NET.
      */
-    @Generated
-    public static final StringIndexType UTF16CODE_UNIT = fromString("utf16CodeUnit");
+    UTF16CODE_UNIT("utf16CodeUnit");
 
     /**
-     * Creates a new instance of StringIndexType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a StringIndexType instance.
      */
-    @Generated
-    @Deprecated
-    public StringIndexType() {
+    private final String value;
+
+    StringIndexType(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a StringIndexType from its string representation.
+     * Parses a serialized value to a StringIndexType instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding StringIndexType.
+     * @param value the serialized value to parse.
+     * @return the parsed StringIndexType object, or null if unable to parse.
      */
-    @Generated
-    public static StringIndexType fromString(String name) {
-        return fromString(name, StringIndexType.class);
+    public static StringIndexType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        StringIndexType[] items = StringIndexType.values();
+        for (StringIndexType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known StringIndexType values.
-     * 
-     * @return known StringIndexType values.
+     * {@inheritDoc}
      */
-    @Generated
-    public static Collection<StringIndexType> values() {
-        return values(StringIndexType.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

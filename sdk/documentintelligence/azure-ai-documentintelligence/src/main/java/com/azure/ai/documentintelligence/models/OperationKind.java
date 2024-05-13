@@ -4,67 +4,64 @@
 
 package com.azure.ai.documentintelligence.models;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * Type of operation.
  */
-public final class OperationKind extends ExpandableStringEnum<OperationKind> {
+public enum OperationKind {
     /**
      * Build a new custom document model.
      */
-    @Generated
-    public static final OperationKind DOCUMENT_MODEL_BUILD = fromString("documentModelBuild");
+    DOCUMENT_MODEL_BUILD("documentModelBuild"),
 
     /**
      * Compose a new custom document model from existing models.
      */
-    @Generated
-    public static final OperationKind DOCUMENT_MODEL_COMPOSE = fromString("documentModelCompose");
+    DOCUMENT_MODEL_COMPOSE("documentModelCompose"),
 
     /**
      * Copy an existing document model to potentially a different resource, region, or
      * subscription.
      */
-    @Generated
-    public static final OperationKind DOCUMENT_MODEL_COPY_TO = fromString("documentModelCopyTo");
+    DOCUMENT_MODEL_COPY_TO("documentModelCopyTo"),
 
     /**
      * Build a new custom classifier model.
      */
-    @Generated
-    public static final OperationKind DOCUMENT_CLASSIFIER_BUILD = fromString("documentClassifierBuild");
+    DOCUMENT_CLASSIFIER_BUILD("documentClassifierBuild");
 
     /**
-     * Creates a new instance of OperationKind value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a OperationKind instance.
      */
-    @Generated
-    @Deprecated
-    public OperationKind() {
+    private final String value;
+
+    OperationKind(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a OperationKind from its string representation.
+     * Parses a serialized value to a OperationKind instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding OperationKind.
+     * @param value the serialized value to parse.
+     * @return the parsed OperationKind object, or null if unable to parse.
      */
-    @Generated
-    public static OperationKind fromString(String name) {
-        return fromString(name, OperationKind.class);
+    public static OperationKind fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        OperationKind[] items = OperationKind.values();
+        for (OperationKind item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known OperationKind values.
-     * 
-     * @return known OperationKind values.
+     * {@inheritDoc}
      */
-    @Generated
-    public static Collection<OperationKind> values() {
-        return values(OperationKind.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

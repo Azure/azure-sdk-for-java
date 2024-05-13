@@ -4,54 +4,53 @@
 
 package com.azure.ai.documentintelligence.models;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * Formula kind.
  */
-public final class DocumentFormulaKind extends ExpandableStringEnum<DocumentFormulaKind> {
+public enum DocumentFormulaKind {
     /**
      * A formula embedded within the content of a paragraph.
      */
-    @Generated
-    public static final DocumentFormulaKind INLINE = fromString("inline");
+    INLINE("inline"),
 
     /**
      * A formula in display mode that takes up an entire line.
      */
-    @Generated
-    public static final DocumentFormulaKind DISPLAY = fromString("display");
+    DISPLAY("display");
 
     /**
-     * Creates a new instance of DocumentFormulaKind value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a DocumentFormulaKind instance.
      */
-    @Generated
-    @Deprecated
-    public DocumentFormulaKind() {
+    private final String value;
+
+    DocumentFormulaKind(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a DocumentFormulaKind from its string representation.
+     * Parses a serialized value to a DocumentFormulaKind instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding DocumentFormulaKind.
+     * @param value the serialized value to parse.
+     * @return the parsed DocumentFormulaKind object, or null if unable to parse.
      */
-    @Generated
-    public static DocumentFormulaKind fromString(String name) {
-        return fromString(name, DocumentFormulaKind.class);
+    public static DocumentFormulaKind fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        DocumentFormulaKind[] items = DocumentFormulaKind.values();
+        for (DocumentFormulaKind item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known DocumentFormulaKind values.
-     * 
-     * @return known DocumentFormulaKind values.
+     * {@inheritDoc}
      */
-    @Generated
-    public static Collection<DocumentFormulaKind> values() {
-        return values(DocumentFormulaKind.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

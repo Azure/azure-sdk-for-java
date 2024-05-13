@@ -4,60 +4,58 @@
 
 package com.azure.ai.documentintelligence.models;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * Document splitting mode.
  */
-public final class SplitMode extends ExpandableStringEnum<SplitMode> {
+public enum SplitMode {
     /**
      * Automatically split file into documents.
      */
-    @Generated
-    public static final SplitMode AUTO = fromString("auto");
+    AUTO("auto"),
 
     /**
      * Treat the entire file as a single document.
      */
-    @Generated
-    public static final SplitMode NONE = fromString("none");
+    NONE("none"),
 
     /**
      * Treat each page in the file as a separate document.
      */
-    @Generated
-    public static final SplitMode PER_PAGE = fromString("perPage");
+    PER_PAGE("perPage");
 
     /**
-     * Creates a new instance of SplitMode value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a SplitMode instance.
      */
-    @Generated
-    @Deprecated
-    public SplitMode() {
+    private final String value;
+
+    SplitMode(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a SplitMode from its string representation.
+     * Parses a serialized value to a SplitMode instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding SplitMode.
+     * @param value the serialized value to parse.
+     * @return the parsed SplitMode object, or null if unable to parse.
      */
-    @Generated
-    public static SplitMode fromString(String name) {
-        return fromString(name, SplitMode.class);
+    public static SplitMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        SplitMode[] items = SplitMode.values();
+        for (SplitMode item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known SplitMode values.
-     * 
-     * @return known SplitMode values.
+     * {@inheritDoc}
      */
-    @Generated
-    public static Collection<SplitMode> values() {
-        return values(SplitMode.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

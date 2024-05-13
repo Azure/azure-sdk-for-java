@@ -4,84 +4,78 @@
 
 package com.azure.ai.documentintelligence.models;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * Semantic role of the paragraph.
  */
-public final class ParagraphRole extends ExpandableStringEnum<ParagraphRole> {
+public enum ParagraphRole {
     /**
      * Text near the top edge of the page.
      */
-    @Generated
-    public static final ParagraphRole PAGE_HEADER = fromString("pageHeader");
+    PAGE_HEADER("pageHeader"),
 
     /**
      * Text near the bottom edge of the page.
      */
-    @Generated
-    public static final ParagraphRole PAGE_FOOTER = fromString("pageFooter");
+    PAGE_FOOTER("pageFooter"),
 
     /**
      * Page number.
      */
-    @Generated
-    public static final ParagraphRole PAGE_NUMBER = fromString("pageNumber");
+    PAGE_NUMBER("pageNumber"),
 
     /**
      * Top-level title describing the entire document.
      */
-    @Generated
-    public static final ParagraphRole TITLE = fromString("title");
+    TITLE("title"),
 
     /**
      * Sub heading describing a section of the document.
      */
-    @Generated
-    public static final ParagraphRole SECTION_HEADING = fromString("sectionHeading");
+    SECTION_HEADING("sectionHeading"),
 
     /**
      * A note usually placed after the main content on a page.
      */
-    @Generated
-    public static final ParagraphRole FOOTNOTE = fromString("footnote");
+    FOOTNOTE("footnote"),
 
     /**
      * A block of formulas, often with shared alignment.
      */
-    @Generated
-    public static final ParagraphRole FORMULA_BLOCK = fromString("formulaBlock");
+    FORMULA_BLOCK("formulaBlock");
 
     /**
-     * Creates a new instance of ParagraphRole value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a ParagraphRole instance.
      */
-    @Generated
-    @Deprecated
-    public ParagraphRole() {
+    private final String value;
+
+    ParagraphRole(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a ParagraphRole from its string representation.
+     * Parses a serialized value to a ParagraphRole instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding ParagraphRole.
+     * @param value the serialized value to parse.
+     * @return the parsed ParagraphRole object, or null if unable to parse.
      */
-    @Generated
-    public static ParagraphRole fromString(String name) {
-        return fromString(name, ParagraphRole.class);
+    public static ParagraphRole fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        ParagraphRole[] items = ParagraphRole.values();
+        for (ParagraphRole item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known ParagraphRole values.
-     * 
-     * @return known ParagraphRole values.
+     * {@inheritDoc}
      */
-    @Generated
-    public static Collection<ParagraphRole> values() {
-        return values(ParagraphRole.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

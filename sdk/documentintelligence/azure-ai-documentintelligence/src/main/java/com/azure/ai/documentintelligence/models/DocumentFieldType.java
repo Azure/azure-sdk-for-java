@@ -4,132 +4,118 @@
 
 package com.azure.ai.documentintelligence.models;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * Semantic data type of the field value.
  */
-public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldType> {
+public enum DocumentFieldType {
     /**
      * Plain text.
      */
-    @Generated
-    public static final DocumentFieldType STRING = fromString("string");
+    STRING("string"),
 
     /**
      * Date, normalized to ISO 8601 (YYYY-MM-DD) format.
      */
-    @Generated
-    public static final DocumentFieldType DATE = fromString("date");
+    DATE("date"),
 
     /**
      * Time, normalized to ISO 8601 (hh:mm:ss) format.
      */
-    @Generated
-    public static final DocumentFieldType TIME = fromString("time");
+    TIME("time"),
 
     /**
      * Phone number, normalized to E.164 (+{CountryCode}{SubscriberNumber}) format.
      */
-    @Generated
-    public static final DocumentFieldType PHONE_NUMBER = fromString("phoneNumber");
+    PHONE_NUMBER("phoneNumber"),
 
     /**
      * Floating point number, normalized to double precision floating point.
      */
-    @Generated
-    public static final DocumentFieldType NUMBER = fromString("number");
+    NUMBER("number"),
 
     /**
      * Integer number, normalized to 64-bit signed integer.
      */
-    @Generated
-    public static final DocumentFieldType INTEGER = fromString("integer");
+    INTEGER("integer"),
 
     /**
      * Is field selected?.
      */
-    @Generated
-    public static final DocumentFieldType SELECTION_MARK = fromString("selectionMark");
+    SELECTION_MARK("selectionMark"),
 
     /**
      * Country/region, normalized to ISO 3166-1 alpha-3 format (ex. USA).
      */
-    @Generated
-    public static final DocumentFieldType COUNTRY_REGION = fromString("countryRegion");
+    COUNTRY_REGION("countryRegion"),
 
     /**
      * Is signature present?.
      */
-    @Generated
-    public static final DocumentFieldType SIGNATURE = fromString("signature");
+    SIGNATURE("signature"),
 
     /**
      * List of subfields of the same type.
      */
-    @Generated
-    public static final DocumentFieldType ARRAY = fromString("array");
+    ARRAY("array"),
 
     /**
      * Named list of subfields of potentially different types.
      */
-    @Generated
-    public static final DocumentFieldType OBJECT = fromString("object");
+    OBJECT("object"),
 
     /**
      * Currency amount with optional currency symbol and unit.
      */
-    @Generated
-    public static final DocumentFieldType CURRENCY = fromString("currency");
+    CURRENCY("currency"),
 
     /**
      * Parsed address.
      */
-    @Generated
-    public static final DocumentFieldType ADDRESS = fromString("address");
+    ADDRESS("address"),
 
     /**
      * Boolean value, normalized to true or false.
      */
-    @Generated
-    public static final DocumentFieldType BOOLEAN = fromString("boolean");
+    BOOLEAN("boolean"),
 
     /**
      * Array of selected string values.
      */
-    @Generated
-    public static final DocumentFieldType SELECTION_GROUP = fromString("selectionGroup");
+    SELECTION_GROUP("selectionGroup");
 
     /**
-     * Creates a new instance of DocumentFieldType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a DocumentFieldType instance.
      */
-    @Generated
-    @Deprecated
-    public DocumentFieldType() {
+    private final String value;
+
+    DocumentFieldType(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a DocumentFieldType from its string representation.
+     * Parses a serialized value to a DocumentFieldType instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding DocumentFieldType.
+     * @param value the serialized value to parse.
+     * @return the parsed DocumentFieldType object, or null if unable to parse.
      */
-    @Generated
-    public static DocumentFieldType fromString(String name) {
-        return fromString(name, DocumentFieldType.class);
+    public static DocumentFieldType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        DocumentFieldType[] items = DocumentFieldType.values();
+        for (DocumentFieldType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known DocumentFieldType values.
-     * 
-     * @return known DocumentFieldType values.
+     * {@inheritDoc}
      */
-    @Generated
-    public static Collection<DocumentFieldType> values() {
-        return values(DocumentFieldType.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

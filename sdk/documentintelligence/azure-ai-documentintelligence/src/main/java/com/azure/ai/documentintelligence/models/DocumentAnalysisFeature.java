@@ -4,84 +4,78 @@
 
 package com.azure.ai.documentintelligence.models;
 
-import com.azure.core.annotation.Generated;
-import com.azure.core.util.ExpandableStringEnum;
-import java.util.Collection;
-
 /**
  * Document analysis features to enable.
  */
-public final class DocumentAnalysisFeature extends ExpandableStringEnum<DocumentAnalysisFeature> {
+public enum DocumentAnalysisFeature {
     /**
      * Perform OCR at a higher resolution to handle documents with fine print.
      */
-    @Generated
-    public static final DocumentAnalysisFeature OCR_HIGH_RESOLUTION = fromString("ocrHighResolution");
+    OCR_HIGH_RESOLUTION("ocrHighResolution"),
 
     /**
      * Enable the detection of the text content language.
      */
-    @Generated
-    public static final DocumentAnalysisFeature LANGUAGES = fromString("languages");
+    LANGUAGES("languages"),
 
     /**
      * Enable the detection of barcodes in the document.
      */
-    @Generated
-    public static final DocumentAnalysisFeature BARCODES = fromString("barcodes");
+    BARCODES("barcodes"),
 
     /**
      * Enable the detection of mathematical expressions in the document.
      */
-    @Generated
-    public static final DocumentAnalysisFeature FORMULAS = fromString("formulas");
+    FORMULAS("formulas"),
 
     /**
      * Enable the detection of general key value pairs (form fields) in the document.
      */
-    @Generated
-    public static final DocumentAnalysisFeature KEY_VALUE_PAIRS = fromString("keyValuePairs");
+    KEY_VALUE_PAIRS("keyValuePairs"),
 
     /**
      * Enable the recognition of various font styles.
      */
-    @Generated
-    public static final DocumentAnalysisFeature STYLE_FONT = fromString("styleFont");
+    STYLE_FONT("styleFont"),
 
     /**
      * Enable the extraction of additional fields via the queryFields query parameter.
      */
-    @Generated
-    public static final DocumentAnalysisFeature QUERY_FIELDS = fromString("queryFields");
+    QUERY_FIELDS("queryFields");
 
     /**
-     * Creates a new instance of DocumentAnalysisFeature value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
+     * The actual serialized value for a DocumentAnalysisFeature instance.
      */
-    @Generated
-    @Deprecated
-    public DocumentAnalysisFeature() {
+    private final String value;
+
+    DocumentAnalysisFeature(String value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a DocumentAnalysisFeature from its string representation.
+     * Parses a serialized value to a DocumentAnalysisFeature instance.
      * 
-     * @param name a name to look for.
-     * @return the corresponding DocumentAnalysisFeature.
+     * @param value the serialized value to parse.
+     * @return the parsed DocumentAnalysisFeature object, or null if unable to parse.
      */
-    @Generated
-    public static DocumentAnalysisFeature fromString(String name) {
-        return fromString(name, DocumentAnalysisFeature.class);
+    public static DocumentAnalysisFeature fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        DocumentAnalysisFeature[] items = DocumentAnalysisFeature.values();
+        for (DocumentAnalysisFeature item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
-     * Gets known DocumentAnalysisFeature values.
-     * 
-     * @return known DocumentAnalysisFeature values.
+     * {@inheritDoc}
      */
-    @Generated
-    public static Collection<DocumentAnalysisFeature> values() {
-        return values(DocumentAnalysisFeature.class);
+    @Override
+    public String toString() {
+        return this.value;
     }
 }
