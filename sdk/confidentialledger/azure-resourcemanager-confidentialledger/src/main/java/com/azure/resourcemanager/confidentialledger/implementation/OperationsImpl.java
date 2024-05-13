@@ -19,8 +19,7 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient,
+    public OperationsImpl(OperationsClient innerClient,
         com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,14 @@ public final class OperationsImpl implements Operations {
 
     public PagedIterable<ResourceProviderOperationDefinition> list() {
         PagedIterable<ResourceProviderOperationDefinitionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ResourceProviderOperationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ResourceProviderOperationDefinitionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourceProviderOperationDefinition> list(Context context) {
         PagedIterable<ResourceProviderOperationDefinitionInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ResourceProviderOperationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ResourceProviderOperationDefinitionImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

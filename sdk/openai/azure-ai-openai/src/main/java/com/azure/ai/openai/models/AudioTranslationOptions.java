@@ -20,8 +20,7 @@ public final class AudioTranslationOptions {
     private final byte[] file;
 
     /*
-     * The requested format of the translation response data, which will influence the content and detail of the
-     * result.
+     * The requested format of the translation response data, which will influence the content and detail of the result.
      */
     @Generated
     private AudioTranslationFormat responseFormat;
@@ -35,10 +34,8 @@ public final class AudioTranslationOptions {
 
     /*
      * The sampling temperature, between 0 and 1.
-     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused
-     * and deterministic.
-     * If set to 0, the model will use log probability to automatically increase the temperature until certain
-     * thresholds are hit.
+     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
+     * If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit.
      */
     @Generated
     private Double temperature;
@@ -169,8 +166,7 @@ public final class AudioTranslationOptions {
     private String filename;
 
     /**
-     * Get the filename property: The optional filename or descriptive identifier to associate with with the audio
-     * data.
+     * Get the filename property: The optional filename or descriptive identifier to associate with with the audio data.
      *
      * @return the filename value.
      */
@@ -180,8 +176,7 @@ public final class AudioTranslationOptions {
     }
 
     /**
-     * Set the filename property: The optional filename or descriptive identifier to associate with with the audio
-     * data.
+     * Set the filename property: The optional filename or descriptive identifier to associate with with the audio data.
      *
      * @param filename the filename value to set.
      * @return the AudioTranslationOptions object itself.

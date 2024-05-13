@@ -64,15 +64,63 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
           endpointConfig.endpoint shouldEqual sampleProdEndpoint
 
-          val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosAadAuthConfig]
+          val servicePrincipalAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosServicePrincipalAuthConfig]
           endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
-          aadAuthConfig.tenantId shouldEqual testAccountTenantId
+          servicePrincipalAuthConfig.tenantId shouldEqual testAccountTenantId
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
-          aadAuthConfig.clientId shouldEqual testServicePrincipalClientId
-          aadAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
+          servicePrincipalAuthConfig.clientId shouldEqual testServicePrincipalClientId
+          servicePrincipalAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
           new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE.getActiveDirectoryEndpoint
           endpointConfig.accountName shouldEqual "boson-test"
       }
+  }
+
+  "Config Parser" should "parse managed identity AAD authentication credentials" in {
+
+    for (managedIdentitySelector <- Array("", "clientId", "resourceId", "clientIdAndResourceId")) {
+      val userConfigMutable = collection.mutable.Map(
+        "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+        "spark.cosmos.auth.type" -> "ManagedIdentity",
+        "spark.cosmos.account.subscriptionId" -> testAccountSubscriptionId,
+        "spark.cosmos.account.tenantId" -> testAccountTenantId,
+        "spark.cosmos.account.resourceGroupName" -> testAccountResourceGroupName,
+        "spark.cosmos.auth.aad.clientSecret" -> testServicePrincipalClientSecret
+      )
+
+      val randomId = UUID.randomUUID().toString
+
+      managedIdentitySelector match {
+        case "" =>
+        case "clientId" => userConfigMutable.put("spark.cosmos.auth.aad.clientId", randomId)
+        case "resourceId" => userConfigMutable.put("spark.cosmos.auth.aad.resourceId", randomId)
+        case "clientIdAndResourceId"  => userConfigMutable.put("spark.cosmos.auth.aad.clientId", randomId)
+          userConfigMutable.put("spark.cosmos.auth.aad.resourceId", randomId)
+      }
+
+      val userConfig = userConfigMutable.toMap
+      val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+      endpointConfig.endpoint shouldEqual sampleProdEndpoint
+
+      val managedIdentityAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosManagedIdentityAuthConfig]
+      endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
+      managedIdentityAuthConfig.tenantId shouldEqual testAccountTenantId
+      endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
+      if (managedIdentitySelector == "clientId" || managedIdentitySelector == "clientIdAndResourceId") {
+        managedIdentityAuthConfig.clientId shouldEqual Some(randomId)
+      } else {
+        managedIdentityAuthConfig.clientId shouldEqual None
+      }
+
+      if (managedIdentitySelector == "resourceId" || managedIdentitySelector == "clientIdAndResourceId") {
+        managedIdentityAuthConfig.resourceId shouldEqual Some(randomId)
+      } else {
+        managedIdentityAuthConfig.resourceId shouldEqual None
+      }
+
+      new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE.getActiveDirectoryEndpoint
+      endpointConfig.accountName shouldEqual "boson-test"
+    }
   }
 
   "Config Parser" should "parse account AAD authentication credentials" in {
@@ -92,12 +140,12 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
           endpointConfig.endpoint shouldEqual sampleProdEndpoint
 
-          val aadAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosAadAuthConfig]
+          val servicePrincipalAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosServicePrincipalAuthConfig]
           endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
-          aadAuthConfig.tenantId shouldEqual testAccountTenantId
+          servicePrincipalAuthConfig.tenantId shouldEqual testAccountTenantId
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
-          aadAuthConfig.clientId shouldEqual testServicePrincipalClientId
-          aadAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
+          servicePrincipalAuthConfig.clientId shouldEqual testServicePrincipalClientId
+          servicePrincipalAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
           new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint
           endpointConfig.accountName shouldEqual "boson-test"
       }

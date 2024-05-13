@@ -12,15 +12,15 @@ public final class ListOperationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListOperations model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"ipfpubji\",\"isDataAction\":false,\"display\":{\"provider\":\"tohqkvpuvksgp\",\"resource\":\"aknynfsynljphuop\",\"operation\":\"dlqiyntorzih\",\"description\":\"osjswsr\"},\"origin\":\"lyzrpzbchckqqzqi\",\"actionType\":\"Internal\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{},{}],\"metricSpecifications\":[{},{}]}}},{\"name\":\"nkedyatrwyhqmib\",\"isDataAction\":false,\"display\":{\"provider\":\"tsmypyynpcdp\",\"resource\":\"nzgmwznmabik\",\"operation\":\"orgjhxbldt\",\"description\":\"wrlkdmtn\"},\"origin\":\"ok\",\"actionType\":\"Internal\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}],\"metricSpecifications\":[{},{}]}}}],\"nextLink\":\"y\"}")
+            "{\"value\":[{\"name\":\"neqn\",\"isDataAction\":true,\"display\":{\"provider\":\"lquuijfqkacewii\",\"resource\":\"pubjibw\",\"operation\":\"f\",\"description\":\"hqkvpuvksgplsak\"},\"origin\":\"n\",\"actionType\":\"Internal\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{}],\"metricSpecifications\":[{},{},{},{}]}}},{\"name\":\"pxodlqiyntorzih\",\"isDataAction\":false,\"display\":{\"provider\":\"swsrms\",\"resource\":\"zrpzb\",\"operation\":\"ckqqzqioxiysui\",\"description\":\"ynkedyatrwyhqmib\"},\"origin\":\"hwit\",\"actionType\":\"Internal\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{}],\"metricSpecifications\":[{}]}}},{\"name\":\"pumnz\",\"isDataAction\":false,\"display\":{\"provider\":\"mabiknsorgjhxb\",\"resource\":\"tlwwrlk\",\"operation\":\"tncvokot\",\"description\":\"xdy\"},\"origin\":\"syocogjltdtbnnha\",\"actionType\":\"Internal\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{},{},{}],\"metricSpecifications\":[{},{},{},{}]}}}],\"nextLink\":\"hnvpamqgxq\"}")
             .toObject(ListOperations.class);
-        Assertions.assertEquals("y", model.nextLink());
+        Assertions.assertEquals("hnvpamqgxq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListOperations model = new ListOperations().withNextLink("y");
+        ListOperations model = new ListOperations().withNextLink("hnvpamqgxq");
         model = BinaryData.fromObject(model).toObject(ListOperations.class);
-        Assertions.assertEquals("y", model.nextLink());
+        Assertions.assertEquals("hnvpamqgxq", model.nextLink());
     }
 }

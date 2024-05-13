@@ -11,14 +11,16 @@ public final class SqlServerStoredProcedureActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlServerStoredProcedureActivityTypeProperties model = BinaryData
-            .fromString("{\"storedProcedureName\":\"datamfbl\",\"storedProcedureParameters\":\"dataekoux\"}")
+            .fromString(
+                "{\"storedProcedureName\":\"dataxcwsnhszmuvarea\",\"storedProcedureParameters\":\"dataxdamnmnmqy\"}")
             .toObject(SqlServerStoredProcedureActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerStoredProcedureActivityTypeProperties model = new SqlServerStoredProcedureActivityTypeProperties()
-            .withStoredProcedureName("datamfbl").withStoredProcedureParameters("dataekoux");
+        SqlServerStoredProcedureActivityTypeProperties model
+            = new SqlServerStoredProcedureActivityTypeProperties().withStoredProcedureName("dataxcwsnhszmuvarea")
+                .withStoredProcedureParameters("dataxdamnmnmqy");
         model = BinaryData.fromObject(model).toObject(SqlServerStoredProcedureActivityTypeProperties.class);
     }
 }

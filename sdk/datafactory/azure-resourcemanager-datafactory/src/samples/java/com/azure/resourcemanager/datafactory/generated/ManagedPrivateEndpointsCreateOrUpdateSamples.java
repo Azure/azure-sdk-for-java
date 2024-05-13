@@ -14,8 +14,7 @@ import java.util.Map;
  */
 public final class ManagedPrivateEndpointsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * ManagedPrivateEndpoints_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_Create.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_Create.
@@ -23,10 +22,12 @@ public final class ManagedPrivateEndpointsCreateOrUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedVirtualNetworksCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedPrivateEndpoints().define("exampleManagedPrivateEndpointName")
+        manager.managedPrivateEndpoints()
+            .define("exampleManagedPrivateEndpointName")
             .withExistingManagedVirtualNetwork("exampleResourceGroup", "exampleFactoryName",
                 "exampleManagedVirtualNetworkName")
-            .withProperties(new ManagedPrivateEndpoint().withFqdns(Arrays.asList()).withGroupId("blob")
+            .withProperties(new ManagedPrivateEndpoint().withFqdns(Arrays.asList())
+                .withGroupId("blob")
                 .withPrivateLinkResourceId(
                     "/subscriptions/12345678-1234-1234-1234-12345678abc/resourceGroups/exampleResourceGroup/providers/Microsoft.Storage/storageAccounts/exampleBlobStorage")
                 .withAdditionalProperties(mapOf()))

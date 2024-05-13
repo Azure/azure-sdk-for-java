@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The WafRankingsResponseDataItem model. */
+/**
+ * The WafRankingsResponseDataItem model.
+ */
 @Fluent
 public final class WafRankingsResponseDataItem {
     /*
@@ -23,13 +25,15 @@ public final class WafRankingsResponseDataItem {
     @JsonProperty(value = "metrics")
     private List<WafRankingsResponseDataItemMetric> metrics;
 
-    /** Creates an instance of WafRankingsResponseDataItem class. */
+    /**
+     * Creates an instance of WafRankingsResponseDataItem class.
+     */
     public WafRankingsResponseDataItem() {
     }
 
     /**
      * Get the groupValues property: The groupValues property.
-     *
+     * 
      * @return the groupValues value.
      */
     public List<String> groupValues() {
@@ -38,7 +42,7 @@ public final class WafRankingsResponseDataItem {
 
     /**
      * Set the groupValues property: The groupValues property.
-     *
+     * 
      * @param groupValues the groupValues value to set.
      * @return the WafRankingsResponseDataItem object itself.
      */
@@ -49,7 +53,7 @@ public final class WafRankingsResponseDataItem {
 
     /**
      * Get the metrics property: The metrics property.
-     *
+     * 
      * @return the metrics value.
      */
     public List<WafRankingsResponseDataItemMetric> metrics() {
@@ -58,7 +62,7 @@ public final class WafRankingsResponseDataItem {
 
     /**
      * Set the metrics property: The metrics property.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the WafRankingsResponseDataItem object itself.
      */
@@ -69,7 +73,7 @@ public final class WafRankingsResponseDataItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

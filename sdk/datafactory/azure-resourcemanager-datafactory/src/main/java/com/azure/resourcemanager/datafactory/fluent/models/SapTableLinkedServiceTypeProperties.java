@@ -20,22 +20,19 @@ public final class SapTableLinkedServiceTypeProperties {
     private Object server;
 
     /*
-     * System number of the SAP system where the table is located. (Usually a two-digit decimal number represented as a
-     * string.) Type: string (or Expression with resultType string).
+     * System number of the SAP system where the table is located. (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "systemNumber")
     private Object systemNumber;
 
     /*
-     * Client ID of the client on the SAP system where the table is located. (Usually a three-digit decimal number
-     * represented as a string) Type: string (or Expression with resultType string).
+     * Client ID of the client on the SAP system where the table is located. (Usually a three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
-     * Language of the SAP system where the table is located. The default value is EN. Type: string (or Expression with
-     * resultType string).
+     * Language of the SAP system where the table is located. The default value is EN. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "language")
     private Object language;
@@ -47,8 +44,7 @@ public final class SapTableLinkedServiceTypeProperties {
     private Object systemId;
 
     /*
-     * Username to access the SAP server where the table is located. Type: string (or Expression with resultType
-     * string).
+     * Username to access the SAP server where the table is located. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -72,36 +68,31 @@ public final class SapTableLinkedServiceTypeProperties {
     private Object messageServerService;
 
     /*
-     * SNC activation indicator to access the SAP server where the table is located. Must be either 0 (off) or 1 (on).
-     * Type: string (or Expression with resultType string).
+     * SNC activation indicator to access the SAP server where the table is located. Must be either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sncMode")
     private Object sncMode;
 
     /*
-     * Initiator's SNC name to access the SAP server where the table is located. Type: string (or Expression with
-     * resultType string).
+     * Initiator's SNC name to access the SAP server where the table is located. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sncMyName")
     private Object sncMyName;
 
     /*
-     * Communication partner's SNC name to access the SAP server where the table is located. Type: string (or
-     * Expression with resultType string).
+     * Communication partner's SNC name to access the SAP server where the table is located. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sncPartnerName")
     private Object sncPartnerName;
 
     /*
-     * External security product's library to access the SAP server where the table is located. Type: string (or
-     * Expression with resultType string).
+     * External security product's library to access the SAP server where the table is located. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sncLibraryPath")
     private Object sncLibraryPath;
 
     /*
-     * SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or Expression with resultType
-     * string).
+     * SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sncQop")
     private Object sncQop;
@@ -113,8 +104,7 @@ public final class SapTableLinkedServiceTypeProperties {
     private Object logonGroup;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -454,8 +444,8 @@ public final class SapTableLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -464,8 +454,8 @@ public final class SapTableLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapTableLinkedServiceTypeProperties object itself.

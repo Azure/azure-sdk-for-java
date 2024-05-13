@@ -29,9 +29,9 @@ public final class ResourceProvidersImpl implements ResourceProviders {
     public Response<MigrationNameAvailabilityResource> checkMigrationNameAvailabilityWithResponse(String subscriptionId,
         String resourceGroupName, String targetDbServerName, MigrationNameAvailabilityResourceInner parameters,
         Context context) {
-        Response<MigrationNameAvailabilityResourceInner> inner
-            = this.serviceClient().checkMigrationNameAvailabilityWithResponse(subscriptionId, resourceGroupName,
-                targetDbServerName, parameters, context);
+        Response<MigrationNameAvailabilityResourceInner> inner = this.serviceClient()
+            .checkMigrationNameAvailabilityWithResponse(subscriptionId, resourceGroupName, targetDbServerName,
+                parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MigrationNameAvailabilityResourceImpl(inner.getValue(), this.manager()));

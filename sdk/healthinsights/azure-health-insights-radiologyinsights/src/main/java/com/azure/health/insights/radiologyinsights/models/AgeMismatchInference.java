@@ -17,14 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = AgeMismatchInference.class, visible = true)
 @JsonTypeName("ageMismatch")
 @Immutable
-public final class AgeMismatchInference extends FhirR4Extendible1 {
-
-    /**
-     * Creates an instance of AgeMismatchInference class.
-     */
-    @Generated
-    private AgeMismatchInference() {
-    }
+public final class AgeMismatchInference extends RadiologyInsightsInference {
 
     /*
      * Inference type.
@@ -33,6 +26,13 @@ public final class AgeMismatchInference extends FhirR4Extendible1 {
     @JsonTypeId
     @JsonProperty(value = "kind")
     private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.AGE_MISMATCH;
+
+    /**
+     * Creates an instance of AgeMismatchInference class.
+     */
+    @Generated
+    private AgeMismatchInference() {
+    }
 
     /**
      * Get the kind property: Inference type.

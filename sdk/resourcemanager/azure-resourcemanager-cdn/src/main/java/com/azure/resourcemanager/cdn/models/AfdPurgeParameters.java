@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters required for content purge. */
+/**
+ * Parameters required for content purge.
+ */
 @Fluent
 public final class AfdPurgeParameters {
     /*
@@ -24,14 +26,16 @@ public final class AfdPurgeParameters {
     @JsonProperty(value = "domains")
     private List<String> domains;
 
-    /** Creates an instance of AfdPurgeParameters class. */
+    /**
+     * Creates an instance of AfdPurgeParameters class.
+     */
     public AfdPurgeParameters() {
     }
 
     /**
      * Get the contentPaths property: The path to the content to be purged. Can describe a file path or a wild card
      * directory.
-     *
+     * 
      * @return the contentPaths value.
      */
     public List<String> contentPaths() {
@@ -41,7 +45,7 @@ public final class AfdPurgeParameters {
     /**
      * Set the contentPaths property: The path to the content to be purged. Can describe a file path or a wild card
      * directory.
-     *
+     * 
      * @param contentPaths the contentPaths value to set.
      * @return the AfdPurgeParameters object itself.
      */
@@ -52,7 +56,7 @@ public final class AfdPurgeParameters {
 
     /**
      * Get the domains property: List of domains.
-     *
+     * 
      * @return the domains value.
      */
     public List<String> domains() {
@@ -61,7 +65,7 @@ public final class AfdPurgeParameters {
 
     /**
      * Set the domains property: List of domains.
-     *
+     * 
      * @param domains the domains value to set.
      * @return the AfdPurgeParameters object itself.
      */
@@ -72,14 +76,13 @@ public final class AfdPurgeParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (contentPaths() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property contentPaths in model AfdPurgeParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property contentPaths in model AfdPurgeParameters"));
         }
     }
 

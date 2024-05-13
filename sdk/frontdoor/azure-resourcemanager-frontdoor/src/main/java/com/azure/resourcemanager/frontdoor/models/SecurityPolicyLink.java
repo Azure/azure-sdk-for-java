@@ -7,7 +7,9 @@ package com.azure.resourcemanager.frontdoor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the Resource ID for a Security Policy. */
+/**
+ * Defines the Resource ID for a Security Policy.
+ */
 @Fluent
 public final class SecurityPolicyLink {
     /*
@@ -16,13 +18,15 @@ public final class SecurityPolicyLink {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of SecurityPolicyLink class. */
+    /**
+     * Creates an instance of SecurityPolicyLink class.
+     */
     public SecurityPolicyLink() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class SecurityPolicyLink {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the SecurityPolicyLink object itself.
      */
@@ -42,7 +46,7 @@ public final class SecurityPolicyLink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

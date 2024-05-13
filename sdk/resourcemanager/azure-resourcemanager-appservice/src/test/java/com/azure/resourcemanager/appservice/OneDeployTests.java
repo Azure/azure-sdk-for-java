@@ -96,7 +96,7 @@ public class OneDeployTests extends AppServiceTest {
         Assertions.assertNotNull(deploymentId);
 
         // stream logs
-        webApp1.streamApplicationLogsAsync().subscribeOn(Schedulers.single()).subscribe(System.out::println);
+        webApp1.streamApplicationLogsAsync().subscribeOn(Schedulers.single()).subscribe(LOGGER::verbose);
 
         waitForRuntimeSuccess(webApp1, deploymentId);
 

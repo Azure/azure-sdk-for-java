@@ -8,11 +8,9 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.migrationdiscoverysap.fluent.models.SapInstanceInner;
-import com.azure.resourcemanager.migrationdiscoverysap.models.ProvisioningState;
 import com.azure.resourcemanager.migrationdiscoverysap.models.SapInstance;
-import com.azure.resourcemanager.migrationdiscoverysap.models.SapInstanceEnvironment;
+import com.azure.resourcemanager.migrationdiscoverysap.models.SapInstanceProperties;
 import com.azure.resourcemanager.migrationdiscoverysap.models.SapInstanceTagsUpdate;
-import com.azure.resourcemanager.migrationdiscoverysap.models.SapMigrateError;
 import java.util.Collections;
 import java.util.Map;
 
@@ -46,32 +44,12 @@ public final class SapInstanceImpl implements SapInstance, SapInstance.Definitio
         }
     }
 
+    public SapInstanceProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public String systemSid() {
-        return this.innerModel().systemSid();
-    }
-
-    public SapInstanceEnvironment environment() {
-        return this.innerModel().environment();
-    }
-
-    public String landscapeSid() {
-        return this.innerModel().landscapeSid();
-    }
-
-    public String application() {
-        return this.innerModel().application();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public SapMigrateError errors() {
-        return this.innerModel().errors();
     }
 
     public Region region() {
@@ -184,6 +162,11 @@ public final class SapInstanceImpl implements SapInstance, SapInstance.Definitio
             this.updateProperties.withTags(tags);
             return this;
         }
+    }
+
+    public SapInstanceImpl withProperties(SapInstanceProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 
     private boolean isInCreateMode() {

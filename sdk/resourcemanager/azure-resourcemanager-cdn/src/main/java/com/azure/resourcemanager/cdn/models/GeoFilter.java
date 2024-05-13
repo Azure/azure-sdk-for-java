@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Rules defining user's geo access within a CDN endpoint. */
+/**
+ * Rules defining user's geo access within a CDN endpoint.
+ */
 @Fluent
 public final class GeoFilter {
     /*
@@ -30,14 +32,16 @@ public final class GeoFilter {
     @JsonProperty(value = "countryCodes", required = true)
     private List<String> countryCodes;
 
-    /** Creates an instance of GeoFilter class. */
+    /**
+     * Creates an instance of GeoFilter class.
+     */
     public GeoFilter() {
     }
 
     /**
      * Get the relativePath property: Relative path applicable to geo filter. (e.g. '/mypictures',
      * '/mypicture/kitty.jpg', and etc.).
-     *
+     * 
      * @return the relativePath value.
      */
     public String relativePath() {
@@ -47,7 +51,7 @@ public final class GeoFilter {
     /**
      * Set the relativePath property: Relative path applicable to geo filter. (e.g. '/mypictures',
      * '/mypicture/kitty.jpg', and etc.).
-     *
+     * 
      * @param relativePath the relativePath value to set.
      * @return the GeoFilter object itself.
      */
@@ -58,7 +62,7 @@ public final class GeoFilter {
 
     /**
      * Get the action property: Action of the geo filter, i.e. allow or block access.
-     *
+     * 
      * @return the action value.
      */
     public GeoFilterActions action() {
@@ -67,7 +71,7 @@ public final class GeoFilter {
 
     /**
      * Set the action property: Action of the geo filter, i.e. allow or block access.
-     *
+     * 
      * @param action the action value to set.
      * @return the GeoFilter object itself.
      */
@@ -77,9 +81,9 @@ public final class GeoFilter {
     }
 
     /**
-     * Get the countryCodes property: Two letter country or region codes defining user country or region access in a geo
-     * filter, e.g. AU, MX, US.
-     *
+     * Get the countryCodes property: Two letter country or region codes defining user country or region access in a
+     * geo filter, e.g. AU, MX, US.
+     * 
      * @return the countryCodes value.
      */
     public List<String> countryCodes() {
@@ -87,9 +91,9 @@ public final class GeoFilter {
     }
 
     /**
-     * Set the countryCodes property: Two letter country or region codes defining user country or region access in a geo
-     * filter, e.g. AU, MX, US.
-     *
+     * Set the countryCodes property: Two letter country or region codes defining user country or region access in a
+     * geo filter, e.g. AU, MX, US.
+     * 
      * @param countryCodes the countryCodes value to set.
      * @return the GeoFilter object itself.
      */
@@ -100,24 +104,21 @@ public final class GeoFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (relativePath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property relativePath in model GeoFilter"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property relativePath in model GeoFilter"));
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model GeoFilter"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property action in model GeoFilter"));
         }
         if (countryCodes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property countryCodes in model GeoFilter"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property countryCodes in model GeoFilter"));
         }
     }
 

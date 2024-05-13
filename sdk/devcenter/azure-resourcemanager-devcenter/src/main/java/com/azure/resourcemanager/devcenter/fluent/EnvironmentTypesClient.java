@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.fluent.models.EnvironmentTypeInner;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypeUpdate;
 
-/** An instance of this class provides access to all the operations defined in EnvironmentTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EnvironmentTypesClient.
+ */
 public interface EnvironmentTypesClient {
     /**
      * Lists environment types for the devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface EnvironmentTypesClient {
 
     /**
      * Lists environment types for the devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -40,12 +42,12 @@ public interface EnvironmentTypesClient {
      * @return result of the environment type list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EnvironmentTypeInner> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context);
+    PagedIterable<EnvironmentTypeInner> listByDevCenter(String resourceGroupName, String devCenterName, Integer top,
+        Context context);
 
     /**
      * Gets an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -56,12 +58,12 @@ public interface EnvironmentTypesClient {
      * @return an environment type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentTypeInner> getWithResponse(
-        String resourceGroupName, String devCenterName, String environmentTypeName, Context context);
+    Response<EnvironmentTypeInner> getWithResponse(String resourceGroupName, String devCenterName,
+        String environmentTypeName, Context context);
 
     /**
      * Gets an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -75,7 +77,7 @@ public interface EnvironmentTypesClient {
 
     /**
      * Creates or updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -87,16 +89,12 @@ public interface EnvironmentTypesClient {
      * @return represents an environment type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentTypeInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String environmentTypeName,
-        EnvironmentTypeInner body,
-        Context context);
+    Response<EnvironmentTypeInner> createOrUpdateWithResponse(String resourceGroupName, String devCenterName,
+        String environmentTypeName, EnvironmentTypeInner body, Context context);
 
     /**
      * Creates or updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -107,12 +105,12 @@ public interface EnvironmentTypesClient {
      * @return represents an environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentTypeInner createOrUpdate(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeInner body);
+    EnvironmentTypeInner createOrUpdate(String resourceGroupName, String devCenterName, String environmentTypeName,
+        EnvironmentTypeInner body);
 
     /**
      * Partially updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -124,16 +122,12 @@ public interface EnvironmentTypesClient {
      * @return represents an environment type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentTypeInner> updateWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String environmentTypeName,
-        EnvironmentTypeUpdate body,
-        Context context);
+    Response<EnvironmentTypeInner> updateWithResponse(String resourceGroupName, String devCenterName,
+        String environmentTypeName, EnvironmentTypeUpdate body, Context context);
 
     /**
      * Partially updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -144,12 +138,12 @@ public interface EnvironmentTypesClient {
      * @return represents an environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentTypeInner update(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeUpdate body);
+    EnvironmentTypeInner update(String resourceGroupName, String devCenterName, String environmentTypeName,
+        EnvironmentTypeUpdate body);
 
     /**
      * Deletes an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -160,12 +154,12 @@ public interface EnvironmentTypesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String devCenterName, String environmentTypeName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String devCenterName, String environmentTypeName,
+        Context context);
 
     /**
      * Deletes an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.

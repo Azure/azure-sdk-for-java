@@ -5,106 +5,93 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Parameters for Azure Cognitive Search when used as an Azure OpenAI chat extension. The supported authentication
- * types are APIKey, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
+ * Parameters for Azure Cognitive Search when used as an Azure OpenAI chat extension. The supported authentication types
+ * are APIKey, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
  */
 @Fluent
-public final class AzureSearchChatExtensionParameters {
+public final class AzureSearchChatExtensionParameters implements JsonSerializable<AzureSearchChatExtensionParameters> {
 
     /*
      * The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation
-     * of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
      */
     @Generated
-    @JsonProperty(value = "authentication")
     private OnYourDataAuthenticationOptions authentication;
 
     /*
      * The configured top number of documents to feature for the configured query.
      */
     @Generated
-    @JsonProperty(value = "top_n_documents")
     private Integer topNDocuments;
 
     /*
      * Whether queries should be restricted to use of indexed data.
      */
     @Generated
-    @JsonProperty(value = "in_scope")
     private Boolean inScope;
 
     /*
-     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the
-     * precision but lower recall of the answer.
+     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
      */
     @Generated
-    @JsonProperty(value = "strictness")
     private Integer strictness;
 
     /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a
-     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
-     * limit for it, and it counts against the overall token limit.
+     * Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      */
     @Generated
-    @JsonProperty(value = "role_information")
     private String roleInformation;
 
     /*
      * The absolute endpoint path for the Azure Cognitive Search resource to use.
      */
     @Generated
-    @JsonProperty(value = "endpoint")
-    private String endpoint;
+    private final String endpoint;
 
     /*
      * The name of the index to use as available in the referenced Azure Cognitive Search resource.
      */
     @Generated
-    @JsonProperty(value = "index_name")
-    private String indexName;
+    private final String indexName;
 
     /*
      * Customized field mapping behavior to use when interacting with the search index.
      */
     @Generated
-    @JsonProperty(value = "fields_mapping")
     private AzureSearchIndexFieldMappingOptions fieldsMapping;
 
     /*
      * The query type to use with Azure Cognitive Search.
      */
     @Generated
-    @JsonProperty(value = "query_type")
     private AzureSearchQueryType queryType;
 
     /*
      * The additional semantic configuration for the query.
      */
     @Generated
-    @JsonProperty(value = "semantic_configuration")
     private String semanticConfiguration;
 
     /*
      * Search filter.
      */
     @Generated
-    @JsonProperty(value = "filter")
     private String filter;
 
     /*
      * The embedding dependency for vector search.
      */
     @Generated
-    @JsonProperty(value = "embedding_dependency")
     private OnYourDataVectorizationSource embeddingDependency;
 
     /**
@@ -114,9 +101,7 @@ public final class AzureSearchChatExtensionParameters {
      * @param indexName the indexName value to set.
      */
     @Generated
-    @JsonCreator
-    public AzureSearchChatExtensionParameters(@JsonProperty(value = "endpoint") String endpoint,
-        @JsonProperty(value = "index_name") String indexName) {
+    public AzureSearchChatExtensionParameters(String endpoint, String indexName) {
         this.endpoint = endpoint;
         this.indexName = indexName;
     }
@@ -377,5 +362,98 @@ public final class AzureSearchChatExtensionParameters {
         setEmbeddingDependency(OnYourDataVectorizationSource embeddingDependency) {
         this.embeddingDependency = embeddingDependency;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeStringField("index_name", this.indexName);
+        jsonWriter.writeJsonField("authentication", this.authentication);
+        jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
+        jsonWriter.writeBooleanField("in_scope", this.inScope);
+        jsonWriter.writeNumberField("strictness", this.strictness);
+        jsonWriter.writeStringField("role_information", this.roleInformation);
+        jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
+        jsonWriter.writeStringField("query_type", this.queryType == null ? null : this.queryType.toString());
+        jsonWriter.writeStringField("semantic_configuration", this.semanticConfiguration);
+        jsonWriter.writeStringField("filter", this.filter);
+        jsonWriter.writeJsonField("embedding_dependency", this.embeddingDependency);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSearchChatExtensionParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSearchChatExtensionParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureSearchChatExtensionParameters.
+     */
+    @Generated
+    public static AzureSearchChatExtensionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String endpoint = null;
+            String indexName = null;
+            OnYourDataAuthenticationOptions authentication = null;
+            Integer topNDocuments = null;
+            Boolean inScope = null;
+            Integer strictness = null;
+            String roleInformation = null;
+            AzureSearchIndexFieldMappingOptions fieldsMapping = null;
+            AzureSearchQueryType queryType = null;
+            String semanticConfiguration = null;
+            String filter = null;
+            OnYourDataVectorizationSource embeddingDependency = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("endpoint".equals(fieldName)) {
+                    endpoint = reader.getString();
+                } else if ("index_name".equals(fieldName)) {
+                    indexName = reader.getString();
+                } else if ("authentication".equals(fieldName)) {
+                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
+                } else if ("top_n_documents".equals(fieldName)) {
+                    topNDocuments = reader.getNullable(JsonReader::getInt);
+                } else if ("in_scope".equals(fieldName)) {
+                    inScope = reader.getNullable(JsonReader::getBoolean);
+                } else if ("strictness".equals(fieldName)) {
+                    strictness = reader.getNullable(JsonReader::getInt);
+                } else if ("role_information".equals(fieldName)) {
+                    roleInformation = reader.getString();
+                } else if ("fields_mapping".equals(fieldName)) {
+                    fieldsMapping = AzureSearchIndexFieldMappingOptions.fromJson(reader);
+                } else if ("query_type".equals(fieldName)) {
+                    queryType = AzureSearchQueryType.fromString(reader.getString());
+                } else if ("semantic_configuration".equals(fieldName)) {
+                    semanticConfiguration = reader.getString();
+                } else if ("filter".equals(fieldName)) {
+                    filter = reader.getString();
+                } else if ("embedding_dependency".equals(fieldName)) {
+                    embeddingDependency = OnYourDataVectorizationSource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AzureSearchChatExtensionParameters deserializedAzureSearchChatExtensionParameters
+                = new AzureSearchChatExtensionParameters(endpoint, indexName);
+            deserializedAzureSearchChatExtensionParameters.authentication = authentication;
+            deserializedAzureSearchChatExtensionParameters.topNDocuments = topNDocuments;
+            deserializedAzureSearchChatExtensionParameters.inScope = inScope;
+            deserializedAzureSearchChatExtensionParameters.strictness = strictness;
+            deserializedAzureSearchChatExtensionParameters.roleInformation = roleInformation;
+            deserializedAzureSearchChatExtensionParameters.fieldsMapping = fieldsMapping;
+            deserializedAzureSearchChatExtensionParameters.queryType = queryType;
+            deserializedAzureSearchChatExtensionParameters.semanticConfiguration = semanticConfiguration;
+            deserializedAzureSearchChatExtensionParameters.filter = filter;
+            deserializedAzureSearchChatExtensionParameters.embeddingDependency = embeddingDependency;
+            return deserializedAzureSearchChatExtensionParameters;
+        });
     }
 }

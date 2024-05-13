@@ -407,6 +407,20 @@ public class CloudEventTests {
         });
     }
 
+    @Test
+    public void eventsHaveATime() {
+        CloudEvent event = new CloudEvent("/source", "type", BinaryData.fromObject("data", SERIALIZER),
+            CloudEventDataFormat.JSON, "application/json");
+        assertNotNull(event.getTime());
+    }
+
+    @Test
+    public void eventsCanHaveTimeUnset() {
+        CloudEvent event = new CloudEvent("/source", "type", BinaryData.fromObject("data", SERIALIZER),
+            CloudEventDataFormat.JSON, "application/json").setTime(null);
+        assertNull(event.getTime());
+    }
+
     private String getTestPayloadFromFile(String fileName) throws IOException {
         final ClassLoader classLoader = getClass().getClassLoader();
         try (InputStream inputStream = classLoader.getResourceAsStream("CloudEvent/" + fileName)) {

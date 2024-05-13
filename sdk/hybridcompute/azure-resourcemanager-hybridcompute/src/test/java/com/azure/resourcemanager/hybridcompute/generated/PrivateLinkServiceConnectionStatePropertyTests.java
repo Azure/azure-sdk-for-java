@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStatePropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionStateProperty model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"patdooaojkniodko\",\"description\":\"ebwnujhe\",\"actionsRequired\":\"sbvdkcrodtjinfw\"}")
+        PrivateLinkServiceConnectionStateProperty model
+            = BinaryData.fromString("{\"status\":\"isxgfp\",\"description\":\"lolp\",\"actionsRequired\":\"ksrpqv\"}")
                 .toObject(PrivateLinkServiceConnectionStateProperty.class);
-        Assertions.assertEquals("patdooaojkniodko", model.status());
-        Assertions.assertEquals("ebwnujhe", model.description());
+        Assertions.assertEquals("isxgfp", model.status());
+        Assertions.assertEquals("lolp", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkServiceConnectionStateProperty model =
-            new PrivateLinkServiceConnectionStateProperty().withStatus("patdooaojkniodko").withDescription("ebwnujhe");
+        PrivateLinkServiceConnectionStateProperty model
+            = new PrivateLinkServiceConnectionStateProperty().withStatus("isxgfp").withDescription("lolp");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionStateProperty.class);
-        Assertions.assertEquals("patdooaojkniodko", model.status());
-        Assertions.assertEquals("ebwnujhe", model.description());
+        Assertions.assertEquals("isxgfp", model.status());
+        Assertions.assertEquals("lolp", model.description());
     }
 }

@@ -25,6 +25,14 @@ import java.util.List;
 public final class ImagingProcedureRecommendation extends ProcedureRecommendation {
 
     /*
+     * Procedure type : generic.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private String kind = "imagingProcedureRecommendation";
+
+    /*
      * LOINC codes for the procedure.
      */
     @Generated
@@ -51,6 +59,17 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
+     * Get the kind property: Procedure type : generic.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public String getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the procedureCodes property: LOINC codes for the procedure.
      *
      * @return the procedureCodes value.
@@ -68,24 +87,5 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     @Generated
     public List<ImagingProcedure> getImagingProcedures() {
         return this.imagingProcedures;
-    }
-
-    /*
-     * Procedure type : generic.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private String kind = "imagingProcedureRecommendation";
-
-    /**
-     * Get the kind property: Procedure type : generic.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public String getKind() {
-        return this.kind;
     }
 }

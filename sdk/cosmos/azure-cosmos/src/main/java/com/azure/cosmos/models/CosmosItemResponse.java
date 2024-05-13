@@ -4,11 +4,11 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
@@ -32,7 +32,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class CosmosItemResponse<T> {
     private final Class<T> itemClassType;
-    private final ItemDeserializer itemDeserializer;
+    private final CosmosItemSerializer itemSerializer;
 
     //  Converting item to volatile to fix Double-checked locking - https://en.wikipedia.org/wiki/Double-checked_locking
     //  http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
@@ -47,19 +47,19 @@ public class CosmosItemResponse<T> {
 
     private final Supplier<Boolean> hasPayload;
 
-    CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
+    CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, CosmosItemSerializer itemSerializer) {
         this.itemClassType = classType;
         this.resourceResponse = response;
-        this.itemDeserializer = itemDeserializer;
+        this.itemSerializer = itemSerializer;
         this.item = null;
-        this.hasPayload = () -> response.hasPayload();
+        this.hasPayload = response::hasPayload;
         this.itemBodyOverride = null;
     }
 
-    private CosmosItemResponse(ResourceResponse<Document> response, T item, JsonNode itemBodyOverride, Class<T> classType, ItemDeserializer itemDeserializer) {
+    private CosmosItemResponse(ResourceResponse<Document> response, T item, JsonNode itemBodyOverride, Class<T> classType, CosmosItemSerializer itemSerializer) {
         this.itemClassType = classType;
         this.resourceResponse = response;
-        this.itemDeserializer = itemDeserializer;
+        this.itemSerializer = itemSerializer;
         this.item = item;
         this.itemBodyOverride = itemBodyOverride;
         boolean hasPayloadStaticValue = item != null;
@@ -141,7 +141,7 @@ public class CosmosItemResponse<T> {
                         return item;
                     } else {
                         Instant serializationStartTime = Instant.now();
-                        item = Utils.parse(this.resourceResponse.getBody(), itemClassType, itemDeserializer);
+                        item = Utils.parse((ObjectNode)this.resourceResponse.getBody(), itemClassType, itemSerializer);
 
                         Instant serializationEndTime = Instant.now();
                         SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -273,7 +273,6 @@ public class CosmosItemResponse<T> {
     /**
      * Gets the ETag from the response headers.
      * This is only relevant when getting response from the server.
-     *
      * Null in case of delete operation.
      *
      * @return ETag
@@ -298,7 +297,7 @@ public class CosmosItemResponse<T> {
         }
 
         return new CosmosItemResponse<>(
-            mappedResourceResponse, payload, itemBodyOverride, this.itemClassType, this.itemDeserializer);
+            mappedResourceResponse, payload, itemBodyOverride, this.itemClassType, this.itemSerializer);
     }
 
     boolean hasTrackingId(String candidate) {
@@ -330,12 +329,21 @@ public class CosmosItemResponse<T> {
             new ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor() {
                 public <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosItemResponse<byte[]> response,
                                                                           Class<T> classType,
-                                                                          ItemDeserializer itemDeserializer) {
+                                                                          CosmosItemSerializer serializer) {
                     return new CosmosItemResponse<>(
                         response.resourceResponse,
-                        Utils.parse(response.getItemAsByteArray(), classType),
+                        Utils.parse(response.getItemAsByteArray(), classType, serializer),
                         response.itemBodyOverride,
-                        classType, itemDeserializer);
+                        classType,
+                        serializer);
+                }
+
+                @Override
+                public <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, CosmosItemSerializer serializer) {
+                    return new CosmosItemResponse<>(
+                        response,
+                        classType,
+                        serializer);
                 }
 
                 @Override

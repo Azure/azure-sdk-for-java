@@ -9,8 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class CommunicationsCreateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * CreateSupportTicketCommunication.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateSupportTicketCommunication.json
      */
     /**
      * Sample code: AddCommunicationToSubscriptionTicket.
@@ -18,8 +17,12 @@ public final class CommunicationsCreateSamples {
      * @param manager Entry point to SupportManager.
      */
     public static void addCommunicationToSubscriptionTicket(com.azure.resourcemanager.support.SupportManager manager) {
-        manager.communications().define("testcommunication").withExistingSupportTicket("testticket")
-            .withSender("user@contoso.com").withSubject("This is a test message from a customer!")
-            .withBody("This is a test message from a customer!").create();
+        manager.communications()
+            .define("testcommunication")
+            .withExistingSupportTicket("testticket")
+            .withSubject("This is a test message from a customer!")
+            .withBody("This is a test message from a customer!")
+            .withSender("user@contoso.com")
+            .create();
     }
 }

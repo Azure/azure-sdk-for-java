@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** BackupAndExport Response Properties. */
+/**
+ * BackupAndExport Response Properties.
+ */
 @Fluent
 public final class BackupAndExportResponseProperties {
     /*
@@ -28,13 +30,15 @@ public final class BackupAndExportResponseProperties {
     @JsonProperty(value = "backupMetadata")
     private String backupMetadata;
 
-    /** Creates an instance of BackupAndExportResponseProperties class. */
+    /**
+     * Creates an instance of BackupAndExportResponseProperties class.
+     */
     public BackupAndExportResponseProperties() {
     }
 
     /**
      * Get the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @return the datasourceSizeInBytes value.
      */
     public Long datasourceSizeInBytes() {
@@ -43,7 +47,7 @@ public final class BackupAndExportResponseProperties {
 
     /**
      * Set the datasourceSizeInBytes property: Size of datasource in bytes.
-     *
+     * 
      * @param datasourceSizeInBytes the datasourceSizeInBytes value to set.
      * @return the BackupAndExportResponseProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class BackupAndExportResponseProperties {
 
     /**
      * Get the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @return the dataTransferredInBytes value.
      */
     public Long dataTransferredInBytes() {
@@ -63,7 +67,7 @@ public final class BackupAndExportResponseProperties {
 
     /**
      * Set the dataTransferredInBytes property: Data transferred in bytes.
-     *
+     * 
      * @param dataTransferredInBytes the dataTransferredInBytes value to set.
      * @return the BackupAndExportResponseProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class BackupAndExportResponseProperties {
     /**
      * Get the backupMetadata property: Metadata related to backup to be stored for restoring resource in key-value
      * pairs.
-     *
+     * 
      * @return the backupMetadata value.
      */
     public String backupMetadata() {
@@ -85,7 +89,7 @@ public final class BackupAndExportResponseProperties {
     /**
      * Set the backupMetadata property: Metadata related to backup to be stored for restoring resource in key-value
      * pairs.
-     *
+     * 
      * @param backupMetadata the backupMetadata value to set.
      * @return the BackupAndExportResponseProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class BackupAndExportResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

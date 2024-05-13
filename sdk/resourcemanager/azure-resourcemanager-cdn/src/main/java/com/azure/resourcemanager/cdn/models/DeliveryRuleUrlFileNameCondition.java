@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the UrlFileName condition for the delivery rule. */
+/**
+ * Defines the UrlFileName condition for the delivery rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("UrlFileName")
 @Fluent
@@ -21,13 +23,15 @@ public final class DeliveryRuleUrlFileNameCondition extends DeliveryRuleConditio
     @JsonProperty(value = "parameters", required = true)
     private UrlFileNameMatchConditionParameters parameters;
 
-    /** Creates an instance of DeliveryRuleUrlFileNameCondition class. */
+    /**
+     * Creates an instance of DeliveryRuleUrlFileNameCondition class.
+     */
     public DeliveryRuleUrlFileNameCondition() {
     }
 
     /**
      * Get the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @return the parameters value.
      */
     public UrlFileNameMatchConditionParameters parameters() {
@@ -36,7 +40,7 @@ public final class DeliveryRuleUrlFileNameCondition extends DeliveryRuleConditio
 
     /**
      * Set the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRuleUrlFileNameCondition object itself.
      */
@@ -47,17 +51,15 @@ public final class DeliveryRuleUrlFileNameCondition extends DeliveryRuleConditio
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRuleUrlFileNameCondition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model DeliveryRuleUrlFileNameCondition"));
         } else {
             parameters().validate();
         }

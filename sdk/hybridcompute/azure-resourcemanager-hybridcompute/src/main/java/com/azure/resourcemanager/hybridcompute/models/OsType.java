@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The operating system type of the machine. */
+/**
+ * The operating system type of the machine.
+ */
 public final class OsType extends ExpandableStringEnum<OsType> {
-    /** Static value Windows for OsType. */
+    /**
+     * Static value Windows for OsType.
+     */
     public static final OsType WINDOWS = fromString("Windows");
 
-    /** Static value Linux for OsType. */
+    /**
+     * Static value Linux for OsType.
+     */
     public static final OsType LINUX = fromString("Linux");
 
     /**
      * Creates a new instance of OsType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class OsType extends ExpandableStringEnum<OsType> {
 
     /**
      * Creates or finds a OsType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OsType.
      */
@@ -38,7 +44,7 @@ public final class OsType extends ExpandableStringEnum<OsType> {
 
     /**
      * Gets known OsType values.
-     *
+     * 
      * @return known OsType values.
      */
     public static Collection<OsType> values() {

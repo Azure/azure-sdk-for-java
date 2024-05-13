@@ -14,12 +14,14 @@ import com.azure.resourcemanager.frontdoor.models.FrontendEndpointUpdateParamete
 import com.azure.resourcemanager.frontdoor.models.SessionAffinityEnabledState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JSON object that contains the properties required to create a frontend endpoint. */
+/**
+ * The JSON object that contains the properties required to create a frontend endpoint.
+ */
 @Fluent
 public final class FrontendEndpointProperties extends FrontendEndpointUpdateParameters {
     /*
      * Resource status of the Front Door or Front Door SubResource.
-     *
+     * 
      * Resource status.
      */
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
@@ -43,15 +45,17 @@ public final class FrontendEndpointProperties extends FrontendEndpointUpdatePara
     @JsonProperty(value = "customHttpsConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private CustomHttpsConfiguration customHttpsConfiguration;
 
-    /** Creates an instance of FrontendEndpointProperties class. */
+    /**
+     * Creates an instance of FrontendEndpointProperties class.
+     */
     public FrontendEndpointProperties() {
     }
 
     /**
      * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * 
+     * Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
@@ -60,7 +64,7 @@ public final class FrontendEndpointProperties extends FrontendEndpointUpdatePara
 
     /**
      * Get the customHttpsProvisioningState property: Provisioning status of Custom Https of the frontendEndpoint.
-     *
+     * 
      * @return the customHttpsProvisioningState value.
      */
     public CustomHttpsProvisioningState customHttpsProvisioningState() {
@@ -70,7 +74,7 @@ public final class FrontendEndpointProperties extends FrontendEndpointUpdatePara
     /**
      * Get the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
      * enabling/disabling process step by step.
-     *
+     * 
      * @return the customHttpsProvisioningSubstate value.
      */
     public CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate() {
@@ -79,36 +83,44 @@ public final class FrontendEndpointProperties extends FrontendEndpointUpdatePara
 
     /**
      * Get the customHttpsConfiguration property: The configuration specifying how to enable HTTPS.
-     *
+     * 
      * @return the customHttpsConfiguration value.
      */
     public CustomHttpsConfiguration customHttpsConfiguration() {
         return this.customHttpsConfiguration;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontendEndpointProperties withHostname(String hostname) {
         super.withHostname(hostname);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public FrontendEndpointProperties withSessionAffinityEnabledState(
-        SessionAffinityEnabledState sessionAffinityEnabledState) {
+    public FrontendEndpointProperties
+        withSessionAffinityEnabledState(SessionAffinityEnabledState sessionAffinityEnabledState) {
         super.withSessionAffinityEnabledState(sessionAffinityEnabledState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontendEndpointProperties withSessionAffinityTtlSeconds(Integer sessionAffinityTtlSeconds) {
         super.withSessionAffinityTtlSeconds(sessionAffinityTtlSeconds);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontendEndpointProperties withWebApplicationFirewallPolicyLink(
         FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
@@ -118,7 +130,7 @@ public final class FrontendEndpointProperties extends FrontendEndpointUpdatePara
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

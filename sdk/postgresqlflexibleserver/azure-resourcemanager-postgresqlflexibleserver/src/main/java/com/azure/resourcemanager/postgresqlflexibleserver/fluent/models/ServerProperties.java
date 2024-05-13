@@ -27,8 +27,7 @@ import java.util.List;
 @Fluent
 public final class ServerProperties {
     /*
-     * The administrator's login name of a server. Can only be specified when the server is being created (and is
-     * required for creation).
+     * The administrator's login name of a server. Can only be specified when the server is being created (and is required for creation).
      */
     @JsonProperty(value = "administratorLogin")
     private String administratorLogin;
@@ -88,8 +87,7 @@ public final class ServerProperties {
     private Backup backup;
 
     /*
-     * Network properties of a server. This Network property is required to be passed only in case you want the server
-     * to be Private access server.
+     * Network properties of a server. This Network property is required to be passed only in case you want the server to be Private access server.
      */
     @JsonProperty(value = "network")
     private Network network;
@@ -107,15 +105,13 @@ public final class ServerProperties {
     private MaintenanceWindow maintenanceWindow;
 
     /*
-     * The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore' or
-     * 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned only for Replica server
+     * The source server resource ID to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'Replica' or 'ReviveDropped'. This property is returned only for Replica server
      */
     @JsonProperty(value = "sourceServerResourceId")
     private String sourceServerResourceId;
 
     /*
-     * Restore point creation time (ISO8601 format), specifying the time to restore from. It's required when
-     * 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
+     * Restore point creation time (ISO8601 format), specifying the time to restore from. It's required when 'createMode' is 'PointInTimeRestore' or 'GeoRestore' or 'ReviveDropped'.
      */
     @JsonProperty(value = "pointInTimeUTC")
     private OffsetDateTime pointInTimeUtc;
@@ -139,8 +135,7 @@ public final class ServerProperties {
     private Integer replicaCapacity;
 
     /*
-     * Replica properties of a server. These Replica properties are required to be passed only in case you want to
-     * Promote a server.
+     * Replica properties of a server. These Replica properties are required to be passed only in case you want to Promote a server.
      */
     @JsonProperty(value = "replica")
     private Replica replica;
@@ -490,8 +485,8 @@ public final class ServerProperties {
     }
 
     /**
-     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed
-     * only in case you want to Promote a server.
+     * Get the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
      * 
      * @return the replica value.
      */
@@ -500,8 +495,8 @@ public final class ServerProperties {
     }
 
     /**
-     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed
-     * only in case you want to Promote a server.
+     * Set the replica property: Replica properties of a server. These Replica properties are required to be passed only
+     * in case you want to Promote a server.
      * 
      * @param replica the replica value to set.
      * @return the ServerProperties object itself.

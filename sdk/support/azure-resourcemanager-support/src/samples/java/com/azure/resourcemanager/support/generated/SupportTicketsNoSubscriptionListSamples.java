@@ -9,8 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class SupportTicketsNoSubscriptionListSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListSupportTicketsCreatedOnOrAfterAndInUpdatingState.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsCreatedOnOrAfterAndInUpdatingState.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in updating state.
@@ -19,13 +18,13 @@ public final class SupportTicketsNoSubscriptionListSamples {
      */
     public static void listSupportTicketsCreatedOnOrAfterACertainDateAndInUpdatingState(
         com.azure.resourcemanager.support.SupportManager manager) {
-        manager.supportTicketsNoSubscriptions().list(null,
-            "createdDate ge 2020-03-10T22:08:51Z and status eq 'Updating'", com.azure.core.util.Context.NONE);
+        manager.supportTicketsNoSubscriptions()
+            .list(null, "createdDate ge 2020-03-10T22:08:51Z and status eq 'Updating'",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListSupportTicketsInOpenState.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsInOpenState.json
      */
     /**
      * Sample code: List support tickets in open state.
@@ -37,9 +36,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/ListSupportTickets.
-     * json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTickets.json
      */
     /**
      * Sample code: List support tickets.
@@ -51,8 +48,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListSupportTicketsInUpdatingState.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsInUpdatingState.json
      */
     /**
      * Sample code: List support tickets in updating state.
@@ -64,8 +60,7 @@ public final class SupportTicketsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListSupportTicketsCreatedOnOrAfterAndInOpenState.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenState.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in open state.
@@ -74,13 +69,12 @@ public final class SupportTicketsNoSubscriptionListSamples {
      */
     public static void listSupportTicketsCreatedOnOrAfterACertainDateAndInOpenState(
         com.azure.resourcemanager.support.SupportManager manager) {
-        manager.supportTicketsNoSubscriptions().list(null, "createdDate ge 2020-03-10T22:08:51Z and status eq 'Open'",
-            com.azure.core.util.Context.NONE);
+        manager.supportTicketsNoSubscriptions()
+            .list(null, "createdDate ge 2020-03-10T22:08:51Z and status eq 'Open'", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListSupportTicketsServiceIdEquals.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsServiceIdEquals.json
      */
     /**
      * Sample code: List support tickets with a certain service id.
@@ -89,13 +83,12 @@ public final class SupportTicketsNoSubscriptionListSamples {
      */
     public static void
         listSupportTicketsWithACertainServiceId(com.azure.resourcemanager.support.SupportManager manager) {
-        manager.supportTicketsNoSubscriptions().list(null, "ServiceId eq 'vm_windows_service_guid'",
-            com.azure.core.util.Context.NONE);
+        manager.supportTicketsNoSubscriptions()
+            .list(null, "ServiceId eq 'vm_windows_service_guid'", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListSupportTicketsProblemClassificationIdEquals.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListSupportTicketsProblemClassificationIdEquals.json
      */
     /**
      * Sample code: List support tickets with a certain problem classification id.
@@ -104,7 +97,8 @@ public final class SupportTicketsNoSubscriptionListSamples {
      */
     public static void listSupportTicketsWithACertainProblemClassificationId(
         com.azure.resourcemanager.support.SupportManager manager) {
-        manager.supportTicketsNoSubscriptions().list(null,
-            "ProblemClassificationId eq 'compute_vm_problemClassification_guid'", com.azure.core.util.Context.NONE);
+        manager.supportTicketsNoSubscriptions()
+            .list(null, "ProblemClassificationId eq 'compute_vm_problemClassification_guid'",
+                com.azure.core.util.Context.NONE);
     }
 }

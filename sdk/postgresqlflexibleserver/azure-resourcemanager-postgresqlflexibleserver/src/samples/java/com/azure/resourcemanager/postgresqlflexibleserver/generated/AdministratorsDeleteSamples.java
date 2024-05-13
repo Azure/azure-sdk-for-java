@@ -9,9 +9,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
  */
 public final class AdministratorsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-06-01-preview/examples/
-     * AdministratorDelete.json
+     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-12-01-preview/examples/AdministratorDelete.json
      */
     /**
      * Sample code: AdministratorDelete.
@@ -20,7 +18,7 @@ public final class AdministratorsDeleteSamples {
      */
     public static void
         administratorDelete(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.administrators().delete("testrg", "testserver", "oooooooo-oooo-oooo-oooo-oooooooooooo",
-            com.azure.core.util.Context.NONE);
+        manager.administrators()
+            .delete("testrg", "testserver", "oooooooo-oooo-oooo-oooo-oooooooooooo", com.azure.core.util.Context.NONE);
     }
 }

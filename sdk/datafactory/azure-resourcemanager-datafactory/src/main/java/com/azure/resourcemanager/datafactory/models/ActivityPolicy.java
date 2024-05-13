@@ -18,15 +18,13 @@ import java.util.Map;
 @Fluent
 public final class ActivityPolicy {
     /*
-     * Specifies the timeout for the activity to run. The default timeout is 7 days. Type: string (or Expression with
-     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the timeout for the activity to run. The default timeout is 7 days. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "timeout")
     private Object timeout;
 
     /*
-     * Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum:
-     * 0.
+     * Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "retry")
     private Object retry;
@@ -106,8 +104,7 @@ public final class ActivityPolicy {
     }
 
     /**
-     * Get the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30
-     * sec.
+     * Get the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30 sec.
      * 
      * @return the retryIntervalInSeconds value.
      */
@@ -116,8 +113,7 @@ public final class ActivityPolicy {
     }
 
     /**
-     * Set the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30
-     * sec.
+     * Set the retryIntervalInSeconds property: Interval between each retry attempt (in seconds). The default is 30 sec.
      * 
      * @param retryIntervalInSeconds the retryIntervalInSeconds value to set.
      * @return the ActivityPolicy object itself.

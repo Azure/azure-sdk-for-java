@@ -8,16 +8,28 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.EnvironmentVariableSetupTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The custom setup of setting environment variable.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = EnvironmentVariableSetup.class,
+    visible = true)
 @JsonTypeName("EnvironmentVariableSetup")
 @Fluent
 public final class EnvironmentVariableSetup extends CustomSetupBase {
+    /*
+     * The type of custom setup.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "EnvironmentVariableSetup";
+
     /*
      * Add environment variable type properties.
      */
@@ -28,6 +40,16 @@ public final class EnvironmentVariableSetup extends CustomSetupBase {
      * Creates an instance of EnvironmentVariableSetup class.
      */
     public EnvironmentVariableSetup() {
+    }
+
+    /**
+     * Get the type property: The type of custom setup.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -94,8 +116,9 @@ public final class EnvironmentVariableSetup extends CustomSetupBase {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model EnvironmentVariableSetup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model EnvironmentVariableSetup"));
         } else {
             innerTypeProperties().validate();
         }

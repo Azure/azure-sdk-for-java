@@ -81,12 +81,14 @@ public final class TwilioLinkedServiceTypeProperties {
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property username in model TwilioLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model TwilioLinkedServiceTypeProperties"));
         }
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property password in model TwilioLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model TwilioLinkedServiceTypeProperties"));
         } else {
             password().validate();
         }

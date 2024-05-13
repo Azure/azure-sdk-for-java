@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.MappingDataFlowTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,10 +15,17 @@ import java.util.List;
 /**
  * Mapping data flow.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = MappingDataFlow.class, visible = true)
 @JsonTypeName("MappingDataFlow")
 @Fluent
 public final class MappingDataFlow extends DataFlow {
+    /*
+     * Type of data flow.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "MappingDataFlow";
+
     /*
      * Mapping data flow type properties.
      */
@@ -28,6 +36,16 @@ public final class MappingDataFlow extends DataFlow {
      * Creates an instance of MappingDataFlow class.
      */
     public MappingDataFlow() {
+    }
+
+    /**
+     * Get the type property: Type of data flow.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

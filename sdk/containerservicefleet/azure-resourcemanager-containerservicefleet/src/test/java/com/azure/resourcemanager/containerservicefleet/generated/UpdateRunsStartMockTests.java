@@ -32,49 +32,35 @@ public final class UpdateRunsStartMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"updateStrategyId\":\"qyib\",\"strategy\":{\"stages\":[{\"name\":\"fluszdtm\",\"groups\":[{\"name\":\"wofyyvoqacpiexp\"},{\"name\":\"tg\"},{\"name\":\"wbwo\"}],\"afterStageWaitInSeconds\":1119495390},{\"name\":\"ashrt\",\"groups\":[{\"name\":\"cnqxwbpokulpi\"},{\"name\":\"jwaa\"},{\"name\":\"ipqiiobyuqerpq\"}],\"afterStageWaitInSeconds\":2131221175}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"NodeImageOnly\",\"kubernetesVersion\":\"ciuqgbdb\"},\"nodeImageSelection\":{\"type\":\"Consistent\"}},\"status\":{\"status\":{\"startTime\":\"2021-03-08T12:51:31Z\",\"completedTime\":\"2021-09-10T07:31:19Z\",\"state\":\"Running\"},\"stages\":[{\"status\":{},\"name\":\"k\",\"groups\":[{},{}],\"afterStageWaitStatus\":{}},{\"status\":{},\"name\":\"nn\",\"groups\":[{},{},{}],\"afterStageWaitStatus\":{}},{\"status\":{},\"name\":\"koymkcd\",\"groups\":[{},{},{}],\"afterStageWaitStatus\":{}},{\"status\":{},\"name\":\"pwdreqnovvqf\",\"groups\":[{},{}],\"afterStageWaitStatus\":{}}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{},{}]}}},\"eTag\":\"uwsyrsndsytgadg\",\"id\":\"aeaeneqnzarrw\",\"name\":\"q\",\"type\":\"uijfqk\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"updateStrategyId\":\"vfdnwnwmewzsyyce\",\"strategy\":{\"stages\":[{\"name\":\"oibjudpfrxtrthz\",\"groups\":[{\"name\":\"tdwkqbrq\"}],\"afterStageWaitInSeconds\":965192802},{\"name\":\"axhexiilivp\",\"groups\":[{\"name\":\"irqtdqoa\"},{\"name\":\"oruzfgsquyfxrxx\"}],\"afterStageWaitInSeconds\":1730428865},{\"name\":\"tramxjez\",\"groups\":[{\"name\":\"nwxuqlcvydyp\"},{\"name\":\"tdooaoj\"},{\"name\":\"niodkooeb\"}],\"afterStageWaitInSeconds\":2091031438}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"NodeImageOnly\",\"kubernetesVersion\":\"emmsbvdkc\"},\"nodeImageSelection\":{\"type\":\"Latest\"}},\"status\":{\"status\":{\"startTime\":\"2021-05-02T14:35:28Z\",\"completedTime\":\"2021-09-11T12:40:37Z\",\"state\":\"Failed\"},\"stages\":[{\"status\":{},\"name\":\"cjvefkdlfo\",\"groups\":[{},{},{},{}],\"afterStageWaitStatus\":{}},{\"status\":{},\"name\":\"pagao\",\"groups\":[{},{},{},{}],\"afterStageWaitStatus\":{}}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{},{},{},{}]}}},\"eTag\":\"ylsyxkqjnsje\",\"id\":\"tiagx\",\"name\":\"dszue\",\"type\":\"psbzkfzbeyvpn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ContainerServiceFleetManager manager =
-            ContainerServiceFleetManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ContainerServiceFleetManager manager = ContainerServiceFleetManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        UpdateRun response =
-            manager
-                .updateRuns()
-                .start("apvhelxprgly", "tddckcb", "uejrjxgc", "qibrhosxsdqrhzoy", com.azure.core.util.Context.NONE);
+        UpdateRun response = manager.updateRuns().start("sofwqmzqalkrmnji", "pxacqqudfn", "yxbaaabjyvayf",
+            "imrzrtuzqog", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qyib", response.updateStrategyId());
-        Assertions.assertEquals("fluszdtm", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("wofyyvoqacpiexp", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1119495390, response.strategy().stages().get(0).afterStageWaitInSeconds());
-        Assertions
-            .assertEquals(ManagedClusterUpgradeType.NODE_IMAGE_ONLY, response.managedClusterUpdate().upgrade().type());
-        Assertions.assertEquals("ciuqgbdb", response.managedClusterUpdate().upgrade().kubernetesVersion());
-        Assertions
-            .assertEquals(
-                NodeImageSelectionType.CONSISTENT, response.managedClusterUpdate().nodeImageSelection().type());
+        Assertions.assertEquals("vfdnwnwmewzsyyce", response.updateStrategyId());
+        Assertions.assertEquals("oibjudpfrxtrthz", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("tdwkqbrq", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(965192802, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals(ManagedClusterUpgradeType.NODE_IMAGE_ONLY,
+            response.managedClusterUpdate().upgrade().type());
+        Assertions.assertEquals("emmsbvdkc", response.managedClusterUpdate().upgrade().kubernetesVersion());
+        Assertions.assertEquals(NodeImageSelectionType.LATEST,
+            response.managedClusterUpdate().nodeImageSelection().type());
     }
 }

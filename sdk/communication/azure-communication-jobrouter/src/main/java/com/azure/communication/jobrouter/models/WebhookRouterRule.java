@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,48 +17,50 @@ public final class WebhookRouterRule extends RouterRule {
     /*
      * Uri for Authorization Server.
      */
-    @Generated
-    @JsonProperty(value = "authorizationServerUri")
-    private String authorizationServerUri;
+    @JsonProperty(value = "authorizationServerUrl")
+    private String authorizationServerUrl;
 
     /*
      * OAuth2.0 Credentials used to Contoso's Authorization server. Reference:
      * https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
      */
-    @Generated
     @JsonProperty(value = "clientCredential")
     private OAuth2WebhookClientCredential clientCredential;
 
     /*
-     * Uri for Contoso's Web Server.
+     * Url for Contoso's Web Server.
      */
-    @Generated
-    @JsonProperty(value = "webhookUri")
-    private String webhookUri;
+    @JsonProperty(value = "webhookUrl")
+    private String webhookUrl;
 
     /** Creates an instance of WebhookRouterRule class. */
-    @Generated
     public WebhookRouterRule() {}
 
     /**
-     * Get the authorizationServerUri property: Uri for Authorization Server.
-     *
-     * @return the authorizationServerUri value.
+     * Returns kind discriminator.
+     * @return kind.
      */
-    @Generated
-    public String getAuthorizationServerUri() {
-        return this.authorizationServerUri;
+    public RouterRuleKind getKind() {
+        return RouterRuleKind.WEBHOOK;
+    }
+
+    /**
+     * Get the authorizationServerUrl property: Url for Authorization Server.
+     *
+     * @return the authorizationServerUrl value.
+     */
+    public String getAuthorizationServerUrl() {
+        return this.authorizationServerUrl;
     }
 
     /**
      * Set the authorizationServerUri property: Uri for Authorization Server.
      *
-     * @param authorizationServerUri the authorizationServerUri value to set.
+     * @param authorizationServerUrl the authorizationServerUri value to set.
      * @return the WebhookRouterRule object itself.
      */
-    @Generated
-    public WebhookRouterRule setAuthorizationServerUri(String authorizationServerUri) {
-        this.authorizationServerUri = authorizationServerUri;
+    public WebhookRouterRule setAuthorizationServerUrl(String authorizationServerUrl) {
+        this.authorizationServerUrl = authorizationServerUrl;
         return this;
     }
 
@@ -69,7 +70,6 @@ public final class WebhookRouterRule extends RouterRule {
      *
      * @return the clientCredential value.
      */
-    @Generated
     public OAuth2WebhookClientCredential getClientCredential() {
         return this.clientCredential;
     }
@@ -77,22 +77,20 @@ public final class WebhookRouterRule extends RouterRule {
     /**
      * Get the webhookUri property: Uri for Contoso's Web Server.
      *
-     * @return the webhookUri value.
+     * @return the webhookUrl value.
      */
-    @Generated
-    public String getWebhookUri() {
-        return this.webhookUri;
+    public String getWebhookUrl() {
+        return this.getWebhookUrl();
     }
 
     /**
      * Set the webhookUri property: Uri for Contoso's Web Server.
      *
-     * @param webhookUri the webhookUri value to set.
+     * @param webhookUrl the webhookUri value to set.
      * @return the WebhookRouterRule object itself.
      */
-    @Generated
-    public WebhookRouterRule setWebhookUri(String webhookUri) {
-        this.webhookUri = webhookUri;
+    public WebhookRouterRule setWebhookUrl(String webhookUrl) {
+        this.webhookUrl = webhookUrl;
         return this;
     }
 
@@ -103,7 +101,6 @@ public final class WebhookRouterRule extends RouterRule {
      * @param clientCredential the clientCredential value to set.
      * @return the WebhookRouterRule object itself.
      */
-    @Generated
     public WebhookRouterRule setClientCredential(OAuth2WebhookClientCredential clientCredential) {
         this.clientCredential = clientCredential;
         return this;

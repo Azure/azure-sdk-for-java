@@ -12,25 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class HeaderActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HeaderAction model =
-            BinaryData
-                .fromString("{\"headerActionType\":\"Delete\",\"headerName\":\"gxhnisk\",\"value\":\"bkpyc\"}")
-                .toObject(HeaderAction.class);
-        Assertions.assertEquals(HeaderActionType.DELETE, model.headerActionType());
-        Assertions.assertEquals("gxhnisk", model.headerName());
-        Assertions.assertEquals("bkpyc", model.value());
+        HeaderAction model = BinaryData
+            .fromString("{\"headerActionType\":\"Overwrite\",\"headerName\":\"deibqip\",\"value\":\"ghvxndzwmkrefa\"}")
+            .toObject(HeaderAction.class);
+        Assertions.assertEquals(HeaderActionType.OVERWRITE, model.headerActionType());
+        Assertions.assertEquals("deibqip", model.headerName());
+        Assertions.assertEquals("ghvxndzwmkrefa", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HeaderAction model =
-            new HeaderAction()
-                .withHeaderActionType(HeaderActionType.DELETE)
-                .withHeaderName("gxhnisk")
-                .withValue("bkpyc");
+        HeaderAction model = new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE)
+            .withHeaderName("deibqip")
+            .withValue("ghvxndzwmkrefa");
         model = BinaryData.fromObject(model).toObject(HeaderAction.class);
-        Assertions.assertEquals(HeaderActionType.DELETE, model.headerActionType());
-        Assertions.assertEquals("gxhnisk", model.headerName());
-        Assertions.assertEquals("bkpyc", model.value());
+        Assertions.assertEquals(HeaderActionType.OVERWRITE, model.headerActionType());
+        Assertions.assertEquals("deibqip", model.headerName());
+        Assertions.assertEquals("ghvxndzwmkrefa", model.value());
     }
 }

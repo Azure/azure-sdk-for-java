@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.OracleCloudStorageLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Linked service for Oracle Cloud Storage.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = OracleCloudStorageLinkedService.class,
+    visible = true)
 @JsonTypeName("OracleCloudStorage")
 @Fluent
 public final class OracleCloudStorageLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "OracleCloudStorage";
+
     /*
      * Oracle Cloud Storage linked service properties.
      */
@@ -31,6 +43,16 @@ public final class OracleCloudStorageLinkedService extends LinkedService {
      * Creates an instance of OracleCloudStorageLinkedService class.
      */
     public OracleCloudStorageLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -129,9 +151,9 @@ public final class OracleCloudStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Get the serviceUrl property: This value specifies the endpoint to access with the Oracle Cloud Storage
-     * Connector. This is an optional property; change it only if you want to try a different service endpoint or want
-     * to switch between https and http. Type: string (or Expression with resultType string).
+     * Get the serviceUrl property: This value specifies the endpoint to access with the Oracle Cloud Storage Connector.
+     * This is an optional property; change it only if you want to try a different service endpoint or want to switch
+     * between https and http. Type: string (or Expression with resultType string).
      * 
      * @return the serviceUrl value.
      */
@@ -140,9 +162,9 @@ public final class OracleCloudStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Set the serviceUrl property: This value specifies the endpoint to access with the Oracle Cloud Storage
-     * Connector. This is an optional property; change it only if you want to try a different service endpoint or want
-     * to switch between https and http. Type: string (or Expression with resultType string).
+     * Set the serviceUrl property: This value specifies the endpoint to access with the Oracle Cloud Storage Connector.
+     * This is an optional property; change it only if you want to try a different service endpoint or want to switch
+     * between https and http. Type: string (or Expression with resultType string).
      * 
      * @param serviceUrl the serviceUrl value to set.
      * @return the OracleCloudStorageLinkedService object itself.
@@ -156,8 +178,8 @@ public final class OracleCloudStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -166,8 +188,8 @@ public final class OracleCloudStorageLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the OracleCloudStorageLinkedService object itself.
@@ -189,8 +211,9 @@ public final class OracleCloudStorageLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model OracleCloudStorageLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model OracleCloudStorageLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

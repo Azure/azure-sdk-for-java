@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class DicomServicesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/dicomservices/
-     * DicomServices_Patch.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/dicomservices/DicomServices_Patch.json
      */
     /**
      * Sample code: Update a dicomservice.
@@ -24,7 +22,8 @@ public final class DicomServicesUpdateSamples {
      */
     public static void updateADicomservice(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
         DicomService resource = manager.dicomServices()
-            .getWithResponse("testRG", "workspace1", "blue", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("testRG", "workspace1", "blue", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tagKey", "fakeTokenPlaceholder")).apply();
     }
 

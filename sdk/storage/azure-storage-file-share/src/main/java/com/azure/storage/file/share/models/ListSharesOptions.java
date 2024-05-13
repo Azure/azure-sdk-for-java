@@ -52,6 +52,7 @@ public final class ListSharesOptions {
     }
 
     /**
+     * Gets the prefix that a share must match to be included in the listing
      * @return the prefix that a share must match to be included in the listing
      */
     public String getPrefix() {
@@ -71,7 +72,8 @@ public final class ListSharesOptions {
     }
 
     /**
-     * @return the maximum number of shares to inlcude in a single response
+     * Gets the maximum number of shares to include in a single response
+     * @return the maximum number of shares to include in a single response
      */
     public Integer getMaxResultsPerPage() {
         return maxResultsPerPage;
@@ -79,7 +81,7 @@ public final class ListSharesOptions {
 
     /**
      * Sets the status of including share metadata when listing shares
-     *
+     * <p>
      * If listing snapshots as well this will also determine if the snapshots have their metadata included as well.
      *
      * @param includeMetadata Flag indicating if metadata should be including in the listing
@@ -91,6 +93,8 @@ public final class ListSharesOptions {
     }
 
     /**
+     * Gets the status of include share metadata when listing shares
+     *
      * @return the status of include share metadata when listing shares
      */
     public boolean isIncludeMetadata() {
@@ -109,6 +113,8 @@ public final class ListSharesOptions {
     }
 
     /**
+     * Gets the status of including share snapshots when listing shares
+     *
      * @return the status of including share snapshots when listing shares
      */
     public boolean isIncludeSnapshots() {
@@ -127,6 +133,8 @@ public final class ListSharesOptions {
     }
 
     /**
+     * Gets the status of including deleted shares when listing shares
+     *
      * @return the status of including deleted shares when listing shares
      */
     public boolean isIncludeDeleted() {

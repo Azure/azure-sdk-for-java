@@ -10,7 +10,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List hybrid machine operation response. */
+/**
+ * The List hybrid machine operation response.
+ */
 @Fluent
 public final class MachineListResult {
     /*
@@ -20,19 +22,20 @@ public final class MachineListResult {
     private List<MachineInner> value;
 
     /*
-     * The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the next page of hybrid
-     * machines.
+     * The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the next page of hybrid machines.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of MachineListResult class. */
+    /**
+     * Creates an instance of MachineListResult class.
+     */
     public MachineListResult() {
     }
 
     /**
      * Get the value property: The list of hybrid machines.
-     *
+     * 
      * @return the value value.
      */
     public List<MachineInner> value() {
@@ -41,7 +44,7 @@ public final class MachineListResult {
 
     /**
      * Set the value property: The list of hybrid machines.
-     *
+     * 
      * @param value the value value to set.
      * @return the MachineListResult object itself.
      */
@@ -53,7 +56,7 @@ public final class MachineListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the
      * next page of hybrid machines.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +66,7 @@ public final class MachineListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the
      * next page of hybrid machines.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the MachineListResult object itself.
      */
@@ -74,14 +77,13 @@ public final class MachineListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model MachineListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model MachineListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

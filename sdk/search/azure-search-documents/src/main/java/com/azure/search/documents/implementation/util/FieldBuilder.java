@@ -18,6 +18,7 @@ import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.VectorEncodingFormat;
 import reactor.util.annotation.Nullable;
 
 import java.lang.annotation.Annotation;
@@ -53,6 +54,7 @@ public final class FieldBuilder {
     private static final int MAX_DEPTH = 10000;
     private static final Map<Type, SearchFieldDataType> SUPPORTED_NONE_PARAMETERIZED_TYPE = new HashMap<>();
     private static final Set<Type> UNSUPPORTED_TYPES = new HashSet<>();
+    private static final Set<SearchFieldDataType> UNSUPPORTED_SERVICE_TYPES = new HashSet<>();
 
     private static final SearchFieldDataType COLLECTION_STRING
         = SearchFieldDataType.collection(SearchFieldDataType.STRING);
@@ -82,6 +84,7 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Byte.class, SearchFieldDataType.SBYTE);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(short.class, SearchFieldDataType.INT16);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Short.class, SearchFieldDataType.INT16);
+        UNSUPPORTED_SERVICE_TYPES.add(SearchFieldDataType.BYTE);
     }
 
     /**
@@ -279,6 +282,7 @@ public final class FieldBuilder {
         String normalizerName;
         Integer vectorSearchDimensions = null;
         String vectorSearchProfileName = null;
+        String vectorEncodingFormat = null;
 
         if (simpleField != null) {
             key = simpleField.isKey();
@@ -304,6 +308,8 @@ public final class FieldBuilder {
                 ? searchableField.vectorSearchDimensions() : null;
             vectorSearchProfileName = CoreUtils.isNullOrEmpty(searchableField.vectorSearchProfileName())
                 ? null : searchableField.vectorSearchProfileName();
+            vectorEncodingFormat = CoreUtils.isNullOrEmpty(searchableField.vectorEncodingFormat())
+                ? null : searchableField.vectorEncodingFormat();
         }
 
         StringBuilder errorMessage = new StringBuilder();
@@ -314,6 +320,7 @@ public final class FieldBuilder {
         boolean hasSearchAnalyzerName = !CoreUtils.isNullOrEmpty(searchAnalyzerName);
         boolean hasIndexAnalyzerName = !CoreUtils.isNullOrEmpty(indexAnalyzerName);
         boolean hasNormalizerName = !CoreUtils.isNullOrEmpty(normalizerName);
+        boolean hasVectorEncodingFormat = !CoreUtils.isNullOrEmpty(vectorEncodingFormat);
         if (searchable) {
             if (!isSearchableType) {
                 errorMessage.append("SearchField can only be used on 'Edm.String', 'Collection(Edm.String)', or "
@@ -369,6 +376,10 @@ public final class FieldBuilder {
 
         if (hasNormalizerName) {
             searchField.setNormalizerName(LexicalNormalizerName.fromString(normalizerName));
+        }
+
+        if (hasVectorEncodingFormat) {
+            searchField.setVectorEncodingFormat(VectorEncodingFormat.fromString(vectorEncodingFormat));
         }
 
         if (!CoreUtils.isNullOrEmpty(synonymMapNames)) {

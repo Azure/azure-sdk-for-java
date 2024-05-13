@@ -10,8 +10,8 @@ import java.util.List;
 
 /**
  * ManagedCCFProperties
- *
- * <p>Additional Managed CCF properties.
+ * 
+ * Additional Managed CCF properties.
  */
 @Fluent
 public final class ManagedCcfProperties {
@@ -41,33 +41,41 @@ public final class ManagedCcfProperties {
 
     /*
      * DeploymentType
-     *
+     * 
      * Deployment Type of Managed CCF
      */
     @JsonProperty(value = "deploymentType")
     private DeploymentType deploymentType;
 
     /*
-     * Provisioning state of Ledger Resource
+     * Object representing RunningState for Managed CCF.
+     */
+    @JsonProperty(value = "runningState")
+    private RunningState runningState;
+
+    /*
+     * Provisioning state of Managed CCF Resource
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * NodeCount
-     *
+     * 
      * Number of CCF nodes in the Managed CCF.
      */
     @JsonProperty(value = "nodeCount")
     private Integer nodeCount;
 
-    /** Creates an instance of ManagedCcfProperties class. */
+    /**
+     * Creates an instance of ManagedCcfProperties class.
+     */
     public ManagedCcfProperties() {
     }
 
     /**
      * Get the appName property: Unique name for the Managed CCF.
-     *
+     * 
      * @return the appName value.
      */
     public String appName() {
@@ -76,7 +84,7 @@ public final class ManagedCcfProperties {
 
     /**
      * Get the appUri property: Endpoint for calling Managed CCF Service.
-     *
+     * 
      * @return the appUri value.
      */
     public String appUri() {
@@ -85,7 +93,7 @@ public final class ManagedCcfProperties {
 
     /**
      * Get the identityServiceUri property: Endpoint for accessing network identity.
-     *
+     * 
      * @return the identityServiceUri value.
      */
     public String identityServiceUri() {
@@ -94,7 +102,7 @@ public final class ManagedCcfProperties {
 
     /**
      * Get the memberIdentityCertificates property: List of member identity certificates for Managed CCF.
-     *
+     * 
      * @return the memberIdentityCertificates value.
      */
     public List<MemberIdentityCertificate> memberIdentityCertificates() {
@@ -103,21 +111,21 @@ public final class ManagedCcfProperties {
 
     /**
      * Set the memberIdentityCertificates property: List of member identity certificates for Managed CCF.
-     *
+     * 
      * @param memberIdentityCertificates the memberIdentityCertificates value to set.
      * @return the ManagedCcfProperties object itself.
      */
-    public ManagedCcfProperties withMemberIdentityCertificates(
-        List<MemberIdentityCertificate> memberIdentityCertificates) {
+    public ManagedCcfProperties
+        withMemberIdentityCertificates(List<MemberIdentityCertificate> memberIdentityCertificates) {
         this.memberIdentityCertificates = memberIdentityCertificates;
         return this;
     }
 
     /**
      * Get the deploymentType property: DeploymentType
-     *
-     * <p>Deployment Type of Managed CCF.
-     *
+     * 
+     * Deployment Type of Managed CCF.
+     * 
      * @return the deploymentType value.
      */
     public DeploymentType deploymentType() {
@@ -126,9 +134,9 @@ public final class ManagedCcfProperties {
 
     /**
      * Set the deploymentType property: DeploymentType
-     *
-     * <p>Deployment Type of Managed CCF.
-     *
+     * 
+     * Deployment Type of Managed CCF.
+     * 
      * @param deploymentType the deploymentType value to set.
      * @return the ManagedCcfProperties object itself.
      */
@@ -138,8 +146,28 @@ public final class ManagedCcfProperties {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of Ledger Resource.
-     *
+     * Get the runningState property: Object representing RunningState for Managed CCF.
+     * 
+     * @return the runningState value.
+     */
+    public RunningState runningState() {
+        return this.runningState;
+    }
+
+    /**
+     * Set the runningState property: Object representing RunningState for Managed CCF.
+     * 
+     * @param runningState the runningState value to set.
+     * @return the ManagedCcfProperties object itself.
+     */
+    public ManagedCcfProperties withRunningState(RunningState runningState) {
+        this.runningState = runningState;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of Managed CCF Resource.
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -148,9 +176,9 @@ public final class ManagedCcfProperties {
 
     /**
      * Get the nodeCount property: NodeCount
-     *
-     * <p>Number of CCF nodes in the Managed CCF.
-     *
+     * 
+     * Number of CCF nodes in the Managed CCF.
+     * 
      * @return the nodeCount value.
      */
     public Integer nodeCount() {
@@ -159,9 +187,9 @@ public final class ManagedCcfProperties {
 
     /**
      * Set the nodeCount property: NodeCount
-     *
-     * <p>Number of CCF nodes in the Managed CCF.
-     *
+     * 
+     * Number of CCF nodes in the Managed CCF.
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the ManagedCcfProperties object itself.
      */
@@ -172,7 +200,7 @@ public final class ManagedCcfProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

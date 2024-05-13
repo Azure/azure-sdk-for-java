@@ -11,6 +11,15 @@
 ### Other Changes
 
 
+## 1.1.15 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.11.4` to version `1.12.0`.
+
+
 ## 1.1.14 (2024-03-20)
 
 ### Other Changes

@@ -25,95 +25,67 @@ import com.azure.resourcemanager.frontdoor.models.Transform;
 import java.time.Duration;
 import java.util.Arrays;
 
-/** Samples for RulesEngines CreateOrUpdate. */
+/**
+ * Samples for RulesEngines CreateOrUpdate.
+ */
 public final class RulesEnginesCreateOrUpdateSamples {
     /*
      * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineCreate.json
      */
     /**
      * Sample code: Create or update a specific Rules Engine Configuration.
-     *
+     * 
      * @param manager Entry point to FrontDoorManager.
      */
-    public static void createOrUpdateASpecificRulesEngineConfiguration(
-        com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
-        manager
-            .rulesEngines()
+    public static void
+        createOrUpdateASpecificRulesEngineConfiguration(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
+        manager.rulesEngines()
             .define("rulesEngine1")
             .withExistingFrontDoor("rg1", "frontDoor1")
-            .withRules(
-                Arrays
-                    .asList(
-                        new RulesEngineRule()
-                            .withName("Rule1")
-                            .withPriority(1)
-                            .withAction(
-                                new RulesEngineAction()
-                                    .withRouteConfigurationOverride(
-                                        new RedirectConfiguration()
-                                            .withRedirectType(FrontDoorRedirectType.MOVED)
-                                            .withRedirectProtocol(FrontDoorRedirectProtocol.HTTPS_ONLY)
-                                            .withCustomHost("www.bing.com")
-                                            .withCustomPath("/api")
-                                            .withCustomFragment("fragment")
-                                            .withCustomQueryString("a=b")))
-                            .withMatchConditions(
-                                Arrays
-                                    .asList(
-                                        new RulesEngineMatchCondition()
-                                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.REMOTE_ADDR)
-                                            .withRulesEngineOperator(RulesEngineOperator.GEO_MATCH)
-                                            .withRulesEngineMatchValue(Arrays.asList("CH"))))
-                            .withMatchProcessingBehavior(MatchProcessingBehavior.STOP),
-                        new RulesEngineRule()
-                            .withName("Rule2")
-                            .withPriority(2)
-                            .withAction(
-                                new RulesEngineAction()
-                                    .withResponseHeaderActions(
-                                        Arrays
-                                            .asList(
-                                                new HeaderAction()
-                                                    .withHeaderActionType(HeaderActionType.OVERWRITE)
-                                                    .withHeaderName("Cache-Control")
-                                                    .withValue("public, max-age=31536000"))))
-                            .withMatchConditions(
-                                Arrays
-                                    .asList(
-                                        new RulesEngineMatchCondition()
-                                            .withRulesEngineMatchVariable(
-                                                RulesEngineMatchVariable.REQUEST_FILENAME_EXTENSION)
-                                            .withRulesEngineOperator(RulesEngineOperator.EQUAL)
-                                            .withRulesEngineMatchValue(Arrays.asList("jpg"))
-                                            .withTransforms(Arrays.asList(Transform.LOWERCASE)))),
-                        new RulesEngineRule()
-                            .withName("Rule3")
-                            .withPriority(3)
-                            .withAction(
-                                new RulesEngineAction()
-                                    .withRouteConfigurationOverride(
-                                        new ForwardingConfiguration()
-                                            .withForwardingProtocol(FrontDoorForwardingProtocol.HTTPS_ONLY)
-                                            .withCacheConfiguration(
-                                                new CacheConfiguration()
-                                                    .withQueryParameterStripDirective(FrontDoorQuery.STRIP_ONLY)
-                                                    .withQueryParameters("a=b,p=q")
-                                                    .withDynamicCompression(DynamicCompressionEnabled.DISABLED)
-                                                    .withCacheDuration(Duration.parse("P1DT12H20M30S")))
-                                            .withBackendPool(
-                                                new SubResource()
-                                                    .withId(
-                                                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/backendPools/backendPool1"))))
-                            .withMatchConditions(
-                                Arrays
-                                    .asList(
-                                        new RulesEngineMatchCondition()
-                                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_HEADER)
-                                            .withSelector("Rules-Engine-Route-Forward")
-                                            .withRulesEngineOperator(RulesEngineOperator.EQUAL)
-                                            .withNegateCondition(false)
-                                            .withRulesEngineMatchValue(Arrays.asList("allowoverride"))
-                                            .withTransforms(Arrays.asList(Transform.LOWERCASE))))))
+            .withRules(Arrays.asList(
+                new RulesEngineRule().withName("Rule1")
+                    .withPriority(1)
+                    .withAction(new RulesEngineAction().withRouteConfigurationOverride(
+                        new RedirectConfiguration().withRedirectType(FrontDoorRedirectType.MOVED)
+                            .withRedirectProtocol(FrontDoorRedirectProtocol.HTTPS_ONLY)
+                            .withCustomHost("www.bing.com")
+                            .withCustomPath("/api")
+                            .withCustomFragment("fragment")
+                            .withCustomQueryString("a=b")))
+                    .withMatchConditions(Arrays.asList(new RulesEngineMatchCondition()
+                        .withRulesEngineMatchVariable(RulesEngineMatchVariable.REMOTE_ADDR)
+                        .withRulesEngineOperator(RulesEngineOperator.GEO_MATCH)
+                        .withRulesEngineMatchValue(Arrays.asList("CH"))))
+                    .withMatchProcessingBehavior(MatchProcessingBehavior.STOP),
+                new RulesEngineRule().withName("Rule2")
+                    .withPriority(2)
+                    .withAction(new RulesEngineAction().withResponseHeaderActions(
+                        Arrays.asList(new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE)
+                            .withHeaderName("Cache-Control")
+                            .withValue("public, max-age=31536000"))))
+                    .withMatchConditions(Arrays.asList(new RulesEngineMatchCondition()
+                        .withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_FILENAME_EXTENSION)
+                        .withRulesEngineOperator(RulesEngineOperator.EQUAL)
+                        .withRulesEngineMatchValue(Arrays.asList("jpg"))
+                        .withTransforms(Arrays.asList(Transform.LOWERCASE)))),
+                new RulesEngineRule().withName("Rule3")
+                    .withPriority(3)
+                    .withAction(new RulesEngineAction().withRouteConfigurationOverride(
+                        new ForwardingConfiguration().withForwardingProtocol(FrontDoorForwardingProtocol.HTTPS_ONLY)
+                            .withCacheConfiguration(new CacheConfiguration()
+                                .withQueryParameterStripDirective(FrontDoorQuery.STRIP_ONLY)
+                                .withQueryParameters("a=b,p=q")
+                                .withDynamicCompression(DynamicCompressionEnabled.DISABLED)
+                                .withCacheDuration(Duration.parse("P1DT12H20M30S")))
+                            .withBackendPool(new SubResource().withId(
+                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/frontDoors/frontDoor1/backendPools/backendPool1"))))
+                    .withMatchConditions(Arrays.asList(new RulesEngineMatchCondition()
+                        .withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_HEADER)
+                        .withSelector("Rules-Engine-Route-Forward")
+                        .withRulesEngineOperator(RulesEngineOperator.EQUAL)
+                        .withNegateCondition(false)
+                        .withRulesEngineMatchValue(Arrays.asList("allowoverride"))
+                        .withTransforms(Arrays.asList(Transform.LOWERCASE))))))
             .create();
     }
 }

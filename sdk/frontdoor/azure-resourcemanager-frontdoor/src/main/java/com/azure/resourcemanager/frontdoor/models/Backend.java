@@ -7,7 +7,9 @@ package com.azure.resourcemanager.frontdoor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Backend address of a frontDoor load balancer. */
+/**
+ * Backend address of a frontDoor load balancer.
+ */
 @Fluent
 public final class Backend {
     /*
@@ -23,8 +25,7 @@ public final class Backend {
     private String privateLinkAlias;
 
     /*
-     * The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is
-     * 'Private'
+     * The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is 'Private'
      */
     @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
@@ -66,8 +67,7 @@ public final class Backend {
     private BackendEnabledState enabledState;
 
     /*
-     * Priority to use for load balancing. Higher priorities will not be used for load balancing if any lower priority
-     * backend is healthy.
+     * Priority to use for load balancing. Higher priorities will not be used for load balancing if any lower priority backend is healthy.
      */
     @JsonProperty(value = "priority")
     private Integer priority;
@@ -79,19 +79,20 @@ public final class Backend {
     private Integer weight;
 
     /*
-     * The value to use as the host header sent to the backend. If blank or unspecified, this defaults to the incoming
-     * host.
+     * The value to use as the host header sent to the backend. If blank or unspecified, this defaults to the incoming host.
      */
     @JsonProperty(value = "backendHostHeader")
     private String backendHostHeader;
 
-    /** Creates an instance of Backend class. */
+    /**
+     * Creates an instance of Backend class.
+     */
     public Backend() {
     }
 
     /**
      * Get the address property: Location of the backend (IP address or FQDN).
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -100,7 +101,7 @@ public final class Backend {
 
     /**
      * Set the address property: Location of the backend (IP address or FQDN).
-     *
+     * 
      * @param address the address value to set.
      * @return the Backend object itself.
      */
@@ -112,7 +113,7 @@ public final class Backend {
     /**
      * Get the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this backend is 'Private'.
-     *
+     * 
      * @return the privateLinkAlias value.
      */
     public String privateLinkAlias() {
@@ -122,7 +123,7 @@ public final class Backend {
     /**
      * Set the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this backend is 'Private'.
-     *
+     * 
      * @param privateLinkAlias the privateLinkAlias value to set.
      * @return the Backend object itself.
      */
@@ -134,7 +135,7 @@ public final class Backend {
     /**
      * Get the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
@@ -144,7 +145,7 @@ public final class Backend {
     /**
      * Set the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the Backend object itself.
      */
@@ -156,7 +157,7 @@ public final class Backend {
     /**
      * Get the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @return the privateLinkLocation value.
      */
     public String privateLinkLocation() {
@@ -166,7 +167,7 @@ public final class Backend {
     /**
      * Set the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @param privateLinkLocation the privateLinkLocation value to set.
      * @return the Backend object itself.
      */
@@ -177,7 +178,7 @@ public final class Backend {
 
     /**
      * Get the privateEndpointStatus property: The Approval status for the connection to the Private Link.
-     *
+     * 
      * @return the privateEndpointStatus value.
      */
     public PrivateEndpointStatus privateEndpointStatus() {
@@ -187,7 +188,7 @@ public final class Backend {
     /**
      * Get the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @return the privateLinkApprovalMessage value.
      */
     public String privateLinkApprovalMessage() {
@@ -197,7 +198,7 @@ public final class Backend {
     /**
      * Set the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @param privateLinkApprovalMessage the privateLinkApprovalMessage value to set.
      * @return the Backend object itself.
      */
@@ -208,7 +209,7 @@ public final class Backend {
 
     /**
      * Get the httpPort property: The HTTP TCP port number. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpPort value.
      */
     public Integer httpPort() {
@@ -217,7 +218,7 @@ public final class Backend {
 
     /**
      * Set the httpPort property: The HTTP TCP port number. Must be between 1 and 65535.
-     *
+     * 
      * @param httpPort the httpPort value to set.
      * @return the Backend object itself.
      */
@@ -228,7 +229,7 @@ public final class Backend {
 
     /**
      * Get the httpsPort property: The HTTPS TCP port number. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
@@ -237,7 +238,7 @@ public final class Backend {
 
     /**
      * Set the httpsPort property: The HTTPS TCP port number. Must be between 1 and 65535.
-     *
+     * 
      * @param httpsPort the httpsPort value to set.
      * @return the Backend object itself.
      */
@@ -249,7 +250,7 @@ public final class Backend {
     /**
      * Get the enabledState property: Whether to enable use of this backend. Permitted values are 'Enabled' or
      * 'Disabled'.
-     *
+     * 
      * @return the enabledState value.
      */
     public BackendEnabledState enabledState() {
@@ -259,7 +260,7 @@ public final class Backend {
     /**
      * Set the enabledState property: Whether to enable use of this backend. Permitted values are 'Enabled' or
      * 'Disabled'.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the Backend object itself.
      */
@@ -271,7 +272,7 @@ public final class Backend {
     /**
      * Get the priority property: Priority to use for load balancing. Higher priorities will not be used for load
      * balancing if any lower priority backend is healthy.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -281,7 +282,7 @@ public final class Backend {
     /**
      * Set the priority property: Priority to use for load balancing. Higher priorities will not be used for load
      * balancing if any lower priority backend is healthy.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the Backend object itself.
      */
@@ -292,7 +293,7 @@ public final class Backend {
 
     /**
      * Get the weight property: Weight of this endpoint for load balancing purposes.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -301,7 +302,7 @@ public final class Backend {
 
     /**
      * Set the weight property: Weight of this endpoint for load balancing purposes.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the Backend object itself.
      */
@@ -313,7 +314,7 @@ public final class Backend {
     /**
      * Get the backendHostHeader property: The value to use as the host header sent to the backend. If blank or
      * unspecified, this defaults to the incoming host.
-     *
+     * 
      * @return the backendHostHeader value.
      */
     public String backendHostHeader() {
@@ -323,7 +324,7 @@ public final class Backend {
     /**
      * Set the backendHostHeader property: The value to use as the host header sent to the backend. If blank or
      * unspecified, this defaults to the incoming host.
-     *
+     * 
      * @param backendHostHeader the backendHostHeader value to set.
      * @return the Backend object itself.
      */
@@ -334,7 +335,7 @@ public final class Backend {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

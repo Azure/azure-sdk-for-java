@@ -16,20 +16,20 @@ public final class IntegrationRuntimeMonitoringDataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeMonitoringDataInner model = BinaryData.fromString(
-            "{\"name\":\"k\",\"nodes\":[{\"nodeName\":\"io\",\"availableMemoryInMB\":952194839,\"cpuUtilization\":1578257059,\"concurrentJobsLimit\":391809232,\"concurrentJobsRunning\":1039189909,\"maxConcurrentJobs\":1375924345,\"sentBytes\":68.58864,\"receivedBytes\":66.46081,\"\":{\"jooxdjebw\":\"datasowzxcugi\"}}]}")
+            "{\"name\":\"xsbkyvpyca\",\"nodes\":[{\"nodeName\":\"p\",\"availableMemoryInMB\":1414672968,\"cpuUtilization\":172271307,\"concurrentJobsLimit\":1834539320,\"concurrentJobsRunning\":2051758335,\"maxConcurrentJobs\":1514524475,\"sentBytes\":30.272806,\"receivedBytes\":79.5002,\"\":{\"srtslhspkdeem\":\"dataseyvj\",\"ahvljuaha\":\"dataofmxagkvtmelmqkr\"}}]}")
             .toObject(IntegrationRuntimeMonitoringDataInner.class);
-        Assertions.assertEquals("k", model.name());
+        Assertions.assertEquals("xsbkyvpyca", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeMonitoringDataInner model = new IntegrationRuntimeMonitoringDataInner().withName("k")
+        IntegrationRuntimeMonitoringDataInner model = new IntegrationRuntimeMonitoringDataInner().withName("xsbkyvpyca")
             .withNodes(Arrays.asList(new IntegrationRuntimeNodeMonitoringData()
-                .withAdditionalProperties(mapOf("nodeName", "io", "cpuUtilization", 1578257059, "receivedBytes",
-                    66.46081f, "concurrentJobsLimit", 391809232, "concurrentJobsRunning", 1039189909,
-                    "maxConcurrentJobs", 1375924345, "availableMemoryInMB", 952194839, "sentBytes", 68.58864f))));
+                .withAdditionalProperties(mapOf("nodeName", "p", "cpuUtilization", 172271307, "receivedBytes", 79.5002f,
+                    "concurrentJobsLimit", 1834539320, "concurrentJobsRunning", 2051758335, "maxConcurrentJobs",
+                    1514524475, "availableMemoryInMB", 1414672968, "sentBytes", 30.272806f))));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeMonitoringDataInner.class);
-        Assertions.assertEquals("k", model.name());
+        Assertions.assertEquals("xsbkyvpyca", model.name());
     }
 
     // Use "Map.of" if available

@@ -17,25 +17,30 @@ public final class DelimitedTextSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DelimitedTextSink model = BinaryData.fromString(
-            "{\"type\":\"DelimitedTextSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datakqah\",\"disableMetricsCollection\":\"datagnapkpaiedo\",\"copyBehavior\":\"dataoaoavezwc\",\"metadata\":[{\"name\":\"datalrvlg\",\"value\":\"datarcdiqhvhcbukaw\"},{\"name\":\"datazfjtockgqaawyys\",\"value\":\"dataoeql\"},{\"name\":\"dataw\",\"value\":\"datarfyww\"},{\"name\":\"dataipkhqhvktcztm\",\"value\":\"datak\"}],\"\":{\"bxxxqfrn\":\"dataspkgxemvlyaprj\"}},\"formatSettings\":{\"type\":\"DelimitedTextWriteSettings\",\"quoteAllText\":\"datahmx\",\"fileExtension\":\"datapxfauvgtoino\",\"maxRowsPerFile\":\"datamyvvfapfbmrwhkne\",\"fileNamePrefix\":\"dataoo\",\"\":{\"gupiosibg\":\"datadspdd\",\"skyrttnrikss\":\"datalaxuybxjwny\"}},\"writeBatchSize\":\"dataiksjpkign\",\"writeBatchTimeout\":\"datao\",\"sinkRetryCount\":\"datauivipbfsxpslp\",\"sinkRetryWait\":\"datazpqydnokkkg\",\"maxConcurrentConnections\":\"datacjyft\",\"disableMetricsCollection\":\"dataeftzetjclaqx\",\"\":{\"agpdsuyywnaqgo\":\"dataq\",\"zwlhufsgc\":\"dataxuhhvgddfzcny\",\"gtdeg\":\"datawr\"}}")
+            "{\"type\":\"qaq\",\"storeSettings\":{\"type\":\"johwwtlerhpf\",\"maxConcurrentConnections\":\"datarqnjush\",\"disableMetricsCollection\":\"datahtvnqcmrrgmlwgo\",\"copyBehavior\":\"datascsddlcnwbi\",\"metadata\":[{\"name\":\"datangeffrghwd\",\"value\":\"dataowhrrguvdrggucw\"},{\"name\":\"datalmsikl\",\"value\":\"datam\"},{\"name\":\"datacphgimi\",\"value\":\"datahrbs\"}],\"\":{\"qfbgeblp\":\"dataublouelf\",\"swgfjrg\":\"datawckmnpzubzq\"}},\"formatSettings\":{\"type\":\"uop\",\"quoteAllText\":\"dataklfswzsyigxsyxhy\",\"fileExtension\":\"dataczab\",\"maxRowsPerFile\":\"dataeu\",\"fileNamePrefix\":\"datazf\",\"\":{\"sspcutgkm\":\"dataa\"}},\"writeBatchSize\":\"datalnhgisiwzzk\",\"writeBatchTimeout\":\"dataqrngl\",\"sinkRetryCount\":\"datatu\",\"sinkRetryWait\":\"datafwdkpadktsyy\",\"maxConcurrentConnections\":\"dataojrfqtfk\",\"disableMetricsCollection\":\"dataupmdajqpdvvzb\",\"\":{\"mvtqhn\":\"dataxokiffqpwdyzset\",\"cprkqywyb\":\"dataoij\"}}")
             .toObject(DelimitedTextSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelimitedTextSink model = new DelimitedTextSink().withWriteBatchSize("dataiksjpkign")
-            .withWriteBatchTimeout("datao").withSinkRetryCount("datauivipbfsxpslp").withSinkRetryWait("datazpqydnokkkg")
-            .withMaxConcurrentConnections("datacjyft").withDisableMetricsCollection("dataeftzetjclaqx")
-            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datakqah")
-                .withDisableMetricsCollection("datagnapkpaiedo").withCopyBehavior("dataoaoavezwc")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("datalrvlg").withValue("datarcdiqhvhcbukaw"),
-                    new MetadataItem().withName("datazfjtockgqaawyys").withValue("dataoeql"),
-                    new MetadataItem().withName("dataw").withValue("datarfyww"),
-                    new MetadataItem().withName("dataipkhqhvktcztm").withValue("datak")))
-                .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
-            .withFormatSettings(
-                new DelimitedTextWriteSettings().withQuoteAllText("datahmx").withFileExtension("datapxfauvgtoino")
-                    .withMaxRowsPerFile("datamyvvfapfbmrwhkne").withFileNamePrefix("dataoo"));
+        DelimitedTextSink model = new DelimitedTextSink().withWriteBatchSize("datalnhgisiwzzk")
+            .withWriteBatchTimeout("dataqrngl")
+            .withSinkRetryCount("datatu")
+            .withSinkRetryWait("datafwdkpadktsyy")
+            .withMaxConcurrentConnections("dataojrfqtfk")
+            .withDisableMetricsCollection("dataupmdajqpdvvzb")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datarqnjush")
+                .withDisableMetricsCollection("datahtvnqcmrrgmlwgo")
+                .withCopyBehavior("datascsddlcnwbi")
+                .withMetadata(
+                    Arrays.asList(new MetadataItem().withName("datangeffrghwd").withValue("dataowhrrguvdrggucw"),
+                        new MetadataItem().withName("datalmsikl").withValue("datam"),
+                        new MetadataItem().withName("datacphgimi").withValue("datahrbs")))
+                .withAdditionalProperties(mapOf("type", "johwwtlerhpf")))
+            .withFormatSettings(new DelimitedTextWriteSettings().withQuoteAllText("dataklfswzsyigxsyxhy")
+                .withFileExtension("dataczab")
+                .withMaxRowsPerFile("dataeu")
+                .withFileNamePrefix("datazf"));
         model = BinaryData.fromObject(model).toObject(DelimitedTextSink.class);
     }
 

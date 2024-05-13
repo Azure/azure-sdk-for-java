@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Caching behavior for the requests. */
+/**
+ * Caching behavior for the requests.
+ */
 public final class CacheBehavior extends ExpandableStringEnum<CacheBehavior> {
-    /** Static value BypassCache for CacheBehavior. */
+    /**
+     * Static value BypassCache for CacheBehavior.
+     */
     public static final CacheBehavior BYPASS_CACHE = fromString("BypassCache");
 
-    /** Static value Override for CacheBehavior. */
+    /**
+     * Static value Override for CacheBehavior.
+     */
     public static final CacheBehavior OVERRIDE = fromString("Override");
 
-    /** Static value SetIfMissing for CacheBehavior. */
+    /**
+     * Static value SetIfMissing for CacheBehavior.
+     */
     public static final CacheBehavior SET_IF_MISSING = fromString("SetIfMissing");
 
     /**
      * Creates a new instance of CacheBehavior value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class CacheBehavior extends ExpandableStringEnum<CacheBehavior> {
 
     /**
      * Creates or finds a CacheBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CacheBehavior.
      */
@@ -41,7 +49,7 @@ public final class CacheBehavior extends ExpandableStringEnum<CacheBehavior> {
 
     /**
      * Gets known CacheBehavior values.
-     *
+     * 
      * @return known CacheBehavior values.
      */
     public static Collection<CacheBehavior> values() {

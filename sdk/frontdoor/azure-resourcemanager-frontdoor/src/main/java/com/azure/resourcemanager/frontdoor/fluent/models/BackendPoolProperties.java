@@ -12,47 +12,57 @@ import com.azure.resourcemanager.frontdoor.models.FrontDoorResourceState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JSON object that contains the properties required to create a Backend Pool. */
+/**
+ * The JSON object that contains the properties required to create a Backend Pool.
+ */
 @Fluent
 public final class BackendPoolProperties extends BackendPoolUpdateParameters {
     /*
      * Resource status of the Front Door or Front Door SubResource.
-     *
+     * 
      * Resource status.
      */
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private FrontDoorResourceState resourceState;
 
-    /** Creates an instance of BackendPoolProperties class. */
+    /**
+     * Creates an instance of BackendPoolProperties class.
+     */
     public BackendPoolProperties() {
     }
 
     /**
      * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * 
+     * Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
         return this.resourceState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendPoolProperties withBackends(List<Backend> backends) {
         super.withBackends(backends);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendPoolProperties withLoadBalancingSettings(SubResource loadBalancingSettings) {
         super.withLoadBalancingSettings(loadBalancingSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendPoolProperties withHealthProbeSettings(SubResource healthProbeSettings) {
         super.withHealthProbeSettings(healthProbeSettings);
@@ -61,7 +71,7 @@ public final class BackendPoolProperties extends BackendPoolUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

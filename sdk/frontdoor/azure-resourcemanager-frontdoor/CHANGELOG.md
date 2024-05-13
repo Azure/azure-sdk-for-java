@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,52 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-04-15)
+
+- Azure Resource Manager FrontDoor client library for Java. This package contains Microsoft Azure SDK for FrontDoor Management SDK. FrontDoor Client. Package tag package-2024-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ScrubbingRuleEntryMatchOperator` was added
+
+* `models.GroupByVariable` was added
+
+* `models.ScrubbingRuleEntryState` was added
+
+* `models.WebApplicationFirewallScrubbingState` was added
+
+* `models.WebApplicationFirewallScrubbingRules` was added
+
+* `models.ScrubbingRuleEntryMatchVariable` was added
+
+* `models.VariableName` was added
+
+#### `models.RedirectConfiguration` was modified
+
+* `odataType()` was added
+
+#### `models.CustomRule` was modified
+
+* `groupBy()` was added
+* `withGroupBy(java.util.List)` was added
+
+#### `models.RouteConfiguration` was modified
+
+* `odataType()` was added
+
+#### `models.PolicySettings` was modified
+
+* `javascriptChallengeExpirationInMinutes()` was added
+* `withJavascriptChallengeExpirationInMinutes(java.lang.Integer)` was added
+* `withState(models.WebApplicationFirewallScrubbingState)` was added
+* `withScrubbingRules(java.util.List)` was added
+* `state()` was added
+* `scrubbingRules()` was added
+
+#### `models.ForwardingConfiguration` was modified
+
+* `odataType()` was added
 
 ## 1.0.0-beta.3 (2023-05-22)
 

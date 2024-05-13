@@ -16,19 +16,25 @@ public final class BinarySinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BinarySink model = BinaryData.fromString(
-            "{\"type\":\"BinarySink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"dataoogijiqwxw\",\"disableMetricsCollection\":\"databdhqnprb\",\"copyBehavior\":\"datauhdjzivl\",\"metadata\":[{\"name\":\"datamq\",\"value\":\"datambfpt\"}],\"\":{\"zulmqxficinwij\":\"datamksxxbdtjvvngnvk\",\"er\":\"dataeyxt\",\"ytten\":\"datattobosjxb\",\"lyimhspj\":\"datauditumyycvtya\"}},\"writeBatchSize\":\"dataivxblqvwhjgt\",\"writeBatchTimeout\":\"datareoutqohp\",\"sinkRetryCount\":\"dataqi\",\"sinkRetryWait\":\"databougcwzgdfdrdx\",\"maxConcurrentConnections\":\"datatkgezul\",\"disableMetricsCollection\":\"datatp\",\"\":{\"eoy\":\"dataejxjhlxoljbp\",\"havwhrivvzrc\":\"datayk\",\"eearbbxaneviqk\":\"datayfrxlsypwu\"}}")
+            "{\"type\":\"jyfbutqlotojfvba\",\"storeSettings\":{\"type\":\"islcfxs\",\"maxConcurrentConnections\":\"datadiqemcghorrj\",\"disableMetricsCollection\":\"datafczb\",\"copyBehavior\":\"datarmvhtmzwg\",\"metadata\":[{\"name\":\"datanzpybrflqv\",\"value\":\"datalqwpmmmhupv\"},{\"name\":\"datahpsugebgboq\",\"value\":\"dataiiiwu\"},{\"name\":\"dataofgfqge\",\"value\":\"dataypxm\"}],\"\":{\"fdsogl\":\"datajonasjdaxe\",\"duwncaifwogq\":\"dataih\",\"fachkzzn\":\"datadxtp\",\"oxhzcmgm\":\"datakmmsfnig\"}},\"writeBatchSize\":\"datawjgjlo\",\"writeBatchTimeout\":\"datahhkxlquupbihui\",\"sinkRetryCount\":\"datay\",\"sinkRetryWait\":\"dataqweptejryvvuktc\",\"maxConcurrentConnections\":\"datatp\",\"disableMetricsCollection\":\"datawjbmrkcqpyxjj\",\"\":{\"lyvqycknqmb\":\"dataovhuif\",\"i\":\"datassjbyneusnncnn\"}}")
             .toObject(BinarySink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BinarySink model = new BinarySink().withWriteBatchSize("dataivxblqvwhjgt")
-            .withWriteBatchTimeout("datareoutqohp").withSinkRetryCount("dataqi").withSinkRetryWait("databougcwzgdfdrdx")
-            .withMaxConcurrentConnections("datatkgezul").withDisableMetricsCollection("datatp")
-            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("dataoogijiqwxw")
-                .withDisableMetricsCollection("databdhqnprb").withCopyBehavior("datauhdjzivl")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("datamq").withValue("datambfpt")))
-                .withAdditionalProperties(mapOf("type", "StoreWriteSettings")));
+        BinarySink model = new BinarySink().withWriteBatchSize("datawjgjlo")
+            .withWriteBatchTimeout("datahhkxlquupbihui")
+            .withSinkRetryCount("datay")
+            .withSinkRetryWait("dataqweptejryvvuktc")
+            .withMaxConcurrentConnections("datatp")
+            .withDisableMetricsCollection("datawjbmrkcqpyxjj")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datadiqemcghorrj")
+                .withDisableMetricsCollection("datafczb")
+                .withCopyBehavior("datarmvhtmzwg")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("datanzpybrflqv").withValue("datalqwpmmmhupv"),
+                    new MetadataItem().withName("datahpsugebgboq").withValue("dataiiiwu"),
+                    new MetadataItem().withName("dataofgfqge").withValue("dataypxm")))
+                .withAdditionalProperties(mapOf("type", "islcfxs")));
         model = BinaryData.fromObject(model).toObject(BinarySink.class);
     }
 

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2023-09-01.
+ * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2024-03-01.
  */
 @Fluent
 public final class ProxyAgentSettings {

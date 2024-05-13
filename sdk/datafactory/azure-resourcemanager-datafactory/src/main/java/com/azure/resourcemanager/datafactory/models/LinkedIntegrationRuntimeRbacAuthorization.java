@@ -7,16 +7,28 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The role based access control (RBAC) authorization type integration runtime.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authorizationType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "authorizationType",
+    defaultImpl = LinkedIntegrationRuntimeRbacAuthorization.class,
+    visible = true)
 @JsonTypeName("RBAC")
 @Fluent
 public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedIntegrationRuntimeType {
+    /*
+     * The authorization type for integration runtime sharing.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "authorizationType", required = true)
+    private String authorizationType = "RBAC";
+
     /*
      * The resource identifier of the integration runtime to be shared.
      */
@@ -33,6 +45,16 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
      * Creates an instance of LinkedIntegrationRuntimeRbacAuthorization class.
      */
     public LinkedIntegrationRuntimeRbacAuthorization() {
+    }
+
+    /**
+     * Get the authorizationType property: The authorization type for integration runtime sharing.
+     * 
+     * @return the authorizationType value.
+     */
+    @Override
+    public String authorizationType() {
+        return this.authorizationType;
     }
 
     /**
@@ -84,8 +106,9 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     public void validate() {
         super.validate();
         if (resourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resourceId in model LinkedIntegrationRuntimeRbacAuthorization"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceId in model LinkedIntegrationRuntimeRbacAuthorization"));
         }
         if (credential() != null) {
             credential().validate();

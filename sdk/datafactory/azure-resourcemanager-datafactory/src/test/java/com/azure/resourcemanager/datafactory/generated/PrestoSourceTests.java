@@ -11,16 +11,19 @@ public final class PrestoSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrestoSource model = BinaryData.fromString(
-            "{\"type\":\"PrestoSource\",\"query\":\"dataqngpvvnbu\",\"queryTimeout\":\"datavkutl\",\"additionalColumns\":\"dataxuuqb\",\"sourceRetryCount\":\"datapbeswgkreozpufk\",\"sourceRetryWait\":\"datamzcbzgi\",\"maxConcurrentConnections\":\"dataqpegcgdndpb\",\"disableMetricsCollection\":\"dataeymmcbiktetzvqt\",\"\":{\"pdnbzqweohmlkzhx\":\"datavcsbyimygswdu\",\"haerhxd\":\"datadmauanxzrqt\",\"bqmoguy\":\"datahkbrkhjjbwelicrx\",\"dxljjzdbzk\":\"datamselwszqveak\"}}")
+            "{\"type\":\"td\",\"query\":\"datazcajityjznpryo\",\"queryTimeout\":\"datavhc\",\"additionalColumns\":\"datamua\",\"sourceRetryCount\":\"datai\",\"sourceRetryWait\":\"datazytdj\",\"maxConcurrentConnections\":\"dataun\",\"disableMetricsCollection\":\"dataadyrhmpokfxcb\",\"\":{\"lnlwgseouh\":\"dataxgajyrac\",\"zru\":\"dataetxupxeain\",\"zfaja\":\"datageaenkfsxtsmzva\",\"ujcqz\":\"databswwbrllvva\"}}")
             .toObject(PrestoSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrestoSource model
-            = new PrestoSource().withSourceRetryCount("datapbeswgkreozpufk").withSourceRetryWait("datamzcbzgi")
-                .withMaxConcurrentConnections("dataqpegcgdndpb").withDisableMetricsCollection("dataeymmcbiktetzvqt")
-                .withQueryTimeout("datavkutl").withAdditionalColumns("dataxuuqb").withQuery("dataqngpvvnbu");
+        PrestoSource model = new PrestoSource().withSourceRetryCount("datai")
+            .withSourceRetryWait("datazytdj")
+            .withMaxConcurrentConnections("dataun")
+            .withDisableMetricsCollection("dataadyrhmpokfxcb")
+            .withQueryTimeout("datavhc")
+            .withAdditionalColumns("datamua")
+            .withQuery("datazcajityjznpryo");
         model = BinaryData.fromObject(model).toObject(PrestoSource.class);
     }
 }

@@ -60,7 +60,8 @@ public final class DomainUpdateParametersTests {
         DomainUpdateParameters model
             = new DomainUpdateParameters().withTags(mapOf("bbtdzumvee", "uaejxdultsk", "zuhkfpbsjyof", "gpw"))
                 .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withPrincipalId("stmgrcfbunrmfqjh").withTenantId("xbpvjymjhx")
+                    .withPrincipalId("stmgrcfbunrmfqjh")
+                    .withTenantId("xbpvjymjhx")
                     .withUserAssignedIdentities(mapOf("uvjfdxxive",
                         new UserIdentityProperties().withPrincipalId("gudivkrtswbxqz").withClientId("zjf"), "wvxysl",
                         new UserIdentityProperties().withPrincipalId("t").withClientId("aqtdoqmcbx"))))
@@ -68,17 +69,27 @@ public final class DomainUpdateParametersTests {
                 .withPublicNetworkAccess(PublicNetworkAccess.SECURED_BY_PERIMETER)
                 .withInboundIpRules(
                     Arrays.asList(new InboundIpRule().withIpMask("ttouwaboekqvkel").withAction(IpActionType.ALLOW)))
-                .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO).withDisableLocalAuth(true)
-                .withAutoCreateTopicWithFirstSubscription(true).withAutoDeleteTopicWithLastSubscription(false)
+                .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO)
+                .withDisableLocalAuth(true)
+                .withAutoCreateTopicWithFirstSubscription(true)
+                .withAutoDeleteTopicWithLastSubscription(false)
                 .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_GEOPAIR)
-                .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE).withInlineEventTypes(mapOf(
-                    "aulppggd", new InlineEventProperties().withDescription("jixisxyawjoyaqcs")
-                        .withDisplayName("jpkiidzyexznelix").withDocumentationUrl("rzt").withDataSchemaUrl("lhbnxkna"),
-                    "trmgucnapkte",
-                    new InlineEventProperties().withDescription("napnyiropuhpigv").withDisplayName("ylgqgitxmedjvcsl")
-                        .withDocumentationUrl("qwwncw").withDataSchemaUrl("hxg"),
-                    "lzdahzxctobgbkdm", new InlineEventProperties().withDescription("llwptfdy")
-                        .withDisplayName("fqbuaceopzf").withDocumentationUrl("hhuao").withDataSchemaUrl("pcqeqx"))));
+                .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
+                    .withInlineEventTypes(mapOf("aulppggd",
+                        new InlineEventProperties().withDescription("jixisxyawjoyaqcs")
+                            .withDisplayName("jpkiidzyexznelix")
+                            .withDocumentationUrl("rzt")
+                            .withDataSchemaUrl("lhbnxkna"),
+                        "trmgucnapkte",
+                        new InlineEventProperties().withDescription("napnyiropuhpigv")
+                            .withDisplayName("ylgqgitxmedjvcsl")
+                            .withDocumentationUrl("qwwncw")
+                            .withDataSchemaUrl("hxg"),
+                        "lzdahzxctobgbkdm",
+                        new InlineEventProperties().withDescription("llwptfdy")
+                            .withDisplayName("fqbuaceopzf")
+                            .withDocumentationUrl("hhuao")
+                            .withDataSchemaUrl("pcqeqx"))));
         model = BinaryData.fromObject(model).toObject(DomainUpdateParameters.class);
         Assertions.assertEquals("uaejxdultsk", model.tags().get("bbtdzumvee"));
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());

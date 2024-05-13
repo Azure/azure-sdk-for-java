@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * Helper class containing utility methods.
@@ -50,10 +51,9 @@ public final class Utility {
      * @return A newly allocated {@link ByteBuffer} containing the copied bytes.
      */
     public static ByteBuffer deepCopyBuffer(ByteBuf byteBuf) {
-        ByteBuffer buffer = ByteBuffer.allocate(byteBuf.readableBytes());
-        byteBuf.readBytes(buffer);
-        buffer.rewind();
-        return buffer;
+        byte[] bytes = new byte[byteBuf.readableBytes()];
+        byteBuf.getBytes(byteBuf.readerIndex(), bytes);
+        return ByteBuffer.wrap(bytes);
     }
 
     /**
@@ -89,6 +89,10 @@ public final class Utility {
      * warning will contain the versions found in runtime and the expected versions to be used by the SDK.
      */
     public static void validateNettyVersions() {
+        validateNettyVersions(LOGGER::warning);
+    }
+
+    static void validateNettyVersions(Consumer<String> logger) {
         Map<String, String> pomVersions = CoreUtils.getProperties(PROPERTIES_FILE_NAME);
         String nettyVersion = pomVersions.get(NETTY_VERSION_PROPERTY);
         String nettyTcnativeVersion = pomVersions.get(NETTY_TCNATIVE_VERSION_PROPERTY);
@@ -132,7 +136,7 @@ public final class Utility {
         }
 
         if (!versionMismatches.isEmpty()) {
-            LOGGER.warning("The following Netty dependencies have versions that do not match the versions specified in "
+            logger.accept("The following Netty dependencies have versions that do not match the versions specified in "
                 + "the azure-core-http-netty pom.xml file. This may result in unexpected behavior. If your application "
                 + "runs without issue this message can be ignored, otherwise please update the Netty dependencies to "
                 + "match the versions specified in the pom.xml file. Versions found in runtime: "

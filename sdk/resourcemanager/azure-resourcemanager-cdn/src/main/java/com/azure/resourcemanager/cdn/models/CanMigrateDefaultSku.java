@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Recommended sku for the migration. */
+/**
+ * Recommended sku for the migration.
+ */
 public final class CanMigrateDefaultSku extends ExpandableStringEnum<CanMigrateDefaultSku> {
-    /** Static value Standard_AzureFrontDoor for CanMigrateDefaultSku. */
+    /**
+     * Static value Standard_AzureFrontDoor for CanMigrateDefaultSku.
+     */
     public static final CanMigrateDefaultSku STANDARD_AZURE_FRONT_DOOR = fromString("Standard_AzureFrontDoor");
 
-    /** Static value Premium_AzureFrontDoor for CanMigrateDefaultSku. */
+    /**
+     * Static value Premium_AzureFrontDoor for CanMigrateDefaultSku.
+     */
     public static final CanMigrateDefaultSku PREMIUM_AZURE_FRONT_DOOR = fromString("Premium_AzureFrontDoor");
 
     /**
      * Creates a new instance of CanMigrateDefaultSku value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class CanMigrateDefaultSku extends ExpandableStringEnum<CanMigrateD
 
     /**
      * Creates or finds a CanMigrateDefaultSku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CanMigrateDefaultSku.
      */
@@ -38,7 +44,7 @@ public final class CanMigrateDefaultSku extends ExpandableStringEnum<CanMigrateD
 
     /**
      * Gets known CanMigrateDefaultSku values.
-     *
+     * 
      * @return known CanMigrateDefaultSku values.
      */
     public static Collection<CanMigrateDefaultSku> values() {

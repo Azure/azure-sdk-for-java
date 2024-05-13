@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AzureServiceBusJmsPropertiesTests {
+    private static final ClientLogger LOGGER = new ClientLogger(AzureServiceBusJmsPropertiesTests.class);
+
     static final String CONNECTION_STRING = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;"
         + "SharedAccessKey=sasKey";
 
@@ -31,7 +35,7 @@ class AzureServiceBusJmsPropertiesTests {
 
         String expectedMessage = "'spring.jms.servicebus.connection-string' should be provided.";
         String actualMessage = ex.getMessage();
-        System.out.println("message:" + actualMessage);
+        LOGGER.log(LogLevel.VERBOSE, () -> "message:" + actualMessage);
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
@@ -47,7 +51,7 @@ class AzureServiceBusJmsPropertiesTests {
 
         String expectedMessage = "'spring.jms.servicebus.pricing-tier' is not valid";
         String actualMessage = ex.getMessage();
-        System.out.println("message:" + actualMessage);
+        LOGGER.log(LogLevel.VERBOSE, () -> "message:" + actualMessage);
         assertTrue(actualMessage.contains(expectedMessage));
     }
 

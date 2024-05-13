@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,11 @@
 
 ### Other Changes
 
+## 1.5.0 (2024-04-15)
+
+### Features Added
+
+- Expanded `ChatAttachment` to include new enum `file` to enable communication users to recieve file attachments shared by Teams user in a Teams Interoperbility Chat.
 
 ## 1.4.2 (2024-03-20)
 

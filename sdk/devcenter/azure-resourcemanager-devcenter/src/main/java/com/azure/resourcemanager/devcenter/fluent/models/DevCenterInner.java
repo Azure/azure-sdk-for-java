@@ -7,13 +7,16 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.devcenter.models.DevCenterProjectCatalogSettings;
 import com.azure.resourcemanager.devcenter.models.Encryption;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Represents a devcenter resource. */
+/**
+ * Represents a devcenter resource.
+ */
 @Fluent
 public final class DevCenterInner extends Resource {
     /*
@@ -34,13 +37,15 @@ public final class DevCenterInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DevCenterInner class. */
+    /**
+     * Creates an instance of DevCenterInner class.
+     */
     public DevCenterInner() {
     }
 
     /**
      * Get the innerProperties property: DevCenter properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DevCenterProperties innerProperties() {
@@ -49,7 +54,7 @@ public final class DevCenterInner extends Resource {
 
     /**
      * Get the identity property: Managed identity properties.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -58,7 +63,7 @@ public final class DevCenterInner extends Resource {
 
     /**
      * Set the identity property: Managed identity properties.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the DevCenterInner object itself.
      */
@@ -69,21 +74,25 @@ public final class DevCenterInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevCenterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -92,7 +101,7 @@ public final class DevCenterInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -101,7 +110,7 @@ public final class DevCenterInner extends Resource {
 
     /**
      * Get the devCenterUri property: The URI of the Dev Center.
-     *
+     * 
      * @return the devCenterUri value.
      */
     public String devCenterUri() {
@@ -111,7 +120,7 @@ public final class DevCenterInner extends Resource {
     /**
      * Get the encryption property: Encryption settings to be used for server-side encryption for proprietary content
      * (such as catalogs, logs, customizations).
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -121,7 +130,7 @@ public final class DevCenterInner extends Resource {
     /**
      * Set the encryption property: Encryption settings to be used for server-side encryption for proprietary content
      * (such as catalogs, logs, customizations).
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the DevCenterInner object itself.
      */
@@ -135,7 +144,7 @@ public final class DevCenterInner extends Resource {
 
     /**
      * Get the displayName property: The display name of the devcenter.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -144,7 +153,7 @@ public final class DevCenterInner extends Resource {
 
     /**
      * Set the displayName property: The display name of the devcenter.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the DevCenterInner object itself.
      */
@@ -157,8 +166,33 @@ public final class DevCenterInner extends Resource {
     }
 
     /**
+     * Get the projectCatalogSettings property: Dev Center settings to be used when associating a project with a
+     * catalog.
+     * 
+     * @return the projectCatalogSettings value.
+     */
+    public DevCenterProjectCatalogSettings projectCatalogSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().projectCatalogSettings();
+    }
+
+    /**
+     * Set the projectCatalogSettings property: Dev Center settings to be used when associating a project with a
+     * catalog.
+     * 
+     * @param projectCatalogSettings the projectCatalogSettings value to set.
+     * @return the DevCenterInner object itself.
+     */
+    public DevCenterInner withProjectCatalogSettings(DevCenterProjectCatalogSettings projectCatalogSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DevCenterProperties();
+        }
+        this.innerProperties().withProjectCatalogSettings(projectCatalogSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -18,8 +18,7 @@ import java.util.Map;
  */
 public final class DataFlowDebugSessionCreateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * DataFlowDebugSession_Create.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/DataFlowDebugSession_Create.json
      */
     /**
      * Sample code: DataFlowDebugSession_Create.
@@ -34,7 +33,9 @@ public final class DataFlowDebugSessionCreateSamples {
                         .withProperties(new ManagedIntegrationRuntime()
                             .withComputeProperties(new IntegrationRuntimeComputeProperties().withLocation("AutoResolve")
                                 .withDataFlowProperties(new IntegrationRuntimeDataFlowProperties()
-                                    .withComputeType(DataFlowComputeType.GENERAL).withCoreCount(48).withTimeToLive(10)
+                                    .withComputeType(DataFlowComputeType.GENERAL)
+                                    .withCoreCount(48)
+                                    .withTimeToLive(10)
                                     .withAdditionalProperties(mapOf()))
                                 .withAdditionalProperties(mapOf())))),
                 com.azure.core.util.Context.NONE);

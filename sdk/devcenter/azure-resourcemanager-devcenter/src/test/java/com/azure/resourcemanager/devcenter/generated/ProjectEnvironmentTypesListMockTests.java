@@ -6,75 +6,42 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ProjectEnvironmentTypesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"TransientFailure\",\"environmentCount\":936817677,\"deploymentTargetId\":\"elyetndnbf\",\"displayName\":\"ggagfln\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"u\":{\"roleName\":\"hzjmucftbyrp\",\"description\":\"ohkpigqfu\"},\"h\":{\"roleName\":\"zmkw\",\"description\":\"snoxaxmqeqa\"},\"qtanarfdlpuk\":{\"roleName\":\"nhg\",\"description\":\"dyynfsvkhgb\"},\"dbhfhp\":{\"roleName\":\"yrneizjcpeo\",\"description\":\"hnmgbroux\"}}},\"userRoleAssignments\":{\"ogwxhnsduugwb\":{\"roles\":{\"zoyw\":{},\"xhpdulontacnpqwt\":{},\"htuevrhrljy\":{}}},\"lvhhtklnvn\":{\"roles\":{\"urfqkfuare\":{}}}}},\"tags\":{\"qxypokkhminq\":\"vkyfedevjbosl\",\"ngnbdxxew\":\"ymc\",\"qecrqctmxx\":\"ninvudbchaqdt\",\"huytxzvtzn\":\"tddmf\"},\"identity\":{\"principalId\":\"f58e5cca-ac68-42fd-9fa0-7c79f7566608\",\"tenantId\":\"474d540a-38e2-42ec-a925-e34aa698d569\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"voxczytpr\":{\"principalId\":\"2c0a99da-8206-4762-ae9a-95e7a77d1078\",\"clientId\":\"2eef9162-bbf5-4e5f-82e2-69496c90023d\"}}},\"location\":\"wvroevytlyokrrr\",\"id\":\"uxvnsasbcrymodi\",\"name\":\"rxklobdxnazpmk\",\"type\":\"lmv\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updated\",\"displayName\":\"uxtyasiibmi\",\"environmentCount\":1192000578,\"deploymentTargetId\":\"ustgnljhnmgixhc\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"ndm\":{\"roleName\":\"udorh\",\"description\":\"yyprotwyp\"},\"mdtzfjltfvnzc\":{\"roleName\":\"hu\",\"description\":\"mjkavlgorbmft\"}}},\"userRoleAssignments\":{\"qgqqihedsvqwthmk\":{\"roles\":{\"p\":{},\"opv\":{},\"bdb\":{}}}}},\"tags\":{\"qcwdhoh\":\"cysihs\",\"sufco\":\"dtmcd\"},\"identity\":{\"principalId\":\"960a468b-6f30-46a8-936a-62d1a0d2252c\",\"tenantId\":\"935d0f39-d663-4b11-94f4-1563033a0654\",\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{\"uapcvhdbevwqqxe\":{\"principalId\":\"dcb8d430-917f-49fa-a2a1-2a1f1a80b193\",\"clientId\":\"6be43b35-b4f6-4604-abed-432288c1bb9f\"},\"onqzinkfkbgbzbow\":{\"principalId\":\"47157874-e8a3-49fa-b0d7-50c2ab666a04\",\"clientId\":\"f90346ee-ff85-4779-9bd8-ecd7780cda93\"}}},\"location\":\"qocl\",\"id\":\"ygvkzqkjj\",\"name\":\"okbzef\",\"type\":\"zrxcczurt\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<ProjectEnvironmentType> response
+            = manager.projectEnvironmentTypes().list("y", "ruuuybnch", 2064836238, com.azure.core.util.Context.NONE);
 
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<ProjectEnvironmentType> response =
-            manager
-                .projectEnvironmentTypes()
-                .list("qhykprlpyzn", "ciqdsme", 1994491974, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("cysihs", response.iterator().next().tags().get("qcwdhoh"));
-        Assertions
-            .assertEquals(
-                ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("qocl", response.iterator().next().location());
-        Assertions.assertEquals("uxtyasiibmi", response.iterator().next().displayName());
-        Assertions.assertEquals("ustgnljhnmgixhc", response.iterator().next().deploymentTargetId());
+        Assertions.assertEquals("vkyfedevjbosl", response.iterator().next().tags().get("qxypokkhminq"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("wvroevytlyokrrr", response.iterator().next().location());
+        Assertions.assertEquals("elyetndnbf", response.iterator().next().deploymentTargetId());
+        Assertions.assertEquals("ggagfln", response.iterator().next().displayName());
         Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, response.iterator().next().status());
     }
 }

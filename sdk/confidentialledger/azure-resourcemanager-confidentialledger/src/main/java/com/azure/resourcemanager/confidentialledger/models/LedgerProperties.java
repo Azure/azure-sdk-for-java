@@ -10,8 +10,8 @@ import java.util.List;
 
 /**
  * LedgerProperties
- *
- * <p>Additional Confidential Ledger properties.
+ * 
+ * Additional Confidential Ledger properties.
  */
 @Fluent
 public final class LedgerProperties {
@@ -58,6 +58,12 @@ public final class LedgerProperties {
     private ProvisioningState provisioningState;
 
     /*
+     * SKU associated with the ledger
+     */
+    @JsonProperty(value = "ledgerSku")
+    private LedgerSku ledgerSku;
+
+    /*
      * Array of all AAD based Security Principals.
      */
     @JsonProperty(value = "aadBasedSecurityPrincipals")
@@ -69,13 +75,15 @@ public final class LedgerProperties {
     @JsonProperty(value = "certBasedSecurityPrincipals")
     private List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals;
 
-    /** Creates an instance of LedgerProperties class. */
+    /**
+     * Creates an instance of LedgerProperties class.
+     */
     public LedgerProperties() {
     }
 
     /**
      * Get the ledgerName property: Unique name for the Confidential Ledger.
-     *
+     * 
      * @return the ledgerName value.
      */
     public String ledgerName() {
@@ -84,7 +92,7 @@ public final class LedgerProperties {
 
     /**
      * Get the ledgerUri property: Endpoint for calling Ledger Service.
-     *
+     * 
      * @return the ledgerUri value.
      */
     public String ledgerUri() {
@@ -93,7 +101,7 @@ public final class LedgerProperties {
 
     /**
      * Get the identityServiceUri property: Endpoint for accessing network identity.
-     *
+     * 
      * @return the identityServiceUri value.
      */
     public String identityServiceUri() {
@@ -102,7 +110,7 @@ public final class LedgerProperties {
 
     /**
      * Get the ledgerInternalNamespace property: Internal namespace for the Ledger.
-     *
+     * 
      * @return the ledgerInternalNamespace value.
      */
     public String ledgerInternalNamespace() {
@@ -111,7 +119,7 @@ public final class LedgerProperties {
 
     /**
      * Get the runningState property: Object representing RunningState for Ledger.
-     *
+     * 
      * @return the runningState value.
      */
     public RunningState runningState() {
@@ -120,7 +128,7 @@ public final class LedgerProperties {
 
     /**
      * Set the runningState property: Object representing RunningState for Ledger.
-     *
+     * 
      * @param runningState the runningState value to set.
      * @return the LedgerProperties object itself.
      */
@@ -131,7 +139,7 @@ public final class LedgerProperties {
 
     /**
      * Get the ledgerType property: Type of Confidential Ledger.
-     *
+     * 
      * @return the ledgerType value.
      */
     public LedgerType ledgerType() {
@@ -140,7 +148,7 @@ public final class LedgerProperties {
 
     /**
      * Set the ledgerType property: Type of Confidential Ledger.
-     *
+     * 
      * @param ledgerType the ledgerType value to set.
      * @return the LedgerProperties object itself.
      */
@@ -151,7 +159,7 @@ public final class LedgerProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of Ledger Resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -159,8 +167,28 @@ public final class LedgerProperties {
     }
 
     /**
+     * Get the ledgerSku property: SKU associated with the ledger.
+     * 
+     * @return the ledgerSku value.
+     */
+    public LedgerSku ledgerSku() {
+        return this.ledgerSku;
+    }
+
+    /**
+     * Set the ledgerSku property: SKU associated with the ledger.
+     * 
+     * @param ledgerSku the ledgerSku value to set.
+     * @return the LedgerProperties object itself.
+     */
+    public LedgerProperties withLedgerSku(LedgerSku ledgerSku) {
+        this.ledgerSku = ledgerSku;
+        return this;
+    }
+
+    /**
      * Get the aadBasedSecurityPrincipals property: Array of all AAD based Security Principals.
-     *
+     * 
      * @return the aadBasedSecurityPrincipals value.
      */
     public List<AadBasedSecurityPrincipal> aadBasedSecurityPrincipals() {
@@ -169,7 +197,7 @@ public final class LedgerProperties {
 
     /**
      * Set the aadBasedSecurityPrincipals property: Array of all AAD based Security Principals.
-     *
+     * 
      * @param aadBasedSecurityPrincipals the aadBasedSecurityPrincipals value to set.
      * @return the LedgerProperties object itself.
      */
@@ -180,7 +208,7 @@ public final class LedgerProperties {
 
     /**
      * Get the certBasedSecurityPrincipals property: Array of all cert based Security Principals.
-     *
+     * 
      * @return the certBasedSecurityPrincipals value.
      */
     public List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals() {
@@ -189,19 +217,19 @@ public final class LedgerProperties {
 
     /**
      * Set the certBasedSecurityPrincipals property: Array of all cert based Security Principals.
-     *
+     * 
      * @param certBasedSecurityPrincipals the certBasedSecurityPrincipals value to set.
      * @return the LedgerProperties object itself.
      */
-    public LedgerProperties withCertBasedSecurityPrincipals(
-        List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals) {
+    public LedgerProperties
+        withCertBasedSecurityPrincipals(List<CertBasedSecurityPrincipal> certBasedSecurityPrincipals) {
         this.certBasedSecurityPrincipals = certBasedSecurityPrincipals;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -81,8 +81,8 @@ public final class ManagedIntegrationRuntimeTypeProperties {
     }
 
     /**
-     * Get the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime
-     * will join.
+     * Get the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime will
+     * join.
      * 
      * @return the customerVirtualNetwork value.
      */
@@ -91,8 +91,8 @@ public final class ManagedIntegrationRuntimeTypeProperties {
     }
 
     /**
-     * Set the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime
-     * will join.
+     * Set the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime will
+     * join.
      * 
      * @param customerVirtualNetwork the customerVirtualNetwork value to set.
      * @return the ManagedIntegrationRuntimeTypeProperties object itself.

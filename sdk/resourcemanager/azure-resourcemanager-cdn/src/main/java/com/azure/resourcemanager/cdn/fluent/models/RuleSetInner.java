@@ -6,11 +6,14 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Friendly RuleSet name mapping to the any RuleSet or secret related information. */
+/**
+ * Friendly RuleSet name mapping to the any RuleSet or secret related information.
+ */
 @Immutable
 public final class RuleSetInner extends ProxyResource {
     /*
@@ -19,13 +22,21 @@ public final class RuleSetInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RuleSetProperties innerProperties;
 
-    /** Creates an instance of RuleSetInner class. */
+    /*
+     * Read only system data
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of RuleSetInner class.
+     */
     public RuleSetInner() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the Rule Set to create.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RuleSetProperties innerProperties() {
@@ -33,8 +44,17 @@ public final class RuleSetInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Read only system data.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the profileName property: The name of the profile which holds the rule set.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -43,7 +63,7 @@ public final class RuleSetInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -52,7 +72,7 @@ public final class RuleSetInner extends ProxyResource {
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
@@ -61,7 +81,7 @@ public final class RuleSetInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

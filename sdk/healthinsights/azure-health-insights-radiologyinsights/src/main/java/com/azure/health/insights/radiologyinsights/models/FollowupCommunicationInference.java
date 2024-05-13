@@ -24,7 +24,15 @@ import java.util.List;
     visible = true)
 @JsonTypeName("followupCommunication")
 @Immutable
-public final class FollowupCommunicationInference extends FhirR4Extendible1 {
+public final class FollowupCommunicationInference extends RadiologyInsightsInference {
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION;
 
     /*
      * Communication date and time.
@@ -59,6 +67,17 @@ public final class FollowupCommunicationInference extends FhirR4Extendible1 {
     }
 
     /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the dateTime property: Communication date and time.
      *
      * @return the dateTime value.
@@ -86,24 +105,5 @@ public final class FollowupCommunicationInference extends FhirR4Extendible1 {
     @Generated
     public boolean isWasAcknowledged() {
         return this.wasAcknowledged;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION;
-
-    /**
-     * Get the kind property: Inference type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RadiologyInsightsInferenceType getKind() {
-        return this.kind;
     }
 }

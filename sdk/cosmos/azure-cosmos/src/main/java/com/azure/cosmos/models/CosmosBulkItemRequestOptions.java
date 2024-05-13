@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.RequestOptions;
  * creating bulk request using {@link CosmosBulkOperations}.
  */
 public final class CosmosBulkItemRequestOptions {
-
     private String ifMatchETag;
     private String ifNoneMatchETag;
     private Boolean contentResponseOnWriteEnabled;
@@ -65,14 +64,10 @@ public final class CosmosBulkItemRequestOptions {
     /**
      * Sets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations in {@link CosmosItemOperation}.
-     *
      * If set to false, service doesn't return payload in the response. It reduces networking
      * and CPU load by not sending the payload back over the network and serializing it on the client.
-     *
      * This feature does not impact RU usage for read or write operations.
-     *
      * By-default, this is null.
-     *
      * NOTE: This flag is also present on {@link CosmosClientBuilder}, however if specified
      * here, it will override the value specified in {@link CosmosClientBuilder} for this request.
      *
@@ -89,12 +84,9 @@ public final class CosmosBulkItemRequestOptions {
     /**
      * Gets the boolean to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations in {@link CosmosItemOperation}.
-     *
      * If set to false, service doesn't return payload in the response. It reduces networking
      * and CPU load by not sending the payload back over the network and serializing it on the client.
-     *
      * This feature does not impact RU usage for read or write operations.
-     *
      * By-default, this is null.
      *
      * @return a boolean indicating whether payload will be included in the response or not for this operation.
@@ -108,6 +100,7 @@ public final class CosmosBulkItemRequestOptions {
         requestOptions.setIfMatchETag(this.ifMatchETag);
         requestOptions.setIfNoneMatchETag(this.ifNoneMatchETag);
         requestOptions.setContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled);
+
         return requestOptions;
     }
 }

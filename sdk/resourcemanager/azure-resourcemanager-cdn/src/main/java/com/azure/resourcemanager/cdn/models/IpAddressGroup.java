@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** CDN Ip address group. */
+/**
+ * CDN Ip address group.
+ */
 @Fluent
 public final class IpAddressGroup {
     /*
@@ -29,13 +31,15 @@ public final class IpAddressGroup {
     @JsonProperty(value = "ipv6Addresses")
     private List<CidrIpAddress> ipv6Addresses;
 
-    /** Creates an instance of IpAddressGroup class. */
+    /**
+     * Creates an instance of IpAddressGroup class.
+     */
     public IpAddressGroup() {
     }
 
     /**
      * Get the deliveryRegion property: The delivery region of the ip address group.
-     *
+     * 
      * @return the deliveryRegion value.
      */
     public String deliveryRegion() {
@@ -44,7 +48,7 @@ public final class IpAddressGroup {
 
     /**
      * Set the deliveryRegion property: The delivery region of the ip address group.
-     *
+     * 
      * @param deliveryRegion the deliveryRegion value to set.
      * @return the IpAddressGroup object itself.
      */
@@ -55,7 +59,7 @@ public final class IpAddressGroup {
 
     /**
      * Get the ipv4Addresses property: The list of ip v4 addresses.
-     *
+     * 
      * @return the ipv4Addresses value.
      */
     public List<CidrIpAddress> ipv4Addresses() {
@@ -64,7 +68,7 @@ public final class IpAddressGroup {
 
     /**
      * Set the ipv4Addresses property: The list of ip v4 addresses.
-     *
+     * 
      * @param ipv4Addresses the ipv4Addresses value to set.
      * @return the IpAddressGroup object itself.
      */
@@ -75,7 +79,7 @@ public final class IpAddressGroup {
 
     /**
      * Get the ipv6Addresses property: The list of ip v6 addresses.
-     *
+     * 
      * @return the ipv6Addresses value.
      */
     public List<CidrIpAddress> ipv6Addresses() {
@@ -84,7 +88,7 @@ public final class IpAddressGroup {
 
     /**
      * Set the ipv6Addresses property: The list of ip v6 addresses.
-     *
+     * 
      * @param ipv6Addresses the ipv6Addresses value to set.
      * @return the IpAddressGroup object itself.
      */
@@ -95,7 +99,7 @@ public final class IpAddressGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

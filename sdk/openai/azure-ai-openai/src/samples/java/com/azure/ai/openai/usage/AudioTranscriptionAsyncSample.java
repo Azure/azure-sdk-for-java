@@ -9,6 +9,7 @@ import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,8 +25,8 @@ public class AudioTranscriptionAsyncSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) throws InterruptedException {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
+        String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
         String fileName = "batman.wav";
         Path filePath = Paths.get("src/samples/java/com/azure/ai/openai/resources/" + fileName);
@@ -36,6 +37,11 @@ public class AudioTranscriptionAsyncSample {
             .buildAsyncClient();
 
         byte[] file = BinaryData.fromFile(filePath).toBytes();
+
+        // To request timestamps for 'segments' and/or 'words', specific the desired response format as
+        // 'AudioTranscriptionFormat.VERBOSE_JSON' and provide the desired combination of enum flags for the available
+        // timestamp granularities. If not otherwise specified, 'segments' will be provided. Note that 'words', unlike 'segments',
+        // will introduce additional processing latency to compute.
         AudioTranscriptionOptions transcriptionOptions = new AudioTranscriptionOptions(file)
             .setResponseFormat(AudioTranscriptionFormat.JSON);
 

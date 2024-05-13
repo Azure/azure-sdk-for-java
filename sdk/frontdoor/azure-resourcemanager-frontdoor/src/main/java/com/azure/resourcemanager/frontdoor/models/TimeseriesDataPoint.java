@@ -7,7 +7,9 @@ package com.azure.resourcemanager.frontdoor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines a timeseries datapoint used in a timeseries. */
+/**
+ * Defines a timeseries datapoint used in a timeseries.
+ */
 @Fluent
 public final class TimeseriesDataPoint {
     /*
@@ -22,13 +24,15 @@ public final class TimeseriesDataPoint {
     @JsonProperty(value = "value")
     private Float value;
 
-    /** Creates an instance of TimeseriesDataPoint class. */
+    /**
+     * Creates an instance of TimeseriesDataPoint class.
+     */
     public TimeseriesDataPoint() {
     }
 
     /**
      * Get the dateTimeUtc property: The DateTime of the Timeseries data point in UTC.
-     *
+     * 
      * @return the dateTimeUtc value.
      */
     public String dateTimeUtc() {
@@ -37,7 +41,7 @@ public final class TimeseriesDataPoint {
 
     /**
      * Set the dateTimeUtc property: The DateTime of the Timeseries data point in UTC.
-     *
+     * 
      * @param dateTimeUtc the dateTimeUtc value to set.
      * @return the TimeseriesDataPoint object itself.
      */
@@ -48,7 +52,7 @@ public final class TimeseriesDataPoint {
 
     /**
      * Get the value property: The Value of the Timeseries data point.
-     *
+     * 
      * @return the value value.
      */
     public Float value() {
@@ -57,7 +61,7 @@ public final class TimeseriesDataPoint {
 
     /**
      * Set the value property: The Value of the Timeseries data point.
-     *
+     * 
      * @param value the value value to set.
      * @return the TimeseriesDataPoint object itself.
      */
@@ -68,7 +72,7 @@ public final class TimeseriesDataPoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,14 +6,14 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import java.time.Instant;
 
 public class CosmosSourceChangeFeedConfig {
-    private final CosmosChangeFeedModes changeFeedModes;
-    private final CosmosChangeFeedStartFromModes changeFeedStartFromModes;
+    private final CosmosChangeFeedMode changeFeedModes;
+    private final CosmosChangeFeedStartFromMode changeFeedStartFromModes;
     private final Instant startFrom;
     private final int maxItemCountHint;
 
     public CosmosSourceChangeFeedConfig(
-        CosmosChangeFeedModes changeFeedModes,
-        CosmosChangeFeedStartFromModes changeFeedStartFromModes,
+        CosmosChangeFeedMode changeFeedModes,
+        CosmosChangeFeedStartFromMode changeFeedStartFromModes,
         Instant startFrom,
         int maxItemCountHint) {
         this.changeFeedModes = changeFeedModes;
@@ -22,11 +22,11 @@ public class CosmosSourceChangeFeedConfig {
         this.maxItemCountHint = maxItemCountHint;
     }
 
-    public CosmosChangeFeedModes getChangeFeedModes() {
+    public CosmosChangeFeedMode getChangeFeedModes() {
         return changeFeedModes;
     }
 
-    public CosmosChangeFeedStartFromModes getChangeFeedStartFromModes() {
+    public CosmosChangeFeedStartFromMode getChangeFeedStartFromModes() {
         return changeFeedStartFromModes;
     }
 

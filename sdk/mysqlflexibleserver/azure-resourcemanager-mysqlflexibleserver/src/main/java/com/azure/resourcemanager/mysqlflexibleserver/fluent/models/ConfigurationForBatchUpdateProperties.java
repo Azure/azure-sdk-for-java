@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties can be updated for a configuration. */
+/**
+ * The properties can be updated for a configuration.
+ */
 @Fluent
 public final class ConfigurationForBatchUpdateProperties {
     /*
@@ -22,13 +24,15 @@ public final class ConfigurationForBatchUpdateProperties {
     @JsonProperty(value = "source")
     private String source;
 
-    /** Creates an instance of ConfigurationForBatchUpdateProperties class. */
+    /**
+     * Creates an instance of ConfigurationForBatchUpdateProperties class.
+     */
     public ConfigurationForBatchUpdateProperties() {
     }
 
     /**
      * Get the value property: Value of the configuration.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +41,7 @@ public final class ConfigurationForBatchUpdateProperties {
 
     /**
      * Set the value property: Value of the configuration.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationForBatchUpdateProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class ConfigurationForBatchUpdateProperties {
 
     /**
      * Get the source property: Source of the configuration.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -57,7 +61,7 @@ public final class ConfigurationForBatchUpdateProperties {
 
     /**
      * Set the source property: Source of the configuration.
-     *
+     * 
      * @param source the source value to set.
      * @return the ConfigurationForBatchUpdateProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class ConfigurationForBatchUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
