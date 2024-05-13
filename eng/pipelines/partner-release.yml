@@ -37,12 +37,20 @@ extends:
 
           - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
-          - task: PowerShell@2
-            displayName: 'Download packages from blob storage'
+          - task: AzurePowerShell@5
+            displayName: 'Copy from azuresdkpartnerdrops'
+            condition: and(succeeded(), ne(variables['SkipCopyFromPartnerDrops'], 'true'))
             inputs:
-              targetType: filePath
-              filePath: '$(BuildToolScripts)/copy-from-azuresdkpartnerdrops.ps1'
-              arguments: '$(Artifacts) ${{ parameters.BlobPath }} $(azuresdkpartnerdrops-access-key)'
+              azureSubscription: 'azuresdkpartnerdrops - Storage Partner Drops'
+              ScriptType: 'InlineScript'
+              azurePowerShellVersion: LatestVersion 
+              pwsh: true
+              Inline: |
+                azcopy copy 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}/*' '$(Artifacts)' --recursive=true
+                echo "Copied files:"
+                dir '$(Artifacts)' -r | % { $_.FullName }
+            env: 
+              AZCOPY_AUTO_LOGIN_TYPE: 'PSCRED'
 
           - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
             parameters:

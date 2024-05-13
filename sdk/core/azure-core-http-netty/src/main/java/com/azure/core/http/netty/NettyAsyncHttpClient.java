@@ -15,6 +15,7 @@ import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
 import com.azure.core.implementation.util.FileContent;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
@@ -94,11 +95,6 @@ class NettyAsyncHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClient.class);
     private static final byte[] EMPTY_BYTES = new byte[0];
 
-    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
-    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
-    private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
-    private static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
-
     final boolean disableBufferCopy;
 
     final boolean addProxyHandler;
@@ -132,10 +128,11 @@ class NettyAsyncHttpClient implements HttpClient {
         Objects.requireNonNull(request.getUrl(), "'request.getUrl()' cannot be null.");
         Objects.requireNonNull(request.getUrl().getProtocol(), "'request.getUrl().getProtocol()' cannot be null.");
 
-        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
-        boolean headersEagerlyConverted = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
-        Long responseTimeout = context.getData(AZURE_RESPONSE_TIMEOUT)
+        boolean eagerlyReadResponse = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        boolean headersEagerlyConverted
+            = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_CONVERT_HEADERS).orElse(false);
+        Long responseTimeout = context.getData(HttpUtils.AZURE_RESPONSE_TIMEOUT)
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(null);
