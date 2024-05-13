@@ -123,12 +123,17 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .httpClient(getHttpClient(true, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
+        // Disable `("$..token")` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3431"));
+        }
+
         if (interceptorManager.isPlaybackMode()) {
             addPolicies(builder);
             return builder;
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -145,11 +150,16 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
         addPolicies(builder, policies);
 
+        // Disable `("$..source")` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3423"));
+        }
+
         if (interceptorManager.isPlaybackMode()) {
             return builder;
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -185,11 +195,16 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
+        // Disable `("$.key")` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3448"));
+        }
+
         if (interceptorManager.isPlaybackMode()) {
             return builder;
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 

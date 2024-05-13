@@ -53,12 +53,14 @@ public class AadCredentialTest extends TestProxyTestBase {
             if (interceptorManager.isRecordMode()) {
                 builder.addPolicy(interceptorManager.getRecordPolicy()); // Record
             }
-            // Disable `("$.key")` sanitizer
-            if (!interceptorManager.isLiveMode()) {
-                interceptorManager.removeSanitizers(Arrays.asList("AZSDK3447"));
-            }
+
 
             client = builder.buildClient();
+        }
+
+        // Disable `("$.key")` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3447"));
         }
     }
 

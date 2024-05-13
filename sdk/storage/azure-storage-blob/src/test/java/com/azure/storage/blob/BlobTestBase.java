@@ -155,9 +155,6 @@ public class BlobTestBase extends TestProxyTestBase {
                 new TestProxySanitizer("x-ms-copy-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED", TestProxySanitizerType.HEADER),
                 new TestProxySanitizer("x-ms-copy-source-authorization", ".+", "REDACTED", TestProxySanitizerType.HEADER),
                 new TestProxySanitizer("x-ms-rename-source", "((?<=http://|https://)([^/?]+)|sig=(.*))", "REDACTED", TestProxySanitizerType.HEADER)));
-
-            // Disable sanitizing the 'x-ms-encryption-key-sha256' header
-            interceptorManager.removeSanitizers(Arrays.asList("x-ms-encryption-key-sha256"));
         }
 
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
