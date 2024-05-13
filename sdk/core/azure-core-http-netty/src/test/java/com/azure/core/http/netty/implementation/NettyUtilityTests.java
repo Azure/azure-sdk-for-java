@@ -18,6 +18,7 @@ public class NettyUtilityTests {
         assertFalse(logMessage.isEmpty(), "Version logs are always expected.");
 
         // But azure-core-http-netty shouldn't have version mismatches.
-        assertFalse(logMessage.contains(NettyUtility.NETTY_VERSION_MISMATCH_LOG), "Unexpected Netty version mismatch logs.");
+        assertFalse(logMessage.contains(NettyUtility.NETTY_VERSION_MISMATCH_LOG),
+            "Unexpected Netty version mismatch logs.");
     }
 }

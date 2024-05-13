@@ -5,6 +5,7 @@ package com.azure.core.http.netty.implementation;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.Version;
 import reactor.netty.Connection;
@@ -92,7 +93,9 @@ public final class NettyUtility {
      * warning will contain the versions found in runtime and the expected versions to be used by the SDK.
      */
     public static void validateNettyVersions() {
-        validateNettyVersions(LOGGER::info);
+        if (LOGGER.canLogAtLevel(LogLevel.INFORMATIONAL)) {
+            validateNettyVersions(LOGGER::info);
+        }
     }
 
     static void validateNettyVersions(Consumer<String> logger) {
