@@ -164,7 +164,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     }
 
     @Test
-    public void JsonContentTypeWithInvalidJsonValueTest() throws IOException {
+    public void jsonContentTypeWithInvalidJsonValueTest() {
         List<ConfigurationSetting> items = new ArrayList<>();
         items.add(ITEM_INVALID_JSON);
         when(configurationListMock.iterator()).thenReturn(items.iterator())

@@ -13,7 +13,6 @@ import org.springframework.core.env.EnumerablePropertySource;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
