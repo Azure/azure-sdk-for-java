@@ -155,7 +155,8 @@ public final class Utility {
             .append(nettyTcnativeVersion)
             .append(". If your application runs without issue this message can be ignored, otherwise please align the "
                 + "Netty versions you are using (this doesn't need to be the versions used by azure-core-http-netty if "
-                + "the versions of Netty being used are newer).");
+                + "the versions of Netty being used are newer than what is used by this version of "
+                + "azure-core-http-netty).");
 
         logger.accept(stringBuilder.toString());
     }
