@@ -51,27 +51,6 @@ public class KeyVaultBackupAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code samples for using {@link KeyVaultBackupAsyncClient#beginPreBackup(String, String)}.
-     */
-    public void beginPreBackup() {
-        KeyVaultBackupAsyncClient client = createAsyncClient();
-
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginPreBackup#String-String
-        String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-        String sasToken = "<sas-token>";
-
-        client.beginPreBackup(blobStorageUrl, sasToken)
-            .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
-            .doOnError(e -> System.out.printf("Pre-backup check failed with error: %s.%n", e.getMessage()))
-            .doOnNext(pollResponse ->
-                System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
-            .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-            .flatMap(AsyncPollResponse::getFinalResult)
-            .subscribe(unused -> System.out.printf("Pre-backup check completed successfully.%n"));
-        // END: com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginPreBackup#String-String
-    }
-
-    /**
      * Generates code samples for using {@link KeyVaultBackupAsyncClient#beginBackup(String, String)}.
      */
     public void beginBackup() {
@@ -79,7 +58,8 @@ public class KeyVaultBackupAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginBackup#String-String
         String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
-        String sasToken = "<sas-token>";
+        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z"
+            + "&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
 
         client.beginBackup(blobStorageUrl, sasToken)
             .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
@@ -94,27 +74,6 @@ public class KeyVaultBackupAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code samples for using {@link KeyVaultBackupAsyncClient#beginPreRestore(String, String)}.
-     */
-    public void beginPreRestore() {
-        KeyVaultBackupAsyncClient client = createAsyncClient();
-
-        // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginPreRestore#String-String
-        String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "<sas-token>";
-
-        client.beginPreRestore(folderUrl, sasToken)
-            .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
-            .doOnError(e -> System.out.printf("Pre-restore check failed with error: %s.%n", e.getMessage()))
-            .doOnNext(pollResponse ->
-                System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus()))
-            .filter(pollResponse -> pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-            .flatMap(AsyncPollResponse::getFinalResult)
-            .subscribe(unused -> System.out.printf("Pre-restore check completed successfully.%n"));
-        // END: com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginPreRestore#String-String
-    }
-
-    /**
      * Generates code samples for using {@link KeyVaultBackupAsyncClient#beginRestore(String, String)}.
      */
     public void beginRestore() {
@@ -122,7 +81,8 @@ public class KeyVaultBackupAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginRestore#String-String
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "<sas-token>";
+        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z"
+            + "&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
 
         client.beginRestore(folderUrl, sasToken)
             .setPollInterval(Duration.ofSeconds(1)) // You can set a custom polling interval.
@@ -144,7 +104,8 @@ public class KeyVaultBackupAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.beginSelectiveKeyRestore#String-String-String
         String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
-        String sasToken = "<sas-token>";
+        String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z"
+            + "&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
         String keyName = "myKey";
 
         client.beginSelectiveKeyRestore(folderUrl, sasToken, keyName)
