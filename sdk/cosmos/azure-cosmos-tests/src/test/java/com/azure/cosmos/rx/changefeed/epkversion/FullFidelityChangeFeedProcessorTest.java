@@ -265,9 +265,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                     }
                 }
 
-                // Wait for the feed processor to shut down.
-                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-
                 ChangeFeedProcessorBuilder incrementalChangeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                     .options(new ChangeFeedProcessorOptions().setStartFromBeginning(isStartFromBeginning).setMaxItemCount(1))
                     .hostName(hostName)
@@ -389,9 +386,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                         logger.info("Lease container document : {}", OBJECT_MAPPER.writeValueAsString(lease));
                     }
                 }
-
-                // Wait for the feed processor to shut down.
-                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
                 ChangeFeedProcessorBuilder fullFidelityChangeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                     .options(new ChangeFeedProcessorOptions().setMaxItemCount(1))
@@ -543,9 +537,6 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                         logger.info("Lease container document : {}", OBJECT_MAPPER.writeValueAsString(lease));
                     }
                 }
-
-                // Wait for the feed processor to shut down.
-                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
                 ChangeFeedProcessorBuilder fullFidelityChangeFeedProcessorBuilder = new ChangeFeedProcessorBuilder()
                     .options(new ChangeFeedProcessorOptions().setMaxItemCount(1))

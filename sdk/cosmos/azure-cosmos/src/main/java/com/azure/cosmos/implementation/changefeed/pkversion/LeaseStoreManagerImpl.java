@@ -498,7 +498,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
             param.setName("@PartitionLeasePrefix");
             param.setValue(prefix);
             querySpec = new SqlQuerySpec(
-                "SELECT TOP @Top * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix) AND c.continuationToken <> null",
+                "SELECT TOP @Top * FROM c WHERE STARTSWITH(c.id, @PartitionLeasePrefix) AND c.ContinuationToken <> null",
                 Arrays.asList(topParam, param));
         }
 
