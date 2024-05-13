@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IGlobalPartitionEndpointManager;
 import com.azure.cosmos.implementation.OpenConnectionResponse;
@@ -52,7 +53,7 @@ public class GlobalAddressResolverTest {
 
     private HttpClient httpClient;
     private GlobalEndpointManager endpointManager;
-    private IGlobalPartitionEndpointManager globalPartitionEndpointManager;
+    private GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager;
     private IAuthorizationTokenProvider authorizationTokenProvider;
     private UserAgentContainer userAgentContainer;
     private RxCollectionCache collectionCache;

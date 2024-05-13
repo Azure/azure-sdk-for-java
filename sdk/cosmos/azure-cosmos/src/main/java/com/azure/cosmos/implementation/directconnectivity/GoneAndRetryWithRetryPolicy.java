@@ -322,10 +322,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                 if (request.requestContext == null) {
                     return false;
                 }
-
-                if (request.locationLevelCircuitBreakerRequestContext != null) {
-                    return request.locationLevelCircuitBreakerRequestContext.tryRecordRegionScopedFailure(request.requestContext.locationEndpointToRoute, cosmosException.getStatusCode(), cosmosException.getSubStatusCode());
-                }
             }
 
             return false;

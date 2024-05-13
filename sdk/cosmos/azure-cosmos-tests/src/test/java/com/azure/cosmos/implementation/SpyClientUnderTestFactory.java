@@ -121,7 +121,7 @@ public class SpyClientUnderTestFactory {
                                                  GlobalEndpointManager globalEndpointManager,
                                                  HttpClient rxClient,
                                                  ApiType apiType,
-                                                 IGlobalPartitionEndpointManager globalPartitionEndpointManager) {
+                                                 GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager) {
             this.origRxGatewayStoreModel = super.createRxGatewayProxy(
                 sessionContainer,
                 consistencyLevel,

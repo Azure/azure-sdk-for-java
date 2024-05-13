@@ -9,10 +9,13 @@ public class FeedOperationContext {
 
     private final Set<PartitionKeyRange> partitionKeyRangesWithSuccess;
 
+    private final boolean isThresholdBasedAvailabilityStrategyEnabled;
+
     private boolean isRequestHedged;
 
-    public FeedOperationContext(Set<PartitionKeyRange> partitionKeyRangesWithSuccess) {
+    public FeedOperationContext(Set<PartitionKeyRange> partitionKeyRangesWithSuccess, boolean isThresholdBasedAvailabilityStrategyEnabled) {
         this.partitionKeyRangesWithSuccess = partitionKeyRangesWithSuccess;
+        this.isThresholdBasedAvailabilityStrategyEnabled = isThresholdBasedAvailabilityStrategyEnabled;
     }
 
     public void setIsRequestHedged(boolean isRequestHedged) {
@@ -29,5 +32,9 @@ public class FeedOperationContext {
 
     public boolean hasPartitionKeyRangeSeenSuccess(PartitionKeyRange partitionKeyRange) {
         return this.partitionKeyRangesWithSuccess.contains(partitionKeyRange);
+    }
+
+    public boolean isThresholdBasedAvailabilityStrategyEnabled() {
+        return isThresholdBasedAvailabilityStrategyEnabled;
     }
 }

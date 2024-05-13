@@ -11,10 +11,13 @@ public class PointOperationContext {
 
     private final AtomicBoolean hasOperationSeenSuccess;
 
+    private final boolean isThresholdBasedAvailabilityStrategyEnabled;
+
     private boolean isRequestHedged;
 
-    public PointOperationContext(AtomicBoolean hasOperationSeenSuccess) {
+    public PointOperationContext(AtomicBoolean hasOperationSeenSuccess, boolean isThresholdBasedAvailabilityStrategyEnabled) {
         this.hasOperationSeenSuccess = hasOperationSeenSuccess;
+        this.isThresholdBasedAvailabilityStrategyEnabled = isThresholdBasedAvailabilityStrategyEnabled;
     }
 
     public void setIsRequestHedged(boolean isRequestHedged) {
@@ -31,5 +34,9 @@ public class PointOperationContext {
 
     public boolean getHasOperationSeenSuccess() {
         return hasOperationSeenSuccess.get();
+    }
+
+    public boolean isThresholdBasedAvailabilityStrategyEnabled() {
+        return isThresholdBasedAvailabilityStrategyEnabled;
     }
 }

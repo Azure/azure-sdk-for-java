@@ -2241,15 +2241,49 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     RxDocumentServiceRequest failedRequest = requestReference.get();
                     PointOperationContext pointOperationContext = failedRequest.requestContext.getPointOperationContext();
 
-                    if (!pointOperationContext.getIsRequestHedged() && pointOperationContext.getHasOperationSeenSuccess()) {
+                    if (pointOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
+
+                        if (!pointOperationContext.getIsRequestHedged() && pointOperationContext.getHasOperationSeenSuccess()) {
+                            OperationCancelledException exception = Utils.as(throwable, OperationCancelledException.class);
+                            Optional<String> firstContactedRegion = exception.getDiagnostics().getContactedRegionNames().stream().findFirst();
+
+                            UnmodifiableList<URI> endpoints = requestReference.get().isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
+                            List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, requestReference.get().getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
+
+                            this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get(), filteredEndpoint.get(0));
+                        }
+                    } else {
                         OperationCancelledException exception = Utils.as(throwable, OperationCancelledException.class);
-                        Optional<String> firstContactedRegion = exception.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().stream().findFirst();
+                        Optional<String> firstContactedRegion = exception.getDiagnostics().getContactedRegionNames().stream().findFirst();
 
                         UnmodifiableList<URI> endpoints = requestReference.get().isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
                         List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, requestReference.get().getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
 
                         this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get(), filteredEndpoint.get(0));
                     }
+                }
+            })
+            .doOnCancel(() -> {
+                RxDocumentServiceRequest failedRequest = requestReference.get();
+                PointOperationContext pointOperationContext = failedRequest.requestContext.getPointOperationContext();
+
+                if (pointOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
+
+                    if (!pointOperationContext.getIsRequestHedged() && pointOperationContext.getHasOperationSeenSuccess()) {
+                        Optional<String> firstContactedRegion = failedRequest.requestContext.cosmosDiagnostics.getContactedRegionNames().stream().findFirst();
+
+                        UnmodifiableList<URI> endpoints = requestReference.get().isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
+                        List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, requestReference.get().getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
+
+                        this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get(), filteredEndpoint.get(0));
+                    }
+                } else {
+                    Optional<String> firstContactedRegion = failedRequest.requestContext.cosmosDiagnostics.getContactedRegionNames().stream().findFirst();
+
+                    UnmodifiableList<URI> endpoints = failedRequest.isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
+                    List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, failedRequest.getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
+
+                    this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(failedRequest, filteredEndpoint.get(0));
                 }
             });
     }
@@ -5677,7 +5711,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                     if (orderedApplicableRegionsForSpeculation.size() < 2) {
                         // There is at most one applicable region - no hedging possible
-                        PointOperationContext pointOperationContextForMainRequest = new PointOperationContext(isOperationSuccessful);
+                        PointOperationContext pointOperationContextForMainRequest = new PointOperationContext(isOperationSuccessful, false);
                         pointOperationContextForMainRequest.setIsRequestHedged(false);
                         return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, pointOperationContextForMainRequest, collectionRoutingMapValueHolder);
                     }
@@ -5698,7 +5732,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 // by the ClientRetryPolicy for the initial request - so, any outcome of the
                                 // initial Mono should be treated as non-transient error - even when
                                 // the error would otherwise be treated as transient
-                                PointOperationContext pointOperationContextForMainRequest = new PointOperationContext(isOperationSuccessful);
+                                PointOperationContext pointOperationContextForMainRequest = new PointOperationContext(isOperationSuccessful, true);
                                 pointOperationContextForMainRequest.setIsRequestHedged(false);
                                 Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
                                     callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForMainRequest, collectionRoutingMapValueHolder)
@@ -5728,7 +5762,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 // Non-Transient errors are mapped to a value - this ensures the firstWithValue
                                 // operator below will complete the composite Mono for both successful values
                                 // and non-transient errors
-                                PointOperationContext pointOperationContextForHedgedRequest = new PointOperationContext(isOperationSuccessful);
+                                PointOperationContext pointOperationContextForHedgedRequest = new PointOperationContext(isOperationSuccessful, true);
                                 pointOperationContextForHedgedRequest.setIsRequestHedged(true);
                                 Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
                                     callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForHedgedRequest, collectionRoutingMapValueHolder)
@@ -6019,7 +6053,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (orderedApplicableRegionsForSpeculation.size() < 2) {
             // There is at most one applicable region - no hedging possible
-            FeedOperationContext feedOperationContextForMainRequest = new FeedOperationContext(partitionKeyRangesWithSuccess);
+            FeedOperationContext feedOperationContextForMainRequest = new FeedOperationContext(partitionKeyRangesWithSuccess, false);
             feedOperationContextForMainRequest.setIsRequestHedged(false);
             req.requestContext.setFeedOperationContext(feedOperationContextForMainRequest);
             return feedOperation.apply(retryPolicyFactory, req);
@@ -6039,7 +6073,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     // by the ClientRetryPolicy for the initial request - so, any outcome of the
                     // initial Mono should be treated as non-transient error - even when
                     // the error would otherwise be treated as transient
-                    FeedOperationContext feedOperationContextForMainRequest = new FeedOperationContext(partitionKeyRangesWithSuccess);
+                    FeedOperationContext feedOperationContextForMainRequest = new FeedOperationContext(partitionKeyRangesWithSuccess, true);
                     feedOperationContextForMainRequest.setIsRequestHedged(false);
                     clonedRequest.requestContext.setFeedOperationContext(feedOperationContextForMainRequest);
                     Mono<NonTransientFeedOperationResult<T>> initialMonoAcrossAllRegions =
@@ -6067,7 +6101,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             region)
                     );
 
-                    FeedOperationContext feedOperationContextForHedgedRequest = new FeedOperationContext(partitionKeyRangesWithSuccess);
+                    FeedOperationContext feedOperationContextForHedgedRequest = new FeedOperationContext(partitionKeyRangesWithSuccess, true);
                     feedOperationContextForHedgedRequest.setIsRequestHedged(true);
                     clonedRequest.requestContext.setFeedOperationContext(feedOperationContextForHedgedRequest);
 
