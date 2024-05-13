@@ -9,7 +9,7 @@ import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.AzureSdkHandler;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.HttpProxyHandler;
-import com.azure.core.http.netty.implementation.Utility;
+import com.azure.core.http.netty.implementation.NettyUtility;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -115,7 +115,7 @@ public class NettyAsyncHttpClientBuilder {
     private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
     static {
-        Utility.validateNettyVersions();
+        NettyUtility.validateNettyVersions();
     }
 
     private final HttpClient baseHttpClient;
