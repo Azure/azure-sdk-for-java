@@ -54,7 +54,7 @@ commons-codec:commons-codec;1.15
 commons-net:commons-net;3.9.0
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
-io.fabric8:kubernetes-client;5.12.3
+io.fabric8:kubernetes-client;6.12.1
 io.micrometer:micrometer-core;1.9.17
 io.micrometer:micrometer-registry-azure-monitor;1.9.17
 io.micrometer:micrometer-registry-graphite;1.9.17

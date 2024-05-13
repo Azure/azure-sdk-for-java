@@ -45,22 +45,22 @@ public class MetricDataMapper {
 
     private static final ClientLogger logger = new ClientLogger(MetricDataMapper.class);
 
+    private static final Set<String> OTEL_UNSTABLE_METRICS_TO_EXCLUDE = new HashSet<>();
+    private static final String OTEL_INSTRUMENTATION_NAME_PREFIX = "io.opentelemetry";
     private static final Set<String> OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES = new HashSet<>(4);
-    private static final List<String> EXCLUDED_METRIC_NAMES = new ArrayList<>();
     public static final AttributeKey<String> APPLICATIONINSIGHTS_INTERNAL_METRIC_NAME = AttributeKey.stringKey("applicationinsights.internal.metric_name");
 
     private final BiConsumer<AbstractTelemetryBuilder, Resource> telemetryInitializer;
     private final boolean captureHttpServer4xxAsError;
 
     static {
-        EXCLUDED_METRIC_NAMES.add("http.server.active_requests"); // Servlet
-        EXCLUDED_METRIC_NAMES.add("http.server.response.size");
-        EXCLUDED_METRIC_NAMES.add("http.client.response.size");
+        // HTTP unstable metrics to be excluded via Otel auto instrumentation
+        OTEL_UNSTABLE_METRICS_TO_EXCLUDE.add("rpc.client.duration");
+        OTEL_UNSTABLE_METRICS_TO_EXCLUDE.add("rpc.server.duration");
 
+        // Application Insights pre-aggregated standard metrics
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.request.duration");
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.request.duration");
-        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.server.duration"); // pre-stable HTTP semconv
-        OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("http.client.duration"); // pre-stable HTTP semconv
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.client.duration");
         OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.add("rpc.server.duration");
     }
@@ -73,10 +73,6 @@ public class MetricDataMapper {
     }
 
     public void map(MetricData metricData, Consumer<TelemetryItem> consumer) {
-        if (EXCLUDED_METRIC_NAMES.contains(metricData.getName())) {
-            return;
-        }
-
         MetricDataType type = metricData.getType();
         if (type == DOUBLE_SUM
             || type == DOUBLE_GAUGE
@@ -85,11 +81,20 @@ public class MetricDataMapper {
             || type == HISTOGRAM) {
             boolean isPreAggregatedStandardMetric =
                 OTEL_PRE_AGGREGATED_STANDARD_METRIC_NAMES.contains(metricData.getName());
-            List<TelemetryItem> telemetryItemList =
-                convertOtelMetricToAzureMonitorMetric(metricData, isPreAggregatedStandardMetric);
-            for (TelemetryItem telemetryItem : telemetryItemList) {
-                consumer.accept(telemetryItem);
+            if (isPreAggregatedStandardMetric) {
+                List<TelemetryItem> preAggregatedStandardMetrics =
+                    convertOtelMetricToAzureMonitorMetric(metricData, true);
+                preAggregatedStandardMetrics.forEach(consumer::accept);
             }
+
+            // DO NOT emit unstable metrics from the OpenTelemetry auto instrumentation libraries
+            // custom metrics are always emitted
+            if (OTEL_UNSTABLE_METRICS_TO_EXCLUDE.contains(metricData.getName())
+                && metricData.getInstrumentationScopeInfo().getName().startsWith(OTEL_INSTRUMENTATION_NAME_PREFIX)) {
+                return;
+            }
+            List<TelemetryItem> stableOtelMetrics = convertOtelMetricToAzureMonitorMetric(metricData, false);
+            stableOtelMetrics.forEach(consumer::accept);
         } else {
             logger.warning("metric data type {} is not supported yet.", metricData.getType());
         }

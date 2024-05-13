@@ -40,7 +40,7 @@ public final class OperationInner {
     private Origin origin;
 
     /*
-     * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+     * Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
      */
     @JsonProperty(value = "actionType")
     private ActionType actionType;
@@ -91,8 +91,8 @@ public final class OperationInner {
     }
 
     /**
-     * Get the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
-     * only APIs.
+     * Get the actionType property: Extensible enum. Indicates the action type. "Internal" refers to actions that are
+     * for internal only APIs.
      * 
      * @return the actionType value.
      */

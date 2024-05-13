@@ -54,6 +54,7 @@ public final class FieldBuilder {
     private static final int MAX_DEPTH = 10000;
     private static final Map<Type, SearchFieldDataType> SUPPORTED_NONE_PARAMETERIZED_TYPE = new HashMap<>();
     private static final Set<Type> UNSUPPORTED_TYPES = new HashSet<>();
+    private static final Set<SearchFieldDataType> UNSUPPORTED_SERVICE_TYPES = new HashSet<>();
 
     private static final SearchFieldDataType COLLECTION_STRING
         = SearchFieldDataType.collection(SearchFieldDataType.STRING);
@@ -83,6 +84,7 @@ public final class FieldBuilder {
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Byte.class, SearchFieldDataType.SBYTE);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(short.class, SearchFieldDataType.INT16);
         SUPPORTED_NONE_PARAMETERIZED_TYPE.put(Short.class, SearchFieldDataType.INT16);
+        UNSUPPORTED_SERVICE_TYPES.add(SearchFieldDataType.BYTE);
     }
 
     /**
