@@ -584,7 +584,7 @@ public abstract class HttpClientTests {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, requestUrl, new HttpHeaders(), requestBody);
 
         try (HttpResponse httpResponse = httpClient.sendSync(request, Context.NONE)) {
-            byte[] responseBytes = httpResponse.getBodyAsByteArray().block();
+            byte[] responseBytes = httpResponse.getBodyAsBinaryData().toBytes();
             assertArraysEqual(expectedResponseBody, responseBytes);
         }
     }
@@ -615,7 +615,7 @@ public abstract class HttpClientTests {
             .getContext();
 
         try (HttpResponse httpResponse = httpClient.sendSync(request, context)) {
-            byte[] responseBytes = httpResponse.getBodyAsByteArray().block();
+            byte[] responseBytes = httpResponse.getBodyAsBinaryData().toBytes();
             assertArraysEqual(expectedResponseBody, responseBytes);
             assertEquals(expectedResponseBody.length, progress.intValue());
         }

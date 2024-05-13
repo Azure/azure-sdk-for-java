@@ -9,7 +9,7 @@ import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.AzureSdkHandler;
 import com.azure.core.http.netty.implementation.ChallengeHolder;
 import com.azure.core.http.netty.implementation.HttpProxyHandler;
-import com.azure.core.http.netty.implementation.Utility;
+import com.azure.core.http.netty.implementation.NettyUtility;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
@@ -36,15 +36,14 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
-import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 
 /**
  * <p>
@@ -112,28 +111,11 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  * @see NettyAsyncHttpClient
  */
 public class NettyAsyncHttpClientBuilder {
-    private static final long MINIMUM_TIMEOUT = TimeUnit.MILLISECONDS.toMillis(1);
-    private static final long DEFAULT_CONNECT_TIMEOUT;
-    private static final long DEFAULT_WRITE_TIMEOUT;
-    private static final long DEFAULT_RESPONSE_TIMEOUT;
-    private static final long DEFAULT_READ_TIMEOUT;
-
     // NettyAsyncHttpClientBuilder may be instantiated many times, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClientBuilder.class);
 
     static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-
-        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER).toMillis();
-        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER).toMillis();
-        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER).toMillis();
-        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER).toMillis();
-
-        Utility.validateNettyVersions();
+        NettyUtility.validateNettyVersions();
     }
 
     private final HttpClient baseHttpClient;
@@ -205,9 +187,9 @@ public class NettyAsyncHttpClientBuilder {
             addressResolverWasSetByBuilder = true;
         }
 
-        long writeTimeout = getTimeoutMillis(this.writeTimeout, DEFAULT_WRITE_TIMEOUT);
-        long responseTimeout = getTimeoutMillis(this.responseTimeout, DEFAULT_RESPONSE_TIMEOUT);
-        long readTimeout = getTimeoutMillis(this.readTimeout, DEFAULT_READ_TIMEOUT);
+        long writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout()).toMillis();
+        long responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout()).toMillis();
+        long readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout()).toMillis();
 
         // Get the initial HttpResponseDecoderSpec and update it.
         // .httpResponseDecoder passes a new HttpResponseDecoderSpec and any existing configuration should be updated
@@ -215,7 +197,7 @@ public class NettyAsyncHttpClientBuilder {
         HttpResponseDecoderSpec initialSpec = nettyHttpClient.configuration().decoder();
         nettyHttpClient = nettyHttpClient.port(port)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
-                (int) getTimeoutMillis(connectTimeout, DEFAULT_CONNECT_TIMEOUT))
+                (int) getTimeout(connectTimeout, getDefaultConnectTimeout()).toMillis())
             // TODO (alzimmer): What does validating HTTP response headers get us?
             .httpResponseDecoder(httpResponseDecoderSpec -> initialSpec.validateHeaders(false))
             .doOnRequest(
@@ -560,27 +542,6 @@ public class NettyAsyncHttpClientBuilder {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("Unknown 'ProxyOptions.Type' enum value"));
         }
-    }
-
-    /*
-     * Returns the timeout in milliseconds to use based on the passed Duration and default timeout.
-     *
-     * If the timeout is {@code null} the default timeout will be used. If the timeout is less than or equal to zero
-     * no timeout will be used. If the timeout is less than one millisecond a timeout of one millisecond will be used.
-     */
-    static long getTimeoutMillis(Duration configuredTimeout, long defaultTimeout) {
-        // Timeout is null, use the default timeout.
-        if (configuredTimeout == null) {
-            return defaultTimeout;
-        }
-
-        // Timeout is less than or equal to zero, return no timeout.
-        if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
-            return 0;
-        }
-
-        // Return the maximum of the timeout period and the minimum allowed timeout period.
-        return Math.max(configuredTimeout.toMillis(), MINIMUM_TIMEOUT);
     }
 
     private static boolean shouldApplyProxy(SocketAddress socketAddress, Pattern nonProxyHostsPattern) {

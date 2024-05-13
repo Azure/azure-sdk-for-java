@@ -49,7 +49,9 @@ public interface XmlSerializable<T extends XmlSerializable<T>> {
      * @return The {@link XmlWriter} where the XML was written for chaining.
      * @throws XMLStreamException If the object fails to be written to the {@code xmlWriter}.
      */
-    XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException;
+    default XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
 
     /**
      * Writes the object to the passed {@link XmlWriter}.
@@ -119,7 +121,7 @@ public interface XmlSerializable<T extends XmlSerializable<T>> {
      * @throws XMLStreamException If an object fails to be read from the {@code xmlReader}.
      */
     static <T extends XmlSerializable<T>> T fromXml(XmlReader xmlReader) throws XMLStreamException {
-        throw new UnsupportedOperationException("Implementation of XmlSerializable must define this factory method.");
+        return fromXml(xmlReader, null);
     }
 
     /**
