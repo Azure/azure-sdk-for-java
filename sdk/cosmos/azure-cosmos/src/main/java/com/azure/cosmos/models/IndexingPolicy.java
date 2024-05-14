@@ -20,7 +20,6 @@ import java.util.List;
  */
 public final class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
-
     private List<IncludedPath> includedPaths;
     private List<ExcludedPath> excludedPaths;
     private List<List<CompositePath>> compositeIndexes;
