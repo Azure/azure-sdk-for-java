@@ -434,6 +434,21 @@
   ],
   "overrides": [
     {
+      "filename": "sdk/batch/azure-compute-batch/**",
+      "words": [
+        "Dtest",
+        "osdisk",
+        "nopublicipaddresses",
+        "cifs",
+        "noaction",
+        "upgradingos",
+        "VMSS",
+        "reimaged",
+        "isdirectory",
+        "SSDLRS"
+      ]
+    },
+    {
       "filename": "sdk/search/azure-search-documents/**",
       "words": [
         "ADLS",
