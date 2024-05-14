@@ -12,8 +12,7 @@ steps:
       options: ${{ parameters.Options }}
       mavenOptions: ${{ parameters.MavenOptions }}
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: ${{ parameters.JdkVersion }}
+      jdkVersionOption: '1.11'
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'install'
-    condition: and(succeeded(), gt('${{ parameters.JdkVersion }}', '1.11'))
