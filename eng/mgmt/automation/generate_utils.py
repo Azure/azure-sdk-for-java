@@ -338,18 +338,22 @@ def generate_typespec_project(
         tspconfig_valid = True
         if url_match:
             # generate from remote url
-            tsp_cmd = ['npx', 'tsp-client', 'init', '--debug',
-                   '--tsp-config', tsp_project]
+            tsp_cmd = [
+                'npx', 'tsp-client', 'init', '--debug',
+                '--tsp-config', tsp_project
+            ]
         else:
             # sdk automation
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
             tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, 'https://github.com/')
-            tsp_cmd = ['npx', 'tsp-client', 'init', '--debug',
-                   '--tsp-config', tsp_dir,
-                   '--commit', head_sha,
-                   '--repo', repo,
-                   '--local-spec-repo', tsp_dir]
+            tsp_cmd = [
+                'npx', 'tsp-client', 'init', '--debug',
+                '--tsp-config', tsp_dir,
+                '--commit', head_sha,
+                '--repo', repo,
+                '--local-spec-repo', tsp_dir
+            ]
 
         if tspconfig_valid:
             check_call(tsp_cmd, sdk_root)
