@@ -421,12 +421,22 @@ public class AnnotatedQueryIT {
     }
 
     @Test
-    public void testAnnotatedFindAllWithSort() {
+    public void testAnnotatedFindAllWithSortAsc() {
         final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1,
             Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2);
         addressRepository.saveAll(addresses);
 
         final List<Address> resultsAsc = addressRepository.annotatedFindAllWithSort(Sort.by(Sort.Direction.ASC, "postalCode"));
         assertAddressOrder(resultsAsc, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2, Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testAnnotatedFindAllWithSortDesc() {
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1,
+            Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2);
+        addressRepository.saveAll(addresses);
+
+        final List<Address> resultsAsc = addressRepository.annotatedFindAllWithSort(Sort.by(Sort.Direction.DESC, "postalCode"));
+        assertAddressOrder(resultsAsc, Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS1_PARTITION2, Address.TEST_ADDRESS2_PARTITION1);
     }
 }
