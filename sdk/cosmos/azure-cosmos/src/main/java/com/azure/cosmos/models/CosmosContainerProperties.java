@@ -347,6 +347,28 @@ public final class CosmosContainerProperties {
         return this;
     }
 
+    /**
+     * Gets the Vector Embedding Policy containing paths for embeddings along with path-specific settings for the item
+     * used in performing vector search on the items in a collection in the Azure CosmosDB database service.
+     *
+     * @return the Vector Embedding Policy.
+     */
+    public CosmosVectorEmbeddingPolicy getVectorEmbeddingPolicy() {
+        return this.documentCollection.getVectorEmbeddingPolicy();
+    }
+
+    /**
+     * Sets the Vector Embedding Policy containing paths for embeddings along with path-specific settings for the item
+     * used in performing vector search on the items in a collection in the Azure CosmosDB database service.
+     *
+     * @param value the Vector Embedding Policy.
+     * @return the CosmosContainerProperties.
+     */
+    public CosmosContainerProperties setVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy value) {
+        this.documentCollection.setVectorEmbeddingPolicy(value);
+        return this;
+    }
+
     Resource getResource() {
         return this.documentCollection;
     }
