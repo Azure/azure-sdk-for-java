@@ -158,7 +158,7 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
                 + ".[0-9a-fA-F]{8}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{12})",
                 ".redacted", TestProxySanitizerType.BODY_REGEX),
             new TestProxySanitizer(domain.indexOf(".") > 0 ? domain.substring(domain.indexOf(".")) : domain,
-                ".testdomain.com", TestProxySanitizerType.BODY_REGEX),
+                ".com", TestProxySanitizerType.BODY_REGEX),
             new TestProxySanitizer("id", null,
                 "REDACTED", TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("phoneNumber", null, "REDACTED",

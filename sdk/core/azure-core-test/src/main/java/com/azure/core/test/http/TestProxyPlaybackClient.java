@@ -224,7 +224,7 @@ public class TestProxyPlaybackClient implements HttpClient {
             HttpRequest request
                 = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
 
-            sendRequestWithRetries(request);
+            client.sendSync(request, Context.NONE).close();
         } else {
             this.sanitizers.addAll(sanitizers);
         }
