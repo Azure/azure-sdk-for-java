@@ -32,7 +32,7 @@ public class ClientAssertionCredentialTest extends IdentityTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "PLAYBACK")
+//    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "PLAYBACK")
     public void getToken(HttpClient httpClient) {
         // arrange
         initializeClient(httpClient);
@@ -48,7 +48,7 @@ public class ClientAssertionCredentialTest extends IdentityTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "PLAYBACK")
+//    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "PLAYBACK")
     public void getTokenAsync(HttpClient httpClient) {
         // arrange
         initializeClient(httpClient);
