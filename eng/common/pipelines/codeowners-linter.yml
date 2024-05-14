@@ -48,6 +48,7 @@ stages:
 
       - ${{if eq(variables['Build.Reason'], 'PullRequest') }}:
         - pwsh: |
+            Write-Host "git checkout $ENV:SYSTEM_PULLREQUEST_TARGETBRANCH"
             git checkout $ENV:SYSTEM_PULLREQUEST_TARGETBRANCH
           displayName: Checkout the base branch
 
@@ -62,6 +63,7 @@ stages:
           workingDirectory: '$(Build.SourcesDirectory)/eng/common'
 
         - pwsh: |
+            Write-Host "git checkout $ENV:SYSTEM_PULLREQUEST_SOURCEBRANCH"
             git checkout $ENV:SYSTEM_PULLREQUEST_SOURCEBRANCH
           displayName: Checkout the PR branch
 
