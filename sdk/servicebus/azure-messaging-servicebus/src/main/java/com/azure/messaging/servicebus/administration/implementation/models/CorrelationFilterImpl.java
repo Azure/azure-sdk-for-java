@@ -285,7 +285,7 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT);
         xmlWriter.writeNamespace("xsi", WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE);
-        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", "CorrelationFilter");
+        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", this.type);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "CorrelationId", this.correlationId);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MessageId", this.messageId);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "To", this.to);
@@ -311,7 +311,7 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
      * @param xmlReader The XmlReader being read.
      * @return An instance of CorrelationFilter if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized XML object has an invalid polymorphic discriminator value.
      * @throws XMLStreamException If an error occurs while reading the CorrelationFilter.
      */
     public static CorrelationFilterImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -326,7 +326,7 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
      * cases where the model can deserialize from different root element names.
      * @return An instance of CorrelationFilter if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized XML object has an invalid polymorphic discriminator value.
      * @throws XMLStreamException If an error occurs while reading the CorrelationFilter.
      */
     public static CorrelationFilterImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
