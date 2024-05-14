@@ -226,7 +226,6 @@ stephbaron is an invalid user. Ensure the user exists, is public member of Azure
 derek1ee is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 bleroy is not a public member of Azure.
 tjacobhi is not a public member of Azure.
-markheff is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 miwelsh is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 chlahav is not a public member of Azure.
 EldertGrootenboer is not a public member of Azure.
