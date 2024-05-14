@@ -1,0 +1,150 @@
+<!--
+  ~ Copyright (c) Microsoft Corporation. All rights reserved.
+  ~ Licensed under the MIT License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.clientcore</groupId>
+    <artifactId>clientcore-parent</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
+    <relativePath>../../parents/clientcore-parent</relativePath>
+  </parent>
+
+  <groupId>io.clientcore</groupId>
+  <artifactId>http-okhttp3</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
+
+  <name>Java OkHttp3 HTTP Client Library</name>
+  <description>This package contains the OkHttp HTTP client plugin for io.clientcore.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <jacoco.min.linecoverage>0.80</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.65</jacoco.min.branchcoverage>
+    <javaModulesSurefireArgLine>
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.util=ALL-UNNAMED
+
+      --add-opens io.clientcore.http.okhttp/io.clientcore.http.okhttp=ALL-UNNAMED
+      --add-opens io.clientcore.http.okhttp/io.clientcore.http.okhttp.implementation=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
+
+    <javadoc.excludePackageNames>
+      io.clientcore.core.annotation,io.clientcore.core.credential,io.clientcore.core.http,io.clientcore.core.http.annotation,io.clientcore.core.http.client,
+      io.clientcore.core.http.exception,io.clientcore.core.http.models,io.clientcore.core.http.pipeline,io.clientcore.core.implementation,
+      io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.util,io.clientcore.core.util*,io.clientcore.core.json
+    </javadoc.excludePackageNames>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okio</groupId>
+      <artifactId>okio-jvm</artifactId>
+      <version>3.9.0</version> <!-- {x-version-update;com.squareup.okio:okio-jvm;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.okhttp3</groupId>
+      <artifactId>okhttp</artifactId>
+      <version>4.12.0</version> <!-- {x-version-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+    </dependency>
+
+    <!-- Test dependencies on core, because we want to run tests inherited from this module using OkHttp -->
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.54.v20240208</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.54.v20240208</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.11.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.conscrypt</groupId>
+      <artifactId>conscrypt-openjdk-uber</artifactId>
+      <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.squareup.okhttp3:okhttp:[4.12.0]</include> <!-- {x-include-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+                <include>com.squareup.okio:okio-jvm:[3.9.0]</include> <!-- {x-include-update;com.squareup.okio:okio-jvm;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
