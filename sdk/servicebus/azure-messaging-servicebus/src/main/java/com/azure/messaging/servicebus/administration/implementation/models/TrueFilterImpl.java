@@ -25,10 +25,25 @@ public final class TrueFilterImpl extends SqlFilterImpl {
     private static final String WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE
         = "http://www.w3.org/2001/XMLSchema-instance";
 
+    /*
+     * The type property.
+     */
+    private String type = "TrueFilter";
+
     /**
      * Creates an instance of TrueFilter class.
      */
     public TrueFilterImpl() {
+    }
+
+    /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -78,7 +93,7 @@ public final class TrueFilterImpl extends SqlFilterImpl {
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT);
         xmlWriter.writeNamespace("xsi", WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE);
-        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", "TrueFilter");
+        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", this.type);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "SqlExpression", getSqlExpression());
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "CompatibilityLevel",
             getCompatibilityLevel());
@@ -100,7 +115,7 @@ public final class TrueFilterImpl extends SqlFilterImpl {
      * @param xmlReader The XmlReader being read.
      * @return An instance of TrueFilter if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized XML object has an invalid polymorphic discriminator value.
      * @throws XMLStreamException If an error occurs while reading the TrueFilter.
      */
     public static TrueFilterImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -115,7 +130,7 @@ public final class TrueFilterImpl extends SqlFilterImpl {
      * cases where the model can deserialize from different root element names.
      * @return An instance of TrueFilter if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     * @throws IllegalStateException If the deserialized XML object has an invalid polymorphic discriminator value.
      * @throws XMLStreamException If an error occurs while reading the TrueFilter.
      */
     public static TrueFilterImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
@@ -129,6 +144,7 @@ public final class TrueFilterImpl extends SqlFilterImpl {
                     "'type' was expected to be non-null and equal to 'TrueFilter'. The found 'type' was '"
                         + discriminatorValue + "'.");
             }
+            deserializedTrueFilter.type = discriminatorValue;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
