@@ -173,7 +173,7 @@ public interface PolicyDefinition extends
         /**
          * A policy definition allowing policy definition mode to be set.
          */
-        interface WIthMode {
+        interface WithMode {
             /**
              * Specifies the policy definition mode.
              * <p>
@@ -211,7 +211,7 @@ public interface PolicyDefinition extends
                 DefinitionStages.WithDisplayName,
                 DefinitionStages.WithPolicyType,
                 DefinitionStages.WithParameters,
-                DefinitionStages.WIthMode,
+                DefinitionStages.WithMode,
                 DefinitionStages.WithMetadata {
         }
     }
@@ -275,7 +275,7 @@ public interface PolicyDefinition extends
         /**
          * A policy definition allowing policy definition mode to be set.
          */
-        interface WIthMode {
+        interface WithMode {
             /**
              * Specifies the policy definition mode.
              * <p>
@@ -312,7 +312,7 @@ public interface PolicyDefinition extends
             UpdateStages.WithDisplayName,
             UpdateStages.WithPolicyRule,
             UpdateStages.WithPolicyType,
-            UpdateStages.WIthMode,
+            UpdateStages.WithMode,
             UpdateStages.WithMetadata {
     }
 }
