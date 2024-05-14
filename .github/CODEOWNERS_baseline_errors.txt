@@ -13,7 +13,6 @@ besh2014 is an invalid user. Ensure the user exists, is public member of Azure a
 phermanov-msft is not a public member of Azure.
 ilyapaliakou-msft is not a public member of Azure.
 alexokun is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
-Mrayyan is an invalid user. Ensure the user exists, is public member of Azure and has write permissions.
 shwali-msft is not a public member of Azure.
 allchiang-msft is not a public member of Azure.
 mikehang-msft is not a public member of Azure.
