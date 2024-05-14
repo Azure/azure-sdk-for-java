@@ -48,6 +48,8 @@ stages:
 
       - ${{if eq(variables['Build.Reason'], 'PullRequest') }}:
         - pwsh: |
+            Write-Host "git status"
+            git status
             Write-Host "git checkout $ENV:SYSTEM_PULLREQUEST_TARGETBRANCH"
             git checkout $ENV:SYSTEM_PULLREQUEST_TARGETBRANCH
           displayName: Checkout the base branch
