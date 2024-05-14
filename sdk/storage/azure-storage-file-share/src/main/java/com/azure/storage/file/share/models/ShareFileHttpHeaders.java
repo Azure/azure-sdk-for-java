@@ -6,17 +6,12 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
 
 /**
  * Parameter group.
  */
 @Fluent
-public final class ShareFileHttpHeaders implements JsonSerializable<ShareFileHttpHeaders> {
+public final class ShareFileHttpHeaders {
     /*
      * Sets the MIME content type of the file. The default type is 'application/octet-stream'.
      */
@@ -116,8 +111,8 @@ public final class ShareFileHttpHeaders implements JsonSerializable<ShareFileHtt
     }
 
     /**
-     * Get the cacheControl property: Sets the file's cache control. The File service stores this value but does not
-     * use or modify it.
+     * Get the cacheControl property: Sets the file's cache control. The File service stores this value but does not use
+     * or modify it.
      * 
      * @return the cacheControl value.
      */
@@ -126,8 +121,8 @@ public final class ShareFileHttpHeaders implements JsonSerializable<ShareFileHtt
     }
 
     /**
-     * Set the cacheControl property: Sets the file's cache control. The File service stores this value but does not
-     * use or modify it.
+     * Set the cacheControl property: Sets the file's cache control. The File service stores this value but does not use
+     * or modify it.
      * 
      * @param cacheControl the cacheControl value to set.
      * @return the ShareFileHttpHeaders object itself.
@@ -175,53 +170,5 @@ public final class ShareFileHttpHeaders implements JsonSerializable<ShareFileHtt
     public ShareFileHttpHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("contentType", this.contentType);
-        jsonWriter.writeStringField("contentEncoding", this.contentEncoding);
-        jsonWriter.writeStringField("contentLanguage", this.contentLanguage);
-        jsonWriter.writeStringField("cacheControl", this.cacheControl);
-        jsonWriter.writeBinaryField("contentMd5", this.contentMd5);
-        jsonWriter.writeStringField("contentDisposition", this.contentDisposition);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ShareFileHttpHeaders from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ShareFileHttpHeaders if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ShareFileHttpHeaders.
-     */
-    public static ShareFileHttpHeaders fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ShareFileHttpHeaders deserializedShareFileHttpHeaders = new ShareFileHttpHeaders();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("contentType".equals(fieldName)) {
-                    deserializedShareFileHttpHeaders.contentType = reader.getString();
-                } else if ("contentEncoding".equals(fieldName)) {
-                    deserializedShareFileHttpHeaders.contentEncoding = reader.getString();
-                } else if ("contentLanguage".equals(fieldName)) {
-                    deserializedShareFileHttpHeaders.contentLanguage = reader.getString();
-                } else if ("cacheControl".equals(fieldName)) {
-                    deserializedShareFileHttpHeaders.cacheControl = reader.getString();
-                } else if ("contentMd5".equals(fieldName)) {
-                    deserializedShareFileHttpHeaders.contentMd5 = reader.getBinary();
-                } else if ("contentDisposition".equals(fieldName)) {
-                    deserializedShareFileHttpHeaders.contentDisposition = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedShareFileHttpHeaders;
-        });
     }
 }

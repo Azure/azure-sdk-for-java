@@ -37,8 +37,7 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
     private DateTimeRfc1123 expirationTime;
 
     /*
-     * This value is required to delete the Message. If deletion fails using this popreceipt then the message has been
-     * dequeued by another client.
+     * This value is required to delete the Message. If deletion fails using this popreceipt then the message has been dequeued by another client.
      */
     private String popReceipt;
 
