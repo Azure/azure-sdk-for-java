@@ -317,6 +317,26 @@ public class FileShareTestBase extends TestProxyTestBase {
         return setOauthCredentials(builder).buildClient();
     }
 
+    protected ShareClientBuilder getShareClientBuilderWithTokenCredential(String endpoint, HttpPipelinePolicy... policies) {
+        ShareClientBuilder builder = new ShareClientBuilder()
+            .endpoint(endpoint);
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+
+        instrument(builder);
+        return builder;
+    }
+
     protected ShareServiceClient getOAuthServiceClientSharedKey(ShareServiceClientBuilder builder) {
         if (builder == null) {
             builder = new ShareServiceClientBuilder();

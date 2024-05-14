@@ -7,6 +7,8 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
@@ -1697,6 +1699,14 @@ public class DirectoryApiTests extends FileShareTestBase {
         ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         ShareStorageException e = assertThrows(ShareStorageException.class, aadDirClient::exists);
         assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+
+        /*
+        ShareClient aadShare = getShareClientBuilderWithTokenCredential(shareClient.getShareUrl())
+            .audience(ShareAudience.createShareServiceAccountAudience("badAudience"))
+            .buildClient();
+
+        assertNotNull(aadShare.getProperties());
+         */
     }
 
     @Test
