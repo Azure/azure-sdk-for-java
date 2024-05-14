@@ -17,7 +17,6 @@ import com.azure.resourcemanager.appservice.models.HostnameBinding;
 import com.azure.resourcemanager.appservice.models.MSDeploy;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PricingTier;
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
 import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionState;
 import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
@@ -25,6 +24,7 @@ import com.azure.resourcemanager.appservice.models.WebAppSourceControl;
 import com.azure.resourcemanager.appservice.fluent.models.ConnectionStringDictionaryInner;
 import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.models.MSDeployStatusInner;
+import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteConfigResourceInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
@@ -537,7 +537,7 @@ abstract class AppServiceBaseImpl<
         return this.manager().serviceClient().getWebApps()
             .approveOrRejectPrivateEndpointConnectionAsync(this.resourceGroupName(), this.name(),
                 privateEndpointConnectionName,
-                new PrivateLinkConnectionApprovalRequestResource().withPrivateLinkServiceConnectionState(
+                new RemotePrivateEndpointConnectionArmResourceInner().withPrivateLinkServiceConnectionState(
                     new PrivateLinkConnectionState()
                         .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED.toString())
                 ))
@@ -554,7 +554,7 @@ abstract class AppServiceBaseImpl<
         return this.manager().serviceClient().getWebApps()
             .approveOrRejectPrivateEndpointConnectionAsync(this.resourceGroupName(), this.name(),
                 privateEndpointConnectionName,
-                new PrivateLinkConnectionApprovalRequestResource().withPrivateLinkServiceConnectionState(
+                new RemotePrivateEndpointConnectionArmResourceInner().withPrivateLinkServiceConnectionState(
                     new PrivateLinkConnectionState()
                         .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED.toString())
                 ))
