@@ -204,6 +204,9 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @return the max number of items for vector search.
      */
     public Integer getMaxItemCountForVectorSearch() {
+        if (this.maxItemCountForVectorSearch == null) {
+            this.maxItemCountForVectorSearch = Configs.DEFAULT_MAX_ITEM_COUNT_FOR_VECTOR_SEARCH;
+        }
         return this.maxItemCountForVectorSearch;
     }
 
