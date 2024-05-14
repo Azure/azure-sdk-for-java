@@ -43,8 +43,7 @@ class QueryPlanRetriever {
                                                                QueryFeature.GroupBy.name() + ", " +
                                                                QueryFeature.Top.name() + ", " +
                                                                QueryFeature.DCount.name() + ", " +
-                                                               QueryFeature.NonValueAggregate.name() + ", " +
-                                                               QueryFeature.NonStreamingOrderBy.name();
+                                                               QueryFeature.NonValueAggregate.name();
 
     static Mono<PartitionedQueryExecutionInfo> getQueryPlanThroughGatewayAsync(DiagnosticsClientContext diagnosticsClientContext,
                                                                                IDocumentQueryClient queryClient,

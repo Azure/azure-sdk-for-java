@@ -63,8 +63,7 @@ public abstract class PipelinedQueryExecutionContextBase<T>
             || queryInfo.hasAggregates()
             || queryInfo.hasGroupBy()
             || queryInfo.hasDCount()
-            || queryInfo.hasDistinct()
-            || queryInfo.hasNonStreamingOrderBy()) {
+            || queryInfo.hasDistinct()) {
 
             return PipelinedDocumentQueryExecutionContext.createAsyncCore(
                 diagnosticsClientContext,
