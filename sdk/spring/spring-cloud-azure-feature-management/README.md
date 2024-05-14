@@ -304,7 +304,7 @@ There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered
   | Property | Relevance | Description |
       |----------|-----------|-------------|
   | **Type** | Required | Must be set to `Numbered`. |
-  | **NumberOfOccurrences** | Required | 	Specifies the number of occurrences. |
+  | **NumberOfOccurrences** | Required | Specifies the number of days that it will occur. |
 
   The following example will repeat the time window on Monday and Tuesday until the there are 3 occurrences, which respectively happens on April 1st(Mon), April 2nd(Tue) and April 8th(Mon).
 
