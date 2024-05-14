@@ -21,6 +21,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItem;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.bouncycastle.util.Arrays;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -120,22 +122,21 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     @Test
     public void testPropCanBeInitAndQueried() throws IOException {
-        when(configurationListMock.iterator()).thenReturn(testItems.iterator());
+        when(configurationListMock.iterator()).thenReturn(testItems.iterator()).thenReturn(testItems.iterator());
         when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
         when(clientMock.getTracingInfo())
             .thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        
+        FeatureFlagLoader featureFlagLoader = new FeatureFlagLoader();
 
-        propertySource.initProperties(TRIM);
+        propertySource.initProperties(TRIM, featureFlagLoader);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = testItems.stream().map(t -> {
-            if (t.getKey().startsWith(".appconfig.featureflag/")) {
-                return t.getKey().replace(".appconfig.featureflag/", "feature-management.");
-            }
             return t.getKey().replaceFirst("^" + KEY_FILTER, "").replace("/", ".");
 
-        }).toArray(String[]::new);
+        }).filter(key -> !key.startsWith(".appconfig")).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
 
@@ -143,6 +144,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         assertThat(propertySource.getProperty(TEST_KEY_2)).isEqualTo(TEST_VALUE_2);
         assertThat(propertySource.getProperty(TEST_KEY_3)).isEqualTo(TEST_VALUE_3);
         assertThat(propertySource.getProperty(".bar.test_key_4")).isEqualTo("test_value_4");
+        assertEquals(1, featureFlagLoader.getProperties().size());
     }
 
     @Test
@@ -155,7 +157,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties(TRIM);
+        propertySource.initProperties(TRIM, new FeatureFlagLoader());
 
         String expectedKeyName = TEST_SLASH_KEY.replace('/', '.');
         String[] actualKeyNames = propertySource.getPropertyNames();
@@ -173,7 +175,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         when(configurationListMock.iterator()).thenReturn(items.iterator()).thenReturn(Collections.emptyIterator());
         when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock);
 
-        propertySource.initProperties(TRIM);
+        propertySource.initProperties(TRIM, new FeatureFlagLoader());
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames =

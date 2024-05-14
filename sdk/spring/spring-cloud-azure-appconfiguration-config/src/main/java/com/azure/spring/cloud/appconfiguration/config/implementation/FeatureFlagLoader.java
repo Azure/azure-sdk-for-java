@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.stream.IntStream;
 
 import org.bouncycastle.jcajce.provider.digest.SHA256;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -56,7 +57,8 @@ import com.nimbusds.jose.util.Base64URL;
  * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
  * </p>
  */
-class FeatureFlagLoader {
+@Component
+public class FeatureFlagLoader {
 
     protected final Map<String, Feature> properties = new LinkedHashMap<>();
 
@@ -92,15 +94,21 @@ class FeatureFlagLoader {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
 
             FeatureFlags features = replicaClient.listFeatureFlags(settingSelector);
-            loadedFeatureFlags.add(features);
+            loadedFeatureFlags.addAll(proccessFeatureFlags(features, keyFilter));
+        }
+        return loadedFeatureFlags;
+    }
+    
+    public List<FeatureFlags> proccessFeatureFlags(FeatureFlags features, String endpoint) {
+        List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
+        loadedFeatureFlags.add(features);
 
-            // Reading In Features
-            for (ConfigurationSetting setting : features.getFeatureFlags()) {
-                if (setting instanceof FeatureFlagConfigurationSetting
-                    && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
-                    FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
-                    properties.put(featureFlag.getKey(), createFeature(featureFlag, replicaClient.getEndpoint()));
-                }
+        // Reading In Features
+        for (ConfigurationSetting setting : features.getFeatureFlags()) {
+            if (setting instanceof FeatureFlagConfigurationSetting
+                && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
+                FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
+                properties.put(featureFlag.getKey(), createFeature(featureFlag, endpoint));
             }
         }
         return loadedFeatureFlags;

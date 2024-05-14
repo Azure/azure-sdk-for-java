@@ -218,12 +218,14 @@ public class AppConfigurationRefreshUtilTest {
 
         List<ConfigurationSetting> listedKeys = new ArrayList<>();
         listedKeys.add(updatedWatchKey);
+        FeatureFlags featureFlags = new FeatureFlags(new SettingSelector(), watchKeysFeatureFlags);
 
-        FeatureFlagState newState = new FeatureFlagState(List.of(), Math.toIntExact(Duration.ofMinutes(10).getSeconds()),
+
+        FeatureFlagState newState = new FeatureFlagState(List.of(featureFlags), Math.toIntExact(Duration.ofMinutes(10).getSeconds()),
             endpoint);
 
         // Config Store does return a watch key change.
-        when(clientMock.listSettings(Mockito.any(SettingSelector.class))).thenReturn(watchKeyListMock);
+        when(clientMock.checkWatchKeys(Mockito.any(SettingSelector.class))).thenReturn(true);
         when(watchKeyListMock.iterator()).thenReturn(listedKeys.iterator());
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
@@ -240,10 +242,11 @@ public class AppConfigurationRefreshUtilTest {
         when(clientMock.getEndpoint()).thenReturn(endpoint);
 
         // Config Store doesn't return a value, Feature Flag was deleted
-        when(clientMock.listSettings(Mockito.any(SettingSelector.class))).thenReturn(watchKeyListMock);
+        when(clientMock.checkWatchKeys(Mockito.any(SettingSelector.class))).thenReturn(true);
         when(watchKeyListMock.iterator()).thenReturn(Collections.emptyIterator());
+        FeatureFlags featureFlags = new FeatureFlags(new SettingSelector(), watchKeysFeatureFlags);
 
-        FeatureFlagState newState = new FeatureFlagState(List.of(), Math.toIntExact(Duration.ofMinutes(10).getSeconds()),
+        FeatureFlagState newState = new FeatureFlagState(List.of(featureFlags), Math.toIntExact(Duration.ofMinutes(10).getSeconds()),
             endpoint);
 
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
@@ -265,11 +268,13 @@ public class AppConfigurationRefreshUtilTest {
 
         List<ConfigurationSetting> listedKeys = generateFeatureFlagWatchKeys();
         listedKeys.add(extraFeatureFlag);
-        FeatureFlagState newState = new FeatureFlagState(List.of(), Math.toIntExact(Duration.ofMinutes(10).getSeconds()),
+        FeatureFlags featureFlags = new FeatureFlags(new SettingSelector(), watchKeysFeatureFlags);
+
+        FeatureFlagState newState = new FeatureFlagState(List.of(featureFlags), Math.toIntExact(Duration.ofMinutes(10).getSeconds()),
             endpoint);
 
         // Config Store returns a new feature flag
-        when(clientMock.listSettings(Mockito.any(SettingSelector.class))).thenReturn(watchKeyListMock);
+        when(clientMock.checkWatchKeys(Mockito.any(SettingSelector.class))).thenReturn(true);
         when(watchKeyListMock.iterator()).thenReturn(listedKeys.iterator());
         try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
             stateHolderMock.when(() -> StateHolder.getStateFeatureFlag(endpoint)).thenReturn(newState);
@@ -574,7 +579,7 @@ public class AppConfigurationRefreshUtilTest {
             assertFalse(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
-            verify(currentStateMock, times(1)).updateStateRefresh(Mockito.any(), Mockito.any());
+            verify(currentStateMock, times(1)).updateFeatureFlagStateRefresh(Mockito.any(), Mockito.any());
 
         }
     }
@@ -601,10 +606,12 @@ public class AppConfigurationRefreshUtilTest {
         listedKeys.add(updated);
 
         when(clientFactoryMock.getAvailableClients(Mockito.eq(endpoint))).thenReturn(clients);
-        when(clientOriginMock.listSettings(Mockito.any())).thenReturn(watchKeyListMock);
+        when(clientOriginMock.checkWatchKeys(Mockito.any())).thenReturn(true);
         when(watchKeyListMock.iterator()).thenReturn(listedKeys.iterator());
+        FeatureFlags featureFlags = new FeatureFlags(new SettingSelector(), watchKeysFeatureFlags);
 
-        FeatureFlagState newState = new FeatureFlagState(List.of(), Math.toIntExact(Duration.ofMinutes(-1).getSeconds()),
+
+        FeatureFlagState newState = new FeatureFlagState(List.of(featureFlags), Math.toIntExact(Duration.ofMinutes(-1).getSeconds()),
             endpoint);
 
         // Config Store doesn't return a watch key change.
@@ -617,7 +624,6 @@ public class AppConfigurationRefreshUtilTest {
             assertTrue(eventData.getDoRefresh());
             verify(clientFactoryMock, times(1)).setCurrentConfigStoreClient(Mockito.eq(endpoint), Mockito.eq(endpoint));
             verify(clientOriginMock, times(0)).getWatchKey(Mockito.anyString(), Mockito.anyString());
-            verify(currentStateMock, times(1)).updateStateRefresh(Mockito.any(), Mockito.any());
         }
     }
 

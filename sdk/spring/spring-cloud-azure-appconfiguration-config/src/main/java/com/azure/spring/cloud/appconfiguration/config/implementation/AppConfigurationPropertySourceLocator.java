@@ -49,7 +49,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
 
-    private final FeatureFlagLoader featureFlagLoader = new FeatureFlagLoader();
+    private final FeatureFlagLoader featureFlagLoader;
 
     private final ReplicaLookUp replicaLookUp;
 
@@ -64,16 +64,18 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      * @param appProperties Configurations for the library.
      * @param clientFactory factory for creating clients for connecting to Azure App Configuration.
      * @param keyVaultClientFactory factory for creating clients for connecting to Azure Key Vault
+     * @param featureFlagLoader service for loadingFeatureFlags.
      */
     public AppConfigurationPropertySourceLocator(AppConfigurationProviderProperties appProperties,
         AppConfigurationReplicaClientFactory clientFactory, AppConfigurationKeyVaultClientFactory keyVaultClientFactory,
-        Duration refreshInterval, List<ConfigStore> configStores, ReplicaLookUp replicaLookUp) {
+        Duration refreshInterval, List<ConfigStore> configStores, ReplicaLookUp replicaLookUp, FeatureFlagLoader featureFlagLoader) {
         this.refreshInterval = refreshInterval;
         this.appProperties = appProperties;
         this.configStores = configStores;
         this.clientFactory = clientFactory;
         this.keyVaultClientFactory = keyVaultClientFactory;
         this.replicaLookUp = replicaLookUp;
+        this.featureFlagLoader = featureFlagLoader;
 
         BackoffTimeCalculator.setDefaults(appProperties.getDefaultMaxBackoff(), appProperties.getDefaultMinBackoff());
     }
@@ -161,10 +163,12 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     // Refresh failed for a config store ending attempt
                     failedToGeneratePropertySource(configStore, newState, new RuntimeException(message));
                 }
-
-                AppConfigurationFeatureManagementPropertySource acfmps = new AppConfigurationFeatureManagementPropertySource(
-                    featureFlagLoader);
-                composite.addPropertySource(acfmps);
+                
+                if (configStore.getFeatureFlags().getEnabled()) {
+                    AppConfigurationFeatureManagementPropertySource acfmps = new AppConfigurationFeatureManagementPropertySource(
+                        featureFlagLoader);
+                    composite.addPropertySource(acfmps);
+                }
 
             } else if (!configStore.isEnabled() && loadNewPropertySources) {
                 LOGGER.info("Not loading configurations from {} as it is not enabled.", configStore.getEndpoint());

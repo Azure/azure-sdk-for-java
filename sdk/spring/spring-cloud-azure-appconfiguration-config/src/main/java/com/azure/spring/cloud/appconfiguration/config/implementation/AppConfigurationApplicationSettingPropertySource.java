@@ -91,7 +91,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
                 handleKeyVaultReference(key, (SecretReferenceConfigurationSetting) setting);
             } else if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
-                handleFeatureFlag(key, (FeatureFlagConfigurationSetting) setting, keyPrefixTrimValues);
+                continue;
             } else if (StringUtils.hasText(setting.getContentType())
                 && JsonConfigurationParser.isJsonContentType(setting.getContentType())) {
                 handleJson(setting, keyPrefixTrimValues);

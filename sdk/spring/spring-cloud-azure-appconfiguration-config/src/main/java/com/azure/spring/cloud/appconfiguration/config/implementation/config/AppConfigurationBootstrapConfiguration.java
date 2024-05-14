@@ -27,6 +27,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigur
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationPropertySourceLocator;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientFactory;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientsBuilder;
+import com.azure.spring.cloud.appconfiguration.config.implementation.FeatureFlagLoader;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
@@ -60,15 +61,17 @@ public class AppConfigurationBootstrapConfiguration {
     @Bean
     AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, ReplicaLookUp replicaLookUp)
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, ReplicaLookUp replicaLookUp,
+        FeatureFlagLoader featureFlagLoader)
         throws IllegalArgumentException {
 
         return new AppConfigurationPropertySourceLocator(appProperties, clientFactory, keyVaultClientFactory,
-            properties.getRefreshInterval(), properties.getStores(), replicaLookUp);
+            properties.getRefreshInterval(), properties.getStores(), replicaLookUp, featureFlagLoader);
     }
 
     @Bean
-    AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(Environment environment, AppConfigurationProviderProperties appProperties)
+    AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(Environment environment,
+        AppConfigurationProviderProperties appProperties)
         throws IllegalArgumentException {
         AzureGlobalProperties globalSource = Binder.get(environment).bindOrCreate(AzureGlobalProperties.PREFIX,
             AzureGlobalProperties.class);
@@ -108,6 +111,17 @@ public class AppConfigurationBootstrapConfiguration {
     AppConfigurationReplicaClientFactory buildClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
         AppConfigurationProperties properties, ReplicaLookUp replicaLookUp) {
         return new AppConfigurationReplicaClientFactory(clientBuilder, properties.getStores(), replicaLookUp);
+    }
+
+    /**
+     * Loader for all feature flags. Enables de-duplicating of feature flags when multiple feature flags with the same
+     * name are loaded.
+     * @return {@link FeatureFlagLoader}
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    FeatureFlagLoader featureFlagLoader() {
+        return new FeatureFlagLoader();
     }
 
     /**
@@ -155,7 +169,7 @@ public class AppConfigurationBootstrapConfiguration {
 
         return clientBuilder;
     }
-    
+
     @Bean
     ReplicaLookUp replicaLookUp(AppConfigurationProperties properties) throws NamingException {
         return new ReplicaLookUp(properties);

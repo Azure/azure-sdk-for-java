@@ -196,37 +196,22 @@ class AppConfigurationRefreshUtil {
         if (date.isAfter(state.getNextRefreshCheck())) {
             replicaLookUp.updateAutoFailoverEndpoints();
 
-            checkFeatureFlags(state, client, eventData);
+            for (FeatureFlags featureFlags : state.getWatchKeys()) {
 
-            if (!eventData.getDoRefresh()) {
-                String eventDataInfo = ".appconfig.featureflag/*";
+                if (client.checkWatchKeys(featureFlags.getSettingSelector())) {
+                    String eventDataInfo = ".appconfig.featureflag/*";
 
-                // Only one refresh Event needs to be call to update all of the
-                // stores, not one for each.
-                LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
+                    // Only one refresh Event needs to be call to update all of the
+                    // stores, not one for each.
+                    LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
 
-                eventData.setMessage(eventDataInfo);
+                    eventData.setMessage(eventDataInfo);
+                    return;
+                }
+
             }
 
             StateHolder.getCurrentState().updateFeatureFlagStateRefresh(state, refreshInterval);
-        }
-    }
-
-    private static void checkFeatureFlags(FeatureFlagState state, AppConfigurationReplicaClient client,
-        RefreshEventData eventData) {
-        for (FeatureFlags featureFlags : state.getWatchKeys()) {
-
-            if (client.checkWatchKeys(featureFlags.getSettingSelector())) {
-                String eventDataInfo = ".appconfig.featureflag/*";
-
-                // Only one refresh Event needs to be call to update all of the
-                // stores, not one for each.
-                LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
-
-                eventData.setMessage(eventDataInfo);
-                return;
-            }
-
         }
     }
 
