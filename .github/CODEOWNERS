@@ -855,5 +855,5 @@
 /eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @chenrujun @netyyyy @saragluna @moarychan
 
 # Add owners for notifications for specific pipelines
-/eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles
+/eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles @miwelsh
 /eng/common/pipelines/codeowners-linter.yml          @alzimmermsft @srnagar @lmolkova
