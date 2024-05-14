@@ -281,6 +281,8 @@ public class ImplementationBridgeHelpers {
             Integer getMaxItemCount(CosmosQueryRequestOptions options);
 
             String getRequestContinuation(CosmosQueryRequestOptions options);
+
+            Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options);
         }
     }
 

@@ -50,6 +50,12 @@ import java.util.stream.Collectors;
  */
 public class DocumentQueryExecutionContextFactory {
 
+    private static final ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .CosmosQueryRequestOptionsAccessor qryOptAccessor = ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor();
+
     private final static int PageSizeFactorForTop = 5;
     private static final Logger logger = LoggerFactory.getLogger(DocumentQueryExecutionContextFactory.class);
     private static Mono<Utils.ValueHolder<DocumentCollection>> resolveCollection(DiagnosticsClientContext diagnosticsClientContext,
@@ -362,7 +368,7 @@ public class DocumentQueryExecutionContextFactory {
         boolean getLazyFeedResponse = queryInfo.hasTop();
 
         // We need to compute the optimal initial age size for non-streaming order-by queries
-        if (queryInfo.hasNonStreamingOrderBy() && Configs.getMaxItemSizeForVectorSearchEnabled()) {
+        if (queryInfo.hasNonStreamingOrderBy()) {
             // Validate the TOP or LIMIT for non-streaming order-by queries
             if (!queryInfo.hasTop() && !queryInfo.hasLimit() && queryInfo.getTop() < 0 && queryInfo.getLimit() < 0) {
                 throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
@@ -373,8 +379,8 @@ public class DocumentQueryExecutionContextFactory {
             // Validate the size of TOP or LIMIT against MaxItemSizeForVectorSearch
             int maxLimit = Math.max(queryInfo.hasTop() ? queryInfo.getTop() : 0,
                 queryInfo.hasLimit() ? queryInfo.getLimit() : 0);
-            int maxItemSizeForVectorSearch = Math.max(Configs.getMaxItemSizeForVectorSearch(),
-                ModelBridgeInternal.getMaxItemSizeForVectorSearchFromQueryRequestOptions(cosmosQueryRequestOptions));
+            int maxItemSizeForVectorSearch = Math.max(Configs.getMaxItemCountForVectorSearch(),
+                qryOptAccessor.getMaxItemCountForVectorSearch(cosmosQueryRequestOptions));
             if (maxLimit > maxItemSizeForVectorSearch) {
                 throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
                     "Executing a vector search query with TOP or LIMIT larger than the maxItemSizeForVectorSearch " +
@@ -383,7 +389,8 @@ public class DocumentQueryExecutionContextFactory {
             // Set initialPageSize based on the smallest of TOP or LIMIT
             if (queryInfo.hasTop() || queryInfo.hasLimit()) {
                 int pageSizeWithTopOrLimit = Math.min(queryInfo.hasTop() ? queryInfo.getTop() : Integer.MAX_VALUE,
-                                           queryInfo.hasLimit() ? queryInfo.getLimit() : Integer.MAX_VALUE);
+                                           queryInfo.hasLimit() && queryInfo.hasOffset() ?
+                                               queryInfo.getLimit() + queryInfo.getOffset() : Integer.MAX_VALUE);
                 if (initialPageSize > 0) {
                     initialPageSize = Math.min(pageSizeWithTopOrLimit, initialPageSize);
                 } else {

@@ -261,18 +261,18 @@ public class CosmosQueryRequestOptions {
      *
      * @return the max number of items for vector search.
      */
-    public Integer getMaxItemSizeForVectorSearch() {
-        return this.actualRequestOptions.getMaxItemSizeForVectorSearch();
+    Integer getMaxItemCountForVectorSearch() {
+        return this.actualRequestOptions.getMaxItemCountForVectorSearch();
     }
 
     /**
      * Sets the maximum item size to fetch during non-streaming order by queries.
      *
-     * @param maxItemSizeForVectorSearch the max number of items for vector search.
+     * @param maxItemCountForVectorSearch the max number of items for vector search.
      * @return the CosmosQueryRequestOptions.
      */
-    public CosmosQueryRequestOptions setMaxItemSizeForVectorSearch(Integer maxItemSizeForVectorSearch) {
-        this.actualRequestOptions.setMaxItemSizeForVectorSearch(maxItemSizeForVectorSearch);
+    CosmosQueryRequestOptions setMaxItemCountForVectorSearch(Integer maxItemCountForVectorSearch) {
+        this.actualRequestOptions.setMaxItemCountForVectorSearch(maxItemCountForVectorSearch);
         return this;
     }
 
@@ -622,6 +622,11 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public String getRequestContinuation(CosmosQueryRequestOptions options) {
                     return options.getRequestContinuation();
+                }
+
+                @Override
+                public Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options) {
+                    return options.getMaxItemCountForVectorSearch();
                 }
             });
     }

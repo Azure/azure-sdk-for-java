@@ -541,11 +541,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static Integer getMaxItemSizeForVectorSearchFromQueryRequestOptions(CosmosQueryRequestOptions options) {
-        return options.getMaxItemSizeForVectorSearch();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static String getRequestContinuationFromQueryRequestOptions(CosmosQueryRequestOptions options) {
         return options.getRequestContinuation();
     }

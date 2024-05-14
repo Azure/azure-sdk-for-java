@@ -166,12 +166,12 @@ public class Configs {
     public static final String MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = "COSMOS.MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED";
     private static final int DEFAULT_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
-    private static final String MAX_ITEM_SIZE_FOR_VECTOR_SEARCH = "COSMOS.MAX_ITEM_SIZE_FOR_VECTOR_SEARCH";
-    private static final int DEFAULT_MAX_ITEM_SIZE_FOR_VECTOR_SEARCH = 50000;
+    private static final String MAX_ITEM_COUNT_FOR_VECTOR_SEARCH = "COSMOS.MAX_ITEM_SIZE_FOR_VECTOR_SEARCH";
+    private static final int DEFAULT_MAX_ITEM_COUNT_FOR_VECTOR_SEARCH = 50000;
 
-    private static final String MAX_ITEM_SIZE_FOR_VECTOR_SEARCH_ENABLED = "COSMOS.MAX_ITEM_SIZE_FOR_VECTOR_SEARCH_ENABLED";
+    private static final String AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY = "COSMOS.AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY";
 
-    private static final boolean DEFAULT_MAX_ITEM_SIZE_FOR_VECTOR_SEARCH_ENABLED = true;
+    private static final boolean DEFAULT_AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY = false;
 
     public static final int MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
@@ -491,12 +491,18 @@ public class Configs {
                 MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED);
     }
 
-    public static int getMaxItemSizeForVectorSearch() {
-        return getJVMConfigAsInt(MAX_ITEM_SIZE_FOR_VECTOR_SEARCH, DEFAULT_MAX_ITEM_SIZE_FOR_VECTOR_SEARCH);
+    public static int getMaxItemCountForVectorSearch() {
+        return Integer.parseInt(System.getProperty(MAX_ITEM_COUNT_FOR_VECTOR_SEARCH,
+             firstNonNull(
+                emptyToNull(System.getenv().get(MAX_ITEM_COUNT_FOR_VECTOR_SEARCH)),
+                String.valueOf(DEFAULT_MAX_ITEM_COUNT_FOR_VECTOR_SEARCH))));
     }
 
-    public static boolean getMaxItemSizeForVectorSearchEnabled() {
-        return getJVMConfigAsBoolean(MAX_ITEM_SIZE_FOR_VECTOR_SEARCH_ENABLED, DEFAULT_MAX_ITEM_SIZE_FOR_VECTOR_SEARCH_ENABLED);
+    public static boolean getAzureCosmosNonStreamingOrderByDisabled() {
+        return Boolean.parseBoolean(System.getProperty(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY,
+            firstNonNull(
+                emptyToNull(System.getenv().get(AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY)),
+                String.valueOf(DEFAULT_AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY))));
     }
 
     public static Duration getMinRetryTimeInLocalRegionWhenRemoteRegionPreferred() {
