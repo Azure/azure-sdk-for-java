@@ -26,8 +26,10 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
@@ -46,6 +48,7 @@ public class ClientSideRequestStatistics {
     private Instant requestStartTimeUTC;
     private Instant requestEndTimeUTC;
     private Set<String> regionsContacted;
+    private NavigableSet<RegionWithContext> regionsContactedWithContext;
     private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
     private FaultInjectionRequestContext requestContext;
@@ -68,6 +71,7 @@ public class ClientSideRequestStatistics {
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
+        this.regionsContactedWithContext = Collections.synchronizedNavigableSet(new TreeSet<>());
         this.locationEndpointsContacted = Collections.synchronizedSet(new HashSet<>());
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
@@ -88,6 +92,7 @@ public class ClientSideRequestStatistics {
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>(toBeCloned.contactedReplicas));
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>(toBeCloned.failedReplicas));
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>(toBeCloned.regionsContacted));
+        this.regionsContactedWithContext = Collections.synchronizedNavigableSet(new TreeSet<>(toBeCloned.regionsContactedWithContext));
         this.locationEndpointsContacted = Collections.synchronizedSet(
             new HashSet<>(toBeCloned.locationEndpointsContacted));
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext(toBeCloned.metadataDiagnosticsContext);
@@ -176,6 +181,7 @@ public class ClientSideRequestStatistics {
                     globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType());
                 this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
+                this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, locationEndPoint));
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
@@ -206,8 +212,13 @@ public class ClientSideRequestStatistics {
             this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
+
+                String regionName = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType());
+
+                this.regionsContacted.add(regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
+
+                this.regionsContactedWithContext.add(new RegionWithContext(regionName, locationEndPoint));
             }
 
             GatewayStatistics gatewayStatistics = new GatewayStatistics();
@@ -397,6 +408,21 @@ public class ClientSideRequestStatistics {
         }
     }
 
+    private void mergeRegionWithContextSet(NavigableSet<RegionWithContext> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
+            this.regionsContactedWithContext = other;
+            return;
+        }
+
+        for (RegionWithContext regionWithContext : other) {
+            this.regionsContactedWithContext.add(regionWithContext);
+        }
+    }
+
     private void mergeRegionsContacted(Set<String> other) {
         if (other == null) {
             return;
@@ -458,6 +484,7 @@ public class ClientSideRequestStatistics {
         this.mergeFailedReplica(other.failedReplicas);
         this.mergeLocationEndpointsContacted(other.locationEndpointsContacted);
         this.mergeRegionsContacted(other.regionsContacted);
+        this.mergeRegionWithContextSet(other.regionsContactedWithContext);
         this.mergeStartTime(other.requestStartTimeUTC);
         this.mergeEndTime(other.requestEndTimeUTC);
         this.mergeSupplementalResponses(other.supplementalResponseStatisticsList);
@@ -582,6 +609,22 @@ public class ClientSideRequestStatistics {
         this.samplingRateSnapshot = samplingRateSnapshot;
 
         return this;
+    }
+
+    public String getFirstContactedRegion() {
+        if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
+            return StringUtils.EMPTY;
+        }
+
+        return this.regionsContactedWithContext.first().regionContacted;
+    }
+
+    public URI getFirstContactedLocationEndpoint() {
+        if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
+            return null;
+        }
+
+        return this.regionsContactedWithContext.first().locationEndpointsContacted;
     }
 
     public static class StoreResponseStatistics {
@@ -909,5 +952,36 @@ public class ClientSideRequestStatistics {
                 totalMemory - freeMemory + " KB",
                 (maxMemory - (totalMemory - freeMemory)) + " KB",
                 runtime.availableProcessors());
+    }
+
+    static class RegionWithContext implements Comparable<RegionWithContext> {
+
+        private final String regionContacted;
+        private final URI locationEndpointsContacted;
+        private final long recordedTimestamp;
+
+        RegionWithContext(String regionContacted, URI locationEndpointsContacted) {
+            this.regionContacted = regionContacted;
+            this.locationEndpointsContacted = locationEndpointsContacted;
+            this.recordedTimestamp = System.currentTimeMillis();
+        }
+
+        public String getRegionContacted() {
+            return regionContacted;
+        }
+
+        @Override
+        public int compareTo(RegionWithContext o) {
+
+            if (o == null || this.recordedTimestamp > o.recordedTimestamp) {
+                return 1;
+            }
+
+            if (this.recordedTimestamp == o.recordedTimestamp) {
+                return 0;
+            }
+
+            return -1;
+        }
     }
 }

@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.FeedOperationContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -35,6 +36,10 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 abstract class Fetcher<T> {
     private final static Logger logger = LoggerFactory.getLogger(Fetcher.class);
+
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private final Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc;
     private final boolean isChangeFeed;
@@ -194,33 +199,33 @@ abstract class Fetcher<T> {
                     return;
                 }
 
-                FeedOperationContext feedOperationContext = request.requestContext.getFeedOperationContext();
+                if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
 
-                if (feedOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
-                    if (!feedOperationContext.getIsRequestHedged() && feedOperationContext.hasPartitionKeyRangeSeenSuccess(request.requestContext.resolvedPartitionKeyRange)) {
+                    FeedOperationContext feedOperationContext = request.requestContext.getFeedOperationContext();
 
-                        if (this.globalEndpointManager != null && this.globalPartitionEndpointManagerForCircuitBreaker != null) {
-                            Optional<String> firstContactedRegion = request.requestContext.cosmosDiagnostics.getContactedRegionNames().stream().findFirst();
+                    if (feedOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
+                        if (!feedOperationContext.getIsRequestHedged() && feedOperationContext.hasPartitionKeyRangeSeenSuccess(request.requestContext.resolvedPartitionKeyRange)) {
 
-                            UnmodifiableList<URI> endpoints = request.isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
-                            List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, request.getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
-
-                            this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(request, filteredEndpoint.get(0));
+                            if (this.globalEndpointManager != null && this.globalPartitionEndpointManagerForCircuitBreaker != null) {
+                                this.tryMarkPartitionKeyRangeAsUnavailable(request);
+                            }
                         }
+                    } else {
+                        this.tryMarkPartitionKeyRangeAsUnavailable(request);
                     }
-                } else {
-                    Optional<String> firstContactedRegion = request.requestContext.cosmosDiagnostics.getContactedRegionNames().stream().findFirst();
-
-                    UnmodifiableList<URI> endpoints = request.isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
-                    List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, request.getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
-
-                    this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(request, filteredEndpoint.get(0));
                 }
-
 
                 if (request.requestContext != null && request.requestContext.cosmosDiagnostics != null) {
                     this.cancelledRequestDiagnosticsTracker.add(request.requestContext.cosmosDiagnostics);
                 }
             });
+    }
+
+    private void tryMarkPartitionKeyRangeAsUnavailable(RxDocumentServiceRequest failedRequest) {
+        URI firstContactedLocationEndpoint = diagnosticsAccessor.getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
+
+        if (firstContactedLocationEndpoint != null) {
+            this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+        }
     }
 }

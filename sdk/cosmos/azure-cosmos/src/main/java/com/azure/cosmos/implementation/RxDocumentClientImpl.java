@@ -17,7 +17,6 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
@@ -86,6 +85,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.util.concurrent.Queues;
 
 import java.io.IOException;
@@ -106,7 +106,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -2238,52 +2237,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .doOnError(throwable -> {
                 if (throwable instanceof OperationCancelledException) {
 
+                    if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+                        RxDocumentServiceRequest failedRequest = requestReference.get();
+                        PointOperationContext pointOperationContext = failedRequest.requestContext.getPointOperationContext();
+
+                        if (pointOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
+
+                            if (!pointOperationContext.getIsRequestHedged() && pointOperationContext.getHasOperationSeenSuccess()) {
+                                this.tryMarkPartitionKeyRangeAsUnavailableForRegion(failedRequest);
+                            }
+                        } else {
+                            this.tryMarkPartitionKeyRangeAsUnavailableForRegion(failedRequest);
+                        }
+                    }
+                }
+            })
+            .doFinally(signalType -> {
+
+                if (signalType == SignalType.CANCEL && Configs.isPartitionLevelCircuitBreakerEnabled()) {
                     RxDocumentServiceRequest failedRequest = requestReference.get();
                     PointOperationContext pointOperationContext = failedRequest.requestContext.getPointOperationContext();
 
                     if (pointOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
 
                         if (!pointOperationContext.getIsRequestHedged() && pointOperationContext.getHasOperationSeenSuccess()) {
-                            OperationCancelledException exception = Utils.as(throwable, OperationCancelledException.class);
-                            Optional<String> firstContactedRegion = exception.getDiagnostics().getContactedRegionNames().stream().findFirst();
-
-                            UnmodifiableList<URI> endpoints = requestReference.get().isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
-                            List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, requestReference.get().getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
-
-                            this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get(), filteredEndpoint.get(0));
+                            this.tryMarkPartitionKeyRangeAsUnavailableForRegion(failedRequest);
                         }
                     } else {
-                        OperationCancelledException exception = Utils.as(throwable, OperationCancelledException.class);
-                        Optional<String> firstContactedRegion = exception.getDiagnostics().getContactedRegionNames().stream().findFirst();
-
-                        UnmodifiableList<URI> endpoints = requestReference.get().isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
-                        List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, requestReference.get().getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
-
-                        this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get(), filteredEndpoint.get(0));
+                        this.tryMarkPartitionKeyRangeAsUnavailableForRegion(failedRequest);
                     }
-                }
-            })
-            .doOnCancel(() -> {
-                RxDocumentServiceRequest failedRequest = requestReference.get();
-                PointOperationContext pointOperationContext = failedRequest.requestContext.getPointOperationContext();
-
-                if (pointOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
-
-                    if (!pointOperationContext.getIsRequestHedged() && pointOperationContext.getHasOperationSeenSuccess()) {
-                        Optional<String> firstContactedRegion = failedRequest.requestContext.cosmosDiagnostics.getContactedRegionNames().stream().findFirst();
-
-                        UnmodifiableList<URI> endpoints = requestReference.get().isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
-                        List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, requestReference.get().getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
-
-                        this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get(), filteredEndpoint.get(0));
-                    }
-                } else {
-                    Optional<String> firstContactedRegion = failedRequest.requestContext.cosmosDiagnostics.getContactedRegionNames().stream().findFirst();
-
-                    UnmodifiableList<URI> endpoints = failedRequest.isReadOnly() ? this.globalEndpointManager.getReadEndpoints() : this.globalEndpointManager.getWriteEndpoints();
-                    List<URI> filteredEndpoint = endpoints.stream().filter(uri -> this.globalEndpointManager.getRegionName(uri, failedRequest.getOperationType()).equals(firstContactedRegion.get())).collect(Collectors.toList());
-
-                    this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(failedRequest, filteredEndpoint.get(0));
                 }
             });
     }
@@ -6187,6 +6169,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 return exception;
             });
+    }
+
+    private void tryMarkPartitionKeyRangeAsUnavailableForRegion(RxDocumentServiceRequest failedRequest) {
+
+        URI firstContactedLocationEndpoint = diagnosticsAccessor.getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
+
+        if (firstContactedLocationEndpoint != null) {
+            this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+        }
     }
 
     @FunctionalInterface

@@ -76,6 +76,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -771,6 +772,10 @@ public class ImplementationBridgeHelpers {
             boolean isNotEmpty(CosmosDiagnostics cosmosDiagnostics);
 
             void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
+
+            String getFirstContactedRegion(CosmosDiagnostics cosmosDiagnostics);
+
+            URI getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 
