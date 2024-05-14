@@ -4,9 +4,10 @@
 
 package com.azure.messaging.servicebus.administration.implementation.models;
 
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
