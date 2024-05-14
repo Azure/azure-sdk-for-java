@@ -394,9 +394,8 @@ def check_call(cmd: List[str], work_dir: str):
     subprocess.check_call(cmd, cwd=work_dir)
 
 def drop_changes(work_dir: str):
-    check_call(['git', 'add', '.'], work_dir)
-    check_call(['git', 'stash'], work_dir)
-    check_call(['git', 'stash', 'clear'], work_dir)
+    check_call(['git', 'checkout', '--', '.'], work_dir)
+    check_call(['git', 'clean', '-qf'], work_dir)
 
 
 def remove_prefix(text, prefix):
