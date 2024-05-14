@@ -60,9 +60,9 @@ public class VertxAsyncHttpClientProvider implements HttpClientProvider {
         return new VertxAsyncHttpClientBuilder().proxy(clientOptions.getProxyOptions())
             .configuration(clientOptions.getConfiguration())
             .connectTimeout(clientOptions.getConnectTimeout())
-            .idleTimeout(clientOptions.getConnectionIdleTimeout())
-            .writeIdleTimeout(clientOptions.getWriteTimeout())
-            .readIdleTimeout(clientOptions.getReadTimeout())
+            .writeTimeout(clientOptions.getWriteTimeout())
+            .responseTimeout(clientOptions.getResponseTimeout())
+            .readTimeout(clientOptions.getReadTimeout())
             .build();
     }
 }

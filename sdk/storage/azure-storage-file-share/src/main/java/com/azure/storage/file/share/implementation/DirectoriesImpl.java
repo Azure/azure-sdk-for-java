@@ -1919,8 +1919,11 @@ public final class DirectoriesImpl {
         final String restype = "directory";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.listFilesAndDirectoriesSegment(this.client.getUrl(), shareName,
             directory, restype, comp, prefix, sharesnapshot, marker, maxresults, timeout, this.client.getVersion(),
             includeConverted, includeExtendedInfo, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
@@ -1962,8 +1965,11 @@ public final class DirectoriesImpl {
         final String restype = "directory";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.listFilesAndDirectoriesSegment(this.client.getUrl(), shareName, directory, restype, comp, prefix,
             sharesnapshot, marker, maxresults, timeout, this.client.getVersion(), includeConverted, includeExtendedInfo,
             this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
@@ -2071,8 +2077,11 @@ public final class DirectoriesImpl {
         final String restype = "directory";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.listFilesAndDirectoriesSegmentNoCustomHeaders(this.client.getUrl(),
                 shareName, directory, restype, comp, prefix, sharesnapshot, marker, maxresults, timeout,
@@ -2115,8 +2124,11 @@ public final class DirectoriesImpl {
         final String restype = "directory";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.listFilesAndDirectoriesSegmentNoCustomHeaders(this.client.getUrl(), shareName, directory,
             restype, comp, prefix, sharesnapshot, marker, maxresults, timeout, this.client.getVersion(),
             includeConverted, includeExtendedInfo, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
@@ -2157,8 +2169,11 @@ public final class DirectoriesImpl {
         final String restype = "directory";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.listFilesAndDirectoriesSegmentSync(this.client.getUrl(), shareName, directory, restype, comp,
             prefix, sharesnapshot, marker, maxresults, timeout, this.client.getVersion(), includeConverted,
             includeExtendedInfo, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
@@ -2230,8 +2245,11 @@ public final class DirectoriesImpl {
         final String restype = "directory";
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.listFilesAndDirectoriesSegmentNoCustomHeadersSync(this.client.getUrl(), shareName, directory,
             restype, comp, prefix, sharesnapshot, marker, maxresults, timeout, this.client.getVersion(),
             includeConverted, includeExtendedInfo, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),

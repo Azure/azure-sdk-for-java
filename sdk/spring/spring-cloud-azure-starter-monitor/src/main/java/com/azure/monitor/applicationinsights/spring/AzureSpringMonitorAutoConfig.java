@@ -4,7 +4,6 @@
 package com.azure.monitor.applicationinsights.spring;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
@@ -14,6 +13,8 @@ import io.opentelemetry.sdk.autoconfigure.spi.traces.ConfigurableSpanExporterPro
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -31,7 +32,7 @@ import java.util.Optional;
 @ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
 public class AzureSpringMonitorAutoConfig {
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureSpringMonitorAutoConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfig.class);
 
     private static final String CONNECTION_STRING_ERROR_MESSAGE = "Unable to find the Application Insights connection string.";
 
@@ -48,7 +49,7 @@ public class AzureSpringMonitorAutoConfig {
     public AzureSpringMonitorAutoConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, ObjectProvider<HttpPipeline> httpPipeline) {
         this.azureMonitorExporterBuilderOpt = createAzureMonitorExporterBuilder(connectionStringSysProp, httpPipeline);
         if (!isNativeRuntimeExecution()) {
-            LOGGER.warning("You are using Application Insights for Spring in a non-native GraalVM runtime environment. We recommend using the Application Insights Java agent.");
+            LOG.warn("You are using Application Insights for Spring in a non-native GraalVM runtime environment. We recommend using the Application Insights Java agent.");
         }
     }
 
@@ -70,11 +71,11 @@ public class AzureSpringMonitorAutoConfig {
             } catch (IllegalArgumentException illegalArgumentException) {
                 String errorMessage = illegalArgumentException.getMessage();
                 if (errorMessage.contains("InstrumentationKey")) {
-                    LOGGER.warning(CONNECTION_STRING_ERROR_MESSAGE + " Please check you have not used an instrumentation key instead of a connection string");
+                    LOG.warn(CONNECTION_STRING_ERROR_MESSAGE + " Please check you have not used an instrumentation key instead of a connection string");
                 }
             }
         } else {
-            LOGGER.warning(CONNECTION_STRING_ERROR_MESSAGE);
+            LOG.warn(CONNECTION_STRING_ERROR_MESSAGE);
         }
         return Optional.empty();
     }
