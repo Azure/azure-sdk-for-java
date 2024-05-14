@@ -3269,11 +3269,6 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.appservice.models.StorageType",
-  "allDeclaredConstructors" : true,
-  "allDeclaredFields" : true,
-  "allDeclaredMethods" : true
-}, {
   "name" : "com.azure.resourcemanager.appservice.models.AuthenticationType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -3580,6 +3575,11 @@
   "allDeclaredMethods" : true
 }, {
   "name" : "com.azure.resourcemanager.appservice.models.AzureStorageState",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.appservice.models.StorageType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
