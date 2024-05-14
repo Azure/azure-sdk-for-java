@@ -25,10 +25,25 @@ public final class FalseFilterImpl extends SqlFilterImpl {
     private static final String WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE
         = "http://www.w3.org/2001/XMLSchema-instance";
 
+    /*
+     * The type property.
+     */
+    private String type = "FalseFilter";
+
     /**
      * Creates an instance of FalseFilter class.
      */
     public FalseFilterImpl() {
+    }
+
+    /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -129,6 +144,7 @@ public final class FalseFilterImpl extends SqlFilterImpl {
                     "'type' was expected to be non-null and equal to 'FalseFilter'. The found 'type' was '"
                         + discriminatorValue + "'.");
             }
+            deserializedFalseFilter.type = discriminatorValue;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 

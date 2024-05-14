@@ -22,10 +22,25 @@ public final class EmptyRuleActionImpl extends RuleActionImpl {
     private static final String WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE
         = "http://www.w3.org/2001/XMLSchema-instance";
 
+    /*
+     * The type property.
+     */
+    private String type = "EmptyRuleAction";
+
     /**
      * Creates an instance of EmptyRuleAction class.
      */
     public EmptyRuleActionImpl() {
+    }
+
+    /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     @Override
@@ -78,6 +93,7 @@ public final class EmptyRuleActionImpl extends RuleActionImpl {
                     "'type' was expected to be non-null and equal to 'EmptyRuleAction'. The found 'type' was '"
                         + discriminatorValue + "'.");
             }
+            deserializedEmptyRuleAction.type = discriminatorValue;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 reader.skipElement();
             }

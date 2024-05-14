@@ -25,10 +25,25 @@ public final class TrueFilterImpl extends SqlFilterImpl {
     private static final String WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE
         = "http://www.w3.org/2001/XMLSchema-instance";
 
+    /*
+     * The type property.
+     */
+    private String type = "TrueFilter";
+
     /**
      * Creates an instance of TrueFilter class.
      */
     public TrueFilterImpl() {
+    }
+
+    /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -129,6 +144,7 @@ public final class TrueFilterImpl extends SqlFilterImpl {
                     "'type' was expected to be non-null and equal to 'TrueFilter'. The found 'type' was '"
                         + discriminatorValue + "'.");
             }
+            deserializedTrueFilter.type = discriminatorValue;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 

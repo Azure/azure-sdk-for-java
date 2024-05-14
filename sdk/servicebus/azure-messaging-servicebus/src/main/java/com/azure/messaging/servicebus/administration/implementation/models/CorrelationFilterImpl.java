@@ -26,6 +26,11 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
         = "http://www.w3.org/2001/XMLSchema-instance";
 
     /*
+     * The type property.
+     */
+    private String type = "CorrelationFilter";
+
+    /*
      * The correlationId property.
      */
     private String correlationId;
@@ -74,6 +79,16 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
      * Creates an instance of CorrelationFilter class.
      */
     public CorrelationFilterImpl() {
+    }
+
+    /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -325,6 +340,7 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
                     "'type' was expected to be non-null and equal to 'CorrelationFilter'. The found 'type' was '"
                         + discriminatorValue + "'.");
             }
+            deserializedCorrelationFilter.type = discriminatorValue;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 

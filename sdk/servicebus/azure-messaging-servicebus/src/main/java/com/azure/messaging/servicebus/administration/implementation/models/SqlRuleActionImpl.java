@@ -26,6 +26,11 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
         = "http://www.w3.org/2001/XMLSchema-instance";
 
     /*
+     * The type property.
+     */
+    private String type = "SqlRuleAction";
+
+    /*
      * The sqlExpression property.
      */
     private String sqlExpression;
@@ -49,6 +54,16 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
      * Creates an instance of SqlRuleAction class.
      */
     public SqlRuleActionImpl() {
+    }
+
+    /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -196,6 +211,7 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
                     "'type' was expected to be non-null and equal to 'SqlRuleAction'. The found 'type' was '"
                         + discriminatorValue + "'.");
             }
+            deserializedSqlRuleAction.type = discriminatorValue;
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
