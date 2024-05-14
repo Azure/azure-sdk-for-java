@@ -42,8 +42,8 @@ public interface Operation {
     Origin origin();
 
     /**
-     * Gets the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
-     * only APIs.
+     * Gets the actionType property: Extensible enum. Indicates the action type. "Internal" refers to actions that are
+     * for internal only APIs.
      * 
      * @return the actionType value.
      */

@@ -22,10 +22,7 @@ import javax.xml.stream.XMLStreamException;
 @Fluent
 public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
     /*
-     * The origin domains that are permitted to make a request against the storage service via CORS. The origin domain
-     * is the domain from which the request originates. Note that the origin must be an exact case-sensitive match with
-     * the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all
-     * origin domains to make requests via CORS.
+     * The origin domains that are permitted to make a request against the storage service via CORS. The origin domain is the domain from which the request originates. Note that the origin must be an exact case-sensitive match with the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all origin domains to make requests via CORS.
      */
     private String allowedOrigins;
 
@@ -40,8 +37,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
     private String allowedHeaders;
 
     /*
-     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
-     * request issuer
+     * The response headers that may be sent in the response to the CORS request and exposed by the browser to the request issuer
      */
     private String exposedHeaders;
 
@@ -58,8 +54,8 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
 
     /**
      * Get the allowedOrigins property: The origin domains that are permitted to make a request against the storage
-     * service via CORS. The origin domain is the domain from which the request originates. Note that the origin must
-     * be an exact case-sensitive match with the origin that the user age sends to the service. You can also use the
+     * service via CORS. The origin domain is the domain from which the request originates. Note that the origin must be
+     * an exact case-sensitive match with the origin that the user age sends to the service. You can also use the
      * wildcard character '*' to allow all origin domains to make requests via CORS.
      * 
      * @return the allowedOrigins value.
@@ -70,8 +66,8 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
 
     /**
      * Set the allowedOrigins property: The origin domains that are permitted to make a request against the storage
-     * service via CORS. The origin domain is the domain from which the request originates. Note that the origin must
-     * be an exact case-sensitive match with the origin that the user age sends to the service. You can also use the
+     * service via CORS. The origin domain is the domain from which the request originates. Note that the origin must be
+     * an exact case-sensitive match with the origin that the user age sends to the service. You can also use the
      * wildcard character '*' to allow all origin domains to make requests via CORS.
      * 
      * @param allowedOrigins the allowedOrigins value to set.

@@ -16,3 +16,4 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
       goals: 'install'
+    condition: and(succeeded(), gt('${{ parameters.JdkVersion }}', '1.11'))

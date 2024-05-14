@@ -12,6 +12,7 @@ import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -126,8 +127,8 @@ public final class ConfigurationClientBuilder implements
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
         ADD_HEADERS_POLICY = new AddHeadersPolicy(new HttpHeaders()
             .set("x-ms-return-client-request-id", "true")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/vnd.microsoft.azconfig.kv+json"));
+            .set(HttpHeaderName.CONTENT_TYPE, "application/json")
+            .set(HttpHeaderName.ACCEPT, "application/vnd.microsoft.azconfig.kv+json"));
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClientBuilder.class);

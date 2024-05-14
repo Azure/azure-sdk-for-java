@@ -24,7 +24,7 @@ from generate_data import (
 )
 from generate_utils import (
     compare_with_maven_package,
-    compile_package,
+    compile_arm_package,
     generate,
     get_and_update_service_from_api_specs,
     get_suffix_from_api_specs,
@@ -187,7 +187,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                 tag=tag,
             )
             if succeeded:
-                compile_package(sdk_root, module)
+                compile_arm_package(sdk_root, module)
 
             packages.append({
                 'packageName':
@@ -246,7 +246,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     repo_url: str = config['repoHttpsUrl']
 
     succeeded, require_sdk_integration, sdk_folder, service, module \
-        = generate_typespec_project(tsp_project, sdk_root, spec_root, head_sha, repo_url)
+        = generate_typespec_project(tsp_project, sdk_root, spec_root, head_sha, repo_url, remove_before_regen=True, group_id=GROUP_ID)
 
     if succeeded:
         # TODO (weidxu): move to typespec-java
@@ -256,7 +256,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             update_root_pom(sdk_root, service)
 
         # compile
-        succeeded = compile_package(sdk_root, module)
+        succeeded = compile_arm_package(sdk_root, module)
 
     # output
     if sdk_folder and module and service:
@@ -308,7 +308,7 @@ def main():
         tsp_config = args['tsp_config']
 
         succeeded, require_sdk_integration, sdk_folder, service, module \
-            = generate_typespec_project(tsp_project=tsp_config, sdk_root=sdk_root)
+            = generate_typespec_project(tsp_project=tsp_config, sdk_root=sdk_root, remove_before_regen=True, group_id=GROUP_ID)
 
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)
         args['version'] = current_version
@@ -359,7 +359,7 @@ def main():
         )
 
     if succeeded:
-        succeeded = compile_package(sdk_root, module)
+        succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
             compare_with_maven_package(sdk_root, service, stable_version,
                                        current_version, module)
