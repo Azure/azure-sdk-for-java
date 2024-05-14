@@ -78,6 +78,11 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     public static final SkuName ELASTIC_ISOLATED = fromString("ElasticIsolated");
 
     /**
+     * Static value FlexConsumption for SkuName.
+     */
+    public static final SkuName FLEX_CONSUMPTION = fromString("FlexConsumption");
+
+    /**
      * Creates a new instance of SkuName value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

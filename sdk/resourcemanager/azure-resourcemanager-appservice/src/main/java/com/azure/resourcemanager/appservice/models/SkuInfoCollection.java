@@ -69,8 +69,8 @@ public final class SkuInfoCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model SkuInfoCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model SkuInfoCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -69,8 +69,9 @@ public final class ApplicationStackCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model ApplicationStackCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model ApplicationStackCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

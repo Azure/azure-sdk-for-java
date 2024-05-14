@@ -13,8 +13,7 @@ import java.util.Map;
  */
 public final class StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * CreateOrUpdateStaticSiteBuildFunctionAppSettings.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/CreateOrUpdateStaticSiteBuildFunctionAppSettings.json
      */
     /**
      * Sample code: Creates or updates the function app settings of a static site build.
@@ -23,7 +22,10 @@ public final class StaticSitesCreateOrUpdateStaticSiteBuildFunctionAppSettingsSa
      */
     public static void
         createsOrUpdatesTheFunctionAppSettingsOfAStaticSiteBuild(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites()
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
             .createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponse("rg", "testStaticSite0", "12",
                 new StringDictionaryInner().withProperties(mapOf("setting1", "someval", "setting2", "someval2")),
                 com.azure.core.util.Context.NONE);

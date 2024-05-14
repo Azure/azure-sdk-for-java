@@ -20,15 +20,13 @@ public final class Hostname {
     private String name;
 
     /*
-     * List of apps the hostname is assigned to. This list will have more than one app only if the hostname is pointing
-     * to a Traffic Manager.
+     * List of apps the hostname is assigned to. This list will have more than one app only if the hostname is pointing to a Traffic Manager.
      */
     @JsonProperty(value = "siteNames")
     private List<String> siteNames;
 
     /*
-     * Name of the Azure resource the hostname is assigned to. If it is assigned to a Traffic Manager then it will be
-     * the Traffic Manager name otherwise it will be the app name.
+     * Name of the Azure resource the hostname is assigned to. If it is assigned to a Traffic Manager then it will be the Traffic Manager name otherwise it will be the app name.
      */
     @JsonProperty(value = "azureResourceName")
     private String azureResourceName;

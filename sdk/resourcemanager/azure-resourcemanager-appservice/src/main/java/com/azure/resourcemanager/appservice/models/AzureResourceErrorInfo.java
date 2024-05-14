@@ -90,8 +90,8 @@ public final class AzureResourceErrorInfo extends ErrorInfo {
     public void validate() {
         super.validate();
         if (message() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property message in model AzureResourceErrorInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property message in model AzureResourceErrorInfo"));
         }
         if (details() != null) {
             details().forEach(e -> e.validate());

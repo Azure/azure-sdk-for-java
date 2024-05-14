@@ -59,7 +59,6 @@ import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorExce
 import com.azure.resourcemanager.appservice.models.InboundEnvironmentEndpointCollection;
 import com.azure.resourcemanager.appservice.models.OutboundEnvironmentEndpointCollection;
 import com.azure.resourcemanager.appservice.models.PrivateEndpointConnectionCollection;
-import com.azure.resourcemanager.appservice.models.PrivateLinkConnectionApprovalRequestResource;
 import com.azure.resourcemanager.appservice.models.ResourceMetricDefinitionCollection;
 import com.azure.resourcemanager.appservice.models.SkuInfoCollection;
 import com.azure.resourcemanager.appservice.models.StampCapacityCollection;
@@ -102,8 +101,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     }
 
     /**
-     * The interface defining all the services for WebSiteManagementClientAppServiceEnvironments to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for WebSiteManagementClientAppServiceEnvironments to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
@@ -406,7 +405,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
+            @BodyParam("application/json") RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -2136,15 +2135,21 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono = service.changeVnet(this.client.getEndpoint(), resourceGroupName,
-                name, this.client.getSubscriptionId(), this.client.getApiVersion(), vnetInfo, accept, context).cache();
+            Mono<Response<Flux<ByteBuffer>>> mono
+                = service
+                    .changeVnet(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                        this.client.getApiVersion(), vnetInfo, accept, context)
+                    .cache();
             return Mono.zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, this.client.getContext())
-                    .last().flatMap(this.client::getLroFinalResultOrError));
-        }).<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getT1().getRequest(),
-            res.getT1().getStatusCode(), res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError));
+        })
+            .<PagedResponse<SiteInner>>map(
+                res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
+                    res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2187,14 +2192,18 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = service.changeVnet(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), vnetInfo, accept, context).cache();
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = service
+                .changeVnet(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), vnetInfo, accept, context)
+                .cache();
         return Mono
             .zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, context)
-                    .last().flatMap(this.client::getLroFinalResultOrError))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError))
             .map(res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
                 res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null));
     }
@@ -5646,7 +5655,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5656,7 +5665,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5698,7 +5707,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5709,7 +5718,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -5750,7 +5759,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5760,7 +5769,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     public
         PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionAsync(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         Mono<Response<Flux<ByteBuffer>>> mono = approveOrRejectPrivateEndpointConnectionWithResponseAsync(
             resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper);
         return this.client
@@ -5777,7 +5787,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5788,8 +5798,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     private
         PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnectionAsync(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
-            Context context) {
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = approveOrRejectPrivateEndpointConnectionWithResponseAsync(
             resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, context);
@@ -5807,7 +5817,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5817,9 +5827,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     public
         SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
-        return this.beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
-            privateEndpointConnectionName, privateEndpointWrapper).getSyncPoller();
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
+        return this
+            .beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
+                privateEndpointWrapper)
+            .getSyncPoller();
     }
 
     /**
@@ -5830,7 +5843,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5841,10 +5854,12 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     public
         SyncPoller<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
-            String privateEndpointConnectionName, PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper,
-            Context context) {
-        return this.beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
-            privateEndpointConnectionName, privateEndpointWrapper, context).getSyncPoller();
+            String privateEndpointConnectionName,
+            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
+        return this
+            .beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
+                privateEndpointWrapper, context)
+            .getSyncPoller();
     }
 
     /**
@@ -5855,7 +5870,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5864,10 +5879,10 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         return beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
             privateEndpointConnectionName, privateEndpointWrapper).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5878,7 +5893,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5888,10 +5903,10 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         return beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
             privateEndpointConnectionName, privateEndpointWrapper, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5902,7 +5917,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5911,7 +5926,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         return approveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
             privateEndpointWrapper).block();
     }
@@ -5924,7 +5939,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Private Endpoint Connection Approval ARM resource.
+     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -5934,7 +5949,7 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
-        PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper, Context context) {
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         return approveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
             privateEndpointWrapper, context).block();
     }
@@ -6478,15 +6493,21 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono = service.resume(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context).cache();
+            Mono<Response<Flux<ByteBuffer>>> mono
+                = service
+                    .resume(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                        this.client.getApiVersion(), accept, context)
+                    .cache();
             return Mono.zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, this.client.getContext())
-                    .last().flatMap(this.client::getLroFinalResultOrError));
-        }).<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getT1().getRequest(),
-            res.getT1().getStatusCode(), res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError));
+        })
+            .<PagedResponse<SiteInner>>map(
+                res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
+                    res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6523,14 +6544,18 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = service.resume(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context).cache();
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = service
+                .resume(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), accept, context)
+                .cache();
         return Mono
             .zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, context)
-                    .last().flatMap(this.client::getLroFinalResultOrError))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError))
             .map(res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
                 res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null));
     }
@@ -6971,15 +6996,21 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono = service.suspend(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context).cache();
+            Mono<Response<Flux<ByteBuffer>>> mono
+                = service
+                    .suspend(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                        this.client.getApiVersion(), accept, context)
+                    .cache();
             return Mono.zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, this.client.getContext())
-                    .last().flatMap(this.client::getLroFinalResultOrError));
-        }).<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getT1().getRequest(),
-            res.getT1().getStatusCode(), res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError));
+        })
+            .<PagedResponse<SiteInner>>map(
+                res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
+                    res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7016,14 +7047,18 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = service.suspend(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context).cache();
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = service
+                .suspend(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), accept, context)
+                .cache();
         return Mono
             .zip(mono,
                 this.client
                     .<WebAppCollection, WebAppCollection>getLroResult(mono, this.client.getHttpPipeline(),
                         WebAppCollection.class, WebAppCollection.class, context)
-                    .last().flatMap(this.client::getLroFinalResultOrError))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError))
             .map(res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
                 res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null));
     }
@@ -7817,7 +7852,8 @@ public final class AppServiceEnvironmentsClientImpl implements InnerSupportsGet<
     private Mono<WorkerPoolResourceInner> createOrUpdateWorkerPoolAsync(String resourceGroupName, String name,
         String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope, Context context) {
         return beginCreateOrUpdateWorkerPoolAsync(resourceGroupName, name, workerPoolName, workerPoolEnvelope, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

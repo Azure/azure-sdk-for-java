@@ -15,9 +15,7 @@ import java.util.Map;
  */
 public final class AppServiceCertificateOrdersValidatePurchaseInformationSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/
-     * ValidateAppServiceCertificatePurchaseInformationBySubscription.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/ValidateAppServiceCertificatePurchaseInformationBySubscription.json
      */
     /**
      * Sample code: Validate App Service Certificate purchase information by subscription.
@@ -26,18 +24,22 @@ public final class AppServiceCertificateOrdersValidatePurchaseInformationSamples
      */
     public static void validateAppServiceCertificatePurchaseInformationBySubscription(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceCertificateOrders()
-            .validatePurchaseInformationWithResponse(
-                new AppServiceCertificateOrderInner().withLocation("Global")
-                    .withCertificates(mapOf("SampleCertName1",
-                        new AppServiceCertificateInner()
-                            .withKeyVaultId("fakeTokenPlaceholder").withKeyVaultSecretName("fakeTokenPlaceholder"),
-                        "SampleCertName2",
-                        new AppServiceCertificateInner().withKeyVaultId("fakeTokenPlaceholder")
-                            .withKeyVaultSecretName("fakeTokenPlaceholder")))
-                    .withDistinguishedName("CN=SampleCustomDomain.com").withValidityInYears(2).withKeySize(2048)
-                    .withProductType(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL).withAutoRenew(true),
-                com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceCertificateOrders()
+            .validatePurchaseInformationWithResponse(new AppServiceCertificateOrderInner().withLocation("Global")
+                .withCertificates(mapOf("SampleCertName1",
+                    new AppServiceCertificateInner().withKeyVaultId("fakeTokenPlaceholder")
+                        .withKeyVaultSecretName("fakeTokenPlaceholder"),
+                    "SampleCertName2",
+                    new AppServiceCertificateInner().withKeyVaultId("fakeTokenPlaceholder")
+                        .withKeyVaultSecretName("fakeTokenPlaceholder")))
+                .withDistinguishedName("CN=SampleCustomDomain.com")
+                .withValidityInYears(2)
+                .withKeySize(2048)
+                .withProductType(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL)
+                .withAutoRenew(true), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

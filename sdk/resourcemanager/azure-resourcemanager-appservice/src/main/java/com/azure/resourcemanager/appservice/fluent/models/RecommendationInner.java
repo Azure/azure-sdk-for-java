@@ -291,8 +291,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is
-     * invalid.
+     * Get the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
      * 
      * @return the enabled value.
      */
@@ -301,8 +300,7 @@ public final class RecommendationInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is
-     * invalid.
+     * Set the enabled property: True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
      * 
      * @param enabled the enabled value to set.
      * @return the RecommendationInner object itself.

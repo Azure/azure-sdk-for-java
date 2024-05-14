@@ -26,7 +26,7 @@ public final class VnetInfo {
     private String certThumbprint;
 
     /*
-     * A certificate file (.cer) blob containing the public key of the private key used to authenticate a
+     * A certificate file (.cer) blob containing the public key of the private key used to authenticate a 
      * Point-To-Site VPN connection.
      */
     @JsonProperty(value = "certBlob")

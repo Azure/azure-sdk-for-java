@@ -15,8 +15,7 @@ import java.util.Map;
  */
 public final class WebAppsUpdateAzureStorageAccountsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/UpdateAzureStorageAccounts.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/UpdateAzureStorageAccounts.json
      */
     /**
      * Sample code: Update Azure Storage Accounts.
@@ -24,12 +23,18 @@ public final class WebAppsUpdateAzureStorageAccountsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAzureStorageAccounts(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().updateAzureStorageAccountsWithResponse("testrg123",
-            "sitef6141",
-            new AzureStoragePropertyDictionaryResourceInner().withProperties(mapOf("account1",
-                new AzureStorageInfoValue().withType(AzureStorageType.AZURE_FILES).withAccountName("testsa")
-                    .withShareName("web").withAccessKey("fakeTokenPlaceholder").withMountPath("/mounts/a/files"))),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getWebApps()
+            .updateAzureStorageAccountsWithResponse("testrg123", "sitef6141",
+                new AzureStoragePropertyDictionaryResourceInner().withProperties(mapOf("account1",
+                    new AzureStorageInfoValue().withType(AzureStorageType.AZURE_FILES)
+                        .withAccountName("testsa")
+                        .withShareName("web")
+                        .withAccessKey("fakeTokenPlaceholder")
+                        .withMountPath("/mounts/a/files"))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

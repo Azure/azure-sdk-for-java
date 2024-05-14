@@ -69,8 +69,9 @@ public final class KubeEnvironmentCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model KubeEnvironmentCollection"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property value in model KubeEnvironmentCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

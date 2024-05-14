@@ -541,8 +541,8 @@ public final class AppServicePlanPatchResourceProperties {
     }
 
     /**
-     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform
-     * availability zone balancing.
+     * Get the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
+     * zone balancing.
      * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone balancing.
      * 
      * @return the zoneRedundant value.
@@ -552,8 +552,8 @@ public final class AppServicePlanPatchResourceProperties {
     }
 
     /**
-     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform
-     * availability zone balancing.
+     * Set the zoneRedundant property: If &lt;code&gt;true&lt;/code&gt;, this App Service Plan will perform availability
+     * zone balancing.
      * If &lt;code&gt;false&lt;/code&gt;, this App Service Plan will not perform availability zone balancing.
      * 
      * @param zoneRedundant the zoneRedundant value to set.

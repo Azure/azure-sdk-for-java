@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesGetStaticSiteBuildsSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetStaticSiteBuilds.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetStaticSiteBuilds.json
      */
     /**
      * Sample code: Get all builds for a static site.
@@ -18,7 +17,10 @@ public final class StaticSitesGetStaticSiteBuildsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAllBuildsForAStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getStaticSites().getStaticSiteBuilds("rg", "testStaticSite0",
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getStaticSites()
+            .getStaticSiteBuilds("rg", "testStaticSite0", com.azure.core.util.Context.NONE);
     }
 }

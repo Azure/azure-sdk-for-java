@@ -16,16 +16,14 @@ import java.util.List;
 @Fluent
 public final class SiteAuthSettingsProperties {
     /*
-     * <code>true</code> if the Authentication / Authorization feature is enabled for the current app; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the Authentication / Authorization feature is enabled for the current app; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The RuntimeVersion of the Authentication / Authorization feature in use for the current app.
-     * The setting in this value can control the behavior of certain features in the Authentication / Authorization
-     * module.
+     * The setting in this value can control the behavior of certain features in the Authentication / Authorization module.
      */
     @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
@@ -37,16 +35,14 @@ public final class SiteAuthSettingsProperties {
     private UnauthenticatedClientAction unauthenticatedClientAction;
 
     /*
-     * <code>true</code> to durably store platform-specific security tokens that are obtained during login flows;
-     * otherwise, <code>false</code>.
-     * The default is <code>false</code>.
+     * <code>true</code> to durably store platform-specific security tokens that are obtained during login flows; otherwise, <code>false</code>.
+     *  The default is <code>false</code>.
      */
     @JsonProperty(value = "tokenStoreEnabled")
     private Boolean tokenStoreEnabled;
 
     /*
-     * External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query
-     * string part of the URL is ignored.
+     * External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
      */
@@ -70,7 +66,7 @@ public final class SiteAuthSettingsProperties {
 
     /*
      * The Client ID of this relying party application, known as the client_id.
-     * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
+     * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or 
      * other 3rd party OpenID Connect providers.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html
      */
@@ -78,10 +74,8 @@ public final class SiteAuthSettingsProperties {
     private String clientId;
 
     /*
-     * The Client Secret of this relying party application (in Azure Active Directory, this is also referred to as the
-     * Key).
-     * This setting is optional. If no client secret is configured, the OpenID Connect implicit auth flow is used to
-     * authenticate end users.
+     * The Client Secret of this relying party application (in Azure Active Directory, this is also referred to as the Key).
+     * This setting is optional. If no client secret is configured, the OpenID Connect implicit auth flow is used to authenticate end users.
      * Otherwise, the OpenID Connect Authorization Code Flow is used to authenticate end users.
      * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html
      */
@@ -95,8 +89,7 @@ public final class SiteAuthSettingsProperties {
     private String clientSecretSettingName;
 
     /*
-     * An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This
-     * property acts as
+     * An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts as
      * a replacement for the Client Secret. It is also optional.
      */
     @JsonProperty(value = "clientSecretCertificateThumbprint")
@@ -104,8 +97,7 @@ public final class SiteAuthSettingsProperties {
 
     /*
      * The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application.
-     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g.
-     * https://sts.windows.net/{tenant-guid}/.
+     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g. https://sts.windows.net/{tenant-guid}/.
      * This URI is a case-sensitive identifier for the token issuer.
      * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html
      */
@@ -119,7 +111,7 @@ public final class SiteAuthSettingsProperties {
     private Boolean validateIssuer;
 
     /*
-     * Allowed audience values to consider when validating JSON Web Tokens issued by
+     * Allowed audience values to consider when validating JSON Web Tokens issued by 
      * Azure Active Directory. Note that the <code>ClientID</code> value is always considered an
      * allowed audience, regardless of this setting.
      */
@@ -156,7 +148,7 @@ public final class SiteAuthSettingsProperties {
     private String googleClientSecret;
 
     /*
-     * The app setting name that contains the client secret associated with
+     * The app setting name that contains the client secret associated with 
      * the Google web application.
      */
     @JsonProperty(value = "googleClientSecretSettingName")

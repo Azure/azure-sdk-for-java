@@ -69,8 +69,8 @@ public final class ApiKVReferenceCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model ApiKVReferenceCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ApiKVReferenceCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -325,8 +325,8 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static
-     * web app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+     * Get the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static web
+     * app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -335,8 +335,8 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static
-     * web app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+     * Set the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static web
+     * app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the StaticSitePatchResource object itself.
