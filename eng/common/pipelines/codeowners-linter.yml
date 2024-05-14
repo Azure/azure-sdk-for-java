@@ -67,8 +67,8 @@ stages:
         - pwsh: |
             # Write-Host "git checkout $ENV:SYSTEM_PULLREQUEST_SOURCEBRANCH"
             # git checkout $ENV:SYSTEM_PULLREQUEST_SOURCEBRANCH
-            Write-Host "git checkout refs/pull/$ENV:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER/merge"
-            git checkout refs/pull/$ENV:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER/merge
+            Write-Host "git checkout refs/remotes/pull/$ENV:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER/merge"
+            git checkout refs/remotes/pull/$ENV:SYSTEM_PULLREQUEST_PULLREQUESTNUMBER/merge
           displayName: Checkout the PR branch
 
       - pwsh: |
