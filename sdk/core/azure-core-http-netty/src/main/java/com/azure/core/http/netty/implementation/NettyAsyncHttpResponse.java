@@ -19,8 +19,8 @@ import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 
-import static com.azure.core.http.netty.implementation.Utility.closeConnection;
-import static com.azure.core.http.netty.implementation.Utility.deepCopyBuffer;
+import static com.azure.core.http.netty.implementation.NettyUtility.closeConnection;
+import static com.azure.core.http.netty.implementation.NettyUtility.deepCopyBuffer;
 
 /**
  * Default HTTP response for Reactor Netty.

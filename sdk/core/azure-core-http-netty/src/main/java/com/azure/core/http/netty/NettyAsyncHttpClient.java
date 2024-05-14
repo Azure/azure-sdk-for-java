@@ -10,7 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
-import com.azure.core.http.netty.implementation.Utility;
+import com.azure.core.http.netty.implementation.NettyUtility;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -344,7 +344,7 @@ class NettyAsyncHttpClient implements HttpClient {
                         .switchIfEmpty(Mono.just(EMPTY_BYTES))
                         .map(bytes -> Tuples.of(new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
                             bytes, headersEagerlyConverted), reactorNettyResponse.responseHeaders())),
-                    Utility::closeConnection);
+                    NettyUtility::closeConnection);
             } else {
                 return Mono.just(Tuples.of(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection,
                     restRequest, disableBufferCopy, headersEagerlyConverted), reactorNettyResponse.responseHeaders()));
