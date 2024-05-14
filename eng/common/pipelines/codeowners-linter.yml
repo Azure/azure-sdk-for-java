@@ -57,10 +57,10 @@ stages:
         - pwsh: |
             # Generate the base branch baseline file to the Build.BinariesDirectory. This will create
             # a baseline error file against the CODEOWNERS in the base branch
-            $baseBranchBaseline = "$(Build.BinariesDirectory)/CODEOWNERS_BaseBranch_Baseline_errors.txt"
-            Write-Host "codeowners-linter --repoRoot $(Build.SourcesDirectory) --repoName $(Build.Repository.Name) -gbl -rUri ""$(RepoLabelUri)"" -tUri ""$(TeamUserUri)"" -uUri ""$(UserOrgUri)"" -bbf ""$(baseBranchBaseline)"""
-            codeowners-linter --repoRoot $(Build.SourcesDirectory) --repoName $(Build.Repository.Name) -gbl -rUri "$(RepoLabelUri)" -tUri "$(TeamUserUri)" -uUri "$(UserOrgUri)" -bbf "$(baseBranchBaseline)"
-            echo "##vso[task.setvariable variable=baseBranchBaseline]$baseBranchBaseline"
+            $baseBranchBaselineFile = "$(Build.BinariesDirectory)/CODEOWNERS_BaseBranch_Baseline_errors.txt"
+            Write-Host "codeowners-linter --repoRoot $(Build.SourcesDirectory) --repoName $(Build.Repository.Name) -gbl -rUri ""$(RepoLabelUri)"" -tUri ""$(TeamUserUri)"" -uUri ""$(UserOrgUri)"" -bbf ""$baseBranchBaselineFile"""
+            codeowners-linter --repoRoot $(Build.SourcesDirectory) --repoName $(Build.Repository.Name) -gbl -rUri "$(RepoLabelUri)" -tUri "$(TeamUserUri)" -uUri "$(UserOrgUri)" -bbf "$baseBranchBaselineFile"
+            echo "##vso[task.setvariable variable=baseBranchBaseline]$baseBranchBaselineFile"
           displayName: 'Generate baseline file for base branch'
           workingDirectory: '$(Build.SourcesDirectory)/eng/common'
 
