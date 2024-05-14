@@ -38,7 +38,7 @@ public final class DocumentIntelligenceAsyncClient {
 
     /**
      * Initializes an instance of DocumentIntelligenceAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -68,14 +68,14 @@ public final class DocumentIntelligenceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -103,14 +103,14 @@ public final class DocumentIntelligenceAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -129,7 +129,7 @@ public final class DocumentIntelligenceAsyncClient {
 
     /**
      * Analyzes document with document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only
@@ -150,8 +150,8 @@ public final class DocumentIntelligenceAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocument(String modelId, String pages,
-                                                                                  String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-                                                                                  List<String> queryFields, ContentFormat outputContentFormat, AnalyzeDocumentRequest analyzeRequest) {
+        String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
+        List<String> queryFields, ContentFormat outputContentFormat, AnalyzeDocumentRequest analyzeRequest) {
         // Generated convenience method for beginAnalyzeDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (pages != null) {
@@ -188,7 +188,7 @@ public final class DocumentIntelligenceAsyncClient {
 
     /**
      * Analyzes document with document model.
-     *
+     * 
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -208,7 +208,7 @@ public final class DocumentIntelligenceAsyncClient {
 
     /**
      * Classifies document with document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param stringIndexType Method used to compute string offset and length.
@@ -223,7 +223,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocument(String classifierId,
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentRequest classifyRequest, StringIndexType stringIndexType, SplitMode split) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -239,7 +239,7 @@ public final class DocumentIntelligenceAsyncClient {
 
     /**
      * Classifies document with document classifier.
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,7 +252,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocument(String classifierId,
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentRequest classifyRequest) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();

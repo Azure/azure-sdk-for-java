@@ -34,10 +34,8 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingStrategyOptions;
-import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -61,7 +59,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Gets The Document Intelligence service endpoint.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -75,7 +73,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public DocumentIntelligenceServiceVersion getServiceVersion() {
@@ -89,7 +87,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -103,7 +101,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -112,7 +110,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     *
+     * 
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
      */
@@ -123,7 +121,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The Document Intelligence service endpoint.
      * @param serviceVersion Service version.
@@ -135,7 +133,7 @@ public final class DocumentIntelligenceClientImpl {
 
     /**
      * Initializes an instance of DocumentIntelligenceClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The Document Intelligence service endpoint.
@@ -225,14 +223,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -277,14 +275,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -329,14 +327,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -349,12 +347,14 @@ public final class DocumentIntelligenceClientImpl {
     public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
-            new OperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion()), "analyzeResult"),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -380,14 +380,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -400,12 +400,14 @@ public final class DocumentIntelligenceClientImpl {
     public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-            new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion()), "analyzeResult"),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -431,14 +433,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -452,12 +454,14 @@ public final class DocumentIntelligenceClientImpl {
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponseAsync(modelId, requestOptions),
-            new OperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion()), "analyzeResult"),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(AnalyzeResultOperation.class),
             TypeReference.createInstance(AnalyzeResult.class));
     }
@@ -484,14 +488,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -505,12 +509,14 @@ public final class DocumentIntelligenceClientImpl {
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.analyzeDocumentWithResponse(modelId, requestOptions),
-            new SyncOperationLocationPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion()), "analyzeResult"),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(AnalyzeResultOperation.class),
             TypeReference.createInstance(AnalyzeResult.class));
     }
@@ -528,14 +534,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -568,14 +574,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -607,14 +613,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -629,12 +635,14 @@ public final class DocumentIntelligenceClientImpl {
         BinaryData classifyRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -651,14 +659,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -673,12 +681,14 @@ public final class DocumentIntelligenceClientImpl {
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
@@ -695,14 +705,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -713,18 +723,20 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocumentWithModelAsync(
-        String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocumentWithModelAsync(String classifierId,
+        BinaryData classifyRequest, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponseAsync(classifierId, classifyRequest, requestOptions),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.OperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResultOperation.class));
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 
     /**
@@ -740,14 +752,14 @@ public final class DocumentIntelligenceClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
      * }</pre>
-     *
+     * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -758,17 +770,19 @@ public final class DocumentIntelligenceClientImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation>
-        beginClassifyDocumentWithModel(String classifierId, BinaryData classifyRequest, RequestOptions requestOptions) {
+    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocumentWithModel(String classifierId,
+        BinaryData classifyRequest, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.classifyDocumentWithResponse(classifierId, classifyRequest, requestOptions),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
-                .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
-                .setContext(requestOptions != null && requestOptions.getContext() != null
-                    ? requestOptions.getContext()
-                    : Context.NONE)
-                .setServiceVersion(this.getServiceVersion().getVersion())),
+            new com.azure.ai.documentintelligence.implementation.SyncOperationLocationPollingStrategy<>(
+                new PollingStrategyOptions(this.getHttpPipeline())
+                    .setEndpoint("{endpoint}/documentintelligence".replace("{endpoint}", this.getEndpoint()))
+                    .setContext(requestOptions != null && requestOptions.getContext() != null
+                        ? requestOptions.getContext()
+                        : Context.NONE)
+                    .setServiceVersion(this.getServiceVersion().getVersion()),
+                "analyzeResult"),
             TypeReference.createInstance(AnalyzeResultOperation.class),
-            TypeReference.createInstance(AnalyzeResultOperation.class));
+            TypeReference.createInstance(AnalyzeResult.class));
     }
 }

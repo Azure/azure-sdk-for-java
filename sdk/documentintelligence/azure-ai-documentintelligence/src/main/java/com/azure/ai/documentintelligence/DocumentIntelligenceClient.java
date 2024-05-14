@@ -223,7 +223,7 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocument(String classifierId,
+    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentRequest classifyRequest, StringIndexType stringIndexType, SplitMode split) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -252,7 +252,7 @@ public final class DocumentIntelligenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocument(String classifierId,
+    public SyncPoller<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentRequest classifyRequest) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();

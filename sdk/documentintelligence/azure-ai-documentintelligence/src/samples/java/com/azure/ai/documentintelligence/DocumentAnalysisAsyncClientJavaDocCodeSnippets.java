@@ -104,7 +104,6 @@ public class DocumentAnalysisAsyncClientJavaDocCodeSnippets {
         documentIntelligenceAsyncClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
             // if polling operation completed, retrieve the final result.
             .flatMap(AsyncPollResponse::getFinalResult)
-            .map(AnalyzeResultOperation::getAnalyzeResult)
             .subscribe(analyzeResult -> {
                 System.out.println(analyzeResult.getModelId());
                 analyzeResult.getDocuments()

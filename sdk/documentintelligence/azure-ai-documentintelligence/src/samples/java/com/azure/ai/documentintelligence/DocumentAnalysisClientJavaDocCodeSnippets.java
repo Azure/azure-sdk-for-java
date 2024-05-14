@@ -118,7 +118,6 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
 
         documentIntelligenceClient.beginClassifyDocument(classifierId, new ClassifyDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())))
             .getFinalResult()
-            .getAnalyzeResult()
             .getDocuments()
             .forEach(analyzedDocument -> System.out.printf("Doc Type: %s%n", analyzedDocument.getDocType()));
         // END: com.azure.ai.documentintelligence.DocumentAnalysisClient.beginClassifyDocument#string-BinaryData-Context
