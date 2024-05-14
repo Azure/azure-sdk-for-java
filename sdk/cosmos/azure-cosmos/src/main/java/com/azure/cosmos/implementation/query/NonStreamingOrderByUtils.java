@@ -92,7 +92,7 @@ public class NonStreamingOrderByUtils {
                             r.toJson(),
                             documentProducerFeedResponse.sourceFeedRange,
                             null);
-                        if (Configs.getMaxItemSizeForVectorSearchEnabled()) {
+                        if (!Configs.getAzureCosmosNonStreamingOrderByDisabled()) {
                             if (priorityQueue.size() < initialPageSize) {
                                 priorityQueue.add(orderByRowResult);
                             } else {
