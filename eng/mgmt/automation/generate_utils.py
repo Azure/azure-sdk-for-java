@@ -95,7 +95,7 @@ def generate(
     return True
 
 
-def compile_package(sdk_root, module) -> bool:
+def compile_arm_package(sdk_root: str, module: str) -> bool:
     if os.system(
             'mvn --no-transfer-progress clean verify -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip -pl {1}:{2} -am'.format(
                 sdk_root, GROUP_ID, module)) != 0:
