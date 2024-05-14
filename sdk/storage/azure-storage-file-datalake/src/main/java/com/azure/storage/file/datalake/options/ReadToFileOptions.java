@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake.options;
 
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -18,7 +19,7 @@ import java.util.Set;
  * Parameters when calling readToFile() on {@link DataLakeFileClient}
  */
 public class ReadToFileOptions {
-    private String filePath;
+    private final String filePath;
     private FileRange range;
     private ParallelTransferOptions parallelTransferOptions;
     private DownloadRetryOptions downloadRetryOptions;
@@ -28,19 +29,20 @@ public class ReadToFileOptions {
     private Boolean userPrincipalName;
 
     /**
+     * Constructs a {@link ReadToFileOptions}.
+     *
+     * @param filePath Path of the file to download to.
+     */
+    public ReadToFileOptions(String filePath) {
+        StorageImplUtils.assertNotNull("filePath", filePath);
+        this.filePath = filePath;
+    }
+
+    /**
      * @return A {@link String} representing the filePath where the downloaded data will be written.
      */
     public String getFilePath() {
         return filePath;
-    }
-
-    /**
-     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
-     * @return The updated options.
-     */
-    public ReadToFileOptions setFilePath(String filePath) {
-        this.filePath = filePath;
-        return this;
     }
 
     /**
