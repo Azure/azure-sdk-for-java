@@ -5,17 +5,12 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
 
 /**
  * Parameter group.
  */
 @Fluent
-public final class SourceLeaseAccessConditions implements JsonSerializable<SourceLeaseAccessConditions> {
+public final class SourceLeaseAccessConditions {
     /*
      * Required if the source file has an active infinite lease.
      */
@@ -45,38 +40,5 @@ public final class SourceLeaseAccessConditions implements JsonSerializable<Sourc
     public SourceLeaseAccessConditions setSourceLeaseId(String sourceLeaseId) {
         this.sourceLeaseId = sourceLeaseId;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("sourceLeaseId", this.sourceLeaseId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SourceLeaseAccessConditions from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SourceLeaseAccessConditions if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SourceLeaseAccessConditions.
-     */
-    public static SourceLeaseAccessConditions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SourceLeaseAccessConditions deserializedSourceLeaseAccessConditions = new SourceLeaseAccessConditions();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("sourceLeaseId".equals(fieldName)) {
-                    deserializedSourceLeaseAccessConditions.sourceLeaseId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSourceLeaseAccessConditions;
-        });
     }
 }

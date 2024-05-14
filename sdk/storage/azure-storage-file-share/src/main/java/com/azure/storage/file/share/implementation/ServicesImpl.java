@@ -625,8 +625,11 @@ public final class ServicesImpl {
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.listSharesSegment(this.client.getUrl(), comp, prefix, marker, maxresults,
                 includeConverted, timeout, this.client.getVersion(), accept, context))
@@ -659,8 +662,11 @@ public final class ServicesImpl {
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout, Context context) {
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service
             .listSharesSegment(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted, timeout,
                 this.client.getVersion(), accept, context)
@@ -746,8 +752,11 @@ public final class ServicesImpl {
         String marker, Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.listSharesSegmentNoCustomHeaders(this.client.getUrl(), comp, prefix, marker,
                 maxresults, includeConverted, timeout, this.client.getVersion(), accept, context))
@@ -780,8 +789,11 @@ public final class ServicesImpl {
         String marker, Integer maxresults, List<ListSharesIncludeType> include, Integer timeout, Context context) {
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service
             .listSharesSegmentNoCustomHeaders(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
                 timeout, this.client.getVersion(), accept, context)
@@ -867,8 +879,11 @@ public final class ServicesImpl {
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res
             = service.listSharesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
                 timeout, this.client.getVersion(), accept, Context.NONE);
@@ -901,8 +916,11 @@ public final class ServicesImpl {
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout, Context context) {
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res
             = service.listSharesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
                 timeout, this.client.getVersion(), accept, context);
@@ -989,8 +1007,11 @@ public final class ServicesImpl {
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
             prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
@@ -1022,8 +1043,11 @@ public final class ServicesImpl {
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout, Context context) {
         final String comp = "list";
         final String accept = "application/xml";
-        String includeConverted = (include == null) ? null : include.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String includeConverted = (include == null)
+            ? null
+            : include.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
             prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
