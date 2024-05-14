@@ -56,12 +56,21 @@ public class PipelinedDocumentQueryExecutionContext<T>
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
                 CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
                     qryOptAccessor.clone(requestOptions);
-                ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
-                qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
-
-                documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
-
-                return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
+                if (queryInfo.hasNonStreamingOrderBy()) {
+                    if (continuationToken != null) {
+                        throw new NonStreamingOrderByBadRequestException(
+                            HttpConstants.StatusCodes.BADREQUEST,
+                            "Can not use a continuation token for a vector search query");
+                    }
+                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
+                    documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
+                    return NonStreamingOrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
+                } else {
+                    ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
+                    qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setCustomItemSerializer(null);
+                    documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
+                    return OrderByDocumentQueryExecutionContext.createAsync(diagnosticsClientContext, client, documentQueryParams, collection);
+                }
             };
         } else {
 

@@ -25,6 +25,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private boolean queryPlanRetrievalDisallowed;
     private boolean emptyPageDiagnosticsEnabled;
     private String queryName;
+    private Integer maxItemCountForVectorSearch;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
 
     /**
@@ -62,6 +63,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.queryName = options.queryName;
         this.feedRange = options.feedRange;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
+        this.maxItemCountForVectorSearch = options.maxItemCountForVectorSearch;
     }
 
     /**
@@ -193,6 +195,26 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      */
     public CosmosQueryRequestOptionsImpl setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
+        return this;
+    }
+
+    /**
+     * Gets the maximum item size to fetch during non-streaming order by queries.
+     *
+     * @return the max number of items for vector search.
+     */
+    public Integer getMaxItemCountForVectorSearch() {
+        return this.maxItemCountForVectorSearch;
+    }
+
+    /**
+     * Sets the maximum item size to fetch during non-streaming order by queries.
+     *
+     * @param maxItemCountForVectorSearch the max number of items for vector search.
+     * return the CosmosQueryRequestOptions.
+     */
+    public CosmosQueryRequestOptionsImpl setMaxItemCountForVectorSearch(Integer maxItemCountForVectorSearch) {
+        this.maxItemCountForVectorSearch = maxItemCountForVectorSearch;
         return this;
     }
 
