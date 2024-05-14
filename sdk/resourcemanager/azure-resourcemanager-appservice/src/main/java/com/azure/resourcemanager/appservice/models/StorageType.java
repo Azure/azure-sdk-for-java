@@ -12,11 +12,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum StorageType {
     /**
-     * Enum value blobContainer.
-     */
-    BLOB_CONTAINER("blobContainer"),
-
-    /**
      * Enum value LocalNode.
      */
     LOCAL_NODE("LocalNode"),
@@ -24,7 +19,12 @@ public enum StorageType {
     /**
      * Enum value NetworkFileSystem.
      */
-    NETWORK_FILE_SYSTEM("NetworkFileSystem");
+    NETWORK_FILE_SYSTEM("NetworkFileSystem"),
+
+    /**
+     * Enum value blobContainer.
+     */
+    BLOB_CONTAINER("blobContainer");
 
     /**
      * The actual serialized value for a StorageType instance.
