@@ -72,6 +72,9 @@ public final class TableServiceOdataError implements JsonSerializable<TableServi
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

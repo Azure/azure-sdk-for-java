@@ -6,17 +6,12 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
 
 /**
  * Parameter group.
  */
 @Fluent
-public final class SourceModifiedAccessConditions implements JsonSerializable<SourceModifiedAccessConditions> {
+public final class SourceModifiedAccessConditions {
     /*
      * Specify the crc64 value to operate only on range with a matching crc64 checksum.
      */
@@ -75,42 +70,5 @@ public final class SourceModifiedAccessConditions implements JsonSerializable<So
     public SourceModifiedAccessConditions setSourceIfNoneMatchCrc64(byte[] sourceIfNoneMatchCrc64) {
         this.sourceIfNoneMatchCrc64 = CoreUtils.clone(sourceIfNoneMatchCrc64);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeBinaryField("sourceIfMatchCrc64", this.sourceIfMatchCrc64);
-        jsonWriter.writeBinaryField("sourceIfNoneMatchCrc64", this.sourceIfNoneMatchCrc64);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SourceModifiedAccessConditions from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SourceModifiedAccessConditions if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SourceModifiedAccessConditions.
-     */
-    public static SourceModifiedAccessConditions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SourceModifiedAccessConditions deserializedSourceModifiedAccessConditions
-                = new SourceModifiedAccessConditions();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("sourceIfMatchCrc64".equals(fieldName)) {
-                    deserializedSourceModifiedAccessConditions.sourceIfMatchCrc64 = reader.getBinary();
-                } else if ("sourceIfNoneMatchCrc64".equals(fieldName)) {
-                    deserializedSourceModifiedAccessConditions.sourceIfNoneMatchCrc64 = reader.getBinary();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSourceModifiedAccessConditions;
-        });
     }
 }
