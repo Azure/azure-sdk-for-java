@@ -787,7 +787,7 @@
               <execution>
                 <id>default-compile</id>
                 <configuration>
-                  <release>1.8</release>
+                  <release>8</release>
                 </configuration>
               </execution>
               <!-- Here the 'base-compile' execution section of java-lts profile defined in parent pom.client.xml is
@@ -801,7 +801,7 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <release>1.8</release>
+                  <release>8</release>
                 </configuration>
               </execution>
               <execution>
@@ -810,8 +810,8 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration>
-                  <release>1.8</release>
-                  <testRelease>1.8</testRelease>
+                  <release>8</release>
+                  <testRelease>8</testRelease>
                 </configuration>
               </execution>
               <execution>
@@ -820,7 +820,7 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <testRelease>1.8</testRelease>
+                  <testRelease>8</testRelease>
                 </configuration>
               </execution>
             </executions>
