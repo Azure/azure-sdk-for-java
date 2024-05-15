@@ -43,6 +43,7 @@ import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
+import static com.azure.core.test.utils.TestProxyUtils.getRemoveSanitizerRequest;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
 /**
@@ -242,10 +243,8 @@ public class TestProxyPlaybackClient implements HttpClient {
 
             HttpRequest request;
             try {
-                request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/RemoveSanitizers")
-                    .setBody(SERIALIZER.serialize(data, SerializerEncoding.JSON))
-                    .setHeader(X_RECORDING_ID, xRecordingId)
-                    .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+                request = getRemoveSanitizerRequest().setBody(SERIALIZER.serialize(data, SerializerEncoding.JSON))
+                    .setHeader(X_RECORDING_ID, xRecordingId);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

@@ -446,6 +446,16 @@ public class TestProxyUtils {
         return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizers").setBody(requestBody);
     }
 
+    /**
+     * Creates a request to remove sanitizers from the request.
+     * @return The {@link HttpRequest request} to be sent.
+     */
+    public static HttpRequest getRemoveSanitizerRequest() {
+
+        return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/RemoveSanitizers")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+    }
+
     private static HttpRequest createHttpRequest(String requestBody, String sanitizerType, URL proxyUrl) {
         return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizer").setBody(requestBody)
             .setHeader(X_ABSTRACTION_IDENTIFIER, sanitizerType);
