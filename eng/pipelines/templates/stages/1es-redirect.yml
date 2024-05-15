@@ -43,7 +43,7 @@ extends:
     sdl:
       componentgovernance:
         sourceScanPath: $(Build.SourcesDirectory)
-        ignoreDirectories: $(Build.SourcesDirectory)
+        ignoreDirectories: $(Build.SourcesDirectory)/*
         whatif: true
         scanType: LogOnly
         alertWarningLevel: Medium
