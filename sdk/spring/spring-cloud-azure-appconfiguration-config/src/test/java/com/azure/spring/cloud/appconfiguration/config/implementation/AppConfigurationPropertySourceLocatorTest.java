@@ -122,7 +122,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     private ReplicaLookUp replicaLookUpMock;
     
     @Mock
-    private FeatureFlagLoader featureFlagLoader;
+    private FeatureFlagClient featureFlagLoader;
 
     private AppConfigurationPropertySourceLocator locator;
 

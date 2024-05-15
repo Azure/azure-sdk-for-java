@@ -27,7 +27,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigur
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationPropertySourceLocator;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientFactory;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientsBuilder;
-import com.azure.spring.cloud.appconfiguration.config.implementation.FeatureFlagLoader;
+import com.azure.spring.cloud.appconfiguration.config.implementation.FeatureFlagClient;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
@@ -62,7 +62,7 @@ public class AppConfigurationBootstrapConfiguration {
     AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
         AppConfigurationKeyVaultClientFactory keyVaultClientFactory, ReplicaLookUp replicaLookUp,
-        FeatureFlagLoader featureFlagLoader)
+        FeatureFlagClient featureFlagLoader)
         throws IllegalArgumentException {
 
         return new AppConfigurationPropertySourceLocator(appProperties, clientFactory, keyVaultClientFactory,
@@ -116,12 +116,12 @@ public class AppConfigurationBootstrapConfiguration {
     /**
      * Loader for all feature flags. Enables de-duplicating of feature flags when multiple feature flags with the same
      * name are loaded.
-     * @return {@link FeatureFlagLoader}
+     * @return {@link FeatureFlagClient}
      */
     @Bean
     @ConditionalOnMissingBean
-    FeatureFlagLoader featureFlagLoader() {
-        return new FeatureFlagLoader();
+    FeatureFlagClient featureFlagLoader() {
+        return new FeatureFlagClient();
     }
 
     /**

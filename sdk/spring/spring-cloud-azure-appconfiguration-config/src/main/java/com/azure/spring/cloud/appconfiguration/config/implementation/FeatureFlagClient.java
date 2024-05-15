@@ -40,6 +40,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.FeatureTelemetry;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -51,14 +52,11 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.nimbusds.jose.util.Base64URL;
 
 /**
- * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
- *
- * <p>
- * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be created.
- * </p>
+ * Loads sets of feature flags, and de-duplicates the results with previously loaded feature flags. Newer Feature Flags
+ * take priority.
  */
 @Component
-public class FeatureFlagLoader {
+public class FeatureFlagClient {
 
     protected final Map<String, Feature> properties = new LinkedHashMap<>();
 
@@ -98,7 +96,7 @@ public class FeatureFlagLoader {
         }
         return loadedFeatureFlags;
     }
-    
+
     public List<FeatureFlags> proccessFeatureFlags(FeatureFlags features, String endpoint) {
         List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
         loadedFeatureFlags.add(features);

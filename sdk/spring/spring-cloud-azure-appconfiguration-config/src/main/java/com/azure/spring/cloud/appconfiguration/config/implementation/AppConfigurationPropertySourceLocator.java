@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
@@ -49,7 +50,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
 
-    private final FeatureFlagLoader featureFlagLoader;
+    private final FeatureFlagClient featureFlagClient;
 
     private final ReplicaLookUp replicaLookUp;
 
@@ -68,14 +69,14 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      */
     public AppConfigurationPropertySourceLocator(AppConfigurationProviderProperties appProperties,
         AppConfigurationReplicaClientFactory clientFactory, AppConfigurationKeyVaultClientFactory keyVaultClientFactory,
-        Duration refreshInterval, List<ConfigStore> configStores, ReplicaLookUp replicaLookUp, FeatureFlagLoader featureFlagLoader) {
+        Duration refreshInterval, List<ConfigStore> configStores, ReplicaLookUp replicaLookUp, FeatureFlagClient featureFlagLoader) {
         this.refreshInterval = refreshInterval;
         this.appProperties = appProperties;
         this.configStores = configStores;
         this.clientFactory = clientFactory;
         this.keyVaultClientFactory = keyVaultClientFactory;
         this.replicaLookUp = replicaLookUp;
-        this.featureFlagLoader = featureFlagLoader;
+        this.featureFlagClient = featureFlagLoader;
 
         BackoffTimeCalculator.setDefaults(appProperties.getDefaultMaxBackoff(), appProperties.getDefaultMinBackoff());
     }
@@ -166,7 +167,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 
                 if (configStore.getFeatureFlags().getEnabled()) {
                     AppConfigurationFeatureManagementPropertySource acfmps = new AppConfigurationFeatureManagementPropertySource(
-                        featureFlagLoader);
+                        featureFlagClient);
                     composite.addPropertySource(acfmps);
                 }
 
@@ -260,7 +261,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
                 propertySource = new AppConfigurationSnapshotPropertySource(
                     selectedKeys.getSnapshotName() + "/" + store.getEndpoint(), client, keyVaultClientFactory,
-                    selectedKeys.getSnapshotName());
+                    selectedKeys.getSnapshotName(), featureFlagClient);
             } else {
                 propertySource = new AppConfigurationApplicationSettingPropertySource(
                     selectedKeys.getKeyFilter() + store.getEndpoint() + "/", client, keyVaultClientFactory,
@@ -288,7 +289,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         List<FeatureFlags> featureFlagWatchKeys = new ArrayList<>();
         if (store.getFeatureFlags().getEnabled()) {
             for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
-                List<FeatureFlags> storesFeatureFlags = featureFlagLoader.loadFeatureFlags(client,
+                List<FeatureFlags> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
                     selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
                 storesFeatureFlags.forEach(featureFlags -> featureFlags.setConfigStore(store));
                 featureFlagWatchKeys.addAll(storesFeatureFlags);

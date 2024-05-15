@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.appconfiguration.config.implementation;
+package com.azure.spring.cloud.appconfiguration.config.implementation.feature;
 
 import java.time.Instant;
 import java.util.List;
 
-class FeatureFlagState {
+public class FeatureFlagState {
 
     private final List<FeatureFlags> watchKeys;
 
@@ -17,7 +17,7 @@ class FeatureFlagState {
 
     private final int refreshInterval;
 
-    FeatureFlagState(List<FeatureFlags> watchKeys, int refreshInterval, String originEndpoint) {
+    public FeatureFlagState(List<FeatureFlags> watchKeys, int refreshInterval, String originEndpoint) {
         this.watchKeys = watchKeys;
         this.refreshInterval = refreshInterval;
         nextRefreshCheck = Instant.now().plusSeconds(refreshInterval);
@@ -25,7 +25,7 @@ class FeatureFlagState {
         this.refreshAttempt = 1;
     }
 
-    FeatureFlagState(FeatureFlagState oldState, Instant newRefresh) {
+    public FeatureFlagState(FeatureFlagState oldState, Instant newRefresh) {
         this.watchKeys = oldState.getWatchKeys();
         this.refreshInterval = oldState.getRefreshInterval();
         this.nextRefreshCheck = newRefresh;

@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,7 +20,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.feature.ent
 public class AppConfigurationFeatureManagementPropertySourceTest {
 
     @Mock
-    private FeatureFlagLoader featureFlagLoaderMock;
+    private FeatureFlagClient featureFlagLoaderMock;
     
     private static final String FEATURE_FLAG_KEY = "feature_management.feature_flags";
 

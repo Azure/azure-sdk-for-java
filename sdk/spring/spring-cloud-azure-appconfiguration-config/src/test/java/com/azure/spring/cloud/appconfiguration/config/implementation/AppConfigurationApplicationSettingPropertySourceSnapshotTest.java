@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.bouncycastle.util.Arrays;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -90,6 +89,8 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     @Mock
     private List<ConfigurationSetting> configurationListMock;
+    
+    FeatureFlagClient featureFlagLoader = new FeatureFlagClient();
 
     @BeforeAll
     public static void setup() {
@@ -112,7 +113,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         TRIM.add(KEY_FILTER);
 
         propertySource = new AppConfigurationSnapshotPropertySource(TEST_STORE_NAME, clientMock,
-            keyVaultClientFactoryMock, SNAPSHOT_NAME);
+            keyVaultClientFactoryMock, SNAPSHOT_NAME, featureFlagLoader);
     }
 
     @AfterEach
@@ -127,10 +128,8 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
             .thenReturn(configurationListMock);
         when(clientMock.getTracingInfo())
             .thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
-        
-        FeatureFlagLoader featureFlagLoader = new FeatureFlagLoader();
 
-        propertySource.initProperties(TRIM, featureFlagLoader);
+        propertySource.initProperties(TRIM);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = testItems.stream().map(t -> {
@@ -157,7 +156,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties(TRIM, new FeatureFlagLoader());
+        propertySource.initProperties(TRIM);
 
         String expectedKeyName = TEST_SLASH_KEY.replace('/', '.');
         String[] actualKeyNames = propertySource.getPropertyNames();
@@ -175,7 +174,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         when(configurationListMock.iterator()).thenReturn(items.iterator()).thenReturn(Collections.emptyIterator());
         when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock);
 
-        propertySource.initProperties(TRIM, new FeatureFlagLoader());
+        propertySource.initProperties(TRIM);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames =

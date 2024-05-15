@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.appconfiguration.config.implementation;
+package com.azure.spring.cloud.appconfiguration.config.implementation.feature;
 
 import java.util.List;
 

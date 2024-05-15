@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 
 final class StateHolder {
 

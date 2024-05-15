@@ -2,9 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -18,13 +21,19 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
 
     private final String snapshotName;
 
+    private final FeatureFlagClient featureFlagClient;
+
+    private List<ConfigurationSetting> featureFlagsList = new ArrayList<>();
+
     AppConfigurationSnapshotPropertySource(String name, AppConfigurationReplicaClient replicaClient,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String snapshotName) {
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, String snapshotName,
+        FeatureFlagClient featureFlagClient) {
         // The context alone does not uniquely define a PropertySource, append storeName
         // and label to uniquely define a PropertySource
         // super(snapshotName + originEndpoint + "/", replicaClient, maxRetryTime);
         super(name, replicaClient, keyVaultClientFactory, null, null);
         this.snapshotName = snapshotName;
+        this.featureFlagClient = featureFlagClient;
     }
 
     /**
@@ -35,11 +44,18 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * @param trim prefix to trim
      * @throws JsonProcessingException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> trim, FeatureFlagLoader featureFlagLoader) throws JsonProcessingException {
+    public void initProperties(List<String> trim) throws JsonProcessingException {
         List<ConfigurationSetting> settings = replicaClient.listSettingSnapshot(snapshotName);
         processConfigurationSettings(settings, null, trim);
-        
-        FeatureFlags featureFlags = new FeatureFlags(null, settings);
-        featureFlagLoader.proccessFeatureFlags(featureFlags, replicaClient.getEndpoint());
+
+        FeatureFlags featureFlags = new FeatureFlags(null, featureFlagsList);
+        featureFlagClient.proccessFeatureFlags(featureFlags, replicaClient.getEndpoint());
+    }
+
+    @Override
+    void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
+        throws JsonProcessingException {
+        // Feature Flags are only part of this if they come from a snapshot
+        featureFlagsList.add(setting);
     }
 }

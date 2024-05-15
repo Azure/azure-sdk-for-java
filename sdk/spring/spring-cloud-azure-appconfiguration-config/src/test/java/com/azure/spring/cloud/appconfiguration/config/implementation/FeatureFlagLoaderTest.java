@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 
 public class FeatureFlagLoaderTest {
@@ -30,7 +31,7 @@ public class FeatureFlagLoaderTest {
     @Mock
     private AppConfigurationReplicaClient clientMock;
 
-    private FeatureFlagLoader featureFlagLoader;
+    private FeatureFlagClient featureFlagLoader;
 
     private String[] emptyLabelList = { "\0" };
 
@@ -38,7 +39,7 @@ public class FeatureFlagLoaderTest {
     public void init() {
         MockitoAnnotations.openMocks(this);
 
-        featureFlagLoader = new FeatureFlagLoader();
+        featureFlagLoader = new FeatureFlagClient();
     }
 
     @Test
