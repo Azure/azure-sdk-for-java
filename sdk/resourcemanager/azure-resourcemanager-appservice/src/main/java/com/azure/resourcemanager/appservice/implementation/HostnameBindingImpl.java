@@ -218,6 +218,10 @@ class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                         parent().resourceGroupName(), parent().name(), name, innerModel())
                     .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
                     .map(mapper);
+            if (this.parent() instanceof FunctionAppImpl
+                && ((FunctionAppImpl) this.parent()).isFunctionAppOnACA()) {
+                hostnameBindingObservable = RetryUtils.backoffRetryForFunctionAppAca(hostnameBindingObservable);
+            }
         }
 
         return hostnameBindingObservable;
