@@ -12,6 +12,9 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.callautomation.models.ConnectOptions;
+import com.azure.communication.callautomation.models.ConnectResult;
+import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -187,6 +190,36 @@ public final class CallAutomationClient {
     public Response<Void> rejectCallWithResponse(RejectCallOptions rejectCallOptions, Context context) {
         return callAutomationAsyncClient.rejectCallWithResponseInternal(rejectCallOptions, context).block();
     }
+
+    /**
+     * Create a connect request
+     *
+     * @param callLocator call locator.
+     * @param callbackUrl The call back url for receiving events.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result of connect.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectResult connect(CallLocator callLocator,
+                                       String callbackUrl) {
+        return callAutomationAsyncClient.connect(callLocator, callbackUrl).block();
+    }
+
+    /**
+     * Create a connect request.
+     *
+     * @param connectOptions Options for connect request.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of connect.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectResult> connectWithResponse(ConnectOptions connectOptions, Context context) {
+        return callAutomationAsyncClient.connectWithResponseInternal(connectOptions, context).block();
+    }
+
     //endregion
 
     //region Mid-call Actions

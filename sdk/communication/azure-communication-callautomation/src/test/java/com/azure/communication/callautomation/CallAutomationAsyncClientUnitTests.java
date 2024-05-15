@@ -12,6 +12,9 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.callautomation.models.ConnectOptions;
+import com.azure.communication.callautomation.models.ConnectResult;
+import com.azure.communication.callautomation.models.RoomCallLocator;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
@@ -183,5 +186,36 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
 
         assertNotNull(rejectCallResponse);
         assertEquals(204, rejectCallResponse.getStatusCode());
+    }
+
+    @Test
+    public void connect() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL,  null, null), 200)
+            )));
+
+        ConnectResult result = callAutomationAsyncClient.connect(new RoomCallLocator(ROOM_ID), CALL_CALLBACK_URL).block();
+
+        assertNotNull(result);
+    }
+
+    @Test
+    public void connectWithResponse() {
+        CallAutomationAsyncClient callAutomationAsyncClient = getCallAutomationAsyncClient(new ArrayList<>(
+            Collections.singletonList(
+                new AbstractMap.SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 200)
+            )));
+
+        ConnectOptions connectOptions = new ConnectOptions(new RoomCallLocator(ROOM_ID), CALL_CALLBACK_URL);
+
+        Response<ConnectResult> result = callAutomationAsyncClient.connectWithResponse(
+            connectOptions).block();
+
+        assertNotNull(result);
+        assertEquals(200, result.getStatusCode());
+        assertNotNull(result.getValue());
     }
 }

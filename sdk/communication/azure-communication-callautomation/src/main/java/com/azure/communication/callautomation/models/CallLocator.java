@@ -17,7 +17,7 @@ public abstract class CallLocator {
      * @param kind Specify the call locator kind.
      */
     CallLocator(CallLocatorKind kind) {
-        if (kind == CallLocatorKind.GROUP_CALL_LOCATOR || kind == CallLocatorKind.SERVER_CALL_LOCATOR) {
+        if (kind == CallLocatorKind.GROUP_CALL_LOCATOR || kind == CallLocatorKind.SERVER_CALL_LOCATOR | kind == CallLocatorKind.ROOM_CALL_LOCATOR) {
             this.kind = kind;
         } else {
             throw new IllegalArgumentException("Illegal callLocator kind");

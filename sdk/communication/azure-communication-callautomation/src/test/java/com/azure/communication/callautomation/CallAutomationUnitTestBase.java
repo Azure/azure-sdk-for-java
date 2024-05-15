@@ -52,6 +52,7 @@ public class CallAutomationUnitTestBase {
     static final String DATA_SUBSCRIPTION_ID = "dataSubscriptionId";
     static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
+    static final String ROOM_ID = "roomId";
 
     static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION = new MediaStreamingOptions(
         "https://websocket.url.com",

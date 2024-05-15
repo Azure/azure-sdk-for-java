@@ -26,6 +26,9 @@ import com.azure.communication.callautomation.implementation.models.RedirectCall
 import com.azure.communication.callautomation.implementation.models.RejectCallRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.TranscriptionTransportTypeInternal;
+import com.azure.communication.callautomation.implementation.models.ConnectRequestInternal;
+import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
+import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
@@ -36,6 +39,13 @@ import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
+import com.azure.communication.callautomation.models.ConnectOptions;
+import com.azure.communication.callautomation.models.CallLocator;
+import com.azure.communication.callautomation.models.CallLocatorKind;
+import com.azure.communication.callautomation.models.GroupCallLocator;
+import com.azure.communication.callautomation.models.ServerCallLocator;
+import com.azure.communication.callautomation.models.RoomCallLocator;
+import com.azure.communication.callautomation.models.ConnectResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -51,6 +61,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.security.InvalidParameterException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -453,6 +464,82 @@ public final class CallAutomationAsyncClient {
             return monoError(logger, ex);
         }
     }
+
+    /**
+     * Create a connect request.
+     *
+     * @param callLocator Call locator.
+     * @param callbackUrl The call back url.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Result of connect request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConnectResult> connect(CallLocator callLocator, String callbackUrl) {
+        return connectWithResponse(new ConnectOptions(callLocator, callbackUrl))
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Create a connect request.
+     *
+     * @param connectOptions Options for connect request.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with result of connect.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConnectResult>> connectWithResponse(ConnectOptions connectOptions) {
+        return withContext(context -> connectWithResponseInternal(connectOptions, context));
+    }
+
+    Mono<Response<ConnectResult>> connectWithResponseInternal(ConnectOptions connectOptions,
+                                                                    Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+
+            CallLocator callLocator = connectOptions.getCallLocator();
+            CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
+                .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
+
+            if (callLocator.getKind() == CallLocatorKind.GROUP_CALL_LOCATOR) {
+                callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.SERVER_CALL_LOCATOR) {
+                callLocatorInternal.setServerCallId(((ServerCallLocator) callLocator).getServerCallId());
+            } else if (callLocator.getKind() == CallLocatorKind.ROOM_CALL_LOCATOR) {
+                callLocatorInternal.setRoomId(((RoomCallLocator) callLocator).getRoomId());
+            } else {
+                throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
+            }
+
+            ConnectRequestInternal request = new ConnectRequestInternal()
+                .setCallbackUri(connectOptions.getCallbackUrl())
+                .setCallLocator(callLocatorInternal);
+
+            if (connectOptions.getCallIntelligenceOptions() != null && connectOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
+                CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
+                callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(connectOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
+                request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
+            }
+
+            return azureCommunicationCallAutomationServiceInternal.connectWithResponseAsync(
+                    request,
+                    context)
+                .map(response -> {
+                    try {
+                        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
+                        return new SimpleResponse<>(response,
+                            new ConnectResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                                new CallConnection(callConnectionAsync), callConnectionAsync));
+                    } catch (URISyntaxException e) {
+                        throw logger.logExceptionAsError(new RuntimeException(e));
+                    }
+                });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
     //endregion
 
     //region Mid-call Actions

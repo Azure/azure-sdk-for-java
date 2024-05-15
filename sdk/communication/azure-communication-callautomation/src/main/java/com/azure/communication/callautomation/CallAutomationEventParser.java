@@ -36,6 +36,7 @@ import com.azure.communication.callautomation.models.events.TranscriptionUpdated
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
 import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
 import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
+import com.azure.communication.callautomation.models.events.ConnectFailed;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -163,6 +164,8 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, MediaStreamingStopped.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingFailed")) {
                 ret = mapper.convertValue(eventData, MediaStreamingFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.ConnectFailed")) {
+                ret = mapper.convertValue(eventData, ConnectFailed.class);
             }
             return ret;
         } catch (RuntimeException e) {
