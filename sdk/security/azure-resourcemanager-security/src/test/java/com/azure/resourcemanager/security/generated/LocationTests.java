@@ -10,7 +10,7 @@ import com.azure.resourcemanager.security.models.Location;
 public final class LocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Location model = BinaryData.fromString("{\"location\":\"ympmlqoin\"}").toObject(Location.class);
+        Location model = BinaryData.fromString("{\"location\":\"pkupnq\"}").toObject(Location.class);
     }
 
     @org.junit.jupiter.api.Test

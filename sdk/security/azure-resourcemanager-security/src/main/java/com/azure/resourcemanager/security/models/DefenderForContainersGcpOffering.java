@@ -6,16 +6,28 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The containers GCP offering.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "offeringType",
+    defaultImpl = DefenderForContainersGcpOffering.class,
+    visible = true)
 @JsonTypeName("DefenderForContainersGcp")
 @Fluent
 public final class DefenderForContainersGcpOffering extends CloudOffering {
+    /*
+     * The type of the security offering.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "offeringType", required = true)
+    private OfferingType offeringType = OfferingType.DEFENDER_FOR_CONTAINERS_GCP;
+
     /*
      * The native cloud connection configuration
      */
@@ -31,20 +43,20 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
     /*
      * Is audit logs data collection enabled
      */
-    @JsonProperty(value = "auditLogsAutoProvisioningFlag")
-    private Boolean auditLogsAutoProvisioningFlag;
+    @JsonProperty(value = "enableAuditLogsAutoProvisioning")
+    private Boolean enableAuditLogsAutoProvisioning;
 
     /*
      * Is Microsoft Defender for Cloud Kubernetes agent auto provisioning enabled
      */
-    @JsonProperty(value = "defenderAgentAutoProvisioningFlag")
-    private Boolean defenderAgentAutoProvisioningFlag;
+    @JsonProperty(value = "enableDefenderAgentAutoProvisioning")
+    private Boolean enableDefenderAgentAutoProvisioning;
 
     /*
      * Is Policy Kubernetes agent auto provisioning enabled
      */
-    @JsonProperty(value = "policyAgentAutoProvisioningFlag")
-    private Boolean policyAgentAutoProvisioningFlag;
+    @JsonProperty(value = "enablePolicyAgentAutoProvisioning")
+    private Boolean enablePolicyAgentAutoProvisioning;
 
     /*
      * The Microsoft Defender Container image assessment configuration
@@ -58,10 +70,26 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
     @JsonProperty(value = "mdcContainersAgentlessDiscoveryK8s")
     private DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S;
 
+    /*
+     * The Microsoft Defender for Container K8s VM host scanning configuration
+     */
+    @JsonProperty(value = "vmScanners")
+    private DefenderForContainersGcpOfferingVmScanners vmScanners;
+
     /**
      * Creates an instance of DefenderForContainersGcpOffering class.
      */
     public DefenderForContainersGcpOffering() {
+    }
+
+    /**
+     * Get the offeringType property: The type of the security offering.
+     * 
+     * @return the offeringType value.
+     */
+    @Override
+    public OfferingType offeringType() {
+        return this.offeringType;
     }
 
     /**
@@ -107,66 +135,67 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
     }
 
     /**
-     * Get the auditLogsAutoProvisioningFlag property: Is audit logs data collection enabled.
+     * Get the enableAuditLogsAutoProvisioning property: Is audit logs data collection enabled.
      * 
-     * @return the auditLogsAutoProvisioningFlag value.
+     * @return the enableAuditLogsAutoProvisioning value.
      */
-    public Boolean auditLogsAutoProvisioningFlag() {
-        return this.auditLogsAutoProvisioningFlag;
+    public Boolean enableAuditLogsAutoProvisioning() {
+        return this.enableAuditLogsAutoProvisioning;
     }
 
     /**
-     * Set the auditLogsAutoProvisioningFlag property: Is audit logs data collection enabled.
+     * Set the enableAuditLogsAutoProvisioning property: Is audit logs data collection enabled.
      * 
-     * @param auditLogsAutoProvisioningFlag the auditLogsAutoProvisioningFlag value to set.
+     * @param enableAuditLogsAutoProvisioning the enableAuditLogsAutoProvisioning value to set.
      * @return the DefenderForContainersGcpOffering object itself.
      */
-    public DefenderForContainersGcpOffering withAuditLogsAutoProvisioningFlag(Boolean auditLogsAutoProvisioningFlag) {
-        this.auditLogsAutoProvisioningFlag = auditLogsAutoProvisioningFlag;
+    public DefenderForContainersGcpOffering
+        withEnableAuditLogsAutoProvisioning(Boolean enableAuditLogsAutoProvisioning) {
+        this.enableAuditLogsAutoProvisioning = enableAuditLogsAutoProvisioning;
         return this;
     }
 
     /**
-     * Get the defenderAgentAutoProvisioningFlag property: Is Microsoft Defender for Cloud Kubernetes agent auto
+     * Get the enableDefenderAgentAutoProvisioning property: Is Microsoft Defender for Cloud Kubernetes agent auto
      * provisioning enabled.
      * 
-     * @return the defenderAgentAutoProvisioningFlag value.
+     * @return the enableDefenderAgentAutoProvisioning value.
      */
-    public Boolean defenderAgentAutoProvisioningFlag() {
-        return this.defenderAgentAutoProvisioningFlag;
+    public Boolean enableDefenderAgentAutoProvisioning() {
+        return this.enableDefenderAgentAutoProvisioning;
     }
 
     /**
-     * Set the defenderAgentAutoProvisioningFlag property: Is Microsoft Defender for Cloud Kubernetes agent auto
+     * Set the enableDefenderAgentAutoProvisioning property: Is Microsoft Defender for Cloud Kubernetes agent auto
      * provisioning enabled.
      * 
-     * @param defenderAgentAutoProvisioningFlag the defenderAgentAutoProvisioningFlag value to set.
+     * @param enableDefenderAgentAutoProvisioning the enableDefenderAgentAutoProvisioning value to set.
      * @return the DefenderForContainersGcpOffering object itself.
      */
     public DefenderForContainersGcpOffering
-        withDefenderAgentAutoProvisioningFlag(Boolean defenderAgentAutoProvisioningFlag) {
-        this.defenderAgentAutoProvisioningFlag = defenderAgentAutoProvisioningFlag;
+        withEnableDefenderAgentAutoProvisioning(Boolean enableDefenderAgentAutoProvisioning) {
+        this.enableDefenderAgentAutoProvisioning = enableDefenderAgentAutoProvisioning;
         return this;
     }
 
     /**
-     * Get the policyAgentAutoProvisioningFlag property: Is Policy Kubernetes agent auto provisioning enabled.
+     * Get the enablePolicyAgentAutoProvisioning property: Is Policy Kubernetes agent auto provisioning enabled.
      * 
-     * @return the policyAgentAutoProvisioningFlag value.
+     * @return the enablePolicyAgentAutoProvisioning value.
      */
-    public Boolean policyAgentAutoProvisioningFlag() {
-        return this.policyAgentAutoProvisioningFlag;
+    public Boolean enablePolicyAgentAutoProvisioning() {
+        return this.enablePolicyAgentAutoProvisioning;
     }
 
     /**
-     * Set the policyAgentAutoProvisioningFlag property: Is Policy Kubernetes agent auto provisioning enabled.
+     * Set the enablePolicyAgentAutoProvisioning property: Is Policy Kubernetes agent auto provisioning enabled.
      * 
-     * @param policyAgentAutoProvisioningFlag the policyAgentAutoProvisioningFlag value to set.
+     * @param enablePolicyAgentAutoProvisioning the enablePolicyAgentAutoProvisioning value to set.
      * @return the DefenderForContainersGcpOffering object itself.
      */
     public DefenderForContainersGcpOffering
-        withPolicyAgentAutoProvisioningFlag(Boolean policyAgentAutoProvisioningFlag) {
-        this.policyAgentAutoProvisioningFlag = policyAgentAutoProvisioningFlag;
+        withEnablePolicyAgentAutoProvisioning(Boolean enablePolicyAgentAutoProvisioning) {
+        this.enablePolicyAgentAutoProvisioning = enablePolicyAgentAutoProvisioning;
         return this;
     }
 
@@ -215,6 +244,26 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
     }
 
     /**
+     * Get the vmScanners property: The Microsoft Defender for Container K8s VM host scanning configuration.
+     * 
+     * @return the vmScanners value.
+     */
+    public DefenderForContainersGcpOfferingVmScanners vmScanners() {
+        return this.vmScanners;
+    }
+
+    /**
+     * Set the vmScanners property: The Microsoft Defender for Container K8s VM host scanning configuration.
+     * 
+     * @param vmScanners the vmScanners value to set.
+     * @return the DefenderForContainersGcpOffering object itself.
+     */
+    public DefenderForContainersGcpOffering withVmScanners(DefenderForContainersGcpOfferingVmScanners vmScanners) {
+        this.vmScanners = vmScanners;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -233,6 +282,9 @@ public final class DefenderForContainersGcpOffering extends CloudOffering {
         }
         if (mdcContainersAgentlessDiscoveryK8S() != null) {
             mdcContainersAgentlessDiscoveryK8S().validate();
+        }
+        if (vmScanners() != null) {
+            vmScanners().validate();
         }
     }
 }

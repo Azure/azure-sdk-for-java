@@ -11,24 +11,24 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8STests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S model = BinaryData
-            .fromString(
-                "{\"enabled\":false,\"workloadIdentityProviderId\":\"i\",\"serviceAccountEmailAddress\":\"ejlwbk\"}")
+        DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S model = BinaryData.fromString(
+            "{\"enabled\":true,\"workloadIdentityProviderId\":\"owly\",\"serviceAccountEmailAddress\":\"zmudsqcm\"}")
             .toObject(DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("i", model.workloadIdentityProviderId());
-        Assertions.assertEquals("ejlwbk", model.serviceAccountEmailAddress());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("owly", model.workloadIdentityProviderId());
+        Assertions.assertEquals("zmudsqcm", model.serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S model
-            = new DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(false)
-                .withWorkloadIdentityProviderId("i").withServiceAccountEmailAddress("ejlwbk");
+            = new DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(true)
+                .withWorkloadIdentityProviderId("owly")
+                .withServiceAccountEmailAddress("zmudsqcm");
         model = BinaryData.fromObject(model)
             .toObject(DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("i", model.workloadIdentityProviderId());
-        Assertions.assertEquals("ejlwbk", model.serviceAccountEmailAddress());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("owly", model.workloadIdentityProviderId());
+        Assertions.assertEquals("zmudsqcm", model.serviceAccountEmailAddress());
     }
 }
