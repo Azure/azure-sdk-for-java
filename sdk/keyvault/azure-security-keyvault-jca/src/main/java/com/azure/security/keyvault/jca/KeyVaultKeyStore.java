@@ -377,7 +377,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
 
             keyVaultCertificates.updateKeyVaultClient(
-                parameter.getKeyVaultUri(), parameter.getLoginUri(), parameter.getTenantId(), parameter.getClientId(),
+                parameter.getUri(), parameter.getLoginUri(), parameter.getTenantId(), parameter.getClientId(),
                 parameter.getClientSecret(), parameter.getManagedIdentity());
         }
 
