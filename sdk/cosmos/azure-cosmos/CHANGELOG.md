@@ -3,10 +3,12 @@
 ### 4.60.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added the capability to regionally scope session tokens used for operations scoped to a logical partition. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Ensured that `excludedRegions` is getting honored change feed operations. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003) 
 
 #### Other Changes
 * Added change to throw `IllegalStateException` when change feed mode is switched from `AllVersionsAndDeletes` to `Incremental` and vice-versa for the same deployment unit for EPK-Range based leases. See [PR 38740](https://github.com/Azure/azure-sdk-for-java/pull/38740)
