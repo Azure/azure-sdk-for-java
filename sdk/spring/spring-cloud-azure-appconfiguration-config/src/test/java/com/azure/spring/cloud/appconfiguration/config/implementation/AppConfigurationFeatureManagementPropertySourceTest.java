@@ -10,10 +10,14 @@ import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 
@@ -23,10 +27,19 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
     private FeatureFlagClient featureFlagLoaderMock;
     
     private static final String FEATURE_FLAG_KEY = "feature_management.feature_flags";
+    
+    private MockitoSession session;
 
     @BeforeEach
     public void init() {
+        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MockitoAnnotations.openMocks(this);
+    }
+    
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
+        session.finishMocking();
     }
 
     @Test

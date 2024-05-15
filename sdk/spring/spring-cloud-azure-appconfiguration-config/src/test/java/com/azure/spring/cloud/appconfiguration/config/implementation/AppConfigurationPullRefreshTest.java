@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 import org.springframework.context.ApplicationEventPublisher;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
@@ -37,16 +39,20 @@ public class AppConfigurationPullRefreshTest {
 
     @Mock
     private AppConfigurationReplicaClientFactory clientFactoryMock;
+    
+    private MockitoSession session;
 
     @BeforeEach
     public void setup() {
+        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MockitoAnnotations.openMocks(this);
         eventData = new RefreshEventData();
     }
 
     @AfterEach
-    public void cleanupMethod() throws Exception {
+    public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
+        session.finishMocking();
     }
 
     @Test

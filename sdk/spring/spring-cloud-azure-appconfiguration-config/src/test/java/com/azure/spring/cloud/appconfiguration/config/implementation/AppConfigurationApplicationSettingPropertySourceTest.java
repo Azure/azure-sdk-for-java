@@ -31,6 +31,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
@@ -71,6 +73,8 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
 
     @Mock
     private List<ConfigurationSetting> configurationListMock;
+    
+    private MockitoSession session;
 
     @BeforeAll
     public static void setup() {
@@ -79,6 +83,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
 
     @BeforeEach
     public void init() {
+        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
         MockitoAnnotations.openMocks(this);
@@ -97,6 +102,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
+        session.finishMocking();
     }
 
     @Test

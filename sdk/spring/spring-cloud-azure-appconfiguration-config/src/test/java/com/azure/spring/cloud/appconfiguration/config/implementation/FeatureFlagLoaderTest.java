@@ -14,11 +14,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -34,12 +37,21 @@ public class FeatureFlagLoaderTest {
     private FeatureFlagClient featureFlagLoader;
 
     private String[] emptyLabelList = { "\0" };
+    
+    private MockitoSession session;
 
     @BeforeEach
     public void init() {
+        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MockitoAnnotations.openMocks(this);
 
         featureFlagLoader = new FeatureFlagClient();
+    }
+    
+    @AfterEach
+    public void cleanup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
+        session.finishMocking();
     }
 
     @Test
