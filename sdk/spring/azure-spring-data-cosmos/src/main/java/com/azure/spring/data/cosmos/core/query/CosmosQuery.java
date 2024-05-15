@@ -185,7 +185,7 @@ public class CosmosQuery {
 
     private boolean hasKeywordAnd() {
         // If there is AND keyword in DocumentQuery, the top node of Criteria must be AND type.
-        return this.criteria != null ? this.criteria.getType() == CriteriaType.AND: false;
+        return this.criteria != null ? this.criteria.getType() == CriteriaType.AND : false;
     }
 
     private boolean isEqualCriteria(Criteria criteria) {
