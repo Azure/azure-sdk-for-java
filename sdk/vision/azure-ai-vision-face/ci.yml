@@ -8,11 +8,11 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/face/ci.yml
-      - sdk/face/azure-ai-vision-face/
+      - sdk/vision/azure-ai-vision-face/ci.yml
+      - sdk/vision/azure-ai-vision-face/
     exclude:
-      - sdk/face/pom.xml
-      - sdk/face/azure-ai-vision-face/pom.xml
+      - sdk/vision/pom.xml
+      - sdk/vision/azure-ai-vision-face/pom.xml
 
 pr:
   branches:
@@ -23,11 +23,11 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/face/ci.yml
-      - sdk/face/azure-ai-vision-face/
+      - sdk/vision/azure-ai-vision-face/ci.yml
+      - sdk/vision/azure-ai-vision-face/
     exclude:
-      - sdk/face/pom.xml
-      - sdk/face/azure-ai-vision-face/pom.xml
+      - sdk/vision/pom.xml
+      - sdk/vision/azure-ai-vision-face/pom.xml
 
 parameters:
   - name: release_azureaivisionface
@@ -36,9 +36,9 @@ parameters:
     default: true
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: ../../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: face
+    ServiceDirectory: vision
     EnableBatchRelease: true
     Artifacts:
       - name: azure-ai-vision-face

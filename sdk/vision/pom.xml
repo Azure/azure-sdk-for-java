@@ -11,5 +11,6 @@
 
   <modules>
     <module>azure-ai-vision-imageanalysis</module>
+    <module>azure-ai-vision-face</module>
   </modules>
 </project>
