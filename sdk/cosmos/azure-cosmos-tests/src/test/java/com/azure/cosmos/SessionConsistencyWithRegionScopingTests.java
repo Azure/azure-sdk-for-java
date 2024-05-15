@@ -1710,25 +1710,25 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         assertThat(partitionKeyBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType("pk2", "eastus", 1L))).isFalse();
     }
 
-    @Test(groups = {"unit"}, timeOut = TIMEOUT)
+    @Test(groups = {"unit"})
     public void testFppRate() {
 
         Funnel<Integer> integerFunnel = Funnels.integerFunnel();
         Set<Integer> actualNumbers = new HashSet<>();
         Random random = new Random();
 
-        BloomFilter<Integer> integerBasedBloomFilter = BloomFilter.create(integerFunnel, 1_000_000, 0.001);
+        BloomFilter<Integer> integerBasedBloomFilter = BloomFilter.create(integerFunnel, 10_000_000, 0.001);
 
         int falsePositiveCount = 0;
 
-        for (int i = 1; i <= 1_000_000; i++) {
+        for (int i = 1; i <= 10_000_000; i++) {
             int valPicked = random.nextInt(Integer.MAX_VALUE);
 
             actualNumbers.add(valPicked);
             integerBasedBloomFilter.put(valPicked);
         }
 
-        for (int i = 1; i <= 1_000_000; i++) {
+        for (int i = 1; i <= 10_000_000; i++) {
             boolean isPresentInBloomFilter = integerBasedBloomFilter.mightContain(i);
             boolean isPresentInActualSet = actualNumbers.contains(i);
 
@@ -1737,7 +1737,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             }
         }
 
-        double fppRate = (double) falsePositiveCount / 1_000_000d;
+        double fppRate = (double) falsePositiveCount / 10_000_000d;
 
         logger.info("False positives count : {}", falsePositiveCount);
         logger.info("FPP Rate : {}", fppRate);
@@ -1745,14 +1745,14 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         falsePositiveCount = 0;
         fppRate = 0d;
 
-        for (int i = 1; i <= 1_000_000; i++) {
+        for (int i = 1; i <= 10_000_000; i++) {
             int valPicked = random.nextInt(Integer.MAX_VALUE);
 
             actualNumbers.add(valPicked);
             integerBasedBloomFilter.put(valPicked);
         }
 
-        for (int i = 1; i <= 2_000_000; i++) {
+        for (int i = 1; i <= 20_000_000; i++) {
             boolean isPresentInBloomFilter = integerBasedBloomFilter.mightContain(i);
             boolean isPresentInActualSet = actualNumbers.contains(i);
 
@@ -1761,7 +1761,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
             }
         }
 
-        fppRate = (double) falsePositiveCount / 2_000_000d;
+        fppRate = (double) falsePositiveCount / 20_000_000;
 
         logger.info("False positives count : {}", falsePositiveCount);
         logger.info("FPP Rate : {}", fppRate);

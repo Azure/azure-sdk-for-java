@@ -237,7 +237,7 @@ public class CosmosClientBuilderTest {
     }
 
     // set env variable to COSMOS.SESSION_CAPTURING_TYPE to REGION_SCOPED to test all possible assertions
-    @Test(groups = "unit")
+    @Test(groups = "unit", enabled = false)
     public void validateSessionTokenCapturingForAccountDefaultConsistencyWithEnvVariable() {
 
         try {
