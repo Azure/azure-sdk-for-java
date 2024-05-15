@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Power Virtual Agents Dialog. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("PowerVirtualAgents")
+@JsonTypeName("powerVirtualAgents")
 @Fluent
 public final class PowerVirtualAgentsDialog extends BaseDialog {
     /*
