@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added change to throw `IllegalStateException` when change feed mode is switched from `AllVersionsAndDeletes` to `Incremental` and vice-versa for the same deployment unit for EPK-Range based leases. See [PR 38740](https://github.com/Azure/azure-sdk-for-java/pull/38740)
 
 ### 4.59.0 (2024-04-27)
 
