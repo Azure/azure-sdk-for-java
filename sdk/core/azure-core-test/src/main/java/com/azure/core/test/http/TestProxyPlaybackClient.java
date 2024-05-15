@@ -29,6 +29,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_FILE_LOCATION;
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
+import static com.azure.core.test.utils.TestProxyUtils.DEFAULT_REMOVE_SANITIZER_LIST;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
 import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
@@ -99,6 +101,7 @@ public class TestProxyPlaybackClient implements HttpClient {
                 = new String(Base64.getUrlDecoder().decode(response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)),
                     StandardCharsets.UTF_8);
             addProxySanitization(this.sanitizers);
+            removeProxySanitization(DEFAULT_REMOVE_SANITIZER_LIST);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
             // The test proxy stores variables in a map with no guaranteed order.
@@ -224,6 +227,30 @@ public class TestProxyPlaybackClient implements HttpClient {
             client.sendSync(request, Context.NONE).close();
         } else {
             this.sanitizers.addAll(sanitizers);
+        }
+    }
+
+    /**
+     * Removes the list of sanitizers from the current playback session.
+     * @param sanitizers The sanitizers to remove.
+     * @throws RuntimeException if an {@link IOException} is thrown.
+     */
+    public void removeProxySanitization(List<String> sanitizers) {
+        if (isPlayingBack()) {
+            Map<String, List<String>> data = new HashMap<>();
+            data.put("Sanitizers", sanitizers);
+
+            HttpRequest request;
+            try {
+                request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/RemoveSanitizers")
+                    .setBody(SERIALIZER.serialize(data, SerializerEncoding.JSON))
+                    .setHeader(X_RECORDING_ID, xRecordingId)
+                    .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            sendRequestWithRetries(request);
         }
     }
 
