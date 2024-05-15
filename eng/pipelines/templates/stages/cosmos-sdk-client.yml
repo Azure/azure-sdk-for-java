@@ -63,7 +63,6 @@ extends:
                 NonSparseParameters: Agent
                 GenerateVMJobs: true
             MatrixFilters:
-              - TestFromSource=^$|false
               - ${{ parameters.MatrixFilters }}
             MatrixReplace:
               - AZURE_TEST.*=.*/
