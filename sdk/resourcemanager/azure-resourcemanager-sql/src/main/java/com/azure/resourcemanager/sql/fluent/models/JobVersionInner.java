@@ -7,16 +7,20 @@ package com.azure.resourcemanager.sql.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 
-/** A job version. */
+/**
+ * A job version.
+ */
 @Immutable
 public final class JobVersionInner extends ProxyResource {
-    /** Creates an instance of JobVersionInner class. */
+    /**
+     * Creates an instance of JobVersionInner class.
+     */
     public JobVersionInner() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

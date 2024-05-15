@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Per database settings of an elastic pool. */
+/**
+ * Per database settings of an elastic pool.
+ */
 @Fluent
 public final class ElasticPoolPerDatabaseSettings {
     /*
@@ -22,13 +24,15 @@ public final class ElasticPoolPerDatabaseSettings {
     @JsonProperty(value = "maxCapacity")
     private Double maxCapacity;
 
-    /** Creates an instance of ElasticPoolPerDatabaseSettings class. */
+    /**
+     * Creates an instance of ElasticPoolPerDatabaseSettings class.
+     */
     public ElasticPoolPerDatabaseSettings() {
     }
 
     /**
      * Get the minCapacity property: The minimum capacity all databases are guaranteed.
-     *
+     * 
      * @return the minCapacity value.
      */
     public Double minCapacity() {
@@ -37,7 +41,7 @@ public final class ElasticPoolPerDatabaseSettings {
 
     /**
      * Set the minCapacity property: The minimum capacity all databases are guaranteed.
-     *
+     * 
      * @param minCapacity the minCapacity value to set.
      * @return the ElasticPoolPerDatabaseSettings object itself.
      */
@@ -48,7 +52,7 @@ public final class ElasticPoolPerDatabaseSettings {
 
     /**
      * Get the maxCapacity property: The maximum capacity any one database can consume.
-     *
+     * 
      * @return the maxCapacity value.
      */
     public Double maxCapacity() {
@@ -57,7 +61,7 @@ public final class ElasticPoolPerDatabaseSettings {
 
     /**
      * Set the maxCapacity property: The maximum capacity any one database can consume.
-     *
+     * 
      * @param maxCapacity the maxCapacity value to set.
      * @return the ElasticPoolPerDatabaseSettings object itself.
      */
@@ -68,7 +72,7 @@ public final class ElasticPoolPerDatabaseSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

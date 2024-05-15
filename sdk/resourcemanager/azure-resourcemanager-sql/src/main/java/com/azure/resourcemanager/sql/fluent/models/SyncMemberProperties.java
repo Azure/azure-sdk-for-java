@@ -11,7 +11,9 @@ import com.azure.resourcemanager.sql.models.SyncMemberState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** Properties of a sync member. */
+/**
+ * Properties of a sync member.
+ */
 @Fluent
 public final class SyncMemberProperties {
     /*
@@ -86,13 +88,15 @@ public final class SyncMemberProperties {
     @JsonProperty(value = "syncState", access = JsonProperty.Access.WRITE_ONLY)
     private SyncMemberState syncState;
 
-    /** Creates an instance of SyncMemberProperties class. */
+    /**
+     * Creates an instance of SyncMemberProperties class.
+     */
     public SyncMemberProperties() {
     }
 
     /**
      * Get the databaseType property: Database type of the sync member.
-     *
+     * 
      * @return the databaseType value.
      */
     public SyncMemberDbType databaseType() {
@@ -101,7 +105,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the databaseType property: Database type of the sync member.
-     *
+     * 
      * @param databaseType the databaseType value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -112,7 +116,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the syncAgentId property: ARM resource id of the sync agent in the sync member.
-     *
+     * 
      * @return the syncAgentId value.
      */
     public String syncAgentId() {
@@ -121,7 +125,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the syncAgentId property: ARM resource id of the sync agent in the sync member.
-     *
+     * 
      * @param syncAgentId the syncAgentId value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -132,7 +136,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the sqlServerDatabaseId property: SQL Server database id of the sync member.
-     *
+     * 
      * @return the sqlServerDatabaseId value.
      */
     public UUID sqlServerDatabaseId() {
@@ -141,7 +145,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the sqlServerDatabaseId property: SQL Server database id of the sync member.
-     *
+     * 
      * @param sqlServerDatabaseId the sqlServerDatabaseId value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -153,7 +157,7 @@ public final class SyncMemberProperties {
     /**
      * Get the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
      * members in Azure.
-     *
+     * 
      * @return the syncMemberAzureDatabaseResourceId value.
      */
     public String syncMemberAzureDatabaseResourceId() {
@@ -163,7 +167,7 @@ public final class SyncMemberProperties {
     /**
      * Set the syncMemberAzureDatabaseResourceId property: ARM resource id of the sync member logical database, for sync
      * members in Azure.
-     *
+     * 
      * @param syncMemberAzureDatabaseResourceId the syncMemberAzureDatabaseResourceId value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -174,7 +178,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the usePrivateLinkConnection property: Whether to use private link connection.
-     *
+     * 
      * @return the usePrivateLinkConnection value.
      */
     public Boolean usePrivateLinkConnection() {
@@ -183,7 +187,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the usePrivateLinkConnection property: Whether to use private link connection.
-     *
+     * 
      * @param usePrivateLinkConnection the usePrivateLinkConnection value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -195,7 +199,7 @@ public final class SyncMemberProperties {
     /**
      * Get the privateEndpointName property: Private endpoint name of the sync member if use private link connection is
      * enabled, for sync members in Azure.
-     *
+     * 
      * @return the privateEndpointName value.
      */
     public String privateEndpointName() {
@@ -204,7 +208,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the serverName property: Server name of the member database in the sync member.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -213,7 +217,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the serverName property: Server name of the member database in the sync member.
-     *
+     * 
      * @param serverName the serverName value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -224,7 +228,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the databaseName property: Database name of the member database in the sync member.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -233,7 +237,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the databaseName property: Database name of the member database in the sync member.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -244,7 +248,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the username property: User name of the member database in the sync member.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -253,7 +257,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the username property: User name of the member database in the sync member.
-     *
+     * 
      * @param username the username value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -264,7 +268,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the password property: Password of the member database in the sync member.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -273,7 +277,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the password property: Password of the member database in the sync member.
-     *
+     * 
      * @param password the password value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -284,7 +288,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the syncDirection property: Sync direction of the sync member.
-     *
+     * 
      * @return the syncDirection value.
      */
     public SyncDirection syncDirection() {
@@ -293,7 +297,7 @@ public final class SyncMemberProperties {
 
     /**
      * Set the syncDirection property: Sync direction of the sync member.
-     *
+     * 
      * @param syncDirection the syncDirection value to set.
      * @return the SyncMemberProperties object itself.
      */
@@ -304,7 +308,7 @@ public final class SyncMemberProperties {
 
     /**
      * Get the syncState property: Sync state of the sync member.
-     *
+     * 
      * @return the syncState value.
      */
     public SyncMemberState syncState() {
@@ -313,7 +317,7 @@ public final class SyncMemberProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

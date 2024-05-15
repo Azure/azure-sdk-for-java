@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PrivateLinkServiceConnectionStateProperty model. */
+/**
+ * The PrivateLinkServiceConnectionStateProperty model.
+ */
 @Fluent
 public final class PrivateLinkServiceConnectionStateProperty {
     /*
@@ -29,13 +31,15 @@ public final class PrivateLinkServiceConnectionStateProperty {
     @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateLinkServiceConnectionStateActionsRequire actionsRequired;
 
-    /** Creates an instance of PrivateLinkServiceConnectionStateProperty class. */
+    /**
+     * Creates an instance of PrivateLinkServiceConnectionStateProperty class.
+     */
     public PrivateLinkServiceConnectionStateProperty() {
     }
 
     /**
      * Get the status property: The private link service connection status.
-     *
+     * 
      * @return the status value.
      */
     public PrivateLinkServiceConnectionStateStatus status() {
@@ -44,7 +48,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
 
     /**
      * Set the status property: The private link service connection status.
-     *
+     * 
      * @param status the status value to set.
      * @return the PrivateLinkServiceConnectionStateProperty object itself.
      */
@@ -55,7 +59,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
 
     /**
      * Get the description property: The private link service connection description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -64,7 +68,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
 
     /**
      * Set the description property: The private link service connection description.
-     *
+     * 
      * @param description the description value to set.
      * @return the PrivateLinkServiceConnectionStateProperty object itself.
      */
@@ -75,7 +79,7 @@ public final class PrivateLinkServiceConnectionStateProperty {
 
     /**
      * Get the actionsRequired property: The actions required for private link service connection.
-     *
+     * 
      * @return the actionsRequired value.
      */
     public PrivateLinkServiceConnectionStateActionsRequire actionsRequired() {
@@ -84,21 +88,19 @@ public final class PrivateLinkServiceConnectionStateProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model PrivateLinkServiceConnectionStateProperty"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model PrivateLinkServiceConnectionStateProperty"));
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property description in model PrivateLinkServiceConnectionStateProperty"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model PrivateLinkServiceConnectionStateProperty"));
         }
     }
 

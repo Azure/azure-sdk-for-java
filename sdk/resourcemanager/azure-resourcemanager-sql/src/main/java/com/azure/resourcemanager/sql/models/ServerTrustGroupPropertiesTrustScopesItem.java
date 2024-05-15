@@ -8,19 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServerTrustGroupPropertiesTrustScopesItem. */
+/**
+ * Defines values for ServerTrustGroupPropertiesTrustScopesItem.
+ */
 public final class ServerTrustGroupPropertiesTrustScopesItem
     extends ExpandableStringEnum<ServerTrustGroupPropertiesTrustScopesItem> {
-    /** Static value GlobalTransactions for ServerTrustGroupPropertiesTrustScopesItem. */
-    public static final ServerTrustGroupPropertiesTrustScopesItem GLOBAL_TRANSACTIONS =
-        fromString("GlobalTransactions");
+    /**
+     * Static value GlobalTransactions for ServerTrustGroupPropertiesTrustScopesItem.
+     */
+    public static final ServerTrustGroupPropertiesTrustScopesItem GLOBAL_TRANSACTIONS
+        = fromString("GlobalTransactions");
 
-    /** Static value ServiceBroker for ServerTrustGroupPropertiesTrustScopesItem. */
+    /**
+     * Static value ServiceBroker for ServerTrustGroupPropertiesTrustScopesItem.
+     */
     public static final ServerTrustGroupPropertiesTrustScopesItem SERVICE_BROKER = fromString("ServiceBroker");
 
     /**
+     * Creates a new instance of ServerTrustGroupPropertiesTrustScopesItem value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServerTrustGroupPropertiesTrustScopesItem() {
+    }
+
+    /**
      * Creates or finds a ServerTrustGroupPropertiesTrustScopesItem from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServerTrustGroupPropertiesTrustScopesItem.
      */
@@ -31,7 +46,7 @@ public final class ServerTrustGroupPropertiesTrustScopesItem
 
     /**
      * Gets known ServerTrustGroupPropertiesTrustScopesItem values.
-     *
+     * 
      * @return known ServerTrustGroupPropertiesTrustScopesItem values.
      */
     public static Collection<ServerTrustGroupPropertiesTrustScopesItem> values() {

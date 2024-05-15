@@ -11,13 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.models.RecommendedSensitivityLabelUpdateList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RecommendedSensitivityLabelsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecommendedSensitivityLabelsClient.
+ */
 public interface RecommendedSensitivityLabelsClient {
     /**
      * Update recommended sensitivity labels states of a given database using an operations batch.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters A list of recommended sensitivity label update operations.
@@ -27,17 +29,14 @@ public interface RecommendedSensitivityLabelsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
+    Mono<Response<Void>> updateWithResponseAsync(String resourceGroupName, String serverName, String databaseName,
         RecommendedSensitivityLabelUpdateList parameters);
 
     /**
      * Update recommended sensitivity labels states of a given database using an operations batch.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters A list of recommended sensitivity label update operations.
@@ -47,17 +46,14 @@ public interface RecommendedSensitivityLabelsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
+    Mono<Void> updateAsync(String resourceGroupName, String serverName, String databaseName,
         RecommendedSensitivityLabelUpdateList parameters);
 
     /**
      * Update recommended sensitivity labels states of a given database using an operations batch.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters A list of recommended sensitivity label update operations.
@@ -68,18 +64,14 @@ public interface RecommendedSensitivityLabelsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        RecommendedSensitivityLabelUpdateList parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String serverName, String databaseName,
+        RecommendedSensitivityLabelUpdateList parameters, Context context);
 
     /**
      * Update recommended sensitivity labels states of a given database using an operations batch.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters A list of recommended sensitivity label update operations.
@@ -88,9 +80,6 @@ public interface RecommendedSensitivityLabelsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
+    void update(String resourceGroupName, String serverName, String databaseName,
         RecommendedSensitivityLabelUpdateList parameters);
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of recommended sensitivity label update operations. */
+/**
+ * A list of recommended sensitivity label update operations.
+ */
 @Fluent
 public final class RecommendedSensitivityLabelUpdateList {
     /*
@@ -17,13 +19,15 @@ public final class RecommendedSensitivityLabelUpdateList {
     @JsonProperty(value = "operations")
     private List<RecommendedSensitivityLabelUpdate> operations;
 
-    /** Creates an instance of RecommendedSensitivityLabelUpdateList class. */
+    /**
+     * Creates an instance of RecommendedSensitivityLabelUpdateList class.
+     */
     public RecommendedSensitivityLabelUpdateList() {
     }
 
     /**
      * Get the operations property: The operations property.
-     *
+     * 
      * @return the operations value.
      */
     public List<RecommendedSensitivityLabelUpdate> operations() {
@@ -32,7 +36,7 @@ public final class RecommendedSensitivityLabelUpdateList {
 
     /**
      * Set the operations property: The operations property.
-     *
+     * 
      * @param operations the operations value to set.
      * @return the RecommendedSensitivityLabelUpdateList object itself.
      */
@@ -43,7 +47,7 @@ public final class RecommendedSensitivityLabelUpdateList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

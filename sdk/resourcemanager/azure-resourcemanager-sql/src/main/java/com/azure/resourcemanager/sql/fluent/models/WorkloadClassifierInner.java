@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workload classifier operations for a data warehouse. */
+/**
+ * Workload classifier operations for a data warehouse.
+ */
 @Fluent
 public final class WorkloadClassifierInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class WorkloadClassifierInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private WorkloadClassifierProperties innerProperties;
 
-    /** Creates an instance of WorkloadClassifierInner class. */
+    /**
+     * Creates an instance of WorkloadClassifierInner class.
+     */
     public WorkloadClassifierInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkloadClassifierProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the memberName property: The workload classifier member name.
-     *
+     * 
      * @return the memberName value.
      */
     public String memberName() {
@@ -41,7 +45,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the memberName property: The workload classifier member name.
-     *
+     * 
      * @param memberName the memberName value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -55,7 +59,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the label property: The workload classifier label.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -64,7 +68,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the label property: The workload classifier label.
-     *
+     * 
      * @param label the label value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -78,7 +82,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the context property: The workload classifier context.
-     *
+     * 
      * @return the context value.
      */
     public String context() {
@@ -87,7 +91,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the context property: The workload classifier context.
-     *
+     * 
      * @param context the context value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -101,7 +105,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the startTime property: The workload classifier start time for classification.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -110,7 +114,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the startTime property: The workload classifier start time for classification.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -124,7 +128,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the endTime property: The workload classifier end time for classification.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -133,7 +137,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the endTime property: The workload classifier end time for classification.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -147,7 +151,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Get the importance property: The workload classifier importance.
-     *
+     * 
      * @return the importance value.
      */
     public String importance() {
@@ -156,7 +160,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Set the importance property: The workload classifier importance.
-     *
+     * 
      * @param importance the importance value to set.
      * @return the WorkloadClassifierInner object itself.
      */
@@ -170,7 +174,7 @@ public final class WorkloadClassifierInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,11 +5,14 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.sql.models.BackupStorageAccessTier;
 import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of a long term retention backup. */
+/**
+ * Properties of a long term retention backup.
+ */
 @Fluent
 public final class LongTermRetentionBackupProperties {
     /*
@@ -60,13 +63,27 @@ public final class LongTermRetentionBackupProperties {
     @JsonProperty(value = "requestedBackupStorageRedundancy")
     private BackupStorageRedundancy requestedBackupStorageRedundancy;
 
-    /** Creates an instance of LongTermRetentionBackupProperties class. */
+    /*
+     * The setting whether the LTR backup is immutable
+     */
+    @JsonProperty(value = "isBackupImmutable")
+    private Boolean isBackupImmutable;
+
+    /*
+     * The BackupStorageAccessTier for the LTR backup
+     */
+    @JsonProperty(value = "backupStorageAccessTier", access = JsonProperty.Access.WRITE_ONLY)
+    private BackupStorageAccessTier backupStorageAccessTier;
+
+    /**
+     * Creates an instance of LongTermRetentionBackupProperties class.
+     */
     public LongTermRetentionBackupProperties() {
     }
 
     /**
      * Get the serverName property: The server name that the backup database belong to.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -75,7 +92,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the serverCreateTime property: The create time of the server.
-     *
+     * 
      * @return the serverCreateTime value.
      */
     public OffsetDateTime serverCreateTime() {
@@ -84,7 +101,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the databaseName property: The name of the database the backup belong to.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -93,7 +110,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the databaseDeletionTime property: The delete time of the database.
-     *
+     * 
      * @return the databaseDeletionTime value.
      */
     public OffsetDateTime databaseDeletionTime() {
@@ -102,7 +119,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the backupTime property: The time the backup was taken.
-     *
+     * 
      * @return the backupTime value.
      */
     public OffsetDateTime backupTime() {
@@ -111,7 +128,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the backupExpirationTime property: The time the long term retention backup will expire.
-     *
+     * 
      * @return the backupExpirationTime value.
      */
     public OffsetDateTime backupExpirationTime() {
@@ -120,7 +137,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the backupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @return the backupStorageRedundancy value.
      */
     public BackupStorageRedundancy backupStorageRedundancy() {
@@ -129,7 +146,7 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Get the requestedBackupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @return the requestedBackupStorageRedundancy value.
      */
     public BackupStorageRedundancy requestedBackupStorageRedundancy() {
@@ -138,19 +155,48 @@ public final class LongTermRetentionBackupProperties {
 
     /**
      * Set the requestedBackupStorageRedundancy property: The storage redundancy type of the backup.
-     *
+     * 
      * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
      * @return the LongTermRetentionBackupProperties object itself.
      */
-    public LongTermRetentionBackupProperties withRequestedBackupStorageRedundancy(
-        BackupStorageRedundancy requestedBackupStorageRedundancy) {
+    public LongTermRetentionBackupProperties
+        withRequestedBackupStorageRedundancy(BackupStorageRedundancy requestedBackupStorageRedundancy) {
         this.requestedBackupStorageRedundancy = requestedBackupStorageRedundancy;
         return this;
     }
 
     /**
+     * Get the isBackupImmutable property: The setting whether the LTR backup is immutable.
+     * 
+     * @return the isBackupImmutable value.
+     */
+    public Boolean isBackupImmutable() {
+        return this.isBackupImmutable;
+    }
+
+    /**
+     * Set the isBackupImmutable property: The setting whether the LTR backup is immutable.
+     * 
+     * @param isBackupImmutable the isBackupImmutable value to set.
+     * @return the LongTermRetentionBackupProperties object itself.
+     */
+    public LongTermRetentionBackupProperties withIsBackupImmutable(Boolean isBackupImmutable) {
+        this.isBackupImmutable = isBackupImmutable;
+        return this;
+    }
+
+    /**
+     * Get the backupStorageAccessTier property: The BackupStorageAccessTier for the LTR backup.
+     * 
+     * @return the backupStorageAccessTier value.
+     */
+    public BackupStorageAccessTier backupStorageAccessTier() {
+        return this.backupStorageAccessTier;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

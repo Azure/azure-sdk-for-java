@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The max per-database performance level capability. */
+/**
+ * The max per-database performance level capability.
+ */
 @Fluent
 public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
     /*
@@ -41,13 +43,15 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ElasticPoolPerDatabaseMaxPerformanceLevelCapability class. */
+    /**
+     * Creates an instance of ElasticPoolPerDatabaseMaxPerformanceLevelCapability class.
+     */
     public ElasticPoolPerDatabaseMaxPerformanceLevelCapability() {
     }
 
     /**
      * Get the limit property: The maximum performance level per database.
-     *
+     * 
      * @return the limit value.
      */
     public Double limit() {
@@ -56,7 +60,7 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Get the unit property: Unit type used to measure performance level.
-     *
+     * 
      * @return the unit value.
      */
     public PerformanceLevelUnit unit() {
@@ -65,7 +69,7 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Get the supportedPerDatabaseMinPerformanceLevels property: The list of supported min database performance levels.
-     *
+     * 
      * @return the supportedPerDatabaseMinPerformanceLevels value.
      */
     public List<ElasticPoolPerDatabaseMinPerformanceLevelCapability> supportedPerDatabaseMinPerformanceLevels() {
@@ -74,7 +78,7 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -83,7 +87,7 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -92,7 +96,7 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ElasticPoolPerDatabaseMaxPerformanceLevelCapability object itself.
      */
@@ -103,7 +107,7 @@ public final class ElasticPoolPerDatabaseMaxPerformanceLevelCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

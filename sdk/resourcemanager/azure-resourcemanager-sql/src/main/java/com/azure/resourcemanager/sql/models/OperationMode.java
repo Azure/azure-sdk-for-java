@@ -8,20 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Operation mode of the operation: Import, Export, or PolybaseImport. */
+/**
+ * Operation Mode.
+ */
 public final class OperationMode extends ExpandableStringEnum<OperationMode> {
-    /** Static value PolybaseImport for OperationMode. */
+    /**
+     * Static value PolybaseImport for OperationMode.
+     */
     public static final OperationMode POLYBASE_IMPORT = fromString("PolybaseImport");
 
-    /** Static value Import for OperationMode. */
-    public static final OperationMode IMPORT = fromString("Import");
-
-    /** Static value Export for OperationMode. */
-    public static final OperationMode EXPORT = fromString("Export");
+    /**
+     * Creates a new instance of OperationMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OperationMode() {
+    }
 
     /**
      * Creates or finds a OperationMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperationMode.
      */
@@ -32,7 +39,7 @@ public final class OperationMode extends ExpandableStringEnum<OperationMode> {
 
     /**
      * Gets known OperationMode values.
-     *
+     * 
      * @return known OperationMode values.
      */
     public static Collection<OperationMode> values() {

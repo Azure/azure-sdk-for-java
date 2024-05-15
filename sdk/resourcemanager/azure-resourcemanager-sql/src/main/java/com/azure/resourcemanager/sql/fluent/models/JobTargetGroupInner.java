@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.JobTarget;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A group of job targets. */
+/**
+ * A group of job targets.
+ */
 @Fluent
 public final class JobTargetGroupInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class JobTargetGroupInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private JobTargetGroupProperties innerProperties;
 
-    /** Creates an instance of JobTargetGroupInner class. */
+    /**
+     * Creates an instance of JobTargetGroupInner class.
+     */
     public JobTargetGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobTargetGroupProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class JobTargetGroupInner extends ProxyResource {
 
     /**
      * Get the members property: Members of the target group.
-     *
+     * 
      * @return the members value.
      */
     public List<JobTarget> members() {
@@ -43,7 +47,7 @@ public final class JobTargetGroupInner extends ProxyResource {
 
     /**
      * Set the members property: Members of the target group.
-     *
+     * 
      * @param members the members value to set.
      * @return the JobTargetGroupInner object itself.
      */
@@ -57,7 +61,7 @@ public final class JobTargetGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

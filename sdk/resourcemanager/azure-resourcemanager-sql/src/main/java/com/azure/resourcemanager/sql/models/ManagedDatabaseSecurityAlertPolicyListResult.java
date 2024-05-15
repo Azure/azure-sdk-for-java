@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.ManagedDatabaseSecurityAlertP
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of the managed database's security alert policies. */
+/**
+ * A list of the managed database's security alert policies.
+ */
 @Immutable
 public final class ManagedDatabaseSecurityAlertPolicyListResult {
     /*
@@ -24,13 +26,15 @@ public final class ManagedDatabaseSecurityAlertPolicyListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ManagedDatabaseSecurityAlertPolicyListResult class. */
+    /**
+     * Creates an instance of ManagedDatabaseSecurityAlertPolicyListResult class.
+     */
     public ManagedDatabaseSecurityAlertPolicyListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedDatabaseSecurityAlertPolicyInner> value() {
@@ -39,7 +43,7 @@ public final class ManagedDatabaseSecurityAlertPolicyListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ManagedDatabaseSecurityAlertPolicyListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

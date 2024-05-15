@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.EndpointCertificateInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of endpoint certificates on the target instance. */
+/**
+ * A list of endpoint certificates on the target instance.
+ */
 @Immutable
 public final class EndpointCertificateListResult {
     /*
@@ -24,13 +26,15 @@ public final class EndpointCertificateListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of EndpointCertificateListResult class. */
+    /**
+     * Creates an instance of EndpointCertificateListResult class.
+     */
     public EndpointCertificateListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<EndpointCertificateInner> value() {
@@ -39,7 +43,7 @@ public final class EndpointCertificateListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class EndpointCertificateListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

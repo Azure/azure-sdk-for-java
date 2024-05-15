@@ -15,13 +15,15 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobStepExecutionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobStepExecutionsClient.
+ */
 public interface JobStepExecutionsClient {
     /**
      * Lists the step executions of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -39,25 +41,16 @@ public interface JobStepExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<JobExecutionInner> listByJobExecutionAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top);
+    PagedFlux<JobExecutionInner> listByJobExecutionAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top);
 
     /**
      * Lists the step executions of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -68,14 +61,14 @@ public interface JobStepExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<JobExecutionInner> listByJobExecutionAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
+    PagedFlux<JobExecutionInner> listByJobExecutionAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId);
 
     /**
      * Lists the step executions of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -86,14 +79,14 @@ public interface JobStepExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobExecutionInner> listByJobExecution(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, UUID jobExecutionId);
+    PagedIterable<JobExecutionInner> listByJobExecution(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId);
 
     /**
      * Lists the step executions of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -112,26 +105,16 @@ public interface JobStepExecutionsClient {
      * @return a list of job executions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<JobExecutionInner> listByJobExecution(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        OffsetDateTime createTimeMin,
-        OffsetDateTime createTimeMax,
-        OffsetDateTime endTimeMin,
-        OffsetDateTime endTimeMax,
-        Boolean isActive,
-        Long skip,
-        Long top,
-        Context context);
+    PagedIterable<JobExecutionInner> listByJobExecution(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId, OffsetDateTime createTimeMin,
+        OffsetDateTime createTimeMax, OffsetDateTime endTimeMin, OffsetDateTime endTimeMax, Boolean isActive,
+        Integer skip, Integer top, Context context);
 
     /**
      * Gets a step execution of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -143,19 +126,14 @@ public interface JobStepExecutionsClient {
      * @return a step execution of a job execution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<JobExecutionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        String stepName);
+    Mono<Response<JobExecutionInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String jobName, UUID jobExecutionId, String stepName);
 
     /**
      * Gets a step execution of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -167,19 +145,14 @@ public interface JobStepExecutionsClient {
      * @return a step execution of a job execution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<JobExecutionInner> getAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        String stepName);
+    Mono<JobExecutionInner> getAsync(String resourceGroupName, String serverName, String jobAgentName, String jobName,
+        UUID jobExecutionId, String stepName);
 
     /**
      * Gets a step execution of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -192,20 +165,14 @@ public interface JobStepExecutionsClient {
      * @return a step execution of a job execution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobExecutionInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        String stepName,
-        Context context);
+    Response<JobExecutionInner> getWithResponse(String resourceGroupName, String serverName, String jobAgentName,
+        String jobName, UUID jobExecutionId, String stepName, Context context);
 
     /**
      * Gets a step execution of a job execution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
@@ -217,11 +184,6 @@ public interface JobStepExecutionsClient {
      * @return a step execution of a job execution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JobExecutionInner get(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        UUID jobExecutionId,
-        String stepName);
+    JobExecutionInner get(String resourceGroupName, String serverName, String jobAgentName, String jobName,
+        UUID jobExecutionId, String stepName);
 }

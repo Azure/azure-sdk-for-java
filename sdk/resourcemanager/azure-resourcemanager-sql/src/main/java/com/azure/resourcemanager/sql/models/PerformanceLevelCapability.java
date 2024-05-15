@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The performance level capability. */
+/**
+ * The performance level capability.
+ */
 @Immutable
 public final class PerformanceLevelCapability {
     /*
@@ -22,13 +24,15 @@ public final class PerformanceLevelCapability {
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private PerformanceLevelUnit unit;
 
-    /** Creates an instance of PerformanceLevelCapability class. */
+    /**
+     * Creates an instance of PerformanceLevelCapability class.
+     */
     public PerformanceLevelCapability() {
     }
 
     /**
      * Get the value property: Performance level value.
-     *
+     * 
      * @return the value value.
      */
     public Double value() {
@@ -37,7 +41,7 @@ public final class PerformanceLevelCapability {
 
     /**
      * Get the unit property: Unit type used to measure performance level.
-     *
+     * 
      * @return the unit value.
      */
     public PerformanceLevelUnit unit() {
@@ -46,7 +50,7 @@ public final class PerformanceLevelCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

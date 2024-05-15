@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Active Directory only authentication. */
+/**
+ * Azure Active Directory only authentication.
+ */
 @Fluent
 public final class ManagedInstanceAzureADOnlyAuthenticationInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class ManagedInstanceAzureADOnlyAuthenticationInner extends ProxyRe
     @JsonProperty(value = "properties")
     private ManagedInstanceAzureADOnlyAuthProperties innerProperties;
 
-    /** Creates an instance of ManagedInstanceAzureADOnlyAuthenticationInner class. */
+    /**
+     * Creates an instance of ManagedInstanceAzureADOnlyAuthenticationInner class.
+     */
     public ManagedInstanceAzureADOnlyAuthenticationInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedInstanceAzureADOnlyAuthProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationInner extends ProxyRe
 
     /**
      * Get the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @return the azureADOnlyAuthentication value.
      */
     public Boolean azureADOnlyAuthentication() {
@@ -41,12 +45,12 @@ public final class ManagedInstanceAzureADOnlyAuthenticationInner extends ProxyRe
 
     /**
      * Set the azureADOnlyAuthentication property: Azure Active Directory only Authentication enabled.
-     *
+     * 
      * @param azureADOnlyAuthentication the azureADOnlyAuthentication value to set.
      * @return the ManagedInstanceAzureADOnlyAuthenticationInner object itself.
      */
-    public ManagedInstanceAzureADOnlyAuthenticationInner withAzureADOnlyAuthentication(
-        Boolean azureADOnlyAuthentication) {
+    public ManagedInstanceAzureADOnlyAuthenticationInner
+        withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedInstanceAzureADOnlyAuthProperties();
         }
@@ -56,7 +60,7 @@ public final class ManagedInstanceAzureADOnlyAuthenticationInner extends ProxyRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
