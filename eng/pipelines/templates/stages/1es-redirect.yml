@@ -47,7 +47,7 @@ extends:
         scanType: LogOnly
         alertWarningLevel: Medium
         failOnAlert: true
-        verbosity: Normal
+        verbosity: Register
       sourceAnalysisPool:
         name: azsdk-pool-mms-win-2022-general
         image: azsdk-pool-mms-win-2022-1espt
