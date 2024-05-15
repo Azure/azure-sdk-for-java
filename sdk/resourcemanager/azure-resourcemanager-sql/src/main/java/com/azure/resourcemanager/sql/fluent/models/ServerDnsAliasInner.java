@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A server DNS alias. */
+/**
+ * A server DNS alias.
+ */
 @Immutable
 public final class ServerDnsAliasInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class ServerDnsAliasInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ServerDnsAliasProperties innerProperties;
 
-    /** Creates an instance of ServerDnsAliasInner class. */
+    /**
+     * Creates an instance of ServerDnsAliasInner class.
+     */
     public ServerDnsAliasInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerDnsAliasProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class ServerDnsAliasInner extends ProxyResource {
 
     /**
      * Get the azureDnsRecord property: The fully qualified DNS record for alias.
-     *
+     * 
      * @return the azureDnsRecord value.
      */
     public String azureDnsRecord() {
@@ -41,7 +45,7 @@ public final class ServerDnsAliasInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

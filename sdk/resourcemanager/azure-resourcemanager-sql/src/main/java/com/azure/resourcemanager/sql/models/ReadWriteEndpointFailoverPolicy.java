@@ -13,15 +13,28 @@ import java.util.Collection;
  * failoverWithDataLossGracePeriodMinutes is required.
  */
 public final class ReadWriteEndpointFailoverPolicy extends ExpandableStringEnum<ReadWriteEndpointFailoverPolicy> {
-    /** Static value Manual for ReadWriteEndpointFailoverPolicy. */
+    /**
+     * Static value Manual for ReadWriteEndpointFailoverPolicy.
+     */
     public static final ReadWriteEndpointFailoverPolicy MANUAL = fromString("Manual");
 
-    /** Static value Automatic for ReadWriteEndpointFailoverPolicy. */
+    /**
+     * Static value Automatic for ReadWriteEndpointFailoverPolicy.
+     */
     public static final ReadWriteEndpointFailoverPolicy AUTOMATIC = fromString("Automatic");
 
     /**
+     * Creates a new instance of ReadWriteEndpointFailoverPolicy value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReadWriteEndpointFailoverPolicy() {
+    }
+
+    /**
      * Creates or finds a ReadWriteEndpointFailoverPolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReadWriteEndpointFailoverPolicy.
      */
@@ -32,7 +45,7 @@ public final class ReadWriteEndpointFailoverPolicy extends ExpandableStringEnum<
 
     /**
      * Gets known ReadWriteEndpointFailoverPolicy values.
-     *
+     * 
      * @return known ReadWriteEndpointFailoverPolicy values.
      */
     public static Collection<ReadWriteEndpointFailoverPolicy> values() {

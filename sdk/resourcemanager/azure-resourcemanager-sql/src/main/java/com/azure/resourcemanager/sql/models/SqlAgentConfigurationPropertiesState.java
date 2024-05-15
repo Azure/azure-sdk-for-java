@@ -8,18 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of Sql Agent. */
+/**
+ * The state of Sql Agent.
+ */
 public final class SqlAgentConfigurationPropertiesState
     extends ExpandableStringEnum<SqlAgentConfigurationPropertiesState> {
-    /** Static value Enabled for SqlAgentConfigurationPropertiesState. */
+    /**
+     * Static value Enabled for SqlAgentConfigurationPropertiesState.
+     */
     public static final SqlAgentConfigurationPropertiesState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for SqlAgentConfigurationPropertiesState. */
+    /**
+     * Static value Disabled for SqlAgentConfigurationPropertiesState.
+     */
     public static final SqlAgentConfigurationPropertiesState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of SqlAgentConfigurationPropertiesState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SqlAgentConfigurationPropertiesState() {
+    }
+
+    /**
      * Creates or finds a SqlAgentConfigurationPropertiesState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SqlAgentConfigurationPropertiesState.
      */
@@ -30,7 +45,7 @@ public final class SqlAgentConfigurationPropertiesState
 
     /**
      * Gets known SqlAgentConfigurationPropertiesState values.
-     *
+     * 
      * @return known SqlAgentConfigurationPropertiesState values.
      */
     public static Collection<SqlAgentConfigurationPropertiesState> values() {

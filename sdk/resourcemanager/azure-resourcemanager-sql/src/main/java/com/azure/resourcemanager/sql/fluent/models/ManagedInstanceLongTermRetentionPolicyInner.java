@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A long term retention policy. */
+/**
+ * A long term retention policy.
+ */
 @Fluent
 public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
     @JsonProperty(value = "properties")
     private BaseLongTermRetentionPolicyProperties innerProperties;
 
-    /** Creates an instance of ManagedInstanceLongTermRetentionPolicyInner class. */
+    /**
+     * Creates an instance of ManagedInstanceLongTermRetentionPolicyInner class.
+     */
     public ManagedInstanceLongTermRetentionPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BaseLongTermRetentionPolicyProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
 
     /**
      * Get the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @return the weeklyRetention value.
      */
     public String weeklyRetention() {
@@ -41,7 +45,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
 
     /**
      * Set the weeklyRetention property: The weekly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @param weeklyRetention the weeklyRetention value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */
@@ -55,7 +59,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
 
     /**
      * Get the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @return the monthlyRetention value.
      */
     public String monthlyRetention() {
@@ -64,7 +68,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
 
     /**
      * Set the monthlyRetention property: The monthly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @param monthlyRetention the monthlyRetention value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */
@@ -78,7 +82,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
 
     /**
      * Get the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @return the yearlyRetention value.
      */
     public String yearlyRetention() {
@@ -87,7 +91,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
 
     /**
      * Set the yearlyRetention property: The yearly retention policy for an LTR backup in an ISO 8601 format.
-     *
+     * 
      * @param yearlyRetention the yearlyRetention value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */
@@ -101,7 +105,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
 
     /**
      * Get the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
-     *
+     * 
      * @return the weekOfYear value.
      */
     public Integer weekOfYear() {
@@ -110,7 +114,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
 
     /**
      * Set the weekOfYear property: The week of year to take the yearly backup in an ISO 8601 format.
-     *
+     * 
      * @param weekOfYear the weekOfYear value to set.
      * @return the ManagedInstanceLongTermRetentionPolicyInner object itself.
      */
@@ -124,7 +128,7 @@ public final class ManagedInstanceLongTermRetentionPolicyInner extends ProxyReso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

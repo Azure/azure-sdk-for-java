@@ -8,14 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthenticationName. */
+/**
+ * Defines values for AuthenticationName.
+ */
 public final class AuthenticationName extends ExpandableStringEnum<AuthenticationName> {
-    /** Static value Default for AuthenticationName. */
+    /**
+     * Static value Default for AuthenticationName.
+     */
     public static final AuthenticationName DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of AuthenticationName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationName() {
+    }
+
+    /**
      * Creates or finds a AuthenticationName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AuthenticationName.
      */
@@ -26,7 +39,7 @@ public final class AuthenticationName extends ExpandableStringEnum<Authenticatio
 
     /**
      * Gets known AuthenticationName values.
-     *
+     * 
      * @return known AuthenticationName values.
      */
     public static Collection<AuthenticationName> values() {

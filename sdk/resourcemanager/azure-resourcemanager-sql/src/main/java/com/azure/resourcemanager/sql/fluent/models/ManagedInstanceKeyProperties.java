@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.ServerKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties for a key execution. */
+/**
+ * Properties for a key execution.
+ */
 @Fluent
 public final class ManagedInstanceKeyProperties {
     /*
@@ -43,13 +45,15 @@ public final class ManagedInstanceKeyProperties {
     @JsonProperty(value = "autoRotationEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean autoRotationEnabled;
 
-    /** Creates an instance of ManagedInstanceKeyProperties class. */
+    /**
+     * Creates an instance of ManagedInstanceKeyProperties class.
+     */
     public ManagedInstanceKeyProperties() {
     }
 
     /**
      * Get the serverKeyType property: The key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -58,7 +62,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Set the serverKeyType property: The key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the ManagedInstanceKeyProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Get the uri property: The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -78,7 +82,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Set the uri property: The URI of the key. If the ServerKeyType is AzureKeyVault, then the URI is required.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the ManagedInstanceKeyProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Get the thumbprint property: Thumbprint of the key.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -98,7 +102,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Get the creationDate property: The key creation date.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -107,7 +111,7 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
-     *
+     * 
      * @return the autoRotationEnabled value.
      */
     public Boolean autoRotationEnabled() {
@@ -116,15 +120,14 @@ public final class ManagedInstanceKeyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serverKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverKeyType in model ManagedInstanceKeyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverKeyType in model ManagedInstanceKeyProperties"));
         }
     }
 

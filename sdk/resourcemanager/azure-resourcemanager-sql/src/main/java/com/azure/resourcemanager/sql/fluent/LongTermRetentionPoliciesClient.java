@@ -19,13 +19,15 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LongTermRetentionPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LongTermRetentionPoliciesClient.
+ */
 public interface LongTermRetentionPoliciesClient {
     /**
      * Gets a database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,14 +36,14 @@ public interface LongTermRetentionPoliciesClient {
      * @return a database's long term retention policy as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<LongTermRetentionPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    PagedFlux<LongTermRetentionPolicyInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Gets a database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,14 +52,14 @@ public interface LongTermRetentionPoliciesClient {
      * @return a database's long term retention policy as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName);
+    PagedIterable<LongTermRetentionPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Gets a database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
@@ -67,32 +69,32 @@ public interface LongTermRetentionPoliciesClient {
      * @return a database's long term retention policy as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LongTermRetentionPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    PagedIterable<LongTermRetentionPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName, Context context);
 
     /**
      * Gets a database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a database's long term retention policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LongTermRetentionPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName);
+    Mono<Response<LongTermRetentionPolicyInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, LongTermRetentionPolicyName policyName);
 
     /**
      * Gets a database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -102,14 +104,14 @@ public interface LongTermRetentionPoliciesClient {
      * @return a database's long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LongTermRetentionPolicyInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName);
+    Mono<LongTermRetentionPolicyInner> getAsync(String resourceGroupName, String serverName, String databaseName,
+        LongTermRetentionPolicyName policyName);
 
     /**
      * Gets a database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -120,18 +122,14 @@ public interface LongTermRetentionPoliciesClient {
      * @return a database's long term retention policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LongTermRetentionPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LongTermRetentionPolicyName policyName,
-        Context context);
+    Response<LongTermRetentionPolicyInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, LongTermRetentionPolicyName policyName, Context context);
 
     /**
      * Gets a database's long term retention policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -141,14 +139,14 @@ public interface LongTermRetentionPoliciesClient {
      * @return a database's long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionPolicyInner get(
-        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName);
+    LongTermRetentionPolicyInner get(String resourceGroupName, String serverName, String databaseName,
+        LongTermRetentionPolicyName policyName);
 
     /**
-     * Sets a database's long term retention policy.
-     *
+     * Set or update a database's long term retention policy.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -159,18 +157,14 @@ public interface LongTermRetentionPoliciesClient {
      * @return a long term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LongTermRetentionPolicyName policyName,
-        LongTermRetentionPolicyInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters);
 
     /**
-     * Sets a database's long term retention policy.
-     *
+     * Set or update a database's long term retention policy.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -182,17 +176,14 @@ public interface LongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LongTermRetentionPolicyName policyName,
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
         LongTermRetentionPolicyInner parameters);
 
     /**
-     * Sets a database's long term retention policy.
-     *
+     * Set or update a database's long term retention policy.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -204,17 +195,14 @@ public interface LongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LongTermRetentionPolicyName policyName,
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
         LongTermRetentionPolicyInner parameters);
 
     /**
-     * Sets a database's long term retention policy.
-     *
+     * Set or update a database's long term retention policy.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -227,18 +215,14 @@ public interface LongTermRetentionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LongTermRetentionPolicyInner>, LongTermRetentionPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LongTermRetentionPolicyName policyName,
-        LongTermRetentionPolicyInner parameters,
-        Context context);
+        String resourceGroupName, String serverName, String databaseName, LongTermRetentionPolicyName policyName,
+        LongTermRetentionPolicyInner parameters, Context context);
 
     /**
-     * Sets a database's long term retention policy.
-     *
+     * Set or update a database's long term retention policy.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -249,18 +233,14 @@ public interface LongTermRetentionPoliciesClient {
      * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LongTermRetentionPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LongTermRetentionPolicyName policyName,
-        LongTermRetentionPolicyInner parameters);
+    Mono<LongTermRetentionPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters);
 
     /**
-     * Sets a database's long term retention policy.
-     *
+     * Set or update a database's long term retention policy.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -271,18 +251,14 @@ public interface LongTermRetentionPoliciesClient {
      * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LongTermRetentionPolicyName policyName,
-        LongTermRetentionPolicyInner parameters);
+    LongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters);
 
     /**
-     * Sets a database's long term retention policy.
-     *
+     * Set or update a database's long term retention policy.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
@@ -294,11 +270,6 @@ public interface LongTermRetentionPoliciesClient {
      * @return a long term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LongTermRetentionPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        LongTermRetentionPolicyName policyName,
-        LongTermRetentionPolicyInner parameters,
-        Context context);
+    LongTermRetentionPolicyInner createOrUpdate(String resourceGroupName, String serverName, String databaseName,
+        LongTermRetentionPolicyName policyName, LongTermRetentionPolicyInner parameters, Context context);
 }

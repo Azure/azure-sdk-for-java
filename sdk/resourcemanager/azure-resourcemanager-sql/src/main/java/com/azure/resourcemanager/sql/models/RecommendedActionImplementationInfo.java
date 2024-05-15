@@ -24,14 +24,16 @@ public final class RecommendedActionImplementationInfo {
     @JsonProperty(value = "script", access = JsonProperty.Access.WRITE_ONLY)
     private String script;
 
-    /** Creates an instance of RecommendedActionImplementationInfo class. */
+    /**
+     * Creates an instance of RecommendedActionImplementationInfo class.
+     */
     public RecommendedActionImplementationInfo() {
     }
 
     /**
      * Get the method property: Gets the method in which this recommended action can be manually implemented. e.g.,
      * TSql, AzurePowerShell.
-     *
+     * 
      * @return the method value.
      */
     public ImplementationMethod method() {
@@ -41,7 +43,7 @@ public final class RecommendedActionImplementationInfo {
     /**
      * Get the script property: Gets the manual implementation script. e.g., T-SQL script that could be executed on the
      * database.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -50,7 +52,7 @@ public final class RecommendedActionImplementationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

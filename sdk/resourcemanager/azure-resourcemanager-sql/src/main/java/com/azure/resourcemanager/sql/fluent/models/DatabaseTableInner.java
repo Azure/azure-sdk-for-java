@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.TableTemporalType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A database table resource. */
+/**
+ * A database table resource.
+ */
 @Fluent
 public final class DatabaseTableInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class DatabaseTableInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DatabaseTableProperties innerProperties;
 
-    /** Creates an instance of DatabaseTableInner class. */
+    /**
+     * Creates an instance of DatabaseTableInner class.
+     */
     public DatabaseTableInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DatabaseTableProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class DatabaseTableInner extends ProxyResource {
 
     /**
      * Get the temporalType property: The table temporal type.
-     *
+     * 
      * @return the temporalType value.
      */
     public TableTemporalType temporalType() {
@@ -42,7 +46,7 @@ public final class DatabaseTableInner extends ProxyResource {
 
     /**
      * Set the temporalType property: The table temporal type.
-     *
+     * 
      * @param temporalType the temporalType value to set.
      * @return the DatabaseTableInner object itself.
      */
@@ -56,7 +60,7 @@ public final class DatabaseTableInner extends ProxyResource {
 
     /**
      * Get the memoryOptimized property: Whether or not the table is memory optimized.
-     *
+     * 
      * @return the memoryOptimized value.
      */
     public Boolean memoryOptimized() {
@@ -65,7 +69,7 @@ public final class DatabaseTableInner extends ProxyResource {
 
     /**
      * Set the memoryOptimized property: Whether or not the table is memory optimized.
-     *
+     * 
      * @param memoryOptimized the memoryOptimized value to set.
      * @return the DatabaseTableInner object itself.
      */
@@ -79,7 +83,7 @@ public final class DatabaseTableInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
