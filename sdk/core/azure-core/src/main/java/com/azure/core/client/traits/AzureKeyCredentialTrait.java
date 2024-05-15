@@ -8,7 +8,7 @@ import com.azure.core.credential.AzureKeyCredential;
 /**
  * An {@link com.azure.core.client.traits Azure SDK for Java trait} providing a consistent interface for setting
  * {@link AzureKeyCredential}. Refer to the Azure SDK for Java
- * <a href="https://aka.ms/azsdk/java/docs/identity"> identity and authentication</a>
+ * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
  * documentation for more details on proper usage of the {@link AzureKeyCredential} type.
  *
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
