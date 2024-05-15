@@ -14,16 +14,16 @@ public final class AlertSimulatorBundlesRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertSimulatorBundlesRequestProperties model = BinaryData.fromString(
-            "{\"kind\":\"Bundles\",\"bundles\":[\"SqlServers\",\"StorageAccounts\",\"StorageAccounts\"],\"\":{\"xcelujiswlluunx\":\"datalmcds\",\"fxzf\":\"datafw\",\"eupcknecexkgrv\":\"datau\"}}")
+            "{\"kind\":\"Bundles\",\"bundles\":[\"DNS\",\"KeyVaults\",\"ResourceManager\",\"AppServices\"],\"\":{\"btxluevsolzwil\":\"dataofuckc\",\"fxfjwp\":\"datangojfsqebuuxjx\",\"gzzxljbkhxsd\":\"datakktpmbmxbmbr\"}}")
             .toObject(AlertSimulatorBundlesRequestProperties.class);
-        Assertions.assertEquals(BundleType.SQL_SERVERS, model.bundles().get(0));
+        Assertions.assertEquals(BundleType.DNS, model.bundles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AlertSimulatorBundlesRequestProperties model = new AlertSimulatorBundlesRequestProperties().withBundles(
-            Arrays.asList(BundleType.SQL_SERVERS, BundleType.STORAGE_ACCOUNTS, BundleType.STORAGE_ACCOUNTS));
+            Arrays.asList(BundleType.DNS, BundleType.KEY_VAULTS, BundleType.RESOURCE_MANAGER, BundleType.APP_SERVICES));
         model = BinaryData.fromObject(model).toObject(AlertSimulatorBundlesRequestProperties.class);
-        Assertions.assertEquals(BundleType.SQL_SERVERS, model.bundles().get(0));
+        Assertions.assertEquals(BundleType.DNS, model.bundles().get(0));
     }
 }

@@ -14,19 +14,18 @@ public final class GitLabGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitLabGroupProperties model = BinaryData.fromString(
-            "{\"provisioningStatusMessage\":\"gkkumuikjcj\",\"provisioningStatusUpdateTimeUtc\":\"2021-05-27T02:24:48Z\",\"provisioningState\":\"DeletionFailure\",\"fullyQualifiedName\":\"snsqowxwcoml\",\"fullyQualifiedFriendlyName\":\"ytwvczcswkacve\",\"url\":\"fdv\",\"onboardingState\":\"NotOnboarded\"}")
+            "{\"provisioningStatusMessage\":\"qqzjkoxdu\",\"provisioningStatusUpdateTimeUtc\":\"2021-03-21T20:01:13Z\",\"provisioningState\":\"Failed\",\"fullyQualifiedName\":\"rouigdmfivjqte\",\"fullyQualifiedFriendlyName\":\"qq\",\"url\":\"dydkghpcvrwqir\",\"onboardingState\":\"Onboarded\"}")
             .toObject(GitLabGroupProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.onboardingState());
+        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.provisioningState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, model.onboardingState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitLabGroupProperties model
-            = new GitLabGroupProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
-                .withOnboardingState(OnboardingState.NOT_ONBOARDED);
+        GitLabGroupProperties model = new GitLabGroupProperties().withProvisioningState(DevOpsProvisioningState.FAILED)
+            .withOnboardingState(OnboardingState.ONBOARDED);
         model = BinaryData.fromObject(model).toObject(GitLabGroupProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.onboardingState());
+        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.provisioningState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED, model.onboardingState());
     }
 }

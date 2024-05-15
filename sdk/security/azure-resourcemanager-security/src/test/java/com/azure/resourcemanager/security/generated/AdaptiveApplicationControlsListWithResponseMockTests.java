@@ -6,56 +6,39 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControlGroups;
 import com.azure.resourcemanager.security.models.EnforcementMode;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AdaptiveApplicationControlsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"enforcementMode\":\"None\",\"protectionMode\":{\"exe\":\"Enforce\",\"msi\":\"None\",\"script\":\"Audit\",\"executable\":\"Audit\"},\"configurationStatus\":\"NoStatus\",\"recommendationStatus\":\"Recommended\",\"issues\":[{},{},{},{}],\"sourceSystem\":\"None\",\"vmRecommendations\":[{},{},{},{}],\"pathRecommendations\":[{},{},{},{}]},\"location\":\"qn\",\"id\":\"idvssvgyoggkztzt\",\"name\":\"jnknpbqgz\",\"type\":\"uobclobnaqeizpli\"}]}";
+            = "{\"value\":[{\"properties\":{\"enforcementMode\":\"Audit\",\"protectionMode\":{\"exe\":\"Audit\",\"msi\":\"Enforce\",\"script\":\"None\",\"executable\":\"Audit\"},\"configurationStatus\":\"NotConfigured\",\"recommendationStatus\":\"NotAvailable\",\"issues\":[{},{}],\"sourceSystem\":\"NonAzure_AppLocker\",\"vmRecommendations\":[{},{},{}],\"pathRecommendations\":[{},{},{}]},\"location\":\"dlypkcpwsrqn\",\"id\":\"mjund\",\"name\":\"lxcltjhbcycg\",\"type\":\"a\"},{\"properties\":{\"enforcementMode\":\"Enforce\",\"protectionMode\":{\"exe\":\"Enforce\",\"msi\":\"Enforce\",\"script\":\"None\",\"executable\":\"None\"},\"configurationStatus\":\"Failed\",\"recommendationStatus\":\"NotAvailable\",\"issues\":[{}],\"sourceSystem\":\"Azure_AppLocker\",\"vmRecommendations\":[{},{},{},{}],\"pathRecommendations\":[{},{}]},\"location\":\"whzqqgugw\",\"id\":\"uxahtqmmkdhwq\",\"name\":\"qwebagm\",\"type\":\"pkephujeucosvkke\"},{\"properties\":{\"enforcementMode\":\"Enforce\",\"protectionMode\":{\"exe\":\"Enforce\",\"msi\":\"Enforce\",\"script\":\"Enforce\",\"executable\":\"None\"},\"configurationStatus\":\"InProgress\",\"recommendationStatus\":\"Recommended\",\"issues\":[{}],\"sourceSystem\":\"NonAzure_AppLocker\",\"vmRecommendations\":[{},{},{}],\"pathRecommendations\":[{},{},{}]},\"location\":\"buqxknvmcgmb\",\"id\":\"zyojfch\",\"name\":\"cp\",\"type\":\"rexzoksgq\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AdaptiveApplicationControlGroups response = manager.adaptiveApplicationControls()
-            .listWithResponse(true, false, com.azure.core.util.Context.NONE).getValue();
+            .listWithResponse(false, false, com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(EnforcementMode.NONE, response.value().get(0).enforcementMode());
-        Assertions.assertEquals(EnforcementMode.ENFORCE, response.value().get(0).protectionMode().exe());
-        Assertions.assertEquals(EnforcementMode.NONE, response.value().get(0).protectionMode().msi());
-        Assertions.assertEquals(EnforcementMode.AUDIT, response.value().get(0).protectionMode().script());
+        Assertions.assertEquals(EnforcementMode.AUDIT, response.value().get(0).enforcementMode());
+        Assertions.assertEquals(EnforcementMode.AUDIT, response.value().get(0).protectionMode().exe());
+        Assertions.assertEquals(EnforcementMode.ENFORCE, response.value().get(0).protectionMode().msi());
+        Assertions.assertEquals(EnforcementMode.NONE, response.value().get(0).protectionMode().script());
         Assertions.assertEquals(EnforcementMode.AUDIT, response.value().get(0).protectionMode().executable());
     }
 }

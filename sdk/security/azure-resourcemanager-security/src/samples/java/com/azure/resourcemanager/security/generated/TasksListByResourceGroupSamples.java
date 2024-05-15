@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class TasksListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/
-     * GetTasksResourceGroupLocation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2015-06-01-preview/examples/Tasks/GetTasksResourceGroupLocation_example.json
      */
     /**
      * Sample code: Get security recommendation tasks in a resource group.

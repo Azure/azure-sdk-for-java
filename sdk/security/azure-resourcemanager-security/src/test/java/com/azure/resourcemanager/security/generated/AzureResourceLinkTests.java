@@ -10,8 +10,7 @@ import com.azure.resourcemanager.security.models.AzureResourceLink;
 public final class AzureResourceLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureResourceLink model
-            = BinaryData.fromString("{\"id\":\"zfytlbtlqhopxou\"}").toObject(AzureResourceLink.class);
+        AzureResourceLink model = BinaryData.fromString("{\"id\":\"iyewhfjsrwqr\"}").toObject(AzureResourceLink.class);
     }
 
     @org.junit.jupiter.api.Test

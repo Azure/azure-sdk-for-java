@@ -17,33 +17,31 @@ public final class GitHubOwnerListResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitHubOwnerListResponseInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"zopjhbzxliohr\",\"provisioningStatusUpdateTimeUtc\":\"2021-05-21T08:47:13Z\",\"provisioningState\":\"Failed\",\"ownerUrl\":\"xqbawpc\",\"gitHubInternalId\":\"nzqcy\",\"onboardingState\":\"Onboarded\"},\"id\":\"p\",\"name\":\"ofyuicd\",\"type\":\"zb\"},{\"properties\":{\"provisioningStatusMessage\":\"wgbdvibidmhmwffp\",\"provisioningStatusUpdateTimeUtc\":\"2021-04-22T02:27:43Z\",\"provisioningState\":\"DeletionFailure\",\"ownerUrl\":\"pckc\",\"gitHubInternalId\":\"rv\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"oxoyyukp\",\"name\":\"aimmoiroqb\",\"type\":\"shbraga\"},{\"properties\":{\"provisioningStatusMessage\":\"mfsvbpav\",\"provisioningStatusUpdateTimeUtc\":\"2021-03-10T05:14:48Z\",\"provisioningState\":\"Succeeded\",\"ownerUrl\":\"dbwnu\",\"gitHubInternalId\":\"ahxku\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"jcaacfdmmcpugm\",\"name\":\"hqepvufhbzehewh\",\"type\":\"qhnlbqnbld\"},{\"properties\":{\"provisioningStatusMessage\":\"lgsc\",\"provisioningStatusUpdateTimeUtc\":\"2021-09-12T01:01:46Z\",\"provisioningState\":\"Failed\",\"ownerUrl\":\"rsrrmoucsofldp\",\"gitHubInternalId\":\"iyfc\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"eolhbhlvbmx\",\"name\":\"qi\",\"type\":\"s\"}],\"nextLink\":\"kcudfbsfarfsiowl\"}")
+            "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"arwp\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-25T20:56:22Z\",\"provisioningState\":\"Succeeded\",\"ownerUrl\":\"oejtig\",\"gitHubInternalId\":\"xjpytnkqbalahovu\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"h\",\"name\":\"e\",\"type\":\"jnhj\"},{\"properties\":{\"provisioningStatusMessage\":\"ffbbcngkegxcypxb\",\"provisioningStatusUpdateTimeUtc\":\"2021-06-24T06:35:29Z\",\"provisioningState\":\"DeletionFailure\",\"ownerUrl\":\"lyr\",\"gitHubInternalId\":\"xpdxqlfrolqow\",\"onboardingState\":\"NotApplicable\"},\"id\":\"u\",\"name\":\"jew\",\"type\":\"ahwkxjjm\"},{\"properties\":{\"provisioningStatusMessage\":\"mso\",\"provisioningStatusUpdateTimeUtc\":\"2021-03-20T07:59:43Z\",\"provisioningState\":\"Failed\",\"ownerUrl\":\"cdhdyswcrpt\",\"gitHubInternalId\":\"ajczxvl\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"gkrfizrpywlp\",\"name\":\"yuqh\",\"type\":\"lmcskyk\"}],\"nextLink\":\"u\"}")
             .toObject(GitHubOwnerListResponseInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("kcudfbsfarfsiowl", model.nextLink());
+        Assertions.assertEquals(DevOpsProvisioningState.SUCCEEDED,
+            model.value().get(0).properties().provisioningState());
+        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.value().get(0).properties().onboardingState());
+        Assertions.assertEquals("u", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitHubOwnerListResponseInner model = new GitHubOwnerListResponseInner()
-            .withValue(Arrays.asList(
-                new GitHubOwnerInner()
-                    .withProperties(new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.FAILED)
-                        .withOnboardingState(OnboardingState.ONBOARDED)),
-                new GitHubOwnerInner().withProperties(
-                    new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
-                        .withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR)),
-                new GitHubOwnerInner()
-                    .withProperties(new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.SUCCEEDED)
-                        .withOnboardingState(OnboardingState.NOT_ONBOARDED)),
-                new GitHubOwnerInner()
-                    .withProperties(new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.FAILED)
-                        .withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR))))
-            .withNextLink("kcudfbsfarfsiowl");
+        GitHubOwnerListResponseInner model = new GitHubOwnerListResponseInner().withValue(Arrays.asList(
+            new GitHubOwnerInner()
+                .withProperties(new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.SUCCEEDED)
+                    .withOnboardingState(OnboardingState.NOT_ONBOARDED)),
+            new GitHubOwnerInner().withProperties(
+                new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
+                    .withOnboardingState(OnboardingState.NOT_APPLICABLE)),
+            new GitHubOwnerInner()
+                .withProperties(new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.FAILED)
+                    .withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR))))
+            .withNextLink("u");
         model = BinaryData.fromObject(model).toObject(GitHubOwnerListResponseInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.value().get(0).properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("kcudfbsfarfsiowl", model.nextLink());
+        Assertions.assertEquals(DevOpsProvisioningState.SUCCEEDED,
+            model.value().get(0).properties().provisioningState());
+        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.value().get(0).properties().onboardingState());
+        Assertions.assertEquals("u", model.nextLink());
     }
 }

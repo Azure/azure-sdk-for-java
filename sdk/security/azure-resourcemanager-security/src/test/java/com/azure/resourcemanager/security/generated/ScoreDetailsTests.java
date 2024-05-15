@@ -11,7 +11,7 @@ public final class ScoreDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScoreDetails model = BinaryData
-            .fromString("{\"max\":1648575812,\"current\":80.88377565297465,\"percentage\":79.52766844069008}")
+            .fromString("{\"max\":1100283852,\"current\":71.7647477002083,\"percentage\":80.18024171032928}")
             .toObject(ScoreDetails.class);
     }
 
