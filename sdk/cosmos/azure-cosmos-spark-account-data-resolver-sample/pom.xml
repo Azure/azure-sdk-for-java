@@ -143,6 +143,55 @@
       </exclusions>
     </dependency>
 
+    <dependency>
+      <groupId>com.globalmentor</groupId>
+      <artifactId>hadoop-bare-naked-local-fs</artifactId>
+      <version>0.1.0</version> <!-- {x-version-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.8.1</version> <!-- {x-version-update;cosmos_org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.4.36</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_2.12</artifactId>
+      <version>3.2.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest-flatspec_2.12</artifactId>
+      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalactic</groupId>
+      <artifactId>scalactic_2.12</artifactId>
+      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalactic:scalactic_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalamock</groupId>
+      <artifactId>scalamock_2.12</artifactId>
+      <version>5.0.0</version> <!-- {x-version-update;cosmos_org.scalamock:scalamock_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
          Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
          which is used in @Nullable annotation in reactor core classes.
