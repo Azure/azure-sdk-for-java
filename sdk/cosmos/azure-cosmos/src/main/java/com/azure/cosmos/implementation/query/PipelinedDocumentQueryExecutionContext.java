@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ObjectNodeMap;
@@ -16,7 +15,6 @@ import reactor.core.publisher.Flux;
 
 import java.util.function.BiFunction;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
