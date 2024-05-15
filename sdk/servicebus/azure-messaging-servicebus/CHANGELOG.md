@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added the support for batch-delete APIs in Receiver client.
+
 ### Breaking Changes
 
 ### Bugs Fixed
