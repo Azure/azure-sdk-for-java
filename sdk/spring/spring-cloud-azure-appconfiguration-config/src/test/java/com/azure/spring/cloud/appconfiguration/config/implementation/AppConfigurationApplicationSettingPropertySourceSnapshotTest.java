@@ -36,6 +36,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -91,6 +93,8 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
     private List<ConfigurationSetting> configurationListMock;
     
     FeatureFlagClient featureFlagLoader = new FeatureFlagClient();
+    
+    private MockitoSession session;
 
     @BeforeAll
     public static void setup() {
@@ -99,6 +103,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     @BeforeEach
     public void init() {
+        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
         MockitoAnnotations.openMocks(this);
@@ -119,6 +124,7 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
+        session.finishMocking();
     }
 
     @Test
@@ -126,8 +132,6 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         when(configurationListMock.iterator()).thenReturn(testItems.iterator()).thenReturn(testItems.iterator());
         when(clientMock.listSettingSnapshot(Mockito.any())).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
-        when(clientMock.getTracingInfo())
-            .thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
         propertySource.initProperties(TRIM);
 
