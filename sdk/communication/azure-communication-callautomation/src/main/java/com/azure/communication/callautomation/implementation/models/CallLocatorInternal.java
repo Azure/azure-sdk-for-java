@@ -25,6 +25,12 @@ public final class CallLocatorInternal {
     private String serverCallId;
 
     /*
+     * The Acs room id
+     */
+    @JsonProperty(value = "roomId")
+    private String roomId;
+
+    /*
      * The call locator kind.
      */
     @JsonProperty(value = "kind")
@@ -73,6 +79,26 @@ public final class CallLocatorInternal {
      */
     public CallLocatorInternal setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
+        return this;
+    }
+
+    /**
+     * Get the roomId property: The Acs room id.
+     * 
+     * @return the roomId value.
+     */
+    public String getRoomId() {
+        return this.roomId;
+    }
+
+    /**
+     * Set the roomId property: The Acs room id.
+     * 
+     * @param roomId the roomId value to set.
+     * @return the CallLocatorInternal object itself.
+     */
+    public CallLocatorInternal setRoomId(String roomId) {
+        this.roomId = roomId;
         return this;
     }
 

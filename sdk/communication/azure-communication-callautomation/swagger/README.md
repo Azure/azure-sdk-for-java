@@ -31,7 +31,7 @@ autorest README.md --java --use=@autorest/java@4.1.27 --use=@autorest/modelerfou
 ``` yaml
 tag: package-2024-06-15-preview
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/109529fbfccebbacb0a731d433949c0eaed4e8b2/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/736ccc1337d223326b79e25a5c2f700f100b804f/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -86,6 +86,9 @@ directive:
 - rename-model:
     from: CreateCallRequest
     to: CreateCallRequestInternal
+- rename-model:
+    from: ConnectRequest
+    to: ConnectRequestInternal
 - rename-model:
     from: AnswerCallRequest
     to: AnswerCallRequestInternal
@@ -242,7 +245,7 @@ directive:
 - remove-model: MediaStreamingStarted
 - remove-model: MediaStreamingStopped
 - remove-model: MediaStreamingFailed
-
+- remove-model: ConnectFailed
 
 ```
 
