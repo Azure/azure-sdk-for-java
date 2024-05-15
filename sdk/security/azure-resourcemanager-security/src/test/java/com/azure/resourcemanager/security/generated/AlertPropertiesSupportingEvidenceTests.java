@@ -13,14 +13,14 @@ public final class AlertPropertiesSupportingEvidenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AlertPropertiesSupportingEvidence model
-            = BinaryData.fromString("{\"type\":\"r\",\"\":{\"zygba\":\"datavdubew\",\"hzrtd\":\"datauvecovsd\"}}")
+            = BinaryData.fromString("{\"type\":\"bctbhp\",\"\":{\"it\":\"datapcvrdny\"}}")
                 .toObject(AlertPropertiesSupportingEvidence.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AlertPropertiesSupportingEvidence model
-            = new AlertPropertiesSupportingEvidence().withAdditionalProperties(mapOf("type", "r"));
+            = new AlertPropertiesSupportingEvidence().withAdditionalProperties(mapOf("type", "bctbhp"));
         model = BinaryData.fromObject(model).toObject(AlertPropertiesSupportingEvidence.class);
     }
 

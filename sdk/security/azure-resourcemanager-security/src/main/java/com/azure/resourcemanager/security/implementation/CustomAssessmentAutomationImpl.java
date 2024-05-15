@@ -88,16 +88,20 @@ public final class CustomAssessmentAutomationImpl
     }
 
     public CustomAssessmentAutomation create() {
-        this.innerObject
-            = serviceManager.serviceClient().getCustomAssessmentAutomations().createWithResponse(resourceGroupName,
-                customAssessmentAutomationName, createCustomAssessmentAutomationBody, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomAssessmentAutomations()
+            .createWithResponse(resourceGroupName, customAssessmentAutomationName, createCustomAssessmentAutomationBody,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomAssessmentAutomation create(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getCustomAssessmentAutomations().createWithResponse(resourceGroupName,
-                customAssessmentAutomationName, createCustomAssessmentAutomationBody, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomAssessmentAutomations()
+            .createWithResponse(resourceGroupName, customAssessmentAutomationName, createCustomAssessmentAutomationBody,
+                context)
+            .getValue();
         return this;
     }
 
@@ -109,14 +113,18 @@ public final class CustomAssessmentAutomationImpl
     }
 
     public CustomAssessmentAutomation refresh() {
-        this.innerObject = serviceManager.serviceClient().getCustomAssessmentAutomations()
-            .getByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomAssessmentAutomations()
+            .getByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomAssessmentAutomation refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCustomAssessmentAutomations()
-            .getByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomAssessmentAutomations()
+            .getByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, context)
+            .getValue();
         return this;
     }
 

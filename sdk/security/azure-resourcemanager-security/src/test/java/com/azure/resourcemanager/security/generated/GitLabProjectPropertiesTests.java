@@ -14,7 +14,7 @@ public final class GitLabProjectPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitLabProjectProperties model = BinaryData.fromString(
-            "{\"provisioningStatusMessage\":\"qmrjg\",\"provisioningStatusUpdateTimeUtc\":\"2021-12-08T18:59:58Z\",\"provisioningState\":\"PendingDeletion\",\"fullyQualifiedName\":\"ggwfiwz\",\"fullyQualifiedFriendlyName\":\"mjpb\",\"fullyQualifiedParentGroupName\":\"phmgtvljvrcmyfq\",\"url\":\"gxhnpomyqwcabv\",\"onboardingState\":\"NotApplicable\"}")
+            "{\"provisioningStatusMessage\":\"hxuk\",\"provisioningStatusUpdateTimeUtc\":\"2021-10-05T01:12:22Z\",\"provisioningState\":\"PendingDeletion\",\"fullyQualifiedName\":\"oiboan\",\"fullyQualifiedFriendlyName\":\"rcoanvxuldx\",\"fullyQualifiedParentGroupName\":\"c\",\"url\":\"nlb\",\"onboardingState\":\"NotApplicable\"}")
             .toObject(GitLabProjectProperties.class);
         Assertions.assertEquals(DevOpsProvisioningState.PENDING_DELETION, model.provisioningState());
         Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.onboardingState());

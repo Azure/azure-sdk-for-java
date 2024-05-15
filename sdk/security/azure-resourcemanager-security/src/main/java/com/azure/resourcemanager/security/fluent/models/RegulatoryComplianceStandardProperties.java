@@ -38,8 +38,7 @@ public final class RegulatoryComplianceStandardProperties {
     private Integer skippedControls;
 
     /*
-     * The number of regulatory compliance controls of the given standard which are unsupported by automated
-     * assessments
+     * The number of regulatory compliance controls of the given standard which are unsupported by automated assessments
      */
     @JsonProperty(value = "unsupportedControls", access = JsonProperty.Access.WRITE_ONLY)
     private Integer unsupportedControls;

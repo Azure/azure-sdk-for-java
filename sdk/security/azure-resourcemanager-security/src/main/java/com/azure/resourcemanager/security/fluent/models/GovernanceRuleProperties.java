@@ -38,8 +38,7 @@ public final class GovernanceRuleProperties {
     private String description;
 
     /*
-     * Governance rule remediation timeframe - this is the time that will affect on the grace-period duration e.g.
-     * 7.00:00:00 - means 7 days
+     * Governance rule remediation timeframe - this is the time that will affect on the grace-period duration e.g. 7.00:00:00 - means 7 days
      */
     @JsonProperty(value = "remediationTimeframe")
     private String remediationTimeframe;
@@ -51,8 +50,7 @@ public final class GovernanceRuleProperties {
     private Boolean isGracePeriod;
 
     /*
-     * The governance rule priority, priority to the lower number. Rules with the same priority on the same scope will
-     * not be allowed
+     * The governance rule priority, priority to the lower number. Rules with the same priority on the same scope will not be allowed
      */
     @JsonProperty(value = "rulePriority", required = true)
     private int rulePriority;
@@ -100,8 +98,7 @@ public final class GovernanceRuleProperties {
     private GovernanceRuleOwnerSource ownerSource;
 
     /*
-     * The email notifications settings for the governance rule, states whether to disable notifications for mangers
-     * and owners
+     * The email notifications settings for the governance rule, states whether to disable notifications for mangers and owners
      */
     @JsonProperty(value = "governanceEmailNotification")
     private GovernanceRuleEmailNotification governanceEmailNotification;
@@ -292,8 +289,7 @@ public final class GovernanceRuleProperties {
     }
 
     /**
-     * Get the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management
-     * scopes).
+     * Get the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management scopes).
      * 
      * @return the excludedScopes value.
      */
@@ -302,8 +298,7 @@ public final class GovernanceRuleProperties {
     }
 
     /**
-     * Set the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management
-     * scopes).
+     * Set the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management scopes).
      * 
      * @param excludedScopes the excludedScopes value to set.
      * @return the GovernanceRuleProperties object itself.
@@ -356,8 +351,8 @@ public final class GovernanceRuleProperties {
     }
 
     /**
-     * Get the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
-     * example.
+     * Get the ownerSource property: The owner source for the governance rule - e.g. Manually by user&#064;contoso.com -
+     * see example.
      * 
      * @return the ownerSource value.
      */
@@ -366,8 +361,8 @@ public final class GovernanceRuleProperties {
     }
 
     /**
-     * Set the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
-     * example.
+     * Set the ownerSource property: The owner source for the governance rule - e.g. Manually by user&#064;contoso.com -
+     * see example.
      * 
      * @param ownerSource the ownerSource value to set.
      * @return the GovernanceRuleProperties object itself.
@@ -427,24 +422,29 @@ public final class GovernanceRuleProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property displayName in model GovernanceRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model GovernanceRuleProperties"));
         }
         if (ruleType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ruleType in model GovernanceRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ruleType in model GovernanceRuleProperties"));
         }
         if (sourceResourceType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceResourceType in model GovernanceRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceResourceType in model GovernanceRuleProperties"));
         }
         if (conditionSets() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property conditionSets in model GovernanceRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property conditionSets in model GovernanceRuleProperties"));
         }
         if (ownerSource() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ownerSource in model GovernanceRuleProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ownerSource in model GovernanceRuleProperties"));
         } else {
             ownerSource().validate();
         }

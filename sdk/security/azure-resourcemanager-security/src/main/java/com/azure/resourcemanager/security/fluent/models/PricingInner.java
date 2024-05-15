@@ -71,10 +71,10 @@ public final class PricingInner extends ProxyResource {
     }
 
     /**
-     * Get the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one
-     * sub-plan is available. Each sub-plan enables a set of security features. When not specified, full plan is
-     * applied. For VirtualMachines plan, available sub plans are 'P1' &amp; 'P2', where for resource level only 'P1'
-     * sub plan is supported.
+     * Get the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one sub-plan
+     * is available. Each sub-plan enables a set of security features. When not specified, full plan is applied. For
+     * VirtualMachines plan, available sub plans are 'P1' &amp; 'P2', where for resource level only 'P1' sub plan is
+     * supported.
      * 
      * @return the subPlan value.
      */
@@ -83,10 +83,10 @@ public final class PricingInner extends ProxyResource {
     }
 
     /**
-     * Set the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one
-     * sub-plan is available. Each sub-plan enables a set of security features. When not specified, full plan is
-     * applied. For VirtualMachines plan, available sub plans are 'P1' &amp; 'P2', where for resource level only 'P1'
-     * sub plan is supported.
+     * Set the subPlan property: The sub-plan selected for a Standard pricing configuration, when more than one sub-plan
+     * is available. Each sub-plan enables a set of security features. When not specified, full plan is applied. For
+     * VirtualMachines plan, available sub plans are 'P1' &amp; 'P2', where for resource level only 'P1' sub plan is
+     * supported.
      * 
      * @param subPlan the subPlan value to set.
      * @return the PricingInner object itself.
@@ -174,9 +174,9 @@ public final class PricingInner extends ProxyResource {
     /**
      * Get the resourcesCoverageStatus property: This field is available for subscription-level only, and reflects the
      * coverage status of the resources under the subscription. Please note: The "pricingTier" field reflects the plan
-     * status of the subscription. However, since the plan status can also be defined at the resource level, there
-     * might be misalignment between the subscription's plan status and the resource status. This field helps indicate
-     * the coverage status of the resources.
+     * status of the subscription. However, since the plan status can also be defined at the resource level, there might
+     * be misalignment between the subscription's plan status and the resource status. This field helps indicate the
+     * coverage status of the resources.
      * 
      * @return the resourcesCoverageStatus value.
      */

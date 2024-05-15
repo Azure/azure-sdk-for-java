@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ConnectorsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/
-     * DeleteConnectorSubscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/DeleteConnectorSubscription_example.json
      */
     /**
      * Sample code: Delete a cloud account connector from a subscription.
