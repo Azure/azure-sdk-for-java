@@ -34,15 +34,16 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
     /**
      * Creates an instance of DocumentModelCopyToOperationDetails class.
      * 
+     * @param operationId the operationId value to set.
      * @param status the status value to set.
      * @param createdDateTime the createdDateTime value to set.
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @param resourceLocation the resourceLocation value to set.
      */
     @Generated
-    private DocumentModelCopyToOperationDetails(OperationStatus status, OffsetDateTime createdDateTime,
-        OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
-        super(status, createdDateTime, lastUpdatedDateTime, resourceLocation);
+    private DocumentModelCopyToOperationDetails(String operationId, OperationStatus status,
+        OffsetDateTime createdDateTime, OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
+        super(operationId, status, createdDateTime, lastUpdatedDateTime, resourceLocation);
     }
 
     /**
@@ -73,6 +74,7 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", getOperationId());
         jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
         jsonWriter.writeStringField("createdDateTime",
             getCreatedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDateTime()));
@@ -146,9 +148,8 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
                 }
             }
             DocumentModelCopyToOperationDetails deserializedDocumentModelCopyToOperationDetails
-                = new DocumentModelCopyToOperationDetails(status, createdDateTime, lastUpdatedDateTime,
+                = new DocumentModelCopyToOperationDetails(operationId, status, createdDateTime, lastUpdatedDateTime,
                     resourceLocation);
-            deserializedDocumentModelCopyToOperationDetails.setOperationId(operationId);
             deserializedDocumentModelCopyToOperationDetails.setPercentCompleted(percentCompleted);
             deserializedDocumentModelCopyToOperationDetails.setApiVersion(apiVersion);
             deserializedDocumentModelCopyToOperationDetails.setTags(tags);

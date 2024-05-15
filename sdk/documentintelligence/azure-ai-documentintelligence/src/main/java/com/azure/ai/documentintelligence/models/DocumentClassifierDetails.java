@@ -25,7 +25,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
      * Unique document classifier name.
      */
     @Generated
-    private String classifierId;
+    private final String classifierId;
 
     /*
      * Document classifier description.
@@ -72,13 +72,15 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
     /**
      * Creates an instance of DocumentClassifierDetails class.
      * 
+     * @param classifierId the classifierId value to set.
      * @param createdDateTime the createdDateTime value to set.
      * @param apiVersion the apiVersion value to set.
      * @param docTypes the docTypes value to set.
      */
     @Generated
-    private DocumentClassifierDetails(OffsetDateTime createdDateTime, String apiVersion,
+    private DocumentClassifierDetails(String classifierId, OffsetDateTime createdDateTime, String apiVersion,
         Map<String, ClassifierDocumentTypeDetails> docTypes) {
+        this.classifierId = classifierId;
         this.createdDateTime = createdDateTime;
         this.apiVersion = apiVersion;
         this.docTypes = docTypes;
@@ -171,6 +173,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("classifierId", this.classifierId);
         jsonWriter.writeStringField("createdDateTime",
             this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
         jsonWriter.writeStringField("apiVersion", this.apiVersion);
@@ -232,8 +235,7 @@ public final class DocumentClassifierDetails implements JsonSerializable<Documen
                 }
             }
             DocumentClassifierDetails deserializedDocumentClassifierDetails
-                = new DocumentClassifierDetails(createdDateTime, apiVersion, docTypes);
-            deserializedDocumentClassifierDetails.classifierId = classifierId;
+                = new DocumentClassifierDetails(classifierId, createdDateTime, apiVersion, docTypes);
             deserializedDocumentClassifierDetails.description = description;
             deserializedDocumentClassifierDetails.expirationDateTime = expirationDateTime;
             deserializedDocumentClassifierDetails.baseClassifierId = baseClassifierId;

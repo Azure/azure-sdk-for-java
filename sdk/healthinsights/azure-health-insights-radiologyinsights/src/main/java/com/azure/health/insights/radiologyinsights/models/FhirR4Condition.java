@@ -26,7 +26,7 @@ import java.util.List;
 public final class FhirR4Condition extends FhirR4DomainResource {
 
     /*
-     * resourceType
+     * The resourceType property.
      */
     @Generated
     @JsonTypeId
@@ -192,7 +192,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the resourceType property: resourceType.
+     * Get the resourceType property: The resourceType property.
      *
      * @return the resourceType value.
      */
