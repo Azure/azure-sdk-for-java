@@ -106,7 +106,7 @@ public final class BlocklistAsyncClient {
      * 
      * <pre>{@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }</pre>
@@ -115,7 +115,7 @@ public final class BlocklistAsyncClient {
      * 
      * <pre>{@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }</pre>
@@ -163,7 +163,7 @@ public final class BlocklistAsyncClient {
      * 
      * <pre>{@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }</pre>
@@ -258,7 +258,7 @@ public final class BlocklistAsyncClient {
      * 
      * <pre>{@code
      * {
-     *     blocklistName: String (Required)
+     *     blocklistName: String (Optional, Required on create)
      *     description: String (Optional)
      * }
      * }</pre>

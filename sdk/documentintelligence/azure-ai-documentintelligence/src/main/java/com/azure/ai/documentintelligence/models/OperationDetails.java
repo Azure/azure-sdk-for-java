@@ -30,7 +30,7 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
      * Operation ID
      */
     @Generated
-    private String operationId;
+    private final String operationId;
 
     /*
      * Operation status.  notStarted, running, completed, or failed
@@ -83,15 +83,17 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
     /**
      * Creates an instance of OperationDetails class.
      * 
+     * @param operationId the operationId value to set.
      * @param status the status value to set.
      * @param createdDateTime the createdDateTime value to set.
      * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
      * @param resourceLocation the resourceLocation value to set.
      */
     @Generated
-    protected OperationDetails(OperationStatus status, OffsetDateTime createdDateTime,
+    protected OperationDetails(String operationId, OperationStatus status, OffsetDateTime createdDateTime,
         OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
         this.kind = OperationKind.fromString("OperationDetails");
+        this.operationId = operationId;
         this.status = status;
         this.createdDateTime = createdDateTime;
         this.lastUpdatedDateTime = lastUpdatedDateTime;
@@ -116,18 +118,6 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
     @Generated
     public String getOperationId() {
         return this.operationId;
-    }
-
-    /**
-     * Set the operationId property: Operation ID.
-     * 
-     * @param operationId the operationId value to set.
-     * @return the OperationDetails object itself.
-     */
-    @Generated
-    OperationDetails setOperationId(String operationId) {
-        this.operationId = operationId;
-        return this;
     }
 
     /**
@@ -265,6 +255,7 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", this.operationId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("createdDateTime",
             this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
@@ -366,8 +357,7 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
                 }
             }
             OperationDetails deserializedOperationDetails
-                = new OperationDetails(status, createdDateTime, lastUpdatedDateTime, resourceLocation);
-            deserializedOperationDetails.operationId = operationId;
+                = new OperationDetails(operationId, status, createdDateTime, lastUpdatedDateTime, resourceLocation);
             deserializedOperationDetails.kind = kind;
             deserializedOperationDetails.percentCompleted = percentCompleted;
             deserializedOperationDetails.apiVersion = apiVersion;
