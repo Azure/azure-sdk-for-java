@@ -24,7 +24,7 @@ public class ReadToFileOptions {
     private ParallelTransferOptions parallelTransferOptions;
     private DownloadRetryOptions downloadRetryOptions;
     private DataLakeRequestConditions dataLakeRequestConditions;
-    private boolean rangeGetContentMd5;
+    private Boolean rangeGetContentMd5;
     private Set<OpenOption> openOptions;
     private Boolean userPrincipalName;
 
@@ -115,7 +115,7 @@ public class ReadToFileOptions {
     /**
      * @return Whether the contentMD5 for the specified file range should be returned.
      */
-    public boolean isRangeGetContentMd5() {
+    public Boolean isRangeGetContentMd5() {
         return rangeGetContentMd5;
     }
 
@@ -123,7 +123,7 @@ public class ReadToFileOptions {
      * @param rangeGetContentMd5 Whether the contentMD5 for the specified file range should be returned.
      * @return The updated options.
      */
-    public ReadToFileOptions setRangeGetContentMd5(boolean rangeGetContentMd5) {
+    public ReadToFileOptions setRangeGetContentMd5(Boolean rangeGetContentMd5) {
         this.rangeGetContentMd5 = rangeGetContentMd5;
         return this;
     }
