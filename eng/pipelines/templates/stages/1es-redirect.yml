@@ -42,7 +42,7 @@ extends:
       skipBuildTagsForGitHubPullRequests: true
     sdl:
       componentgovernance:
-        ignoreDirectories: *
+        ignoreDirectories: $(Agent.BuildDirectory)
         whatif: true
         scanType: LogOnly
         alertWarningLevel: Medium
