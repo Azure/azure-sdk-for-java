@@ -74,6 +74,12 @@ parameters:
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
+    sdl:
+      componentgovernance:
+        ignoreDirectories: $(Build.SourcesDirectory)/test
+        alertWarningLevel: Medium
+        failOnAlert: true
+        verbosity: Normal
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
     stages:
       - stage: Build
