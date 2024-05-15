@@ -322,7 +322,7 @@
             <configuration>
               <source>11</source>
               <target>11</target>
-              <scalaVersion>2.12.10</scalaVersion>
+              <scalaVersion>2.12.19</scalaVersion>
             </configuration>
             <executions>
               <execution>
