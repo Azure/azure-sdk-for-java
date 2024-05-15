@@ -57,10 +57,10 @@ public class TestProxyUtils {
         "primaryKey", "secondaryKey", "adminPassword.value", "administratorLoginPassword", "runAsPassword",
         "adminPassword", "accessSAS", "WEBSITE_AUTH_ENCRYPTION_KEY", "decryptionKey", "primaryMasterKey",
         "primaryReadonlyMasterKey", "secondaryMasterKey", "secondaryReadonlyMasterKey", "certificatePassword",
-        "clientSecret", "keyVaultClientSecret", "authHeader", "httpHeader", "encryptedCredential", "appkey",
-        "functionKey", "atlasKafkaPrimaryEndpoint", "atlasKafkaSecondaryEndpoint", "certificatePassword",
-        "storageAccountPrimaryKey", "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken",
-        "azureBlobSource.containerUrl", "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
+        "clientSecret", "keyVaultClientSecret", "authHeader", "httpHeader", "encryptedCredential", "functionKey",
+        "atlasKafkaPrimaryEndpoint", "atlasKafkaSecondaryEndpoint", "certificatePassword", "storageAccountPrimaryKey",
+        "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken", "azureBlobSource.containerUrl",
+        "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
 
     private static final List<TestProxySanitizer> HEADER_KEY_REGEX_TO_REDACT = Arrays.asList(
 
