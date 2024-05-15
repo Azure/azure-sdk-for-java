@@ -20,8 +20,8 @@
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
     <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
     <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
     <jacoco.skip>true</jacoco.skip>
     <shadingPrefix>azure_cosmos_spark_sample</shadingPrefix>
     <legal>
