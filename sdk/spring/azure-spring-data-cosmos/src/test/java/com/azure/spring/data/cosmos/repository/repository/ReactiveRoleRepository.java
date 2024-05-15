@@ -33,4 +33,7 @@ public interface ReactiveRoleRepository extends ReactiveCosmosRepository<Role, S
 
     @Query(value = "select * \n from c \n where c.name = @name \n")
     Flux<Role> annotatedFindRoleByNameWithSort2(@Param("name") String name, Sort sort);
+
+    @Query(value = "select * from c")
+    Flux<Role> annotatedFindAllWithSort(Sort sort);
 }
