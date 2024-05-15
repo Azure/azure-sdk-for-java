@@ -13,8 +13,10 @@ import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
 import com.azure.messaging.servicebus.models.DeleteMessagesOptions;
+import com.azure.messaging.servicebus.models.PurgeMessagesOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
@@ -875,6 +877,23 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public int deleteMessages(int messageCount, DeleteMessagesOptions options) {
         return asyncClient.deleteMessages(messageCount, options).block(operationTimeout);
+    }
+
+    /**
+     * Attempts to purge all messages from an entity.  Locked messages are not eligible for removal and will remain in
+     * the entity.
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>
+     * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
+     * made, the possibility of partial success exists.  In this scenario, the method will stop attempting to delete
+     * additional messages and throw the exception that was encountered.
+     * </p>
+     * @param options options used to purge the messages.
+     *
+     * @return the number of messages deleted.
+     */
+    public int purgeMessages(PurgeMessagesOptions options) {
+        return asyncClient.purgeMessages(options).block();
     }
 
     /**
