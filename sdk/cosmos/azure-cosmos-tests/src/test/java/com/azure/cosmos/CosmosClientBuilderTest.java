@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RegionScopedSessionContainer;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -223,8 +224,43 @@ public class CosmosClientBuilderTest {
 
             ISessionContainer sessionContainer = documentClient.getSession();
 
-            if (System.getProperty("COSMOS.SESSION_CAPTURING_TYPE").equals("REGION_SCOPED")) {
+            if (System.getProperty("COSMOS.SESSION_CAPTURING_TYPE") != null && System.getProperty("COSMOS.SESSION_CAPTURING_TYPE").equals("REGION_SCOPED")) {
                 assertThat(sessionContainer instanceof RegionScopedSessionContainer).isTrue();
+            } else {
+                assertThat(sessionContainer instanceof SessionContainer).isTrue();
+            }
+
+            assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
+        } finally {
+            System.clearProperty("COSMOS.SESSION_CAPTURING_TYPE");
+        }
+    }
+
+    // set env variable to COSMOS.SESSION_CAPTURING_TYPE to REGION_SCOPED to test all possible assertions
+    @Test(groups = "unit")
+    public void validateSessionTokenCapturingForAccountDefaultConsistencyWithEnvVariable() {
+
+        try {
+
+            CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .userAgentSuffix("custom-direct-client");
+
+            CosmosAsyncClient client = cosmosClientBuilder.buildAsyncClient();
+            RxDocumentClientImpl documentClient =
+                (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+
+            if (documentClient.getDefaultConsistencyLevelOfAccount() != ConsistencyLevel.SESSION) {
+                throw new SkipException("This test is only applicable when default account-level consistency is Session.");
+            }
+
+            ISessionContainer sessionContainer = documentClient.getSession();
+
+            if (System.getenv("COSMOS.SESSION_CAPTURING_TYPE") != null && System.getenv("COSMOS.SESSION_CAPTURING_TYPE").equals("REGION_SCOPED")) {
+                assertThat(sessionContainer instanceof RegionScopedSessionContainer).isTrue();
+            } else {
+                assertThat(sessionContainer instanceof SessionContainer).isTrue();
             }
 
             assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
