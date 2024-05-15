@@ -25,7 +25,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
      * Unique document model name.
      */
     @Generated
-    private String modelId;
+    private final String modelId;
 
     /*
      * Document model description.
@@ -92,10 +92,12 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     /**
      * Creates an instance of DocumentModelDetails class.
      * 
+     * @param modelId the modelId value to set.
      * @param createdDateTime the createdDateTime value to set.
      */
     @Generated
-    private DocumentModelDetails(OffsetDateTime createdDateTime) {
+    private DocumentModelDetails(String modelId, OffsetDateTime createdDateTime) {
+        this.modelId = modelId;
         this.createdDateTime = createdDateTime;
     }
 
@@ -218,6 +220,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("modelId", this.modelId);
         jsonWriter.writeStringField("createdDateTime",
             this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
         jsonWriter.writeStringField("description", this.description);
@@ -290,8 +293,7 @@ public final class DocumentModelDetails implements JsonSerializable<DocumentMode
                     reader.skipChildren();
                 }
             }
-            DocumentModelDetails deserializedDocumentModelDetails = new DocumentModelDetails(createdDateTime);
-            deserializedDocumentModelDetails.modelId = modelId;
+            DocumentModelDetails deserializedDocumentModelDetails = new DocumentModelDetails(modelId, createdDateTime);
             deserializedDocumentModelDetails.description = description;
             deserializedDocumentModelDetails.expirationDateTime = expirationDateTime;
             deserializedDocumentModelDetails.apiVersion = apiVersion;
