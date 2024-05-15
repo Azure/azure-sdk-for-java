@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40165](https://github.com/Azure/azure-sdk-for-java/pull/40165).
 
 #### Other Changes
 
