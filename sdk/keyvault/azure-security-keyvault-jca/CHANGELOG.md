@@ -3,6 +3,7 @@
 ## 2.9.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for providing a custom login URI to get access tokens from via the system property `azure.login.uri`.
 
 ### Breaking Changes
 
