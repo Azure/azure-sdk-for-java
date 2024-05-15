@@ -667,8 +667,10 @@ public final class AdaptiveNetworkHardeningsClientImpl implements AdaptiveNetwor
     public SyncPoller<PollResult<Void>, Void> beginEnforce(String resourceGroupName, String resourceNamespace,
         String resourceType, String resourceName, String adaptiveNetworkHardeningResourceName,
         AdaptiveNetworkHardeningEnforceRequest body) {
-        return this.beginEnforceAsync(resourceGroupName, resourceNamespace, resourceType, resourceName,
-            adaptiveNetworkHardeningResourceName, body).getSyncPoller();
+        return this
+            .beginEnforceAsync(resourceGroupName, resourceNamespace, resourceType, resourceName,
+                adaptiveNetworkHardeningResourceName, body)
+            .getSyncPoller();
     }
 
     /**
@@ -691,8 +693,10 @@ public final class AdaptiveNetworkHardeningsClientImpl implements AdaptiveNetwor
     public SyncPoller<PollResult<Void>, Void> beginEnforce(String resourceGroupName, String resourceNamespace,
         String resourceType, String resourceName, String adaptiveNetworkHardeningResourceName,
         AdaptiveNetworkHardeningEnforceRequest body, Context context) {
-        return this.beginEnforceAsync(resourceGroupName, resourceNamespace, resourceType, resourceName,
-            adaptiveNetworkHardeningResourceName, body, context).getSyncPoller();
+        return this
+            .beginEnforceAsync(resourceGroupName, resourceNamespace, resourceType, resourceName,
+                adaptiveNetworkHardeningResourceName, body, context)
+            .getSyncPoller();
     }
 
     /**

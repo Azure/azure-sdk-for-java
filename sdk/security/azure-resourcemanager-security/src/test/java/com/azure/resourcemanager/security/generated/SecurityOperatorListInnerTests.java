@@ -16,7 +16,7 @@ public final class SecurityOperatorListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityOperatorListInner model = BinaryData.fromString(
-            "{\"value\":[{\"identity\":{\"principalId\":\"cfzq\",\"tenantId\":\"yxgtczh\",\"type\":\"SystemAssigned\"},\"id\":\"bsdshmkxmaehvbbx\",\"name\":\"ripltf\",\"type\":\"htba\"}]}")
+            "{\"value\":[{\"identity\":{\"principalId\":\"wpfhpagmhrskd\",\"tenantId\":\"fdsd\",\"type\":\"SystemAssigned\"},\"id\":\"gtdlmk\",\"name\":\"zev\",\"type\":\"l\"},{\"identity\":{\"principalId\":\"pusdstt\",\"tenantId\":\"ogvbbejdcngq\",\"type\":\"SystemAssigned\"},\"id\":\"akufgmjz\",\"name\":\"wr\",\"type\":\"grtwae\"}]}")
             .toObject(SecurityOperatorListInner.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
     }
@@ -24,6 +24,7 @@ public final class SecurityOperatorListInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecurityOperatorListInner model = new SecurityOperatorListInner().withValue(Arrays.asList(
+            new SecurityOperatorInner().withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)),
             new SecurityOperatorInner().withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))));
         model = BinaryData.fromObject(model).toObject(SecurityOperatorListInner.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());

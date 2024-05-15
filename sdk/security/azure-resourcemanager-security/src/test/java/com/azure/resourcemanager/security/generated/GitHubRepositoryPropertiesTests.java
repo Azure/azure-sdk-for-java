@@ -14,21 +14,22 @@ public final class GitHubRepositoryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitHubRepositoryProperties model = BinaryData.fromString(
-            "{\"provisioningStatusMessage\":\"hqvlnnpxybafiqg\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-27T17:03:14Z\",\"provisioningState\":\"Canceled\",\"repoId\":\"jekglklbyuli\",\"repoName\":\"cwvmzegj\",\"repoFullName\":\"fhjirwgdnqzbrfk\",\"onboardingState\":\"Onboarded\",\"repoUrl\":\"zmtksjci\",\"parentOwnerName\":\"igsxcdgljplk\"}")
+            "{\"provisioningStatusMessage\":\"o\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-27T13:05:55Z\",\"provisioningState\":\"Pending\",\"repoId\":\"jznvhxqqmq\",\"repoName\":\"aydhf\",\"repoFullName\":\"ocxm\",\"onboardingState\":\"OnboardedByOtherConnector\",\"repoUrl\":\"k\",\"parentOwnerName\":\"yzmspamwbwmbnl\"}")
             .toObject(GitHubRepositoryProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.CANCELED, model.provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.onboardingState());
-        Assertions.assertEquals("igsxcdgljplk", model.parentOwnerName());
+        Assertions.assertEquals(DevOpsProvisioningState.PENDING, model.provisioningState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.onboardingState());
+        Assertions.assertEquals("yzmspamwbwmbnl", model.parentOwnerName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GitHubRepositoryProperties model
-            = new GitHubRepositoryProperties().withProvisioningState(DevOpsProvisioningState.CANCELED)
-                .withOnboardingState(OnboardingState.ONBOARDED).withParentOwnerName("igsxcdgljplk");
+            = new GitHubRepositoryProperties().withProvisioningState(DevOpsProvisioningState.PENDING)
+                .withOnboardingState(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR)
+                .withParentOwnerName("yzmspamwbwmbnl");
         model = BinaryData.fromObject(model).toObject(GitHubRepositoryProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.CANCELED, model.provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.onboardingState());
-        Assertions.assertEquals("igsxcdgljplk", model.parentOwnerName());
+        Assertions.assertEquals(DevOpsProvisioningState.PENDING, model.provisioningState());
+        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR, model.onboardingState());
+        Assertions.assertEquals("yzmspamwbwmbnl", model.parentOwnerName());
     }
 }

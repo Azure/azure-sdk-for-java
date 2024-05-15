@@ -16,36 +16,31 @@ public final class BaselineAdjustedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BaselineAdjustedResult model = BinaryData.fromString(
-            "{\"baseline\":{\"expectedResults\":[[\"fepgfew\",\"twly\"],[\"ncxykxhdjhlimm\",\"cxfhbcporxv\",\"cjzhqi\"],[\"fpxtg\",\"scjavftju\",\"dqazkmtgguwpijra\"],[\"ivmmghfcfiwrxgk\",\"euvyinzqodfvpgs\"]],\"updatedTime\":\"2021-06-18T14:08:16Z\"},\"status\":\"NonFinding\",\"resultsNotInBaseline\":[[\"fgzdjtxvz\"],[\"bqvgaqv\",\"gafcqu\",\"rdve\",\"nwsdtutnwlduyc\"]],\"resultsOnlyInBaseline\":[[\"yrmewipmvekdx\",\"kuqgsjjxundxgket\",\"zhhzjhfjmhvvmu\",\"gpmuneqsxvmhfbuz\"],[\"ihsasb\",\"udypohyuems\",\"ynsqyrpfoobr\",\"ttymsjny\"],[\"dnfwqzdzg\",\"ilaxhn\",\"hqlyvijo\"]]}")
+            "{\"baseline\":{\"expectedResults\":[[\"hqnrn\",\"pxehuwrykqga\",\"fmviklby\",\"vkhbejdznx\"],[\"dsrhnjiv\",\"lvtno\",\"qfzgemjdftul\"],[\"tduceamt\",\"czu\"]],\"updatedTime\":\"2021-07-25T15:19:26Z\"},\"status\":\"NonFinding\",\"resultsNotInBaseline\":[[\"qioknssxmojm\",\"vpkjpr\"]],\"resultsOnlyInBaseline\":[[\"fz\"],[\"jyxgtczh\",\"ydbsd\",\"hmkxmaehvbb\"],[\"ripltf\",\"htba\",\"kgxywr\"]]}")
             .toObject(BaselineAdjustedResult.class);
-        Assertions.assertEquals("fepgfew", model.baseline().expectedResults().get(0).get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T14:08:16Z"), model.baseline().updatedTime());
+        Assertions.assertEquals("hqnrn", model.baseline().expectedResults().get(0).get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T15:19:26Z"), model.baseline().updatedTime());
         Assertions.assertEquals(RuleStatus.NON_FINDING, model.status());
-        Assertions.assertEquals("fgzdjtxvz", model.resultsNotInBaseline().get(0).get(0));
-        Assertions.assertEquals("yrmewipmvekdx", model.resultsOnlyInBaseline().get(0).get(0));
+        Assertions.assertEquals("qioknssxmojm", model.resultsNotInBaseline().get(0).get(0));
+        Assertions.assertEquals("fz", model.resultsOnlyInBaseline().get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BaselineAdjustedResult model = new BaselineAdjustedResult()
             .withBaseline(new Baseline()
-                .withExpectedResults(Arrays.asList(Arrays.asList("fepgfew", "twly"),
-                    Arrays.asList("ncxykxhdjhlimm", "cxfhbcporxv", "cjzhqi"),
-                    Arrays.asList("fpxtg", "scjavftju", "dqazkmtgguwpijra"),
-                    Arrays.asList("ivmmghfcfiwrxgk", "euvyinzqodfvpgs")))
-                .withUpdatedTime(OffsetDateTime.parse("2021-06-18T14:08:16Z")))
+                .withExpectedResults(Arrays.asList(Arrays.asList("hqnrn", "pxehuwrykqga", "fmviklby", "vkhbejdznx"),
+                    Arrays.asList("dsrhnjiv", "lvtno", "qfzgemjdftul"), Arrays.asList("tduceamt", "czu")))
+                .withUpdatedTime(OffsetDateTime.parse("2021-07-25T15:19:26Z")))
             .withStatus(RuleStatus.NON_FINDING)
-            .withResultsNotInBaseline(
-                Arrays.asList(Arrays.asList("fgzdjtxvz"), Arrays.asList("bqvgaqv", "gafcqu", "rdve", "nwsdtutnwlduyc")))
-            .withResultsOnlyInBaseline(
-                Arrays.asList(Arrays.asList("yrmewipmvekdx", "kuqgsjjxundxgket", "zhhzjhfjmhvvmu", "gpmuneqsxvmhfbuz"),
-                    Arrays.asList("ihsasb", "udypohyuems", "ynsqyrpfoobr", "ttymsjny"),
-                    Arrays.asList("dnfwqzdzg", "ilaxhn", "hqlyvijo")));
+            .withResultsNotInBaseline(Arrays.asList(Arrays.asList("qioknssxmojm", "vpkjpr")))
+            .withResultsOnlyInBaseline(Arrays.asList(Arrays.asList("fz"),
+                Arrays.asList("jyxgtczh", "ydbsd", "hmkxmaehvbb"), Arrays.asList("ripltf", "htba", "kgxywr")));
         model = BinaryData.fromObject(model).toObject(BaselineAdjustedResult.class);
-        Assertions.assertEquals("fepgfew", model.baseline().expectedResults().get(0).get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T14:08:16Z"), model.baseline().updatedTime());
+        Assertions.assertEquals("hqnrn", model.baseline().expectedResults().get(0).get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T15:19:26Z"), model.baseline().updatedTime());
         Assertions.assertEquals(RuleStatus.NON_FINDING, model.status());
-        Assertions.assertEquals("fgzdjtxvz", model.resultsNotInBaseline().get(0).get(0));
-        Assertions.assertEquals("yrmewipmvekdx", model.resultsOnlyInBaseline().get(0).get(0));
+        Assertions.assertEquals("qioknssxmojm", model.resultsNotInBaseline().get(0).get(0));
+        Assertions.assertEquals("fz", model.resultsOnlyInBaseline().get(0).get(0));
     }
 }

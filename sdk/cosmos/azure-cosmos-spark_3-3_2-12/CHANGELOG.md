@@ -3,6 +3,7 @@
 ### 4.31.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added capability in azure-cosmos-spark to allow the spark environment to support access tokens via AccountDataResolver. - See [PR 40079](https://github.com/Azure/azure-sdk-for-java/pull/40079)
 
 #### Breaking Changes
 
