@@ -20,8 +20,8 @@
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
     <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
     <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
-    <maven.compiler.source>8</maven.compiler.source>
-    <maven.compiler.target>8</maven.compiler.target>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <jacoco.skip>true</jacoco.skip>
     <shadingPrefix>azure_cosmos_spark</shadingPrefix>
     <shadingPrefixNetty>azurecosmosspark</shadingPrefixNetty>
@@ -325,8 +325,8 @@
             <artifactId>scala-maven-plugin</artifactId>
             <version>4.8.1</version> <!-- {x-version-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
             <configuration>
-              <source>8</source>
-              <target>8</target>
+              <source>1.8</source>
+              <target>1.8</target>
               <scalaVersion>2.12.19</scalaVersion>
             </configuration>
             <executions>
@@ -767,13 +767,13 @@
               <execution>
                 <id>default-compile</id>
                 <configuration>
-                  <release>11</release>
+                  <release>1.8</release>
                 </configuration>
               </execution>
               <!-- Here the 'base-compile' execution section of java-lts profile defined in parent pom.client.xml is
               overridden. In parent pom, this execution entry enforces java8 release compatibility. The Spark
-              connectors for Spark 3.0 and above not available in Java8, hence here in this pom we override that
-              release compact to 11.
+              connectors for Spark 3.0 and above are available in Java8, hence here in this pom we override that
+              release compact to 1.8.
               -->
               <execution>
                 <id>base-compile</id>
@@ -781,7 +781,7 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <release>11</release>
+                  <release>1.8</release>
                 </configuration>
               </execution>
               <execution>
@@ -790,8 +790,8 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration>
-                  <release>11</release>
-                  <testRelease>11</testRelease>
+                  <release>1.8</release>
+                  <testRelease>1.8</testRelease>
                 </configuration>
               </execution>
               <execution>
@@ -800,7 +800,7 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <testRelease>11</testRelease>
+                  <testRelease>1.8</testRelease>
                 </configuration>
               </execution>
             </executions>
