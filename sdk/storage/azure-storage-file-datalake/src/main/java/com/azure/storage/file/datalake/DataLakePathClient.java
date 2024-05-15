@@ -19,6 +19,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
+import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
@@ -34,6 +35,7 @@ import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
+import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -1152,6 +1154,31 @@ public class DataLakePathClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.getProperties#PathGetPropertiesOptions -->
+     * <pre>
+     * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUserPrincipalName&#40;true&#41;;
+     *
+     * System.out.printf&#40;&quot;Creation Time: %s, Size: %d%n&quot;, client.getProperties&#40;options&#41;.getCreationTime&#40;&#41;,
+     *     client.getProperties&#40;options&#41;.getFileSize&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathClient.getProperties#PathGetPropertiesOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @param options {@link PathGetPropertiesOptions}
+     * @return The resource properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PathProperties getProperties(PathGetPropertiesOptions options) {
+        return getPropertiesUsingOptionsWithResponse(options, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Returns the resource's metadata and properties.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#DataLakeRequestConditions-Duration-Context -->
      * <pre>
      * DataLakeRequestConditions requestConditions = new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
@@ -1178,6 +1205,31 @@ public class DataLakePathClient {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
                 Transforms.toBlobRequestConditions(requestConditions), timeout, context);
+            return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
+        }, LOGGER);
+    }
+
+    /**
+     * Returns the resource's metadata and properties.
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     *
+     * @param options {@link PathGetPropertiesOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the resource properties and metadata.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<PathProperties> getPropertiesUsingOptionsWithResponse(PathGetPropertiesOptions options, Duration timeout,
+                                                              Context context) {
+        context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), context);
+        Context finalContext = context;
+
+        PathGetPropertiesOptions finalOptions = options;
+        return DataLakeImplUtils.returnOrConvertException(() -> {
+            Response<BlobProperties> response = blockBlobClient.getPropertiesWithResponse(
+                Transforms.toBlobRequestConditions(finalOptions.getRequestConditions()), timeout, finalContext);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response));
         }, LOGGER);
     }

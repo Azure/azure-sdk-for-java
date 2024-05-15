@@ -6,13 +6,16 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppReplicaRunningState;
 import com.azure.resourcemanager.appcontainers.models.ReplicaContainer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Container App Revision Replica. */
+/**
+ * Container App Revision Replica.
+ */
 @Fluent
 public final class ReplicaInner extends ProxyResource {
     /*
@@ -21,13 +24,21 @@ public final class ReplicaInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ReplicaProperties innerProperties;
 
-    /** Creates an instance of ReplicaInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of ReplicaInner class.
+     */
     public ReplicaInner() {
     }
 
     /**
      * Get the innerProperties property: Replica resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ReplicaProperties innerProperties() {
@@ -35,8 +46,17 @@ public final class ReplicaInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the createdTime property: Timestamp describing when the pod was created by controller.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -45,7 +65,7 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Get the runningState property: Current running state of the replica.
-     *
+     * 
      * @return the runningState value.
      */
     public ContainerAppReplicaRunningState runningState() {
@@ -54,7 +74,7 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Get the runningStateDetails property: The details of replica current running state.
-     *
+     * 
      * @return the runningStateDetails value.
      */
     public String runningStateDetails() {
@@ -63,7 +83,7 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Get the containers property: The containers collection under a replica.
-     *
+     * 
      * @return the containers value.
      */
     public List<ReplicaContainer> containers() {
@@ -72,7 +92,7 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Set the containers property: The containers collection under a replica.
-     *
+     * 
      * @param containers the containers value to set.
      * @return the ReplicaInner object itself.
      */
@@ -86,7 +106,7 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Get the initContainers property: The init containers collection under a replica.
-     *
+     * 
      * @return the initContainers value.
      */
     public List<ReplicaContainer> initContainers() {
@@ -95,7 +115,7 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Set the initContainers property: The init containers collection under a replica.
-     *
+     * 
      * @param initContainers the initContainers value to set.
      * @return the ReplicaInner object itself.
      */
@@ -109,7 +129,7 @@ public final class ReplicaInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

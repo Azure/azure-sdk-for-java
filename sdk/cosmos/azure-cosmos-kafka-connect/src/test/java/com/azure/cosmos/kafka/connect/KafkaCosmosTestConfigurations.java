@@ -53,6 +53,27 @@ public class KafkaCosmosTestConfigurations {
                 StringUtils.defaultString(
                     Strings.emptyToNull(System.getenv().get("ACCOUNT_HOST")), COSMOS_EMULATOR_HOST));
 
+    public final static String ACCOUNT_TENANT_ID =
+        properties
+            .getProperty(
+                "ACCOUNT_TENANT_ID",
+                StringUtils.defaultString(
+                    Strings.emptyToNull(System.getenv().get("ACCOUNT_TENANT_ID")), StringUtils.EMPTY));
+
+    public final static String ACCOUNT_AAD_CLIENT_ID =
+        properties
+            .getProperty(
+                "ACCOUNT_AAD_CLIENT_ID",
+                StringUtils.defaultString(
+                    Strings.emptyToNull(System.getenv().get("ACCOUNT_AAD_CLIENT_ID")), StringUtils.EMPTY));
+
+    public final static String ACCOUNT_AAD_CLIENT_SECRET =
+        properties
+            .getProperty(
+                "ACCOUNT_AAD_CLIENT_SECRET",
+                StringUtils.defaultString(
+                    Strings.emptyToNull(System.getenv().get("ACCOUNT_AAD_CLIENT_SECRET")), StringUtils.EMPTY));
+
     public final static String KAFKA_CLUSTER_KEY =
         properties
             .getProperty(
@@ -80,6 +101,8 @@ public class KafkaCosmosTestConfigurations {
                 "SCHEMA_REGISTRY_SECRET",
                 StringUtils.defaultString(
                     Strings.emptyToNull(System.getenv().get("SCHEMA_REGISTRY_SECRET")), ""));
+
+    public final static String SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO = SCHEMA_REGISTRY_KEY + ":" + SCHEMA_REGISTRY_SECRET;
 
     public final static String SCHEMA_REGISTRY_URL =
         properties

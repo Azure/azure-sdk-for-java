@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure File Properties. */
+/**
+ * Azure File Properties.
+ */
 @Fluent
 public final class AzureFileProperties {
     /*
@@ -34,13 +36,15 @@ public final class AzureFileProperties {
     @JsonProperty(value = "shareName")
     private String shareName;
 
-    /** Creates an instance of AzureFileProperties class. */
+    /**
+     * Creates an instance of AzureFileProperties class.
+     */
     public AzureFileProperties() {
     }
 
     /**
      * Get the accountName property: Storage account name for azure file.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -49,7 +53,7 @@ public final class AzureFileProperties {
 
     /**
      * Set the accountName property: Storage account name for azure file.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the AzureFileProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class AzureFileProperties {
 
     /**
      * Get the accountKey property: Storage account key for azure file.
-     *
+     * 
      * @return the accountKey value.
      */
     public String accountKey() {
@@ -69,7 +73,7 @@ public final class AzureFileProperties {
 
     /**
      * Set the accountKey property: Storage account key for azure file.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the AzureFileProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class AzureFileProperties {
 
     /**
      * Get the accessMode property: Access mode for storage.
-     *
+     * 
      * @return the accessMode value.
      */
     public AccessMode accessMode() {
@@ -89,7 +93,7 @@ public final class AzureFileProperties {
 
     /**
      * Set the accessMode property: Access mode for storage.
-     *
+     * 
      * @param accessMode the accessMode value to set.
      * @return the AzureFileProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class AzureFileProperties {
 
     /**
      * Get the shareName property: Azure file share name.
-     *
+     * 
      * @return the shareName value.
      */
     public String shareName() {
@@ -109,7 +113,7 @@ public final class AzureFileProperties {
 
     /**
      * Set the shareName property: Azure file share name.
-     *
+     * 
      * @param shareName the shareName value to set.
      * @return the AzureFileProperties object itself.
      */
@@ -120,7 +124,7 @@ public final class AzureFileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

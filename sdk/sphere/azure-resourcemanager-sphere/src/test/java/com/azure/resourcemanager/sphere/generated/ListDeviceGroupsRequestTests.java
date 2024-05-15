@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ListDeviceGroupsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListDeviceGroupsRequest model =
-            BinaryData.fromString("{\"deviceGroupName\":\"yexfwh\"}").toObject(ListDeviceGroupsRequest.class);
-        Assertions.assertEquals("yexfwh", model.deviceGroupName());
+        ListDeviceGroupsRequest model
+            = BinaryData.fromString("{\"deviceGroupName\":\"q\"}").toObject(ListDeviceGroupsRequest.class);
+        Assertions.assertEquals("q", model.deviceGroupName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListDeviceGroupsRequest model = new ListDeviceGroupsRequest().withDeviceGroupName("yexfwh");
+        ListDeviceGroupsRequest model = new ListDeviceGroupsRequest().withDeviceGroupName("q");
         model = BinaryData.fromObject(model).toObject(ListDeviceGroupsRequest.class);
-        Assertions.assertEquals("yexfwh", model.deviceGroupName());
+        Assertions.assertEquals("q", model.deviceGroupName());
     }
 }

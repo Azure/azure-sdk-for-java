@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cluster resource patch properties. */
+/**
+ * Cluster resource patch properties.
+ */
 @Fluent
 public final class UpdatableClusterProfile {
     /*
@@ -49,18 +51,32 @@ public final class UpdatableClusterProfile {
     private ClusterPrometheusProfile prometheusProfile;
 
     /*
+     * Cluster Ranger plugin profile.
+     */
+    @JsonProperty(value = "rangerPluginProfile")
+    private ClusterRangerPluginProfile rangerPluginProfile;
+
+    /*
+     * The ranger cluster profile.
+     */
+    @JsonProperty(value = "rangerProfile")
+    private RangerProfile rangerProfile;
+
+    /*
      * The script action profile list.
      */
     @JsonProperty(value = "scriptActionProfiles")
     private List<ScriptActionProfile> scriptActionProfiles;
 
-    /** Creates an instance of UpdatableClusterProfile class. */
+    /**
+     * Creates an instance of UpdatableClusterProfile class.
+     */
     public UpdatableClusterProfile() {
     }
 
     /**
      * Get the serviceConfigsProfiles property: The service configs profiles.
-     *
+     * 
      * @return the serviceConfigsProfiles value.
      */
     public List<ClusterServiceConfigsProfile> serviceConfigsProfiles() {
@@ -69,19 +85,19 @@ public final class UpdatableClusterProfile {
 
     /**
      * Set the serviceConfigsProfiles property: The service configs profiles.
-     *
+     * 
      * @param serviceConfigsProfiles the serviceConfigsProfiles value to set.
      * @return the UpdatableClusterProfile object itself.
      */
-    public UpdatableClusterProfile withServiceConfigsProfiles(
-        List<ClusterServiceConfigsProfile> serviceConfigsProfiles) {
+    public UpdatableClusterProfile
+        withServiceConfigsProfiles(List<ClusterServiceConfigsProfile> serviceConfigsProfiles) {
         this.serviceConfigsProfiles = serviceConfigsProfiles;
         return this;
     }
 
     /**
      * Get the sshProfile property: Ssh profile for the cluster.
-     *
+     * 
      * @return the sshProfile value.
      */
     public SshProfile sshProfile() {
@@ -90,7 +106,7 @@ public final class UpdatableClusterProfile {
 
     /**
      * Set the sshProfile property: Ssh profile for the cluster.
-     *
+     * 
      * @param sshProfile the sshProfile value to set.
      * @return the UpdatableClusterProfile object itself.
      */
@@ -102,7 +118,7 @@ public final class UpdatableClusterProfile {
     /**
      * Get the autoscaleProfile property: This is the Autoscale profile for the cluster. This will allow customer to
      * create cluster enabled with Autoscale.
-     *
+     * 
      * @return the autoscaleProfile value.
      */
     public AutoscaleProfile autoscaleProfile() {
@@ -112,7 +128,7 @@ public final class UpdatableClusterProfile {
     /**
      * Set the autoscaleProfile property: This is the Autoscale profile for the cluster. This will allow customer to
      * create cluster enabled with Autoscale.
-     *
+     * 
      * @param autoscaleProfile the autoscaleProfile value to set.
      * @return the UpdatableClusterProfile object itself.
      */
@@ -124,7 +140,7 @@ public final class UpdatableClusterProfile {
     /**
      * Get the authorizationProfile property: Authorization profile with details of AAD user Ids and group Ids
      * authorized for data plane access.
-     *
+     * 
      * @return the authorizationProfile value.
      */
     public AuthorizationProfile authorizationProfile() {
@@ -134,7 +150,7 @@ public final class UpdatableClusterProfile {
     /**
      * Set the authorizationProfile property: Authorization profile with details of AAD user Ids and group Ids
      * authorized for data plane access.
-     *
+     * 
      * @param authorizationProfile the authorizationProfile value to set.
      * @return the UpdatableClusterProfile object itself.
      */
@@ -145,7 +161,7 @@ public final class UpdatableClusterProfile {
 
     /**
      * Get the logAnalyticsProfile property: Cluster log analytics profile to enable or disable OMS agent for cluster.
-     *
+     * 
      * @return the logAnalyticsProfile value.
      */
     public ClusterLogAnalyticsProfile logAnalyticsProfile() {
@@ -154,7 +170,7 @@ public final class UpdatableClusterProfile {
 
     /**
      * Set the logAnalyticsProfile property: Cluster log analytics profile to enable or disable OMS agent for cluster.
-     *
+     * 
      * @param logAnalyticsProfile the logAnalyticsProfile value to set.
      * @return the UpdatableClusterProfile object itself.
      */
@@ -165,7 +181,7 @@ public final class UpdatableClusterProfile {
 
     /**
      * Get the prometheusProfile property: Cluster Prometheus profile.
-     *
+     * 
      * @return the prometheusProfile value.
      */
     public ClusterPrometheusProfile prometheusProfile() {
@@ -174,7 +190,7 @@ public final class UpdatableClusterProfile {
 
     /**
      * Set the prometheusProfile property: Cluster Prometheus profile.
-     *
+     * 
      * @param prometheusProfile the prometheusProfile value to set.
      * @return the UpdatableClusterProfile object itself.
      */
@@ -184,8 +200,48 @@ public final class UpdatableClusterProfile {
     }
 
     /**
+     * Get the rangerPluginProfile property: Cluster Ranger plugin profile.
+     * 
+     * @return the rangerPluginProfile value.
+     */
+    public ClusterRangerPluginProfile rangerPluginProfile() {
+        return this.rangerPluginProfile;
+    }
+
+    /**
+     * Set the rangerPluginProfile property: Cluster Ranger plugin profile.
+     * 
+     * @param rangerPluginProfile the rangerPluginProfile value to set.
+     * @return the UpdatableClusterProfile object itself.
+     */
+    public UpdatableClusterProfile withRangerPluginProfile(ClusterRangerPluginProfile rangerPluginProfile) {
+        this.rangerPluginProfile = rangerPluginProfile;
+        return this;
+    }
+
+    /**
+     * Get the rangerProfile property: The ranger cluster profile.
+     * 
+     * @return the rangerProfile value.
+     */
+    public RangerProfile rangerProfile() {
+        return this.rangerProfile;
+    }
+
+    /**
+     * Set the rangerProfile property: The ranger cluster profile.
+     * 
+     * @param rangerProfile the rangerProfile value to set.
+     * @return the UpdatableClusterProfile object itself.
+     */
+    public UpdatableClusterProfile withRangerProfile(RangerProfile rangerProfile) {
+        this.rangerProfile = rangerProfile;
+        return this;
+    }
+
+    /**
      * Get the scriptActionProfiles property: The script action profile list.
-     *
+     * 
      * @return the scriptActionProfiles value.
      */
     public List<ScriptActionProfile> scriptActionProfiles() {
@@ -194,7 +250,7 @@ public final class UpdatableClusterProfile {
 
     /**
      * Set the scriptActionProfiles property: The script action profile list.
-     *
+     * 
      * @param scriptActionProfiles the scriptActionProfiles value to set.
      * @return the UpdatableClusterProfile object itself.
      */
@@ -205,7 +261,7 @@ public final class UpdatableClusterProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -226,6 +282,12 @@ public final class UpdatableClusterProfile {
         }
         if (prometheusProfile() != null) {
             prometheusProfile().validate();
+        }
+        if (rangerPluginProfile() != null) {
+            rangerPluginProfile().validate();
+        }
+        if (rangerProfile() != null) {
+            rangerProfile().validate();
         }
         if (scriptActionProfiles() != null) {
             scriptActionProfiles().forEach(e -> e.validate());

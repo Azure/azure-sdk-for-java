@@ -57,6 +57,7 @@ public final class OperationsListSamples {
 ### SapDiscoverySites_Create
 
 ```java
+import com.azure.resourcemanager.migrationdiscoverysap.models.SapDiscoverySiteProperties;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,8 +78,10 @@ public final class SapDiscoverySitesCreateSamples {
     public static void createResourceForImportBasedInput(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
         manager.sapDiscoverySites().define("SampleSite").withRegion("eastus").withExistingResourceGroup("test-rg")
-            .withTags(mapOf("property1", "value1", "property2", "value2")).withMasterSiteId("MasterSiteIdResourceId")
-            .withMigrateProjectId("MigrateProjectId").create();
+            .withTags(mapOf("property1", "value1", "property2", "value2"))
+            .withProperties(new SapDiscoverySiteProperties().withMasterSiteId("MasterSiteIdResourceId")
+                .withMigrateProjectId("MigrateProjectId"))
+            .create();
     }
 
     // Use "Map.of" if available
@@ -261,6 +264,7 @@ public final class SapDiscoverySitesUpdateSamples {
 ### SapInstances_Create
 
 ```java
+import com.azure.resourcemanager.migrationdiscoverysap.models.SapInstanceProperties;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -282,7 +286,8 @@ public final class SapInstancesCreateSamples {
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
         manager.sapInstances().define("MPP_MPP").withRegion("eastus")
             .withExistingSapDiscoverySite("test-rg", "SampleSite")
-            .withTags(mapOf("property1", "value1", "property2", "value2")).create();
+            .withTags(mapOf("property1", "value1", "property2", "value2")).withProperties(new SapInstanceProperties())
+            .create();
     }
 
     // Use "Map.of" if available
@@ -516,8 +521,8 @@ public final class ServerInstancesListBySapInstanceSamples {
 ### ServerInstances_Update
 
 ```java
-import com.azure.resourcemanager.migrationdiscoverysap.fluent.models.ServerInstanceProperties;
 import com.azure.resourcemanager.migrationdiscoverysap.models.ServerInstance;
+import com.azure.resourcemanager.migrationdiscoverysap.models.ServerInstanceProperties;
 
 /**
  * Samples for ServerInstances Update.

@@ -30,44 +30,30 @@ public final class PacketCapturesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Accepted\",\"status\":\"NotStarted\",\"reason\":\"wiwtglxxhl\",\"captureStartTime\":\"2021-02-24T17:36:23Z\",\"networkInterfaces\":[\"icrmnzh\",\"gmqgjs\",\"vpqcb\",\"rmbodt\"],\"bytesToCapturePerPacket\":4761446188291703076,\"totalBytesPerSession\":6402554888202206387,\"timeLimitInSeconds\":26841896,\"outputFiles\":[\"kclacjfrn\"]},\"id\":\"usx\",\"name\":\"uzlwvsgmw\",\"type\":\"hqf\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Deleted\",\"status\":\"Error\",\"reason\":\"ibmikostbzb\",\"captureStartTime\":\"2021-09-02T20:21Z\",\"networkInterfaces\":[\"qnyophzfyls\"],\"bytesToCapturePerPacket\":1557828548687606223,\"totalBytesPerSession\":2804347969541145358,\"timeLimitInSeconds\":1928749436,\"outputFiles\":[\"zcezelfwyfwl\",\"xjwet\",\"psihcla\",\"zvaylptrsqqw\"]},\"id\":\"cmwqkchcxwa\",\"name\":\"fewz\",\"type\":\"kjexfdeqvhp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PacketCapture response =
-            manager
-                .packetCaptures()
-                .getWithResponse("kfvxcnq", "xqpswok", "vkhlggdhbemz", com.azure.core.util.Context.NONE)
-                .getValue();
+        PacketCapture response = manager.packetCaptures()
+            .getWithResponse("zjedmstkvnlv", "bcuiiz", "ktwfa", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("icrmnzh", response.networkInterfaces().get(0));
-        Assertions.assertEquals(4761446188291703076L, response.bytesToCapturePerPacket());
-        Assertions.assertEquals(6402554888202206387L, response.totalBytesPerSession());
-        Assertions.assertEquals(26841896, response.timeLimitInSeconds());
+        Assertions.assertEquals("qnyophzfyls", response.networkInterfaces().get(0));
+        Assertions.assertEquals(1557828548687606223L, response.bytesToCapturePerPacket());
+        Assertions.assertEquals(2804347969541145358L, response.totalBytesPerSession());
+        Assertions.assertEquals(1928749436, response.timeLimitInSeconds());
     }
 }

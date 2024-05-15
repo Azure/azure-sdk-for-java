@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mobilenetwork.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Signaling configuration for the packet core. */
+/**
+ * Signaling configuration for the packet core.
+ */
 @Fluent
 public final class SignalingConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class SignalingConfiguration {
     @JsonProperty(value = "nasReroute")
     private NasRerouteConfiguration nasReroute;
 
-    /** Creates an instance of SignalingConfiguration class. */
+    /**
+     * Creates an instance of SignalingConfiguration class.
+     */
     public SignalingConfiguration() {
     }
 
     /**
      * Get the nasReroute property: Configuration enabling 4G NAS reroute.
-     *
+     * 
      * @return the nasReroute value.
      */
     public NasRerouteConfiguration nasReroute() {
@@ -31,7 +35,7 @@ public final class SignalingConfiguration {
 
     /**
      * Set the nasReroute property: Configuration enabling 4G NAS reroute.
-     *
+     * 
      * @param nasReroute the nasReroute value to set.
      * @return the SignalingConfiguration object itself.
      */
@@ -42,7 +46,7 @@ public final class SignalingConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

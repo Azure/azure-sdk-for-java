@@ -18,39 +18,52 @@ public final class SecurityContactListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityContactList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"emails\":\"iohgwxrtfud\",\"phone\":\"pxgy\",\"isEnabled\":false,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Unsupported\",\"roles\":[\"Owner\"]}},\"id\":\"kghimdblxgwimfnj\",\"name\":\"fjxwmsz\",\"type\":\"kfoqreyfkzikfj\"},{\"properties\":{\"emails\":\"eaivxwczel\",\"phone\":\"irels\",\"isEnabled\":false,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Unsupported\",\"roles\":[\"AccountAdmin\",\"AccountAdmin\",\"Owner\",\"Contributor\"]}},\"id\":\"dxbjhwuaanozj\",\"name\":\"sphyoulpjrvxa\",\"type\":\"l\"},{\"properties\":{\"emails\":\"mjwosytx\",\"phone\":\"cskfcktqumiekk\",\"isEnabled\":false,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Passed\",\"roles\":[\"ServiceAdmin\",\"Owner\",\"Contributor\",\"AccountAdmin\"]}},\"id\":\"gge\",\"name\":\"dunyg\",\"type\":\"eqidbqfatpx\"}],\"nextLink\":\"rxcyjmoad\"}")
+            "{\"value\":[{\"properties\":{\"emails\":\"joylh\",\"phone\":\"muoyxprimr\",\"isEnabled\":false,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Passed\",\"roles\":[\"ServiceAdmin\",\"ServiceAdmin\",\"AccountAdmin\",\"Contributor\"]}},\"id\":\"tvasy\",\"name\":\"wxdzaumweoohgu\",\"type\":\"fuzboyjathwtzolb\"},{\"properties\":{\"emails\":\"wm\",\"phone\":\"mebwjscjpah\",\"isEnabled\":true,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Failed\",\"roles\":[\"ServiceAdmin\",\"ServiceAdmin\",\"AccountAdmin\"]}},\"id\":\"qtibxyijddtv\",\"name\":\"cttadi\",\"type\":\"aeukm\"},{\"properties\":{\"emails\":\"eekpndz\",\"phone\":\"pmudqmeqwig\",\"isEnabled\":false,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Passed\",\"roles\":[\"Contributor\"]}},\"id\":\"e\",\"name\":\"bpmzzn\",\"type\":\"tffyaqit\"},{\"properties\":{\"emails\":\"eioqaqhvse\",\"phone\":\"uqyrxpdl\",\"isEnabled\":true,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Unsupported\",\"roles\":[\"Contributor\",\"ServiceAdmin\"]}},\"id\":\"ddgamquhiosr\",\"name\":\"ju\",\"type\":\"vfcdisyirn\"}],\"nextLink\":\"hcz\"}")
             .toObject(SecurityContactList.class);
-        Assertions.assertEquals("iohgwxrtfud", model.value().get(0).emails());
-        Assertions.assertEquals("pxgy", model.value().get(0).phone());
+        Assertions.assertEquals("joylh", model.value().get(0).emails());
+        Assertions.assertEquals("muoyxprimr", model.value().get(0).phone());
         Assertions.assertEquals(false, model.value().get(0).isEnabled());
-        Assertions.assertEquals(State.UNSUPPORTED, model.value().get(0).notificationsByRole().state());
-        Assertions.assertEquals(SecurityContactRole.OWNER, model.value().get(0).notificationsByRole().roles().get(0));
+        Assertions.assertEquals(State.PASSED, model.value().get(0).notificationsByRole().state());
+        Assertions.assertEquals(SecurityContactRole.SERVICE_ADMIN,
+            model.value().get(0).notificationsByRole().roles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecurityContactList model = new SecurityContactList().withValue(Arrays.asList(
-            new SecurityContactInner().withEmails("iohgwxrtfud").withPhone("pxgy").withIsEnabled(false)
-                .withNotificationsSources(Arrays.asList(new NotificationsSource(), new NotificationsSource(),
-                    new NotificationsSource(), new NotificationsSource()))
-                .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.UNSUPPORTED)
-                    .withRoles(Arrays.asList(SecurityContactRole.OWNER))),
-            new SecurityContactInner().withEmails("eaivxwczel").withPhone("irels").withIsEnabled(false)
+            new SecurityContactInner().withEmails("joylh")
+                .withPhone("muoyxprimr")
+                .withIsEnabled(false)
+                .withNotificationsSources(Arrays.asList(new NotificationsSource(), new NotificationsSource()))
+                .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.PASSED)
+                    .withRoles(Arrays.asList(SecurityContactRole.SERVICE_ADMIN, SecurityContactRole.SERVICE_ADMIN,
+                        SecurityContactRole.ACCOUNT_ADMIN, SecurityContactRole.CONTRIBUTOR))),
+            new SecurityContactInner().withEmails("wm")
+                .withPhone("mebwjscjpah")
+                .withIsEnabled(true)
+                .withNotificationsSources(Arrays.asList(new NotificationsSource()))
+                .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.FAILED)
+                    .withRoles(Arrays.asList(SecurityContactRole.SERVICE_ADMIN, SecurityContactRole.SERVICE_ADMIN,
+                        SecurityContactRole.ACCOUNT_ADMIN))),
+            new SecurityContactInner().withEmails("eekpndz")
+                .withPhone("pmudqmeqwig")
+                .withIsEnabled(false)
+                .withNotificationsSources(Arrays.asList(new NotificationsSource(), new NotificationsSource()))
+                .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.PASSED)
+                    .withRoles(Arrays.asList(SecurityContactRole.CONTRIBUTOR))),
+            new SecurityContactInner().withEmails("eioqaqhvse")
+                .withPhone("uqyrxpdl")
+                .withIsEnabled(true)
                 .withNotificationsSources(
                     Arrays.asList(new NotificationsSource(), new NotificationsSource(), new NotificationsSource()))
                 .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.UNSUPPORTED)
-                    .withRoles(Arrays.asList(SecurityContactRole.ACCOUNT_ADMIN, SecurityContactRole.ACCOUNT_ADMIN,
-                        SecurityContactRole.OWNER, SecurityContactRole.CONTRIBUTOR))),
-            new SecurityContactInner().withEmails("mjwosytx").withPhone("cskfcktqumiekk").withIsEnabled(false)
-                .withNotificationsSources(Arrays.asList(new NotificationsSource()))
-                .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.PASSED)
-                    .withRoles(Arrays.asList(SecurityContactRole.SERVICE_ADMIN, SecurityContactRole.OWNER,
-                        SecurityContactRole.CONTRIBUTOR, SecurityContactRole.ACCOUNT_ADMIN)))));
+                    .withRoles(Arrays.asList(SecurityContactRole.CONTRIBUTOR, SecurityContactRole.SERVICE_ADMIN)))));
         model = BinaryData.fromObject(model).toObject(SecurityContactList.class);
-        Assertions.assertEquals("iohgwxrtfud", model.value().get(0).emails());
-        Assertions.assertEquals("pxgy", model.value().get(0).phone());
+        Assertions.assertEquals("joylh", model.value().get(0).emails());
+        Assertions.assertEquals("muoyxprimr", model.value().get(0).phone());
         Assertions.assertEquals(false, model.value().get(0).isEnabled());
-        Assertions.assertEquals(State.UNSUPPORTED, model.value().get(0).notificationsByRole().state());
-        Assertions.assertEquals(SecurityContactRole.OWNER, model.value().get(0).notificationsByRole().roles().get(0));
+        Assertions.assertEquals(State.PASSED, model.value().get(0).notificationsByRole().state());
+        Assertions.assertEquals(SecurityContactRole.SERVICE_ADMIN,
+            model.value().get(0).notificationsByRole().roles().get(0));
     }
 }

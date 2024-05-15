@@ -6,105 +6,70 @@ package com.azure.resourcemanager.sphere.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.sphere.models.ProvisioningState;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.sphere.models.DeploymentProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
-import java.util.List;
 
-/** An deployment resource belonging to a device group resource. */
+/**
+ * An deployment resource belonging to a device group resource.
+ */
 @Fluent
 public final class DeploymentInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
-    private DeploymentProperties innerProperties;
+    private DeploymentProperties properties;
 
-    /** Creates an instance of DeploymentInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of DeploymentInner class.
+     */
     public DeploymentInner() {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    private DeploymentProperties innerProperties() {
-        return this.innerProperties;
+    public DeploymentProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the deploymentId property: Deployment ID.
-     *
-     * @return the deploymentId value.
-     */
-    public String deploymentId() {
-        return this.innerProperties() == null ? null : this.innerProperties().deploymentId();
-    }
-
-    /**
-     * Set the deploymentId property: Deployment ID.
-     *
-     * @param deploymentId the deploymentId value to set.
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
      * @return the DeploymentInner object itself.
      */
-    public DeploymentInner withDeploymentId(String deploymentId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeploymentProperties();
-        }
-        this.innerProperties().withDeploymentId(deploymentId);
+    public DeploymentInner withProperties(DeploymentProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the deployedImages property: Images deployed.
-     *
-     * @return the deployedImages value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public List<ImageInner> deployedImages() {
-        return this.innerProperties() == null ? null : this.innerProperties().deployedImages();
-    }
-
-    /**
-     * Set the deployedImages property: Images deployed.
-     *
-     * @param deployedImages the deployedImages value to set.
-     * @return the DeploymentInner object itself.
-     */
-    public DeploymentInner withDeployedImages(List<ImageInner> deployedImages) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DeploymentProperties();
-        }
-        this.innerProperties().withDeployedImages(deployedImages);
-        return this;
-    }
-
-    /**
-     * Get the deploymentDateUtc property: Deployment date UTC.
-     *
-     * @return the deploymentDateUtc value.
-     */
-    public OffsetDateTime deploymentDateUtc() {
-        return this.innerProperties() == null ? null : this.innerProperties().deploymentDateUtc();
-    }
-
-    /**
-     * Get the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

@@ -16,8 +16,7 @@ import java.util.List;
 @Fluent
 public final class SecurityContactProperties {
     /*
-     * List of email addresses which will get notifications from Microsoft Defender for Cloud by the configurations
-     * defined in this security contact.
+     * List of email addresses which will get notifications from Microsoft Defender for Cloud by the configurations defined in this security contact.
      */
     @JsonProperty(value = "emails")
     private String emails;
@@ -41,8 +40,7 @@ public final class SecurityContactProperties {
     private List<NotificationsSource> notificationsSources;
 
     /*
-     * Defines whether to send email notifications from Microsoft Defender for Cloud to persons with specific RBAC
-     * roles on the subscription.
+     * Defines whether to send email notifications from Microsoft Defender for Cloud to persons with specific RBAC roles on the subscription.
      */
     @JsonProperty(value = "notificationsByRole")
     private SecurityContactPropertiesNotificationsByRole notificationsByRole;

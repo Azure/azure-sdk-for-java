@@ -6,32 +6,33 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The lineage parents relation with GUID of the parent entity and to child entity.
  */
 @Immutable
-public final class ParentRelation {
+public final class ParentRelation implements JsonSerializable<ParentRelation> {
     /*
      * The GUID of child entity.
      */
     @Generated
-    @JsonProperty(value = "childEntityId")
     private String childEntityId;
 
     /*
      * The GUID of relationship.
      */
     @Generated
-    @JsonProperty(value = "relationshipId")
     private String relationshipId;
 
     /*
      * The GUID of parent entity.
      */
     @Generated
-    @JsonProperty(value = "parentEntityId")
     private String parentEntityId;
 
     /**
@@ -69,5 +70,49 @@ public final class ParentRelation {
     @Generated
     public String getParentEntityId() {
         return this.parentEntityId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("childEntityId", this.childEntityId);
+        jsonWriter.writeStringField("relationshipId", this.relationshipId);
+        jsonWriter.writeStringField("parentEntityId", this.parentEntityId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParentRelation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParentRelation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ParentRelation.
+     */
+    @Generated
+    public static ParentRelation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParentRelation deserializedParentRelation = new ParentRelation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("childEntityId".equals(fieldName)) {
+                    deserializedParentRelation.childEntityId = reader.getString();
+                } else if ("relationshipId".equals(fieldName)) {
+                    deserializedParentRelation.relationshipId = reader.getString();
+                } else if ("parentEntityId".equals(fieldName)) {
+                    deserializedParentRelation.parentEntityId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedParentRelation;
+        });
     }
 }

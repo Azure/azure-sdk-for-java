@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,7 +15,11 @@ import java.util.List;
 /**
  * A request to send a text notification.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = TextNotificationContent.class,
+    visible = true)
 @JsonTypeName("text")
 @Immutable
 public final class TextNotificationContent extends NotificationContent {
@@ -24,7 +29,7 @@ public final class TextNotificationContent extends NotificationContent {
      */
     @Generated
     @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /**
      * Creates an instance of TextNotificationContent class.
@@ -49,5 +54,24 @@ public final class TextNotificationContent extends NotificationContent {
     @Generated
     public String getContent() {
         return this.content;
+    }
+
+    /*
+     * The type discriminator describing a notification type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private CommunicationMessageKind kind = CommunicationMessageKind.TEXT;
+
+    /**
+     * Get the kind property: The type discriminator describing a notification type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public CommunicationMessageKind getKind() {
+        return this.kind;
     }
 }

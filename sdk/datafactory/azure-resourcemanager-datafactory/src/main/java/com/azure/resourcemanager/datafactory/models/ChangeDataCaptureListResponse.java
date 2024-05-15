@@ -80,8 +80,9 @@ public final class ChangeDataCaptureListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model ChangeDataCaptureListResponse"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model ChangeDataCaptureListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

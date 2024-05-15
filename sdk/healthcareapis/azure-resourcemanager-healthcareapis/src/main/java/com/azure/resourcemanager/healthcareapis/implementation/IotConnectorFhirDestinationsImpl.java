@@ -28,8 +28,8 @@ public final class IotConnectorFhirDestinationsImpl implements IotConnectorFhirD
 
     public Response<IotFhirDestination> getWithResponse(String resourceGroupName, String workspaceName,
         String iotConnectorName, String fhirDestinationName, Context context) {
-        Response<IotFhirDestinationInner> inner = this.serviceClient().getWithResponse(resourceGroupName, workspaceName,
-            iotConnectorName, fhirDestinationName, context);
+        Response<IotFhirDestinationInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IotFhirDestinationImpl(inner.getValue(), this.manager()));
@@ -60,22 +60,22 @@ public final class IotConnectorFhirDestinationsImpl implements IotConnectorFhirD
     }
 
     public IotFhirDestination getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String iotConnectorName = Utils.getValueFromIdByName(id, "iotconnectors");
+        String iotConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "iotconnectors");
         if (iotConnectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'iotconnectors'.", id)));
         }
-        String fhirDestinationName = Utils.getValueFromIdByName(id, "fhirdestinations");
+        String fhirDestinationName = ResourceManagerUtils.getValueFromIdByName(id, "fhirdestinations");
         if (fhirDestinationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fhirdestinations'.", id)));
@@ -86,22 +86,22 @@ public final class IotConnectorFhirDestinationsImpl implements IotConnectorFhirD
     }
 
     public Response<IotFhirDestination> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String iotConnectorName = Utils.getValueFromIdByName(id, "iotconnectors");
+        String iotConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "iotconnectors");
         if (iotConnectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'iotconnectors'.", id)));
         }
-        String fhirDestinationName = Utils.getValueFromIdByName(id, "fhirdestinations");
+        String fhirDestinationName = ResourceManagerUtils.getValueFromIdByName(id, "fhirdestinations");
         if (fhirDestinationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fhirdestinations'.", id)));
@@ -110,22 +110,22 @@ public final class IotConnectorFhirDestinationsImpl implements IotConnectorFhirD
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String iotConnectorName = Utils.getValueFromIdByName(id, "iotconnectors");
+        String iotConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "iotconnectors");
         if (iotConnectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'iotconnectors'.", id)));
         }
-        String fhirDestinationName = Utils.getValueFromIdByName(id, "fhirdestinations");
+        String fhirDestinationName = ResourceManagerUtils.getValueFromIdByName(id, "fhirdestinations");
         if (fhirDestinationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fhirdestinations'.", id)));
@@ -134,22 +134,22 @@ public final class IotConnectorFhirDestinationsImpl implements IotConnectorFhirD
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String iotConnectorName = Utils.getValueFromIdByName(id, "iotconnectors");
+        String iotConnectorName = ResourceManagerUtils.getValueFromIdByName(id, "iotconnectors");
         if (iotConnectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'iotconnectors'.", id)));
         }
-        String fhirDestinationName = Utils.getValueFromIdByName(id, "fhirdestinations");
+        String fhirDestinationName = ResourceManagerUtils.getValueFromIdByName(id, "fhirdestinations");
         if (fhirDestinationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'fhirdestinations'.", id)));

@@ -7,18 +7,20 @@ package com.azure.resourcemanager.containerservicefleet.models;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetCredentialResultsInner;
 import java.util.List;
 
-/** An immutable client-side representation of FleetCredentialResults. */
+/**
+ * An immutable client-side representation of FleetCredentialResults.
+ */
 public interface FleetCredentialResults {
     /**
      * Gets the kubeconfigs property: Array of base64-encoded Kubernetes configuration files.
-     *
+     * 
      * @return the kubeconfigs value.
      */
     List<FleetCredentialResult> kubeconfigs();
 
     /**
      * Gets the inner com.azure.resourcemanager.containerservicefleet.fluent.models.FleetCredentialResultsInner object.
-     *
+     * 
      * @return the inner object.
      */
     FleetCredentialResultsInner innerModel();

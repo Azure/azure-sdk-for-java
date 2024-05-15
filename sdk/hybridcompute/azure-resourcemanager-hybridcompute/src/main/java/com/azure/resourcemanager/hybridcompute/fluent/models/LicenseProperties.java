@@ -10,7 +10,9 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseType;
 import com.azure.resourcemanager.hybridcompute.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a License Profile. */
+/**
+ * Describes the properties of a License Profile.
+ */
 @Fluent
 public final class LicenseProperties {
     /*
@@ -37,13 +39,15 @@ public final class LicenseProperties {
     @JsonProperty(value = "licenseDetails")
     private LicenseDetails licenseDetails;
 
-    /** Creates an instance of LicenseProperties class. */
+    /**
+     * Creates an instance of LicenseProperties class.
+     */
     public LicenseProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -52,7 +56,7 @@ public final class LicenseProperties {
 
     /**
      * Get the tenantId property: Describes the tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -61,7 +65,7 @@ public final class LicenseProperties {
 
     /**
      * Set the tenantId property: Describes the tenant id.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the LicenseProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class LicenseProperties {
 
     /**
      * Get the licenseType property: The type of the license resource.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -81,7 +85,7 @@ public final class LicenseProperties {
 
     /**
      * Set the licenseType property: The type of the license resource.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the LicenseProperties object itself.
      */
@@ -92,7 +96,7 @@ public final class LicenseProperties {
 
     /**
      * Get the licenseDetails property: Describes the properties of a License.
-     *
+     * 
      * @return the licenseDetails value.
      */
     public LicenseDetails licenseDetails() {
@@ -101,7 +105,7 @@ public final class LicenseProperties {
 
     /**
      * Set the licenseDetails property: Describes the properties of a License.
-     *
+     * 
      * @param licenseDetails the licenseDetails value to set.
      * @return the LicenseProperties object itself.
      */
@@ -112,7 +116,7 @@ public final class LicenseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

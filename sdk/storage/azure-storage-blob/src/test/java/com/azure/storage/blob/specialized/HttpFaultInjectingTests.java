@@ -4,11 +4,13 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
+import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
@@ -138,12 +140,15 @@ public class HttpFaultInjectingTests {
                     null, Context.NONE);
                 byte[] actualFileBytes = Files.readAllBytes(it.toPath());
                 TestUtils.assertArraysEqual(realFileBytes, actualFileBytes);
-                successCount.incrementAndGet();
+                LOGGER.atVerbose()
+                    .addKeyValue("successCount", successCount.incrementAndGet())
+                    .log("Download completed successfully.");
                 Files.deleteIfExists(it.toPath());
             } catch (Exception ex) {
                 // Don't let network exceptions fail the download
                 LOGGER.atWarning()
-                    .log(() -> "Failed to complete download, target download file: " + it.getAbsolutePath(), ex);
+                    .addKeyValue("downloadFile", it.getAbsolutePath())
+                    .log("Failed to complete download.", ex);
             }
 
             return null;
@@ -158,11 +163,14 @@ public class HttpFaultInjectingTests {
             try {
                 Files.deleteIfExists(it.toPath());
             } catch (IOException e) {
-                LOGGER.atWarning().log(() -> "Failed to delete file: " + it.getAbsolutePath(), e);
+                LOGGER.atWarning()
+                    .addKeyValue("file", it.getAbsolutePath())
+                    .log("Failed to delete file.", e);
             }
         });
     }
 
+    @SuppressWarnings("unchecked")
     private HttpClient getFaultInjectingWrappedHttpClient() {
         switch (ENVIRONMENT.getHttpClientType()) {
             case NETTY:
@@ -175,6 +183,21 @@ public class HttpFaultInjectingTests {
                     .readTimeout(Duration.ofSeconds(2))
                     .responseTimeout(Duration.ofSeconds(2))
                     .setHttpClientProvider(OkHttpAsyncClientProvider.class));
+            case VERTX:
+                return HttpClient.createDefault(new HttpClientOptions()
+                    .readTimeout(Duration.ofSeconds(2))
+                    .responseTimeout(Duration.ofSeconds(2))
+                    .setHttpClientProvider(VertxAsyncHttpClientProvider.class));
+            case JDK_HTTP:
+                try {
+                    return HttpClient.createDefault(new HttpClientOptions()
+                        .readTimeout(Duration.ofSeconds(2))
+                        .responseTimeout(Duration.ofSeconds(2))
+                        .setHttpClientProvider((Class<? extends HttpClientProvider>) Class.forName(
+                            "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider")));
+                } catch (ClassNotFoundException e) {
+                    throw new IllegalStateException(e);
+                }
 
             default:
                 throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());

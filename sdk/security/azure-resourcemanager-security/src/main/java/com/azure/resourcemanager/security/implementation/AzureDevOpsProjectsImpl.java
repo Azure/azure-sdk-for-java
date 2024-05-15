@@ -43,8 +43,8 @@ public final class AzureDevOpsProjectsImpl implements AzureDevOpsProjects {
 
     public Response<AzureDevOpsProject> getWithResponse(String resourceGroupName, String securityConnectorName,
         String orgName, String projectName, Context context) {
-        Response<AzureDevOpsProjectInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            securityConnectorName, orgName, projectName, context);
+        Response<AzureDevOpsProjectInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, securityConnectorName, orgName, projectName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureDevOpsProjectImpl(inner.getValue(), this.manager()));

@@ -31,14 +31,14 @@ public final class CertificatesImpl implements Certificates {
 
     public PagedIterable<Certificate> listByBatchAccount(String resourceGroupName, String accountName) {
         PagedIterable<CertificateInner> inner = this.serviceClient().listByBatchAccount(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Certificate> listByBatchAccount(String resourceGroupName, String accountName,
         Integer maxresults, String select, String filter, Context context) {
         PagedIterable<CertificateInner> inner = this.serviceClient().listByBatchAccount(resourceGroupName, accountName,
             maxresults, select, filter, context);
-        return Utils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
     }
 
     public void delete(String resourceGroupName, String accountName, String certificateName) {
@@ -92,17 +92,17 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public Certificate getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -111,17 +111,17 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public Response<Certificate> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -130,17 +130,17 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
@@ -149,17 +149,17 @@ public final class CertificatesImpl implements Certificates {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));

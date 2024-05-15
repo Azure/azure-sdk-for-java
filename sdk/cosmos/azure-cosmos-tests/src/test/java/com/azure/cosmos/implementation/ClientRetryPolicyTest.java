@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.directconnectivity.ChannelAcquisitionException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
@@ -37,6 +38,24 @@ public class ClientRetryPolicyTest {
             { OperationType.Read, ResourceType.Database, Boolean.FALSE, TEST_DATABASE_PATH, Boolean.TRUE },
             { OperationType.Create, ResourceType.Database, Boolean.FALSE, TEST_DATABASE_PATH, Boolean.FALSE },
             { OperationType.QueryPlan, ResourceType.Document, Boolean.FALSE, TEST_DOCUMENT_PATH, Boolean.TRUE }
+        };
+    }
+
+    @DataProvider(name = "tcpNetworkFailureOnWriteArgProvider")
+    public static Object[][] tcpNetworkFailureOnWriteArgProvider() {
+        return new Object[][]{
+            // internal exception, canUseMultipleWriteLocations, nonIdempotentWriteRetriesEnabled, shouldRetry
+            { new SocketException("Dummy socket exception"), false, true, false },
+            { new SSLHandshakeException("test"), false, true, false },
+            { new ChannelAcquisitionException("test channel acquisition failed"), false, true, false },
+
+            // when canUseMultipleWriteLocations
+            { new SocketException("Dummy socket exception"), true, false, false },
+            { new SSLHandshakeException("test"), true, false, true },
+            { new ChannelAcquisitionException("test channel acquisition failed"), true, false, true },
+            { new SocketException("Dummy socket exception"), true, true, true },
+            { new SSLHandshakeException("test"), true, true, true },
+            { new ChannelAcquisitionException("test channel acquisition failed"), true, true, true }
         };
     }
 
@@ -194,8 +213,12 @@ public class ClientRetryPolicyTest {
         }
     }
 
-    @Test(groups = "unit")
-    public void tcpNetworkFailureOnWrite() throws Exception {
+    @Test(groups = "unit", dataProvider = "tcpNetworkFailureOnWriteArgProvider")
+    public void tcpNetworkFailureOnWrite(
+        Exception exception,
+        boolean canUseMultiWriteLocations,
+        boolean nonIdempotentWriteRetriesEnabled,
+        boolean shouldRetry) throws Exception {
         ThrottlingRetryOptions retryOptions = new ThrottlingRetryOptions();
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URI("http://localhost")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
@@ -204,59 +227,51 @@ public class ClientRetryPolicyTest {
         ClientRetryPolicy clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions, null);
 
         //Non retribale exception for write
-        Exception exception = new SocketException("Dummy SocketException");;
         GoneException goneException = new GoneException(exception);
         CosmosException cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.setNonIdempotentWriteRetriesEnabled(nonIdempotentWriteRetriesEnabled);
+        Mockito.when(endpointManager.canUseMultipleWriteLocations(dsr)).thenReturn(canUseMultiWriteLocations);
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
+        if (shouldRetry) {
+            for (int i = 0; i < 10; i++) {
+                Mono<ShouldRetryResult> retryResult = clientRetryPolicy.shouldRetry(cosmosException);
+                if (i < 2) {
+                    validateSuccess(retryResult, ShouldRetryValidator.builder()
+                        .nullException()
+                        .shouldRetry(true)
+                        .backOffTime(Duration.ofMillis(0))
+                        .build());
 
-        for (int i = 0; i < 10; i++) {
-            Mono<ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
-            //  We don't want to retry writes on network failure with non retriable exception
-            validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-                .nullException()
-                .shouldRetry(false)
-                .build());
+                    Assert.assertTrue(clientRetryPolicy.canUsePreferredLocations());
+                } else {
+                    validateSuccess(retryResult, ShouldRetryValidator.builder()
+                        .nullException()
+                        .shouldRetry(false)
+                        .build());
 
-            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
-            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
-        }
+                    Assert.assertFalse(clientRetryPolicy.canUsePreferredLocations());
+                }
 
-        // Retriable exception scenario
-        exception = new SSLHandshakeException("test");
-        goneException = new GoneException(exception);
-        cosmosException = BridgeInternal.createCosmosException(null, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE, goneException);
-
-        Mockito.doReturn(true).when(endpointManager).canUseMultipleWriteLocations(Mockito.any(RxDocumentServiceRequest.class));
-        clientRetryPolicy = new ClientRetryPolicy(mockDiagnosticsClientContext(), endpointManager, true, retryOptions, null);
-        clientRetryPolicy.onBeforeSendRequest(dsr);
-
-        for (int i = 0; i < 10; i++) {
-            Mono<ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(cosmosException);
-            //  We want to retry writes on network failure with retriable exception
-            if (i < 2) {
-                validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-                    .nullException()
-                    .shouldRetry(true)
-                    .backOffTime(Duration.ofMillis(0))
-                    .build());
-
-                Assert.assertTrue(clientRetryPolicy.canUsePreferredLocations());
-            } else {
-                validateSuccess(shouldRetry, ShouldRetryValidator.builder()
+                Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
+                Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
+            }
+        } else {
+            for (int i = 0; i < 10; i++) {
+                Mono<ShouldRetryResult> retryResult = clientRetryPolicy.shouldRetry(cosmosException);
+                //  We don't want to retry writes on network failure with non retriable exception
+                validateSuccess(retryResult, ShouldRetryValidator.builder()
                     .nullException()
                     .shouldRetry(false)
                     .build());
 
-                Assert.assertFalse(clientRetryPolicy.canUsePreferredLocations());
+                Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
+                Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
             }
-
-            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForRead(Mockito.any());
-            Mockito.verify(endpointManager, Mockito.times(0)).markEndpointUnavailableForWrite(Mockito.any());
         }
     }
 

@@ -6,22 +6,23 @@ package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.resourcemanager.sphere.models.Product;
 
-/** Samples for Products Update. */
+/**
+ * Samples for Products Update.
+ */
 public final class ProductsUpdateSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/preview/2022-09-01-preview/examples/PatchProduct.json
+     * x-ms-original-file:
+     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PatchProduct.json
      */
     /**
      * Sample code: Products_Update.
-     *
+     * 
      * @param manager Entry point to AzureSphereManager.
      */
     public static void productsUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        Product resource =
-            manager
-                .products()
-                .getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", com.azure.core.util.Context.NONE)
-                .getValue();
+        Product resource = manager.products()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

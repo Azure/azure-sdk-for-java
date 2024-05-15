@@ -5,7 +5,7 @@
         "ArmTemplateParameters": "@{ defaultConsistencyLevel = 'Session' }",
         "ProfileFlag": "-P integration-test-azure",
         "Pool": "env:LINUXPOOL",
-        "OSVmImage": "MMSUbuntu2004"
+        "OSVmImage": "env:LINUXVMIMAGE"
       }
     },
     "TestFromSource": true,

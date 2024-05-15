@@ -11,7 +11,7 @@ public final class IoTSecurityDeviceRecommendationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecurityDeviceRecommendation model = BinaryData.fromString(
-            "{\"recommendationDisplayName\":\"hnhjtfvpndpmi\",\"reportedSeverity\":\"Informational\",\"devicesCount\":2460948080588782821}")
+            "{\"recommendationDisplayName\":\"nwgfmxjgcgbjbgd\",\"reportedSeverity\":\"Medium\",\"devicesCount\":5670178793180886047}")
             .toObject(IoTSecurityDeviceRecommendation.class);
     }
 

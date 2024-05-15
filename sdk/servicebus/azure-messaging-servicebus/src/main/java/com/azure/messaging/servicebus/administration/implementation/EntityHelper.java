@@ -28,7 +28,6 @@ import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
-import com.azure.xml.XmlProviders;
 import com.azure.xml.XmlReader;
 
 import javax.xml.stream.XMLStreamException;
@@ -651,11 +650,11 @@ public final class EntityHelper {
         ClientLogger logger) {
         String responseBody = response.getValue().toString();
 
-        try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+        try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
             QueueDescriptionFeedImpl entry = QueueDescriptionFeedImpl.fromXml(xmlReader);
             return new SimpleResponse<>(response, entry);
         } catch (IllegalStateException ex) {
-            try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+            try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
                 TopicDescriptionFeedImpl entryTopic = TopicDescriptionFeedImpl.fromXml(xmlReader);
                 logger.atWarning()
                     .addKeyValue("entityName", entryTopic.getTitle())
@@ -682,7 +681,7 @@ public final class EntityHelper {
     public static Response<QueueProperties> deserializeQueue(Response<Object> response, ClientLogger logger) {
         String responseBody = response.getValue().toString();
 
-        try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+        try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
             QueueDescriptionEntryImpl entry = QueueDescriptionEntryImpl.fromXml(xmlReader);
             // This was an empty response (ie. 204).
             if (entry == null) {
@@ -700,7 +699,7 @@ public final class EntityHelper {
 
             return new SimpleResponse<>(response, result);
         } catch (IllegalStateException ex) {
-            try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+            try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
                 TopicDescriptionEntryImpl entryTopic = TopicDescriptionEntryImpl.fromXml(xmlReader);
                 logger.atWarning()
                     .addKeyValue("entityName", entryTopic.getTitle())
@@ -728,11 +727,11 @@ public final class EntityHelper {
         ClientLogger logger) {
         String responseBody = response.getValue().toString();
 
-        try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+        try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
             TopicDescriptionFeedImpl entry = TopicDescriptionFeedImpl.fromXml(xmlReader);
             return new SimpleResponse<>(response, entry);
         } catch (IllegalStateException ex) {
-            try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+            try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
                 QueueDescriptionFeedImpl entryTopic = QueueDescriptionFeedImpl.fromXml(xmlReader);
                 logger.atWarning()
                     .addKeyValue("entityName", entryTopic.getTitle())
@@ -759,7 +758,7 @@ public final class EntityHelper {
     public static Response<TopicProperties> deserializeTopic(Response<Object> response, ClientLogger logger) {
         String responseBody = response.getValue().toString();
 
-        try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+        try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
             TopicDescriptionEntryImpl entry = TopicDescriptionEntryImpl.fromXml(xmlReader);
             // This was an empty response (ie. 204).
             if (entry == null) {
@@ -777,7 +776,7 @@ public final class EntityHelper {
 
             return new SimpleResponse<>(response, result);
         } catch (IllegalStateException ex) {
-            try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+            try (XmlReader xmlReader = XmlReader.fromString(responseBody)) {
                 QueueDescriptionEntryImpl entryQueue = QueueDescriptionEntryImpl.fromXml(xmlReader);
                 logger.atWarning()
                     .addKeyValue("entityName", entryQueue.getTitle())

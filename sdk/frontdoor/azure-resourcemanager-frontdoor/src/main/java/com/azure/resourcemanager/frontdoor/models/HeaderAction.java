@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An action that can manipulate an http header. */
+/**
+ * An action that can manipulate an http header.
+ */
 @Fluent
 public final class HeaderAction {
     /*
@@ -29,13 +31,15 @@ public final class HeaderAction {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of HeaderAction class. */
+    /**
+     * Creates an instance of HeaderAction class.
+     */
     public HeaderAction() {
     }
 
     /**
      * Get the headerActionType property: Which type of manipulation to apply to the header.
-     *
+     * 
      * @return the headerActionType value.
      */
     public HeaderActionType headerActionType() {
@@ -44,7 +48,7 @@ public final class HeaderAction {
 
     /**
      * Set the headerActionType property: Which type of manipulation to apply to the header.
-     *
+     * 
      * @param headerActionType the headerActionType value to set.
      * @return the HeaderAction object itself.
      */
@@ -55,7 +59,7 @@ public final class HeaderAction {
 
     /**
      * Get the headerName property: The name of the header this action will apply to.
-     *
+     * 
      * @return the headerName value.
      */
     public String headerName() {
@@ -64,7 +68,7 @@ public final class HeaderAction {
 
     /**
      * Set the headerName property: The name of the header this action will apply to.
-     *
+     * 
      * @param headerName the headerName value to set.
      * @return the HeaderAction object itself.
      */
@@ -76,7 +80,7 @@ public final class HeaderAction {
     /**
      * Get the value property: The value to update the given header name with. This value is not used if the actionType
      * is Delete.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -86,7 +90,7 @@ public final class HeaderAction {
     /**
      * Set the value property: The value to update the given header name with. This value is not used if the actionType
      * is Delete.
-     *
+     * 
      * @param value the value value to set.
      * @return the HeaderAction object itself.
      */
@@ -97,19 +101,17 @@ public final class HeaderAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (headerActionType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property headerActionType in model HeaderAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property headerActionType in model HeaderAction"));
         }
         if (headerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property headerName in model HeaderAction"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property headerName in model HeaderAction"));
         }
     }
 

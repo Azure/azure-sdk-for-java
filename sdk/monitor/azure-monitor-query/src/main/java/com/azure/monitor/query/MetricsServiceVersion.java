@@ -12,7 +12,7 @@ public enum MetricsServiceVersion implements ServiceVersion {
     /**
      * The preview version of the Metrics Query service.
      */
-    V2023_10_01("2023-10-01");
+    V2024_02_01("2024-02-01");
 
     private final String version;
 
@@ -30,6 +30,6 @@ public enum MetricsServiceVersion implements ServiceVersion {
      * @return the latest {@link MetricsServiceVersion}.
      */
     public static MetricsServiceVersion getLatest() {
-        return V2023_10_01;
+        return V2024_02_01;
     }
 }

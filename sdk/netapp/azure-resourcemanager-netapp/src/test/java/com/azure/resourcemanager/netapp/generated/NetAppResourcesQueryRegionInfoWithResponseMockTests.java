@@ -32,7 +32,7 @@ public final class NetAppResourcesQueryRegionInfoWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"storageToNetworkProximity\":\"T1AndT2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"grjqctojcmi\",\"isAvailable\":true},{\"availabilityZone\":\"eypefojyqd\",\"isAvailable\":false}]}";
+            = "{\"storageToNetworkProximity\":\"T2\",\"availabilityZoneMappings\":[{\"availabilityZone\":\"vk\",\"isAvailable\":false},{\"availabilityZone\":\"ql\",\"isAvailable\":false},{\"availabilityZone\":\"tczheydbsdshmkx\",\"isAvailable\":true},{\"availabilityZone\":\"vbbxuripl\",\"isAvailable\":false}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,11 +49,11 @@ public final class NetAppResourcesQueryRegionInfoWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RegionInfo response
-            = manager.netAppResources().queryRegionInfoWithResponse("own", com.azure.core.util.Context.NONE).getValue();
+        RegionInfo response = manager.netAppResources()
+            .queryRegionInfoWithResponse("ssxmojms", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(RegionStorageToNetworkProximity.T1AND_T2, response.storageToNetworkProximity());
-        Assertions.assertEquals("grjqctojcmi", response.availabilityZoneMappings().get(0).availabilityZone());
-        Assertions.assertEquals(true, response.availabilityZoneMappings().get(0).isAvailable());
+        Assertions.assertEquals(RegionStorageToNetworkProximity.T2, response.storageToNetworkProximity());
+        Assertions.assertEquals("vk", response.availabilityZoneMappings().get(0).availabilityZone());
+        Assertions.assertEquals(false, response.availabilityZoneMappings().get(0).isAvailable());
     }
 }

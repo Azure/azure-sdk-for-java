@@ -30,8 +30,8 @@ import static com.azure.cosmos.implementation.Utils.ValueHolder;
  */
 public class VectorSessionToken implements ISessionToken {
     private final static Logger logger = LoggerFactory.getLogger(VectorSessionToken.class);
-    private final static char SegmentSeparator = '#';
-    private final static char RegionProgressSeparator = '=';
+    public final static char SegmentSeparator = '#';
+    public final static char RegionProgressSeparator = '=';
 
     private final long version;
     private final long globalLsn;
@@ -234,6 +234,14 @@ public class VectorSessionToken implements ISessionToken {
         return this.sessionToken;
     }
 
+    public long getVersion() {
+        return version;
+    }
+
+    public UnmodifiableMap<Integer, Long> getLocalLsnByRegion() {
+        return localLsnByRegion;
+    }
+
     private boolean areRegionProgressEqual(UnmodifiableMap<Integer, Long> other) {
         if (this.localLsnByRegion.size() != other.size()) {
             return false;
@@ -264,7 +272,7 @@ public class VectorSessionToken implements ISessionToken {
         globalLsn.v = -1L;
 
         if (Strings.isNullOrEmpty(sessionToken)) {
-            logger.warn("SESSION token is empty");
+            logger.info("SESSION token is empty");
             return false;
         }
 
@@ -308,7 +316,7 @@ public class VectorSessionToken implements ISessionToken {
         return true;
     }
 
-    private static boolean tryParseLong(String str, ValueHolder<Long> value) {
+    public static boolean tryParseLong(String str, ValueHolder<Long> value) {
         try {
             value.v = Long.parseLong(str);
             return true;
@@ -317,7 +325,7 @@ public class VectorSessionToken implements ISessionToken {
         }
     }
 
-    private static boolean tryParseInt(String str, ValueHolder<Integer> value) {
+    public static boolean tryParseInt(String str, ValueHolder<Integer> value) {
         try {
             value.v = Integer.parseInt(str);
             return true;

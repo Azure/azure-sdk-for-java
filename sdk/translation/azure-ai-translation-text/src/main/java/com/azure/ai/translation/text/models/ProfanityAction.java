@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for ProfanityAction.
+ * Translator profanity actions.
  */
 public final class ProfanityAction extends ExpandableStringEnum<ProfanityAction> {
 

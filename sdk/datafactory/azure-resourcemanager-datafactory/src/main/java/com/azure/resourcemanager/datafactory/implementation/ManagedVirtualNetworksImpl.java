@@ -44,8 +44,8 @@ public final class ManagedVirtualNetworksImpl implements ManagedVirtualNetworks 
 
     public Response<ManagedVirtualNetworkResource> getWithResponse(String resourceGroupName, String factoryName,
         String managedVirtualNetworkName, String ifNoneMatch, Context context) {
-        Response<ManagedVirtualNetworkResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            factoryName, managedVirtualNetworkName, ifNoneMatch, context);
+        Response<ManagedVirtualNetworkResourceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, ifNoneMatch, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ManagedVirtualNetworkResourceImpl(inner.getValue(), this.manager()));

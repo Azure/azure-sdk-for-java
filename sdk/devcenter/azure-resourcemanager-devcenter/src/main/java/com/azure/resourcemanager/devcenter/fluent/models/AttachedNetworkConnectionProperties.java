@@ -11,7 +11,9 @@ import com.azure.resourcemanager.devcenter.models.HealthCheckStatus;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an attached NetworkConnection. */
+/**
+ * Properties of an attached NetworkConnection.
+ */
 @Fluent
 public final class AttachedNetworkConnectionProperties {
     /*
@@ -44,13 +46,15 @@ public final class AttachedNetworkConnectionProperties {
     @JsonProperty(value = "domainJoinType", access = JsonProperty.Access.WRITE_ONLY)
     private DomainJoinType domainJoinType;
 
-    /** Creates an instance of AttachedNetworkConnectionProperties class. */
+    /**
+     * Creates an instance of AttachedNetworkConnectionProperties class.
+     */
     public AttachedNetworkConnectionProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -59,7 +63,7 @@ public final class AttachedNetworkConnectionProperties {
 
     /**
      * Get the networkConnectionId property: The resource ID of the NetworkConnection you want to attach.
-     *
+     * 
      * @return the networkConnectionId value.
      */
     public String networkConnectionId() {
@@ -68,7 +72,7 @@ public final class AttachedNetworkConnectionProperties {
 
     /**
      * Set the networkConnectionId property: The resource ID of the NetworkConnection you want to attach.
-     *
+     * 
      * @param networkConnectionId the networkConnectionId value to set.
      * @return the AttachedNetworkConnectionProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class AttachedNetworkConnectionProperties {
     /**
      * Get the networkConnectionLocation property: The geo-location where the NetworkConnection resource specified in
      * 'networkConnectionResourceId' property lives.
-     *
+     * 
      * @return the networkConnectionLocation value.
      */
     public String networkConnectionLocation() {
@@ -89,7 +93,7 @@ public final class AttachedNetworkConnectionProperties {
 
     /**
      * Get the healthCheckStatus property: Health check status values.
-     *
+     * 
      * @return the healthCheckStatus value.
      */
     public HealthCheckStatus healthCheckStatus() {
@@ -99,7 +103,7 @@ public final class AttachedNetworkConnectionProperties {
     /**
      * Get the domainJoinType property: AAD Join type of the network. This is populated based on the referenced Network
      * Connection.
-     *
+     * 
      * @return the domainJoinType value.
      */
     public DomainJoinType domainJoinType() {
@@ -108,15 +112,14 @@ public final class AttachedNetworkConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkConnectionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkConnectionId in model AttachedNetworkConnectionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkConnectionId in model AttachedNetworkConnectionProperties"));
         }
     }
 

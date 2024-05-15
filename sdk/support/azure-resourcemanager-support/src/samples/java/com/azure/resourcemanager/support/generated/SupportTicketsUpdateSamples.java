@@ -12,75 +12,77 @@ import com.azure.resourcemanager.support.models.SupportTicketDetails;
 import com.azure.resourcemanager.support.models.UpdateContactProfile;
 import java.util.Arrays;
 
-/** Samples for SupportTickets Update. */
+/**
+ * Samples for SupportTickets Update.
+ */
 public final class SupportTicketsUpdateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateAdvancedDiagnosticConsentOfSupportTicketForSubscription.json
      */
     /**
-     * Sample code: Update advanced diagnostic consent of a support ticket.
-     *
+     * Sample code: Update advanced diagnostic consent of a subscription support ticket.
+     * 
      * @param manager Entry point to SupportManager.
      */
-    public static void updateAdvancedDiagnosticConsentOfASupportTicket(
+    public static void updateAdvancedDiagnosticConsentOfASubscriptionSupportTicket(
         com.azure.resourcemanager.support.SupportManager manager) {
-        SupportTicketDetails resource =
-            manager.supportTickets().getWithResponse("testticket", com.azure.core.util.Context.NONE).getValue();
+        SupportTicketDetails resource
+            = manager.supportTickets().getWithResponse("testticket", com.azure.core.util.Context.NONE).getValue();
         resource.update().withAdvancedDiagnosticConsent(Consent.YES).apply();
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateSeverityOfSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateSeverityOfSupportTicketForSubscription.json
      */
     /**
-     * Sample code: Update severity of a support ticket.
-     *
+     * Sample code: Update severity of a subscription support ticket.
+     * 
      * @param manager Entry point to SupportManager.
      */
-    public static void updateSeverityOfASupportTicket(com.azure.resourcemanager.support.SupportManager manager) {
-        SupportTicketDetails resource =
-            manager.supportTickets().getWithResponse("testticket", com.azure.core.util.Context.NONE).getValue();
+    public static void
+        updateSeverityOfASubscriptionSupportTicket(com.azure.resourcemanager.support.SupportManager manager) {
+        SupportTicketDetails resource
+            = manager.supportTickets().getWithResponse("testticket", com.azure.core.util.Context.NONE).getValue();
         resource.update().withSeverity(SeverityLevel.CRITICAL).apply();
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateStatusOfSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateStatusOfSupportTicketForSubscription.json
      */
     /**
-     * Sample code: Update status of a support ticket.
-     *
+     * Sample code: Update status of a subscription support ticket.
+     * 
      * @param manager Entry point to SupportManager.
      */
-    public static void updateStatusOfASupportTicket(com.azure.resourcemanager.support.SupportManager manager) {
-        SupportTicketDetails resource =
-            manager.supportTickets().getWithResponse("testticket", com.azure.core.util.Context.NONE).getValue();
+    public static void
+        updateStatusOfASubscriptionSupportTicket(com.azure.resourcemanager.support.SupportManager manager) {
+        SupportTicketDetails resource
+            = manager.supportTickets().getWithResponse("testticket", com.azure.core.util.Context.NONE).getValue();
         resource.update().withStatus(Status.CLOSED).apply();
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/UpdateContactDetailsOfSupportTicketForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/UpdateContactDetailsOfSupportTicketForSubscription.json
      */
     /**
-     * Sample code: Update contact details of a support ticket.
-     *
+     * Sample code: Update contact details of a subscription support ticket.
+     * 
      * @param manager Entry point to SupportManager.
      */
-    public static void updateContactDetailsOfASupportTicket(com.azure.resourcemanager.support.SupportManager manager) {
-        SupportTicketDetails resource =
-            manager.supportTickets().getWithResponse("testticket", com.azure.core.util.Context.NONE).getValue();
-        resource
-            .update()
-            .withContactDetails(
-                new UpdateContactProfile()
-                    .withFirstName("first name")
-                    .withLastName("last name")
-                    .withPreferredContactMethod(PreferredContactMethod.EMAIL)
-                    .withPrimaryEmailAddress("test.name@contoso.com")
-                    .withAdditionalEmailAddresses(Arrays.asList("tname@contoso.com", "teamtest@contoso.com"))
-                    .withPhoneNumber("123-456-7890")
-                    .withPreferredTimeZone("Pacific Standard Time")
-                    .withCountry("USA")
-                    .withPreferredSupportLanguage("en-US"))
+    public static void
+        updateContactDetailsOfASubscriptionSupportTicket(com.azure.resourcemanager.support.SupportManager manager) {
+        SupportTicketDetails resource
+            = manager.supportTickets().getWithResponse("testticket", com.azure.core.util.Context.NONE).getValue();
+        resource.update()
+            .withContactDetails(new UpdateContactProfile().withFirstName("first name")
+                .withLastName("last name")
+                .withPreferredContactMethod(PreferredContactMethod.EMAIL)
+                .withPrimaryEmailAddress("test.name@contoso.com")
+                .withAdditionalEmailAddresses(Arrays.asList("tname@contoso.com", "teamtest@contoso.com"))
+                .withPhoneNumber("123-456-7890")
+                .withPreferredTimeZone("Pacific Standard Time")
+                .withCountry("USA")
+                .withPreferredSupportLanguage("en-US"))
             .apply();
     }
 }

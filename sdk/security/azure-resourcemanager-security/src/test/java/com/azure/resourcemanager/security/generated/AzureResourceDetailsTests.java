@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.models.AzureResourceDetails;
 public final class AzureResourceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureResourceDetails model
-            = BinaryData.fromString("{\"source\":\"Azure\",\"id\":\"zrpv\"}").toObject(AzureResourceDetails.class);
+        AzureResourceDetails model = BinaryData.fromString("{\"source\":\"Azure\",\"id\":\"ahneaoovtyjzt\"}")
+            .toObject(AzureResourceDetails.class);
     }
 
     @org.junit.jupiter.api.Test

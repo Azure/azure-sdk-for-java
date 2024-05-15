@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,11 +15,7 @@ import java.util.List;
 /**
  * Base class for all control activities like IfCondition, ForEach , Until.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ControlActivity.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ControlActivity.class, visible = true)
 @JsonTypeName("Container")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ExecutePipeline", value = ExecutePipelineActivity.class),
@@ -34,10 +32,27 @@ import java.util.List;
     @JsonSubTypes.Type(name = "WebHook", value = WebhookActivity.class) })
 @Fluent
 public class ControlActivity extends Activity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Container";
+
     /**
      * Creates an instance of ControlActivity class.
      */
     public ControlActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

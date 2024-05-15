@@ -8,35 +8,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WafRankingType. */
+/**
+ * Defines values for WafRankingType.
+ */
 public final class WafRankingType extends ExpandableStringEnum<WafRankingType> {
-    /** Static value action for WafRankingType. */
+    /**
+     * Static value action for WafRankingType.
+     */
     public static final WafRankingType ACTION = fromString("action");
 
-    /** Static value ruleGroup for WafRankingType. */
+    /**
+     * Static value ruleGroup for WafRankingType.
+     */
     public static final WafRankingType RULE_GROUP = fromString("ruleGroup");
 
-    /** Static value ruleId for WafRankingType. */
+    /**
+     * Static value ruleId for WafRankingType.
+     */
     public static final WafRankingType RULE_ID = fromString("ruleId");
 
-    /** Static value userAgent for WafRankingType. */
+    /**
+     * Static value userAgent for WafRankingType.
+     */
     public static final WafRankingType USER_AGENT = fromString("userAgent");
 
-    /** Static value clientIp for WafRankingType. */
+    /**
+     * Static value clientIp for WafRankingType.
+     */
     public static final WafRankingType CLIENT_IP = fromString("clientIp");
 
-    /** Static value url for WafRankingType. */
+    /**
+     * Static value url for WafRankingType.
+     */
     public static final WafRankingType URL = fromString("url");
 
-    /** Static value countryOrRegion for WafRankingType. */
+    /**
+     * Static value countryOrRegion for WafRankingType.
+     */
     public static final WafRankingType COUNTRY_OR_REGION = fromString("countryOrRegion");
 
-    /** Static value ruleType for WafRankingType. */
+    /**
+     * Static value ruleType for WafRankingType.
+     */
     public static final WafRankingType RULE_TYPE = fromString("ruleType");
 
     /**
      * Creates a new instance of WafRankingType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +63,7 @@ public final class WafRankingType extends ExpandableStringEnum<WafRankingType> {
 
     /**
      * Creates or finds a WafRankingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WafRankingType.
      */
@@ -56,7 +74,7 @@ public final class WafRankingType extends ExpandableStringEnum<WafRankingType> {
 
     /**
      * Gets known WafRankingType values.
-     *
+     * 
      * @return known WafRankingType values.
      */
     public static Collection<WafRankingType> values() {

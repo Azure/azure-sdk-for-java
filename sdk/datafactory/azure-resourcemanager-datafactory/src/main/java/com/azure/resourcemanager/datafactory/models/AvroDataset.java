@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.AvroDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.Map;
 /**
  * Avro dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AvroDataset.class, visible = true)
 @JsonTypeName("Avro")
 @Fluent
 public final class AvroDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Avro";
+
     /*
      * Avro dataset properties.
      */
@@ -29,6 +37,16 @@ public final class AvroDataset extends Dataset {
      * Creates an instance of AvroDataset class.
      */
     public AvroDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -127,8 +145,8 @@ public final class AvroDataset extends Dataset {
     }
 
     /**
-     * Get the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with
-     * resultType string).
+     * Get the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the avroCompressionCodec value.
      */
@@ -137,8 +155,8 @@ public final class AvroDataset extends Dataset {
     }
 
     /**
-     * Set the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with
-     * resultType string).
+     * Set the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
+     * string).
      * 
      * @param avroCompressionCodec the avroCompressionCodec value to set.
      * @return the AvroDataset object itself.

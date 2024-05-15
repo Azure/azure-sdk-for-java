@@ -9,7 +9,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.UsageInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Core Usages. */
+/**
+ * List of Core Usages.
+ */
 @Immutable
 public final class ListUsagesResult {
     /*
@@ -24,13 +26,15 @@ public final class ListUsagesResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ListUsagesResult class. */
+    /**
+     * Creates an instance of ListUsagesResult class.
+     */
     public ListUsagesResult() {
     }
 
     /**
      * Get the value property: The array page of Usages.
-     *
+     * 
      * @return the value value.
      */
     public List<UsageInner> value() {
@@ -39,7 +43,7 @@ public final class ListUsagesResult {
 
     /**
      * Get the nextLink property: The link to get the next page of Usage result.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ListUsagesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appcontainers.models.DnsVerificationTestResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Custom domain analysis. */
+/**
+ * Custom domain analysis.
+ */
 @Fluent
 public final class CustomHostnameAnalysisResultInner {
     /*
@@ -87,13 +89,15 @@ public final class CustomHostnameAnalysisResultInner {
     @JsonProperty(value = "alternateTxtRecords")
     private List<String> alternateTxtRecords;
 
-    /** Creates an instance of CustomHostnameAnalysisResultInner class. */
+    /**
+     * Creates an instance of CustomHostnameAnalysisResultInner class.
+     */
     public CustomHostnameAnalysisResultInner() {
     }
 
     /**
      * Get the hostname property: Host name that was analyzed.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -103,7 +107,7 @@ public final class CustomHostnameAnalysisResultInner {
     /**
      * Get the isHostnameAlreadyVerified property: &lt;code&gt;true&lt;/code&gt; if hostname is already verified;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isHostnameAlreadyVerified value.
      */
     public Boolean isHostnameAlreadyVerified() {
@@ -112,7 +116,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Get the customDomainVerificationTest property: DNS verification test result.
-     *
+     * 
      * @return the customDomainVerificationTest value.
      */
     public DnsVerificationTestResult customDomainVerificationTest() {
@@ -121,7 +125,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Get the customDomainVerificationFailureInfo property: Raw failure information if DNS verification fails.
-     *
+     * 
      * @return the customDomainVerificationFailureInfo value.
      */
     public CustomHostnameAnalysisResultCustomDomainVerificationFailureInfo customDomainVerificationFailureInfo() {
@@ -131,7 +135,7 @@ public final class CustomHostnameAnalysisResultInner {
     /**
      * Get the hasConflictOnManagedEnvironment property: &lt;code&gt;true&lt;/code&gt; if there is a conflict on the
      * Container App's managed environment; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the hasConflictOnManagedEnvironment value.
      */
     public Boolean hasConflictOnManagedEnvironment() {
@@ -139,9 +143,9 @@ public final class CustomHostnameAnalysisResultInner {
     }
 
     /**
-     * Get the conflictWithEnvironmentCustomDomain property: &lt;code&gt;true&lt;/code&gt; if there is a conflict on the
-     * Container App's managed environment level custom domain; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * Get the conflictWithEnvironmentCustomDomain property: &lt;code&gt;true&lt;/code&gt; if there is a conflict on
+     * the Container App's managed environment level custom domain; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * 
      * @return the conflictWithEnvironmentCustomDomain value.
      */
     public Boolean conflictWithEnvironmentCustomDomain() {
@@ -151,7 +155,7 @@ public final class CustomHostnameAnalysisResultInner {
     /**
      * Get the conflictingContainerAppResourceId property: Name of the conflicting Container App on the Managed
      * Environment if it's within the same subscription.
-     *
+     * 
      * @return the conflictingContainerAppResourceId value.
      */
     public String conflictingContainerAppResourceId() {
@@ -160,7 +164,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Get the cNameRecords property: CName records visible for this hostname.
-     *
+     * 
      * @return the cNameRecords value.
      */
     public List<String> cNameRecords() {
@@ -169,7 +173,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Set the cNameRecords property: CName records visible for this hostname.
-     *
+     * 
      * @param cNameRecords the cNameRecords value to set.
      * @return the CustomHostnameAnalysisResultInner object itself.
      */
@@ -180,7 +184,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Get the txtRecords property: TXT records visible for this hostname.
-     *
+     * 
      * @return the txtRecords value.
      */
     public List<String> txtRecords() {
@@ -189,7 +193,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Set the txtRecords property: TXT records visible for this hostname.
-     *
+     * 
      * @param txtRecords the txtRecords value to set.
      * @return the CustomHostnameAnalysisResultInner object itself.
      */
@@ -200,7 +204,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Get the aRecords property: A records visible for this hostname.
-     *
+     * 
      * @return the aRecords value.
      */
     public List<String> aRecords() {
@@ -209,7 +213,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Set the aRecords property: A records visible for this hostname.
-     *
+     * 
      * @param aRecords the aRecords value to set.
      * @return the CustomHostnameAnalysisResultInner object itself.
      */
@@ -220,7 +224,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Get the alternateCNameRecords property: Alternate CName records visible for this hostname.
-     *
+     * 
      * @return the alternateCNameRecords value.
      */
     public List<String> alternateCNameRecords() {
@@ -229,7 +233,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Set the alternateCNameRecords property: Alternate CName records visible for this hostname.
-     *
+     * 
      * @param alternateCNameRecords the alternateCNameRecords value to set.
      * @return the CustomHostnameAnalysisResultInner object itself.
      */
@@ -240,7 +244,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Get the alternateTxtRecords property: Alternate TXT records visible for this hostname.
-     *
+     * 
      * @return the alternateTxtRecords value.
      */
     public List<String> alternateTxtRecords() {
@@ -249,7 +253,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Set the alternateTxtRecords property: Alternate TXT records visible for this hostname.
-     *
+     * 
      * @param alternateTxtRecords the alternateTxtRecords value to set.
      * @return the CustomHostnameAnalysisResultInner object itself.
      */
@@ -260,7 +264,7 @@ public final class CustomHostnameAnalysisResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

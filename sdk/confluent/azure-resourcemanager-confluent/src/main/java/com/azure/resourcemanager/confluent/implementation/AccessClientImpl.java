@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.confluent.implementation;
 
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
@@ -29,9 +30,12 @@ import com.azure.resourcemanager.confluent.fluent.models.AccessListInvitationsSu
 import com.azure.resourcemanager.confluent.fluent.models.AccessListRoleBindingsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.AccessListServiceAccountsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.AccessListUsersSuccessResponseInner;
+import com.azure.resourcemanager.confluent.fluent.models.AccessRoleBindingNameListSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.InvitationRecordInner;
+import com.azure.resourcemanager.confluent.models.AccessCreateRoleBindingRequestModel;
 import com.azure.resourcemanager.confluent.models.AccessInviteUserAccountModel;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
+import com.azure.resourcemanager.confluent.models.RoleBindingRecord;
 import reactor.core.publisher.Mono;
 
 /**
@@ -142,12 +146,45 @@ public final class AccessClientImpl implements AccessClient {
             @PathParam("organizationName") String organizationName,
             @BodyParam("application/json") ListAccessRequestModel body, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/createRoleBinding")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RoleBindingRecord>> createRoleBinding(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName,
+            @BodyParam("application/json") AccessCreateRoleBindingRequestModel body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/deleteRoleBinding/{roleBindingId}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> deleteRoleBinding(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName, @PathParam("roleBindingId") String roleBindingId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listRoleBindingNameList")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AccessRoleBindingNameListSuccessResponseInner>> listRoleBindingNameList(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("organizationName") String organizationName,
+            @BodyParam("application/json") ListAccessRequestModel body, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Organization users details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +226,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization users details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @param context The context to associate with this operation.
@@ -231,7 +268,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization users details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -249,7 +286,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization users details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @param context The context to associate with this operation.
@@ -267,7 +304,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization users details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,7 +321,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization service accounts details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -327,7 +364,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization service accounts details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @param context The context to associate with this operation.
@@ -370,7 +407,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization service accounts details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -388,7 +425,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization service accounts details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @param context The context to associate with this operation.
@@ -406,7 +443,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization service accounts details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -423,7 +460,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization accounts invitation details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -465,7 +502,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization accounts invitation details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @param context The context to associate with this operation.
@@ -507,7 +544,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization accounts invitation details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -525,7 +562,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization accounts invitation details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @param context The context to associate with this operation.
@@ -543,7 +580,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Organization accounts invitation details.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body List Access Request Model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -560,7 +597,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Invite user to the organization.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Invite user account model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -602,7 +639,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Invite user to the organization.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Invite user account model.
      * @param context The context to associate with this operation.
@@ -644,7 +681,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Invite user to the organization.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Invite user account model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -662,7 +699,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Invite user to the organization.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Invite user account model.
      * @param context The context to associate with this operation.
@@ -680,7 +717,7 @@ public final class AccessClientImpl implements AccessClient {
     /**
      * Invite user to the organization.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGroupName Resource group name.
      * @param organizationName Organization resource name.
      * @param body Invite user account model.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -703,7 +740,8 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list environments success response along with {@link Response} on successful completion of {@link Mono}.
+     * @return details of the environments returned on successful response along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessListEnvironmentsSuccessResponseInner>> listEnvironmentsWithResponseAsync(
@@ -746,7 +784,8 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list environments success response along with {@link Response} on successful completion of {@link Mono}.
+     * @return details of the environments returned on successful response along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessListEnvironmentsSuccessResponseInner>> listEnvironmentsWithResponseAsync(
@@ -787,7 +826,7 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list environments success response on successful completion of {@link Mono}.
+     * @return details of the environments returned on successful response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessListEnvironmentsSuccessResponseInner> listEnvironmentsAsync(String resourceGroupName,
@@ -806,7 +845,7 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list environments success response along with {@link Response}.
+     * @return details of the environments returned on successful response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessListEnvironmentsSuccessResponseInner> listEnvironmentsWithResponse(String resourceGroupName,
@@ -823,7 +862,7 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list environments success response.
+     * @return details of the environments returned on successful response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessListEnvironmentsSuccessResponseInner listEnvironments(String resourceGroupName,
@@ -840,7 +879,8 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list cluster success response along with {@link Response} on successful completion of {@link Mono}.
+     * @return details of the clusters returned on successful response along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessListClusterSuccessResponseInner>>
@@ -883,7 +923,8 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list cluster success response along with {@link Response} on successful completion of {@link Mono}.
+     * @return details of the clusters returned on successful response along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessListClusterSuccessResponseInner>> listClustersWithResponseAsync(
@@ -924,7 +965,7 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list cluster success response on successful completion of {@link Mono}.
+     * @return details of the clusters returned on successful response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessListClusterSuccessResponseInner> listClustersAsync(String resourceGroupName,
@@ -943,7 +984,7 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list cluster success response along with {@link Response}.
+     * @return details of the clusters returned on successful response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessListClusterSuccessResponseInner> listClustersWithResponse(String resourceGroupName,
@@ -960,7 +1001,7 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list cluster success response.
+     * @return details of the clusters returned on successful response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessListClusterSuccessResponseInner listClusters(String resourceGroupName, String organizationName,
@@ -977,7 +1018,8 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list cluster success response along with {@link Response} on successful completion of {@link Mono}.
+     * @return details of the role bindings returned on successful response along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessListRoleBindingsSuccessResponseInner>> listRoleBindingsWithResponseAsync(
@@ -1020,7 +1062,8 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list cluster success response along with {@link Response} on successful completion of {@link Mono}.
+     * @return details of the role bindings returned on successful response along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccessListRoleBindingsSuccessResponseInner>> listRoleBindingsWithResponseAsync(
@@ -1061,7 +1104,7 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list cluster success response on successful completion of {@link Mono}.
+     * @return details of the role bindings returned on successful response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessListRoleBindingsSuccessResponseInner> listRoleBindingsAsync(String resourceGroupName,
@@ -1080,7 +1123,7 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list cluster success response along with {@link Response}.
+     * @return details of the role bindings returned on successful response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessListRoleBindingsSuccessResponseInner> listRoleBindingsWithResponse(String resourceGroupName,
@@ -1097,11 +1140,422 @@ public final class AccessClientImpl implements AccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list cluster success response.
+     * @return details of the role bindings returned on successful response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessListRoleBindingsSuccessResponseInner listRoleBindings(String resourceGroupName,
         String organizationName, ListAccessRequestModel body) {
         return listRoleBindingsWithResponse(resourceGroupName, organizationName, body, Context.NONE).getValue();
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body Create role binding Request Model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details on principal, role name and crn pattern of a role binding along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RoleBindingRecord>> createRoleBindingWithResponseAsync(String resourceGroupName,
+        String organizationName, AccessCreateRoleBindingRequestModel body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.createRoleBinding(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, body, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body Create role binding Request Model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details on principal, role name and crn pattern of a role binding along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RoleBindingRecord>> createRoleBindingWithResponseAsync(String resourceGroupName,
+        String organizationName, AccessCreateRoleBindingRequestModel body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.createRoleBinding(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, body, accept, context);
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body Create role binding Request Model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details on principal, role name and crn pattern of a role binding on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RoleBindingRecord> createRoleBindingAsync(String resourceGroupName, String organizationName,
+        AccessCreateRoleBindingRequestModel body) {
+        return createRoleBindingWithResponseAsync(resourceGroupName, organizationName, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body Create role binding Request Model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details on principal, role name and crn pattern of a role binding along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RoleBindingRecord> createRoleBindingWithResponse(String resourceGroupName, String organizationName,
+        AccessCreateRoleBindingRequestModel body, Context context) {
+        return createRoleBindingWithResponseAsync(resourceGroupName, organizationName, body, context).block();
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body Create role binding Request Model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details on principal, role name and crn pattern of a role binding.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RoleBindingRecord createRoleBinding(String resourceGroupName, String organizationName,
+        AccessCreateRoleBindingRequestModel body) {
+        return createRoleBindingWithResponse(resourceGroupName, organizationName, body, Context.NONE).getValue();
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param roleBindingId Confluent Role binding id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteRoleBindingWithResponseAsync(String resourceGroupName, String organizationName,
+        String roleBindingId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (roleBindingId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter roleBindingId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.deleteRoleBinding(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, organizationName, roleBindingId, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param roleBindingId Confluent Role binding id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteRoleBindingWithResponseAsync(String resourceGroupName, String organizationName,
+        String roleBindingId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (roleBindingId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter roleBindingId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.deleteRoleBinding(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, roleBindingId, accept, context);
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param roleBindingId Confluent Role binding id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteRoleBindingAsync(String resourceGroupName, String organizationName, String roleBindingId) {
+        return deleteRoleBindingWithResponseAsync(resourceGroupName, organizationName, roleBindingId)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param roleBindingId Confluent Role binding id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteRoleBindingWithResponse(String resourceGroupName, String organizationName,
+        String roleBindingId, Context context) {
+        return deleteRoleBindingWithResponseAsync(resourceGroupName, organizationName, roleBindingId, context).block();
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param roleBindingId Confluent Role binding id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteRoleBinding(String resourceGroupName, String organizationName, String roleBindingId) {
+        deleteRoleBindingWithResponse(resourceGroupName, organizationName, roleBindingId, Context.NONE);
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the role binding names returned on successful response along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AccessRoleBindingNameListSuccessResponseInner>> listRoleBindingNameListWithResponseAsync(
+        String resourceGroupName, String organizationName, ListAccessRequestModel body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listRoleBindingNameList(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, organizationName, body, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the role binding names returned on successful response along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AccessRoleBindingNameListSuccessResponseInner>> listRoleBindingNameListWithResponseAsync(
+        String resourceGroupName, String organizationName, ListAccessRequestModel body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (organizationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter organizationName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listRoleBindingNameList(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, organizationName, body, accept, context);
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the role binding names returned on successful response on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AccessRoleBindingNameListSuccessResponseInner> listRoleBindingNameListAsync(String resourceGroupName,
+        String organizationName, ListAccessRequestModel body) {
+        return listRoleBindingNameListWithResponseAsync(resourceGroupName, organizationName, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the role binding names returned on successful response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AccessRoleBindingNameListSuccessResponseInner> listRoleBindingNameListWithResponse(
+        String resourceGroupName, String organizationName, ListAccessRequestModel body, Context context) {
+        return listRoleBindingNameListWithResponseAsync(resourceGroupName, organizationName, body, context).block();
+    }
+
+    /**
+     * Organization role bindings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param organizationName Organization resource name.
+     * @param body List Access Request Model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the role binding names returned on successful response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessRoleBindingNameListSuccessResponseInner listRoleBindingNameList(String resourceGroupName,
+        String organizationName, ListAccessRequestModel body) {
+        return listRoleBindingNameListWithResponse(resourceGroupName, organizationName, body, Context.NONE).getValue();
     }
 }

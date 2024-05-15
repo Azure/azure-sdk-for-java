@@ -6,28 +6,29 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contiguous region of the concatenated content property, specified as an offset
  * and length.
  */
 @Immutable
-public final class DocumentSpan {
+public final class DocumentSpan implements JsonSerializable<DocumentSpan> {
     /*
      * Zero-based index of the content represented by the span.
      */
     @Generated
-    @JsonProperty(value = "offset")
-    private int offset;
+    private final int offset;
 
     /*
      * Number of characters in the content represented by the span.
      */
     @Generated
-    @JsonProperty(value = "length")
-    private int length;
+    private final int length;
 
     /**
      * Creates an instance of DocumentSpan class.
@@ -36,8 +37,7 @@ public final class DocumentSpan {
      * @param length the length value to set.
      */
     @Generated
-    @JsonCreator
-    private DocumentSpan(@JsonProperty(value = "offset") int offset, @JsonProperty(value = "length") int length) {
+    private DocumentSpan(int offset, int length) {
         this.offset = offset;
         this.length = length;
     }
@@ -60,5 +60,47 @@ public final class DocumentSpan {
     @Generated
     public int getLength() {
         return this.length;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("offset", this.offset);
+        jsonWriter.writeIntField("length", this.length);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentSpan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentSpan if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentSpan.
+     */
+    @Generated
+    public static DocumentSpan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            int offset = 0;
+            int length = 0;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("offset".equals(fieldName)) {
+                    offset = reader.getInt();
+                } else if ("length".equals(fieldName)) {
+                    length = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new DocumentSpan(offset, length);
+        });
     }
 }

@@ -65,12 +65,12 @@ public final class OperationsListSamples {
      * Operations_List.json
      */
     /**
-     * Sample code: Operations.
+     * Sample code: List the operations for the provider.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void
-        operations(com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+    public static void listTheOperationsForTheProvider(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

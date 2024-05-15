@@ -293,7 +293,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                 .flatMap(
                         t -> {
                             if (this.isClosed) {
-                                logger.warn("client already closed");
+                                logger.info("client already closed");
                                 // if client is already closed, nothing to be done, just return.
                                 return Mono.empty();
                             }
@@ -303,7 +303,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                                     this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {
-                                logger.info("db account retrieved {}", databaseAccountObs);
+                                logger.info("db account retrieved {}", dbAccount);
                                 this.refreshInBackground.set(false);
                                 return this.refreshLocationPrivateAsync(dbAccount);
                             });
@@ -334,5 +334,9 @@ public class GlobalEndpointManager implements AutoCloseable {
 
     public String getRegionName(URI locationEndpoint, OperationType operationType) {
         return this.locationCache.getRegionName(locationEndpoint, operationType);
+    }
+
+    public ConnectionPolicy getConnectionPolicy() {
+        return this.connectionPolicy;
     }
 }

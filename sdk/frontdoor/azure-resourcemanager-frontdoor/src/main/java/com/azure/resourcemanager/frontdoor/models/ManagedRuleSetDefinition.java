@@ -8,81 +8,83 @@ import com.azure.resourcemanager.frontdoor.fluent.models.ManagedRuleSetDefinitio
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of ManagedRuleSetDefinition. */
+/**
+ * An immutable client-side representation of ManagedRuleSetDefinition.
+ */
 public interface ManagedRuleSetDefinition {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the provisioningState property: Provisioning state of the managed rule set.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the ruleSetId property: Id of the managed rule set.
-     *
+     * 
      * @return the ruleSetId value.
      */
     String ruleSetId();
 
     /**
      * Gets the ruleSetType property: Type of the managed rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     String ruleSetType();
 
     /**
      * Gets the ruleSetVersion property: Version of the managed rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     String ruleSetVersion();
 
     /**
      * Gets the ruleGroups property: Rule groups of the managed rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     List<ManagedRuleGroupDefinition> ruleGroups();
 
     /**
      * Gets the inner com.azure.resourcemanager.frontdoor.fluent.models.ManagedRuleSetDefinitionInner object.
-     *
+     * 
      * @return the inner object.
      */
     ManagedRuleSetDefinitionInner innerModel();

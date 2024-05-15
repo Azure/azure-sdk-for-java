@@ -73,7 +73,7 @@
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.10</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.10.1</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -130,7 +130,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <compilerArgs>
             <arg>-Xlint:deprecation</arg>

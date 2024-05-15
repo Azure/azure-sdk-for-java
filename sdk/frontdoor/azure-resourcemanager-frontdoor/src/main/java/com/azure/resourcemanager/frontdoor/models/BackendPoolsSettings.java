@@ -7,31 +7,33 @@ package com.azure.resourcemanager.frontdoor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings that apply to all backend pools. */
+/**
+ * Settings that apply to all backend pools.
+ */
 @Fluent
 public final class BackendPoolsSettings {
     /*
-     * Whether to enforce certificate name check on HTTPS requests to all backend pools. No effect on non-HTTPS
-     * requests.
+     * Whether to enforce certificate name check on HTTPS requests to all backend pools. No effect on non-HTTPS requests.
      */
     @JsonProperty(value = "enforceCertificateNameCheck")
     private EnforceCertificateNameCheckEnabledState enforceCertificateNameCheck;
 
     /*
-     * Send and receive timeout on forwarding request to the backend. When timeout is reached, the request fails and
-     * returns.
+     * Send and receive timeout on forwarding request to the backend. When timeout is reached, the request fails and returns.
      */
     @JsonProperty(value = "sendRecvTimeoutSeconds")
     private Integer sendRecvTimeoutSeconds;
 
-    /** Creates an instance of BackendPoolsSettings class. */
+    /**
+     * Creates an instance of BackendPoolsSettings class.
+     */
     public BackendPoolsSettings() {
     }
 
     /**
      * Get the enforceCertificateNameCheck property: Whether to enforce certificate name check on HTTPS requests to all
      * backend pools. No effect on non-HTTPS requests.
-     *
+     * 
      * @return the enforceCertificateNameCheck value.
      */
     public EnforceCertificateNameCheckEnabledState enforceCertificateNameCheck() {
@@ -41,12 +43,12 @@ public final class BackendPoolsSettings {
     /**
      * Set the enforceCertificateNameCheck property: Whether to enforce certificate name check on HTTPS requests to all
      * backend pools. No effect on non-HTTPS requests.
-     *
+     * 
      * @param enforceCertificateNameCheck the enforceCertificateNameCheck value to set.
      * @return the BackendPoolsSettings object itself.
      */
-    public BackendPoolsSettings withEnforceCertificateNameCheck(
-        EnforceCertificateNameCheckEnabledState enforceCertificateNameCheck) {
+    public BackendPoolsSettings
+        withEnforceCertificateNameCheck(EnforceCertificateNameCheckEnabledState enforceCertificateNameCheck) {
         this.enforceCertificateNameCheck = enforceCertificateNameCheck;
         return this;
     }
@@ -54,7 +56,7 @@ public final class BackendPoolsSettings {
     /**
      * Get the sendRecvTimeoutSeconds property: Send and receive timeout on forwarding request to the backend. When
      * timeout is reached, the request fails and returns.
-     *
+     * 
      * @return the sendRecvTimeoutSeconds value.
      */
     public Integer sendRecvTimeoutSeconds() {
@@ -64,7 +66,7 @@ public final class BackendPoolsSettings {
     /**
      * Set the sendRecvTimeoutSeconds property: Send and receive timeout on forwarding request to the backend. When
      * timeout is reached, the request fails and returns.
-     *
+     * 
      * @param sendRecvTimeoutSeconds the sendRecvTimeoutSeconds value to set.
      * @return the BackendPoolsSettings object itself.
      */
@@ -75,7 +77,7 @@ public final class BackendPoolsSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -21,7 +21,7 @@ public final class FhirR4Extension extends FhirR4Element {
      */
     @Generated
     @JsonProperty(value = "url")
-    private String url;
+    private final String url;
 
     /*
      * Value as Quantity

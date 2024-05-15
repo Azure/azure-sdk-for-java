@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cdn.fluent.models.OriginUpdatePropertiesParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Origin properties needed for origin update. */
+/**
+ * Origin properties needed for origin update.
+ */
 @Fluent
 public final class OriginUpdateParameters {
     /*
@@ -17,13 +19,15 @@ public final class OriginUpdateParameters {
     @JsonProperty(value = "properties")
     private OriginUpdatePropertiesParameters innerProperties;
 
-    /** Creates an instance of OriginUpdateParameters class. */
+    /**
+     * Creates an instance of OriginUpdateParameters class.
+     */
     public OriginUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the origin.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OriginUpdatePropertiesParameters innerProperties() {
@@ -33,7 +37,7 @@ public final class OriginUpdateParameters {
     /**
      * Get the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
      * supported.This should be unique across all origins in an endpoint.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -43,7 +47,7 @@ public final class OriginUpdateParameters {
     /**
      * Set the hostname property: The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are
      * supported.This should be unique across all origins in an endpoint.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the OriginUpdateParameters object itself.
      */
@@ -57,7 +61,7 @@ public final class OriginUpdateParameters {
 
     /**
      * Get the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpPort value.
      */
     public Integer httpPort() {
@@ -66,7 +70,7 @@ public final class OriginUpdateParameters {
 
     /**
      * Set the httpPort property: The value of the HTTP port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpPort the httpPort value to set.
      * @return the OriginUpdateParameters object itself.
      */
@@ -80,7 +84,7 @@ public final class OriginUpdateParameters {
 
     /**
      * Get the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @return the httpsPort value.
      */
     public Integer httpsPort() {
@@ -89,7 +93,7 @@ public final class OriginUpdateParameters {
 
     /**
      * Set the httpsPort property: The value of the HTTPS port. Must be between 1 and 65535.
-     *
+     * 
      * @param httpsPort the httpsPort value to set.
      * @return the OriginUpdateParameters object itself.
      */
@@ -106,7 +110,7 @@ public final class OriginUpdateParameters {
      * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
      * Services require this host header value to match the origin hostname by default. This overrides the host header
      * defined at Endpoint.
-     *
+     * 
      * @return the originHostHeader value.
      */
     public String originHostHeader() {
@@ -118,7 +122,7 @@ public final class OriginUpdateParameters {
      * blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud
      * Services require this host header value to match the origin hostname by default. This overrides the host header
      * defined at Endpoint.
-     *
+     * 
      * @param originHostHeader the originHostHeader value to set.
      * @return the OriginUpdateParameters object itself.
      */
@@ -133,7 +137,7 @@ public final class OriginUpdateParameters {
     /**
      * Get the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -143,7 +147,7 @@ public final class OriginUpdateParameters {
     /**
      * Set the priority property: Priority of origin in given origin group for load balancing. Higher priorities will
      * not be used for load balancing if any lower priority origin is healthy.Must be between 1 and 5.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the OriginUpdateParameters object itself.
      */
@@ -158,7 +162,7 @@ public final class OriginUpdateParameters {
     /**
      * Get the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @return the weight value.
      */
     public Integer weight() {
@@ -168,7 +172,7 @@ public final class OriginUpdateParameters {
     /**
      * Set the weight property: Weight of the origin in given origin group for load balancing. Must be between 1 and
      * 1000.
-     *
+     * 
      * @param weight the weight value to set.
      * @return the OriginUpdateParameters object itself.
      */
@@ -182,7 +186,7 @@ public final class OriginUpdateParameters {
 
     /**
      * Get the enabled property: Origin is enabled for load balancing or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -191,7 +195,7 @@ public final class OriginUpdateParameters {
 
     /**
      * Set the enabled property: Origin is enabled for load balancing or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the OriginUpdateParameters object itself.
      */
@@ -206,7 +210,7 @@ public final class OriginUpdateParameters {
     /**
      * Get the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this origin is 'Private'.
-     *
+     * 
      * @return the privateLinkAlias value.
      */
     public String privateLinkAlias() {
@@ -216,7 +220,7 @@ public final class OriginUpdateParameters {
     /**
      * Set the privateLinkAlias property: The Alias of the Private Link resource. Populating this optional field
      * indicates that this origin is 'Private'.
-     *
+     * 
      * @param privateLinkAlias the privateLinkAlias value to set.
      * @return the OriginUpdateParameters object itself.
      */
@@ -231,7 +235,7 @@ public final class OriginUpdateParameters {
     /**
      * Get the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
@@ -241,7 +245,7 @@ public final class OriginUpdateParameters {
     /**
      * Set the privateLinkResourceId property: The Resource Id of the Private Link resource. Populating this optional
      * field indicates that this backend is 'Private'.
-     *
+     * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the OriginUpdateParameters object itself.
      */
@@ -256,7 +260,7 @@ public final class OriginUpdateParameters {
     /**
      * Get the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @return the privateLinkLocation value.
      */
     public String privateLinkLocation() {
@@ -266,7 +270,7 @@ public final class OriginUpdateParameters {
     /**
      * Set the privateLinkLocation property: The location of the Private Link resource. Required only if
      * 'privateLinkResourceId' is populated.
-     *
+     * 
      * @param privateLinkLocation the privateLinkLocation value to set.
      * @return the OriginUpdateParameters object itself.
      */
@@ -281,7 +285,7 @@ public final class OriginUpdateParameters {
     /**
      * Get the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @return the privateLinkApprovalMessage value.
      */
     public String privateLinkApprovalMessage() {
@@ -291,7 +295,7 @@ public final class OriginUpdateParameters {
     /**
      * Set the privateLinkApprovalMessage property: A custom message to be included in the approval request to connect
      * to the Private Link.
-     *
+     * 
      * @param privateLinkApprovalMessage the privateLinkApprovalMessage value to set.
      * @return the OriginUpdateParameters object itself.
      */
@@ -305,7 +309,7 @@ public final class OriginUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

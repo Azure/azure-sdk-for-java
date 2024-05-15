@@ -29,7 +29,12 @@ public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBu
     private final AzureMonitorMetricBatchBuilder innerMetricsBatchBuilder = new AzureMonitorMetricBatchBuilder();
 
     /**
-     * Sets the metrics batch query endpoint.
+     * Creates an instance of MetricsClientBuilder.
+     */
+    public MetricsClientBuilder() { }
+
+    /**
+     * Sets the metrics endpoint.
      * @param endpoint the endpoint.
      * @return the {@link MetricsClientBuilder}.
      */

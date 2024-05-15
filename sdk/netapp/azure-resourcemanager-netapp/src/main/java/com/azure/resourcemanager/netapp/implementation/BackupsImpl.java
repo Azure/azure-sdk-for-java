@@ -4,17 +4,12 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
-import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
-import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.RestoreStatusInner;
-import com.azure.resourcemanager.netapp.models.Backup;
-import com.azure.resourcemanager.netapp.models.BackupStatus;
 import com.azure.resourcemanager.netapp.models.Backups;
 import com.azure.resourcemanager.netapp.models.RestoreStatus;
 
@@ -28,29 +23,6 @@ public final class BackupsImpl implements Backups {
     public BackupsImpl(BackupsClient innerClient, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public Response<BackupStatus> getLatestStatusWithResponse(String resourceGroupName, String accountName,
-        String poolName, String volumeName, Context context) {
-        Response<BackupStatusInner> inner = this.serviceClient().getLatestStatusWithResponse(resourceGroupName,
-            accountName, poolName, volumeName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BackupStatusImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public BackupStatus getLatestStatus(String resourceGroupName, String accountName, String poolName,
-        String volumeName) {
-        BackupStatusInner inner
-            = this.serviceClient().getLatestStatus(resourceGroupName, accountName, poolName, volumeName);
-        if (inner != null) {
-            return new BackupStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<RestoreStatus> getVolumeRestoreStatusWithResponse(String resourceGroupName, String accountName,
@@ -76,155 +48,11 @@ public final class BackupsImpl implements Backups {
         }
     }
 
-    public PagedIterable<Backup> listByVault(String resourceGroupName, String accountName, String backupVaultName) {
-        PagedIterable<BackupInner> inner
-            = this.serviceClient().listByVault(resourceGroupName, accountName, backupVaultName);
-        return Utils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Backup> listByVault(String resourceGroupName, String accountName, String backupVaultName,
-        String filter, Context context) {
-        PagedIterable<BackupInner> inner
-            = this.serviceClient().listByVault(resourceGroupName, accountName, backupVaultName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new BackupImpl(inner1, this.manager()));
-    }
-
-    public Response<Backup> getWithResponse(String resourceGroupName, String accountName, String backupVaultName,
-        String backupName, Context context) {
-        Response<BackupInner> inner = this.serviceClient().getWithResponse(resourceGroupName, accountName,
-            backupVaultName, backupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new BackupImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Backup get(String resourceGroupName, String accountName, String backupVaultName, String backupName) {
-        BackupInner inner = this.serviceClient().get(resourceGroupName, accountName, backupVaultName, backupName);
-        if (inner != null) {
-            return new BackupImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public void delete(String resourceGroupName, String accountName, String backupVaultName, String backupName) {
-        this.serviceClient().delete(resourceGroupName, accountName, backupVaultName, backupName);
-    }
-
-    public void delete(String resourceGroupName, String accountName, String backupVaultName, String backupName,
-        Context context) {
-        this.serviceClient().delete(resourceGroupName, accountName, backupVaultName, backupName, context);
-    }
-
-    public Backup getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String backupVaultName = Utils.getValueFromIdByName(id, "backupVaults");
-        if (backupVaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String backupName = Utils.getValueFromIdByName(id, "backups");
-        if (backupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE)
-            .getValue();
-    }
-
-    public Response<Backup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String backupVaultName = Utils.getValueFromIdByName(id, "backupVaults");
-        if (backupVaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String backupName = Utils.getValueFromIdByName(id, "backups");
-        if (backupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));
-        }
-        return this.getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String backupVaultName = Utils.getValueFromIdByName(id, "backupVaults");
-        if (backupVaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String backupName = Utils.getValueFromIdByName(id, "backups");
-        if (backupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
-        if (accountName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
-        }
-        String backupVaultName = Utils.getValueFromIdByName(id, "backupVaults");
-        if (backupVaultName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String backupName = Utils.getValueFromIdByName(id, "backups");
-        if (backupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'backups'.", id)));
-        }
-        this.delete(resourceGroupName, accountName, backupVaultName, backupName, context);
-    }
-
     private BackupsClient serviceClient() {
         return this.innerClient;
     }
 
     private com.azure.resourcemanager.netapp.NetAppFilesManager manager() {
         return this.serviceManager;
-    }
-
-    public BackupImpl define(String name) {
-        return new BackupImpl(name, this.manager());
     }
 }

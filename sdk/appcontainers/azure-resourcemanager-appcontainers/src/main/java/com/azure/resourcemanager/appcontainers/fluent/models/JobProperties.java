@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appcontainers.models.JobTemplate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Container Apps Job resource specific properties. */
+/**
+ * Container Apps Job resource specific properties.
+ */
 @Fluent
 public final class JobProperties {
     /*
@@ -56,13 +58,15 @@ public final class JobProperties {
     @JsonProperty(value = "eventStreamEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String eventStreamEndpoint;
 
-    /** Creates an instance of JobProperties class. */
+    /**
+     * Creates an instance of JobProperties class.
+     */
     public JobProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the Container Apps Job.
-     *
+     * 
      * @return the provisioningState value.
      */
     public JobProvisioningState provisioningState() {
@@ -71,7 +75,7 @@ public final class JobProperties {
 
     /**
      * Get the environmentId property: Resource ID of environment.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -80,7 +84,7 @@ public final class JobProperties {
 
     /**
      * Set the environmentId property: Resource ID of environment.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the JobProperties object itself.
      */
@@ -91,7 +95,7 @@ public final class JobProperties {
 
     /**
      * Get the workloadProfileName property: Workload profile name to pin for container apps job execution.
-     *
+     * 
      * @return the workloadProfileName value.
      */
     public String workloadProfileName() {
@@ -100,7 +104,7 @@ public final class JobProperties {
 
     /**
      * Set the workloadProfileName property: Workload profile name to pin for container apps job execution.
-     *
+     * 
      * @param workloadProfileName the workloadProfileName value to set.
      * @return the JobProperties object itself.
      */
@@ -111,7 +115,7 @@ public final class JobProperties {
 
     /**
      * Get the configuration property: Container Apps Job configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     public JobConfiguration configuration() {
@@ -120,7 +124,7 @@ public final class JobProperties {
 
     /**
      * Set the configuration property: Container Apps Job configuration properties.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the JobProperties object itself.
      */
@@ -131,7 +135,7 @@ public final class JobProperties {
 
     /**
      * Get the template property: Container Apps job definition.
-     *
+     * 
      * @return the template value.
      */
     public JobTemplate template() {
@@ -140,7 +144,7 @@ public final class JobProperties {
 
     /**
      * Set the template property: Container Apps job definition.
-     *
+     * 
      * @param template the template value to set.
      * @return the JobProperties object itself.
      */
@@ -151,7 +155,7 @@ public final class JobProperties {
 
     /**
      * Get the outboundIpAddresses property: Outbound IP Addresses of a container apps job.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     public List<String> outboundIpAddresses() {
@@ -160,7 +164,7 @@ public final class JobProperties {
 
     /**
      * Get the eventStreamEndpoint property: The endpoint of the eventstream of the container apps job.
-     *
+     * 
      * @return the eventStreamEndpoint value.
      */
     public String eventStreamEndpoint() {
@@ -169,7 +173,7 @@ public final class JobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

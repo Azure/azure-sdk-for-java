@@ -46,8 +46,8 @@ public final class VolumesPoolChangeMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.volumes().poolChange("mavmq", "oudorhcgyyp", "otwypundmb", "hu",
-            new PoolChangeRequest().withNewPoolResourceId("cmjkavlgorbmftpm"), com.azure.core.util.Context.NONE);
+        manager.volumes().poolChange("lftidgfcwqmpim", "qxzhem", "yhohujswtwkozzwc", "lkb",
+            new PoolChangeRequest().withNewPoolResourceId("wpfaj"), com.azure.core.util.Context.NONE);
 
     }
 }

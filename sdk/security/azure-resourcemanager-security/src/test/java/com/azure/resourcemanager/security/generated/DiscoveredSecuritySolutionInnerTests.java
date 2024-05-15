@@ -13,22 +13,25 @@ public final class DiscoveredSecuritySolutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiscoveredSecuritySolutionInner model = BinaryData.fromString(
-            "{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"vwerfwxbsmtb\",\"publisher\":\"jj\",\"sku\":\"h\"},\"location\":\"ifkwdvbtbrekqhs\",\"id\":\"htfpwpqb\",\"name\":\"ejuwyqwdqigmghgi\",\"type\":\"z\"}")
+            "{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"sruqnmdvha\",\"publisher\":\"c\",\"sku\":\"jy\"},\"location\":\"qswbqerzwx\",\"id\":\"ytxtdgu\",\"name\":\"vlbpktgdstyou\",\"type\":\"mbewreswmo\"}")
             .toObject(DiscoveredSecuritySolutionInner.class);
         Assertions.assertEquals(SecurityFamily.VA, model.securityFamily());
-        Assertions.assertEquals("vwerfwxbsmtb", model.offer());
-        Assertions.assertEquals("jj", model.publisher());
-        Assertions.assertEquals("h", model.sku());
+        Assertions.assertEquals("sruqnmdvha", model.offer());
+        Assertions.assertEquals("c", model.publisher());
+        Assertions.assertEquals("jy", model.sku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiscoveredSecuritySolutionInner model = new DiscoveredSecuritySolutionInner()
-            .withSecurityFamily(SecurityFamily.VA).withOffer("vwerfwxbsmtb").withPublisher("jj").withSku("h");
+        DiscoveredSecuritySolutionInner model
+            = new DiscoveredSecuritySolutionInner().withSecurityFamily(SecurityFamily.VA)
+                .withOffer("sruqnmdvha")
+                .withPublisher("c")
+                .withSku("jy");
         model = BinaryData.fromObject(model).toObject(DiscoveredSecuritySolutionInner.class);
         Assertions.assertEquals(SecurityFamily.VA, model.securityFamily());
-        Assertions.assertEquals("vwerfwxbsmtb", model.offer());
-        Assertions.assertEquals("jj", model.publisher());
-        Assertions.assertEquals("h", model.sku());
+        Assertions.assertEquals("sruqnmdvha", model.offer());
+        Assertions.assertEquals("c", model.publisher());
+        Assertions.assertEquals("jy", model.sku());
     }
 }

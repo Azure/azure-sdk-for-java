@@ -5,35 +5,35 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A status response from a file deletion operation.
  */
 @Immutable
-public final class FileDeletionStatus {
+public final class FileDeletionStatus implements JsonSerializable<FileDeletionStatus> {
 
     /*
      * The ID of the resource specified for deletion.
      */
     @Generated
-    @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * A value indicating whether deletion was successful.
      */
     @Generated
-    @JsonProperty(value = "deleted")
-    private boolean deleted;
+    private final boolean deleted;
 
     /*
      * The object type, which is always 'file'.
      */
     @Generated
-    @JsonProperty(value = "object")
-    private String object = "file";
+    private final String object = "file";
 
     /**
      * Creates an instance of FileDeletionStatus class.
@@ -42,9 +42,7 @@ public final class FileDeletionStatus {
      * @param deleted the deleted value to set.
      */
     @Generated
-    @JsonCreator
-    private FileDeletionStatus(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "deleted") boolean deleted) {
+    private FileDeletionStatus(String id, boolean deleted) {
         this.id = id;
         this.deleted = deleted;
     }
@@ -77,5 +75,47 @@ public final class FileDeletionStatus {
     @Generated
     public String getObject() {
         return this.object;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeBooleanField("deleted", this.deleted);
+        jsonWriter.writeStringField("object", this.object);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileDeletionStatus from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileDeletionStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileDeletionStatus.
+     */
+    @Generated
+    public static FileDeletionStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            boolean deleted = false;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("deleted".equals(fieldName)) {
+                    deleted = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new FileDeletionStatus(id, deleted);
+        });
     }
 }

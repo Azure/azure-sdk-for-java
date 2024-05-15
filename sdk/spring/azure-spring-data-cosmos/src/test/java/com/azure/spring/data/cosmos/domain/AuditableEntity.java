@@ -4,6 +4,7 @@ package com.azure.spring.data.cosmos.domain;
 
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
+import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -17,6 +18,7 @@ import java.time.OffsetDateTime;
 public class AuditableEntity {
 
     @Id
+    @PartitionKey
     String id;
     @Version
     private String _etag;

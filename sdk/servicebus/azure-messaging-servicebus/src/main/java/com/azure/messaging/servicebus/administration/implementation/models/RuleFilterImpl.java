@@ -8,6 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import javax.xml.stream.XMLStreamException;
 
@@ -22,10 +23,25 @@ public class RuleFilterImpl implements XmlSerializable<RuleFilterImpl> {
     private static final String WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE
         = "http://www.w3.org/2001/XMLSchema-instance";
 
+    /*
+     * The type property.
+     */
+    private String type;
+
     /**
      * Creates an instance of RuleFilter class.
      */
     public RuleFilterImpl() {
+        this.type = "RuleFilter";
+    }
+
+    /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    public String getType() {
+        return this.type;
     }
 
     @Override
@@ -39,7 +55,7 @@ public class RuleFilterImpl implements XmlSerializable<RuleFilterImpl> {
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT);
         xmlWriter.writeNamespace("xsi", WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE);
-        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", "RuleFilter");
+        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", this.type);
         return xmlWriter.writeEndElement();
     }
 
@@ -49,7 +65,6 @@ public class RuleFilterImpl implements XmlSerializable<RuleFilterImpl> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of RuleFilter if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      * @throws XMLStreamException If an error occurs while reading the RuleFilter.
      */
     public static RuleFilterImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -64,7 +79,6 @@ public class RuleFilterImpl implements XmlSerializable<RuleFilterImpl> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of RuleFilter if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      * @throws XMLStreamException If an error occurs while reading the RuleFilter.
      */
     public static RuleFilterImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
@@ -77,16 +91,28 @@ public class RuleFilterImpl implements XmlSerializable<RuleFilterImpl> {
             if ("CorrelationFilter".equals(discriminatorValue)) {
                 return CorrelationFilterImpl.fromXml(reader, finalRootElementName);
             } else if ("SqlFilter".equals(discriminatorValue)) {
-                return SqlFilterImpl.fromXmlKnownDiscriminator(reader, finalRootElementName);
+                return SqlFilterImpl.fromXmlInternal(reader, finalRootElementName);
             } else if ("TrueFilter".equals(discriminatorValue)) {
                 return TrueFilterImpl.fromXml(reader, finalRootElementName);
             } else if ("FalseFilter".equals(discriminatorValue)) {
                 return FalseFilterImpl.fromXml(reader, finalRootElementName);
             } else {
-                throw new IllegalStateException(
-                    "Discriminator field 'type' didn't match one of the expected values 'CorrelationFilter', 'SqlFilter', 'TrueFilter', or 'FalseFilter'. It was: '"
-                        + discriminatorValue + "'.");
+                return fromXmlInternal(reader, finalRootElementName);
             }
+        });
+    }
+
+    static RuleFilterImpl fromXmlInternal(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Filter" : rootElementName;
+        return xmlReader.readObject(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, finalRootElementName, reader -> {
+            RuleFilterImpl deserializedRuleFilter = new RuleFilterImpl();
+            deserializedRuleFilter.type
+                = reader.getStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type");
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                reader.skipElement();
+            }
+
+            return deserializedRuleFilter;
         });
     }
 }

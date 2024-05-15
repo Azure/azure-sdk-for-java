@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the RemoteAddress condition for the delivery rule. */
+/**
+ * Defines the RemoteAddress condition for the delivery rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("RemoteAddress")
 @Fluent
@@ -21,13 +23,15 @@ public final class DeliveryRuleRemoteAddressCondition extends DeliveryRuleCondit
     @JsonProperty(value = "parameters", required = true)
     private RemoteAddressMatchConditionParameters parameters;
 
-    /** Creates an instance of DeliveryRuleRemoteAddressCondition class. */
+    /**
+     * Creates an instance of DeliveryRuleRemoteAddressCondition class.
+     */
     public DeliveryRuleRemoteAddressCondition() {
     }
 
     /**
      * Get the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @return the parameters value.
      */
     public RemoteAddressMatchConditionParameters parameters() {
@@ -36,7 +40,7 @@ public final class DeliveryRuleRemoteAddressCondition extends DeliveryRuleCondit
 
     /**
      * Set the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRuleRemoteAddressCondition object itself.
      */
@@ -47,17 +51,15 @@ public final class DeliveryRuleRemoteAddressCondition extends DeliveryRuleCondit
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRuleRemoteAddressCondition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model DeliveryRuleRemoteAddressCondition"));
         } else {
             parameters().validate();
         }

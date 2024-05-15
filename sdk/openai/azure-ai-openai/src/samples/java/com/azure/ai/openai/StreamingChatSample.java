@@ -12,6 +12,7 @@ import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.knuddels.jtokkit.Encodings;
 import com.knuddels.jtokkit.api.Encoding;
@@ -39,7 +40,7 @@ public class StreamingChatSample {
     public static void main(String[] args) {
         String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
-        String deploymentOrModelId = Configuration.getGlobalConfiguration().get("OPENAI_DEPLOYMENT_OR_MODEL_ID");
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
@@ -73,11 +74,11 @@ public class StreamingChatSample {
         //  }
         chatCompletionsStream
                 .stream()
-                // Remove .skip(1) when using Non-Azure OpenAI API
-                // Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
-                // TODO: remove .skip(1) after service fixes the issue.
-                .skip(1)
                 .forEach(chatCompletions -> {
+                    if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
+                        return;
+                    }
+
                     ChatResponseMessage delta = chatCompletions.getChoices().get(0).getDelta();
 
                     if (delta.getRole() != null) {

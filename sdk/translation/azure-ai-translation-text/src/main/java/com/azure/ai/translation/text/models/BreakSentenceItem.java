@@ -28,7 +28,7 @@ public final class BreakSentenceItem {
      */
     @Generated
     @JsonProperty(value = "sentLen")
-    private List<Integer> sentLen;
+    private final List<Integer> sentLen;
 
     /**
      * Creates an instance of BreakSentenceItem class.

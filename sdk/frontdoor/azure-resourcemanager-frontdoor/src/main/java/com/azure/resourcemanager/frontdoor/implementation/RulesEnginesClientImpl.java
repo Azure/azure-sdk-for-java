@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RulesEnginesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RulesEnginesClient.
+ */
 public final class RulesEnginesClientImpl implements RulesEnginesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RulesEnginesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final FrontDoorManagementClientImpl client;
 
     /**
      * Initializes an instance of RulesEnginesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RulesEnginesClientImpl(FrontDoorManagementClientImpl client) {
-        this.service =
-            RestProxy.create(RulesEnginesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RulesEnginesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,102 +70,76 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
     @Host("{$host}")
     @ServiceInterface(name = "FrontDoorManagementC")
     public interface RulesEnginesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RulesEngineListResult>> listByFrontDoor(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RulesEngineListResult>> listByFrontDoor(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("frontDoorName") String frontDoorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("frontDoorName") String frontDoorName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RulesEngineInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("frontDoorName") String frontDoorName,
+            @PathParam("rulesEngineName") String rulesEngineName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("frontDoorName") String frontDoorName,
+            @PathParam("rulesEngineName") String rulesEngineName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RulesEngineInner rulesEngineParameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RulesEngineInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("frontDoorName") String frontDoorName,
-            @PathParam("rulesEngineName") String rulesEngineName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("frontDoorName") String frontDoorName,
+            @PathParam("rulesEngineName") String rulesEngineName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("frontDoorName") String frontDoorName,
-            @PathParam("rulesEngineName") String rulesEngineName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RulesEngineInner rulesEngineParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("frontDoorName") String frontDoorName,
-            @PathParam("rulesEngineName") String rulesEngineName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RulesEngineListResult>> listByFrontDoorNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the Rules Engine Configurations within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Rules Engine Configurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RulesEngineInner>> listByFrontDoorSinglePageAsync(
-        String resourceGroupName, String frontDoorName) {
+    private Mono<PagedResponse<RulesEngineInner>> listByFrontDoorSinglePageAsync(String resourceGroupName,
+        String frontDoorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -171,32 +151,16 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByFrontDoor(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            frontDoorName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<RulesEngineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByFrontDoor(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, frontDoorName, apiVersion, accept, context))
+            .<PagedResponse<RulesEngineInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the Rules Engine Configurations within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param context The context to associate with this operation.
@@ -204,22 +168,18 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Rules Engine Configurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RulesEngineInner>> listByFrontDoorSinglePageAsync(
-        String resourceGroupName, String frontDoorName, Context context) {
+    private Mono<PagedResponse<RulesEngineInner>> listByFrontDoorSinglePageAsync(String resourceGroupName,
+        String frontDoorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -232,28 +192,15 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByFrontDoor(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                frontDoorName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByFrontDoor(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                frontDoorName, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the Rules Engine Configurations within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -263,14 +210,13 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RulesEngineInner> listByFrontDoorAsync(String resourceGroupName, String frontDoorName) {
-        return new PagedFlux<>(
-            () -> listByFrontDoorSinglePageAsync(resourceGroupName, frontDoorName),
+        return new PagedFlux<>(() -> listByFrontDoorSinglePageAsync(resourceGroupName, frontDoorName),
             nextLink -> listByFrontDoorNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the Rules Engine Configurations within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param context The context to associate with this operation.
@@ -280,23 +226,22 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @return result of the request to list Rules Engine Configurations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RulesEngineInner> listByFrontDoorAsync(
-        String resourceGroupName, String frontDoorName, Context context) {
-        return new PagedFlux<>(
-            () -> listByFrontDoorSinglePageAsync(resourceGroupName, frontDoorName, context),
+    private PagedFlux<RulesEngineInner> listByFrontDoorAsync(String resourceGroupName, String frontDoorName,
+        Context context) {
+        return new PagedFlux<>(() -> listByFrontDoorSinglePageAsync(resourceGroupName, frontDoorName, context),
             nextLink -> listByFrontDoorNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the Rules Engine Configurations within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list Rules Engine Configurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RulesEngineInner> listByFrontDoor(String resourceGroupName, String frontDoorName) {
@@ -305,48 +250,44 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
 
     /**
      * Lists all of the Rules Engine Configurations within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list Rules Engine Configurations as paginated response with {@link
-     *     PagedIterable}.
+     * @return result of the request to list Rules Engine Configurations as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RulesEngineInner> listByFrontDoor(
-        String resourceGroupName, String frontDoorName, Context context) {
+    public PagedIterable<RulesEngineInner> listByFrontDoor(String resourceGroupName, String frontDoorName,
+        Context context) {
         return new PagedIterable<>(listByFrontDoorAsync(resourceGroupName, frontDoorName, context));
     }
 
     /**
      * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RulesEngineInner>> getWithResponseAsync(
-        String resourceGroupName, String frontDoorName, String rulesEngineName) {
+    private Mono<Response<RulesEngineInner>> getWithResponseAsync(String resourceGroupName, String frontDoorName,
+        String rulesEngineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -362,24 +303,14 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            frontDoorName,
-                            rulesEngineName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, frontDoorName, rulesEngineName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -387,23 +318,19 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RulesEngineInner>> getWithResponseAsync(
-        String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
+    private Mono<Response<RulesEngineInner>> getWithResponseAsync(String resourceGroupName, String frontDoorName,
+        String rulesEngineName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -419,21 +346,13 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                frontDoorName,
-                rulesEngineName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, frontDoorName,
+            rulesEngineName, apiVersion, accept, context);
     }
 
     /**
      * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -441,7 +360,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Rules Engine Configuration with the specified name within the specified Front Door on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<RulesEngineInner> getAsync(String resourceGroupName, String frontDoorName, String rulesEngineName) {
@@ -451,7 +370,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
 
     /**
      * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -459,18 +378,18 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with {@link
-     *     Response}.
+     * @return a Rules Engine Configuration with the specified name within the specified Front Door along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RulesEngineInner> getWithResponse(
-        String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
+    public Response<RulesEngineInner> getWithResponse(String resourceGroupName, String frontDoorName,
+        String rulesEngineName, Context context) {
         return getWithResponseAsync(resourceGroupName, frontDoorName, rulesEngineName, context).block();
     }
 
     /**
      * Gets a Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -486,35 +405,28 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
 
     /**
      * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
      * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     *     Configuration.
+     * Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response along with {@link Response} on successful completion of {@link Mono}.
+     * the request and response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String rulesEngineName,
-        RulesEngineInner rulesEngineParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String frontDoorName, String rulesEngineName, RulesEngineInner rulesEngineParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -536,55 +448,36 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            frontDoorName,
-                            rulesEngineName,
-                            apiVersion,
-                            rulesEngineParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, frontDoorName, rulesEngineName, apiVersion, rulesEngineParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
      * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     *     Configuration.
+     * Configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response along with {@link Response} on successful completion of {@link Mono}.
+     * the request and response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String rulesEngineName,
-        RulesEngineInner rulesEngineParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String frontDoorName, String rulesEngineName, RulesEngineInner rulesEngineParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -606,130 +499,99 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                frontDoorName,
-                rulesEngineName,
-                apiVersion,
-                rulesEngineParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            frontDoorName, rulesEngineName, apiVersion, rulesEngineParameters, accept, context);
     }
 
     /**
      * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
      * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     *     Configuration.
+     * Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a rules engine configuration containing a list of rules that will
-     *     run to modify the runtime behavior of the request and response.
+     * run to modify the runtime behavior of the request and response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String rulesEngineName,
+        String resourceGroupName, String frontDoorName, String rulesEngineName,
         RulesEngineInner rulesEngineParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters);
-        return this
-            .client
-            .<RulesEngineInner, RulesEngineInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                RulesEngineInner.class,
-                RulesEngineInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters);
+        return this.client.<RulesEngineInner, RulesEngineInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RulesEngineInner.class, RulesEngineInner.class, this.client.getContext());
     }
 
     /**
      * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
      * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     *     Configuration.
+     * Configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a rules engine configuration containing a list of rules that will
-     *     run to modify the runtime behavior of the request and response.
+     * run to modify the runtime behavior of the request and response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String rulesEngineName,
-        RulesEngineInner rulesEngineParameters,
+        String resourceGroupName, String frontDoorName, String rulesEngineName, RulesEngineInner rulesEngineParameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters, context);
-        return this
-            .client
-            .<RulesEngineInner, RulesEngineInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RulesEngineInner.class, RulesEngineInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, frontDoorName,
+            rulesEngineName, rulesEngineParameters, context);
+        return this.client.<RulesEngineInner, RulesEngineInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RulesEngineInner.class, RulesEngineInner.class, context);
     }
 
     /**
      * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
      * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     *     Configuration.
+     * Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a rules engine configuration containing a list of rules that will
-     *     run to modify the runtime behavior of the request and response.
+     * run to modify the runtime behavior of the request and response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String frontDoorName,
-        String rulesEngineName,
-        RulesEngineInner rulesEngineParameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters)
+    public SyncPoller<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdate(String resourceGroupName,
+        String frontDoorName, String rulesEngineName, RulesEngineInner rulesEngineParameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters)
             .getSyncPoller();
     }
 
     /**
      * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
      * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     *     Configuration.
+     * Configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a rules engine configuration containing a list of rules that will
-     *     run to modify the runtime behavior of the request and response.
+     * run to modify the runtime behavior of the request and response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String frontDoorName,
-        String rulesEngineName,
-        RulesEngineInner rulesEngineParameters,
-        Context context) {
+    public SyncPoller<PollResult<RulesEngineInner>, RulesEngineInner> beginCreateOrUpdate(String resourceGroupName,
+        String frontDoorName, String rulesEngineName, RulesEngineInner rulesEngineParameters, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters, context)
             .getSyncPoller();
@@ -737,109 +599,92 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
 
     /**
      * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
      * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     *     Configuration.
+     * Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response on successful completion of {@link Mono}.
+     * the request and response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RulesEngineInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String rulesEngineName,
-        RulesEngineInner rulesEngineParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters)
-            .last()
+    private Mono<RulesEngineInner> createOrUpdateAsync(String resourceGroupName, String frontDoorName,
+        String rulesEngineName, RulesEngineInner rulesEngineParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
      * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     *     Configuration.
+     * Configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response on successful completion of {@link Mono}.
+     * the request and response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RulesEngineInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String rulesEngineName,
-        RulesEngineInner rulesEngineParameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<RulesEngineInner> createOrUpdateAsync(String resourceGroupName, String frontDoorName,
+        String rulesEngineName, RulesEngineInner rulesEngineParameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
      * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     *     Configuration.
+     * Configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response.
+     * the request and response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RulesEngineInner createOrUpdate(
-        String resourceGroupName,
-        String frontDoorName,
-        String rulesEngineName,
+    public RulesEngineInner createOrUpdate(String resourceGroupName, String frontDoorName, String rulesEngineName,
         RulesEngineInner rulesEngineParameters) {
         return createOrUpdateAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters).block();
     }
 
     /**
      * Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
      * @param rulesEngineParameters Rules Engine Configuration properties needed to create a new Rules Engine
-     *     Configuration.
+     * Configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a rules engine configuration containing a list of rules that will run to modify the runtime behavior of
-     *     the request and response.
+     * the request and response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RulesEngineInner createOrUpdate(
-        String resourceGroupName,
-        String frontDoorName,
-        String rulesEngineName,
-        RulesEngineInner rulesEngineParameters,
-        Context context) {
+    public RulesEngineInner createOrUpdate(String resourceGroupName, String frontDoorName, String rulesEngineName,
+        RulesEngineInner rulesEngineParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, frontDoorName, rulesEngineName, rulesEngineParameters, context)
             .block();
     }
 
     /**
      * Deletes an existing Rules Engine Configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -849,19 +694,15 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String frontDoorName, String rulesEngineName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String frontDoorName,
+        String rulesEngineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -877,24 +718,14 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            frontDoorName,
-                            rulesEngineName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, frontDoorName, rulesEngineName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing Rules Engine Configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -905,19 +736,15 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String frontDoorName,
+        String rulesEngineName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -933,21 +760,13 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                frontDoorName,
-                rulesEngineName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            frontDoorName, rulesEngineName, apiVersion, accept, context);
     }
 
     /**
      * Deletes an existing Rules Engine Configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -957,19 +776,17 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String frontDoorName, String rulesEngineName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, frontDoorName, rulesEngineName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String frontDoorName,
+        String rulesEngineName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, frontDoorName, rulesEngineName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an existing Rules Engine Configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -980,19 +797,18 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String frontDoorName,
+        String rulesEngineName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, frontDoorName, rulesEngineName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, frontDoorName, rulesEngineName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an existing Rules Engine Configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -1002,14 +818,14 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String frontDoorName, String rulesEngineName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String frontDoorName,
+        String rulesEngineName) {
         return this.beginDeleteAsync(resourceGroupName, frontDoorName, rulesEngineName).getSyncPoller();
     }
 
     /**
      * Deletes an existing Rules Engine Configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -1020,14 +836,14 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String frontDoorName,
+        String rulesEngineName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, frontDoorName, rulesEngineName, context).getSyncPoller();
     }
 
     /**
      * Deletes an existing Rules Engine Configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -1038,14 +854,13 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String frontDoorName, String rulesEngineName) {
-        return beginDeleteAsync(resourceGroupName, frontDoorName, rulesEngineName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, frontDoorName, rulesEngineName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing Rules Engine Configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -1056,16 +871,15 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String frontDoorName, String rulesEngineName, Context context) {
-        return beginDeleteAsync(resourceGroupName, frontDoorName, rulesEngineName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String frontDoorName, String rulesEngineName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, frontDoorName, rulesEngineName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing Rules Engine Configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -1080,7 +894,7 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
 
     /**
      * Deletes an existing Rules Engine Configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param rulesEngineName Name of the Rules Engine which is unique within the Front Door.
@@ -1096,14 +910,15 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Rules Engine Configurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RulesEngineInner>> listByFrontDoorNextSinglePageAsync(String nextLink) {
@@ -1111,37 +926,29 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFrontDoorNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RulesEngineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RulesEngineInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Rules Engine Configurations along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RulesEngineInner>> listByFrontDoorNextSinglePageAsync(String nextLink, Context context) {
@@ -1149,23 +956,13 @@ public final class RulesEnginesClientImpl implements RulesEnginesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByFrontDoorNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByFrontDoorNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

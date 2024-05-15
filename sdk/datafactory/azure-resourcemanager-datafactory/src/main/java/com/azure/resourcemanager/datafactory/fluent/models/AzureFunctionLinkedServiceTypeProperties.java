@@ -16,8 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureFunctionLinkedServiceTypeProperties {
     /*
-     * The endpoint of the Azure Function App. URL will be in the format https://<accountName>.azurewebsites.net. Type:
-     * string (or Expression with resultType string).
+     * The endpoint of the Azure Function App. URL will be in the format https://<accountName>.azurewebsites.net. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "functionAppUrl", required = true)
     private Object functionAppUrl;
@@ -29,8 +28,7 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     private SecretBase functionKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -48,8 +46,7 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     private Object resourceId;
 
     /*
-     * Type of authentication (Required to specify MSI) used to connect to AzureFunction. Type: string (or Expression
-     * with resultType string).
+     * Type of authentication (Required to specify MSI) used to connect to AzureFunction. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "authentication")
     private Object authentication;
@@ -103,8 +100,8 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -113,8 +110,8 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureFunctionLinkedServiceTypeProperties object itself.
@@ -195,8 +192,9 @@ public final class AzureFunctionLinkedServiceTypeProperties {
      */
     public void validate() {
         if (functionAppUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property functionAppUrl in model AzureFunctionLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property functionAppUrl in model AzureFunctionLinkedServiceTypeProperties"));
         }
         if (functionKey() != null) {
             functionKey().validate();

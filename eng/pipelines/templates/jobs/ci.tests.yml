@@ -42,6 +42,9 @@ parameters:
     default: ''
   - name: OSName
     type: string
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
 
 jobs:
   - job:
@@ -70,8 +73,9 @@ jobs:
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
 
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+
     templateContext:
-      outputParentDirectory: '$(System.DefaultWorkingDirectory)'
       outputs:
         # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
         # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured

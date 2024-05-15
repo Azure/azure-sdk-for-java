@@ -325,10 +325,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().originatingResourceId();
     }
 
-    public Long inheritedSizeInBytes() {
-        return this.innerModel().inheritedSizeInBytes();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -404,10 +400,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     VolumeImpl(VolumeInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = Utils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.volumeName = Utils.getValueFromIdByName(innerObject.id(), "volumes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
+        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
+        this.volumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumes");
     }
 
     public Volume refresh() {
@@ -445,14 +441,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public void resetCifsPassword(Context context) {
         serviceManager.volumes().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName, context);
-    }
-
-    public void splitCloneFromParent() {
-        serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName);
-    }
-
-    public void splitCloneFromParent(Context context) {
-        serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void breakFileLocks() {

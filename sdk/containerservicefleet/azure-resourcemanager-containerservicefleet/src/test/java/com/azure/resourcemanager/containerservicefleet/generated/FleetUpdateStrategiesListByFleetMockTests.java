@@ -31,42 +31,30 @@ public final class FleetUpdateStrategiesListByFleetMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"xoruzfgsquyfxrx\",\"groups\":[{\"name\":\"ptramxj\"},{\"name\":\"zwl\"}],\"afterStageWaitInSeconds\":2125136939},{\"name\":\"xuqlcvydypat\",\"groups\":[{\"name\":\"aojkniodk\"}],\"afterStageWaitInSeconds\":2101936696},{\"name\":\"bw\",\"groups\":[{\"name\":\"hemms\"},{\"name\":\"vdkcrodtj\"}],\"afterStageWaitInSeconds\":321367930}]}},\"eTag\":\"jlfltkacjvefkdlf\",\"id\":\"kggkfpa\",\"name\":\"ao\",\"type\":\"pulpqblylsyxk\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"fpel\",\"groups\":[{\"name\":\"pv\"}],\"afterStageWaitInSeconds\":43527729},{\"name\":\"pqvujzraehtwdwrf\",\"groups\":[{\"name\":\"iby\"}],\"afterStageWaitInSeconds\":403427600},{\"name\":\"l\",\"groups\":[{\"name\":\"hfwpracstwit\"},{\"name\":\"khevxccedc\"},{\"name\":\"nmdyodnwzxl\"},{\"name\":\"jc\"}],\"afterStageWaitInSeconds\":573145067},{\"name\":\"ltiugcxnavv\",\"groups\":[{\"name\":\"ibyqunyowxwlmdj\"}],\"afterStageWaitInSeconds\":1085300316}]}},\"eTag\":\"g\",\"id\":\"fvpdbo\",\"name\":\"acizsjqlhkrr\",\"type\":\"bdeibqipqk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ContainerServiceFleetManager manager =
-            ContainerServiceFleetManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ContainerServiceFleetManager manager = ContainerServiceFleetManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<FleetUpdateStrategy> response =
-            manager.fleetUpdateStrategies().listByFleet("pdtii", "q", com.azure.core.util.Context.NONE);
+        PagedIterable<FleetUpdateStrategy> response = manager.fleetUpdateStrategies().listByFleet("sfgytguslfead",
+            "ygqukyhejh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xoruzfgsquyfxrx", response.iterator().next().strategy().stages().get(0).name());
-        Assertions
-            .assertEquals("ptramxj", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
-        Assertions
-            .assertEquals(2125136939, response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("fpel", response.iterator().next().strategy().stages().get(0).name());
+        Assertions.assertEquals("pv", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(43527729,
+            response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

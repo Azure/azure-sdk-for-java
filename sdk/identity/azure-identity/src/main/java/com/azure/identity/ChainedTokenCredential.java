@@ -59,6 +59,7 @@ public class ChainedTokenCredential implements TokenCredential {
     private final List<TokenCredential> credentials;
     private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
     private final AtomicReference<TokenCredential> selectedCredential;
+    private boolean useCachedWorkingCredential = false;
 
     /**
      * Create an instance of chained token credential that aggregates a list of token
@@ -84,7 +85,7 @@ public class ChainedTokenCredential implements TokenCredential {
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         Mono<AccessToken> accessTokenMono;
-        if (selectedCredential.get() != null) {
+        if (selectedCredential.get() != null && useCachedWorkingCredential) {
             accessTokenMono =  Mono.defer(() -> selectedCredential.get().getToken(request)
                 .doOnNext(t -> logTokenMessage("Azure Identity => Returning token from cached credential {}",
                     selectedCredential.get()))
@@ -132,7 +133,7 @@ public class ChainedTokenCredential implements TokenCredential {
     public AccessToken getTokenSync(TokenRequestContext request) {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
 
-        if (selectedCredential.get() != null) {
+        if (selectedCredential.get() != null && useCachedWorkingCredential) {
             try {
                 AccessToken accessToken = selectedCredential.get().getTokenSync(request);
                 logTokenMessage("Azure Identity => Returning token from cached credential {}", selectedCredential.get());
@@ -201,5 +202,9 @@ public class ChainedTokenCredential implements TokenCredential {
         } else {
             return null;
         }
+    }
+
+    void enableUseCachedWorkingCredential() {
+        this.useCachedWorkingCredential = true;
     }
 }

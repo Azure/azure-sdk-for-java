@@ -16,9 +16,7 @@ import java.time.Duration;
  */
 public final class NamespaceTopicEventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * NamespaceTopicEventSubscriptions_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/NamespaceTopicEventSubscriptions_Update.json
      */
     /**
      * Sample code: NamespaceTopicEventSubscriptions_Update.
@@ -33,8 +31,10 @@ public final class NamespaceTopicEventSubscriptionsUpdateSamples {
             .getValue();
         resource.update()
             .withDeliveryConfiguration(new DeliveryConfiguration().withDeliveryMode(DeliveryMode.QUEUE)
-                .withQueue(new QueueInfo().withReceiveLockDurationInSeconds(60).withMaxDeliveryCount(3)
+                .withQueue(new QueueInfo().withReceiveLockDurationInSeconds(60)
+                    .withMaxDeliveryCount(3)
                     .withEventTimeToLive(Duration.parse("P1D"))))
-            .withEventDeliverySchema(DeliverySchema.CLOUD_EVENT_SCHEMA_V1_0).apply();
+            .withEventDeliverySchema(DeliverySchema.CLOUD_EVENT_SCHEMA_V1_0)
+            .apply();
     }
 }

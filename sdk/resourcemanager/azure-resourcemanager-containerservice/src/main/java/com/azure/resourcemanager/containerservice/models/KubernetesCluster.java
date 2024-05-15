@@ -124,6 +124,13 @@ public interface KubernetesCluster
      */
     String agentPoolResourceGroup();
 
+    /**
+     * Whether the kubernetes cluster can be accessed from public network.
+     *
+     * @return whether the kubernetes cluster can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
     // Actions
 
     /**
@@ -175,6 +182,7 @@ public interface KubernetesCluster
             DefinitionStages.WithNetworkProfile,
             DefinitionStages.WithAddOnProfiles,
             DefinitionStages.WithManagedClusterSku,
+            DefinitionStages.WithPublicNetworkAccess,
             KubernetesCluster.DefinitionStages.WithCreate {
     }
 
@@ -440,6 +448,52 @@ public interface KubernetesCluster
             }
 
             /**
+             * The stage of a network profile definition allowing to specify the network plugin mode.
+             *
+             * @param <ParentT> the stage of the network plugin mode definition to return to after attaching this definition
+             */
+            interface WithNetworkPluginMode<ParentT> {
+                /**
+                 * Specifies the network plugin mode to be used for building the Kubernetes network.
+                 *
+                 * @param networkPluginMode the network plugin mode to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkPluginMode(NetworkPluginMode networkPluginMode);
+            }
+
+            /**
+             * The stage of a network profile definition allowing to specify the network mode.
+             *
+             * @param <ParentT> the stage of the network mode definition to return to after attaching this definition
+             */
+            interface WithNetworkMode<ParentT> {
+                /**
+                 * Specifies the network plugin mode to be used for building the Kubernetes network.
+                 *
+                 * @param networkMode the network mode to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkMode(NetworkMode networkMode);
+            }
+
+            /**
+             * The stage of a network profile definition allowing to specify the network data plan.
+             *
+             * @param <ParentT> the stage of the network mode definition to return to after attaching this definition
+             */
+            interface WithNetworkDataPlan<ParentT> {
+                /**
+                 * Specifies the network data plan to be used for building the Kubernetes network.
+                 *
+                 * @param networkDataPlan the network data plan to be used for building the Kubernetes network
+                 * @return the next stage of the definition
+                 */
+                WithAttach<ParentT> withNetworkDataPlan(NetworkDataplane networkDataPlan);
+            }
+
+
+            /**
              * The final stage of a network profile definition. At this stage, any remaining optional settings can be
              * specified, or the container service agent pool can be attached to the parent container service
              * definition.
@@ -454,6 +508,9 @@ public interface KubernetesCluster
                     NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
                     NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
                     NetworkProfileDefinitionStages.WithLoadBalancerProfile<ParentT>,
+                    NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
+                    NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
+                    NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>,
                     Attachable.InDefinition<ParentT> {
             }
         }
@@ -471,6 +528,9 @@ public interface KubernetesCluster
                 NetworkProfileDefinitionStages.WithServiceCidr<ParentT>,
                 NetworkProfileDefinitionStages.WithDnsServiceIP<ParentT>,
                 NetworkProfileDefinitionStages.WithDockerBridgeCidr<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkMode<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkDataPlan<ParentT>,
+                NetworkProfileDefinitionStages.WithNetworkPluginMode<ParentT>,
                 NetworkProfileDefinitionStages.WithAttach<ParentT> {
         }
 
@@ -596,6 +656,16 @@ public interface KubernetesCluster
             WithCreate withAgentPoolResourceGroup(String resourceGroupName);
         }
 
+        /** The stage of Kubernetes cluster  definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Disables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -615,6 +685,7 @@ public interface KubernetesCluster
                 WithDiskEncryption,
                 WithAgentPoolResourceGroup,
                 WithManagedClusterSku,
+                WithPublicNetworkAccess,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -630,6 +701,7 @@ public interface KubernetesCluster
             UpdateStages.WithLocalAccounts,
             UpdateStages.WithVersion,
             UpdateStages.WithManagedClusterSku,
+            UpdateStages.WithPublicNetworkAccess,
             Resource.UpdateWithTags<KubernetesCluster.Update>,
             Appliable<KubernetesCluster> {
     }
@@ -806,6 +878,23 @@ public interface KubernetesCluster
              * @return the next stage
              */
             Update withVersion(String kubernetesVersion);
+        }
+
+
+        /** The stage of kubernetes cluster update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
         }
     }
 }

@@ -3,7 +3,7 @@
 
 package com.azure.xml.contract;
 
-import com.azure.xml.ReadValueCallback;
+import com.azure.xml.XmlReadValueCallback;
 import com.azure.xml.XmlReader;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -37,7 +37,7 @@ public abstract class XmlReaderContractTests {
 
     @ParameterizedTest
     @MethodSource("basicElementOperationsSupplier")
-    public <T> void basicElementOperations(String xml, T expectedValue, ReadValueCallback<XmlReader, T> function)
+    public <T> void basicElementOperations(String xml, T expectedValue, XmlReadValueCallback<XmlReader, T> function)
         throws XMLStreamException {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
@@ -104,8 +104,8 @@ public abstract class XmlReaderContractTests {
     // Byte arrays can't use Object.equals as they'll be compared by memory location instead of value equality.
     @ParameterizedTest
     @MethodSource("binaryElementOperationsSupplier")
-    public void binaryElementOperations(String xml, byte[] expectedValue, ReadValueCallback<XmlReader, byte[]> function)
-        throws XMLStreamException {
+    public void binaryElementOperations(String xml, byte[] expectedValue,
+        XmlReadValueCallback<XmlReader, byte[]> function) throws XMLStreamException {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
@@ -126,9 +126,9 @@ public abstract class XmlReaderContractTests {
 
     @ParameterizedTest
     @MethodSource("basicAttributeOperationsSupplier")
-    public <T> void basicAttributeOperations(String json, T expectedValue, ReadValueCallback<XmlReader, T> function)
+    public <T> void basicAttributeOperations(String xml, T expectedValue, XmlReadValueCallback<XmlReader, T> function)
         throws XMLStreamException {
-        XmlReader reader = getXmlReader(json);
+        XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
         T actualValue = assertDoesNotThrow(() -> function.read(reader));
@@ -268,7 +268,7 @@ public abstract class XmlReaderContractTests {
     @ParameterizedTest
     @MethodSource("binaryAttributeOperationsSupplier")
     public void binaryAttributeOperations(String xml, byte[] expectedValue,
-        ReadValueCallback<XmlReader, byte[]> function) throws XMLStreamException {
+        XmlReadValueCallback<XmlReader, byte[]> function) throws XMLStreamException {
         XmlReader reader = getXmlReader(xml);
         reader.nextElement(); // Initialize the XmlReader for reading.
 
@@ -298,7 +298,7 @@ public abstract class XmlReaderContractTests {
                 createXmlConsumer(xmlReader -> xmlReader.getBinaryAttribute(null, "test"))));
     }
 
-    private static <T> ReadValueCallback<XmlReader, T> createXmlConsumer(ReadValueCallback<XmlReader, T> func) {
+    private static <T> XmlReadValueCallback<XmlReader, T> createXmlConsumer(XmlReadValueCallback<XmlReader, T> func) {
         return func;
     }
 }

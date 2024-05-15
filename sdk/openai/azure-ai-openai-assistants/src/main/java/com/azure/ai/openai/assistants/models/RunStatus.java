@@ -5,7 +5,6 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -78,7 +77,6 @@ public final class RunStatus extends ExpandableStringEnum<RunStatus> {
      * @return the corresponding RunStatus.
      */
     @Generated
-    @JsonCreator
     public static RunStatus fromString(String name) {
         return fromString(name, RunStatus.class);
     }

@@ -59,7 +59,7 @@ public interface PartnerNamespace {
     SystemData systemData();
 
     /**
-     * Gets the privateEndpointConnections property: The privateEndpointConnections property.
+     * Gets the privateEndpointConnections property: List of private endpoint connections.
      * 
      * @return the privateEndpointConnections value.
      */

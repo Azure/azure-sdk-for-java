@@ -21,43 +21,44 @@ public final class AutomationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"wrtz\",\"isEnabled\":false,\"scopes\":[{\"description\":\"zmh\",\"scopePath\":\"ongmtsa\"},{\"description\":\"cbpwxqpsrknft\",\"scopePath\":\"vriuhprwmdyvx\"},{\"description\":\"ayriwwroyqbexrm\",\"scopePath\":\"ibycno\"}],\"sources\":[{\"eventSource\":\"Assessments\",\"ruleSets\":[{\"rules\":[{},{},{},{}]},{\"rules\":[{},{}]},{\"rules\":[{}]}]}],\"actions\":[{\"actionType\":\"AutomationAction\"}]},\"location\":\"pjyzhpv\",\"tags\":{\"gfhzovawjvzunlut\":\"cjrvxdjzlmwlxkv\",\"i\":\"nnprn\",\"tskzbbtdzumveek\":\"eilpjzuaejxdu\",\"uh\":\"pwo\"},\"id\":\"fpbsjyofdxl\",\"name\":\"us\",\"type\":\"ttouwaboekqvkel\"}")
+            "{\"properties\":{\"description\":\"dnqqskawaoqvmmb\",\"isEnabled\":false,\"scopes\":[{\"description\":\"qlkzme\",\"scopePath\":\"itgvkx\"}],\"sources\":[{\"eventSource\":\"SubAssessmentsSnapshot\",\"ruleSets\":[{\"rules\":[{},{},{}]},{\"rules\":[{},{},{},{}]}]},{\"eventSource\":\"Assessments\",\"ruleSets\":[{\"rules\":[{},{}]}]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]},\"location\":\"nsymoyqhlwigd\",\"tags\":{\"ajuwas\":\"kbxgom\",\"hzbezkgi\":\"vdaeyyguxakjsq\",\"vvjskgfmocwahp\":\"sidxasicdd\"},\"id\":\"gat\",\"name\":\"eaahhvjhhn\",\"type\":\"kzyb\"}")
             .toObject(AutomationInner.class);
-        Assertions.assertEquals("pjyzhpv", model.location());
-        Assertions.assertEquals("cjrvxdjzlmwlxkv", model.tags().get("gfhzovawjvzunlut"));
-        Assertions.assertEquals("wrtz", model.description());
+        Assertions.assertEquals("nsymoyqhlwigd", model.location());
+        Assertions.assertEquals("kbxgom", model.tags().get("ajuwas"));
+        Assertions.assertEquals("dnqqskawaoqvmmb", model.description());
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("zmh", model.scopes().get(0).description());
-        Assertions.assertEquals("ongmtsa", model.scopes().get(0).scopePath());
-        Assertions.assertEquals(EventSource.ASSESSMENTS, model.sources().get(0).eventSource());
+        Assertions.assertEquals("qlkzme", model.scopes().get(0).description());
+        Assertions.assertEquals("itgvkx", model.scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS_SNAPSHOT, model.sources().get(0).eventSource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationInner model = new AutomationInner().withLocation("pjyzhpv")
-            .withTags(mapOf("gfhzovawjvzunlut", "cjrvxdjzlmwlxkv", "i", "nnprn", "tskzbbtdzumveek", "eilpjzuaejxdu",
-                "uh", "pwo"))
-            .withDescription("wrtz").withIsEnabled(false)
-            .withScopes(Arrays.asList(new AutomationScope().withDescription("zmh").withScopePath("ongmtsa"),
-                new AutomationScope().withDescription("cbpwxqpsrknft").withScopePath("vriuhprwmdyvx"),
-                new AutomationScope().withDescription("ayriwwroyqbexrm").withScopePath("ibycno")))
-            .withSources(Arrays.asList(new AutomationSource().withEventSource(EventSource.ASSESSMENTS)
-                .withRuleSets(Arrays.asList(
-                    new AutomationRuleSet()
-                        .withRules(Arrays.asList(new AutomationTriggeringRule(), new AutomationTriggeringRule(),
+        AutomationInner model = new AutomationInner().withLocation("nsymoyqhlwigd")
+            .withTags(mapOf("ajuwas", "kbxgom", "hzbezkgi", "vdaeyyguxakjsq", "vvjskgfmocwahp", "sidxasicdd"))
+            .withDescription("dnqqskawaoqvmmb")
+            .withIsEnabled(false)
+            .withScopes(Arrays.asList(new AutomationScope().withDescription("qlkzme").withScopePath("itgvkx")))
+            .withSources(Arrays.asList(
+                new AutomationSource().withEventSource(EventSource.SUB_ASSESSMENTS_SNAPSHOT)
+                    .withRuleSets(Arrays.asList(
+                        new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule(),
                             new AutomationTriggeringRule(), new AutomationTriggeringRule())),
-                    new AutomationRuleSet()
-                        .withRules(Arrays.asList(new AutomationTriggeringRule(), new AutomationTriggeringRule())),
-                    new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule()))))))
-            .withActions(Arrays.asList(new AutomationAction()));
+                        new AutomationRuleSet()
+                            .withRules(Arrays.asList(new AutomationTriggeringRule(), new AutomationTriggeringRule(),
+                                new AutomationTriggeringRule(), new AutomationTriggeringRule())))),
+                new AutomationSource().withEventSource(EventSource.ASSESSMENTS)
+                    .withRuleSets(Arrays.asList(new AutomationRuleSet()
+                        .withRules(Arrays.asList(new AutomationTriggeringRule(), new AutomationTriggeringRule()))))))
+            .withActions(Arrays.asList(new AutomationAction(), new AutomationAction()));
         model = BinaryData.fromObject(model).toObject(AutomationInner.class);
-        Assertions.assertEquals("pjyzhpv", model.location());
-        Assertions.assertEquals("cjrvxdjzlmwlxkv", model.tags().get("gfhzovawjvzunlut"));
-        Assertions.assertEquals("wrtz", model.description());
+        Assertions.assertEquals("nsymoyqhlwigd", model.location());
+        Assertions.assertEquals("kbxgom", model.tags().get("ajuwas"));
+        Assertions.assertEquals("dnqqskawaoqvmmb", model.description());
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("zmh", model.scopes().get(0).description());
-        Assertions.assertEquals("ongmtsa", model.scopes().get(0).scopePath());
-        Assertions.assertEquals(EventSource.ASSESSMENTS, model.sources().get(0).eventSource());
+        Assertions.assertEquals("qlkzme", model.scopes().get(0).description());
+        Assertions.assertEquals("itgvkx", model.scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS_SNAPSHOT, model.sources().get(0).eventSource());
     }
 
     // Use "Map.of" if available

@@ -32,10 +32,11 @@ parameters:
     default: false
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: serialization
     JavadocSafeJavaBuildVersion: '1.21'
+    TimeoutInMinutes: 90
     EnableBatchRelease: true
     Artifacts:
       - name: azure-json
@@ -64,6 +65,7 @@ extends:
                 - gson_2.7
                 - gson_2.8
                 - gson_2.9
+                - gson_2.10
                 - jackson_2.10
                 - jackson_2.11
                 - jackson_2.12

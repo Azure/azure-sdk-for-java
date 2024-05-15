@@ -12,9 +12,9 @@ import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 
 class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekableByteChannel.ReadBehavior {
@@ -77,5 +77,28 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
             lastKnownResourceLength = client.getProperties().getContentLength();
         }
         return lastKnownResourceLength;
+    }
+
+    private static final class ByteBufferBackedOutputStream extends OutputStream {
+        private final ByteBuffer dst;
+
+        ByteBufferBackedOutputStream(ByteBuffer dst) {
+            this.dst = dst;
+        }
+
+        @Override
+        public void write(int b) {
+            dst.put((byte) b);
+        }
+
+        @Override
+        public void write(byte[] b) {
+            dst.put(b);
+        }
+
+        @Override
+        public void write(byte[] b, int off, int len) {
+            dst.put(b, off, len);
+        }
     }
 }

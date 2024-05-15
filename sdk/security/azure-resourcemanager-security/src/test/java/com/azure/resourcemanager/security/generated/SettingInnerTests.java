@@ -12,7 +12,7 @@ public final class SettingInnerTests {
     public void testDeserialize() throws Exception {
         SettingInner model = BinaryData
             .fromString(
-                "{\"kind\":\"Setting\",\"id\":\"kemjpequlrlz\",\"name\":\"udgjtfb\",\"type\":\"lakkucddwnhcz\"}")
+                "{\"kind\":\"Setting\",\"id\":\"bdxzfxnxmlbmu\",\"name\":\"swkjmdihdcyyyz\",\"type\":\"whbwzjnufzrf\"}")
             .toObject(SettingInner.class);
     }
 

@@ -44,6 +44,13 @@ public final class TransferToParticipantRequestInternal {
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
+    /*
+     * The source caller Id, a phone number, that's will be used as the
+     * transferor's(Contoso) caller id when transfering a call a pstn target.
+     */
+    @JsonProperty(value = "sourceCallerIdNumber")
+    private PhoneNumberIdentifierModel sourceCallerIdNumber;
+
     /**
      * Get the targetParticipant property: The identity of the target where call should be transferred to.
      *
@@ -147,6 +154,29 @@ public final class TransferToParticipantRequestInternal {
      */
     public TransferToParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
+        return this;
+    }
+
+    /**
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used as the
+     * transferor's(Contoso) caller id when transfering a call a pstn target.
+     *
+     * @return the sourceCallerIdNumber value.
+     */
+    public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
+        return this.sourceCallerIdNumber;
+    }
+
+    /**
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used as the
+     * transferor's(Contoso) caller id when transfering a call a pstn target.
+     *
+     * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
+     * @return the TransferToParticipantRequestInternal object itself.
+     */
+    public TransferToParticipantRequestInternal setSourceCallerIdNumber(
+            PhoneNumberIdentifierModel sourceCallerIdNumber) {
+        this.sourceCallerIdNumber = sourceCallerIdNumber;
         return this;
     }
 }

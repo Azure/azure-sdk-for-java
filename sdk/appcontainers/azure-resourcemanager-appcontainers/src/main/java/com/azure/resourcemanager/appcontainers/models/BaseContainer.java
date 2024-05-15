@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Container App base container definition. */
+/**
+ * Container App base container definition.
+ */
 @Fluent
 public class BaseContainer {
     /*
@@ -53,13 +55,15 @@ public class BaseContainer {
     @JsonProperty(value = "volumeMounts")
     private List<VolumeMount> volumeMounts;
 
-    /** Creates an instance of BaseContainer class. */
+    /**
+     * Creates an instance of BaseContainer class.
+     */
     public BaseContainer() {
     }
 
     /**
      * Get the image property: Container image tag.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -68,7 +72,7 @@ public class BaseContainer {
 
     /**
      * Set the image property: Container image tag.
-     *
+     * 
      * @param image the image value to set.
      * @return the BaseContainer object itself.
      */
@@ -79,7 +83,7 @@ public class BaseContainer {
 
     /**
      * Get the name property: Custom container name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -88,7 +92,7 @@ public class BaseContainer {
 
     /**
      * Set the name property: Custom container name.
-     *
+     * 
      * @param name the name value to set.
      * @return the BaseContainer object itself.
      */
@@ -99,7 +103,7 @@ public class BaseContainer {
 
     /**
      * Get the command property: Container start command.
-     *
+     * 
      * @return the command value.
      */
     public List<String> command() {
@@ -108,7 +112,7 @@ public class BaseContainer {
 
     /**
      * Set the command property: Container start command.
-     *
+     * 
      * @param command the command value to set.
      * @return the BaseContainer object itself.
      */
@@ -119,7 +123,7 @@ public class BaseContainer {
 
     /**
      * Get the args property: Container start command arguments.
-     *
+     * 
      * @return the args value.
      */
     public List<String> args() {
@@ -128,7 +132,7 @@ public class BaseContainer {
 
     /**
      * Set the args property: Container start command arguments.
-     *
+     * 
      * @param args the args value to set.
      * @return the BaseContainer object itself.
      */
@@ -139,7 +143,7 @@ public class BaseContainer {
 
     /**
      * Get the env property: Container environment variables.
-     *
+     * 
      * @return the env value.
      */
     public List<EnvironmentVar> env() {
@@ -148,7 +152,7 @@ public class BaseContainer {
 
     /**
      * Set the env property: Container environment variables.
-     *
+     * 
      * @param env the env value to set.
      * @return the BaseContainer object itself.
      */
@@ -159,7 +163,7 @@ public class BaseContainer {
 
     /**
      * Get the resources property: Container resource requirements.
-     *
+     * 
      * @return the resources value.
      */
     public ContainerResources resources() {
@@ -168,7 +172,7 @@ public class BaseContainer {
 
     /**
      * Set the resources property: Container resource requirements.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the BaseContainer object itself.
      */
@@ -179,7 +183,7 @@ public class BaseContainer {
 
     /**
      * Get the volumeMounts property: Container volume mounts.
-     *
+     * 
      * @return the volumeMounts value.
      */
     public List<VolumeMount> volumeMounts() {
@@ -188,7 +192,7 @@ public class BaseContainer {
 
     /**
      * Set the volumeMounts property: Container volume mounts.
-     *
+     * 
      * @param volumeMounts the volumeMounts value to set.
      * @return the BaseContainer object itself.
      */
@@ -199,7 +203,7 @@ public class BaseContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

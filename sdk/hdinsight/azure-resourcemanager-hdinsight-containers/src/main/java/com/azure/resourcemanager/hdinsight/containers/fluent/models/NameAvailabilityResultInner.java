@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Result of check name availability. */
+/**
+ * Result of check name availability.
+ */
 @Fluent
 public final class NameAvailabilityResultInner {
     /*
@@ -28,13 +30,15 @@ public final class NameAvailabilityResultInner {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of NameAvailabilityResultInner class. */
+    /**
+     * Creates an instance of NameAvailabilityResultInner class.
+     */
     public NameAvailabilityResultInner() {
     }
 
     /**
      * Get the nameAvailable property: Indicator of availability of the Microsoft.HDInsight resource name.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -43,7 +47,7 @@ public final class NameAvailabilityResultInner {
 
     /**
      * Set the nameAvailable property: Indicator of availability of the Microsoft.HDInsight resource name.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the NameAvailabilityResultInner object itself.
      */
@@ -54,7 +58,7 @@ public final class NameAvailabilityResultInner {
 
     /**
      * Get the reason property: The reason of unavailability.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -63,7 +67,7 @@ public final class NameAvailabilityResultInner {
 
     /**
      * Set the reason property: The reason of unavailability.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the NameAvailabilityResultInner object itself.
      */
@@ -74,7 +78,7 @@ public final class NameAvailabilityResultInner {
 
     /**
      * Get the message property: The error message of unavailability.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -83,7 +87,7 @@ public final class NameAvailabilityResultInner {
 
     /**
      * Set the message property: The error message of unavailability.
-     *
+     * 
      * @param message the message value to set.
      * @return the NameAvailabilityResultInner object itself.
      */
@@ -94,7 +98,7 @@ public final class NameAvailabilityResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

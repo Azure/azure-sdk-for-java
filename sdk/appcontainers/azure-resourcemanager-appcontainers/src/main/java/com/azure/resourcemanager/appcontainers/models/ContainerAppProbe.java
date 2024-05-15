@@ -77,14 +77,16 @@ public final class ContainerAppProbe {
     @JsonProperty(value = "type")
     private Type type;
 
-    /** Creates an instance of ContainerAppProbe class. */
+    /**
+     * Creates an instance of ContainerAppProbe class.
+     */
     public ContainerAppProbe() {
     }
 
     /**
      * Get the failureThreshold property: Minimum consecutive failures for the probe to be considered failed after
      * having succeeded. Defaults to 3. Minimum value is 1. Maximum value is 10.
-     *
+     * 
      * @return the failureThreshold value.
      */
     public Integer failureThreshold() {
@@ -94,7 +96,7 @@ public final class ContainerAppProbe {
     /**
      * Set the failureThreshold property: Minimum consecutive failures for the probe to be considered failed after
      * having succeeded. Defaults to 3. Minimum value is 1. Maximum value is 10.
-     *
+     * 
      * @param failureThreshold the failureThreshold value to set.
      * @return the ContainerAppProbe object itself.
      */
@@ -105,7 +107,7 @@ public final class ContainerAppProbe {
 
     /**
      * Get the httpGet property: HTTPGet specifies the http request to perform.
-     *
+     * 
      * @return the httpGet value.
      */
     public ContainerAppProbeHttpGet httpGet() {
@@ -114,7 +116,7 @@ public final class ContainerAppProbe {
 
     /**
      * Set the httpGet property: HTTPGet specifies the http request to perform.
-     *
+     * 
      * @param httpGet the httpGet value to set.
      * @return the ContainerAppProbe object itself.
      */
@@ -126,7 +128,7 @@ public final class ContainerAppProbe {
     /**
      * Get the initialDelaySeconds property: Number of seconds after the container has started before liveness probes
      * are initiated. Minimum value is 1. Maximum value is 60.
-     *
+     * 
      * @return the initialDelaySeconds value.
      */
     public Integer initialDelaySeconds() {
@@ -136,7 +138,7 @@ public final class ContainerAppProbe {
     /**
      * Set the initialDelaySeconds property: Number of seconds after the container has started before liveness probes
      * are initiated. Minimum value is 1. Maximum value is 60.
-     *
+     * 
      * @param initialDelaySeconds the initialDelaySeconds value to set.
      * @return the ContainerAppProbe object itself.
      */
@@ -146,9 +148,9 @@ public final class ContainerAppProbe {
     }
 
     /**
-     * Get the periodSeconds property: How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value
-     * is 1. Maximum value is 240.
-     *
+     * Get the periodSeconds property: How often (in seconds) to perform the probe. Default to 10 seconds. Minimum
+     * value is 1. Maximum value is 240.
+     * 
      * @return the periodSeconds value.
      */
     public Integer periodSeconds() {
@@ -156,9 +158,9 @@ public final class ContainerAppProbe {
     }
 
     /**
-     * Set the periodSeconds property: How often (in seconds) to perform the probe. Default to 10 seconds. Minimum value
-     * is 1. Maximum value is 240.
-     *
+     * Set the periodSeconds property: How often (in seconds) to perform the probe. Default to 10 seconds. Minimum
+     * value is 1. Maximum value is 240.
+     * 
      * @param periodSeconds the periodSeconds value to set.
      * @return the ContainerAppProbe object itself.
      */
@@ -170,7 +172,7 @@ public final class ContainerAppProbe {
     /**
      * Get the successThreshold property: Minimum consecutive successes for the probe to be considered successful after
      * having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1. Maximum value is 10.
-     *
+     * 
      * @return the successThreshold value.
      */
     public Integer successThreshold() {
@@ -180,7 +182,7 @@ public final class ContainerAppProbe {
     /**
      * Set the successThreshold property: Minimum consecutive successes for the probe to be considered successful after
      * having failed. Defaults to 1. Must be 1 for liveness and startup. Minimum value is 1. Maximum value is 10.
-     *
+     * 
      * @param successThreshold the successThreshold value to set.
      * @return the ContainerAppProbe object itself.
      */
@@ -191,7 +193,7 @@ public final class ContainerAppProbe {
 
     /**
      * Get the tcpSocket property: TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported.
-     *
+     * 
      * @return the tcpSocket value.
      */
     public ContainerAppProbeTcpSocket tcpSocket() {
@@ -200,7 +202,7 @@ public final class ContainerAppProbe {
 
     /**
      * Set the tcpSocket property: TCPSocket specifies an action involving a TCP port. TCP hooks not yet supported.
-     *
+     * 
      * @param tcpSocket the tcpSocket value to set.
      * @return the ContainerAppProbe object itself.
      */
@@ -211,14 +213,14 @@ public final class ContainerAppProbe {
 
     /**
      * Get the terminationGracePeriodSeconds property: Optional duration in seconds the pod needs to terminate
-     * gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod
-     * are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
-     * value longer than the expected cleanup time for your process. If this value is nil, the pod's
+     * gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the
+     * pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set
+     * this value longer than the expected cleanup time for your process. If this value is nil, the pod's
      * terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec.
-     * Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity
-     * to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature gate. Maximum
-     * value is 3600 seconds (1 hour).
-     *
+     * Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no
+     * opportunity to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature
+     * gate. Maximum value is 3600 seconds (1 hour).
+     * 
      * @return the terminationGracePeriodSeconds value.
      */
     public Long terminationGracePeriodSeconds() {
@@ -227,14 +229,14 @@ public final class ContainerAppProbe {
 
     /**
      * Set the terminationGracePeriodSeconds property: Optional duration in seconds the pod needs to terminate
-     * gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the pod
-     * are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set this
-     * value longer than the expected cleanup time for your process. If this value is nil, the pod's
+     * gracefully upon probe failure. The grace period is the duration in seconds after the processes running in the
+     * pod are sent a termination signal and the time when the processes are forcibly halted with a kill signal. Set
+     * this value longer than the expected cleanup time for your process. If this value is nil, the pod's
      * terminationGracePeriodSeconds will be used. Otherwise, this value overrides the value provided by the pod spec.
-     * Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no opportunity
-     * to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature gate. Maximum
-     * value is 3600 seconds (1 hour).
-     *
+     * Value must be non-negative integer. The value zero indicates stop immediately via the kill signal (no
+     * opportunity to shut down). This is an alpha field and requires enabling ProbeTerminationGracePeriod feature
+     * gate. Maximum value is 3600 seconds (1 hour).
+     * 
      * @param terminationGracePeriodSeconds the terminationGracePeriodSeconds value to set.
      * @return the ContainerAppProbe object itself.
      */
@@ -244,9 +246,9 @@ public final class ContainerAppProbe {
     }
 
     /**
-     * Get the timeoutSeconds property: Number of seconds after which the probe times out. Defaults to 1 second. Minimum
-     * value is 1. Maximum value is 240.
-     *
+     * Get the timeoutSeconds property: Number of seconds after which the probe times out. Defaults to 1 second.
+     * Minimum value is 1. Maximum value is 240.
+     * 
      * @return the timeoutSeconds value.
      */
     public Integer timeoutSeconds() {
@@ -254,9 +256,9 @@ public final class ContainerAppProbe {
     }
 
     /**
-     * Set the timeoutSeconds property: Number of seconds after which the probe times out. Defaults to 1 second. Minimum
-     * value is 1. Maximum value is 240.
-     *
+     * Set the timeoutSeconds property: Number of seconds after which the probe times out. Defaults to 1 second.
+     * Minimum value is 1. Maximum value is 240.
+     * 
      * @param timeoutSeconds the timeoutSeconds value to set.
      * @return the ContainerAppProbe object itself.
      */
@@ -267,7 +269,7 @@ public final class ContainerAppProbe {
 
     /**
      * Get the type property: The type of probe.
-     *
+     * 
      * @return the type value.
      */
     public Type type() {
@@ -276,7 +278,7 @@ public final class ContainerAppProbe {
 
     /**
      * Set the type property: The type of probe.
-     *
+     * 
      * @param type the type value to set.
      * @return the ContainerAppProbe object itself.
      */
@@ -287,7 +289,7 @@ public final class ContainerAppProbe {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

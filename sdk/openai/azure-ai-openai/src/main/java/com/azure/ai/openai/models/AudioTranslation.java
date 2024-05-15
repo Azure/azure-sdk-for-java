@@ -5,8 +5,11 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
@@ -14,20 +17,18 @@ import java.util.List;
  * Result information for an operation that translated spoken audio into written text.
  */
 @Immutable
-public final class AudioTranslation {
+public final class AudioTranslation implements JsonSerializable<AudioTranslation> {
 
     /*
      * The translated text for the provided audio data.
      */
     @Generated
-    @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * The label that describes which operation type generated the accompanying response data.
      */
     @Generated
-    @JsonProperty(value = "task")
     private AudioTaskLabel task;
 
     /*
@@ -35,21 +36,18 @@ public final class AudioTranslation {
      * This is expressed as a two-letter ISO-639-1 language code like 'en' or 'fr'.
      */
     @Generated
-    @JsonProperty(value = "language")
     private String language;
 
     /*
      * The total duration of the audio processed to produce accompanying translation information.
      */
     @Generated
-    @JsonProperty(value = "duration")
     private Double duration;
 
     /*
      * A collection of information about the timing, probabilities, and other detail of each processed audio segment.
      */
     @Generated
-    @JsonProperty(value = "segments")
     private List<AudioTranslationSegment> segments;
 
     /**
@@ -58,8 +56,7 @@ public final class AudioTranslation {
      * @param text the text value to set.
      */
     @Generated
-    @JsonCreator
-    private AudioTranslation(@JsonProperty(value = "text") String text) {
+    private AudioTranslation(String text) {
         this.text = text;
     }
 
@@ -117,5 +114,63 @@ public final class AudioTranslation {
     @Generated
     public List<AudioTranslationSegment> getSegments() {
         return this.segments;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("task", this.task == null ? null : this.task.toString());
+        jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeNumberField("duration", this.duration);
+        jsonWriter.writeArrayField("segments", this.segments, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AudioTranslation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AudioTranslation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AudioTranslation.
+     */
+    @Generated
+    public static AudioTranslation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String text = null;
+            AudioTaskLabel task = null;
+            String language = null;
+            Double duration = null;
+            List<AudioTranslationSegment> segments = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else if ("task".equals(fieldName)) {
+                    task = AudioTaskLabel.fromString(reader.getString());
+                } else if ("language".equals(fieldName)) {
+                    language = reader.getString();
+                } else if ("duration".equals(fieldName)) {
+                    duration = reader.getNullable(JsonReader::getDouble);
+                } else if ("segments".equals(fieldName)) {
+                    segments = reader.readArray(reader1 -> AudioTranslationSegment.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            AudioTranslation deserializedAudioTranslation = new AudioTranslation(text);
+            deserializedAudioTranslation.task = task;
+            deserializedAudioTranslation.language = language;
+            deserializedAudioTranslation.duration = duration;
+            deserializedAudioTranslation.segments = segments;
+            return deserializedAudioTranslation;
+        });
     }
 }

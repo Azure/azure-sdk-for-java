@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Rule to restrict incoming IP address. */
+/**
+ * Rule to restrict incoming IP address.
+ */
 @Fluent
 public final class IpSecurityRestrictionRule {
     /*
@@ -35,13 +37,15 @@ public final class IpSecurityRestrictionRule {
     @JsonProperty(value = "action", required = true)
     private Action action;
 
-    /** Creates an instance of IpSecurityRestrictionRule class. */
+    /**
+     * Creates an instance of IpSecurityRestrictionRule class.
+     */
     public IpSecurityRestrictionRule() {
     }
 
     /**
      * Get the name property: Name for the IP restriction rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class IpSecurityRestrictionRule {
 
     /**
      * Set the name property: Name for the IP restriction rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the IpSecurityRestrictionRule object itself.
      */
@@ -62,7 +66,7 @@ public final class IpSecurityRestrictionRule {
     /**
      * Get the description property: Describe the IP restriction rule that is being sent to the container-app. This is
      * an optional field.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -72,7 +76,7 @@ public final class IpSecurityRestrictionRule {
     /**
      * Set the description property: Describe the IP restriction rule that is being sent to the container-app. This is
      * an optional field.
-     *
+     * 
      * @param description the description value to set.
      * @return the IpSecurityRestrictionRule object itself.
      */
@@ -83,7 +87,7 @@ public final class IpSecurityRestrictionRule {
 
     /**
      * Get the ipAddressRange property: CIDR notation to match incoming IP address.
-     *
+     * 
      * @return the ipAddressRange value.
      */
     public String ipAddressRange() {
@@ -92,7 +96,7 @@ public final class IpSecurityRestrictionRule {
 
     /**
      * Set the ipAddressRange property: CIDR notation to match incoming IP address.
-     *
+     * 
      * @param ipAddressRange the ipAddressRange value to set.
      * @return the IpSecurityRestrictionRule object itself.
      */
@@ -104,7 +108,7 @@ public final class IpSecurityRestrictionRule {
     /**
      * Get the action property: Allow or Deny rules to determine for incoming IP. Note: Rules can only consist of ALL
      * Allow or ALL Deny.
-     *
+     * 
      * @return the action value.
      */
     public Action action() {
@@ -114,7 +118,7 @@ public final class IpSecurityRestrictionRule {
     /**
      * Set the action property: Allow or Deny rules to determine for incoming IP. Note: Rules can only consist of ALL
      * Allow or ALL Deny.
-     *
+     * 
      * @param action the action value to set.
      * @return the IpSecurityRestrictionRule object itself.
      */
@@ -125,26 +129,21 @@ public final class IpSecurityRestrictionRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model IpSecurityRestrictionRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model IpSecurityRestrictionRule"));
         }
         if (ipAddressRange() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipAddressRange in model IpSecurityRestrictionRule"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ipAddressRange in model IpSecurityRestrictionRule"));
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property action in model IpSecurityRestrictionRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property action in model IpSecurityRestrictionRule"));
         }
     }
 

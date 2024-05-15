@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameAvailabilityInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameAvailabilityInput model =
-            BinaryData
-                .fromString("{\"name\":\"odgmaajrmvdjwz\",\"type\":\"Microsoft.Network/frontDoors/frontendEndpoints\"}")
+        CheckNameAvailabilityInput model
+            = BinaryData.fromString("{\"name\":\"nkymuctqhjfbebrj\",\"type\":\"Microsoft.Network/frontDoors\"}")
                 .toObject(CheckNameAvailabilityInput.class);
-        Assertions.assertEquals("odgmaajrmvdjwz", model.name());
-        Assertions.assertEquals(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS_FRONTEND_ENDPOINTS, model.type());
+        Assertions.assertEquals("nkymuctqhjfbebrj", model.name());
+        Assertions.assertEquals(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameAvailabilityInput model =
-            new CheckNameAvailabilityInput()
-                .withName("odgmaajrmvdjwz")
-                .withType(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS_FRONTEND_ENDPOINTS);
+        CheckNameAvailabilityInput model = new CheckNameAvailabilityInput().withName("nkymuctqhjfbebrj")
+            .withType(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS);
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityInput.class);
-        Assertions.assertEquals("odgmaajrmvdjwz", model.name());
-        Assertions.assertEquals(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS_FRONTEND_ENDPOINTS, model.type());
+        Assertions.assertEquals("nkymuctqhjfbebrj", model.name());
+        Assertions.assertEquals(ResourceType.MICROSOFT_NETWORK_FRONT_DOORS, model.type());
     }
 }

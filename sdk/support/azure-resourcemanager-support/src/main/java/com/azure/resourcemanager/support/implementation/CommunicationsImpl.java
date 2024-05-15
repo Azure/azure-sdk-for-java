@@ -24,33 +24,28 @@ public final class CommunicationsImpl implements Communications {
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    public CommunicationsImpl(
-        CommunicationsClient innerClient, com.azure.resourcemanager.support.SupportManager serviceManager) {
+    public CommunicationsImpl(CommunicationsClient innerClient,
+        com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
-        Response<CheckNameAvailabilityOutputInner> inner =
-            this
-                .serviceClient()
-                .checkNameAvailabilityWithResponse(supportTicketName, checkNameAvailabilityInput, context);
+    public Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(String supportTicketName,
+        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
+        Response<CheckNameAvailabilityOutputInner> inner = this.serviceClient()
+            .checkNameAvailabilityWithResponse(supportTicketName, checkNameAvailabilityInput, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityOutputImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckNameAvailabilityOutput checkNameAvailability(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput) {
-        CheckNameAvailabilityOutputInner inner =
-            this.serviceClient().checkNameAvailability(supportTicketName, checkNameAvailabilityInput);
+    public CheckNameAvailabilityOutput checkNameAvailability(String supportTicketName,
+        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+        CheckNameAvailabilityOutputInner inner
+            = this.serviceClient().checkNameAvailability(supportTicketName, checkNameAvailabilityInput);
         if (inner != null) {
             return new CheckNameAvailabilityOutputImpl(inner, this.manager());
         } else {
@@ -60,25 +55,22 @@ public final class CommunicationsImpl implements Communications {
 
     public PagedIterable<CommunicationDetails> list(String supportTicketName) {
         PagedIterable<CommunicationDetailsInner> inner = this.serviceClient().list(supportTicketName);
-        return Utils.mapPage(inner, inner1 -> new CommunicationDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommunicationDetailsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CommunicationDetails> list(
-        String supportTicketName, Integer top, String filter, Context context) {
-        PagedIterable<CommunicationDetailsInner> inner =
-            this.serviceClient().list(supportTicketName, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new CommunicationDetailsImpl(inner1, this.manager()));
+    public PagedIterable<CommunicationDetails> list(String supportTicketName, Integer top, String filter,
+        Context context) {
+        PagedIterable<CommunicationDetailsInner> inner
+            = this.serviceClient().list(supportTicketName, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommunicationDetailsImpl(inner1, this.manager()));
     }
 
-    public Response<CommunicationDetails> getWithResponse(
-        String supportTicketName, String communicationName, Context context) {
-        Response<CommunicationDetailsInner> inner =
-            this.serviceClient().getWithResponse(supportTicketName, communicationName, context);
+    public Response<CommunicationDetails> getWithResponse(String supportTicketName, String communicationName,
+        Context context) {
+        Response<CommunicationDetailsInner> inner
+            = this.serviceClient().getWithResponse(supportTicketName, communicationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CommunicationDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -95,41 +87,29 @@ public final class CommunicationsImpl implements Communications {
     }
 
     public CommunicationDetails getById(String id) {
-        String supportTicketName = Utils.getValueFromIdByName(id, "supportTickets");
+        String supportTicketName = ResourceManagerUtils.getValueFromIdByName(id, "supportTickets");
         if (supportTicketName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'supportTickets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'supportTickets'.", id)));
         }
-        String communicationName = Utils.getValueFromIdByName(id, "communications");
+        String communicationName = ResourceManagerUtils.getValueFromIdByName(id, "communications");
         if (communicationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'communications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'communications'.", id)));
         }
         return this.getWithResponse(supportTicketName, communicationName, Context.NONE).getValue();
     }
 
     public Response<CommunicationDetails> getByIdWithResponse(String id, Context context) {
-        String supportTicketName = Utils.getValueFromIdByName(id, "supportTickets");
+        String supportTicketName = ResourceManagerUtils.getValueFromIdByName(id, "supportTickets");
         if (supportTicketName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'supportTickets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'supportTickets'.", id)));
         }
-        String communicationName = Utils.getValueFromIdByName(id, "communications");
+        String communicationName = ResourceManagerUtils.getValueFromIdByName(id, "communications");
         if (communicationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'communications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'communications'.", id)));
         }
         return this.getWithResponse(supportTicketName, communicationName, context);
     }

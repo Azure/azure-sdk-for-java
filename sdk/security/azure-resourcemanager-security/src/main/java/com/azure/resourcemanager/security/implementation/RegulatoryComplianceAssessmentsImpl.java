@@ -45,8 +45,8 @@ public final class RegulatoryComplianceAssessmentsImpl implements RegulatoryComp
 
     public Response<RegulatoryComplianceAssessment> getWithResponse(String regulatoryComplianceStandardName,
         String regulatoryComplianceControlName, String regulatoryComplianceAssessmentName, Context context) {
-        Response<RegulatoryComplianceAssessmentInner> inner
-            = this.serviceClient().getWithResponse(regulatoryComplianceStandardName, regulatoryComplianceControlName,
+        Response<RegulatoryComplianceAssessmentInner> inner = this.serviceClient()
+            .getWithResponse(regulatoryComplianceStandardName, regulatoryComplianceControlName,
                 regulatoryComplianceAssessmentName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -58,8 +58,8 @@ public final class RegulatoryComplianceAssessmentsImpl implements RegulatoryComp
 
     public RegulatoryComplianceAssessment get(String regulatoryComplianceStandardName,
         String regulatoryComplianceControlName, String regulatoryComplianceAssessmentName) {
-        RegulatoryComplianceAssessmentInner inner = this.serviceClient().get(regulatoryComplianceStandardName,
-            regulatoryComplianceControlName, regulatoryComplianceAssessmentName);
+        RegulatoryComplianceAssessmentInner inner = this.serviceClient()
+            .get(regulatoryComplianceStandardName, regulatoryComplianceControlName, regulatoryComplianceAssessmentName);
         if (inner != null) {
             return new RegulatoryComplianceAssessmentImpl(inner, this.manager());
         } else {

@@ -6,7 +6,6 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class BusinessAttributeUpdateBehavior extends ExpandableStringEnum<
      * @return the corresponding BusinessAttributeUpdateBehavior.
      */
     @Generated
-    @JsonCreator
     public static BusinessAttributeUpdateBehavior fromString(String name) {
         return fromString(name, BusinessAttributeUpdateBehavior.class);
     }

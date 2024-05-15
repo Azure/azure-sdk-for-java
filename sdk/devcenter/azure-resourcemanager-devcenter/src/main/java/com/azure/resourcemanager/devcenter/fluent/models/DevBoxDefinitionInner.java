@@ -17,7 +17,9 @@ import com.azure.resourcemanager.devcenter.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Represents a definition for a Developer Machine. */
+/**
+ * Represents a definition for a Developer Machine.
+ */
 @Fluent
 public final class DevBoxDefinitionInner extends Resource {
     /*
@@ -32,13 +34,15 @@ public final class DevBoxDefinitionInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DevBoxDefinitionInner class. */
+    /**
+     * Creates an instance of DevBoxDefinitionInner class.
+     */
     public DevBoxDefinitionInner() {
     }
 
     /**
      * Get the innerProperties property: Dev Box definition properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DevBoxDefinitionProperties innerProperties() {
@@ -47,21 +51,25 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevBoxDefinitionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DevBoxDefinitionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -70,7 +78,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -79,7 +87,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the imageValidationStatus property: Validation status of the configured image.
-     *
+     * 
      * @return the imageValidationStatus value.
      */
     public ImageValidationStatus imageValidationStatus() {
@@ -89,7 +97,7 @@ public final class DevBoxDefinitionInner extends Resource {
     /**
      * Get the imageValidationErrorDetails property: Details for image validator error. Populated when the image
      * validation is not successful.
-     *
+     * 
      * @return the imageValidationErrorDetails value.
      */
     public ImageValidationErrorDetails imageValidationErrorDetails() {
@@ -98,7 +106,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the validationStatus property: Validation status for the Dev Box Definition.
-     *
+     * 
      * @return the validationStatus value.
      */
     public CatalogResourceValidationStatus validationStatus() {
@@ -108,7 +116,7 @@ public final class DevBoxDefinitionInner extends Resource {
     /**
      * Get the activeImageReference property: Image reference information for the currently active image (only populated
      * during updates).
-     *
+     * 
      * @return the activeImageReference value.
      */
     public ImageReference activeImageReference() {
@@ -117,7 +125,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the imageReference property: Image reference information.
-     *
+     * 
      * @return the imageReference value.
      */
     public ImageReference imageReference() {
@@ -126,7 +134,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Set the imageReference property: Image reference information.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the DevBoxDefinitionInner object itself.
      */
@@ -140,7 +148,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Get the sku property: The SKU for Dev Boxes created using this definition.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -149,7 +157,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Set the sku property: The SKU for Dev Boxes created using this definition.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DevBoxDefinitionInner object itself.
      */
@@ -164,7 +172,7 @@ public final class DevBoxDefinitionInner extends Resource {
     /**
      * Get the osStorageType property: The storage type used for the Operating System disk of Dev Boxes created using
      * this definition.
-     *
+     * 
      * @return the osStorageType value.
      */
     public String osStorageType() {
@@ -174,7 +182,7 @@ public final class DevBoxDefinitionInner extends Resource {
     /**
      * Set the osStorageType property: The storage type used for the Operating System disk of Dev Boxes created using
      * this definition.
-     *
+     * 
      * @param osStorageType the osStorageType value to set.
      * @return the DevBoxDefinitionInner object itself.
      */
@@ -190,7 +198,7 @@ public final class DevBoxDefinitionInner extends Resource {
      * Get the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
      * hibernation. Not all images are capable of supporting hibernation. To find out more see
      * https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @return the hibernateSupport value.
      */
     public HibernateSupport hibernateSupport() {
@@ -201,7 +209,7 @@ public final class DevBoxDefinitionInner extends Resource {
      * Set the hibernateSupport property: Indicates whether Dev Boxes created with this definition are capable of
      * hibernation. Not all images are capable of supporting hibernation. To find out more see
      * https://aka.ms/devbox/hibernate.
-     *
+     * 
      * @param hibernateSupport the hibernateSupport value to set.
      * @return the DevBoxDefinitionInner object itself.
      */
@@ -215,7 +223,7 @@ public final class DevBoxDefinitionInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

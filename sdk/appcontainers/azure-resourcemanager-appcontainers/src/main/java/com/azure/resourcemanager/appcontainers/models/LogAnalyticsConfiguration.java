@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log Analytics configuration, must only be provided when destination is configured as 'log-analytics'. */
+/**
+ * Log Analytics configuration, must only be provided when destination is configured as 'log-analytics'.
+ */
 @Fluent
 public final class LogAnalyticsConfiguration {
     /*
@@ -22,13 +24,21 @@ public final class LogAnalyticsConfiguration {
     @JsonProperty(value = "sharedKey")
     private String sharedKey;
 
-    /** Creates an instance of LogAnalyticsConfiguration class. */
+    /*
+     * Boolean indicating whether to parse json string log into dynamic json columns
+     */
+    @JsonProperty(value = "dynamicJsonColumns")
+    private Boolean dynamicJsonColumns;
+
+    /**
+     * Creates an instance of LogAnalyticsConfiguration class.
+     */
     public LogAnalyticsConfiguration() {
     }
 
     /**
      * Get the customerId property: Log analytics customer id.
-     *
+     * 
      * @return the customerId value.
      */
     public String customerId() {
@@ -37,7 +47,7 @@ public final class LogAnalyticsConfiguration {
 
     /**
      * Set the customerId property: Log analytics customer id.
-     *
+     * 
      * @param customerId the customerId value to set.
      * @return the LogAnalyticsConfiguration object itself.
      */
@@ -48,7 +58,7 @@ public final class LogAnalyticsConfiguration {
 
     /**
      * Get the sharedKey property: Log analytics customer key.
-     *
+     * 
      * @return the sharedKey value.
      */
     public String sharedKey() {
@@ -57,7 +67,7 @@ public final class LogAnalyticsConfiguration {
 
     /**
      * Set the sharedKey property: Log analytics customer key.
-     *
+     * 
      * @param sharedKey the sharedKey value to set.
      * @return the LogAnalyticsConfiguration object itself.
      */
@@ -67,8 +77,30 @@ public final class LogAnalyticsConfiguration {
     }
 
     /**
+     * Get the dynamicJsonColumns property: Boolean indicating whether to parse json string log into dynamic json
+     * columns.
+     * 
+     * @return the dynamicJsonColumns value.
+     */
+    public Boolean dynamicJsonColumns() {
+        return this.dynamicJsonColumns;
+    }
+
+    /**
+     * Set the dynamicJsonColumns property: Boolean indicating whether to parse json string log into dynamic json
+     * columns.
+     * 
+     * @param dynamicJsonColumns the dynamicJsonColumns value to set.
+     * @return the LogAnalyticsConfiguration object itself.
+     */
+    public LogAnalyticsConfiguration withDynamicJsonColumns(Boolean dynamicJsonColumns) {
+        this.dynamicJsonColumns = dynamicJsonColumns;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

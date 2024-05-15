@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The WafRankingsResponseDataItemMetric model. */
+/**
+ * The WafRankingsResponseDataItemMetric model.
+ */
 @Fluent
 public final class WafRankingsResponseDataItemMetric {
     /*
@@ -28,13 +30,15 @@ public final class WafRankingsResponseDataItemMetric {
     @JsonProperty(value = "percentage")
     private Double percentage;
 
-    /** Creates an instance of WafRankingsResponseDataItemMetric class. */
+    /**
+     * Creates an instance of WafRankingsResponseDataItemMetric class.
+     */
     public WafRankingsResponseDataItemMetric() {
     }
 
     /**
      * Get the metric property: The metric property.
-     *
+     * 
      * @return the metric value.
      */
     public String metric() {
@@ -43,7 +47,7 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Set the metric property: The metric property.
-     *
+     * 
      * @param metric the metric value to set.
      * @return the WafRankingsResponseDataItemMetric object itself.
      */
@@ -54,7 +58,7 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public Long value() {
@@ -63,7 +67,7 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the WafRankingsResponseDataItemMetric object itself.
      */
@@ -74,7 +78,7 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Get the percentage property: The percentage property.
-     *
+     * 
      * @return the percentage value.
      */
     public Double percentage() {
@@ -83,7 +87,7 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Set the percentage property: The percentage property.
-     *
+     * 
      * @param percentage the percentage value to set.
      * @return the WafRankingsResponseDataItemMetric object itself.
      */
@@ -94,7 +98,7 @@ public final class WafRankingsResponseDataItemMetric {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sphere.fluent.models.DeviceGroupInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a DeviceGroup list operation. */
+/**
+ * The response of a DeviceGroup list operation.
+ */
 @Fluent
 public final class DeviceGroupListResult {
     /*
@@ -22,16 +24,18 @@ public final class DeviceGroupListResult {
     /*
      * The link to the next page of items
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DeviceGroupListResult class. */
+    /**
+     * Creates an instance of DeviceGroupListResult class.
+     */
     public DeviceGroupListResult() {
     }
 
     /**
      * Get the value property: The DeviceGroup items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<DeviceGroupInner> value() {
@@ -40,7 +44,7 @@ public final class DeviceGroupListResult {
 
     /**
      * Set the value property: The DeviceGroup items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the DeviceGroupListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class DeviceGroupListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,26 +63,14 @@ public final class DeviceGroupListResult {
     }
 
     /**
-     * Set the nextLink property: The link to the next page of items.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the DeviceGroupListResult object itself.
-     */
-    public DeviceGroupListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model DeviceGroupListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model DeviceGroupListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.GoogleAdWordsLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * Google AdWords service linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = GoogleAdWordsLinkedService.class,
+    visible = true)
 @JsonTypeName("GoogleAdWords")
 @Fluent
 public final class GoogleAdWordsLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "GoogleAdWords";
+
     /*
      * Google AdWords service linked service properties.
      */
@@ -31,6 +43,16 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
      * Creates an instance of GoogleAdWordsLinkedService class.
      */
     public GoogleAdWordsLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -278,8 +300,8 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
 
     /**
      * Get the keyFilePath property: (Deprecated) The full path to the .p12 key file that is used to authenticate the
-     * service account email address and can only be used on self-hosted IR. Type: string (or Expression with
-     * resultType string).
+     * service account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the keyFilePath value.
      */
@@ -289,8 +311,8 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
 
     /**
      * Set the keyFilePath property: (Deprecated) The full path to the .p12 key file that is used to authenticate the
-     * service account email address and can only be used on self-hosted IR. Type: string (or Expression with
-     * resultType string).
+     * service account email address and can only be used on self-hosted IR. Type: string (or Expression with resultType
+     * string).
      * 
      * @param keyFilePath the keyFilePath value to set.
      * @return the GoogleAdWordsLinkedService object itself.
@@ -464,8 +486,8 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -474,8 +496,8 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GoogleAdWordsLinkedService object itself.
@@ -497,8 +519,9 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model GoogleAdWordsLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model GoogleAdWordsLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

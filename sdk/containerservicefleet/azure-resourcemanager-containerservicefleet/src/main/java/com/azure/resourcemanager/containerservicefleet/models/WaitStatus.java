@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservicefleet.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The status of the wait duration. */
+/**
+ * The status of the wait duration.
+ */
 @Immutable
 public final class WaitStatus {
     /*
@@ -22,13 +24,15 @@ public final class WaitStatus {
     @JsonProperty(value = "waitDurationInSeconds", access = JsonProperty.Access.WRITE_ONLY)
     private Integer waitDurationInSeconds;
 
-    /** Creates an instance of WaitStatus class. */
+    /**
+     * Creates an instance of WaitStatus class.
+     */
     public WaitStatus() {
     }
 
     /**
      * Get the status property: The status of the wait duration.
-     *
+     * 
      * @return the status value.
      */
     public UpdateStatus status() {
@@ -37,7 +41,7 @@ public final class WaitStatus {
 
     /**
      * Get the waitDurationInSeconds property: The wait duration configured in seconds.
-     *
+     * 
      * @return the waitDurationInSeconds value.
      */
     public Integer waitDurationInSeconds() {
@@ -46,7 +50,7 @@ public final class WaitStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

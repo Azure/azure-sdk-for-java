@@ -204,6 +204,13 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
     Flux<String> streamAllLogsAsync();
 
     /**
+     * Whether the web app can be accessed from public network.
+     *
+     * @return whether the web app can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
      * Verifies the ownership of the domain for a certificate order by verifying a hostname of the domain is bound to
      * this web app.
      *
@@ -940,6 +947,13 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              * @return the next stage of the definition
              */
             WithCreate<FluentT> withAccessRule(IpSecurityRestriction ipSecurityRule);
+
+            /**
+             * Disables public network access for the web app.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate<FluentT> disablePublicNetworkAccess();
         }
 
         /** The stage of web app definition allowing to configure container size. */
@@ -1665,6 +1679,19 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              * @return the next stage of the update
              */
             Update<FluentT> withoutIpAddressRangeAccess(String ipAddressCidr);
+
+            /**
+             * Enables public network access for the web app, for private link feature.
+             *
+             * @return the next stage of the update
+             */
+            Update<FluentT> enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the web app, for private link feature.
+             *
+             * @return the next stage of the update
+             */
+            Update<FluentT> disablePublicNetworkAccess();
         }
 
         /** The stage of web app update allowing to configure container size. */

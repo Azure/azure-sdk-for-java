@@ -63,7 +63,10 @@ public final class JdkHttpClientProvider implements HttpClientProvider {
         JdkHttpClientBuilder builder = new JdkHttpClientBuilder();
         builder = builder.proxy(clientOptions.getProxyOptions())
             .configuration(clientOptions.getConfiguration())
-            .connectionTimeout(clientOptions.getConnectTimeout());
+            .connectionTimeout(clientOptions.getConnectTimeout())
+            .writeTimeout(clientOptions.getWriteTimeout())
+            .responseTimeout(clientOptions.getResponseTimeout())
+            .readTimeout(clientOptions.getReadTimeout());
 
         return builder.build();
     }

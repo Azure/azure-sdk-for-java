@@ -46,8 +46,8 @@ public final class VolumesBreakFileLocksMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.volumes().breakFileLocks("wjlvizbfhfov", "acqpbtuodxesza", "belawumuaslzkwr", "woycqucwyha",
-            new BreakFileLocksRequest().withClientIp("omd").withConfirmRunningDisruptiveOperation(true),
+        manager.volumes().breakFileLocks("aspavehhr", "kbunzoz", "dhcxgkmoy", "cdyuibhmfdnbzyd",
+            new BreakFileLocksRequest().withClientIp("vfcjnaeoisrvhmg").withConfirmRunningDisruptiveOperation(true),
             com.azure.core.util.Context.NONE);
 
     }

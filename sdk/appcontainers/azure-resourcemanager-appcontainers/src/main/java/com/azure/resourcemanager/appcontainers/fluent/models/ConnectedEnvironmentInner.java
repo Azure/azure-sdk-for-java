@@ -13,7 +13,9 @@ import com.azure.resourcemanager.appcontainers.models.ExtendedLocation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An environment for Kubernetes cluster specialized for web workloads by Azure App Service. */
+/**
+ * An environment for Kubernetes cluster specialized for web workloads by Azure App Service.
+ */
 @Fluent
 public final class ConnectedEnvironmentInner extends Resource {
     /*
@@ -34,13 +36,15 @@ public final class ConnectedEnvironmentInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ConnectedEnvironmentInner class. */
+    /**
+     * Creates an instance of ConnectedEnvironmentInner class.
+     */
     public ConnectedEnvironmentInner() {
     }
 
     /**
      * Get the extendedLocation property: The complex type of the extended location.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -49,7 +53,7 @@ public final class ConnectedEnvironmentInner extends Resource {
 
     /**
      * Set the extendedLocation property: The complex type of the extended location.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the ConnectedEnvironmentInner object itself.
      */
@@ -60,7 +64,7 @@ public final class ConnectedEnvironmentInner extends Resource {
 
     /**
      * Get the innerProperties property: ConnectedEnvironment resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConnectedEnvironmentProperties innerProperties() {
@@ -69,21 +73,25 @@ public final class ConnectedEnvironmentInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectedEnvironmentInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConnectedEnvironmentInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -92,7 +100,7 @@ public final class ConnectedEnvironmentInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Kubernetes Environment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ConnectedEnvironmentProvisioningState provisioningState() {
@@ -101,7 +109,7 @@ public final class ConnectedEnvironmentInner extends Resource {
 
     /**
      * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
-     *
+     * 
      * @return the deploymentErrors value.
      */
     public String deploymentErrors() {
@@ -110,7 +118,7 @@ public final class ConnectedEnvironmentInner extends Resource {
 
     /**
      * Get the defaultDomain property: Default Domain Name for the cluster.
-     *
+     * 
      * @return the defaultDomain value.
      */
     public String defaultDomain() {
@@ -119,7 +127,7 @@ public final class ConnectedEnvironmentInner extends Resource {
 
     /**
      * Get the staticIp property: Static IP of the connectedEnvironment.
-     *
+     * 
      * @return the staticIp value.
      */
     public String staticIp() {
@@ -128,7 +136,7 @@ public final class ConnectedEnvironmentInner extends Resource {
 
     /**
      * Set the staticIp property: Static IP of the connectedEnvironment.
-     *
+     * 
      * @param staticIp the staticIp value to set.
      * @return the ConnectedEnvironmentInner object itself.
      */
@@ -141,9 +149,9 @@ public final class ConnectedEnvironmentInner extends Resource {
     }
 
     /**
-     * Get the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
-     * Service communication telemetry.
-     *
+     * Get the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service
+     * to Service communication telemetry.
+     * 
      * @return the daprAIConnectionString value.
      */
     public String daprAIConnectionString() {
@@ -151,9 +159,9 @@ public final class ConnectedEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
-     * Service communication telemetry.
-     *
+     * Set the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service
+     * to Service communication telemetry.
+     * 
      * @param daprAIConnectionString the daprAIConnectionString value to set.
      * @return the ConnectedEnvironmentInner object itself.
      */
@@ -167,7 +175,7 @@ public final class ConnectedEnvironmentInner extends Resource {
 
     /**
      * Get the customDomainConfiguration property: Custom domain configuration for the environment.
-     *
+     * 
      * @return the customDomainConfiguration value.
      */
     public CustomDomainConfiguration customDomainConfiguration() {
@@ -176,12 +184,12 @@ public final class ConnectedEnvironmentInner extends Resource {
 
     /**
      * Set the customDomainConfiguration property: Custom domain configuration for the environment.
-     *
+     * 
      * @param customDomainConfiguration the customDomainConfiguration value to set.
      * @return the ConnectedEnvironmentInner object itself.
      */
-    public ConnectedEnvironmentInner withCustomDomainConfiguration(
-        CustomDomainConfiguration customDomainConfiguration) {
+    public ConnectedEnvironmentInner
+        withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ConnectedEnvironmentProperties();
         }
@@ -191,7 +199,7 @@ public final class ConnectedEnvironmentInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

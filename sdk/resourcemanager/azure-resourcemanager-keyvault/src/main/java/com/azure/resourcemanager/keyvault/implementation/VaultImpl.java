@@ -25,6 +25,7 @@ import com.azure.resourcemanager.keyvault.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleSet;
 import com.azure.resourcemanager.keyvault.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.keyvault.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.keyvault.models.PublicNetworkAccess;
 import com.azure.resourcemanager.keyvault.models.Secrets;
 import com.azure.resourcemanager.keyvault.models.Sku;
 import com.azure.resourcemanager.keyvault.models.SkuFamily;
@@ -171,6 +172,13 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
             return false;
         }
         return ResourceManagerUtils.toPrimitiveBoolean(innerModel().properties().enableRbacAuthorization());
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return (innerModel().properties() == null || innerModel().properties().publicNetworkAccess() == null)
+            ? null
+            : PublicNetworkAccess.fromString(innerModel().properties().publicNetworkAccess());
     }
 
     @Override
@@ -413,6 +421,24 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     @Override
     public NetworkRuleSet networkRuleSet() {
         return innerModel().properties().networkAcls();
+    }
+
+    @Override
+    public VaultImpl enablePublicNetworkAccess() {
+        if (innerModel().properties() == null) {
+            innerModel().withProperties(new VaultProperties());
+        }
+        this.innerModel().properties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED.toString());
+        return this;
+    }
+
+    @Override
+    public VaultImpl disablePublicNetworkAccess() {
+        if (innerModel().properties() == null) {
+            innerModel().withProperties(new VaultProperties());
+        }
+        this.innerModel().properties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED.toString());
+        return this;
     }
 
     @Override

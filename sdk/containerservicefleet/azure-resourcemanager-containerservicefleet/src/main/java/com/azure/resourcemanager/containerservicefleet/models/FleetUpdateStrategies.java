@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FleetUpdateStrategies. */
+/**
+ * Resource collection API of FleetUpdateStrategies.
+ */
 public interface FleetUpdateStrategies {
     /**
      * List FleetUpdateStrategy resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface FleetUpdateStrategies {
 
     /**
      * List FleetUpdateStrategy resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface FleetUpdateStrategies {
 
     /**
      * Get a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -47,12 +49,12 @@ public interface FleetUpdateStrategies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a FleetUpdateStrategy along with {@link Response}.
      */
-    Response<FleetUpdateStrategy> getWithResponse(
-        String resourceGroupName, String fleetName, String updateStrategyName, Context context);
+    Response<FleetUpdateStrategy> getWithResponse(String resourceGroupName, String fleetName, String updateStrategyName,
+        Context context);
 
     /**
      * Get a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -65,7 +67,7 @@ public interface FleetUpdateStrategies {
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -77,7 +79,7 @@ public interface FleetUpdateStrategies {
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -91,7 +93,7 @@ public interface FleetUpdateStrategies {
 
     /**
      * Get a FleetUpdateStrategy.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +104,7 @@ public interface FleetUpdateStrategies {
 
     /**
      * Get a FleetUpdateStrategy.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface FleetUpdateStrategies {
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +126,7 @@ public interface FleetUpdateStrategies {
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch The request should only proceed if an entity matches this string.
      * @param context The context to associate with this operation.
@@ -136,7 +138,7 @@ public interface FleetUpdateStrategies {
 
     /**
      * Begins definition for a new FleetUpdateStrategy resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new FleetUpdateStrategy definition.
      */

@@ -26,7 +26,8 @@ public class ApplicationListOptions {
 
     /**
      * The maximum time that the server can spend processing the request, in
-     * seconds. The default is 30 seconds.
+     * seconds. The default is 30 seconds. If the value is larger than 30, the
+     * default will be used instead.
      */
     @JsonProperty(value = "")
     private Integer timeout;
@@ -74,7 +75,7 @@ public class ApplicationListOptions {
     }
 
     /**
-     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * Get the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @return the timeout value
      */
@@ -83,7 +84,7 @@ public class ApplicationListOptions {
     }
 
     /**
-     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds.
+     * Set the maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used instead.
      *
      * @param timeout the timeout value to set
      * @return the ApplicationListOptions object itself.

@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPoolResourcePropertiesComputeProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolResourcePropertiesComputeProfile model =
-            BinaryData
-                .fromString("{\"vmSize\":\"xwczbyscnp\",\"count\":219984358}")
+        ClusterPoolResourcePropertiesComputeProfile model
+            = BinaryData.fromString("{\"vmSize\":\"kryhtnapczwlokj\",\"count\":1793570177}")
                 .toObject(ClusterPoolResourcePropertiesComputeProfile.class);
-        Assertions.assertEquals("xwczbyscnp", model.vmSize());
+        Assertions.assertEquals("kryhtnapczwlokj", model.vmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolResourcePropertiesComputeProfile model =
-            new ClusterPoolResourcePropertiesComputeProfile().withVmSize("xwczbyscnp");
+        ClusterPoolResourcePropertiesComputeProfile model
+            = new ClusterPoolResourcePropertiesComputeProfile().withVmSize("kryhtnapczwlokj");
         model = BinaryData.fromObject(model).toObject(ClusterPoolResourcePropertiesComputeProfile.class);
-        Assertions.assertEquals("xwczbyscnp", model.vmSize());
+        Assertions.assertEquals("kryhtnapczwlokj", model.vmSize());
     }
 }

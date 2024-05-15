@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.frontdoor.fluent.models.WebApplicationFirewallPolicyInner;
 import com.azure.resourcemanager.frontdoor.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in PoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoliciesClient.
+ */
 public interface PoliciesClient {
     /**
      * Lists all of the protection policies within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -30,7 +32,7 @@ public interface PoliciesClient {
 
     /**
      * Lists all of the protection policies within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +45,7 @@ public interface PoliciesClient {
 
     /**
      * Lists all of the protection policies within a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a list of WebApplicationFirewallPolicies as paginated response with {@link PagedIterable}.
@@ -53,7 +55,7 @@ public interface PoliciesClient {
 
     /**
      * Lists all of the protection policies within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,7 +67,7 @@ public interface PoliciesClient {
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param context The context to associate with this operation.
@@ -75,12 +77,12 @@ public interface PoliciesClient {
      * @return defines web application firewall policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebApplicationFirewallPolicyInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String policyName, Context context);
+    Response<WebApplicationFirewallPolicyInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String policyName, Context context);
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,7 +95,7 @@ public interface PoliciesClient {
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -103,12 +105,12 @@ public interface PoliciesClient {
      * @return the {@link SyncPoller} for polling of defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters);
+    SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
+        beginCreateOrUpdate(String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters);
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -124,7 +126,7 @@ public interface PoliciesClient {
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -134,12 +136,12 @@ public interface PoliciesClient {
      * @return defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WebApplicationFirewallPolicyInner createOrUpdate(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters);
+    WebApplicationFirewallPolicyInner createOrUpdate(String resourceGroupName, String policyName,
+        WebApplicationFirewallPolicyInner parameters);
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -150,13 +152,13 @@ public interface PoliciesClient {
      * @return defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WebApplicationFirewallPolicyInner createOrUpdate(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters, Context context);
+    WebApplicationFirewallPolicyInner createOrUpdate(String resourceGroupName, String policyName,
+        WebApplicationFirewallPolicyInner parameters, Context context);
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -166,13 +168,13 @@ public interface PoliciesClient {
      * @return the {@link SyncPoller} for polling of defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner> beginUpdate(
-        String resourceGroupName, String policyName, TagsObject parameters);
+    SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
+        beginUpdate(String resourceGroupName, String policyName, TagsObject parameters);
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -183,13 +185,13 @@ public interface PoliciesClient {
      * @return the {@link SyncPoller} for polling of defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner> beginUpdate(
-        String resourceGroupName, String policyName, TagsObject parameters, Context context);
+    SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
+        beginUpdate(String resourceGroupName, String policyName, TagsObject parameters, Context context);
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -204,7 +206,7 @@ public interface PoliciesClient {
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -215,12 +217,12 @@ public interface PoliciesClient {
      * @return defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WebApplicationFirewallPolicyInner update(
-        String resourceGroupName, String policyName, TagsObject parameters, Context context);
+    WebApplicationFirewallPolicyInner update(String resourceGroupName, String policyName, TagsObject parameters,
+        Context context);
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,7 +235,7 @@ public interface PoliciesClient {
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param context The context to associate with this operation.
@@ -247,7 +249,7 @@ public interface PoliciesClient {
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,7 +261,7 @@ public interface PoliciesClient {
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param context The context to associate with this operation.

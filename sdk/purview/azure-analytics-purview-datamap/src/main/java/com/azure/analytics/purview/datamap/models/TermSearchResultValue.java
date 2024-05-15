@@ -6,32 +6,33 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The context.
  */
 @Immutable
-public final class TermSearchResultValue {
+public final class TermSearchResultValue implements JsonSerializable<TermSearchResultValue> {
     /*
      * The name of the term.
      */
     @Generated
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The name of the glossary which contains the term.
      */
     @Generated
-    @JsonProperty(value = "glossaryName")
     private String glossaryName;
 
     /*
      * The GUID of the term.
      */
     @Generated
-    @JsonProperty(value = "guid")
     private String guid;
 
     /**
@@ -69,5 +70,49 @@ public final class TermSearchResultValue {
     @Generated
     public String getGuid() {
         return this.guid;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("glossaryName", this.glossaryName);
+        jsonWriter.writeStringField("guid", this.guid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TermSearchResultValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TermSearchResultValue if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TermSearchResultValue.
+     */
+    @Generated
+    public static TermSearchResultValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TermSearchResultValue deserializedTermSearchResultValue = new TermSearchResultValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedTermSearchResultValue.name = reader.getString();
+                } else if ("glossaryName".equals(fieldName)) {
+                    deserializedTermSearchResultValue.glossaryName = reader.getString();
+                } else if ("guid".equals(fieldName)) {
+                    deserializedTermSearchResultValue.guid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTermSearchResultValue;
+        });
     }
 }

@@ -33,7 +33,7 @@ public final class AccessInviteUserWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"kind\":\"ijnkrxfrdd\",\"id\":\"ratiz\",\"metadata\":{\"self\":\"nasx\",\"resource_name\":\"tozqyzhftwesgo\",\"created_at\":\"zhonnxkrlgnyhmo\",\"updated_at\":\"xkk\",\"deleted_at\":\"h\"},\"email\":\"gh\",\"auth_type\":\"bdhqxvcxgf\",\"status\":\"dsofbshrns\",\"accepted_at\":\"uswdv\",\"expires_at\":\"ybycnunvj\"}";
+            = "{\"kind\":\"jlzqnhc\",\"id\":\"ql\",\"metadata\":{\"self\":\"oibgsxg\",\"resource_name\":\"fyq\",\"created_at\":\"mpqoxw\",\"updated_at\":\"fdbxiqxeiiqbim\",\"deleted_at\":\"mwwinhehfqpofv\"},\"email\":\"cblembnkbwv\",\"auth_type\":\"xk\",\"status\":\"vqihebwtswbzuwf\",\"accepted_at\":\"urageg\",\"expires_at\":\"vcjfelisdjubggb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,26 +50,25 @@ public final class AccessInviteUserWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        InvitationRecord response
-            = manager.access()
-                .inviteUserWithResponse(
-                    "uu", "fdlwg", new AccessInviteUserAccountModel().withOrganizationId("tsbwtovvtgse")
-                        .withEmail("qfi").withUpn("x").withInvitedUserDetails(new AccessInvitedUserDetails()
-                            .withInvitedEmail("pirgnepttwq").withAuthType("niffcdmqnroj")),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        InvitationRecord response = manager.access()
+            .inviteUserWithResponse("phai", "mxyasflvgsgzw",
+                new AccessInviteUserAccountModel().withOrganizationId("akoi").withEmail("nsmjbl")
+                    .withUpn("jhlnymzotqyryu").withInvitedUserDetails(
+                        new AccessInvitedUserDetails().withInvitedEmail("mqqvxmvwfgtay").withAuthType("nsup")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("ijnkrxfrdd", response.kind());
-        Assertions.assertEquals("ratiz", response.id());
-        Assertions.assertEquals("nasx", response.metadata().self());
-        Assertions.assertEquals("tozqyzhftwesgo", response.metadata().resourceName());
-        Assertions.assertEquals("zhonnxkrlgnyhmo", response.metadata().createdAt());
-        Assertions.assertEquals("xkk", response.metadata().updatedAt());
-        Assertions.assertEquals("h", response.metadata().deletedAt());
-        Assertions.assertEquals("gh", response.email());
-        Assertions.assertEquals("bdhqxvcxgf", response.authType());
-        Assertions.assertEquals("dsofbshrns", response.status());
-        Assertions.assertEquals("uswdv", response.acceptedAt());
-        Assertions.assertEquals("ybycnunvj", response.expiresAt());
+        Assertions.assertEquals("jlzqnhc", response.kind());
+        Assertions.assertEquals("ql", response.id());
+        Assertions.assertEquals("oibgsxg", response.metadata().self());
+        Assertions.assertEquals("fyq", response.metadata().resourceName());
+        Assertions.assertEquals("mpqoxw", response.metadata().createdAt());
+        Assertions.assertEquals("fdbxiqxeiiqbim", response.metadata().updatedAt());
+        Assertions.assertEquals("mwwinhehfqpofv", response.metadata().deletedAt());
+        Assertions.assertEquals("cblembnkbwv", response.email());
+        Assertions.assertEquals("xk", response.authType());
+        Assertions.assertEquals("vqihebwtswbzuwf", response.status());
+        Assertions.assertEquals("urageg", response.acceptedAt());
+        Assertions.assertEquals("vcjfelisdjubggb", response.expiresAt());
     }
 }

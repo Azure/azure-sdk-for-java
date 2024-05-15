@@ -16,19 +16,21 @@ public final class ActivityDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActivityDependency model = BinaryData.fromString(
-            "{\"activity\":\"wcoezbrhub\",\"dependencyConditions\":[\"Succeeded\"],\"\":{\"okkqfqjbvleo\":\"dataygo\"}}")
+            "{\"activity\":\"biorktal\",\"dependencyConditions\":[\"Skipped\",\"Succeeded\",\"Skipped\",\"Skipped\"],\"\":{\"iloxggdufiq\":\"datahxmsivfo\",\"hvcyyysfg\":\"datadieuzaofj\"}}")
             .toObject(ActivityDependency.class);
-        Assertions.assertEquals("wcoezbrhub", model.activity());
-        Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependencyConditions().get(0));
+        Assertions.assertEquals("biorktal", model.activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependencyConditions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActivityDependency model = new ActivityDependency().withActivity("wcoezbrhub")
-            .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED)).withAdditionalProperties(mapOf());
+        ActivityDependency model = new ActivityDependency().withActivity("biorktal")
+            .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED, DependencyCondition.SUCCEEDED,
+                DependencyCondition.SKIPPED, DependencyCondition.SKIPPED))
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ActivityDependency.class);
-        Assertions.assertEquals("wcoezbrhub", model.activity());
-        Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependencyConditions().get(0));
+        Assertions.assertEquals("biorktal", model.activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependencyConditions().get(0));
     }
 
     // Use "Map.of" if available

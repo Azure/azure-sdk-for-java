@@ -5,27 +5,50 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Details about the target where the backup content will be stored. */
+/**
+ * Details about the target where the backup content will be stored.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = BackupStoreDetails.class)
+    defaultImpl = BackupStoreDetails.class,
+    visible = true)
 @JsonTypeName("BackupStoreDetails")
-@JsonSubTypes({@JsonSubTypes.Type(name = "FullBackupStoreDetails", value = FullBackupStoreDetails.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "FullBackupStoreDetails", value = FullBackupStoreDetails.class) })
 @Immutable
 public class BackupStoreDetails {
-    /** Creates an instance of BackupStoreDetails class. */
+    /*
+     * Type of the specific object - used for deserializing
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType;
+
+    /**
+     * Creates an instance of BackupStoreDetails class.
+     */
     public BackupStoreDetails() {
+        this.objectType = "BackupStoreDetails";
+    }
+
+    /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

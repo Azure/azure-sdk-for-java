@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,123 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-04-23)
+
+- Azure Resource Manager support client library for Java. This package contains Microsoft Azure SDK for support Management SDK. Microsoft Azure Support Resource Provider. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+## 1.0.0-beta.4 (2024-03-20)
+
+- Azure Resource Manager support client library for Java. This package contains Microsoft Azure SDK for support Management SDK. Microsoft Azure Support Resource Provider. Package tag package-preview-2023-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.SupportTicketChatTranscriptsNoSubscriptions` was removed
+
+* `models.SupportTicketCommunicationsNoSubscriptions` was removed
+
+#### `models.FileDetails` was modified
+
+* `java.lang.Float chunkSize()` -> `java.lang.Integer chunkSize()`
+* `java.lang.Float numberOfChunks()` -> `java.lang.Integer numberOfChunks()`
+* `java.lang.Float fileSize()` -> `java.lang.Integer fileSize()`
+
+#### `models.FileDetails$Definition` was modified
+
+* `withChunkSize(java.lang.Float)` was removed
+* `withNumberOfChunks(java.lang.Float)` was removed
+* `withFileSize(java.lang.Float)` was removed
+
+#### `SupportManager` was modified
+
+* `supportTicketChatTranscriptsNoSubscriptions()` was removed
+* `supportTicketCommunicationsNoSubscriptions()` was removed
+
+#### `models.UploadFile` was modified
+
+* `java.lang.Float chunkIndex()` -> `java.lang.Integer chunkIndex()`
+* `withChunkIndex(java.lang.Float)` was removed
+
+### Features Added
+
+* `models.ServiceClassifications` was added
+
+* `models.LookUpResourceIdRequest` was added
+
+* `models.ProblemClassificationsNoSubscriptions` was added
+
+* `models.ServiceClassificationRequest` was added
+
+* `models.IsTemporaryTicket` was added
+
+* `models.ProblemClassificationsClassificationOutput` was added
+
+* `models.LookUpResourceIds` was added
+
+* `models.ServiceClassificationOutput` was added
+
+* `models.ProblemClassificationsClassificationResult` was added
+
+* `models.LookUpResourceIdResponse` was added
+
+* `models.ServiceClassificationAnswer` was added
+
+* `models.ServiceClassificationsNoSubscriptions` was added
+
+* `models.ProblemClassificationProperties` was added
+
+* `models.ProblemClassificationsClassificationInput` was added
+
+* `models.ResourceType` was added
+
+#### `models.ProblemClassification` was modified
+
+* `metadata()` was added
+* `parentProblemClassification()` was added
+
+#### `models.ProblemClassifications` was modified
+
+* `classifyProblems(java.lang.String,models.ProblemClassificationsClassificationInput)` was added
+* `classifyProblemsWithResponse(java.lang.String,models.ProblemClassificationsClassificationInput,com.azure.core.util.Context)` was added
+
+#### `models.Service` was modified
+
+* `metadata()` was added
+
+#### `models.FileDetails$Definition` was modified
+
+* `withFileSize(java.lang.Integer)` was added
+* `withChunkSize(java.lang.Integer)` was added
+* `withNumberOfChunks(java.lang.Integer)` was added
+
+#### `SupportManager` was modified
+
+* `serviceClassificationsNoSubscriptions()` was added
+* `problemClassificationsNoSubscriptions()` was added
+* `lookUpResourceIds()` was added
+* `serviceClassifications()` was added
+
+#### `models.ChatTranscriptsNoSubscriptions` was modified
+
+* `list(java.lang.String)` was added
+* `list(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.UploadFile` was modified
+
+* `withChunkIndex(java.lang.Integer)` was added
+
+#### `models.CommunicationsNoSubscriptions` was modified
+
+* `list(java.lang.String)` was added
+* `list(java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.SupportTicketDetails` was modified
+
+* `isTemporaryTicket()` was added
+
+#### `models.SupportTicketDetails$Definition` was modified
+
+* `withEnrollmentId(java.lang.String)` was added
 
 ## 1.0.0-beta.3 (2023-10-23)
 

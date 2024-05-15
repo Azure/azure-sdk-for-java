@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.DynamicsLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * Dynamics linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DynamicsLinkedService.class, visible = true)
 @JsonTypeName("Dynamics")
 @Fluent
 public final class DynamicsLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Dynamics";
+
     /*
      * Dynamics linked service properties.
      */
@@ -30,6 +38,16 @@ public final class DynamicsLinkedService extends LinkedService {
      * Creates an instance of DynamicsLinkedService class.
      */
     public DynamicsLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -103,8 +121,8 @@ public final class DynamicsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the hostname property: The host name of the on-premises Dynamics server. The property is required for
-     * on-prem and not allowed for online. Type: string (or Expression with resultType string).
+     * Get the hostname property: The host name of the on-premises Dynamics server. The property is required for on-prem
+     * and not allowed for online. Type: string (or Expression with resultType string).
      * 
      * @return the hostname value.
      */
@@ -113,8 +131,8 @@ public final class DynamicsLinkedService extends LinkedService {
     }
 
     /**
-     * Set the hostname property: The host name of the on-premises Dynamics server. The property is required for
-     * on-prem and not allowed for online. Type: string (or Expression with resultType string).
+     * Set the hostname property: The host name of the on-premises Dynamics server. The property is required for on-prem
+     * and not allowed for online. Type: string (or Expression with resultType string).
      * 
      * @param hostname the hostname value to set.
      * @return the DynamicsLinkedService object itself.
@@ -232,8 +250,8 @@ public final class DynamicsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the username property: User name to access the Dynamics instance. Type: string (or Expression with
-     * resultType string).
+     * Get the username property: User name to access the Dynamics instance. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the username value.
      */
@@ -242,8 +260,8 @@ public final class DynamicsLinkedService extends LinkedService {
     }
 
     /**
-     * Set the username property: User name to access the Dynamics instance. Type: string (or Expression with
-     * resultType string).
+     * Set the username property: User name to access the Dynamics instance. Type: string (or Expression with resultType
+     * string).
      * 
      * @param username the username value to set.
      * @return the DynamicsLinkedService object itself.
@@ -305,9 +323,9 @@ public final class DynamicsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the servicePrincipalCredentialType value.
      */
@@ -316,9 +334,9 @@ public final class DynamicsLinkedService extends LinkedService {
     }
 
     /**
-     * Set the servicePrincipalCredentialType property: The service principal credential type to use in
-     * Server-To-Server authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate.
-     * Type: string (or Expression with resultType string).
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
      * 
      * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
      * @return the DynamicsLinkedService object itself.
@@ -361,8 +379,8 @@ public final class DynamicsLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -371,8 +389,8 @@ public final class DynamicsLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DynamicsLinkedService object itself.
@@ -417,8 +435,9 @@ public final class DynamicsLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model DynamicsLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model DynamicsLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

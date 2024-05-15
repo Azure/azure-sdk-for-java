@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Schedule enable or disable status. Indicates whether the schedule applied to is either enabled or disabled. */
+/**
+ * Schedule enable or disable status. Indicates whether the schedule applied to is either enabled or disabled.
+ */
 public final class ScheduleEnableStatus extends ExpandableStringEnum<ScheduleEnableStatus> {
-    /** Static value Enabled for ScheduleEnableStatus. */
+    /**
+     * Static value Enabled for ScheduleEnableStatus.
+     */
     public static final ScheduleEnableStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for ScheduleEnableStatus. */
+    /**
+     * Static value Disabled for ScheduleEnableStatus.
+     */
     public static final ScheduleEnableStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of ScheduleEnableStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ScheduleEnableStatus extends ExpandableStringEnum<ScheduleEna
 
     /**
      * Creates or finds a ScheduleEnableStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScheduleEnableStatus.
      */
@@ -38,7 +44,7 @@ public final class ScheduleEnableStatus extends ExpandableStringEnum<ScheduleEna
 
     /**
      * Gets known ScheduleEnableStatus values.
-     *
+     * 
      * @return known ScheduleEnableStatus values.
      */
     public static Collection<ScheduleEnableStatus> values() {

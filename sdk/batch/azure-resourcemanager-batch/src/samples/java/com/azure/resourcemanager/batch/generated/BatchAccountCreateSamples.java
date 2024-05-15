@@ -20,7 +20,7 @@ import java.util.Map;
 public final class BatchAccountCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/BatchAccountCreate_BYOS.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/BatchAccountCreate_BYOS.json
      */
     /**
      * Sample code: BatchAccountCreate_BYOS.
@@ -40,7 +40,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * BatchAccountCreate_UserAssignedIdentity.json
      */
     /**
@@ -62,7 +62,7 @@ public final class BatchAccountCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PrivateBatchAccountCreate.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PrivateBatchAccountCreate.json
      */
     /**
      * Sample code: PrivateBatchAccountCreate.
@@ -81,7 +81,7 @@ public final class BatchAccountCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
      * BatchAccountCreate_SystemAssignedIdentity.json
      */
     /**
@@ -100,7 +100,7 @@ public final class BatchAccountCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/BatchAccountCreate_Default.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/BatchAccountCreate_Default.json
      */
     /**
      * Sample code: BatchAccountCreate_Default.

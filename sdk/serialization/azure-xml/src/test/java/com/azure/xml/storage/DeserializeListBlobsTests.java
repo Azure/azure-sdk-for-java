@@ -3,7 +3,7 @@
 
 package com.azure.xml.storage;
 
-import com.azure.xml.implementation.DefaultXmlReader;
+import com.azure.xml.XmlReader;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.stream.XMLStreamException;
@@ -28,7 +28,7 @@ public class DeserializeListBlobsTests {
             .setContainerName("b9a86bdc0b9a86bdca9a521096fb76e1772d14cbaabf")
             .setSegment(new BlobFlatListSegment());
 
-        ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(DefaultXmlReader.fromString(xml));
+        ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(XmlReader.fromString(xml));
 
         validateSegmentResponse(expected, actual);
     }
@@ -90,7 +90,7 @@ public class DeserializeListBlobsTests {
             .setNextMarker(
                 "2!120!MDAwMDQ1IXQzNGZiY2JiYzQzNGZiY2JiYzI2YTgwMjA0YzRkMTlhYTliYTIxNDQ0NWFjYyEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-");
 
-        ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(DefaultXmlReader.fromString(xml));
+        ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(XmlReader.fromString(xml));
 
         validateSegmentResponse(expected, actual);
     }
@@ -171,7 +171,7 @@ public class DeserializeListBlobsTests {
             .setContainerName("42735743042735743c8d29610ac1e2478dbcc4df1a99")
             .setSegment(new BlobFlatListSegment().setBlobItems(expectedBlobs));
 
-        ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(DefaultXmlReader.fromString(xml));
+        ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(XmlReader.fromString(xml));
 
         validateSegmentResponse(expected, actual);
     }
@@ -253,7 +253,7 @@ public class DeserializeListBlobsTests {
             .setContainerName("3f9c116203f9c11629bd22488e44f35974dcc48c2aa0")
             .setSegment(new BlobFlatListSegment().setBlobItems(expectedBlobs));
 
-        ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(DefaultXmlReader.fromString(xml));
+        ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(XmlReader.fromString(xml));
 
         validateSegmentResponse(expected, actual);
     }
@@ -320,7 +320,7 @@ public class DeserializeListBlobsTests {
                 .setMaxResults(5)
                 .setSegment(new BlobFlatListSegment().setBlobItems(expectedBlobs));
 
-        ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(DefaultXmlReader.fromString(xml));
+        ListBlobsFlatSegmentResponse actual = ListBlobsFlatSegmentResponse.fromXml(XmlReader.fromString(xml));
 
         validateSegmentResponse(expected, actual);
     }

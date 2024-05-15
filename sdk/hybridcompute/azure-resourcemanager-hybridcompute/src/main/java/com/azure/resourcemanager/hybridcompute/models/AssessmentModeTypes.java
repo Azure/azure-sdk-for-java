@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the assessment mode. */
+/**
+ * Specifies the assessment mode.
+ */
 public final class AssessmentModeTypes extends ExpandableStringEnum<AssessmentModeTypes> {
-    /** Static value ImageDefault for AssessmentModeTypes. */
+    /**
+     * Static value ImageDefault for AssessmentModeTypes.
+     */
     public static final AssessmentModeTypes IMAGE_DEFAULT = fromString("ImageDefault");
 
-    /** Static value AutomaticByPlatform for AssessmentModeTypes. */
+    /**
+     * Static value AutomaticByPlatform for AssessmentModeTypes.
+     */
     public static final AssessmentModeTypes AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
      * Creates a new instance of AssessmentModeTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AssessmentModeTypes extends ExpandableStringEnum<AssessmentMo
 
     /**
      * Creates or finds a AssessmentModeTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AssessmentModeTypes.
      */
@@ -38,7 +44,7 @@ public final class AssessmentModeTypes extends ExpandableStringEnum<AssessmentMo
 
     /**
      * Gets known AssessmentModeTypes values.
-     *
+     * 
      * @return known AssessmentModeTypes values.
      */
     public static Collection<AssessmentModeTypes> values() {

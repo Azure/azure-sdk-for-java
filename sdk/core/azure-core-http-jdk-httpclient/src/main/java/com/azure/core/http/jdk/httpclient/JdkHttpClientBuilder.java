@@ -25,13 +25,19 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
+import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getTimeout;
+
 /**
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
  * first introduced as preview in JDK 9, but made generally available from JDK 11 onwards.
  */
 public class JdkHttpClientBuilder {
+    private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
 
-    private static final Duration DEFAULT_CONNECT_TIMEOUT = Duration.ofSeconds(60);
     private static final String JAVA_HOME = System.getProperty("java.home");
     private static final String JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS = "jdk.httpclient.allowRestrictedHeaders";
 
@@ -48,13 +54,15 @@ public class JdkHttpClientBuilder {
         DEFAULT_RESTRICTED_HEADERS = Set.of("connection", "content-length", "expect", "host", "upgrade");
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
-
     private java.net.http.HttpClient.Builder httpClientBuilder;
-    private Duration connectionTimeout;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
     private Executor executor;
+
+    private Duration connectionTimeout;
+    private Duration writeTimeout;
+    private Duration responseTimeout;
+    private Duration readTimeout;
 
     /**
      * Creates JdkHttpClientBuilder.
@@ -100,7 +108,7 @@ public class JdkHttpClientBuilder {
      * </pre>
      * <!-- end com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.connectionTimeout#Duration -->
      *
-     * The default connection timeout is 60 seconds.
+     * The default connection timeout is 10 seconds.
      *
      * @param connectionTimeout the connection timeout
      * @return the updated JdkHttpClientBuilder object
@@ -108,6 +116,66 @@ public class JdkHttpClientBuilder {
     public JdkHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
         // setConnectionTimeout can be null
         this.connectionTimeout = connectionTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the writing timeout for a request to be sent.
+     * <p>
+     * The writing timeout does not apply to the entire request but to the request being sent over the wire. For example
+     * a request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the last
+     * write tracker will update when each operation completes and the outbound buffer will be periodically checked to
+     * determine if it is still draining.
+     * <p>
+     * If {@code writeTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT} or a 60-second
+     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no write timeout will be
+     * applied. When applying the timeout the greatest of one millisecond and the value of {@code writeTimeout} will be
+     * used.
+     *
+     * @param writeTimeout Write operation timeout duration.
+     * @return The updated {@link JdkHttpClientBuilder} object.
+     */
+    public JdkHttpClientBuilder writeTimeout(Duration writeTimeout) {
+        this.writeTimeout = writeTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the response timeout duration used when waiting for a server to reply.
+     * <p>
+     * The response timeout begins once the request write completes and finishes once the first response read is
+     * triggered when the server response is received.
+     * <p>
+     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT} or a
+     * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied to the response. When applying the timeout the greatest of one millisecond and the value of {@code
+     * responseTimeout} will be used.
+     *
+     * @param responseTimeout Response timeout duration.
+     * @return The updated {@link JdkHttpClientBuilder} object.
+     */
+    public JdkHttpClientBuilder responseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the read timeout duration used when reading the server response.
+     * <p>
+     * The read timeout begins once the first response read is triggered after the server response is received. This
+     * timeout triggers periodically but won't fire its operation if another read operation has completed between when
+     * the timeout is triggered and completes.
+     * <p>
+     * If {@code readTimeout} is null or {@link Configuration#PROPERTY_AZURE_REQUEST_READ_TIMEOUT} or a 60-second
+     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout period will be
+     * applied to response read. When applying the timeout the greatest of one millisecond and the value of {@code
+     * readTimeout} will be used.
+     *
+     * @param readTimeout Read timeout duration.
+     * @return The updated {@link JdkHttpClientBuilder} object.
+     */
+    public JdkHttpClientBuilder readTimeout(Duration readTimeout) {
+        this.readTimeout = readTimeout;
         return this;
     }
 
@@ -163,9 +231,11 @@ public class JdkHttpClientBuilder {
         // Azure JDK http client supports HTTP 1.1 by default.
         httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
 
-        httpClientBuilder = (this.connectionTimeout != null)
-            ? httpClientBuilder.connectTimeout(this.connectionTimeout)
-            : httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
+        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, getDefaultConnectTimeout()));
+
+        Duration writeTimeout = getTimeout(this.writeTimeout, getDefaultWriteTimeout());
+        Duration responseTimeout = getTimeout(this.responseTimeout, getDefaultResponseTimeout());
+        Duration readTimeout = getTimeout(this.readTimeout, getDefaultReadTimeout());
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -187,7 +257,8 @@ public class JdkHttpClientBuilder {
                     new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
             }
         }
-        return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()));
+        return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
+            writeTimeout, responseTimeout, readTimeout);
     }
 
     Set<String> getRestrictedHeaders() {

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDataExplorerCommandActivityTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,21 @@ import java.util.List;
 /**
  * Azure Data Explorer command activity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureDataExplorerCommandActivity.class,
+    visible = true)
 @JsonTypeName("AzureDataExplorerCommand")
 @Fluent
 public final class AzureDataExplorerCommandActivity extends ExecutionActivity {
+    /*
+     * Type of activity.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureDataExplorerCommand";
+
     /*
      * Azure Data Explorer command activity properties.
      */
@@ -30,6 +42,16 @@ public final class AzureDataExplorerCommandActivity extends ExecutionActivity {
      * Creates an instance of AzureDataExplorerCommandActivity class.
      */
     public AzureDataExplorerCommandActivity() {
+    }
+
+    /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -172,8 +194,9 @@ public final class AzureDataExplorerCommandActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model AzureDataExplorerCommandActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzureDataExplorerCommandActivity"));
         } else {
             innerTypeProperties().validate();
         }

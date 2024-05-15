@@ -199,6 +199,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.support.models.IsTemporaryTicket",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.support.models.UserConsent",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,

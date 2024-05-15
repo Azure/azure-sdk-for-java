@@ -4,204 +4,187 @@
 
 package com.azure.resourcemanager.sphere.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceInner;
-import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of Device. */
+/**
+ * An immutable client-side representation of Device.
+ */
 public interface Device {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the deviceId property: Device ID.
-     *
-     * @return the deviceId value.
+     * Gets the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    String deviceId();
+    DeviceProperties properties();
 
     /**
-     * Gets the chipSku property: SKU of the chip.
-     *
-     * @return the chipSku value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    String chipSku();
-
-    /**
-     * Gets the lastAvailableOsVersion property: OS version available for installation when update requested.
-     *
-     * @return the lastAvailableOsVersion value.
-     */
-    String lastAvailableOsVersion();
-
-    /**
-     * Gets the lastInstalledOsVersion property: OS version running on device when update requested.
-     *
-     * @return the lastInstalledOsVersion value.
-     */
-    String lastInstalledOsVersion();
-
-    /**
-     * Gets the lastOsUpdateUtc property: Time when update requested and new OS version available.
-     *
-     * @return the lastOsUpdateUtc value.
-     */
-    OffsetDateTime lastOsUpdateUtc();
-
-    /**
-     * Gets the lastUpdateRequestUtc property: Time when update was last requested.
-     *
-     * @return the lastUpdateRequestUtc value.
-     */
-    OffsetDateTime lastUpdateRequestUtc();
-
-    /**
-     * Gets the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
+    SystemData systemData();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.sphere.fluent.models.DeviceInner object.
-     *
+     * 
      * @return the inner object.
      */
     DeviceInner innerModel();
 
-    /** The entirety of the Device definition. */
+    /**
+     * The entirety of the Device definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The Device definition stages. */
+    /**
+     * The Device definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Device definition. */
+        /**
+         * The first stage of the Device definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the Device definition allowing to specify parent resource. */
+        /**
+         * The stage of the Device definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, catalogName, productName, deviceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param catalogName Name of catalog.
              * @param productName Name of product.
              * @param deviceGroupName Name of device group.
              * @return the next definition stage.
              */
-            WithCreate withExistingDeviceGroup(
-                String resourceGroupName, String catalogName, String productName, String deviceGroupName);
+            WithCreate withExistingDeviceGroup(String resourceGroupName, String catalogName, String productName,
+                String deviceGroupName);
         }
 
         /**
          * The stage of the Device definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithDeviceId {
+        interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Device create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Device create(Context context);
         }
 
-        /** The stage of the Device definition allowing to specify deviceId. */
-        interface WithDeviceId {
+        /**
+         * The stage of the Device definition allowing to specify properties.
+         */
+        interface WithProperties {
             /**
-             * Specifies the deviceId property: Device ID.
-             *
-             * @param deviceId Device ID.
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
-            WithCreate withDeviceId(String deviceId);
+            WithCreate withProperties(DeviceProperties properties);
         }
     }
 
     /**
      * Begins update for the Device resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Device.Update update();
 
-    /** The template for Device update. */
-    interface Update extends UpdateStages.WithDeviceGroupId {
+    /**
+     * The template for Device update.
+     */
+    interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Device apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Device apply(Context context);
     }
 
-    /** The Device update stages. */
+    /**
+     * The Device update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Device update allowing to specify deviceGroupId. */
-        interface WithDeviceGroupId {
+        /**
+         * The stage of the Device update allowing to specify properties.
+         */
+        interface WithProperties {
             /**
-             * Specifies the deviceGroupId property: Device group id.
-             *
-             * @param deviceGroupId Device group id.
+             * Specifies the properties property: The updatable properties of the Device..
+             * 
+             * @param properties The updatable properties of the Device.
              * @return the next definition stage.
              */
-            Update withDeviceGroupId(String deviceGroupId);
+            Update withProperties(DeviceUpdateProperties properties);
         }
     }
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Device refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -210,20 +193,20 @@ public interface Device {
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param generateDeviceCapabilityRequest Generate capability image request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return signed device capability image response.
      */
-    SignedCapabilityImageResponse generateCapabilityImage(
-        GenerateCapabilityImageRequest generateDeviceCapabilityRequest);
+    SignedCapabilityImageResponse
+        generateCapabilityImage(GenerateCapabilityImageRequest generateDeviceCapabilityRequest);
 
     /**
      * Generates the capability image for the device. Use '.unassigned' or '.default' for the device group and product
      * names to generate the image for a device that does not belong to a specific device group and product.
-     *
+     * 
      * @param generateDeviceCapabilityRequest Generate capability image request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,6 +214,6 @@ public interface Device {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return signed device capability image response.
      */
-    SignedCapabilityImageResponse generateCapabilityImage(
-        GenerateCapabilityImageRequest generateDeviceCapabilityRequest, Context context);
+    SignedCapabilityImageResponse
+        generateCapabilityImage(GenerateCapabilityImageRequest generateDeviceCapabilityRequest, Context context);
 }

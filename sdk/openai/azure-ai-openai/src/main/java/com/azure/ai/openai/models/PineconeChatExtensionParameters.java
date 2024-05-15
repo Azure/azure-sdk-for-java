@@ -5,85 +5,75 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters for configuring Azure OpenAI Pinecone chat extensions. The supported authentication type is APIKey.
  */
 @Fluent
-public final class PineconeChatExtensionParameters {
+public final class PineconeChatExtensionParameters implements JsonSerializable<PineconeChatExtensionParameters> {
 
     /*
      * The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation
-     * of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
      */
     @Generated
-    @JsonProperty(value = "authentication")
     private OnYourDataAuthenticationOptions authentication;
 
     /*
      * The configured top number of documents to feature for the configured query.
      */
     @Generated
-    @JsonProperty(value = "top_n_documents")
     private Integer topNDocuments;
 
     /*
      * Whether queries should be restricted to use of indexed data.
      */
     @Generated
-    @JsonProperty(value = "in_scope")
     private Boolean inScope;
 
     /*
-     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the
-     * precision but lower recall of the answer.
+     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
      */
     @Generated
-    @JsonProperty(value = "strictness")
     private Integer strictness;
 
     /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a
-     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
-     * limit for it, and it counts against the overall token limit.
+     * Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      */
     @Generated
-    @JsonProperty(value = "role_information")
     private String roleInformation;
 
     /*
      * The environment name of Pinecone.
      */
     @Generated
-    @JsonProperty(value = "environment")
-    private String environment;
+    private final String environment;
 
     /*
      * The name of the Pinecone database index.
      */
     @Generated
-    @JsonProperty(value = "index_name")
-    private String indexName;
+    private final String indexName;
 
     /*
      * Customized field mapping behavior to use when interacting with the search index.
      */
     @Generated
-    @JsonProperty(value = "fields_mapping")
-    private PineconeFieldMappingOptions fieldsMapping;
+    private final PineconeFieldMappingOptions fieldsMapping;
 
     /*
      * The embedding dependency for vector search.
      */
     @Generated
-    @JsonProperty(value = "embedding_dependency")
-    private OnYourDataVectorizationSource embeddingDependency;
+    private final OnYourDataVectorizationSource embeddingDependency;
 
     /**
      * Get the authentication property: The authentication method to use when accessing the defined data source.
@@ -260,14 +250,87 @@ public final class PineconeChatExtensionParameters {
      * @param embeddingDependency the embeddingDependency value to set.
      */
     @Generated
-    @JsonCreator
-    public PineconeChatExtensionParameters(@JsonProperty(value = "environment") String environment,
-        @JsonProperty(value = "index_name") String indexName,
-        @JsonProperty(value = "fields_mapping") PineconeFieldMappingOptions fieldsMapping,
-        @JsonProperty(value = "embedding_dependency") OnYourDataVectorizationSource embeddingDependency) {
+    public PineconeChatExtensionParameters(String environment, String indexName,
+        PineconeFieldMappingOptions fieldsMapping, OnYourDataVectorizationSource embeddingDependency) {
         this.environment = environment;
         this.indexName = indexName;
         this.fieldsMapping = fieldsMapping;
         this.embeddingDependency = embeddingDependency;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environment", this.environment);
+        jsonWriter.writeStringField("index_name", this.indexName);
+        jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
+        jsonWriter.writeJsonField("embedding_dependency", this.embeddingDependency);
+        jsonWriter.writeJsonField("authentication", this.authentication);
+        jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
+        jsonWriter.writeBooleanField("in_scope", this.inScope);
+        jsonWriter.writeNumberField("strictness", this.strictness);
+        jsonWriter.writeStringField("role_information", this.roleInformation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PineconeChatExtensionParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PineconeChatExtensionParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PineconeChatExtensionParameters.
+     */
+    @Generated
+    public static PineconeChatExtensionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String environment = null;
+            String indexName = null;
+            PineconeFieldMappingOptions fieldsMapping = null;
+            OnYourDataVectorizationSource embeddingDependency = null;
+            OnYourDataAuthenticationOptions authentication = null;
+            Integer topNDocuments = null;
+            Boolean inScope = null;
+            Integer strictness = null;
+            String roleInformation = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("environment".equals(fieldName)) {
+                    environment = reader.getString();
+                } else if ("index_name".equals(fieldName)) {
+                    indexName = reader.getString();
+                } else if ("fields_mapping".equals(fieldName)) {
+                    fieldsMapping = PineconeFieldMappingOptions.fromJson(reader);
+                } else if ("embedding_dependency".equals(fieldName)) {
+                    embeddingDependency = OnYourDataVectorizationSource.fromJson(reader);
+                } else if ("authentication".equals(fieldName)) {
+                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
+                } else if ("top_n_documents".equals(fieldName)) {
+                    topNDocuments = reader.getNullable(JsonReader::getInt);
+                } else if ("in_scope".equals(fieldName)) {
+                    inScope = reader.getNullable(JsonReader::getBoolean);
+                } else if ("strictness".equals(fieldName)) {
+                    strictness = reader.getNullable(JsonReader::getInt);
+                } else if ("role_information".equals(fieldName)) {
+                    roleInformation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            PineconeChatExtensionParameters deserializedPineconeChatExtensionParameters
+                = new PineconeChatExtensionParameters(environment, indexName, fieldsMapping, embeddingDependency);
+            deserializedPineconeChatExtensionParameters.authentication = authentication;
+            deserializedPineconeChatExtensionParameters.topNDocuments = topNDocuments;
+            deserializedPineconeChatExtensionParameters.inScope = inScope;
+            deserializedPineconeChatExtensionParameters.strictness = strictness;
+            deserializedPineconeChatExtensionParameters.roleInformation = roleInformation;
+            return deserializedPineconeChatExtensionParameters;
+        });
     }
 }

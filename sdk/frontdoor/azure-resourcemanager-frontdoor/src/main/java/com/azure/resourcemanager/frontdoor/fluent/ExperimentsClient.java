@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.frontdoor.fluent.models.ExperimentInner;
 import com.azure.resourcemanager.frontdoor.models.ExperimentUpdateModel;
 
-/** An instance of this class provides access to all the operations defined in ExperimentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExperimentsClient.
+ */
 public interface ExperimentsClient {
     /**
      * Gets a list of Experiments.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,7 +33,7 @@ public interface ExperimentsClient {
 
     /**
      * Gets a list of Experiments.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.
@@ -45,7 +47,7 @@ public interface ExperimentsClient {
 
     /**
      * Gets an Experiment by ExperimentName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -56,12 +58,12 @@ public interface ExperimentsClient {
      * @return an Experiment by ExperimentName along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExperimentInner> getWithResponse(
-        String resourceGroupName, String profileName, String experimentName, Context context);
+    Response<ExperimentInner> getWithResponse(String resourceGroupName, String profileName, String experimentName,
+        Context context);
 
     /**
      * Gets an Experiment by ExperimentName.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -75,7 +77,7 @@ public interface ExperimentsClient {
 
     /**
      * Creates or updates an Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -86,12 +88,12 @@ public interface ExperimentsClient {
      * @return the {@link SyncPoller} for polling of defines the properties of an Experiment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(
-        String resourceGroupName, String profileName, String experimentName, ExperimentInner parameters);
+    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(String resourceGroupName,
+        String profileName, String experimentName, ExperimentInner parameters);
 
     /**
      * Creates or updates an Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -103,16 +105,12 @@ public interface ExperimentsClient {
      * @return the {@link SyncPoller} for polling of defines the properties of an Experiment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String profileName,
-        String experimentName,
-        ExperimentInner parameters,
-        Context context);
+    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginCreateOrUpdate(String resourceGroupName,
+        String profileName, String experimentName, ExperimentInner parameters, Context context);
 
     /**
      * Creates or updates an Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -123,12 +121,12 @@ public interface ExperimentsClient {
      * @return defines the properties of an Experiment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExperimentInner createOrUpdate(
-        String resourceGroupName, String profileName, String experimentName, ExperimentInner parameters);
+    ExperimentInner createOrUpdate(String resourceGroupName, String profileName, String experimentName,
+        ExperimentInner parameters);
 
     /**
      * Creates or updates an Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -140,18 +138,14 @@ public interface ExperimentsClient {
      * @return defines the properties of an Experiment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExperimentInner createOrUpdate(
-        String resourceGroupName,
-        String profileName,
-        String experimentName,
-        ExperimentInner parameters,
-        Context context);
+    ExperimentInner createOrUpdate(String resourceGroupName, String profileName, String experimentName,
+        ExperimentInner parameters, Context context);
 
     /**
      * Updates an Experiment by Experiment id
-     *
-     * <p>Updates an Experiment.
-     *
+     * 
+     * Updates an Experiment.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -162,14 +156,14 @@ public interface ExperimentsClient {
      * @return the {@link SyncPoller} for polling of defines the properties of an Experiment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(
-        String resourceGroupName, String profileName, String experimentName, ExperimentUpdateModel parameters);
+    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(String resourceGroupName, String profileName,
+        String experimentName, ExperimentUpdateModel parameters);
 
     /**
      * Updates an Experiment by Experiment id
-     *
-     * <p>Updates an Experiment.
-     *
+     * 
+     * Updates an Experiment.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -181,18 +175,14 @@ public interface ExperimentsClient {
      * @return the {@link SyncPoller} for polling of defines the properties of an Experiment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(
-        String resourceGroupName,
-        String profileName,
-        String experimentName,
-        ExperimentUpdateModel parameters,
-        Context context);
+    SyncPoller<PollResult<ExperimentInner>, ExperimentInner> beginUpdate(String resourceGroupName, String profileName,
+        String experimentName, ExperimentUpdateModel parameters, Context context);
 
     /**
      * Updates an Experiment by Experiment id
-     *
-     * <p>Updates an Experiment.
-     *
+     * 
+     * Updates an Experiment.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -203,14 +193,14 @@ public interface ExperimentsClient {
      * @return defines the properties of an Experiment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExperimentInner update(
-        String resourceGroupName, String profileName, String experimentName, ExperimentUpdateModel parameters);
+    ExperimentInner update(String resourceGroupName, String profileName, String experimentName,
+        ExperimentUpdateModel parameters);
 
     /**
      * Updates an Experiment by Experiment id
-     *
-     * <p>Updates an Experiment.
-     *
+     * 
+     * Updates an Experiment.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -222,16 +212,12 @@ public interface ExperimentsClient {
      * @return defines the properties of an Experiment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExperimentInner update(
-        String resourceGroupName,
-        String profileName,
-        String experimentName,
-        ExperimentUpdateModel parameters,
-        Context context);
+    ExperimentInner update(String resourceGroupName, String profileName, String experimentName,
+        ExperimentUpdateModel parameters, Context context);
 
     /**
      * Deletes an Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -245,7 +231,7 @@ public interface ExperimentsClient {
 
     /**
      * Deletes an Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -256,12 +242,12 @@ public interface ExperimentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String profileName, String experimentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String profileName, String experimentName,
+        Context context);
 
     /**
      * Deletes an Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.
@@ -274,7 +260,7 @@ public interface ExperimentsClient {
 
     /**
      * Deletes an Experiment.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param experimentName The Experiment identifier associated with the Experiment.

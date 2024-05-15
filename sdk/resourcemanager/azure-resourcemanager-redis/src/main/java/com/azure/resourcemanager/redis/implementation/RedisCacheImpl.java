@@ -17,6 +17,7 @@ import com.azure.resourcemanager.redis.models.DayOfWeek;
 import com.azure.resourcemanager.redis.models.ExportRdbParameters;
 import com.azure.resourcemanager.redis.models.ImportRdbParameters;
 import com.azure.resourcemanager.redis.models.ProvisioningState;
+import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redis.models.RebootType;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
@@ -194,6 +195,11 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
             this.manager().serviceClient().getRedis().regenerateKey(this.resourceGroupName(), this.name(), new RedisRegenerateKeyParameters().withKeyType(keyType));
         cachedAccessKeys = new RedisAccessKeysImpl(response);
         return cachedAccessKeys;
+    }
+
+    @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerModel().publicNetworkAccess();
     }
 
     @Override
@@ -728,6 +734,26 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
                         .withStatus(
                             com.azure.resourcemanager.redis.models.PrivateEndpointServiceConnectionStatus.REJECTED)))
             .then();
+    }
+
+    @Override
+    public RedisCacheImpl enablePublicNetworkAccess() {
+        if (isInCreateMode()) {
+            createParameters.withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        } else {
+            updateParameters.withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        }
+        return this;
+    }
+
+    @Override
+    public RedisCacheImpl disablePublicNetworkAccess() {
+        if (isInCreateMode()) {
+            createParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        } else {
+            updateParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        }
+        return this;
     }
 
     private static final class PrivateLinkResourceImpl implements PrivateLinkResource {

@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CommunicationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CommunicationsClient.
+ */
 public final class CommunicationsClientImpl implements CommunicationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CommunicationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftSupportImpl client;
 
     /**
      * Initializes an instance of CommunicationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CommunicationsClientImpl(MicrosoftSupportImpl client) {
-        this.service =
-            RestProxy.create(CommunicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CommunicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,187 +72,140 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftSupportComm")
     public interface CommunicationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailability(@HostParam("$host") String endpoint,
             @PathParam("supportTicketName") String supportTicketName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityInput checkNameAvailabilityInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CommunicationsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("supportTicketName") String supportTicketName,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$filter") String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CommunicationsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("supportTicketName") String supportTicketName, @QueryParam("$top") Integer top,
+            @QueryParam("$filter") String filter, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications/{communicationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications/{communicationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CommunicationDetailsInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CommunicationDetailsInner>> get(@HostParam("$host") String endpoint,
             @PathParam("supportTicketName") String supportTicketName,
             @PathParam("communicationName") String communicationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications/{communicationName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications/{communicationName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("supportTicketName") String supportTicketName,
             @PathParam("communicationName") String communicationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CommunicationDetailsInner createCommunicationParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CommunicationsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
      * a new communication to the support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
         String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityInput is required and cannot be null."));
         } else {
             checkNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            supportTicketName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            checkNameAvailabilityInput,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), supportTicketName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), checkNameAvailabilityInput, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
      * a new communication to the support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
         String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityInput is required and cannot be null."));
         } else {
             checkNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                supportTicketName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                checkNameAvailabilityInput,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), supportTicketName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), checkNameAvailabilityInput, accept, context);
     }
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
      * a new communication to the support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,8 +214,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    private Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(String supportTicketName,
+        CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithResponseAsync(supportTicketName, checkNameAvailabilityInput)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -264,7 +223,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
      * a new communication to the support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
@@ -274,15 +233,15 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
+    public Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(String supportTicketName,
+        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
         return checkNameAvailabilityWithResponseAsync(supportTicketName, checkNameAvailabilityInput, context).block();
     }
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for adding
      * a new communication to the support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,8 +250,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityOutputInner checkNameAvailability(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    public CheckNameAvailabilityOutputInner checkNameAvailability(String supportTicketName,
+        CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithResponse(supportTicketName, checkNameAvailabilityInput, Context.NONE)
             .getValue();
     }
@@ -304,61 +263,40 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * you can retrieve the next set of Communication results. &lt;br/&gt;&lt;br/&gt;Support ticket data is available
      * for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might
      * cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param top The number of values to return in the collection. Default is 10 and max is 10.
      * @param filter The filter to apply on the operation. You can filter by communicationType and createdDate
-     *     properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt')
-     *     and Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by
-     *     Logical And ('and') operator.
+     * properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt') and
+     * Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by Logical
+     * And ('and') operator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommunicationDetailsInner>> listSinglePageAsync(
-        String supportTicketName, Integer top, String filter) {
+    private Mono<PagedResponse<CommunicationDetailsInner>> listSinglePageAsync(String supportTicketName, Integer top,
+        String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            supportTicketName,
-                            top,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<CommunicationDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), supportTicketName, top, filter,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<CommunicationDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -369,60 +307,42 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * you can retrieve the next set of Communication results. &lt;br/&gt;&lt;br/&gt;Support ticket data is available
      * for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might
      * cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param top The number of values to return in the collection. Default is 10 and max is 10.
      * @param filter The filter to apply on the operation. You can filter by communicationType and createdDate
-     *     properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt')
-     *     and Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by
-     *     Logical And ('and') operator.
+     * properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt') and
+     * Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by Logical
+     * And ('and') operator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CommunicationDetailsInner>> listSinglePageAsync(
-        String supportTicketName, Integer top, String filter, Context context) {
+    private Mono<PagedResponse<CommunicationDetailsInner>> listSinglePageAsync(String supportTicketName, Integer top,
+        String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                supportTicketName,
-                top,
-                filter,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), supportTicketName, top, filter, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -432,13 +352,13 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * you can retrieve the next set of Communication results. &lt;br/&gt;&lt;br/&gt;Support ticket data is available
      * for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might
      * cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param top The number of values to return in the collection. Default is 10 and max is 10.
      * @param filter The filter to apply on the operation. You can filter by communicationType and createdDate
-     *     properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt')
-     *     and Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by
-     *     Logical And ('and') operator.
+     * properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt') and
+     * Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by Logical
+     * And ('and') operator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -446,8 +366,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CommunicationDetailsInner> listAsync(String supportTicketName, Integer top, String filter) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(supportTicketName, top, filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(supportTicketName, top, filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -457,7 +377,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * you can retrieve the next set of Communication results. &lt;br/&gt;&lt;br/&gt;Support ticket data is available
      * for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might
      * cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -468,8 +388,8 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
     private PagedFlux<CommunicationDetailsInner> listAsync(String supportTicketName) {
         final Integer top = null;
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(supportTicketName, top, filter), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(supportTicketName, top, filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -479,13 +399,13 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * you can retrieve the next set of Communication results. &lt;br/&gt;&lt;br/&gt;Support ticket data is available
      * for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might
      * cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param top The number of values to return in the collection. Default is 10 and max is 10.
      * @param filter The filter to apply on the operation. You can filter by communicationType and createdDate
-     *     properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt')
-     *     and Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by
-     *     Logical And ('and') operator.
+     * properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt') and
+     * Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by Logical
+     * And ('and') operator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -493,10 +413,9 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @return collection of Communication resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CommunicationDetailsInner> listAsync(
-        String supportTicketName, Integer top, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(supportTicketName, top, filter, context),
+    private PagedFlux<CommunicationDetailsInner> listAsync(String supportTicketName, Integer top, String filter,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(supportTicketName, top, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -507,7 +426,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * you can retrieve the next set of Communication results. &lt;br/&gt;&lt;br/&gt;Support ticket data is available
      * for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might
      * cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -528,13 +447,13 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * you can retrieve the next set of Communication results. &lt;br/&gt;&lt;br/&gt;Support ticket data is available
      * for 18 months after ticket creation. If a ticket was created more than 18 months ago, a request for data might
      * cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param top The number of values to return in the collection. Default is 10 and max is 10.
      * @param filter The filter to apply on the operation. You can filter by communicationType and createdDate
-     *     properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt')
-     *     and Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by
-     *     Logical And ('and') operator.
+     * properties. CommunicationType supports Equals ('eq') operator and createdDate supports Greater Than ('gt') and
+     * Greater Than or Equals ('ge') operators. You may combine the CommunicationType and CreatedDate filters by Logical
+     * And ('and') operator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -542,30 +461,28 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @return collection of Communication resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CommunicationDetailsInner> list(
-        String supportTicketName, Integer top, String filter, Context context) {
+    public PagedIterable<CommunicationDetailsInner> list(String supportTicketName, Integer top, String filter,
+        Context context) {
         return new PagedIterable<>(listAsync(supportTicketName, top, filter, context));
     }
 
     /**
      * Returns communication details for a support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a Communication resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommunicationDetailsInner>> getWithResponseAsync(
-        String supportTicketName, String communicationName) {
+    private Mono<Response<CommunicationDetailsInner>> getWithResponseAsync(String supportTicketName,
+        String communicationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
@@ -576,30 +493,19 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
                 .error(new IllegalArgumentException("Parameter communicationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            supportTicketName,
-                            communicationName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), supportTicketName, communicationName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns communication details for a support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param context The context to associate with this operation.
@@ -607,16 +513,14 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a Communication resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CommunicationDetailsInner>> getWithResponseAsync(
-        String supportTicketName, String communicationName, Context context) {
+    private Mono<Response<CommunicationDetailsInner>> getWithResponseAsync(String supportTicketName,
+        String communicationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
@@ -627,27 +531,18 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
                 .error(new IllegalArgumentException("Parameter communicationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                supportTicketName,
-                communicationName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), supportTicketName, communicationName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Returns communication details for a support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -663,7 +558,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
 
     /**
      * Returns communication details for a support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param context The context to associate with this operation.
@@ -673,14 +568,14 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @return object that represents a Communication resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationDetailsInner> getWithResponse(
-        String supportTicketName, String communicationName, Context context) {
+    public Response<CommunicationDetailsInner> getWithResponse(String supportTicketName, String communicationName,
+        Context context) {
         return getWithResponseAsync(supportTicketName, communicationName, context).block();
     }
 
     /**
      * Returns communication details for a support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -695,7 +590,7 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -703,16 +598,14 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a Communication resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
@@ -723,39 +616,26 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
                 .error(new IllegalArgumentException("Parameter communicationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (createCommunicationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createCommunicationParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter createCommunicationParameters is required and cannot be null."));
         } else {
             createCommunicationParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            supportTicketName,
-                            communicationName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            createCommunicationParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), supportTicketName, communicationName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), createCommunicationParameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -764,19 +644,14 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a Communication resource along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String supportTicketName,
-        String communicationName,
-        CommunicationDetailsInner createCommunicationParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
@@ -787,36 +662,25 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
                 .error(new IllegalArgumentException("Parameter communicationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (createCommunicationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createCommunicationParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter createCommunicationParameters is required and cannot be null."));
         } else {
             createCommunicationParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                supportTicketName,
-                communicationName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                createCommunicationParameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), supportTicketName, communicationName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), createCommunicationParameters, accept,
+            context);
     }
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -828,21 +692,16 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreateAsync(
         String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(supportTicketName, communicationName, createCommunicationParameters);
-        return this
-            .client
-            .<CommunicationDetailsInner, CommunicationDetailsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommunicationDetailsInner.class,
-                CommunicationDetailsInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(supportTicketName, communicationName, createCommunicationParameters);
+        return this.client.<CommunicationDetailsInner, CommunicationDetailsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CommunicationDetailsInner.class, CommunicationDetailsInner.class,
+            this.client.getContext());
     }
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -854,26 +713,18 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreateAsync(
-        String supportTicketName,
-        String communicationName,
-        CommunicationDetailsInner createCommunicationParameters,
+        String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(supportTicketName, communicationName, createCommunicationParameters, context);
-        return this
-            .client
-            .<CommunicationDetailsInner, CommunicationDetailsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CommunicationDetailsInner.class,
-                CommunicationDetailsInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(supportTicketName, communicationName, createCommunicationParameters, context);
+        return this.client.<CommunicationDetailsInner, CommunicationDetailsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), CommunicationDetailsInner.class, CommunicationDetailsInner.class, context);
     }
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -885,14 +736,13 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreate(
         String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters) {
-        return this
-            .beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters)
+        return this.beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters)
             .getSyncPoller();
     }
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -904,18 +754,15 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CommunicationDetailsInner>, CommunicationDetailsInner> beginCreate(
-        String supportTicketName,
-        String communicationName,
-        CommunicationDetailsInner createCommunicationParameters,
+        String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters,
         Context context) {
-        return this
-            .beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters, context)
+        return this.beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -925,16 +772,15 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @return object that represents a Communication resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommunicationDetailsInner> createAsync(
-        String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters) {
-        return beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters)
-            .last()
+    private Mono<CommunicationDetailsInner> createAsync(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters) {
+        return beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -945,19 +791,15 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @return object that represents a Communication resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CommunicationDetailsInner> createAsync(
-        String supportTicketName,
-        String communicationName,
-        CommunicationDetailsInner createCommunicationParameters,
-        Context context) {
-        return beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters, context)
-            .last()
+    private Mono<CommunicationDetailsInner> createAsync(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters, Context context) {
+        return beginCreateAsync(supportTicketName, communicationName, createCommunicationParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -967,14 +809,14 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @return object that represents a Communication resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationDetailsInner create(
-        String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters) {
+    public CommunicationDetailsInner create(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters) {
         return createAsync(supportTicketName, communicationName, createCommunicationParameters).block();
     }
 
     /**
      * Adds a new customer communication to an Azure support ticket.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param communicationName Communication name.
      * @param createCommunicationParameters Communication object.
@@ -985,24 +827,22 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
      * @return object that represents a Communication resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationDetailsInner create(
-        String supportTicketName,
-        String communicationName,
-        CommunicationDetailsInner createCommunicationParameters,
-        Context context) {
+    public CommunicationDetailsInner create(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters, Context context) {
         return createAsync(supportTicketName, communicationName, createCommunicationParameters, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationDetailsInner>> listNextSinglePageAsync(String nextLink) {
@@ -1010,37 +850,28 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CommunicationDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<CommunicationDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of Communication resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommunicationDetailsInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1048,23 +879,13 @@ public final class CommunicationsClientImpl implements CommunicationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

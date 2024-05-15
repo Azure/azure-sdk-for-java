@@ -50,6 +50,13 @@ public interface SapDiscoverySite {
     Map<String, String> tags();
 
     /**
+     * Gets the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
+     */
+    SapDiscoverySiteProperties properties();
+
+    /**
      * Gets the extendedLocation property: The extended location definition.
      * 
      * @return the extendedLocation value.
@@ -62,34 +69,6 @@ public interface SapDiscoverySite {
      * @return the systemData value.
      */
     SystemData systemData();
-
-    /**
-     * Gets the masterSiteId property: The master site ID from Azure Migrate.
-     * 
-     * @return the masterSiteId value.
-     */
-    String masterSiteId();
-
-    /**
-     * Gets the migrateProjectId property: The migrate project ID from Azure Migrate.
-     * 
-     * @return the migrateProjectId value.
-     */
-    String migrateProjectId();
-
-    /**
-     * Gets the provisioningState property: Defines the provisioning states.
-     * 
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
-
-    /**
-     * Gets the errors property: Indicates any errors on the SAP Migration discovery site resource.
-     * 
-     * @return the errors value.
-     */
-    SapMigrateError errors();
 
     /**
      * Gets the region of the resource.
@@ -174,8 +153,8 @@ public interface SapDiscoverySite {
          * The stage of the SapDiscoverySite definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithMasterSiteId, DefinitionStages.WithMigrateProjectId {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithExtendedLocation {
             /**
              * Executes the create request.
              * 
@@ -206,6 +185,19 @@ public interface SapDiscoverySite {
         }
 
         /**
+         * The stage of the SapDiscoverySite definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: The resource-specific properties for this resource..
+             * 
+             * @param properties The resource-specific properties for this resource.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(SapDiscoverySiteProperties properties);
+        }
+
+        /**
          * The stage of the SapDiscoverySite definition allowing to specify extendedLocation.
          */
         interface WithExtendedLocation {
@@ -216,32 +208,6 @@ public interface SapDiscoverySite {
              * @return the next definition stage.
              */
             WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
-        }
-
-        /**
-         * The stage of the SapDiscoverySite definition allowing to specify masterSiteId.
-         */
-        interface WithMasterSiteId {
-            /**
-             * Specifies the masterSiteId property: The master site ID from Azure Migrate..
-             * 
-             * @param masterSiteId The master site ID from Azure Migrate.
-             * @return the next definition stage.
-             */
-            WithCreate withMasterSiteId(String masterSiteId);
-        }
-
-        /**
-         * The stage of the SapDiscoverySite definition allowing to specify migrateProjectId.
-         */
-        interface WithMigrateProjectId {
-            /**
-             * Specifies the migrateProjectId property: The migrate project ID from Azure Migrate..
-             * 
-             * @param migrateProjectId The migrate project ID from Azure Migrate.
-             * @return the next definition stage.
-             */
-            WithCreate withMigrateProjectId(String migrateProjectId);
         }
     }
 

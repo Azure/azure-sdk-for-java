@@ -10,7 +10,7 @@ package com.azure.resourcemanager.confluent.generated;
 public final class OrganizationDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Delete.json
+     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Delete.json
      */
     /**
      * Sample code: Confluent_Delete.

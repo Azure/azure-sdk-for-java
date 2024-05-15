@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devcenter.fluent.models.DevCenterInner;
 import com.azure.resourcemanager.devcenter.models.DevCenterUpdate;
 
-/** An instance of this class provides access to all the operations defined in DevCentersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DevCentersClient.
+ */
 public interface DevCentersClient {
     /**
      * Lists all devcenters in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the list devcenters operation as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface DevCentersClient {
 
     /**
      * Lists all devcenters in a subscription.
-     *
+     * 
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,7 +43,7 @@ public interface DevCentersClient {
 
     /**
      * Lists all devcenters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -53,7 +55,7 @@ public interface DevCentersClient {
 
     /**
      * Lists all devcenters in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
      * @param context The context to associate with this operation.
@@ -67,7 +69,7 @@ public interface DevCentersClient {
 
     /**
      * Gets a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.
@@ -77,12 +79,12 @@ public interface DevCentersClient {
      * @return a devcenter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DevCenterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String devCenterName, Context context);
+    Response<DevCenterInner> getByResourceGroupWithResponse(String resourceGroupName, String devCenterName,
+        Context context);
 
     /**
      * Gets a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -95,7 +97,7 @@ public interface DevCentersClient {
 
     /**
      * Creates or updates a devcenter resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
@@ -105,12 +107,12 @@ public interface DevCentersClient {
      * @return the {@link SyncPoller} for polling of represents a devcenter resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DevCenterInner>, DevCenterInner> beginCreateOrUpdate(
-        String resourceGroupName, String devCenterName, DevCenterInner body);
+    SyncPoller<PollResult<DevCenterInner>, DevCenterInner> beginCreateOrUpdate(String resourceGroupName,
+        String devCenterName, DevCenterInner body);
 
     /**
      * Creates or updates a devcenter resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
@@ -121,12 +123,12 @@ public interface DevCentersClient {
      * @return the {@link SyncPoller} for polling of represents a devcenter resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DevCenterInner>, DevCenterInner> beginCreateOrUpdate(
-        String resourceGroupName, String devCenterName, DevCenterInner body, Context context);
+    SyncPoller<PollResult<DevCenterInner>, DevCenterInner> beginCreateOrUpdate(String resourceGroupName,
+        String devCenterName, DevCenterInner body, Context context);
 
     /**
      * Creates or updates a devcenter resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
@@ -140,7 +142,7 @@ public interface DevCentersClient {
 
     /**
      * Creates or updates a devcenter resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Represents a devcenter.
@@ -155,7 +157,7 @@ public interface DevCentersClient {
 
     /**
      * Partially updates a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
@@ -165,12 +167,12 @@ public interface DevCentersClient {
      * @return the {@link SyncPoller} for polling of represents a devcenter resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DevCenterInner>, DevCenterInner> beginUpdate(
-        String resourceGroupName, String devCenterName, DevCenterUpdate body);
+    SyncPoller<PollResult<DevCenterInner>, DevCenterInner> beginUpdate(String resourceGroupName, String devCenterName,
+        DevCenterUpdate body);
 
     /**
      * Partially updates a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
@@ -181,12 +183,12 @@ public interface DevCentersClient {
      * @return the {@link SyncPoller} for polling of represents a devcenter resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DevCenterInner>, DevCenterInner> beginUpdate(
-        String resourceGroupName, String devCenterName, DevCenterUpdate body, Context context);
+    SyncPoller<PollResult<DevCenterInner>, DevCenterInner> beginUpdate(String resourceGroupName, String devCenterName,
+        DevCenterUpdate body, Context context);
 
     /**
      * Partially updates a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
@@ -200,7 +202,7 @@ public interface DevCentersClient {
 
     /**
      * Partially updates a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param body Updatable devcenter properties.
@@ -215,7 +217,7 @@ public interface DevCentersClient {
 
     /**
      * Deletes a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +230,7 @@ public interface DevCentersClient {
 
     /**
      * Deletes a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.
@@ -242,7 +244,7 @@ public interface DevCentersClient {
 
     /**
      * Deletes a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -254,7 +256,7 @@ public interface DevCentersClient {
 
     /**
      * Deletes a devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param context The context to associate with this operation.

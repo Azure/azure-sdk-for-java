@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Object representing RunningState for Confidential Ledger. */
+/**
+ * Object representing RunningState for Confidential Ledger.
+ */
 public final class RunningState extends ExpandableStringEnum<RunningState> {
-    /** Static value Active for RunningState. */
+    /**
+     * Static value Active for RunningState.
+     */
     public static final RunningState ACTIVE = fromString("Active");
 
-    /** Static value Paused for RunningState. */
+    /**
+     * Static value Paused for RunningState.
+     */
     public static final RunningState PAUSED = fromString("Paused");
 
-    /** Static value Unknown for RunningState. */
+    /**
+     * Static value Unknown for RunningState.
+     */
     public static final RunningState UNKNOWN = fromString("Unknown");
 
-    /** Static value Pausing for RunningState. */
+    /**
+     * Static value Pausing for RunningState.
+     */
     public static final RunningState PAUSING = fromString("Pausing");
 
-    /** Static value Resuming for RunningState. */
+    /**
+     * Static value Resuming for RunningState.
+     */
     public static final RunningState RESUMING = fromString("Resuming");
 
     /**
      * Creates a new instance of RunningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class RunningState extends ExpandableStringEnum<RunningState> {
 
     /**
      * Creates or finds a RunningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RunningState.
      */
@@ -47,7 +59,7 @@ public final class RunningState extends ExpandableStringEnum<RunningState> {
 
     /**
      * Gets known RunningState values.
-     *
+     * 
      * @return known RunningState values.
      */
     public static Collection<RunningState> values() {

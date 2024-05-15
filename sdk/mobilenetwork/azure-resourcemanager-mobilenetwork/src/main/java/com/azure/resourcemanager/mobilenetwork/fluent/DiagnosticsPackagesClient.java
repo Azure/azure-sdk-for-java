@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.DiagnosticsPackageInner;
 
-/** An instance of this class provides access to all the operations defined in DiagnosticsPackagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DiagnosticsPackagesClient.
+ */
 public interface DiagnosticsPackagesClient {
     /**
      * Creates or updates a diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -27,12 +29,12 @@ public interface DiagnosticsPackagesClient {
      * @return the {@link SyncPoller} for polling of diagnostics package resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DiagnosticsPackageInner>, DiagnosticsPackageInner> beginCreateOrUpdate(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName);
+    SyncPoller<PollResult<DiagnosticsPackageInner>, DiagnosticsPackageInner>
+        beginCreateOrUpdate(String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName);
 
     /**
      * Creates or updates a diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -48,7 +50,7 @@ public interface DiagnosticsPackagesClient {
 
     /**
      * Creates or updates a diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -58,12 +60,12 @@ public interface DiagnosticsPackagesClient {
      * @return diagnostics package resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticsPackageInner createOrUpdate(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName);
+    DiagnosticsPackageInner createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        String diagnosticsPackageName);
 
     /**
      * Creates or updates a diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -74,12 +76,12 @@ public interface DiagnosticsPackagesClient {
      * @return diagnostics package resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticsPackageInner createOrUpdate(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName, Context context);
+    DiagnosticsPackageInner createOrUpdate(String resourceGroupName, String packetCoreControlPlaneName,
+        String diagnosticsPackageName, Context context);
 
     /**
      * Gets information about the specified diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -90,12 +92,12 @@ public interface DiagnosticsPackagesClient {
      * @return information about the specified diagnostics package along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiagnosticsPackageInner> getWithResponse(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName, Context context);
+    Response<DiagnosticsPackageInner> getWithResponse(String resourceGroupName, String packetCoreControlPlaneName,
+        String diagnosticsPackageName, Context context);
 
     /**
      * Gets information about the specified diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -105,12 +107,12 @@ public interface DiagnosticsPackagesClient {
      * @return information about the specified diagnostics package.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiagnosticsPackageInner get(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName);
+    DiagnosticsPackageInner get(String resourceGroupName, String packetCoreControlPlaneName,
+        String diagnosticsPackageName);
 
     /**
      * Deletes the specified diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -120,12 +122,12 @@ public interface DiagnosticsPackagesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String packetCoreControlPlaneName,
+        String diagnosticsPackageName);
 
     /**
      * Deletes the specified diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -136,12 +138,12 @@ public interface DiagnosticsPackagesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String packetCoreControlPlaneName,
+        String diagnosticsPackageName, Context context);
 
     /**
      * Deletes the specified diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -154,7 +156,7 @@ public interface DiagnosticsPackagesClient {
 
     /**
      * Deletes the specified diagnostics package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param diagnosticsPackageName The name of the diagnostics package.
@@ -164,12 +166,12 @@ public interface DiagnosticsPackagesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName, Context context);
+    void delete(String resourceGroupName, String packetCoreControlPlaneName, String diagnosticsPackageName,
+        Context context);
 
     /**
      * Lists all the diagnostics packages under a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,12 +180,12 @@ public interface DiagnosticsPackagesClient {
      * @return response for diagnostics package API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DiagnosticsPackageInner> listByPacketCoreControlPlane(
-        String resourceGroupName, String packetCoreControlPlaneName);
+    PagedIterable<DiagnosticsPackageInner> listByPacketCoreControlPlane(String resourceGroupName,
+        String packetCoreControlPlaneName);
 
     /**
      * Lists all the diagnostics packages under a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -193,6 +195,6 @@ public interface DiagnosticsPackagesClient {
      * @return response for diagnostics package API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DiagnosticsPackageInner> listByPacketCoreControlPlane(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context);
+    PagedIterable<DiagnosticsPackageInner> listByPacketCoreControlPlane(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context);
 }

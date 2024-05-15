@@ -216,7 +216,7 @@ public final class MetricsHelper {
             .map(metric -> mapToMetrics(metric))
             .collect(Collectors.toList());
 
-        MetricsQueryResult metricsQueryResult = new MetricsQueryResult(/* TODO (srnagar): fix this item.getCost() */ null,
+        MetricsQueryResult metricsQueryResult = new MetricsQueryResult(null,
             QueryTimeInterval.parse(item.getStarttime() + "/" + item.getEndtime()), Duration.parse(item.getInterval()), item.getNamespace(), item.getResourceregion(), metrics);
         return metricsQueryResult;
     }

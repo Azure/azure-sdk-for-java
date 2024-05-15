@@ -1,6 +1,6 @@
 # Release History
 
-## 11.7.0-beta.3 (Unreleased)
+## 11.7.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,50 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.7.0-beta.3 (2024-05-07)
+
+### Features Added
+
+- Added support for `Byte[]` and `List<Byte>` in `FieldBuilder`
+- Added support for `HybridSearch`
+- Index models added: `AIServicesVisionParameters`, `AIServicesVisionVectorizer`, `AIStudioModelCatalogName`,
+  `AzureMachineLearningParameters`, `AzureMachineLearningVectorizer`, `AzureOpenAIModelName`, `VectorEncodingFormat`,
+ `VisionVectorizeSkill`
+- Search models added: `HybridCountAndFacetMode`, `HybridSearch`, `SearchScoreThreshold`, `VectorSimilarityThreshold`, 
+ `VectorThreshold`, `VectorThresholdKind`, `VectorizableImageBinaryQuery`, `VectorizableImageUrlQuery`
+
+### Other Changes
+
+- Sample added for creating a vector fields index with reduced dimensions.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.11` to version `1.4.12`.
+
+## 11.6.4 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.10` to version `1.4.11`.
+
+
+## 11.6.3 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.9` to version `1.4.10`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
 
 ## 11.7.0-beta.2 (2024-03-11)
 
@@ -29,6 +73,17 @@
 - Upgraded `azure-core-serializer-json-jackson` to version `1.4.10`.
 - Upgraded `azure-core-http-netty` to version `1.14.1`.
 - Upgraded `azure-core` to version `1.47.0`.
+
+
+## 11.6.2 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+
 
 ## 11.7.0-beta.1 (2024-02-09)
 
@@ -96,7 +151,7 @@ used for semantic reranking, semantic captions and semantic answers.
 
 - `SearchQueryVector` model has been replaced by `VectorQuery`.
 - `SearchOptions` instance method `SearchOptions setVectors(List<SearchQueryVector>)` has been replaced by `SearchOptions setVectorQueries(List<VectorQuery>)`.
-- `SearchOptions` instance method `SearchOptions setVectors(SearchQueryVector...)` has been replaced by `SearchOptions setVetorQueries(VectorQuery...)`.
+- `SearchOptions` instance method `SearchOptions setVectors(SearchQueryVector...)` has been replaced by `SearchOptions setVectorQueries(VectorQuery...)`.
 - `SearchOptions` instance method `List<SearchQueryVector> getVectors()` has been replaced by `List<VectorQuery> getVectorQueries()`.
 - `VectorSearch` instance property `List<VectorSearchAlgorithmConfiguration> algorithmConfigurations` has been replaced by properties `List<VectorSearchProfile> profiles`, 
 `List<VectorSearchAlgorithmConfiguration> algorithms`, and `List<VectorSearchVectorizer> vectorizers`.
@@ -887,7 +942,7 @@ used for semantic reranking, semantic captions and semantic answers.
 
 - Added `buildSearchFields` API to `SearchIndexClient` and `SearchIndexAsyncClient` to aid in creating `SearchField`s from the passed `Class`.
 - Added `SearchableFieldProperty`, `SimpleFieldProperty`, and `FieldBuilderIgnore` to annotate `Class`es passed into `buildSearchFields`.
-- Added `getDefaultLogOptions` to `SearchClientBuilder`, `SearchIndexCleintBuilder`, and `SearchIndexerClientBuilder`. Updated client construction to use default log options by default.
+- Added `getDefaultLogOptions` to `SearchClientBuilder`, `SearchIndexClientBuilder`, and `SearchIndexerClientBuilder`. Updated client construction to use default log options by default.
 - Added the ability for clients to accept a `JsonSerializer` to specify a custom JSON serialization layer when dealing with Search documents.
 
 ## 11.0.0 (2020-07-13)

@@ -1,0 +1,12 @@
+{
+  "array":
+    [
+      1,
+      2,
+      [
+        "array in",
+      "array"
+      ],
+      "follow-up word"
+    ]
+}

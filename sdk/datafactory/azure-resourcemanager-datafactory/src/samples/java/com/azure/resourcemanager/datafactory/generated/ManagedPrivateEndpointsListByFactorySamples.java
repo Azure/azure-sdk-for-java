@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class ManagedPrivateEndpointsListByFactorySamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * ManagedPrivateEndpoints_ListByFactory.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_ListByFactory.json
      */
     /**
      * Sample code: ManagedPrivateEndpoints_ListByFactory.
@@ -19,7 +18,8 @@ public final class ManagedPrivateEndpointsListByFactorySamples {
      */
     public static void
         managedPrivateEndpointsListByFactory(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedPrivateEndpoints().listByFactory("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedVirtualNetworkName", com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .listByFactory("exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName",
+                com.azure.core.util.Context.NONE);
     }
 }

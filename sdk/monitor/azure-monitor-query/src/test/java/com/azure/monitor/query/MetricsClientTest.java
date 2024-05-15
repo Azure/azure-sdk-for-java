@@ -10,8 +10,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.models.MetricResult;
-import com.azure.monitor.query.models.MetricsBatchQueryOptions;
-import com.azure.monitor.query.models.MetricsBatchQueryResult;
+import com.azure.monitor.query.models.MetricsQueryResourcesOptions;
+import com.azure.monitor.query.models.MetricsQueryResourcesResult;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.Test;
 
@@ -40,12 +40,12 @@ public class MetricsClientTest extends MetricsClientTestBase {
             // ignore as this is only to generate some metrics
         }
 
-        MetricsBatchQueryOptions options = new MetricsBatchQueryOptions()
+        MetricsQueryResourcesOptions options = new MetricsQueryResourcesOptions()
             .setGranularity(Duration.ofMinutes(15))
             .setTop(10)
             .setTimeInterval(new QueryTimeInterval(OffsetDateTime.now().minusDays(1), OffsetDateTime.now()));
 
-        MetricsBatchQueryResult metricsQueryResults = metricsClient.queryBatchWithResponse(
+        MetricsQueryResourcesResult metricsQueryResults = metricsClient.queryResourcesWithResponse(
                 Arrays.asList(resourceId),
                 Arrays.asList("HttpIncomingRequestCount"), "microsoft.appconfiguration/configurationstores", options, Context.NONE)
             .getValue();
@@ -66,7 +66,7 @@ public class MetricsClientTest extends MetricsClientTestBase {
         String updatedResource1 = resourceId1.substring(resourceId1.indexOf("/subscriptions"));
         String updatedResource2 = resourceId2.substring(resourceId2.indexOf("/subscriptions"));
 
-        assertThrows(HttpResponseException.class, () -> metricsBatchQueryClient.queryBatch(
+        assertThrows(HttpResponseException.class, () -> metricsBatchQueryClient.queryResources(
             Arrays.asList(updatedResource1, updatedResource2),
             Arrays.asList("Successful Requests"), " Microsoft.Eventhub/Namespaces"));
 

@@ -7,11 +7,6 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Warning;
-import com.azure.cosmos.implementation.query.Transformer;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.util.UtilBridgeInternal;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -127,18 +122,5 @@ public final class CosmosBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosException cosmosException(int statusCode, Exception innerException) {
         return new CosmosException(statusCode, innerException);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosPagedFlux<T> queryChangeFeedInternal(
-        CosmosAsyncContainer container,
-        CosmosChangeFeedRequestOptions changeFeedRequestOptions,
-        Transformer<T> transformer) {
-
-        return UtilBridgeInternal.createCosmosPagedFlux(
-            transformer.transform(
-                container.queryChangeFeedInternalFunc(
-                    changeFeedRequestOptions,
-                    JsonNode.class)));
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Metadata of the diagnostics response. */
+/**
+ * Metadata of the diagnostics response.
+ */
 @Fluent
 public final class DiagnosticsDefinition {
     /*
@@ -65,13 +67,15 @@ public final class DiagnosticsDefinition {
     @JsonProperty(value = "score", access = JsonProperty.Access.WRITE_ONLY)
     private Float score;
 
-    /** Creates an instance of DiagnosticsDefinition class. */
+    /**
+     * Creates an instance of DiagnosticsDefinition class.
+     */
     public DiagnosticsDefinition() {
     }
 
     /**
      * Get the id property: Unique detector name.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -80,7 +84,7 @@ public final class DiagnosticsDefinition {
 
     /**
      * Get the name property: Display Name of the detector.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +93,7 @@ public final class DiagnosticsDefinition {
 
     /**
      * Get the description property: Details of the diagnostics info.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -98,7 +102,7 @@ public final class DiagnosticsDefinition {
 
     /**
      * Get the author property: Authors' names of the detector.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -107,7 +111,7 @@ public final class DiagnosticsDefinition {
 
     /**
      * Get the category property: Category of the detector.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -116,7 +120,7 @@ public final class DiagnosticsDefinition {
 
     /**
      * Get the supportTopicList property: List of support topics.
-     *
+     * 
      * @return the supportTopicList value.
      */
     public List<DiagnosticSupportTopic> supportTopicList() {
@@ -125,7 +129,7 @@ public final class DiagnosticsDefinition {
 
     /**
      * Set the supportTopicList property: List of support topics.
-     *
+     * 
      * @param supportTopicList the supportTopicList value to set.
      * @return the DiagnosticsDefinition object itself.
      */
@@ -136,7 +140,7 @@ public final class DiagnosticsDefinition {
 
     /**
      * Get the analysisTypes property: List of analysis types.
-     *
+     * 
      * @return the analysisTypes value.
      */
     public List<String> analysisTypes() {
@@ -145,7 +149,7 @@ public final class DiagnosticsDefinition {
 
     /**
      * Set the analysisTypes property: List of analysis types.
-     *
+     * 
      * @param analysisTypes the analysisTypes value to set.
      * @return the DiagnosticsDefinition object itself.
      */
@@ -156,7 +160,7 @@ public final class DiagnosticsDefinition {
 
     /**
      * Get the type property: Authors' names of the detector.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -165,7 +169,7 @@ public final class DiagnosticsDefinition {
 
     /**
      * Get the score property: Authors' names of the detector.
-     *
+     * 
      * @return the score value.
      */
     public Float score() {
@@ -174,7 +178,7 @@ public final class DiagnosticsDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

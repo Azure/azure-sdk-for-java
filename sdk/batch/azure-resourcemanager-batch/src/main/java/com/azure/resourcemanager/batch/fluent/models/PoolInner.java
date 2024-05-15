@@ -22,6 +22,7 @@ import com.azure.resourcemanager.batch.models.ResizeOperationStatus;
 import com.azure.resourcemanager.batch.models.ScaleSettings;
 import com.azure.resourcemanager.batch.models.StartTask;
 import com.azure.resourcemanager.batch.models.TaskSchedulingPolicy;
+import com.azure.resourcemanager.batch.models.UpgradePolicy;
 import com.azure.resourcemanager.batch.models.UserAccount;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -682,6 +683,29 @@ public final class PoolInner extends ProxyResource {
      */
     public NodeCommunicationMode currentNodeCommunicationMode() {
         return this.innerProperties() == null ? null : this.innerProperties().currentNodeCommunicationMode();
+    }
+
+    /**
+     * Get the upgradePolicy property: Describes an upgrade policy - automatic, manual, or rolling.
+     * 
+     * @return the upgradePolicy value.
+     */
+    public UpgradePolicy upgradePolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradePolicy();
+    }
+
+    /**
+     * Set the upgradePolicy property: Describes an upgrade policy - automatic, manual, or rolling.
+     * 
+     * @param upgradePolicy the upgradePolicy value to set.
+     * @return the PoolInner object itself.
+     */
+    public PoolInner withUpgradePolicy(UpgradePolicy upgradePolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolProperties();
+        }
+        this.innerProperties().withUpgradePolicy(upgradePolicy);
+        return this;
     }
 
     /**

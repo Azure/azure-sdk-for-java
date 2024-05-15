@@ -54,46 +54,18 @@ public final class GlossaryClient {
      * and
      * 
      * 'GET '/datamap/api/atlas/v2/glossary/{glossaryId}/categories'.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
-     * <tr>
-     * <td>ignoreTermsAndCategories</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether ignore terms and categories</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
+     * <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -167,9 +139,8 @@ public final class GlossaryClient {
 
     /**
      * Create a glossary.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -225,9 +196,9 @@ public final class GlossaryClient {
      *     usage: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -300,9 +271,8 @@ public final class GlossaryClient {
 
     /**
      * Create glossary category in bulk.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -364,9 +334,9 @@ public final class GlossaryClient {
      *     }
      * ]
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -445,9 +415,8 @@ public final class GlossaryClient {
 
     /**
      * Create a glossary category.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -507,9 +476,9 @@ public final class GlossaryClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -587,9 +556,8 @@ public final class GlossaryClient {
 
     /**
      * Get specific glossary category by its GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -666,9 +634,8 @@ public final class GlossaryClient {
 
     /**
      * Update the given glossary category by its GUID.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -728,9 +695,9 @@ public final class GlossaryClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -827,17 +794,16 @@ public final class GlossaryClient {
     /**
      * Update the glossary category partially. So far we only supports partial
      * updating shortDescription and longDescription for category.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -918,40 +884,17 @@ public final class GlossaryClient {
     /**
      * Get all related categories (parent and children). Limit, offset, and sort
      * parameters are currently not being enabled and won't work even they are passed.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String (Required): [
@@ -982,40 +925,17 @@ public final class GlossaryClient {
 
     /**
      * Get all terms associated with the specific category.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -1046,28 +966,15 @@ public final class GlossaryClient {
 
     /**
      * Create a glossary term.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1228,9 +1135,9 @@ public final class GlossaryClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1408,9 +1315,8 @@ public final class GlossaryClient {
 
     /**
      * Get a specific glossary term by its GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1588,28 +1494,15 @@ public final class GlossaryClient {
 
     /**
      * Update the given glossary term by its GUID.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1770,9 +1663,9 @@ public final class GlossaryClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -1970,36 +1863,23 @@ public final class GlossaryClient {
     /**
      * Update the glossary term partially. So far we only supports partial updating
      * shortDescription, longDescription, abbreviation, usage and status for term.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -2180,28 +2060,15 @@ public final class GlossaryClient {
 
     /**
      * Create glossary terms in bulk.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>includeTermHierarchy</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether include term hierarchy</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -2364,9 +2231,9 @@ public final class GlossaryClient {
      *     }
      * ]
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -2547,40 +2414,17 @@ public final class GlossaryClient {
     /**
      * List all related objects assigned with the specified term. Recommend using
      * limit/offset to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -2626,9 +2470,8 @@ public final class GlossaryClient {
      * [Entities Create Or Update
      * operation](https://learn.microsoft.com/en-us/rest/api/purview/datamapdataplane/entity/bulk-create-or-update?tabs=HTTP)
      * is an alternative to assign a term to multiple entities.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -2671,9 +2514,8 @@ public final class GlossaryClient {
 
     /**
      * Delete the term assignment for the given list of related objects.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -2717,40 +2559,17 @@ public final class GlossaryClient {
     /**
      * Get all related terms for a specific term by its GUID. Limit, offset, and sort
      * parameters are currently not being enabled and won't work even they are passed.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String (Required): [
@@ -2783,9 +2602,8 @@ public final class GlossaryClient {
 
     /**
      * Get a specific Glossary by its GUID.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -2858,28 +2676,15 @@ public final class GlossaryClient {
 
     /**
      * Update the given glossary.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>ignoreTermsAndCategories</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether ignore terms and categories</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -2935,9 +2740,9 @@ public final class GlossaryClient {
      *     usage: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -3031,40 +2836,17 @@ public final class GlossaryClient {
     /**
      * Get the categories belonging to a specific glossary. Recommend using
      * limit/offset to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -3144,40 +2926,17 @@ public final class GlossaryClient {
     /**
      * Get the category headers belonging to a specific glossary. Recommend using
      * limit/offset to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -3213,9 +2972,8 @@ public final class GlossaryClient {
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/terms and
      * 
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -3456,36 +3214,23 @@ public final class GlossaryClient {
      * 
      * Recommend
      * using 'ignoreTermsAndCategories=true' to reduce response body size.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>ignoreTermsAndCategories</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Whether ignore terms and categories</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     String: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     guid: String (Optional)
@@ -3562,40 +3307,17 @@ public final class GlossaryClient {
     /**
      * Get terms belonging to a specific glossary. Recommend using limit/offset to get
      * pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -3776,40 +3498,17 @@ public final class GlossaryClient {
     /**
      * Get term headers belonging to a specific glossary. Recommend using limit/offset
      * to get pagination result.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The page size - by default there is no paging.</td>
-     * </tr>
-     * <tr>
-     * <td>offset</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The offset for pagination purpose.</td>
-     * </tr>
-     * <tr>
-     * <td>sort</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The sort order, ASC (default) or DESC.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     * <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     * <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -4007,7 +3706,8 @@ public final class GlossaryClient {
         // Generated convenience method for updateCategoryWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return updateCategoryWithResponse(categoryId, BinaryData.fromObject(atlasGlossaryCategory), requestOptions)
-            .getValue().toObject(AtlasGlossaryCategory.class);
+            .getValue()
+            .toObject(AtlasGlossaryCategory.class);
     }
 
     /**

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Defines the SocketAddress condition for the delivery rule. */
+/**
+ * Defines the SocketAddress condition for the delivery rule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "name")
 @JsonTypeName("SocketAddr")
 @Fluent
@@ -21,13 +23,15 @@ public final class DeliveryRuleSocketAddrCondition extends DeliveryRuleCondition
     @JsonProperty(value = "parameters", required = true)
     private SocketAddrMatchConditionParameters parameters;
 
-    /** Creates an instance of DeliveryRuleSocketAddrCondition class. */
+    /**
+     * Creates an instance of DeliveryRuleSocketAddrCondition class.
+     */
     public DeliveryRuleSocketAddrCondition() {
     }
 
     /**
      * Get the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @return the parameters value.
      */
     public SocketAddrMatchConditionParameters parameters() {
@@ -36,7 +40,7 @@ public final class DeliveryRuleSocketAddrCondition extends DeliveryRuleCondition
 
     /**
      * Set the parameters property: Defines the parameters for the condition.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DeliveryRuleSocketAddrCondition object itself.
      */
@@ -47,17 +51,15 @@ public final class DeliveryRuleSocketAddrCondition extends DeliveryRuleCondition
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property parameters in model DeliveryRuleSocketAddrCondition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property parameters in model DeliveryRuleSocketAddrCondition"));
         } else {
             parameters().validate();
         }

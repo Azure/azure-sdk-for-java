@@ -16,20 +16,20 @@ import java.util.List;
 public final class SentenceLength {
 
     /*
-     * An integer array representing the lengths of the sentences in the input text.
+     * An integer array representing the lengths of the sentences in the input text. 
      * The length of the array is the number of sentences, and the values are the length of each sentence.
      */
     @Generated
     @JsonProperty(value = "srcSentLen")
-    private List<Integer> srcSentLen;
+    private final List<Integer> srcSentLen;
 
     /*
-     * An integer array representing the lengths of the sentences in the translated text.
+     * An integer array representing the lengths of the sentences in the translated text. 
      * The length of the array is the number of sentences, and the values are the length of each sentence.
      */
     @Generated
     @JsonProperty(value = "transSentLen")
-    private List<Integer> transSentLen;
+    private final List<Integer> transSentLen;
 
     /**
      * Creates an instance of SentenceLength class.
@@ -57,8 +57,7 @@ public final class SentenceLength {
     }
 
     /**
-     * Get the transSentLen property: An integer array representing the lengths of the sentences in the translated
-     * text.
+     * Get the transSentLen property: An integer array representing the lengths of the sentences in the translated text.
      * The length of the array is the number of sentences, and the values are the length of each sentence.
      *
      * @return the transSentLen value.

@@ -20,8 +20,7 @@ public final class Office365DatasetTypeProperties {
     private Object tableName;
 
     /*
-     * A predicate expression that can be used to filter the specific rows to extract from Office 365. Type: string (or
-     * Expression with resultType string).
+     * A predicate expression that can be used to filter the specific rows to extract from Office 365. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "predicate")
     private Object predicate;
@@ -83,8 +82,9 @@ public final class Office365DatasetTypeProperties {
      */
     public void validate() {
         if (tableName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property tableName in model Office365DatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tableName in model Office365DatasetTypeProperties"));
         }
     }
 

@@ -242,10 +242,10 @@ class InteractiveBrowserBrokerCredentialBuilderTest {
     }
 
     @Test
-    void setUseOperatingSystemAccount() {
+    void setDefaultBrokerAccount() {
         assertDoesNotThrow(() -> {
             InteractiveBrowserBrokerCredentialBuilder builder = new InteractiveBrowserBrokerCredentialBuilder();
-            builder.useOperatingSystemAccount(true);
+            builder.useDefaultBrokerAccount();
             builder.build();
         });
     }

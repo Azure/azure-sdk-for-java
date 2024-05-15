@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Storage for Environments. */
+/**
+ * Collection of Storage for Environments.
+ */
 @Fluent
 public final class ManagedEnvironmentStoragesCollectionInner {
     /*
@@ -18,13 +20,15 @@ public final class ManagedEnvironmentStoragesCollectionInner {
     @JsonProperty(value = "value", required = true)
     private List<ManagedEnvironmentStorageInner> value;
 
-    /** Creates an instance of ManagedEnvironmentStoragesCollectionInner class. */
+    /**
+     * Creates an instance of ManagedEnvironmentStoragesCollectionInner class.
+     */
     public ManagedEnvironmentStoragesCollectionInner() {
     }
 
     /**
      * Get the value property: Collection of storage resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagedEnvironmentStorageInner> value() {
@@ -33,7 +37,7 @@ public final class ManagedEnvironmentStoragesCollectionInner {
 
     /**
      * Set the value property: Collection of storage resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagedEnvironmentStoragesCollectionInner object itself.
      */
@@ -44,15 +48,13 @@ public final class ManagedEnvironmentStoragesCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ManagedEnvironmentStoragesCollectionInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model ManagedEnvironmentStoragesCollectionInner"));
         } else {
             value().forEach(e -> e.validate());
         }

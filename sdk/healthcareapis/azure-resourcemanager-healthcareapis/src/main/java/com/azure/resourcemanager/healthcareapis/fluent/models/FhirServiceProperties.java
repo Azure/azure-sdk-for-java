@@ -204,8 +204,8 @@ public final class FhirServiceProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
+     * private endpoint is enabled.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -214,8 +214,8 @@ public final class FhirServiceProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
+     * private endpoint is enabled.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the FhirServiceProperties object itself.

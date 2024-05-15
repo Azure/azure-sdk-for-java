@@ -16,15 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureDataExplorerLinkedServiceTypeProperties {
     /*
-     * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
-     * https://<clusterName>.<regionName>.kusto.windows.net. Type: string (or Expression with resultType string)
+     * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format https://<clusterName>.<regionName>.kusto.windows.net. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "endpoint", required = true)
     private Object endpoint;
 
     /*
-     * The ID of the service principal used to authenticate against Azure Data Explorer. Type: string (or Expression
-     * with resultType string).
+     * The ID of the service principal used to authenticate against Azure Data Explorer. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
@@ -42,8 +40,7 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
     private Object database;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
-     * string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
@@ -61,9 +58,9 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the
-     * format https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with
-     * resultType string).
+     * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the endpoint value.
      */
@@ -72,9 +69,9 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the
-     * format https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with
-     * resultType string).
+     * Set the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
+     * string).
      * 
      * @param endpoint the endpoint value to set.
      * @return the AzureDataExplorerLinkedServiceTypeProperties object itself.
@@ -195,15 +192,17 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property endpoint in model AzureDataExplorerLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endpoint in model AzureDataExplorerLinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() != null) {
             servicePrincipalKey().validate();
         }
         if (database() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property database in model AzureDataExplorerLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property database in model AzureDataExplorerLinkedServiceTypeProperties"));
         }
         if (credential() != null) {
             credential().validate();

@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AddDataFlowToDebugSessionResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddDataFlowToDebugSessionResponseInner model = BinaryData.fromString("{\"jobVersion\":\"fbcgwgcloxoebqin\"}")
-            .toObject(AddDataFlowToDebugSessionResponseInner.class);
-        Assertions.assertEquals("fbcgwgcloxoebqin", model.jobVersion());
+        AddDataFlowToDebugSessionResponseInner model
+            = BinaryData.fromString("{\"jobVersion\":\"r\"}").toObject(AddDataFlowToDebugSessionResponseInner.class);
+        Assertions.assertEquals("r", model.jobVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddDataFlowToDebugSessionResponseInner model
-            = new AddDataFlowToDebugSessionResponseInner().withJobVersion("fbcgwgcloxoebqin");
+        AddDataFlowToDebugSessionResponseInner model = new AddDataFlowToDebugSessionResponseInner().withJobVersion("r");
         model = BinaryData.fromObject(model).toObject(AddDataFlowToDebugSessionResponseInner.class);
-        Assertions.assertEquals("fbcgwgcloxoebqin", model.jobVersion());
+        Assertions.assertEquals("r", model.jobVersion());
     }
 }

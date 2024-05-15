@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workload Profile resource specific properties. */
+/**
+ * Workload Profile resource specific properties.
+ */
 @Fluent
 public final class WorkloadProfileStatesProperties {
     /*
@@ -28,13 +30,15 @@ public final class WorkloadProfileStatesProperties {
     @JsonProperty(value = "currentCount")
     private Integer currentCount;
 
-    /** Creates an instance of WorkloadProfileStatesProperties class. */
+    /**
+     * Creates an instance of WorkloadProfileStatesProperties class.
+     */
     public WorkloadProfileStatesProperties() {
     }
 
     /**
      * Get the minimumCount property: Minimum count of instances.
-     *
+     * 
      * @return the minimumCount value.
      */
     public Integer minimumCount() {
@@ -43,7 +47,7 @@ public final class WorkloadProfileStatesProperties {
 
     /**
      * Set the minimumCount property: Minimum count of instances.
-     *
+     * 
      * @param minimumCount the minimumCount value to set.
      * @return the WorkloadProfileStatesProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class WorkloadProfileStatesProperties {
 
     /**
      * Get the maximumCount property: Maximum count of nodes.
-     *
+     * 
      * @return the maximumCount value.
      */
     public Integer maximumCount() {
@@ -63,7 +67,7 @@ public final class WorkloadProfileStatesProperties {
 
     /**
      * Set the maximumCount property: Maximum count of nodes.
-     *
+     * 
      * @param maximumCount the maximumCount value to set.
      * @return the WorkloadProfileStatesProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class WorkloadProfileStatesProperties {
 
     /**
      * Get the currentCount property: Current count of nodes.
-     *
+     * 
      * @return the currentCount value.
      */
     public Integer currentCount() {
@@ -83,7 +87,7 @@ public final class WorkloadProfileStatesProperties {
 
     /**
      * Set the currentCount property: Current count of nodes.
-     *
+     * 
      * @param currentCount the currentCount value to set.
      * @return the WorkloadProfileStatesProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class WorkloadProfileStatesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

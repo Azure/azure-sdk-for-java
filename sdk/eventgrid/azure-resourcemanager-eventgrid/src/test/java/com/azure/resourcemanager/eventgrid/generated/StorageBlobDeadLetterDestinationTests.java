@@ -12,18 +12,18 @@ public final class StorageBlobDeadLetterDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageBlobDeadLetterDestination model = BinaryData.fromString(
-            "{\"endpointType\":\"StorageBlob\",\"properties\":{\"resourceId\":\"uhvajmailfemjjza\",\"blobContainerName\":\"wjiqullqxb\"}}")
+            "{\"endpointType\":\"StorageBlob\",\"properties\":{\"resourceId\":\"eh\",\"blobContainerName\":\"ddacbcbgydlqidy\"}}")
             .toObject(StorageBlobDeadLetterDestination.class);
-        Assertions.assertEquals("uhvajmailfemjjza", model.resourceId());
-        Assertions.assertEquals("wjiqullqxb", model.blobContainerName());
+        Assertions.assertEquals("eh", model.resourceId());
+        Assertions.assertEquals("ddacbcbgydlqidy", model.blobContainerName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageBlobDeadLetterDestination model = new StorageBlobDeadLetterDestination()
-            .withResourceId("uhvajmailfemjjza").withBlobContainerName("wjiqullqxb");
+        StorageBlobDeadLetterDestination model
+            = new StorageBlobDeadLetterDestination().withResourceId("eh").withBlobContainerName("ddacbcbgydlqidy");
         model = BinaryData.fromObject(model).toObject(StorageBlobDeadLetterDestination.class);
-        Assertions.assertEquals("uhvajmailfemjjza", model.resourceId());
-        Assertions.assertEquals("wjiqullqxb", model.blobContainerName());
+        Assertions.assertEquals("eh", model.resourceId());
+        Assertions.assertEquals("ddacbcbgydlqidy", model.blobContainerName());
     }
 }

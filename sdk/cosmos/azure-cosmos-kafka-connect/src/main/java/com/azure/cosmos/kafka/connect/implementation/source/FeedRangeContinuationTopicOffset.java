@@ -12,23 +12,23 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 
 public class FeedRangeContinuationTopicOffset {
     private static final String ITEM_LSN_KEY = "cosmos.source.feedRange.item.lsn";
-    private static final String CONTINUATION_KEY = "cosmos.source.feedRange.continuation";
+    private static final String CONTINUATION_KEY = "cosmos.source.feedRange.responseContinuation";
 
-    private final String continuationState;
+    private final String responseContinuation;
     private final String itemLsn;
 
     public FeedRangeContinuationTopicOffset(
-        String continuationState,
+        String responseContinuation,
         String itemLsn) {
-        checkArgument(StringUtils.isNotEmpty(continuationState), "Argument 'continuationState' should not be null");
+        checkArgument(StringUtils.isNotEmpty(responseContinuation), "Argument 'responseContinuation' should not be null");
         checkArgument(StringUtils.isNotEmpty(itemLsn), "Argument 'itemLsn' should not be null");
 
         this.itemLsn = itemLsn;
-        this.continuationState = continuationState;
+        this.responseContinuation = responseContinuation;
     }
 
-    public String getContinuationState() {
-        return continuationState;
+    public String getResponseContinuation() {
+        return responseContinuation;
     }
 
     public String getItemLsn() {
@@ -37,7 +37,7 @@ public class FeedRangeContinuationTopicOffset {
 
     public static Map<String, Object> toMap(FeedRangeContinuationTopicOffset offset) {
         Map<String, Object> map = new HashMap<>();
-        map.put(CONTINUATION_KEY, offset.getContinuationState());
+        map.put(CONTINUATION_KEY, offset.getResponseContinuation());
         map.put(ITEM_LSN_KEY, offset.getItemLsn());
 
         return map;

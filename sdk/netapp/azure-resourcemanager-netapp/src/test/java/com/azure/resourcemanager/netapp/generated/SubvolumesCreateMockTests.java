@@ -31,7 +31,7 @@ public final class SubvolumesCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"path\":\"gpiudeug\",\"size\":8412472612834852479,\"parentPath\":\"c\",\"provisioningState\":\"Succeeded\"},\"id\":\"fykhvuhxepmru\",\"name\":\"znabaobns\",\"type\":\"ujdjltymkmvg\"}";
+            = "{\"properties\":{\"path\":\"oweyirdhlis\",\"size\":2577921237781944905,\"parentPath\":\"qqmpizruwnpqx\",\"provisioningState\":\"Succeeded\"},\"id\":\"iixtmkzj\",\"name\":\"kv\",\"type\":\"irhgfgrwsdp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,12 +48,12 @@ public final class SubvolumesCreateMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SubvolumeInfo response
-            = manager.subvolumes().define("sggux").withExistingVolume("naoyank", "oe", "swankltytmh", "roznnhdrlktgj")
-                .withPath("lwywae").withSize(4845732356948511994L).withParentPath("bukklels").create();
+        SubvolumeInfo response = manager.subvolumes().define("nlb")
+            .withExistingVolume("ebwlnbmhyreeudzq", "vbpdqmjxlyyzglgo", "wtlmjjyuo", "qtobaxkjeyt").withPath("wrus")
+            .withSize(7003868836255706377L).withParentPath("syrq").create();
 
-        Assertions.assertEquals("gpiudeug", response.path());
-        Assertions.assertEquals(8412472612834852479L, response.size());
-        Assertions.assertEquals("c", response.parentPath());
+        Assertions.assertEquals("oweyirdhlis", response.path());
+        Assertions.assertEquals(2577921237781944905L, response.size());
+        Assertions.assertEquals("qqmpizruwnpqx", response.parentPath());
     }
 }

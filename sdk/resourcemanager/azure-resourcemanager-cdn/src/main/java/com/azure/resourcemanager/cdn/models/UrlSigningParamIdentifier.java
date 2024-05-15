@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines how to identify a parameter for a specific purpose e.g. expires. */
+/**
+ * Defines how to identify a parameter for a specific purpose e.g. expires.
+ */
 @Fluent
 public final class UrlSigningParamIdentifier {
     /*
@@ -23,13 +25,15 @@ public final class UrlSigningParamIdentifier {
     @JsonProperty(value = "paramName", required = true)
     private String paramName;
 
-    /** Creates an instance of UrlSigningParamIdentifier class. */
+    /**
+     * Creates an instance of UrlSigningParamIdentifier class.
+     */
     public UrlSigningParamIdentifier() {
     }
 
     /**
      * Get the paramIndicator property: Indicates the purpose of the parameter.
-     *
+     * 
      * @return the paramIndicator value.
      */
     public ParamIndicator paramIndicator() {
@@ -38,7 +42,7 @@ public final class UrlSigningParamIdentifier {
 
     /**
      * Set the paramIndicator property: Indicates the purpose of the parameter.
-     *
+     * 
      * @param paramIndicator the paramIndicator value to set.
      * @return the UrlSigningParamIdentifier object itself.
      */
@@ -49,7 +53,7 @@ public final class UrlSigningParamIdentifier {
 
     /**
      * Get the paramName property: Parameter name.
-     *
+     * 
      * @return the paramName value.
      */
     public String paramName() {
@@ -58,7 +62,7 @@ public final class UrlSigningParamIdentifier {
 
     /**
      * Set the paramName property: Parameter name.
-     *
+     * 
      * @param paramName the paramName value to set.
      * @return the UrlSigningParamIdentifier object itself.
      */
@@ -69,21 +73,17 @@ public final class UrlSigningParamIdentifier {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (paramIndicator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property paramIndicator in model UrlSigningParamIdentifier"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property paramIndicator in model UrlSigningParamIdentifier"));
         }
         if (paramName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property paramName in model UrlSigningParamIdentifier"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property paramName in model UrlSigningParamIdentifier"));
         }
     }
 

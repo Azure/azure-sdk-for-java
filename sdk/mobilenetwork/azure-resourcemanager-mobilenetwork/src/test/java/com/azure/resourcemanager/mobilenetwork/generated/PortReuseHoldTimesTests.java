@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PortReuseHoldTimesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PortReuseHoldTimes model =
-            BinaryData.fromString("{\"tcp\":464271708,\"udp\":48641393}").toObject(PortReuseHoldTimes.class);
+        PortReuseHoldTimes model
+            = BinaryData.fromString("{\"tcp\":464271708,\"udp\":48641393}").toObject(PortReuseHoldTimes.class);
         Assertions.assertEquals(464271708, model.tcp());
         Assertions.assertEquals(48641393, model.udp());
     }

@@ -4,21 +4,19 @@
 
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.resourcemanager.migrationdiscoverysap.fluent.models.ErrorDefinition;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /**
  * An error response from the SAP migrate resources.
  */
-@Immutable
+@Fluent
 public final class SapMigrateError {
     /*
      * The SAP Discovery site resource error body.
      */
     @JsonProperty(value = "properties")
-    private ErrorDefinition innerProperties;
+    private ErrorDefinition properties;
 
     /**
      * Creates an instance of SapMigrateError class.
@@ -27,48 +25,23 @@ public final class SapMigrateError {
     }
 
     /**
-     * Get the innerProperties property: The SAP Discovery site resource error body.
+     * Get the properties property: The SAP Discovery site resource error body.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private ErrorDefinition innerProperties() {
-        return this.innerProperties;
+    public ErrorDefinition properties() {
+        return this.properties;
     }
 
     /**
-     * Get the code property: Service specific error code which serves as the substatus for the HTTP error code.
+     * Set the properties property: The SAP Discovery site resource error body.
      * 
-     * @return the code value.
+     * @param properties the properties value to set.
+     * @return the SapMigrateError object itself.
      */
-    public String code() {
-        return this.innerProperties() == null ? null : this.innerProperties().code();
-    }
-
-    /**
-     * Get the message property: Description of the error.
-     * 
-     * @return the message value.
-     */
-    public String message() {
-        return this.innerProperties() == null ? null : this.innerProperties().message();
-    }
-
-    /**
-     * Get the recommendation property: Description of the recommendation.
-     * 
-     * @return the recommendation value.
-     */
-    public String recommendation() {
-        return this.innerProperties() == null ? null : this.innerProperties().recommendation();
-    }
-
-    /**
-     * Get the details property: Internal error details.
-     * 
-     * @return the details value.
-     */
-    public List<ErrorDefinition> details() {
-        return this.innerProperties() == null ? null : this.innerProperties().details();
+    public SapMigrateError withProperties(ErrorDefinition properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -77,8 +50,8 @@ public final class SapMigrateError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

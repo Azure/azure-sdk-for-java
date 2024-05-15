@@ -63,6 +63,13 @@ public interface Vault
     boolean roleBasedAccessControlEnabled();
 
     /**
+     * Whether the vault can be accessed from public network.
+     *
+     * @return whether the vault can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
      * @return whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key
      *     vault.
      */
@@ -166,6 +173,12 @@ public interface Vault
 
         /** A key vault definition allowing the networkAcl to be set. */
         interface WithNetworkRuleSet {
+            /**
+             * Disables public network access for the vault, for private link feature.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
 
             /**
              * Specifies that by default access to key vault should be allowed from all networks.
@@ -362,6 +375,19 @@ public interface Vault
 
         /** A key vault update allowing the NetworkRuleSet to be set. */
         interface WithNetworkRuleSet {
+            /**
+             * Enables public network access for the vault.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+
+            /**
+             * Disables public network access for the vault, for private link feature.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
 
             /**
              * Specifies that by default access to key vault should be allowed from all networks.

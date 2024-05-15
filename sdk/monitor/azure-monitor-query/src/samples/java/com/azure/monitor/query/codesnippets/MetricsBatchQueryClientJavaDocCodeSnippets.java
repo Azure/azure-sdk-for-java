@@ -8,7 +8,7 @@ import com.azure.monitor.query.MetricsAsyncClient;
 import com.azure.monitor.query.MetricsClient;
 import com.azure.monitor.query.MetricsClientBuilder;
 import com.azure.monitor.query.models.MetricResult;
-import com.azure.monitor.query.models.MetricsBatchQueryResult;
+import com.azure.monitor.query.models.MetricsQueryResourcesResult;
 import com.azure.monitor.query.models.MetricsQueryResult;
 
 import java.util.Arrays;
@@ -41,7 +41,7 @@ public class MetricsBatchQueryClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link MetricsClient#queryBatch(List, List, String)}.
+     * Generates a code sample for using {@link MetricsClient#queryResources(List, List, String)}.
      */
     public void queryBatch() {
         MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
@@ -50,11 +50,11 @@ public class MetricsBatchQueryClientJavaDocCodeSnippets {
             .buildClient();
 
         // BEGIN: com.azure.monitor.query.MetricsBatchQueryClient.queryBatch#List-List-String
-        MetricsBatchQueryResult metricsBatchQueryResult = metricsBatchQueryClient.queryBatch(
+        MetricsQueryResourcesResult metricsQueryResourcesResult = metricsBatchQueryClient.queryResources(
             Arrays.asList("{resourceId1}", "{resourceId2}"),
             Arrays.asList("{metricId}"), "{metricNamespace}");
 
-        for (MetricsQueryResult metricsQueryResult : metricsBatchQueryResult.getMetricsQueryResults()) {
+        for (MetricsQueryResult metricsQueryResult : metricsQueryResourcesResult.getMetricsQueryResults()) {
             // Each MetricsQueryResult corresponds to one of the resourceIds in the batch request.
             List<MetricResult> metrics = metricsQueryResult.getMetrics();
             metrics.forEach(metric -> {
@@ -82,7 +82,7 @@ public class MetricsBatchQueryClientJavaDocCodeSnippets {
             .buildAsyncClient();
 
         // BEGIN: com.azure.monitor.query.MetricsBatchQueryAsyncClient.queryBatch#List-List-String
-        metricsAsyncClient.queryBatch(
+        metricsAsyncClient.queryResources(
                 Arrays.asList("{resourceId1}", "{resourceId2}"),
                 Arrays.asList("{metricId}"), "{metricNamespace}")
             .subscribe(metricsBatchResult -> {

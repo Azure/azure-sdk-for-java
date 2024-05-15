@@ -19,7 +19,7 @@ public final class CriticalResult {
      */
     @Generated
     @JsonProperty(value = "description")
-    private String description;
+    private final String description;
 
     /*
      * Finding linked to the critical result.

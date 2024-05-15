@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a Database. */
+/**
+ * Represents a Database.
+ */
 @Fluent
 public final class DatabaseInner extends ProxyResource {
     /*
@@ -19,18 +21,20 @@ public final class DatabaseInner extends ProxyResource {
     private DatabaseProperties innerProperties;
 
     /*
-     * The system metadata relating to this resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DatabaseInner class. */
+    /**
+     * Creates an instance of DatabaseInner class.
+     */
     public DatabaseInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a database.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DatabaseProperties innerProperties() {
@@ -38,8 +42,8 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to this resource.
-     *
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,7 +52,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the charset property: The charset of the database.
-     *
+     * 
      * @return the charset value.
      */
     public String charset() {
@@ -57,7 +61,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Set the charset property: The charset of the database.
-     *
+     * 
      * @param charset the charset value to set.
      * @return the DatabaseInner object itself.
      */
@@ -71,7 +75,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the collation property: The collation of the database.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -80,7 +84,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Set the collation property: The collation of the database.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the DatabaseInner object itself.
      */
@@ -94,7 +98,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

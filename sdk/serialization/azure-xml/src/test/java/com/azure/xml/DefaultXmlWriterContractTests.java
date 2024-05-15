@@ -4,7 +4,6 @@
 package com.azure.xml;
 
 import com.azure.xml.contract.XmlWriterContractTests;
-import com.azure.xml.implementation.DefaultXmlWriter;
 import org.junit.jupiter.api.BeforeEach;
 
 import javax.xml.stream.XMLStreamException;
@@ -13,7 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Tests {@link DefaultXmlWriter} against the contract required by {@link XmlWriter}.
+ * Tests {@link XmlWriter} against the contract required by {@link XmlWriter}.
  */
 public final class DefaultXmlWriterContractTests extends XmlWriterContractTests {
     private ByteArrayOutputStream outputStream;
@@ -22,7 +21,7 @@ public final class DefaultXmlWriterContractTests extends XmlWriterContractTests 
     @BeforeEach
     public void beforeEach() throws XMLStreamException {
         this.outputStream = new ByteArrayOutputStream();
-        this.writer = DefaultXmlWriter.toStream(outputStream);
+        this.writer = XmlWriter.toStream(outputStream);
     }
 
     @Override

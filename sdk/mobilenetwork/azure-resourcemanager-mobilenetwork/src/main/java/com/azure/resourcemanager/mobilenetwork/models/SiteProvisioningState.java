@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of a resource e.g. SIM/SIM policy on a site. */
+/**
+ * The provisioning state of a resource e.g. SIM/SIM policy on a site.
+ */
 public final class SiteProvisioningState extends ExpandableStringEnum<SiteProvisioningState> {
-    /** Static value NotApplicable for SiteProvisioningState. */
+    /**
+     * Static value NotApplicable for SiteProvisioningState.
+     */
     public static final SiteProvisioningState NOT_APPLICABLE = fromString("NotApplicable");
 
-    /** Static value Adding for SiteProvisioningState. */
+    /**
+     * Static value Adding for SiteProvisioningState.
+     */
     public static final SiteProvisioningState ADDING = fromString("Adding");
 
-    /** Static value Updating for SiteProvisioningState. */
+    /**
+     * Static value Updating for SiteProvisioningState.
+     */
     public static final SiteProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for SiteProvisioningState. */
+    /**
+     * Static value Deleting for SiteProvisioningState.
+     */
     public static final SiteProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Provisioned for SiteProvisioningState. */
+    /**
+     * Static value Provisioned for SiteProvisioningState.
+     */
     public static final SiteProvisioningState PROVISIONED = fromString("Provisioned");
 
-    /** Static value Failed for SiteProvisioningState. */
+    /**
+     * Static value Failed for SiteProvisioningState.
+     */
     public static final SiteProvisioningState FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of SiteProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class SiteProvisioningState extends ExpandableStringEnum<SiteProvis
 
     /**
      * Creates or finds a SiteProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SiteProvisioningState.
      */
@@ -50,7 +64,7 @@ public final class SiteProvisioningState extends ExpandableStringEnum<SiteProvis
 
     /**
      * Gets known SiteProvisioningState values.
-     *
+     * 
      * @return known SiteProvisioningState values.
      */
     public static Collection<SiteProvisioningState> values() {

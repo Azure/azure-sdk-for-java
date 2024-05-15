@@ -5,28 +5,30 @@ package com.azure.resourcemanager.perf.core;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.resourcemanager.test.utils.AuthFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.Objects;
 
 public abstract class AzureResourceManagerTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
     protected final AzureResourceManager azureResourceManager;
-    public AzureResourceManagerTest(TOptions options) throws IOException {
+    public AzureResourceManagerTest(TOptions options) {
         super(options);
 
-        String authFilePath = System.getenv("AZURE_AUTH_LOCATION");
-        if (CoreUtils.isNullOrEmpty(authFilePath)) {
-            System.out.println("Environment variable AZURE_AUTH_LOCATION must be set.");
-            System.exit(1);
-        }
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String tenantId = Objects.requireNonNull(
+            configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID),
+            "'AZURE_TENANT_ID' environment variable cannot be null.");
+        String subscriptionId = Objects.requireNonNull(
+            configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID),
+            "'AZURE_SUBSCRIPTION_ID' environment variable cannot be null.");
 
-        AuthFile authFile = AuthFile.parse(new File(authFilePath));
-        AzureProfile profile = new AzureProfile(authFile.getTenantId(), authFile.getSubscriptionId(), AzureEnvironment.AZURE);
-        azureResourceManager = AzureResourceManager.authenticate(authFile.getCredential(), profile).withDefaultSubscription();
+        AzureProfile profile = new AzureProfile(tenantId, subscriptionId, AzureEnvironment.AZURE);
+        azureResourceManager = AzureResourceManager
+            .authenticate(new DefaultAzureCredentialBuilder().build(), profile)
+            .withDefaultSubscription();
     }
 }

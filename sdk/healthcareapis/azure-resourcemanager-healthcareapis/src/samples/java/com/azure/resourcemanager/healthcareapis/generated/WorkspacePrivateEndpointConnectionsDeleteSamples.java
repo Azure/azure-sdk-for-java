@@ -9,9 +9,7 @@ package com.azure.resourcemanager.healthcareapis.generated;
  */
 public final class WorkspacePrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/privatelink/
-     * WorkspaceDeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/privatelink/WorkspaceDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: WorkspacePrivateEndpointConnections_Delete.
@@ -20,7 +18,7 @@ public final class WorkspacePrivateEndpointConnectionsDeleteSamples {
      */
     public static void workspacePrivateEndpointConnectionsDelete(
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.workspacePrivateEndpointConnections().delete("testRG", "workspace1", "myConnection",
-            com.azure.core.util.Context.NONE);
+        manager.workspacePrivateEndpointConnections()
+            .delete("testRG", "workspace1", "myConnection", com.azure.core.util.Context.NONE);
     }
 }

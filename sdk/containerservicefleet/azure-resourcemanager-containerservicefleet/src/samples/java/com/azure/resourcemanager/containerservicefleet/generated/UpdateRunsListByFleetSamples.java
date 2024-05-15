@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.containerservicefleet.generated;
 
-/** Samples for UpdateRuns ListByFleet. */
+/**
+ * Samples for UpdateRuns ListByFleet.
+ */
 public final class UpdateRunsListByFleetSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/UpdateRuns_ListByFleet.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
+     * examples/UpdateRuns_ListByFleet.json
      */
     /**
      * Sample code: Lists the UpdateRun resources by fleet.
-     *
+     * 
      * @param manager Entry point to ContainerServiceFleetManager.
      */
     public static void listsTheUpdateRunResourcesByFleet(

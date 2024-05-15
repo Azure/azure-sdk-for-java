@@ -120,11 +120,11 @@ public final class SubvolumeInfoImpl implements SubvolumeInfo, SubvolumeInfo.Def
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
-        this.poolName = Utils.getValueFromIdByName(innerObject.id(), "capacityPools");
-        this.volumeName = Utils.getValueFromIdByName(innerObject.id(), "volumes");
-        this.subvolumeName = Utils.getValueFromIdByName(innerObject.id(), "subvolumes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "netAppAccounts");
+        this.poolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "capacityPools");
+        this.volumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumes");
+        this.subvolumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "subvolumes");
     }
 
     public SubvolumeInfo refresh() {

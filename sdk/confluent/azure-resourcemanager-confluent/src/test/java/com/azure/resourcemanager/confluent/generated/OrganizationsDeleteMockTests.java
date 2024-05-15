@@ -45,7 +45,7 @@ public final class OrganizationsDeleteMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.organizations().delete("ggkfpagaowpul", "qblylsyxkqj", com.azure.core.util.Context.NONE);
+        manager.organizations().delete("sspuunnoxyhkx", "qddrihpfhoqcaae", com.azure.core.util.Context.NONE);
 
     }
 }

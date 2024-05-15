@@ -30,45 +30,26 @@ public final class CertificatesListByCatalogMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"certificate\":\"n\",\"status\":\"Expired\",\"subject\":\"gdrjervnaenqpe\",\"thumbprint\":\"ndoygmifthnzdnd\",\"expiryUtc\":\"2021-07-04T07:51:31Z\",\"notBeforeUtc\":\"2021-07-27T07:40:17Z\",\"provisioningState\":\"Canceled\"},\"id\":\"gynduha\",\"name\":\"hqlkthumaqo\",\"type\":\"bgycduiertgccym\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"certificate\":\"uvwbhsqfs\",\"status\":\"Expired\",\"subject\":\"jbi\",\"thumbprint\":\"bpybsrfbjf\",\"expiryUtc\":\"2021-07-05T13:20:17Z\",\"notBeforeUtc\":\"2021-10-31T01:03:52Z\",\"provisioningState\":\"Updating\"},\"id\":\"tpvjzbexilzznfqq\",\"name\":\"vwpm\",\"type\":\"taruoujmkcj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureSphereManager manager =
-            AzureSphereManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Certificate> response =
-            manager
-                .certificates()
-                .listByCatalog(
-                    "otftpvjzbexilz",
-                    "nfqqnvwp",
-                    "qtaruoujmkcjhwq",
-                    1209878928,
-                    1656357002,
-                    75465955,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<Certificate> response = manager.certificates().listByCatalog("ytkblmpew", "wfbkrvrns",
+            "shqjohxcrsbf", 249445305, 1210534043, 1966093769, com.azure.core.util.Context.NONE);
+
     }
 }

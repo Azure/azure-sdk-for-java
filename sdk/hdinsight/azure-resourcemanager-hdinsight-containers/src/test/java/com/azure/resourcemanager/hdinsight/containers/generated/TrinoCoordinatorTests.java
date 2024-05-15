@@ -6,34 +6,31 @@ package com.azure.resourcemanager.hdinsight.containers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.containers.models.TrinoCoordinator;
+import com.azure.resourcemanager.hdinsight.containers.models.TrinoDebugConfig;
 import org.junit.jupiter.api.Assertions;
 
 public final class TrinoCoordinatorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrinoCoordinator model =
-            BinaryData
-                .fromString(
-                    "{\"debug\":{\"enable\":false,\"port\":284483918,\"suspend\":false},\"highAvailabilityEnabled\":false}")
-                .toObject(TrinoCoordinator.class);
-        Assertions.assertEquals(false, model.highAvailabilityEnabled());
-        Assertions.assertEquals(false, model.enable());
-        Assertions.assertEquals(284483918, model.port());
-        Assertions.assertEquals(false, model.suspend());
+        TrinoCoordinator model = BinaryData
+            .fromString(
+                "{\"debug\":{\"enable\":true,\"port\":1650881541,\"suspend\":true},\"highAvailabilityEnabled\":true}")
+            .toObject(TrinoCoordinator.class);
+        Assertions.assertEquals(true, model.debug().enable());
+        Assertions.assertEquals(1650881541, model.debug().port());
+        Assertions.assertEquals(true, model.debug().suspend());
+        Assertions.assertEquals(true, model.highAvailabilityEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrinoCoordinator model =
-            new TrinoCoordinator()
-                .withHighAvailabilityEnabled(false)
-                .withEnable(false)
-                .withPort(284483918)
-                .withSuspend(false);
+        TrinoCoordinator model = new TrinoCoordinator()
+            .withDebug(new TrinoDebugConfig().withEnable(true).withPort(1650881541).withSuspend(true))
+            .withHighAvailabilityEnabled(true);
         model = BinaryData.fromObject(model).toObject(TrinoCoordinator.class);
-        Assertions.assertEquals(false, model.highAvailabilityEnabled());
-        Assertions.assertEquals(false, model.enable());
-        Assertions.assertEquals(284483918, model.port());
-        Assertions.assertEquals(false, model.suspend());
+        Assertions.assertEquals(true, model.debug().enable());
+        Assertions.assertEquals(1650881541, model.debug().port());
+        Assertions.assertEquals(true, model.debug().suspend());
+        Assertions.assertEquals(true, model.highAvailabilityEnabled());
     }
 }

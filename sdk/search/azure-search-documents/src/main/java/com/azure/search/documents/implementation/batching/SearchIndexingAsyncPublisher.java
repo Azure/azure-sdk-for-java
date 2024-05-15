@@ -22,6 +22,7 @@ import com.azure.search.documents.options.OnActionSentOptions;
 import com.azure.search.documents.options.OnActionSucceededOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
 import java.net.HttpURLConnection;
 import java.time.Duration;
@@ -54,21 +55,21 @@ public final class SearchIndexingAsyncPublisher<T> {
     private final JsonSerializer serializer;
 
     private final boolean autoFlush;
-    private int batchActionCount;
+    private int batchSize;
     private final int maxRetries;
     private final long throttlingDelayNanos;
     private final long maxThrottlingDelayNanos;
 
-    private final Consumer<OnActionAddedOptions<T>> onActionAddedConsumer;
-    private final Consumer<OnActionSentOptions<T>> onActionSentConsumer;
-    private final Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer;
-    private final Consumer<OnActionErrorOptions<T>> onActionErrorConsumer;
+    private final Consumer<OnActionAddedOptions<T>> onActionAdded;
+    private final Consumer<OnActionSentOptions<T>> onActionSent;
+    private final Consumer<OnActionSucceededOptions<T>> onActionSucceeded;
+    private final Consumer<OnActionErrorOptions<T>> onActionError;
 
     private final Function<T, String> documentKeyRetriever;
     private final Function<Integer, Integer> scaleDownFunction = size -> size / 2;
     private final IndexingDocumentManager<T> documentManager;
 
-    private final Semaphore processingSemaphore = new Semaphore(1);
+    private final Semaphore processingSemaphore = new Semaphore(1, true);
 
     volatile AtomicInteger backoffCount = new AtomicInteger();
     volatile Duration currentRetryDelay = Duration.ZERO;
@@ -76,37 +77,37 @@ public final class SearchIndexingAsyncPublisher<T> {
     public SearchIndexingAsyncPublisher(SearchIndexClientImpl restClient, JsonSerializer serializer,
         Function<T, String> documentKeyRetriever, boolean autoFlush, int initialBatchActionCount,
         int maxRetriesPerAction, Duration throttlingDelay, Duration maxThrottlingDelay,
-        Consumer<OnActionAddedOptions<T>> onActionAddedConsumer,
-        Consumer<OnActionSucceededOptions<T>> onActionSucceededConsumer,
-        Consumer<OnActionErrorOptions<T>> onActionErrorConsumer,
-        Consumer<OnActionSentOptions<T>> onActionSentConsumer) {
+        Consumer<OnActionAddedOptions<T>> onActionAdded,
+        Consumer<OnActionSucceededOptions<T>> onActionSucceeded,
+        Consumer<OnActionErrorOptions<T>> onActionError,
+        Consumer<OnActionSentOptions<T>> onActionSent) {
         this.documentKeyRetriever = Objects.requireNonNull(documentKeyRetriever,
             "'documentKeyRetriever' cannot be null");
 
         this.restClient = restClient;
         this.serializer = serializer;
-        this.documentManager = new IndexingDocumentManager<>(LOGGER);
+        this.documentManager = new IndexingDocumentManager<>();
 
         this.autoFlush = autoFlush;
-        this.batchActionCount = initialBatchActionCount;
+        this.batchSize = initialBatchActionCount;
         this.maxRetries = maxRetriesPerAction;
         this.throttlingDelayNanos = throttlingDelay.toNanos();
         this.maxThrottlingDelayNanos = (maxThrottlingDelay.compareTo(throttlingDelay) < 0)
             ? this.throttlingDelayNanos
             : maxThrottlingDelay.toNanos();
 
-        this.onActionAddedConsumer = onActionAddedConsumer;
-        this.onActionSentConsumer = onActionSentConsumer;
-        this.onActionSucceededConsumer = onActionSucceededConsumer;
-        this.onActionErrorConsumer = onActionErrorConsumer;
+        this.onActionAdded = onActionAdded;
+        this.onActionSent = onActionSent;
+        this.onActionSucceeded = onActionSucceeded;
+        this.onActionError = onActionError;
     }
 
     public Collection<IndexAction<T>> getActions() {
         return documentManager.getActions();
     }
 
-    public int getBatchActionCount() {
-        return batchActionCount;
+    public int getBatchSize() {
+        return batchSize;
     }
 
     public Duration getCurrentRetryDelay() {
@@ -115,11 +116,12 @@ public final class SearchIndexingAsyncPublisher<T> {
 
     public Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context,
         Runnable rescheduleFlush) {
-        int actionCount = documentManager.add(actions, documentKeyRetriever, onActionAddedConsumer);
+        Tuple2<Integer, Boolean> batchSizeAndAvailable
+            = documentManager.addAndCheckForBatch(actions, documentKeyRetriever, onActionAdded, batchSize);
 
-        LOGGER.verbose("Actions added, new pending queue size: {}.", actionCount);
+        LOGGER.verbose("Actions added, new pending queue size: {}.", batchSizeAndAvailable.getT1());
 
-        if (autoFlush && documentManager.batchAvailableForProcessing(batchActionCount)) {
+        if (autoFlush && batchSizeAndAvailable.getT2()) {
             rescheduleFlush.run();
             LOGGER.verbose("Adding documents triggered batch size limit, sending documents for indexing.");
             return flush(false, false, context);
@@ -146,16 +148,13 @@ public final class SearchIndexingAsyncPublisher<T> {
     }
 
     private Mono<Void> flushLoop(boolean isClosed, Context context) {
-        return createAndProcessBatch(context)
-            .expand(ignored -> Flux.defer(() ->
-                (documentManager.batchAvailableForProcessing(batchActionCount) || isClosed)
-                    ? createAndProcessBatch(context)
-                    : Flux.empty()))
+        return createAndProcessBatch(context, true)
+            .expand(ignored -> Flux.defer(() -> createAndProcessBatch(context, isClosed)))
             .then();
     }
 
-    private Mono<IndexBatchResponse> createAndProcessBatch(Context context) {
-        List<TryTrackingIndexAction<T>> batchActions = documentManager.createBatch(batchActionCount);
+    private Mono<IndexBatchResponse> createAndProcessBatch(Context context, boolean ignoreBatchSize) {
+        List<TryTrackingIndexAction<T>> batchActions = documentManager.tryCreateBatch(batchSize, ignoreBatchSize);
 
         // If there are no documents to in the batch to index just return.
         if (CoreUtils.isNullOrEmpty(batchActions)) {
@@ -184,8 +183,8 @@ public final class SearchIndexingAsyncPublisher<T> {
         Context context) {
         LOGGER.verbose("Sending a batch of size {}.", batchActions.size());
 
-        if (onActionSentConsumer != null) {
-            batchActions.forEach(action -> onActionSentConsumer.accept(new OnActionSentOptions<>(action.getAction())));
+        if (onActionSent != null) {
+            batchActions.forEach(action -> onActionSent.accept(new OnActionSentOptions<>(action.getAction())));
         }
 
         Mono<Response<IndexDocumentsResult>> batchCall = Utility.indexDocumentsWithResponseAsync(restClient, actions, true,
@@ -220,17 +219,17 @@ public final class SearchIndexingAsyncPublisher<T> {
                      * and trigger 413, if we only halved 512 we'd send the same batch again and 413 a second time.
                      * Instead in this scenario we should halve 200 to 100.
                      */
-                    int previousBatchSize = Math.min(batchActionCount, actions.size());
-                    this.batchActionCount = Math.max(1, scaleDownFunction.apply(previousBatchSize));
+                    int previousBatchSize = Math.min(batchSize, actions.size());
+                    this.batchSize = Math.max(1, scaleDownFunction.apply(previousBatchSize));
 
-                    LOGGER.verbose(BATCH_SIZE_SCALED_DOWN, System.lineSeparator(), previousBatchSize, batchActionCount);
+                    LOGGER.verbose(BATCH_SIZE_SCALED_DOWN, System.lineSeparator(), previousBatchSize, batchSize);
 
                     int actionCount = actions.size();
                     if (actionCount == 1) {
                         return Mono.just(new IndexBatchResponse(statusCode, null, actionCount, true));
                     }
 
-                    int splitOffset = Math.min(actions.size(), batchActionCount);
+                    int splitOffset = Math.min(actions.size(), batchSize);
                     List<TryTrackingIndexAction<T>> batchActionsToRemove = batchActions.subList(splitOffset,
                         batchActions.size());
                     documentManager.reinsertFailedActions(batchActionsToRemove);
@@ -252,8 +251,8 @@ public final class SearchIndexingAsyncPublisher<T> {
          */
         if (batchResponse.getStatusCode() == HttpURLConnection.HTTP_ENTITY_TOO_LARGE && batchResponse.getCount() == 1) {
             IndexAction<T> action = actions.get(0).getAction();
-            if (onActionErrorConsumer != null) {
-                onActionErrorConsumer.accept(new OnActionErrorOptions<>(action)
+            if (onActionError != null) {
+                onActionError.accept(new OnActionErrorOptions<>(action)
                     .setThrowable(createDocumentTooLargeException()));
             }
             return;
@@ -284,8 +283,8 @@ public final class SearchIndexingAsyncPublisher<T> {
                 }
 
                 if (isSuccess(result.getStatusCode())) {
-                    if (onActionSucceededConsumer != null) {
-                        onActionSucceededConsumer.accept(new OnActionSucceededOptions<>(action.getAction()));
+                    if (onActionSucceeded != null) {
+                        onActionSucceeded.accept(new OnActionSucceededOptions<>(action.getAction()));
                     }
                 } else if (isRetryable(result.getStatusCode())) {
                     has503 |= result.getStatusCode() == HttpURLConnection.HTTP_UNAVAILABLE;
@@ -293,15 +292,15 @@ public final class SearchIndexingAsyncPublisher<T> {
                         action.incrementTryCount();
                         actionsToRetry.add(action);
                     } else {
-                        if (onActionErrorConsumer != null) {
-                            onActionErrorConsumer.accept(new OnActionErrorOptions<>(action.getAction())
+                        if (onActionError != null) {
+                            onActionError.accept(new OnActionErrorOptions<>(action.getAction())
                                 .setThrowable(createDocumentHitRetryLimitException())
                                 .setIndexingResult(result));
                         }
                     }
                 } else {
-                    if (onActionErrorConsumer != null) {
-                        onActionErrorConsumer.accept(new OnActionErrorOptions<>(action.getAction())
+                    if (onActionError != null) {
+                        onActionError.accept(new OnActionErrorOptions<>(action.getAction())
                             .setIndexingResult(result));
                     }
                 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details of a diagnostics data provider. */
+/**
+ * Details of a diagnostics data provider.
+ */
 @Fluent
 public final class DiagnosticDataProviderMetadata {
     /*
@@ -23,13 +25,15 @@ public final class DiagnosticDataProviderMetadata {
     @JsonProperty(value = "propertyBag")
     private List<DiagnosticDataProviderMetadataPropertyBagItem> propertyBag;
 
-    /** Creates an instance of DiagnosticDataProviderMetadata class. */
+    /**
+     * Creates an instance of DiagnosticDataProviderMetadata class.
+     */
     public DiagnosticDataProviderMetadata() {
     }
 
     /**
      * Get the providerName property: Name of data provider.
-     *
+     * 
      * @return the providerName value.
      */
     public String providerName() {
@@ -38,7 +42,7 @@ public final class DiagnosticDataProviderMetadata {
 
     /**
      * Set the providerName property: Name of data provider.
-     *
+     * 
      * @param providerName the providerName value to set.
      * @return the DiagnosticDataProviderMetadata object itself.
      */
@@ -49,7 +53,7 @@ public final class DiagnosticDataProviderMetadata {
 
     /**
      * Get the propertyBag property: Collection of properties.
-     *
+     * 
      * @return the propertyBag value.
      */
     public List<DiagnosticDataProviderMetadataPropertyBagItem> propertyBag() {
@@ -58,19 +62,19 @@ public final class DiagnosticDataProviderMetadata {
 
     /**
      * Set the propertyBag property: Collection of properties.
-     *
+     * 
      * @param propertyBag the propertyBag value to set.
      * @return the DiagnosticDataProviderMetadata object itself.
      */
-    public DiagnosticDataProviderMetadata withPropertyBag(
-        List<DiagnosticDataProviderMetadataPropertyBagItem> propertyBag) {
+    public DiagnosticDataProviderMetadata
+        withPropertyBag(List<DiagnosticDataProviderMetadataPropertyBagItem> propertyBag) {
         this.propertyBag = propertyBag;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

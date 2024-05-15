@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.support.generated;
 
-/** Samples for SupportTicketsNoSubscription Get. */
+/**
+ * Samples for SupportTicketsNoSubscription Get.
+ */
 public final class SupportTicketsNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/GetSupportTicketDetails.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetSupportTicketDetails.json
      */
     /**
      * Sample code: Get details of a ticket.
-     *
+     * 
      * @param manager Entry point to SupportManager.
      */
     public static void getDetailsOfATicket(com.azure.resourcemanager.support.SupportManager manager) {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The configuration settings of the Azure Active Directory default authorization policy. */
+/**
+ * The configuration settings of the Azure Active Directory default authorization policy.
+ */
 @Fluent
 public final class DefaultAuthorizationPolicy {
     /*
@@ -23,13 +25,15 @@ public final class DefaultAuthorizationPolicy {
     @JsonProperty(value = "allowedApplications")
     private List<String> allowedApplications;
 
-    /** Creates an instance of DefaultAuthorizationPolicy class. */
+    /**
+     * Creates an instance of DefaultAuthorizationPolicy class.
+     */
     public DefaultAuthorizationPolicy() {
     }
 
     /**
      * Get the allowedPrincipals property: The configuration settings of the Azure Active Directory allowed principals.
-     *
+     * 
      * @return the allowedPrincipals value.
      */
     public AllowedPrincipals allowedPrincipals() {
@@ -38,7 +42,7 @@ public final class DefaultAuthorizationPolicy {
 
     /**
      * Set the allowedPrincipals property: The configuration settings of the Azure Active Directory allowed principals.
-     *
+     * 
      * @param allowedPrincipals the allowedPrincipals value to set.
      * @return the DefaultAuthorizationPolicy object itself.
      */
@@ -50,7 +54,7 @@ public final class DefaultAuthorizationPolicy {
     /**
      * Get the allowedApplications property: The configuration settings of the Azure Active Directory allowed
      * applications.
-     *
+     * 
      * @return the allowedApplications value.
      */
     public List<String> allowedApplications() {
@@ -60,7 +64,7 @@ public final class DefaultAuthorizationPolicy {
     /**
      * Set the allowedApplications property: The configuration settings of the Azure Active Directory allowed
      * applications.
-     *
+     * 
      * @param allowedApplications the allowedApplications value to set.
      * @return the DefaultAuthorizationPolicy object itself.
      */
@@ -71,7 +75,7 @@ public final class DefaultAuthorizationPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

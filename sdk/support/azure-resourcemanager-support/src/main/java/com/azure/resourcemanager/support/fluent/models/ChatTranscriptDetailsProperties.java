@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Describes the properties of a Chat Transcript Details resource. */
+/**
+ * Describes the properties of a Chat Transcript Details resource.
+ */
 @Fluent
 public final class ChatTranscriptDetailsProperties {
     /*
@@ -25,13 +27,15 @@ public final class ChatTranscriptDetailsProperties {
     @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
-    /** Creates an instance of ChatTranscriptDetailsProperties class. */
+    /**
+     * Creates an instance of ChatTranscriptDetailsProperties class.
+     */
     public ChatTranscriptDetailsProperties() {
     }
 
     /**
      * Get the messages property: List of chat transcript communication resources.
-     *
+     * 
      * @return the messages value.
      */
     public List<MessageProperties> messages() {
@@ -40,7 +44,7 @@ public final class ChatTranscriptDetailsProperties {
 
     /**
      * Set the messages property: List of chat transcript communication resources.
-     *
+     * 
      * @param messages the messages value to set.
      * @return the ChatTranscriptDetailsProperties object itself.
      */
@@ -51,7 +55,7 @@ public final class ChatTranscriptDetailsProperties {
 
     /**
      * Get the startTime property: Time in UTC (ISO 8601 format) when the chat began.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -60,7 +64,7 @@ public final class ChatTranscriptDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

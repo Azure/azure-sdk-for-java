@@ -12,7 +12,9 @@ import com.azure.resourcemanager.mobilenetwork.models.DiagnosticsPackageStatus;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Diagnostics package resource. */
+/**
+ * Diagnostics package resource.
+ */
 @Immutable
 public final class DiagnosticsPackageInner extends ProxyResource {
     /*
@@ -28,7 +30,9 @@ public final class DiagnosticsPackageInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DiagnosticsPackageInner class. */
+    /**
+     * Creates an instance of DiagnosticsPackageInner class.
+     */
     public DiagnosticsPackageInner() {
     }
 
@@ -36,7 +40,7 @@ public final class DiagnosticsPackageInner extends ProxyResource {
      * Get the innerProperties property: Diagnostics package properties. A diagnostics package file derived from the
      * name of this resource will be uploaded to the Storage Account Container URL in the packet core control plane
      * properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiagnosticsPackagePropertiesFormat innerProperties() {
@@ -45,7 +49,7 @@ public final class DiagnosticsPackageInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -54,7 +58,7 @@ public final class DiagnosticsPackageInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the diagnostics package resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -63,7 +67,7 @@ public final class DiagnosticsPackageInner extends ProxyResource {
 
     /**
      * Get the status property: The status of the diagnostics package collection.
-     *
+     * 
      * @return the status value.
      */
     public DiagnosticsPackageStatus status() {
@@ -72,7 +76,7 @@ public final class DiagnosticsPackageInner extends ProxyResource {
 
     /**
      * Get the reason property: The reason for the current state of the diagnostics package collection.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -81,15 +85,13 @@ public final class DiagnosticsPackageInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model DiagnosticsPackageInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model DiagnosticsPackageInner"));
         } else {
             innerProperties().validate();
         }

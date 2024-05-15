@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity SQL Data Warehouse sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SqlDWSink.class, visible = true)
 @JsonTypeName("SqlDWSink")
 @Fluent
 public final class SqlDWSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SqlDWSink";
+
     /*
      * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
@@ -23,8 +31,7 @@ public final class SqlDWSink extends CopySink {
     private Object preCopyScript;
 
     /*
-     * Indicates to use PolyBase to copy data into SQL Data Warehouse when applicable. Type: boolean (or Expression
-     * with resultType boolean).
+     * Indicates to use PolyBase to copy data into SQL Data Warehouse when applicable. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "allowPolyBase")
     private Object allowPolyBase;
@@ -36,8 +43,7 @@ public final class SqlDWSink extends CopySink {
     private PolybaseSettings polyBaseSettings;
 
     /*
-     * Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType
-     * boolean).
+     * Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "allowCopyCommand")
     private Object allowCopyCommand;
@@ -49,8 +55,7 @@ public final class SqlDWSink extends CopySink {
     private DWCopyCommandSettings copyCommandSettings;
 
     /*
-     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
-     * (or Expression with resultType string).
+     * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableOption")
     private Object tableOption;
@@ -62,8 +67,7 @@ public final class SqlDWSink extends CopySink {
     private Object sqlWriterUseTableLock;
 
     /*
-     * Write behavior when copying data into azure SQL DW. Type: SqlDWWriteBehaviorEnum (or Expression with resultType
-     * SqlDWWriteBehaviorEnum)
+     * Write behavior when copying data into azure SQL DW. Type: SqlDWWriteBehaviorEnum (or Expression with resultType SqlDWWriteBehaviorEnum)
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
@@ -78,6 +82,16 @@ public final class SqlDWSink extends CopySink {
      * Creates an instance of SqlDWSink class.
      */
     public SqlDWSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

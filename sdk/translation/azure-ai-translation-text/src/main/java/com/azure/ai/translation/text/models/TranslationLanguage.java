@@ -20,21 +20,21 @@ public final class TranslationLanguage {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * Display name of the language in the locale native for this language.
      */
     @Generated
     @JsonProperty(value = "nativeName")
-    private String nativeName;
+    private final String nativeName;
 
     /*
      * Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
      */
     @Generated
     @JsonProperty(value = "dir")
-    private String dir;
+    private final String dir;
 
     /**
      * Creates an instance of TranslationLanguage class.

@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WafMetric. */
+/**
+ * Defines values for WafMetric.
+ */
 public final class WafMetric extends ExpandableStringEnum<WafMetric> {
-    /** Static value clientRequestCount for WafMetric. */
+    /**
+     * Static value clientRequestCount for WafMetric.
+     */
     public static final WafMetric CLIENT_REQUEST_COUNT = fromString("clientRequestCount");
 
     /**
      * Creates a new instance of WafMetric value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class WafMetric extends ExpandableStringEnum<WafMetric> {
 
     /**
      * Creates or finds a WafMetric from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WafMetric.
      */
@@ -35,7 +39,7 @@ public final class WafMetric extends ExpandableStringEnum<WafMetric> {
 
     /**
      * Gets known WafMetric values.
-     *
+     * 
      * @return known WafMetric values.
      */
     public static Collection<WafMetric> values() {

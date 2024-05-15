@@ -5,23 +5,25 @@
 package com.azure.monitor.query.implementation.metricsnamespaces.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the format of Error response.
  */
 @Fluent
-public final class ErrorResponse {
+public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /*
      * Error code
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Error message indicating why the operation failed.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -68,5 +70,41 @@ public final class ErrorResponse {
     public ErrorResponse setMessage(String message) {
         this.message = message;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorResponse if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorResponse.
+     */
+    public static ErrorResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorResponse deserializedErrorResponse = new ErrorResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedErrorResponse.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedErrorResponse.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorResponse;
+        });
     }
 }

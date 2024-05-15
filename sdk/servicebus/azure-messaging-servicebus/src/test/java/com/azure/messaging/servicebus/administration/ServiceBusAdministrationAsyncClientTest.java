@@ -36,7 +36,6 @@ import com.azure.messaging.servicebus.administration.implementation.models.Title
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
-import com.azure.xml.XmlProviders;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlWriter;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -731,7 +730,7 @@ class ServiceBusAdministrationAsyncClientTest {
 
     static String serializeResponse(XmlSerializable<?> response) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             XmlWriter xmlWriter = XmlProviders.createWriter(outputStream)) {
+             XmlWriter xmlWriter = XmlWriter.toStream(outputStream)) {
             xmlWriter.writeXml(response).flush();
             return outputStream.toString();
         } catch (IOException | XMLStreamException e) {

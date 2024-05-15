@@ -217,7 +217,7 @@ public interface Volume {
 
     /**
      * Gets the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @return the volumeType value.
      */
@@ -530,15 +530,6 @@ public interface Volume {
      * @return the originatingResourceId value.
      */
     String originatingResourceId();
-
-    /**
-     * Gets the inheritedSizeInBytes property: inheritedSizeInBytes
-     * 
-     * Space shared by short term clone volume with parent volume in bytes.
-     * 
-     * @return the inheritedSizeInBytes value.
-     */
-    Long inheritedSizeInBytes();
 
     /**
      * Gets the region of the resource.
@@ -861,10 +852,10 @@ public interface Volume {
         interface WithVolumeType {
             /**
              * Specifies the volumeType property: What type of volume is this. For destination volumes in Cross Region
-             * Replication, set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+             * Replication, set type to DataProtection.
              * 
              * @param volumeType What type of volume is this. For destination volumes in Cross Region Replication, set
-             * type to DataProtection. For creating clone volume, set type to ShortTermClone.
+             * type to DataProtection.
              * @return the next definition stage.
              */
             WithCreate withVolumeType(String volumeType);
@@ -1692,28 +1683,6 @@ public interface Volume {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void resetCifsPassword(Context context);
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void splitCloneFromParent();
-
-    /**
-     * Split clone from parent volume
-     * 
-     * Split operation to convert clone volume to an independent volume.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void splitCloneFromParent(Context context);
 
     /**
      * Break file locks

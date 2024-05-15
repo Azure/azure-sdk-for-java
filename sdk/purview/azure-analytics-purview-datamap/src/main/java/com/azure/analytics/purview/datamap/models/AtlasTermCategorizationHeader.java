@@ -6,46 +6,45 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The basic information for term categorization.
  */
 @Fluent
-public final class AtlasTermCategorizationHeader {
+public final class AtlasTermCategorizationHeader implements JsonSerializable<AtlasTermCategorizationHeader> {
     /*
      * The GUID of the category.
      */
     @Generated
-    @JsonProperty(value = "categoryGuid")
     private String categoryGuid;
 
     /*
      * The description of the record.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The display text.
      */
     @Generated
-    @JsonProperty(value = "displayText")
     private String displayText;
 
     /*
      * The GUID of the relationship.
      */
     @Generated
-    @JsonProperty(value = "relationGuid")
     private String relationGuid;
 
     /*
      * The status of term relationship.
      */
     @Generated
-    @JsonProperty(value = "status")
     private AtlasTermRelationshipStatus status;
 
     /**
@@ -163,5 +162,57 @@ public final class AtlasTermCategorizationHeader {
     public AtlasTermCategorizationHeader setStatus(AtlasTermRelationshipStatus status) {
         this.status = status;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("categoryGuid", this.categoryGuid);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("displayText", this.displayText);
+        jsonWriter.writeStringField("relationGuid", this.relationGuid);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AtlasTermCategorizationHeader from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AtlasTermCategorizationHeader if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AtlasTermCategorizationHeader.
+     */
+    @Generated
+    public static AtlasTermCategorizationHeader fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AtlasTermCategorizationHeader deserializedAtlasTermCategorizationHeader
+                = new AtlasTermCategorizationHeader();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("categoryGuid".equals(fieldName)) {
+                    deserializedAtlasTermCategorizationHeader.categoryGuid = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAtlasTermCategorizationHeader.description = reader.getString();
+                } else if ("displayText".equals(fieldName)) {
+                    deserializedAtlasTermCategorizationHeader.displayText = reader.getString();
+                } else if ("relationGuid".equals(fieldName)) {
+                    deserializedAtlasTermCategorizationHeader.relationGuid = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedAtlasTermCategorizationHeader.status
+                        = AtlasTermRelationshipStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAtlasTermCategorizationHeader;
+        });
     }
 }

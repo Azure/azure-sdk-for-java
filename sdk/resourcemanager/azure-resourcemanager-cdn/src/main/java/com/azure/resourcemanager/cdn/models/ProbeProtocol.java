@@ -7,18 +7,28 @@ package com.azure.resourcemanager.cdn.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Protocol to use for health probe. */
+/**
+ * Protocol to use for health probe.
+ */
 public enum ProbeProtocol {
-    /** Enum value NotSet. */
+    /**
+     * Enum value NotSet.
+     */
     NOT_SET("NotSet"),
 
-    /** Enum value Http. */
+    /**
+     * Enum value Http.
+     */
     HTTP("Http"),
 
-    /** Enum value Https. */
+    /**
+     * Enum value Https.
+     */
     HTTPS("Https");
 
-    /** The actual serialized value for a ProbeProtocol instance. */
+    /**
+     * The actual serialized value for a ProbeProtocol instance.
+     */
     private final String value;
 
     ProbeProtocol(String value) {
@@ -27,7 +37,7 @@ public enum ProbeProtocol {
 
     /**
      * Parses a serialized value to a ProbeProtocol instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ProbeProtocol object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum ProbeProtocol {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

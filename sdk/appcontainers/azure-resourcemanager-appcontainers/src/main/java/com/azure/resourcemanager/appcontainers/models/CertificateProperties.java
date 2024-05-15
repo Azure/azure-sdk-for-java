@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Certificate resource specific properties. */
+/**
+ * Certificate resource specific properties.
+ */
 @Fluent
 public final class CertificateProperties {
     /*
@@ -18,6 +20,12 @@ public final class CertificateProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateProvisioningState provisioningState;
+
+    /*
+     * Properties for a certificate stored in a Key Vault.
+     */
+    @JsonProperty(value = "certificateKeyVaultProperties")
+    private CertificateKeyVaultProperties certificateKeyVaultProperties;
 
     /*
      * Certificate password.
@@ -79,13 +87,21 @@ public final class CertificateProperties {
     @JsonProperty(value = "publicKeyHash", access = JsonProperty.Access.WRITE_ONLY)
     private String publicKeyHash;
 
-    /** Creates an instance of CertificateProperties class. */
+    /*
+     * The type of the certificate. Allowed values are `ServerSSLCertificate` and `ImagePullTrustedCA`
+     */
+    @JsonProperty(value = "certificateType")
+    private CertificateType certificateType;
+
+    /**
+     * Creates an instance of CertificateProperties class.
+     */
     public CertificateProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the certificate.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CertificateProvisioningState provisioningState() {
@@ -93,8 +109,29 @@ public final class CertificateProperties {
     }
 
     /**
+     * Get the certificateKeyVaultProperties property: Properties for a certificate stored in a Key Vault.
+     * 
+     * @return the certificateKeyVaultProperties value.
+     */
+    public CertificateKeyVaultProperties certificateKeyVaultProperties() {
+        return this.certificateKeyVaultProperties;
+    }
+
+    /**
+     * Set the certificateKeyVaultProperties property: Properties for a certificate stored in a Key Vault.
+     * 
+     * @param certificateKeyVaultProperties the certificateKeyVaultProperties value to set.
+     * @return the CertificateProperties object itself.
+     */
+    public CertificateProperties
+        withCertificateKeyVaultProperties(CertificateKeyVaultProperties certificateKeyVaultProperties) {
+        this.certificateKeyVaultProperties = certificateKeyVaultProperties;
+        return this;
+    }
+
+    /**
      * Get the password property: Certificate password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -103,7 +140,7 @@ public final class CertificateProperties {
 
     /**
      * Set the password property: Certificate password.
-     *
+     * 
      * @param password the password value to set.
      * @return the CertificateProperties object itself.
      */
@@ -114,7 +151,7 @@ public final class CertificateProperties {
 
     /**
      * Get the subjectName property: Subject name of the certificate.
-     *
+     * 
      * @return the subjectName value.
      */
     public String subjectName() {
@@ -123,7 +160,7 @@ public final class CertificateProperties {
 
     /**
      * Get the subjectAlternativeNames property: Subject alternative names the certificate applies to.
-     *
+     * 
      * @return the subjectAlternativeNames value.
      */
     public List<String> subjectAlternativeNames() {
@@ -132,7 +169,7 @@ public final class CertificateProperties {
 
     /**
      * Get the value property: PFX or PEM blob.
-     *
+     * 
      * @return the value value.
      */
     public byte[] value() {
@@ -141,7 +178,7 @@ public final class CertificateProperties {
 
     /**
      * Set the value property: PFX or PEM blob.
-     *
+     * 
      * @param value the value value to set.
      * @return the CertificateProperties object itself.
      */
@@ -152,7 +189,7 @@ public final class CertificateProperties {
 
     /**
      * Get the issuer property: Certificate issuer.
-     *
+     * 
      * @return the issuer value.
      */
     public String issuer() {
@@ -161,7 +198,7 @@ public final class CertificateProperties {
 
     /**
      * Get the issueDate property: Certificate issue Date.
-     *
+     * 
      * @return the issueDate value.
      */
     public OffsetDateTime issueDate() {
@@ -170,7 +207,7 @@ public final class CertificateProperties {
 
     /**
      * Get the expirationDate property: Certificate expiration date.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -179,7 +216,7 @@ public final class CertificateProperties {
 
     /**
      * Get the thumbprint property: Certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -188,7 +225,7 @@ public final class CertificateProperties {
 
     /**
      * Get the valid property: Is the certificate valid?.
-     *
+     * 
      * @return the valid value.
      */
     public Boolean valid() {
@@ -197,7 +234,7 @@ public final class CertificateProperties {
 
     /**
      * Get the publicKeyHash property: Public key hash.
-     *
+     * 
      * @return the publicKeyHash value.
      */
     public String publicKeyHash() {
@@ -205,10 +242,35 @@ public final class CertificateProperties {
     }
 
     /**
+     * Get the certificateType property: The type of the certificate. Allowed values are `ServerSSLCertificate` and
+     * `ImagePullTrustedCA`.
+     * 
+     * @return the certificateType value.
+     */
+    public CertificateType certificateType() {
+        return this.certificateType;
+    }
+
+    /**
+     * Set the certificateType property: The type of the certificate. Allowed values are `ServerSSLCertificate` and
+     * `ImagePullTrustedCA`.
+     * 
+     * @param certificateType the certificateType value to set.
+     * @return the CertificateProperties object itself.
+     */
+    public CertificateProperties withCertificateType(CertificateType certificateType) {
+        this.certificateType = certificateType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (certificateKeyVaultProperties() != null) {
+            certificateKeyVaultProperties().validate();
+        }
     }
 }

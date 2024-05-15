@@ -7,25 +7,27 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppJobExecutionsInner;
 import java.util.List;
 
-/** An immutable client-side representation of ContainerAppJobExecutions. */
+/**
+ * An immutable client-side representation of ContainerAppJobExecutions.
+ */
 public interface ContainerAppJobExecutions {
     /**
      * Gets the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     List<JobExecution> value();
 
     /**
      * Gets the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.ContainerAppJobExecutionsInner object.
-     *
+     * 
      * @return the inner object.
      */
     ContainerAppJobExecutionsInner innerModel();

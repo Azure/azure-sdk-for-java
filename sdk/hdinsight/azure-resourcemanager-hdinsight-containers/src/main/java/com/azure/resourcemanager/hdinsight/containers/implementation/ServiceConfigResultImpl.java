@@ -5,63 +5,22 @@
 package com.azure.resourcemanager.hdinsight.containers.implementation;
 
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ServiceConfigResultInner;
-import com.azure.resourcemanager.hdinsight.containers.models.ServiceConfigListResultValueEntity;
 import com.azure.resourcemanager.hdinsight.containers.models.ServiceConfigResult;
-import java.util.Collections;
-import java.util.Map;
+import com.azure.resourcemanager.hdinsight.containers.models.ServiceConfigResultProperties;
 
 public final class ServiceConfigResultImpl implements ServiceConfigResult {
     private ServiceConfigResultInner innerObject;
 
     private final com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager;
 
-    ServiceConfigResultImpl(
-        ServiceConfigResultInner innerObject,
+    ServiceConfigResultImpl(ServiceConfigResultInner innerObject,
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public String serviceName() {
-        return this.innerModel().serviceName();
-    }
-
-    public String fileName() {
-        return this.innerModel().fileName();
-    }
-
-    public String content() {
-        return this.innerModel().content();
-    }
-
-    public String componentName() {
-        return this.innerModel().componentName();
-    }
-
-    public String type() {
-        return this.innerModel().type();
-    }
-
-    public String path() {
-        return this.innerModel().path();
-    }
-
-    public Map<String, String> customKeys() {
-        Map<String, String> inner = this.innerModel().customKeys();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
-    public Map<String, ServiceConfigListResultValueEntity> defaultKeys() {
-        Map<String, ServiceConfigListResultValueEntity> inner = this.innerModel().defaultKeys();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
+    public ServiceConfigResultProperties properties() {
+        return this.innerModel().properties();
     }
 
     public ServiceConfigResultInner innerModel() {
