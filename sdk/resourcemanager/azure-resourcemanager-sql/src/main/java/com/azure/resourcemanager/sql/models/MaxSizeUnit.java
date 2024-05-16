@@ -8,23 +8,42 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The units that the limit is expressed in. */
+/**
+ * The units that the limit is expressed in.
+ */
 public final class MaxSizeUnit extends ExpandableStringEnum<MaxSizeUnit> {
-    /** Static value Megabytes for MaxSizeUnit. */
+    /**
+     * Static value Megabytes for MaxSizeUnit.
+     */
     public static final MaxSizeUnit MEGABYTES = fromString("Megabytes");
 
-    /** Static value Gigabytes for MaxSizeUnit. */
+    /**
+     * Static value Gigabytes for MaxSizeUnit.
+     */
     public static final MaxSizeUnit GIGABYTES = fromString("Gigabytes");
 
-    /** Static value Terabytes for MaxSizeUnit. */
+    /**
+     * Static value Terabytes for MaxSizeUnit.
+     */
     public static final MaxSizeUnit TERABYTES = fromString("Terabytes");
 
-    /** Static value Petabytes for MaxSizeUnit. */
+    /**
+     * Static value Petabytes for MaxSizeUnit.
+     */
     public static final MaxSizeUnit PETABYTES = fromString("Petabytes");
 
     /**
+     * Creates a new instance of MaxSizeUnit value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MaxSizeUnit() {
+    }
+
+    /**
      * Creates or finds a MaxSizeUnit from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MaxSizeUnit.
      */
@@ -35,7 +54,7 @@ public final class MaxSizeUnit extends ExpandableStringEnum<MaxSizeUnit> {
 
     /**
      * Gets known MaxSizeUnit values.
-     *
+     * 
      * @return known MaxSizeUnit values.
      */
     public static Collection<MaxSizeUnit> values() {

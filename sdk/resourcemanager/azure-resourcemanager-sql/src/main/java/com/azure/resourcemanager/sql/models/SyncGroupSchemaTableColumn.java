@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of column in sync group table. */
+/**
+ * Properties of column in sync group table.
+ */
 @Fluent
 public final class SyncGroupSchemaTableColumn {
     /*
@@ -28,13 +30,15 @@ public final class SyncGroupSchemaTableColumn {
     @JsonProperty(value = "dataType")
     private String dataType;
 
-    /** Creates an instance of SyncGroupSchemaTableColumn class. */
+    /**
+     * Creates an instance of SyncGroupSchemaTableColumn class.
+     */
     public SyncGroupSchemaTableColumn() {
     }
 
     /**
      * Get the quotedName property: Quoted name of sync group table column.
-     *
+     * 
      * @return the quotedName value.
      */
     public String quotedName() {
@@ -43,7 +47,7 @@ public final class SyncGroupSchemaTableColumn {
 
     /**
      * Set the quotedName property: Quoted name of sync group table column.
-     *
+     * 
      * @param quotedName the quotedName value to set.
      * @return the SyncGroupSchemaTableColumn object itself.
      */
@@ -54,7 +58,7 @@ public final class SyncGroupSchemaTableColumn {
 
     /**
      * Get the dataSize property: Data size of the column.
-     *
+     * 
      * @return the dataSize value.
      */
     public String dataSize() {
@@ -63,7 +67,7 @@ public final class SyncGroupSchemaTableColumn {
 
     /**
      * Set the dataSize property: Data size of the column.
-     *
+     * 
      * @param dataSize the dataSize value to set.
      * @return the SyncGroupSchemaTableColumn object itself.
      */
@@ -74,7 +78,7 @@ public final class SyncGroupSchemaTableColumn {
 
     /**
      * Get the dataType property: Data type of the column.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -83,7 +87,7 @@ public final class SyncGroupSchemaTableColumn {
 
     /**
      * Set the dataType property: Data type of the column.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the SyncGroupSchemaTableColumn object itself.
      */
@@ -94,7 +98,7 @@ public final class SyncGroupSchemaTableColumn {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

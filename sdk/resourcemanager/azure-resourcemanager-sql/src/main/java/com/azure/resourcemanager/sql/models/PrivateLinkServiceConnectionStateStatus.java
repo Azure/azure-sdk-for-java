@@ -8,24 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The private link service connection status. */
+/**
+ * The private link service connection status.
+ */
 public final class PrivateLinkServiceConnectionStateStatus
     extends ExpandableStringEnum<PrivateLinkServiceConnectionStateStatus> {
-    /** Static value Approved for PrivateLinkServiceConnectionStateStatus. */
+    /**
+     * Static value Approved for PrivateLinkServiceConnectionStateStatus.
+     */
     public static final PrivateLinkServiceConnectionStateStatus APPROVED = fromString("Approved");
 
-    /** Static value Pending for PrivateLinkServiceConnectionStateStatus. */
+    /**
+     * Static value Pending for PrivateLinkServiceConnectionStateStatus.
+     */
     public static final PrivateLinkServiceConnectionStateStatus PENDING = fromString("Pending");
 
-    /** Static value Rejected for PrivateLinkServiceConnectionStateStatus. */
+    /**
+     * Static value Rejected for PrivateLinkServiceConnectionStateStatus.
+     */
     public static final PrivateLinkServiceConnectionStateStatus REJECTED = fromString("Rejected");
 
-    /** Static value Disconnected for PrivateLinkServiceConnectionStateStatus. */
+    /**
+     * Static value Disconnected for PrivateLinkServiceConnectionStateStatus.
+     */
     public static final PrivateLinkServiceConnectionStateStatus DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of PrivateLinkServiceConnectionStateStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrivateLinkServiceConnectionStateStatus() {
+    }
+
+    /**
      * Creates or finds a PrivateLinkServiceConnectionStateStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrivateLinkServiceConnectionStateStatus.
      */
@@ -36,7 +55,7 @@ public final class PrivateLinkServiceConnectionStateStatus
 
     /**
      * Gets known PrivateLinkServiceConnectionStateStatus values.
-     *
+     * 
      * @return known PrivateLinkServiceConnectionStateStatus values.
      */
     public static Collection<PrivateLinkServiceConnectionStateStatus> values() {

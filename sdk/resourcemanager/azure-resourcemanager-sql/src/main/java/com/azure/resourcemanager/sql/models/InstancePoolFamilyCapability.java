@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The instance pool family capability. */
+/**
+ * The instance pool family capability.
+ */
 @Fluent
 public final class InstancePoolFamilyCapability {
     /*
@@ -41,13 +43,15 @@ public final class InstancePoolFamilyCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of InstancePoolFamilyCapability class. */
+    /**
+     * Creates an instance of InstancePoolFamilyCapability class.
+     */
     public InstancePoolFamilyCapability() {
     }
 
     /**
      * Get the name property: Family name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +60,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Get the supportedLicenseTypes property: List of supported license types.
-     *
+     * 
      * @return the supportedLicenseTypes value.
      */
     public List<LicenseTypeCapability> supportedLicenseTypes() {
@@ -65,7 +69,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Get the supportedVcoresValues property: List of supported virtual cores values.
-     *
+     * 
      * @return the supportedVcoresValues value.
      */
     public List<InstancePoolVcoresCapability> supportedVcoresValues() {
@@ -74,7 +78,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -83,7 +87,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -92,7 +96,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the InstancePoolFamilyCapability object itself.
      */
@@ -103,7 +107,7 @@ public final class InstancePoolFamilyCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

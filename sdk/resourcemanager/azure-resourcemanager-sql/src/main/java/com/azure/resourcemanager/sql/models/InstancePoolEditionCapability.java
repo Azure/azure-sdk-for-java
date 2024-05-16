@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The instance pool capability. */
+/**
+ * The instance pool capability.
+ */
 @Fluent
 public final class InstancePoolEditionCapability {
     /*
@@ -35,13 +37,15 @@ public final class InstancePoolEditionCapability {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of InstancePoolEditionCapability class. */
+    /**
+     * Creates an instance of InstancePoolEditionCapability class.
+     */
     public InstancePoolEditionCapability() {
     }
 
     /**
      * Get the name property: The instance pool version name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class InstancePoolEditionCapability {
 
     /**
      * Get the supportedFamilies property: The supported families.
-     *
+     * 
      * @return the supportedFamilies value.
      */
     public List<InstancePoolFamilyCapability> supportedFamilies() {
@@ -59,7 +63,7 @@ public final class InstancePoolEditionCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -68,7 +72,7 @@ public final class InstancePoolEditionCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -77,7 +81,7 @@ public final class InstancePoolEditionCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the InstancePoolEditionCapability object itself.
      */
@@ -88,7 +92,7 @@ public final class InstancePoolEditionCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

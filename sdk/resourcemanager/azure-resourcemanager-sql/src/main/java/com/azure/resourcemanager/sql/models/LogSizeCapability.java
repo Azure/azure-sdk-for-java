@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The log size capability. */
+/**
+ * The log size capability.
+ */
 @Immutable
 public final class LogSizeCapability {
     /*
@@ -22,13 +24,15 @@ public final class LogSizeCapability {
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private LogSizeUnit unit;
 
-    /** Creates an instance of LogSizeCapability class. */
+    /**
+     * Creates an instance of LogSizeCapability class.
+     */
     public LogSizeCapability() {
     }
 
     /**
      * Get the limit property: The log size limit (see 'unit' for the units).
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -37,7 +41,7 @@ public final class LogSizeCapability {
 
     /**
      * Get the unit property: The units that the limit is expressed in.
-     *
+     * 
      * @return the unit value.
      */
     public LogSizeUnit unit() {
@@ -46,7 +50,7 @@ public final class LogSizeCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

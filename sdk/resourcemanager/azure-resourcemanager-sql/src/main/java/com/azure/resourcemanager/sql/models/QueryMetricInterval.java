@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a query metrics interval. */
+/**
+ * Properties of a query metrics interval.
+ */
 @Fluent
 public final class QueryMetricInterval {
     /*
@@ -35,13 +37,15 @@ public final class QueryMetricInterval {
     @JsonProperty(value = "metrics")
     private List<QueryMetricProperties> metrics;
 
-    /** Creates an instance of QueryMetricInterval class. */
+    /**
+     * Creates an instance of QueryMetricInterval class.
+     */
     public QueryMetricInterval() {
     }
 
     /**
      * Get the intervalStartTime property: The start time for the metric interval (ISO-8601 format).
-     *
+     * 
      * @return the intervalStartTime value.
      */
     public String intervalStartTime() {
@@ -50,7 +54,7 @@ public final class QueryMetricInterval {
 
     /**
      * Get the intervalType property: Interval type (length).
-     *
+     * 
      * @return the intervalType value.
      */
     public QueryTimeGrainType intervalType() {
@@ -59,7 +63,7 @@ public final class QueryMetricInterval {
 
     /**
      * Get the executionCount property: Execution count of a query in this interval.
-     *
+     * 
      * @return the executionCount value.
      */
     public Long executionCount() {
@@ -68,7 +72,7 @@ public final class QueryMetricInterval {
 
     /**
      * Get the metrics property: List of metric objects for this interval.
-     *
+     * 
      * @return the metrics value.
      */
     public List<QueryMetricProperties> metrics() {
@@ -77,7 +81,7 @@ public final class QueryMetricInterval {
 
     /**
      * Set the metrics property: List of metric objects for this interval.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the QueryMetricInterval object itself.
      */
@@ -88,7 +92,7 @@ public final class QueryMetricInterval {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.SensitivityLabelUpdateInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of sensitivity label update operations. */
+/**
+ * A list of sensitivity label update operations.
+ */
 @Fluent
 public final class SensitivityLabelUpdateList {
     /*
@@ -18,13 +20,15 @@ public final class SensitivityLabelUpdateList {
     @JsonProperty(value = "operations")
     private List<SensitivityLabelUpdateInner> operations;
 
-    /** Creates an instance of SensitivityLabelUpdateList class. */
+    /**
+     * Creates an instance of SensitivityLabelUpdateList class.
+     */
     public SensitivityLabelUpdateList() {
     }
 
     /**
      * Get the operations property: The operations property.
-     *
+     * 
      * @return the operations value.
      */
     public List<SensitivityLabelUpdateInner> operations() {
@@ -33,7 +37,7 @@ public final class SensitivityLabelUpdateList {
 
     /**
      * Set the operations property: The operations property.
-     *
+     * 
      * @param operations the operations value to set.
      * @return the SensitivityLabelUpdateList object itself.
      */
@@ -44,7 +48,7 @@ public final class SensitivityLabelUpdateList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

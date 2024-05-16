@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the information necessary to perform a managed database move. */
+/**
+ * Contains the information necessary to perform a managed database move.
+ */
 @Fluent
 public final class ManagedDatabaseMoveDefinition {
     /*
@@ -17,13 +19,15 @@ public final class ManagedDatabaseMoveDefinition {
     @JsonProperty(value = "destinationManagedDatabaseId", required = true)
     private String destinationManagedDatabaseId;
 
-    /** Creates an instance of ManagedDatabaseMoveDefinition class. */
+    /**
+     * Creates an instance of ManagedDatabaseMoveDefinition class.
+     */
     public ManagedDatabaseMoveDefinition() {
     }
 
     /**
      * Get the destinationManagedDatabaseId property: The destination managed database ID.
-     *
+     * 
      * @return the destinationManagedDatabaseId value.
      */
     public String destinationManagedDatabaseId() {
@@ -32,7 +36,7 @@ public final class ManagedDatabaseMoveDefinition {
 
     /**
      * Set the destinationManagedDatabaseId property: The destination managed database ID.
-     *
+     * 
      * @param destinationManagedDatabaseId the destinationManagedDatabaseId value to set.
      * @return the ManagedDatabaseMoveDefinition object itself.
      */
@@ -43,16 +47,14 @@ public final class ManagedDatabaseMoveDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (destinationManagedDatabaseId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destinationManagedDatabaseId in model"
-                            + " ManagedDatabaseMoveDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destinationManagedDatabaseId in model ManagedDatabaseMoveDefinition"));
         }
     }
 

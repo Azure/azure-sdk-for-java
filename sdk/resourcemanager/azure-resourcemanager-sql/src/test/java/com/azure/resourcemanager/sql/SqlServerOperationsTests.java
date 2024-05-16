@@ -102,7 +102,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             sqlServerManager
                 .sqlServers()
                 .define(sqlServerName)
-                .withRegion(Region.US_WEST3)
+                .withRegion(Region.US_WEST2)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
                 .withAdministratorPassword(administratorPassword)

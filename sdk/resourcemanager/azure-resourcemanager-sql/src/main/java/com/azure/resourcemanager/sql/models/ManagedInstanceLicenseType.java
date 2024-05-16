@@ -13,15 +13,28 @@ import java.util.Collection;
  * 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
  */
 public final class ManagedInstanceLicenseType extends ExpandableStringEnum<ManagedInstanceLicenseType> {
-    /** Static value LicenseIncluded for ManagedInstanceLicenseType. */
+    /**
+     * Static value LicenseIncluded for ManagedInstanceLicenseType.
+     */
     public static final ManagedInstanceLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");
 
-    /** Static value BasePrice for ManagedInstanceLicenseType. */
+    /**
+     * Static value BasePrice for ManagedInstanceLicenseType.
+     */
     public static final ManagedInstanceLicenseType BASE_PRICE = fromString("BasePrice");
 
     /**
+     * Creates a new instance of ManagedInstanceLicenseType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedInstanceLicenseType() {
+    }
+
+    /**
      * Creates or finds a ManagedInstanceLicenseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedInstanceLicenseType.
      */
@@ -32,7 +45,7 @@ public final class ManagedInstanceLicenseType extends ExpandableStringEnum<Manag
 
     /**
      * Gets known ManagedInstanceLicenseType values.
-     *
+     * 
      * @return known ManagedInstanceLicenseType values.
      */
     public static Collection<ManagedInstanceLicenseType> values() {

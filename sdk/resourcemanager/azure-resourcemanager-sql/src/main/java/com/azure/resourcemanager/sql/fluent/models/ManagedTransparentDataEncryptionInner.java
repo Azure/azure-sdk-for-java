@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.TransparentDataEncryptionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A managed database transparent data encryption state. */
+/**
+ * A managed database transparent data encryption state.
+ */
 @Fluent
 public final class ManagedTransparentDataEncryptionInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class ManagedTransparentDataEncryptionInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ManagedTransparentDataEncryptionProperties innerProperties;
 
-    /** Creates an instance of ManagedTransparentDataEncryptionInner class. */
+    /**
+     * Creates an instance of ManagedTransparentDataEncryptionInner class.
+     */
     public ManagedTransparentDataEncryptionInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ManagedTransparentDataEncryptionProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class ManagedTransparentDataEncryptionInner extends ProxyResource {
 
     /**
      * Get the state property: Specifies the state of the transparent data encryption.
-     *
+     * 
      * @return the state value.
      */
     public TransparentDataEncryptionState state() {
@@ -42,7 +46,7 @@ public final class ManagedTransparentDataEncryptionInner extends ProxyResource {
 
     /**
      * Set the state property: Specifies the state of the transparent data encryption.
-     *
+     * 
      * @param state the state value to set.
      * @return the ManagedTransparentDataEncryptionInner object itself.
      */
@@ -56,7 +60,7 @@ public final class ManagedTransparentDataEncryptionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
