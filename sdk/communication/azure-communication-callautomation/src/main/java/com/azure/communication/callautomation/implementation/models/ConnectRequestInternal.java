@@ -25,6 +25,12 @@ public final class ConnectRequestInternal {
     private String callbackUri;
 
     /*
+     * Used by customers to correlate the request to the response event.
+     */
+    @JsonProperty(value = "operationContext")
+    private String operationContext;
+
+    /*
      * AI options for the call.
      */
     @JsonProperty(value = "callIntelligenceOptions")
@@ -73,6 +79,26 @@ public final class ConnectRequestInternal {
      */
     public ConnectRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
+        return this;
+    }
+
+    /**
+     * Get the operationContext property: Used by customers to correlate the request to the response event.
+     * 
+     * @return the operationContext value.
+     */
+    public String getOperationContext() {
+        return this.operationContext;
+    }
+
+    /**
+     * Set the operationContext property: Used by customers to correlate the request to the response event.
+     * 
+     * @param operationContext the operationContext value to set.
+     * @return the ConnectRequestInternal object itself.
+     */
+    public ConnectRequestInternal setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 

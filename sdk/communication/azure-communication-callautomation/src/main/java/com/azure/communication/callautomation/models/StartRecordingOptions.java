@@ -15,7 +15,7 @@ import java.util.Objects;
 @Fluent
 public final class StartRecordingOptions {
     /**
-     * Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
+     * Either a {@link GroupCallLocator} or {@link ServerCallLocator} {@link RoomCallLocator} for locating the call.
      */
     private final CallLocator callLocator;
 

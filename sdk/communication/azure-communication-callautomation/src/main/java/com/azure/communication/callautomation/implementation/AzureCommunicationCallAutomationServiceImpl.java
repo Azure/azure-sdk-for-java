@@ -647,7 +647,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     /**
      * Create a Connection to a CallLocator.
      * 
-     * Create a connection to a CallLocator and return connectionId.
+     * Create a connection to a CallLocator.
      * 
      * @param connectRequest The create connection request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -668,7 +668,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     /**
      * Create a Connection to a CallLocator.
      * 
-     * Create a connection to a CallLocator and return connectionId.
+     * Create a connection to a CallLocator.
      * 
      * @param connectRequest The create connection request.
      * @param context The context to associate with this operation.
@@ -690,7 +690,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     /**
      * Create a Connection to a CallLocator.
      * 
-     * Create a connection to a CallLocator and return connectionId.
+     * Create a connection to a CallLocator.
      * 
      * @param connectRequest The create connection request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -706,7 +706,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     /**
      * Create a Connection to a CallLocator.
      * 
-     * Create a connection to a CallLocator and return connectionId.
+     * Create a connection to a CallLocator.
      * 
      * @param connectRequest The create connection request.
      * @param context The context to associate with this operation.
@@ -723,7 +723,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     /**
      * Create a Connection to a CallLocator.
      * 
-     * Create a connection to a CallLocator and return connectionId.
+     * Create a connection to a CallLocator.
      * 
      * @param connectRequest The create connection request.
      * @param context The context to associate with this operation.
@@ -741,7 +741,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     /**
      * Create a Connection to a CallLocator.
      * 
-     * Create a connection to a CallLocator and return connectionId.
+     * Create a connection to a CallLocator.
      * 
      * @param connectRequest The create connection request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

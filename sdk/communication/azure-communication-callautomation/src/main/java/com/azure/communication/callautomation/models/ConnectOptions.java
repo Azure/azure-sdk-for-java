@@ -20,6 +20,11 @@ public final class ConnectOptions {
      */
     private final String callbackUrl;
 
+     /**
+     * The value to identify context of the operation.
+     */
+    private String operationContext;
+
     /*
      * AI options for the call.
      */
@@ -54,6 +59,15 @@ public final class ConnectOptions {
     }
 
     /**
+     * Get the operation context.
+     *
+     * @return operation context.
+     */
+    public String getOperationContext() {
+        return operationContext;
+    }
+
+    /**
      * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
      *
      * @return the callIntelligenceOptions value.
@@ -70,6 +84,17 @@ public final class ConnectOptions {
      */
     public ConnectOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
+        return this;
+    }
+
+     /**
+     * Sets the operation context.
+     *
+     * @param operationContext Operation Context
+     * @return The ConnectOptions object.
+     */
+    public ConnectOptions setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
         return this;
     }
 }

@@ -516,6 +516,10 @@ public final class CallAutomationAsyncClient {
                 .setCallbackUri(connectOptions.getCallbackUrl())
                 .setCallLocator(callLocatorInternal);
 
+            if (connectOptions.getOperationContext() != null) {
+                request.setOperationContext(connectOptions.getOperationContext());
+            }
+
             if (connectOptions.getCallIntelligenceOptions() != null && connectOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
                 CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
                 callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(connectOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
