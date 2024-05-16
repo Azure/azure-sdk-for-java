@@ -232,7 +232,7 @@ public class FaultInjectionRuleProcessor {
                         result.getTimes(),
                         result.getDelay(),
                         result.getSuppressServiceRequests(),
-                        result.getApplyPercentage()
+                        result.getInjectionRate()
                     )
                 );
             });

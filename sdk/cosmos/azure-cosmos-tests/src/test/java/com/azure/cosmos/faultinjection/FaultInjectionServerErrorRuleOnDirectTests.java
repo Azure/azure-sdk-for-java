@@ -1070,7 +1070,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
     }
 
     @Test(groups = {"long"}, timeOut = TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_ApplyPercentage() throws JsonProcessingException {
+    public void faultInjectionServerErrorRuleTests_InjectionRate() throws JsonProcessingException {
         String applyPercentageRuleId = "applyPercentage-"+UUID.randomUUID();
 
         FaultInjectionRule applyPercentageRule =
@@ -1083,7 +1083,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(FaultInjectionServerErrorType.GONE)
-                        .applyPercentage(.5)
+                        .injectionRate(.5)
                         .times(1)//for each operation, only apply the rule one time
                         .build()
                 )

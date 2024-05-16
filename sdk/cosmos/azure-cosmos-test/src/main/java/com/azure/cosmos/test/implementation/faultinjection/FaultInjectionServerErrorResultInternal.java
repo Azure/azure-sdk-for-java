@@ -33,7 +33,7 @@ public class FaultInjectionServerErrorResultInternal {
     private final Duration delay;
 
     private final Boolean suppressServiceRequests;
-    private final Double applyPercentage;
+    private final double injectionRate;
 
 
     public FaultInjectionServerErrorResultInternal(
@@ -41,14 +41,14 @@ public class FaultInjectionServerErrorResultInternal {
         Integer times,
         Duration delay,
         Boolean suppressServiceRequests,
-        Double applyPercentage) {
+        double injectionRate) {
 
         checkArgument(serverErrorTypes != null, "Argument 'serverErrorType' can not be null");
         this.serverErrorType = serverErrorTypes;
         this.times = times;
         this.delay = delay;
         this.suppressServiceRequests = suppressServiceRequests;
-        this.applyPercentage = applyPercentage;
+        this.injectionRate = injectionRate;
     }
 
     public FaultInjectionServerErrorType getServerErrorType() {
@@ -67,7 +67,7 @@ public class FaultInjectionServerErrorResultInternal {
         return this.suppressServiceRequests;
     }
 
-    public Double getApplyPercentage() { return this.applyPercentage; }
+    public double getInjectionRate() { return this.injectionRate; }
 
     public boolean isApplicable(String ruleId, RxDocumentServiceRequest request) {
         return this.times == null || request.faultInjectionRequestContext.getFaultInjectionRuleApplyCount(ruleId) < this.times;

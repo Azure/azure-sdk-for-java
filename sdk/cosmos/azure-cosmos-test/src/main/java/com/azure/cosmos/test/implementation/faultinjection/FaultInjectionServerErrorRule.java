@@ -33,7 +33,8 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
     private final FaultInjectionConnectionType connectionType;
     private final FaultInjectionConditionInternal condition;
     private final FaultInjectionServerErrorResultInternal result;
-    private final Random random = new Random();
+
+    private static final Random random = new Random();
 
     private boolean enabled;
 
@@ -110,10 +111,10 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
                 String.format("%s [Hit Limit reached. Configured hitLimit %d, evaluationCount %d]", this.id, this.hitLimit, evaluationCount)
             );
             return false;
-        } else if (this.random.nextDouble() > this.result.getApplyPercentage()) {
+        } else if (random.nextDouble() > this.result.getInjectionRate()) {
             requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
                 requestArgs.getTransportRequestId(),
-                String.format("%s Apply percentage: Rule will not be applied. Configured applyPercentage %f%%", this.id, this.result.getApplyPercentage() * 100)
+                String.format("%s Apply percentage: Rule will not be applied. Configured applyPercentage %f%%", this.id, this.result.getInjectionRate() * 100)
             );
             return false;
         } else {
