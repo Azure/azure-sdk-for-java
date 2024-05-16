@@ -12,12 +12,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Fault injection server error result builder.
  */
 public final class FaultInjectionServerErrorResultBuilder {
+    private static final double DEFAULT_INJECTION_RATE = 1.0;
     private final FaultInjectionServerErrorType serverErrorType;
     private int times = Integer.MAX_VALUE;
     private Duration delay;
 
     private Boolean suppressServiceRequests = null;
-    private double injectionRate = 1.0;
+    private double injectionRate = DEFAULT_INJECTION_RATE;
 
     FaultInjectionServerErrorResultBuilder(FaultInjectionServerErrorType serverErrorType) {
         this.serverErrorType = serverErrorType;
