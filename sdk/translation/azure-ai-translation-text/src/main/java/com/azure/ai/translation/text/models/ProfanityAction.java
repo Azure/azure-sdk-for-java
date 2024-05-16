@@ -22,7 +22,7 @@ public enum ProfanityAction {
     MARKED("Marked"),
 
     /**
-     * Profanity is deteled from the translated text.
+     * Profanity is deleted from the translated text.
      */
     DELETED("Deleted");
 

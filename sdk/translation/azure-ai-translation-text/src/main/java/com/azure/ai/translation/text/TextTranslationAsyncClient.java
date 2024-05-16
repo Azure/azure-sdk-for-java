@@ -115,7 +115,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -123,9 +123,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -166,7 +166,7 @@ public final class TextTranslationAsyncClient {
      * in the translation scope. For example, use to=de to translate to German.
      * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
      * For example, use to=de&amp;to=it to translate to German and Italian.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -176,9 +176,9 @@ public final class TextTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> translateWithResponse(List<String> targetLanguages, BinaryData requestBody,
+    public Mono<Response<BinaryData>> translateWithResponse(List<String> targetLanguages, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.translateWithResponseAsync(targetLanguages, requestBody, requestOptions);
+        return this.serviceClient.translateWithResponseAsync(targetLanguages, body, requestOptions);
     }
 
     /**
@@ -192,7 +192,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -200,9 +200,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -221,7 +221,7 @@ public final class TextTranslationAsyncClient {
      * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -232,9 +232,9 @@ public final class TextTranslationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> transliterateWithResponse(String language, String sourceLanguageScript,
-        String targetLanguageScript, BinaryData requestBody, RequestOptions requestOptions) {
+        String targetLanguageScript, BinaryData body, RequestOptions requestOptions) {
         return this.serviceClient.transliterateWithResponseAsync(language, sourceLanguageScript, targetLanguageScript,
-            requestBody, requestOptions);
+            body, requestOptions);
     }
 
     /**
@@ -258,7 +258,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -266,9 +266,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -283,7 +283,7 @@ public final class TextTranslationAsyncClient {
      * ]
      * }</pre>
      *
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -293,9 +293,9 @@ public final class TextTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> findSentenceBoundariesWithResponse(BinaryData requestBody,
+    public Mono<Response<BinaryData>> findSentenceBoundariesWithResponse(BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.findSentenceBoundariesWithResponseAsync(requestBody, requestOptions);
+        return this.serviceClient.findSentenceBoundariesWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -309,7 +309,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -317,9 +317,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -350,7 +350,7 @@ public final class TextTranslationAsyncClient {
      * The source language must be one of the supported languages included in the dictionary scope.
      * @param targetLanguage Specifies the language of the output text.
      * The target language must be one of the supported languages included in the dictionary scope.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -361,8 +361,8 @@ public final class TextTranslationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> lookupDictionaryEntriesWithResponse(String sourceLanguage, String targetLanguage,
-        BinaryData requestBody, RequestOptions requestOptions) {
-        return this.serviceClient.lookupDictionaryEntriesWithResponseAsync(sourceLanguage, targetLanguage, requestBody,
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.lookupDictionaryEntriesWithResponseAsync(sourceLanguage, targetLanguage, body,
             requestOptions);
     }
 
@@ -377,7 +377,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -386,9 +386,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -412,7 +412,7 @@ public final class TextTranslationAsyncClient {
      * The source language must be one of the supported languages included in the dictionary scope.
      * @param targetLanguage Specifies the language of the output text.
      * The target language must be one of the supported languages included in the dictionary scope.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -423,8 +423,8 @@ public final class TextTranslationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> lookupDictionaryExamplesWithResponse(String sourceLanguage, String targetLanguage,
-        BinaryData requestBody, RequestOptions requestOptions) {
-        return this.serviceClient.lookupDictionaryExamplesWithResponseAsync(sourceLanguage, targetLanguage, requestBody,
+        BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.lookupDictionaryExamplesWithResponseAsync(sourceLanguage, targetLanguage, body,
             requestOptions);
     }
 
@@ -436,7 +436,7 @@ public final class TextTranslationAsyncClient {
      * in the translation scope. For example, use to=de to translate to German.
      * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
      * For example, use to=de&amp;to=it to translate to German and Italian.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param clientTraceId A client-generated GUID to uniquely identify the request.
      * @param sourceLanguage Specifies the language of the input text. Find which languages are available to translate
      * from by
@@ -485,7 +485,7 @@ public final class TextTranslationAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<TranslatedTextItem>> translate(List<String> targetLanguages, List<InputTextItem> requestBody,
+    private Mono<List<TranslatedTextItem>> translate(List<String> targetLanguages, List<InputTextItem> body,
         String clientTraceId, String sourceLanguage, TextType textType, String category,
         ProfanityAction profanityAction, ProfanityMarker profanityMarker, Boolean includeAlignment,
         Boolean includeSentenceLength, String suggestedSourceLanguage, String sourceLanguageScript,
@@ -528,7 +528,7 @@ public final class TextTranslationAsyncClient {
         if (allowFallback != null) {
             requestOptions.addQueryParam("allowFallback", String.valueOf(allowFallback), false);
         }
-        return translateWithResponse(targetLanguages, BinaryData.fromObject(requestBody), requestOptions)
+        return translateWithResponse(targetLanguages, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ITEM));
     }
@@ -541,7 +541,7 @@ public final class TextTranslationAsyncClient {
      * in the translation scope. For example, use to=de to translate to German.
      * It's possible to translate to multiple languages simultaneously by repeating the parameter in the query string.
      * For example, use to=de&amp;to=it to translate to German and Italian.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -552,10 +552,10 @@ public final class TextTranslationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<TranslatedTextItem>> translateInner(List<String> targetLanguages,
-        List<InputTextItem> requestBody) {
+        List<InputTextItem> body) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return translateWithResponse(targetLanguages, BinaryData.fromObject(requestBody), requestOptions)
+        return translateWithResponse(targetLanguages, BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLATED_TEXT_ITEM));
     }
@@ -675,7 +675,7 @@ public final class TextTranslationAsyncClient {
      * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param clientTraceId A client-generated GUID to uniquely identify the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -687,14 +687,14 @@ public final class TextTranslationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<TransliteratedText>> transliterateInner(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<InputTextItem> requestBody, String clientTraceId) {
+        String targetLanguageScript, List<InputTextItem> body, String clientTraceId) {
         // Generated convenience method for transliterateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("X-ClientTraceId"), clientTraceId);
         }
         return transliterateWithResponse(language, sourceLanguageScript, targetLanguageScript,
-            BinaryData.fromObject(requestBody), requestOptions).flatMap(FluxUtil::toMono)
+            BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT));
     }
 
@@ -713,7 +713,7 @@ public final class TextTranslationAsyncClient {
      * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param clientTraceId A client-generated GUID to uniquely identify the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -725,8 +725,8 @@ public final class TextTranslationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<TransliteratedText>> transliterate(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<String> requestBody, String clientTraceId) {
-        return transliterateInner(language, sourceLanguageScript, targetLanguageScript, convertTextToData(requestBody),
+        String targetLanguageScript, List<String> body, String clientTraceId) {
+        return transliterateInner(language, sourceLanguageScript, targetLanguageScript, convertTextToData(body),
             clientTraceId);
     }
 
@@ -773,7 +773,7 @@ public final class TextTranslationAsyncClient {
      * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -784,11 +784,11 @@ public final class TextTranslationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<TransliteratedText>> transliterateInner(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<InputTextItem> requestBody) {
+        String targetLanguageScript, List<InputTextItem> body) {
         // Generated convenience method for transliterateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transliterateWithResponse(language, sourceLanguageScript, targetLanguageScript,
-            BinaryData.fromObject(requestBody), requestOptions).flatMap(FluxUtil::toMono)
+            BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT));
     }
 
@@ -807,7 +807,7 @@ public final class TextTranslationAsyncClient {
      * @param targetLanguageScript Specifies the output script. Look up supported languages using the transliteration
      * scope, to find output
      * scripts available for the selected combination of input language and input script.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -818,8 +818,8 @@ public final class TextTranslationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<TransliteratedText>> transliterate(String language, String sourceLanguageScript,
-        String targetLanguageScript, List<String> requestBody) {
-        return transliterateInner(language, sourceLanguageScript, targetLanguageScript, convertTextToData(requestBody));
+        String targetLanguageScript, List<String> body) {
+        return transliterateInner(language, sourceLanguageScript, targetLanguageScript, convertTextToData(body));
     }
 
     /**
@@ -855,7 +855,7 @@ public final class TextTranslationAsyncClient {
     /**
      * Find Sentence Boundaries.
      *
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param clientTraceId A client-generated GUID to uniquely identify the request.
      * @param language Language tag identifying the language of the input text.
      * If a code isn't specified, automatic language detection will be applied.
@@ -870,7 +870,7 @@ public final class TextTranslationAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<BreakSentenceItem>> findSentenceBoundariesInner(List<InputTextItem> requestBody,
+    private Mono<List<BreakSentenceItem>> findSentenceBoundariesInner(List<InputTextItem> body,
         String clientTraceId, String language, String script) {
         // Generated convenience method for findSentenceBoundariesWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -883,7 +883,7 @@ public final class TextTranslationAsyncClient {
         if (script != null) {
             requestOptions.addQueryParam("script", script, false);
         }
-        return findSentenceBoundariesWithResponse(BinaryData.fromObject(requestBody), requestOptions)
+        return findSentenceBoundariesWithResponse(BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ITEM));
     }
@@ -947,7 +947,7 @@ public final class TextTranslationAsyncClient {
     /**
      * Find Sentence Boundaries.
      *
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -957,10 +957,10 @@ public final class TextTranslationAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<BreakSentenceItem>> findSentenceBoundariesInner(List<InputTextItem> requestBody) {
+    private Mono<List<BreakSentenceItem>> findSentenceBoundariesInner(List<InputTextItem> body) {
         // Generated convenience method for findSentenceBoundariesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return findSentenceBoundariesWithResponse(BinaryData.fromObject(requestBody), requestOptions)
+        return findSentenceBoundariesWithResponse(BinaryData.fromObject(body), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ITEM));
     }
@@ -1014,7 +1014,7 @@ public final class TextTranslationAsyncClient {
      * The source language must be one of the supported languages included in the dictionary scope.
      * @param targetLanguage Specifies the language of the output text.
      * The target language must be one of the supported languages included in the dictionary scope.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param clientTraceId A client-generated GUID to uniquely identify the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1026,13 +1026,13 @@ public final class TextTranslationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<DictionaryLookupItem>> lookupDictionaryEntriesInner(String sourceLanguage, String targetLanguage,
-        List<InputTextItem> requestBody, String clientTraceId) {
+        List<InputTextItem> body, String clientTraceId) {
         // Generated convenience method for lookupDictionaryEntriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("X-ClientTraceId"), clientTraceId);
         }
-        return lookupDictionaryEntriesWithResponse(sourceLanguage, targetLanguage, BinaryData.fromObject(requestBody),
+        return lookupDictionaryEntriesWithResponse(sourceLanguage, targetLanguage, BinaryData.fromObject(body),
             requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ITEM));
     }
@@ -1098,7 +1098,7 @@ public final class TextTranslationAsyncClient {
      * The source language must be one of the supported languages included in the dictionary scope.
      * @param targetLanguage Specifies the language of the output text.
      * The target language must be one of the supported languages included in the dictionary scope.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1109,10 +1109,10 @@ public final class TextTranslationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<DictionaryLookupItem>> lookupDictionaryEntriesInner(String sourceLanguage, String targetLanguage,
-        List<InputTextItem> requestBody) {
+        List<InputTextItem> body) {
         // Generated convenience method for lookupDictionaryEntriesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return lookupDictionaryEntriesWithResponse(sourceLanguage, targetLanguage, BinaryData.fromObject(requestBody),
+        return lookupDictionaryEntriesWithResponse(sourceLanguage, targetLanguage, BinaryData.fromObject(body),
             requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_LOOKUP_ITEM));
     }
@@ -1174,7 +1174,7 @@ public final class TextTranslationAsyncClient {
      * The source language must be one of the supported languages included in the dictionary scope.
      * @param targetLanguage Specifies the language of the output text.
      * The target language must be one of the supported languages included in the dictionary scope.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @param clientTraceId A client-generated GUID to uniquely identify the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1187,13 +1187,13 @@ public final class TextTranslationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<DictionaryExampleItem>> lookupDictionaryExamples(String sourceLanguage, String targetLanguage,
-        List<DictionaryExampleTextItem> requestBody, String clientTraceId) {
+        List<DictionaryExampleTextItem> body, String clientTraceId) {
         // Generated convenience method for lookupDictionaryExamplesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("X-ClientTraceId"), clientTraceId);
         }
-        return lookupDictionaryExamplesWithResponse(sourceLanguage, targetLanguage, BinaryData.fromObject(requestBody),
+        return lookupDictionaryExamplesWithResponse(sourceLanguage, targetLanguage, BinaryData.fromObject(body),
             requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ITEM));
     }
@@ -1205,7 +1205,7 @@ public final class TextTranslationAsyncClient {
      * The source language must be one of the supported languages included in the dictionary scope.
      * @param targetLanguage Specifies the language of the output text.
      * The target language must be one of the supported languages included in the dictionary scope.
-     * @param requestBody Defines the content of the request.
+     * @param body Defines the content of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1217,10 +1217,10 @@ public final class TextTranslationAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<DictionaryExampleItem>> lookupDictionaryExamples(String sourceLanguage, String targetLanguage,
-        List<DictionaryExampleTextItem> requestBody) {
+        List<DictionaryExampleTextItem> body) {
         // Generated convenience method for lookupDictionaryExamplesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return lookupDictionaryExamplesWithResponse(sourceLanguage, targetLanguage, BinaryData.fromObject(requestBody),
+        return lookupDictionaryExamplesWithResponse(sourceLanguage, targetLanguage, BinaryData.fromObject(body),
             requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_DICTIONARY_EXAMPLE_ITEM));
     }
@@ -1284,7 +1284,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     translation (Optional): {

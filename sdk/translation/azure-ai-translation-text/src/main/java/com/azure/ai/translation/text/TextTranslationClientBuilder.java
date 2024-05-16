@@ -71,6 +71,8 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
 
     private String resourceId;
 
+    private String scope;
+
     private KeyCredential credential;
 
     private TokenCredential tokenCredential;
@@ -293,6 +295,12 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         return this;
     }
 
+    public TextTranslationClientBuilder scope(String scope) {
+        Objects.requireNonNull(scope, "'scope' cannot be null.");
+        this.scope = scope;
+        return this;
+    }
+
     /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
@@ -373,7 +381,11 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+            String authScope = DEFAULT_SCOPE;
+            if (this.scope != null) {
+                authScope = this.scope;
+            }
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, authScope));
             if (this.region != null || this.resourceId != null) {
                 HttpHeaders aadHeaders = new HttpHeaders();
                 aadHeaders.put(OCP_APIM_RESOURCE_ID_KEY, this.resourceId);
