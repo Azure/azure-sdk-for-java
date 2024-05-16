@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Gets or Sets media streaming subscription state.
+ * Media streaming subscription state.
  */
 public final class MediaStreamingSubscriptionStateInternal
     extends ExpandableStringEnum<MediaStreamingSubscriptionStateInternal> {

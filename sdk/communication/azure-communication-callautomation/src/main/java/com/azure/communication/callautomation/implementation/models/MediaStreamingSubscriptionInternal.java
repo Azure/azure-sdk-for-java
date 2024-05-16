@@ -14,19 +14,19 @@ import java.util.List;
 @Fluent
 public final class MediaStreamingSubscriptionInternal {
     /*
-     * Gets or Sets subscription Id.
+     * Subscription Id.
      */
     @JsonProperty(value = "id")
     private String id;
 
     /*
-     * Gets or Sets media streaming subscription state.
+     * Media streaming subscription state.
      */
     @JsonProperty(value = "state")
     private MediaStreamingSubscriptionStateInternal state;
 
     /*
-     * Gets or Sets the subscribed media streaming content types.
+     * Subscribed media streaming content types.
      */
     @JsonProperty(value = "subscribedContentTypes")
     private List<MediaStreamingContentTypeInternal> subscribedContentTypes;
@@ -38,7 +38,7 @@ public final class MediaStreamingSubscriptionInternal {
     }
 
     /**
-     * Get the id property: Gets or Sets subscription Id.
+     * Get the id property: Subscription Id.
      * 
      * @return the id value.
      */
@@ -47,7 +47,7 @@ public final class MediaStreamingSubscriptionInternal {
     }
 
     /**
-     * Set the id property: Gets or Sets subscription Id.
+     * Set the id property: Subscription Id.
      * 
      * @param id the id value to set.
      * @return the MediaStreamingSubscriptionInternal object itself.
@@ -58,7 +58,7 @@ public final class MediaStreamingSubscriptionInternal {
     }
 
     /**
-     * Get the state property: Gets or Sets media streaming subscription state.
+     * Get the state property: Media streaming subscription state.
      * 
      * @return the state value.
      */
@@ -67,7 +67,7 @@ public final class MediaStreamingSubscriptionInternal {
     }
 
     /**
-     * Set the state property: Gets or Sets media streaming subscription state.
+     * Set the state property: Media streaming subscription state.
      * 
      * @param state the state value to set.
      * @return the MediaStreamingSubscriptionInternal object itself.
@@ -78,7 +78,7 @@ public final class MediaStreamingSubscriptionInternal {
     }
 
     /**
-     * Get the subscribedContentTypes property: Gets or Sets the subscribed media streaming content types.
+     * Get the subscribedContentTypes property: Subscribed media streaming content types.
      * 
      * @return the subscribedContentTypes value.
      */
@@ -87,7 +87,7 @@ public final class MediaStreamingSubscriptionInternal {
     }
 
     /**
-     * Set the subscribedContentTypes property: Gets or Sets the subscribed media streaming content types.
+     * Set the subscribedContentTypes property: Subscribed media streaming content types.
      * 
      * @param subscribedContentTypes the subscribedContentTypes value to set.
      * @return the MediaStreamingSubscriptionInternal object itself.

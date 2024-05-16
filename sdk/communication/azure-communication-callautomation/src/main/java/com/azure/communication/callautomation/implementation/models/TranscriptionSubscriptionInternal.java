@@ -14,19 +14,19 @@ import java.util.List;
 @Fluent
 public final class TranscriptionSubscriptionInternal {
     /*
-     * Gets or Sets subscription Id.
+     * Subscription Id.
      */
     @JsonProperty(value = "id")
     private String id;
 
     /*
-     * Gets or Sets transcription subscription state.
+     * Transcription subscription state.
      */
     @JsonProperty(value = "state")
     private TranscriptionSubscriptionStateInternal state;
 
     /*
-     * Gets or Sets the subscribed transcription result types.
+     * Subscribed transcription result types.
      */
     @JsonProperty(value = "subscribedResultTypes")
     private List<TranscriptionResultTypeInternal> subscribedResultTypes;
@@ -38,7 +38,7 @@ public final class TranscriptionSubscriptionInternal {
     }
 
     /**
-     * Get the id property: Gets or Sets subscription Id.
+     * Get the id property: Subscription Id.
      * 
      * @return the id value.
      */
@@ -47,7 +47,7 @@ public final class TranscriptionSubscriptionInternal {
     }
 
     /**
-     * Set the id property: Gets or Sets subscription Id.
+     * Set the id property: Subscription Id.
      * 
      * @param id the id value to set.
      * @return the TranscriptionSubscriptionInternal object itself.
@@ -58,7 +58,7 @@ public final class TranscriptionSubscriptionInternal {
     }
 
     /**
-     * Get the state property: Gets or Sets transcription subscription state.
+     * Get the state property: Transcription subscription state.
      * 
      * @return the state value.
      */
@@ -67,7 +67,7 @@ public final class TranscriptionSubscriptionInternal {
     }
 
     /**
-     * Set the state property: Gets or Sets transcription subscription state.
+     * Set the state property: Transcription subscription state.
      * 
      * @param state the state value to set.
      * @return the TranscriptionSubscriptionInternal object itself.
@@ -78,7 +78,7 @@ public final class TranscriptionSubscriptionInternal {
     }
 
     /**
-     * Get the subscribedResultTypes property: Gets or Sets the subscribed transcription result types.
+     * Get the subscribedResultTypes property: Subscribed transcription result types.
      * 
      * @return the subscribedResultTypes value.
      */
@@ -87,7 +87,7 @@ public final class TranscriptionSubscriptionInternal {
     }
 
     /**
-     * Set the subscribedResultTypes property: Gets or Sets the subscribed transcription result types.
+     * Set the subscribedResultTypes property: Subscribed transcription result types.
      * 
      * @param subscribedResultTypes the subscribedResultTypes value to set.
      * @return the TranscriptionSubscriptionInternal object itself.

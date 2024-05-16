@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Gets or Sets transcription subscription state.
+ * Transcription subscription state.
  */
 public final class TranscriptionSubscriptionStateInternal
     extends ExpandableStringEnum<TranscriptionSubscriptionStateInternal> {

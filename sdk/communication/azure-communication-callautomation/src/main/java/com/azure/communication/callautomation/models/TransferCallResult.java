@@ -5,11 +5,6 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.TransferCallResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
-/**import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.CallTransferAccepted;
-import com.azure.communication.callautomation.models.events.CallTransferFailed;
-import reactor.core.publisher.Mono;
-import java.time.Duration;*/
 import com.azure.core.annotation.Immutable;
 import java.util.Objects;
 
