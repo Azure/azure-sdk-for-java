@@ -25,11 +25,12 @@ class HeartbeatTests {
         }, telemetryItemsConsumer);
 
         // some of the initialization above happens in a separate thread
-        Thread.sleep(1000);
+        Thread.sleep(5000);
 
         // then
         MetricsData data = (MetricsData) provider.gatherData().getData().getBaseData();
         assertThat(data).isNotNull();
+        System.out.println(data.getProperties());
         assertThat(data.getProperties()).isNotEmpty();
     }
 
