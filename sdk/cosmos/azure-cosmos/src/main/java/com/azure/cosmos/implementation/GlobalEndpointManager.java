@@ -335,4 +335,8 @@ public class GlobalEndpointManager implements AutoCloseable {
     public String getRegionName(URI locationEndpoint, OperationType operationType) {
         return this.locationCache.getRegionName(locationEndpoint, operationType);
     }
+
+    public ConnectionPolicy getConnectionPolicy() {
+        return this.connectionPolicy;
+    }
 }

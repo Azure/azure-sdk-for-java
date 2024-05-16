@@ -12,16 +12,16 @@ public final class CustomEntityStoreAssignmentsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomEntityStoreAssignmentsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"principal\":\"scywuggwoluhc\",\"entityStoreDatabaseLink\":\"wem\"},\"id\":\"ai\",\"name\":\"sbrgz\",\"type\":\"wmsweypqwd\"},{\"properties\":{\"principal\":\"cccnxqhuexmktt\",\"entityStoreDatabaseLink\":\"tvlz\"},\"id\":\"wem\",\"name\":\"zrncsdt\",\"type\":\"lusiy\"},{\"properties\":{\"principal\":\"gytguslfead\",\"entityStoreDatabaseLink\":\"gq\"},\"id\":\"kyhejhzisxgf\",\"name\":\"elolppvksrpqvuj\",\"type\":\"raehtwdwrft\"},{\"properties\":{\"principal\":\"yrcdlbhshfwprac\",\"entityStoreDatabaseLink\":\"wity\"},\"id\":\"hevxcced\",\"name\":\"pnmdyodnwzxltjcv\",\"type\":\"hlt\"}],\"nextLink\":\"gcxn\"}")
+            "{\"value\":[{\"properties\":{\"principal\":\"dlxyjrxs\",\"entityStoreDatabaseLink\":\"afcnih\"},\"id\":\"wqapnedgfbcvk\",\"name\":\"vq\",\"type\":\"pkeqdcvdrhvoo\"},{\"properties\":{\"principal\":\"bobzdopcjwvnhd\",\"entityStoreDatabaseLink\":\"wmgxcxrsl\"},\"id\":\"mutwuoe\",\"name\":\"rpkhjwn\",\"type\":\"yqsluic\"},{\"properties\":{\"principal\":\"kzzlvmbmpaxmodf\",\"entityStoreDatabaseLink\":\"efyw\"},\"id\":\"bpfvm\",\"name\":\"yhrfouyftaakcpw\",\"type\":\"yzvqt\"}],\"nextLink\":\"ubex\"}")
             .toObject(CustomEntityStoreAssignmentsListResult.class);
-        Assertions.assertEquals("gcxn", model.nextLink());
+        Assertions.assertEquals("ubex", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomEntityStoreAssignmentsListResult model
-            = new CustomEntityStoreAssignmentsListResult().withNextLink("gcxn");
+            = new CustomEntityStoreAssignmentsListResult().withNextLink("ubex");
         model = BinaryData.fromObject(model).toObject(CustomEntityStoreAssignmentsListResult.class);
-        Assertions.assertEquals("gcxn", model.nextLink());
+        Assertions.assertEquals("ubex", model.nextLink());
     }
 }

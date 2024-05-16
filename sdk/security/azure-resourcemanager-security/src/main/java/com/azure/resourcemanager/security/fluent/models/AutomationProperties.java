@@ -30,8 +30,7 @@ public final class AutomationProperties {
     private Boolean isEnabled;
 
     /*
-     * A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription
-     * itself or a resource group under that subscription. The automation will only apply on defined scopes.
+     * A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription itself or a resource group under that subscription. The automation will only apply on defined scopes.
      */
     @JsonProperty(value = "scopes")
     private List<AutomationScope> scopes;
@@ -43,8 +42,7 @@ public final class AutomationProperties {
     private List<AutomationSource> sources;
 
     /*
-     * A collection of the actions which are triggered if all the configured rules evaluations, within at least one
-     * rule set, are true.
+     * A collection of the actions which are triggered if all the configured rules evaluations, within at least one rule set, are true.
      */
     @JsonProperty(value = "actions")
     private List<AutomationAction> actions;
@@ -97,8 +95,8 @@ public final class AutomationProperties {
 
     /**
      * Get the scopes property: A collection of scopes on which the security automations logic is applied. Supported
-     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply
-     * on defined scopes.
+     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
+     * defined scopes.
      * 
      * @return the scopes value.
      */
@@ -108,8 +106,8 @@ public final class AutomationProperties {
 
     /**
      * Set the scopes property: A collection of scopes on which the security automations logic is applied. Supported
-     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply
-     * on defined scopes.
+     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
+     * defined scopes.
      * 
      * @param scopes the scopes value to set.
      * @return the AutomationProperties object itself.

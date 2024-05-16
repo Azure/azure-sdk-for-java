@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ComplianceResultsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2017-08-01/examples/ComplianceResults/
-     * ListComplianceResults_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2017-08-01/examples/ComplianceResults/ListComplianceResults_example.json
      */
     /**
      * Sample code: Get compliance results on subscription.
@@ -19,7 +17,7 @@ public final class ComplianceResultsListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getComplianceResultsOnSubscription(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.complianceResults().list("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
-            com.azure.core.util.Context.NONE);
+        manager.complianceResults()
+            .list("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", com.azure.core.util.Context.NONE);
     }
 }

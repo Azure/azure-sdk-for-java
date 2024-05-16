@@ -59,8 +59,8 @@ public final class DeviceSecurityGroupsClientImpl implements DeviceSecurityGroup
     }
 
     /**
-     * The interface defining all the services for SecurityCenterDeviceSecurityGroups to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for SecurityCenterDeviceSecurityGroups to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterDevice")

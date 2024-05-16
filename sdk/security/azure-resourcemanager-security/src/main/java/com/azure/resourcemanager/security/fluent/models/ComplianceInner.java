@@ -47,8 +47,8 @@ public final class ComplianceInner extends ProxyResource {
     }
 
     /**
-     * Get the resourceCount property: The resource count of the given subscription for which the Compliance
-     * calculation was conducted (needed for Management Group Compliance calculation).
+     * Get the resourceCount property: The resource count of the given subscription for which the Compliance calculation
+     * was conducted (needed for Management Group Compliance calculation).
      * 
      * @return the resourceCount value.
      */

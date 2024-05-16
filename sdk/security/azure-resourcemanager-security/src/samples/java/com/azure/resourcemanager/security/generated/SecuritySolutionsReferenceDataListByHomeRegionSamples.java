@@ -9,8 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SecuritySolutionsReferenceDataListByHomeRegionSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/
-     * SecuritySolutionsReferenceData/GetSecuritySolutionsReferenceDataSubscriptionLocation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/SecuritySolutionsReferenceData/GetSecuritySolutionsReferenceDataSubscriptionLocation_example.json
      */
     /**
      * Sample code: Get security solutions from a security data location.
@@ -19,7 +18,7 @@ public final class SecuritySolutionsReferenceDataListByHomeRegionSamples {
      */
     public static void
         getSecuritySolutionsFromASecurityDataLocation(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securitySolutionsReferenceDatas().listByHomeRegionWithResponse("westcentralus",
-            com.azure.core.util.Context.NONE);
+        manager.securitySolutionsReferenceDatas()
+            .listByHomeRegionWithResponse("westcentralus", com.azure.core.util.Context.NONE);
     }
 }

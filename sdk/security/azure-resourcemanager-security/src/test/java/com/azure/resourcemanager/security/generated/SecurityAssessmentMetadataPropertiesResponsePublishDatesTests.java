@@ -12,19 +12,19 @@ public final class SecurityAssessmentMetadataPropertiesResponsePublishDatesTests
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityAssessmentMetadataPropertiesResponsePublishDates model
-            = BinaryData.fromString("{\"GA\":\"icuhqvumspb\",\"public\":\"sfeqbbe\"}")
+            = BinaryData.fromString("{\"GA\":\"dzhgbdgzpags\",\"public\":\"cnadbuwqrgxf\"}")
                 .toObject(SecurityAssessmentMetadataPropertiesResponsePublishDates.class);
-        Assertions.assertEquals("icuhqvumspb", model.ga());
-        Assertions.assertEquals("sfeqbbe", model.publicProperty());
+        Assertions.assertEquals("dzhgbdgzpags", model.ga());
+        Assertions.assertEquals("cnadbuwqrgxf", model.publicProperty());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecurityAssessmentMetadataPropertiesResponsePublishDates model
-            = new SecurityAssessmentMetadataPropertiesResponsePublishDates().withGa("icuhqvumspb")
-                .withPublicProperty("sfeqbbe");
+            = new SecurityAssessmentMetadataPropertiesResponsePublishDates().withGa("dzhgbdgzpags")
+                .withPublicProperty("cnadbuwqrgxf");
         model = BinaryData.fromObject(model).toObject(SecurityAssessmentMetadataPropertiesResponsePublishDates.class);
-        Assertions.assertEquals("icuhqvumspb", model.ga());
-        Assertions.assertEquals("sfeqbbe", model.publicProperty());
+        Assertions.assertEquals("dzhgbdgzpags", model.ga());
+        Assertions.assertEquals("cnadbuwqrgxf", model.publicProperty());
     }
 }
