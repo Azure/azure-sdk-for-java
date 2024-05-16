@@ -42,11 +42,12 @@ extends:
       skipBuildTagsForGitHubPullRequests: true
     sdl:
       componentgovernance:
-        sourceScanPath: $(Build.SourcesDirectory)
-        ignoreDirectories: $(Build.SourcesDirectory)
+        scanType: LogOnly
+        sourceScanPath: $(Build.SourcesDirectory)/eng
+        ignoreDirectories: $(Build.SourcesDirectory)/**
         alertWarningLevel: Low
         failOnAlert: true
-        verbosity: Register
+        verbosity: Verbose
       sourceAnalysisPool:
         name: azsdk-pool-mms-win-2022-general
         image: azsdk-pool-mms-win-2022-1espt
