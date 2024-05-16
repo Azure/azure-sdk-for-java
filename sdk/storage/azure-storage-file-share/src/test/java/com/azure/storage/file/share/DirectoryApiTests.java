@@ -1699,14 +1699,6 @@ public class DirectoryApiTests extends FileShareTestBase {
         ShareDirectoryClient aadDirClient = oAuthServiceClient.getShareClient(shareName).getDirectoryClient(dirName);
         ShareStorageException e = assertThrows(ShareStorageException.class, aadDirClient::exists);
         assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
-
-        /*
-        ShareClient aadShare = getShareClientBuilderWithTokenCredential(shareClient.getShareUrl())
-            .audience(ShareAudience.createShareServiceAccountAudience("badAudience"))
-            .buildClient();
-
-        assertNotNull(aadShare.getProperties());
-         */
     }
 
     @Test
