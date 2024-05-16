@@ -8,10 +8,8 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/vision/ci.yml
       - sdk/vision/azure-ai-vision-imageanalysis/
     exclude:
-      - sdk/vision/pom.xml
       - sdk/vision/azure-ai-vision-imageanalysis/pom.xml
 
 pr:
@@ -23,10 +21,8 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/vision/ci.yml
       - sdk/vision/azure-ai-vision-imageanalysis/
     exclude:
-      - sdk/vision/pom.xml
       - sdk/vision/azure-ai-vision-imageanalysis/pom.xml
 
 parameters:
@@ -41,7 +37,7 @@ parameters:
 # were inserted into Java source code comments (JavaDocs). This task will be enabled again
 # once the tools are updated.
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: ../../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: vision
     EnableBatchRelease: true

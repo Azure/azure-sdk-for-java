@@ -8,10 +8,8 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/vision/azure-ai-vision-face/ci.yml
       - sdk/vision/azure-ai-vision-face/
     exclude:
-      - sdk/vision/pom.xml
       - sdk/vision/azure-ai-vision-face/pom.xml
 
 pr:
@@ -23,10 +21,8 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/vision/azure-ai-vision-face/ci.yml
       - sdk/vision/azure-ai-vision-face/
     exclude:
-      - sdk/vision/pom.xml
       - sdk/vision/azure-ai-vision-face/pom.xml
 
 parameters:
