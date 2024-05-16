@@ -68,6 +68,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
     @Test
     @LiveOnly
     public void testUploadLogsPartialFailure() {
+        // Live Only, as it times out in CI playback mode.  TODO: Re-record and update test base to exclude any sanitizers as needed.
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
         LogsCountPolicy logsCountPolicy = new LogsCountPolicy();
@@ -87,7 +88,9 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
     }
 
     @Test
+    @LiveOnly
     public void testUploadLogsPartialFailureWithErrorHandler() {
+        // Live Only, as it times out in CI playback mode.  TODO: Re-record and update test base to exclude any sanitizers as needed.
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
         AtomicLong failedLogsCount = new AtomicLong();
