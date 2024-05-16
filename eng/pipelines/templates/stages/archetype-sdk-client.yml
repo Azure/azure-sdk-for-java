@@ -78,6 +78,7 @@ extends:
     stages:
       - stage: Build
         variables:
+          - skipComponentGovernanceDetection: true
           - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
           # Convert artifact parameter objects to json and set them as variables to be used in

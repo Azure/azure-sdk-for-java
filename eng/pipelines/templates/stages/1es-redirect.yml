@@ -44,7 +44,7 @@ extends:
       componentgovernance:
         sourceScanPath: $(Build.SourcesDirectory)
         ignoreDirectories: $(Build.SourcesDirectory)
-        alertWarningLevel: Medium
+        alertWarningLevel: Low
         failOnAlert: true
         verbosity: Register
       sourceAnalysisPool:
