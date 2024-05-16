@@ -115,7 +115,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -123,9 +123,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -192,7 +192,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -200,9 +200,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -258,7 +258,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -266,9 +266,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -309,7 +309,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -317,9 +317,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -377,7 +377,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -386,9 +386,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -551,8 +551,7 @@ public final class TextTranslationAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<TranslatedTextItem>> translateInner(List<String> targetLanguages,
-        List<InputTextItem> body) {
+    private Mono<List<TranslatedTextItem>> translateInner(List<String> targetLanguages, List<InputTextItem> body) {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return translateWithResponse(targetLanguages, BinaryData.fromObject(body), requestOptions)
@@ -870,8 +869,8 @@ public final class TextTranslationAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<BreakSentenceItem>> findSentenceBoundariesInner(List<InputTextItem> body,
-        String clientTraceId, String language, String script) {
+    private Mono<List<BreakSentenceItem>> findSentenceBoundariesInner(List<InputTextItem> body, String clientTraceId,
+        String language, String script) {
         // Generated convenience method for findSentenceBoundariesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
@@ -883,8 +882,7 @@ public final class TextTranslationAsyncClient {
         if (script != null) {
             requestOptions.addQueryParam("script", script, false);
         }
-        return findSentenceBoundariesWithResponse(BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return findSentenceBoundariesWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ITEM));
     }
 
@@ -960,8 +958,7 @@ public final class TextTranslationAsyncClient {
     private Mono<List<BreakSentenceItem>> findSentenceBoundariesInner(List<InputTextItem> body) {
         // Generated convenience method for findSentenceBoundariesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return findSentenceBoundariesWithResponse(BinaryData.fromObject(body), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return findSentenceBoundariesWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_BREAK_SENTENCE_ITEM));
     }
 
@@ -1284,7 +1281,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     translation (Optional): {

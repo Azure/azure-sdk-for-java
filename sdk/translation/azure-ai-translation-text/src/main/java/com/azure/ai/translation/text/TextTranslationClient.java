@@ -113,7 +113,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -121,9 +121,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -190,7 +190,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -198,9 +198,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -256,7 +256,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -264,9 +264,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -306,7 +306,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -314,9 +314,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -374,7 +374,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -383,9 +383,9 @@ public final class TextTranslationClient {
      *     }
      * ]
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -688,8 +688,7 @@ public final class TextTranslationClient {
             requestOptions.setHeader(HttpHeaderName.fromString("X-ClientTraceId"), clientTraceId);
         }
         return transliterateWithResponse(language, sourceLanguageScript, targetLanguageScript,
-            BinaryData.fromObject(body), requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT);
+            BinaryData.fromObject(body), requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT);
     }
 
     /**
@@ -782,8 +781,7 @@ public final class TextTranslationClient {
         // Generated convenience method for transliterateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return transliterateWithResponse(language, sourceLanguageScript, targetLanguageScript,
-            BinaryData.fromObject(body), requestOptions).getValue()
-            .toObject(TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT);
+            BinaryData.fromObject(body), requestOptions).getValue().toObject(TYPE_REFERENCE_LIST_TRANSLITERATED_TEXT);
     }
 
     /**
@@ -1272,7 +1270,7 @@ public final class TextTranslationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     translation (Optional): {
