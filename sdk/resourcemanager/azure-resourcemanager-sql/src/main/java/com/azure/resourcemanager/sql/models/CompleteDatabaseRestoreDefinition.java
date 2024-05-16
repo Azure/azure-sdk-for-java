@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the information necessary to perform a complete database restore operation. */
+/**
+ * Contains the information necessary to perform a complete database restore operation.
+ */
 @Fluent
 public final class CompleteDatabaseRestoreDefinition {
     /*
@@ -17,13 +19,15 @@ public final class CompleteDatabaseRestoreDefinition {
     @JsonProperty(value = "lastBackupName", required = true)
     private String lastBackupName;
 
-    /** Creates an instance of CompleteDatabaseRestoreDefinition class. */
+    /**
+     * Creates an instance of CompleteDatabaseRestoreDefinition class.
+     */
     public CompleteDatabaseRestoreDefinition() {
     }
 
     /**
      * Get the lastBackupName property: The last backup name to apply.
-     *
+     * 
      * @return the lastBackupName value.
      */
     public String lastBackupName() {
@@ -32,7 +36,7 @@ public final class CompleteDatabaseRestoreDefinition {
 
     /**
      * Set the lastBackupName property: The last backup name to apply.
-     *
+     * 
      * @param lastBackupName the lastBackupName value to set.
      * @return the CompleteDatabaseRestoreDefinition object itself.
      */
@@ -43,15 +47,14 @@ public final class CompleteDatabaseRestoreDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (lastBackupName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property lastBackupName in model CompleteDatabaseRestoreDefinition"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property lastBackupName in model CompleteDatabaseRestoreDefinition"));
         }
     }
 

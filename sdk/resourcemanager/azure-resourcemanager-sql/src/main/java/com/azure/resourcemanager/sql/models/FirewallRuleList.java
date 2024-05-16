@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.FirewallRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of server firewall rules. */
+/**
+ * A list of server firewall rules.
+ */
 @Fluent
 public final class FirewallRuleList {
     /*
@@ -18,13 +20,15 @@ public final class FirewallRuleList {
     @JsonProperty(value = "values")
     private List<FirewallRuleInner> values;
 
-    /** Creates an instance of FirewallRuleList class. */
+    /**
+     * Creates an instance of FirewallRuleList class.
+     */
     public FirewallRuleList() {
     }
 
     /**
      * Get the values property: The values property.
-     *
+     * 
      * @return the values value.
      */
     public List<FirewallRuleInner> values() {
@@ -33,7 +37,7 @@ public final class FirewallRuleList {
 
     /**
      * Set the values property: The values property.
-     *
+     * 
      * @param values the values value to set.
      * @return the FirewallRuleList object itself.
      */
@@ -44,7 +48,7 @@ public final class FirewallRuleList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

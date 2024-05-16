@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of a job credential. */
+/**
+ * Properties of a job credential.
+ */
 @Fluent
 public final class JobCredentialProperties {
     /*
@@ -23,13 +25,15 @@ public final class JobCredentialProperties {
     @JsonProperty(value = "password", required = true)
     private String password;
 
-    /** Creates an instance of JobCredentialProperties class. */
+    /**
+     * Creates an instance of JobCredentialProperties class.
+     */
     public JobCredentialProperties() {
     }
 
     /**
      * Get the username property: The credential user name.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -38,7 +42,7 @@ public final class JobCredentialProperties {
 
     /**
      * Set the username property: The credential user name.
-     *
+     * 
      * @param username the username value to set.
      * @return the JobCredentialProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class JobCredentialProperties {
 
     /**
      * Get the password property: The credential password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -58,7 +62,7 @@ public final class JobCredentialProperties {
 
     /**
      * Set the password property: The credential password.
-     *
+     * 
      * @param password the password value to set.
      * @return the JobCredentialProperties object itself.
      */
@@ -69,21 +73,19 @@ public final class JobCredentialProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model JobCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model JobCredentialProperties"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model JobCredentialProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model JobCredentialProperties"));
         }
     }
 

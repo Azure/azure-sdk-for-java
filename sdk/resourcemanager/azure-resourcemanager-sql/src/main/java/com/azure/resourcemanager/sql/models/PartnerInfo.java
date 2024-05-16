@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Partner server information for the failover group. */
+/**
+ * Partner server information for the failover group.
+ */
 @Fluent
 public final class PartnerInfo {
     /*
@@ -29,13 +31,15 @@ public final class PartnerInfo {
     @JsonProperty(value = "replicationRole", access = JsonProperty.Access.WRITE_ONLY)
     private FailoverGroupReplicationRole replicationRole;
 
-    /** Creates an instance of PartnerInfo class. */
+    /**
+     * Creates an instance of PartnerInfo class.
+     */
     public PartnerInfo() {
     }
 
     /**
      * Get the id property: Resource identifier of the partner server.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +48,7 @@ public final class PartnerInfo {
 
     /**
      * Set the id property: Resource identifier of the partner server.
-     *
+     * 
      * @param id the id value to set.
      * @return the PartnerInfo object itself.
      */
@@ -55,7 +59,7 @@ public final class PartnerInfo {
 
     /**
      * Get the location property: Geo location of the partner server.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -64,7 +68,7 @@ public final class PartnerInfo {
 
     /**
      * Get the replicationRole property: Replication role of the partner server.
-     *
+     * 
      * @return the replicationRole value.
      */
     public FailoverGroupReplicationRole replicationRole() {
@@ -73,13 +77,13 @@ public final class PartnerInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property id in model PartnerInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model PartnerInfo"));
         }
     }
 

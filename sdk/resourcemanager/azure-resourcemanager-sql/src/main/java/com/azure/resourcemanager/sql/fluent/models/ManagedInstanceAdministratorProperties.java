@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.ManagedInstanceAdministratorType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The properties of a managed instance administrator. */
+/**
+ * The properties of a managed instance administrator.
+ */
 @Fluent
 public final class ManagedInstanceAdministratorProperties {
     /*
@@ -37,13 +39,15 @@ public final class ManagedInstanceAdministratorProperties {
     @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
-    /** Creates an instance of ManagedInstanceAdministratorProperties class. */
+    /**
+     * Creates an instance of ManagedInstanceAdministratorProperties class.
+     */
     public ManagedInstanceAdministratorProperties() {
     }
 
     /**
      * Get the administratorType property: Type of the managed instance administrator.
-     *
+     * 
      * @return the administratorType value.
      */
     public ManagedInstanceAdministratorType administratorType() {
@@ -52,19 +56,19 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Set the administratorType property: Type of the managed instance administrator.
-     *
+     * 
      * @param administratorType the administratorType value to set.
      * @return the ManagedInstanceAdministratorProperties object itself.
      */
-    public ManagedInstanceAdministratorProperties withAdministratorType(
-        ManagedInstanceAdministratorType administratorType) {
+    public ManagedInstanceAdministratorProperties
+        withAdministratorType(ManagedInstanceAdministratorType administratorType) {
         this.administratorType = administratorType;
         return this;
     }
 
     /**
      * Get the login property: Login name of the managed instance administrator.
-     *
+     * 
      * @return the login value.
      */
     public String login() {
@@ -73,7 +77,7 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Set the login property: Login name of the managed instance administrator.
-     *
+     * 
      * @param login the login value to set.
      * @return the ManagedInstanceAdministratorProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Get the sid property: SID (object ID) of the managed instance administrator.
-     *
+     * 
      * @return the sid value.
      */
     public UUID sid() {
@@ -93,7 +97,7 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Set the sid property: SID (object ID) of the managed instance administrator.
-     *
+     * 
      * @param sid the sid value to set.
      * @return the ManagedInstanceAdministratorProperties object itself.
      */
@@ -104,7 +108,7 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Get the tenantId property: Tenant ID of the managed instance administrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -113,7 +117,7 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Set the tenantId property: Tenant ID of the managed instance administrator.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the ManagedInstanceAdministratorProperties object itself.
      */
@@ -124,27 +128,24 @@ public final class ManagedInstanceAdministratorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (administratorType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorType in model ManagedInstanceAdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorType in model ManagedInstanceAdministratorProperties"));
         }
         if (login() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property login in model ManagedInstanceAdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property login in model ManagedInstanceAdministratorProperties"));
         }
         if (sid() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sid in model ManagedInstanceAdministratorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sid in model ManagedInstanceAdministratorProperties"));
         }
     }
 

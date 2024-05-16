@@ -7,7 +7,9 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Automatic tuning properties for individual advisors. */
+/**
+ * Automatic tuning properties for individual advisors.
+ */
 @Fluent
 public final class AutomaticTuningServerOptions {
     /*
@@ -34,13 +36,15 @@ public final class AutomaticTuningServerOptions {
     @JsonProperty(value = "reasonDesc", access = JsonProperty.Access.WRITE_ONLY)
     private AutomaticTuningServerReason reasonDesc;
 
-    /** Creates an instance of AutomaticTuningServerOptions class. */
+    /**
+     * Creates an instance of AutomaticTuningServerOptions class.
+     */
     public AutomaticTuningServerOptions() {
     }
 
     /**
      * Get the desiredState property: Automatic tuning option desired state.
-     *
+     * 
      * @return the desiredState value.
      */
     public AutomaticTuningOptionModeDesired desiredState() {
@@ -49,7 +53,7 @@ public final class AutomaticTuningServerOptions {
 
     /**
      * Set the desiredState property: Automatic tuning option desired state.
-     *
+     * 
      * @param desiredState the desiredState value to set.
      * @return the AutomaticTuningServerOptions object itself.
      */
@@ -60,7 +64,7 @@ public final class AutomaticTuningServerOptions {
 
     /**
      * Get the actualState property: Automatic tuning option actual state.
-     *
+     * 
      * @return the actualState value.
      */
     public AutomaticTuningOptionModeActual actualState() {
@@ -69,7 +73,7 @@ public final class AutomaticTuningServerOptions {
 
     /**
      * Get the reasonCode property: Reason code if desired and actual state are different.
-     *
+     * 
      * @return the reasonCode value.
      */
     public Integer reasonCode() {
@@ -78,7 +82,7 @@ public final class AutomaticTuningServerOptions {
 
     /**
      * Get the reasonDesc property: Reason description if desired and actual state are different.
-     *
+     * 
      * @return the reasonDesc value.
      */
     public AutomaticTuningServerReason reasonDesc() {
@@ -87,7 +91,7 @@ public final class AutomaticTuningServerOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

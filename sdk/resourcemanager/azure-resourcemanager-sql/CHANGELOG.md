@@ -1,5 +1,14 @@
 # Release History
 
+
+## 2.39.0-beta.1 (2024-05-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `composite-v5`.
+
 ## 2.38.0 (2024-04-16)
 
 ### Other Changes

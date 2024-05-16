@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.GeoBackupPolicyState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of the geo backup policy. */
+/**
+ * The properties of the geo backup policy.
+ */
 @Fluent
 public final class GeoBackupPolicyProperties {
     /*
@@ -24,13 +26,15 @@ public final class GeoBackupPolicyProperties {
     @JsonProperty(value = "storageType", access = JsonProperty.Access.WRITE_ONLY)
     private String storageType;
 
-    /** Creates an instance of GeoBackupPolicyProperties class. */
+    /**
+     * Creates an instance of GeoBackupPolicyProperties class.
+     */
     public GeoBackupPolicyProperties() {
     }
 
     /**
      * Get the state property: The state of the geo backup policy.
-     *
+     * 
      * @return the state value.
      */
     public GeoBackupPolicyState state() {
@@ -39,7 +43,7 @@ public final class GeoBackupPolicyProperties {
 
     /**
      * Set the state property: The state of the geo backup policy.
-     *
+     * 
      * @param state the state value to set.
      * @return the GeoBackupPolicyProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class GeoBackupPolicyProperties {
 
     /**
      * Get the storageType property: The storage type of the geo backup policy.
-     *
+     * 
      * @return the storageType value.
      */
     public String storageType() {
@@ -59,13 +63,13 @@ public final class GeoBackupPolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property state in model GeoBackupPolicyProperties"));
         }
     }

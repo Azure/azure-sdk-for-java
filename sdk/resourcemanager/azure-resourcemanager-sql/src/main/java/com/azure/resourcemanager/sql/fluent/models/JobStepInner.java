@@ -11,7 +11,9 @@ import com.azure.resourcemanager.sql.models.JobStepExecutionOptions;
 import com.azure.resourcemanager.sql.models.JobStepOutput;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A job step. */
+/**
+ * A job step.
+ */
 @Fluent
 public final class JobStepInner extends ProxyResource {
     /*
@@ -20,13 +22,15 @@ public final class JobStepInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private JobStepProperties innerProperties;
 
-    /** Creates an instance of JobStepInner class. */
+    /**
+     * Creates an instance of JobStepInner class.
+     */
     public JobStepInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobStepProperties innerProperties() {
@@ -36,7 +40,7 @@ public final class JobStepInner extends ProxyResource {
     /**
      * Get the stepId property: The job step's index within the job. If not specified when creating the job step, it
      * will be created as the last step. If not specified when updating the job step, the step id is not modified.
-     *
+     * 
      * @return the stepId value.
      */
     public Integer stepId() {
@@ -46,7 +50,7 @@ public final class JobStepInner extends ProxyResource {
     /**
      * Set the stepId property: The job step's index within the job. If not specified when creating the job step, it
      * will be created as the last step. If not specified when updating the job step, the step id is not modified.
-     *
+     * 
      * @param stepId the stepId value to set.
      * @return the JobStepInner object itself.
      */
@@ -60,7 +64,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Get the targetGroup property: The resource ID of the target group that the job step will be executed on.
-     *
+     * 
      * @return the targetGroup value.
      */
     public String targetGroup() {
@@ -69,7 +73,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Set the targetGroup property: The resource ID of the target group that the job step will be executed on.
-     *
+     * 
      * @param targetGroup the targetGroup value to set.
      * @return the JobStepInner object itself.
      */
@@ -83,7 +87,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Get the credential property: The resource ID of the job credential that will be used to connect to the targets.
-     *
+     * 
      * @return the credential value.
      */
     public String credential() {
@@ -92,7 +96,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Set the credential property: The resource ID of the job credential that will be used to connect to the targets.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the JobStepInner object itself.
      */
@@ -106,7 +110,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Get the action property: The action payload of the job step.
-     *
+     * 
      * @return the action value.
      */
     public JobStepAction action() {
@@ -115,7 +119,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Set the action property: The action payload of the job step.
-     *
+     * 
      * @param action the action value to set.
      * @return the JobStepInner object itself.
      */
@@ -129,7 +133,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Get the output property: Output destination properties of the job step.
-     *
+     * 
      * @return the output value.
      */
     public JobStepOutput output() {
@@ -138,7 +142,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Set the output property: Output destination properties of the job step.
-     *
+     * 
      * @param output the output value to set.
      * @return the JobStepInner object itself.
      */
@@ -152,7 +156,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Get the executionOptions property: Execution options for the job step.
-     *
+     * 
      * @return the executionOptions value.
      */
     public JobStepExecutionOptions executionOptions() {
@@ -161,7 +165,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Set the executionOptions property: Execution options for the job step.
-     *
+     * 
      * @param executionOptions the executionOptions value to set.
      * @return the JobStepInner object itself.
      */
@@ -175,7 +179,7 @@ public final class JobStepInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

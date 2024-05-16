@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.sql.models.ManagedInstancePrivateLinkProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A private link resource. */
+/**
+ * A private link resource.
+ */
 @Immutable
 public final class ManagedInstancePrivateLinkInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class ManagedInstancePrivateLinkInner extends ProxyResource {
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ManagedInstancePrivateLinkProperties properties;
 
-    /** Creates an instance of ManagedInstancePrivateLinkInner class. */
+    /**
+     * Creates an instance of ManagedInstancePrivateLinkInner class.
+     */
     public ManagedInstancePrivateLinkInner() {
     }
 
     /**
      * Get the properties property: The private link resource group id.
-     *
+     * 
      * @return the properties value.
      */
     public ManagedInstancePrivateLinkProperties properties() {
@@ -33,7 +37,7 @@ public final class ManagedInstancePrivateLinkInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

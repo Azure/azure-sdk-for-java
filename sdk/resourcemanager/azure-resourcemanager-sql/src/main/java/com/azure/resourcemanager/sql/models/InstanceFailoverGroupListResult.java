@@ -9,7 +9,9 @@ import com.azure.resourcemanager.sql.fluent.models.InstanceFailoverGroupInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of instance failover groups. */
+/**
+ * A list of instance failover groups.
+ */
 @Immutable
 public final class InstanceFailoverGroupListResult {
     /*
@@ -24,13 +26,15 @@ public final class InstanceFailoverGroupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of InstanceFailoverGroupListResult class. */
+    /**
+     * Creates an instance of InstanceFailoverGroupListResult class.
+     */
     public InstanceFailoverGroupListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<InstanceFailoverGroupInner> value() {
@@ -39,7 +43,7 @@ public final class InstanceFailoverGroupListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class InstanceFailoverGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -29,24 +29,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in MaintenanceWindowOptionsOperationsClient.
  */
 public final class MaintenanceWindowOptionsOperationsClientImpl implements MaintenanceWindowOptionsOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MaintenanceWindowOptionsOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of MaintenanceWindowOptionsOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MaintenanceWindowOptionsOperationsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    MaintenanceWindowOptionsOperationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(MaintenanceWindowOptionsOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,46 +57,38 @@ public final class MaintenanceWindowOptionsOperationsClientImpl implements Maint
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
     public interface MaintenanceWindowOptionsOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/maintenanceWindowOptions/current")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/maintenanceWindowOptions/current")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MaintenanceWindowOptionsInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<MaintenanceWindowOptionsInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @QueryParam("maintenanceWindowOptionsName") String maintenanceWindowOptionsName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of available maintenance windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to get maintenance windows options for.
      * @param maintenanceWindowOptionsName Maintenance window options name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of available maintenance windows along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a list of available maintenance windows along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName, String maintenanceWindowOptionsName) {
+    public Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, String maintenanceWindowOptionsName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -109,40 +101,26 @@ public final class MaintenanceWindowOptionsOperationsClientImpl implements Maint
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (maintenanceWindowOptionsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter maintenanceWindowOptionsName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter maintenanceWindowOptionsName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            maintenanceWindowOptionsName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+                maintenanceWindowOptionsName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of available maintenance windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to get maintenance windows options for.
      * @param maintenanceWindowOptionsName Maintenance window options name.
@@ -150,21 +128,15 @@ public final class MaintenanceWindowOptionsOperationsClientImpl implements Maint
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of available maintenance windows along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a list of available maintenance windows along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String maintenanceWindowOptionsName,
-        Context context) {
+    private Mono<Response<MaintenanceWindowOptionsInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, String maintenanceWindowOptionsName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -177,37 +149,25 @@ public final class MaintenanceWindowOptionsOperationsClientImpl implements Maint
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (maintenanceWindowOptionsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter maintenanceWindowOptionsName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter maintenanceWindowOptionsName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-11-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                maintenanceWindowOptionsName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+            maintenanceWindowOptionsName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Gets a list of available maintenance windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to get maintenance windows options for.
      * @param maintenanceWindowOptionsName Maintenance window options name.
@@ -217,17 +177,17 @@ public final class MaintenanceWindowOptionsOperationsClientImpl implements Maint
      * @return a list of available maintenance windows on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MaintenanceWindowOptionsInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName, String maintenanceWindowOptionsName) {
+    public Mono<MaintenanceWindowOptionsInner> getAsync(String resourceGroupName, String serverName,
+        String databaseName, String maintenanceWindowOptionsName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, maintenanceWindowOptionsName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a list of available maintenance windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to get maintenance windows options for.
      * @param maintenanceWindowOptionsName Maintenance window options name.
@@ -238,21 +198,17 @@ public final class MaintenanceWindowOptionsOperationsClientImpl implements Maint
      * @return a list of available maintenance windows along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MaintenanceWindowOptionsInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        String maintenanceWindowOptionsName,
-        Context context) {
+    public Response<MaintenanceWindowOptionsInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, String maintenanceWindowOptionsName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, maintenanceWindowOptionsName, context)
             .block();
     }
 
     /**
      * Gets a list of available maintenance windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database to get maintenance windows options for.
      * @param maintenanceWindowOptionsName Maintenance window options name.
@@ -262,8 +218,8 @@ public final class MaintenanceWindowOptionsOperationsClientImpl implements Maint
      * @return a list of available maintenance windows.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MaintenanceWindowOptionsInner get(
-        String resourceGroupName, String serverName, String databaseName, String maintenanceWindowOptionsName) {
+    public MaintenanceWindowOptionsInner get(String resourceGroupName, String serverName, String databaseName,
+        String maintenanceWindowOptionsName) {
         return getWithResponse(resourceGroupName, serverName, databaseName, maintenanceWindowOptionsName, Context.NONE)
             .getValue();
     }

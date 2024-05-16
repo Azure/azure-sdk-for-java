@@ -10,7 +10,9 @@ import com.azure.resourcemanager.sql.models.SyncAgentState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** An Azure SQL Database sync agent. */
+/**
+ * An Azure SQL Database sync agent.
+ */
 @Fluent
 public final class SyncAgentInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class SyncAgentInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SyncAgentProperties innerProperties;
 
-    /** Creates an instance of SyncAgentInner class. */
+    /**
+     * Creates an instance of SyncAgentInner class.
+     */
     public SyncAgentInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SyncAgentProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class SyncAgentInner extends ProxyResource {
 
     /**
      * Get the name property: Name of the sync agent.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -43,7 +47,7 @@ public final class SyncAgentInner extends ProxyResource {
 
     /**
      * Get the syncDatabaseId property: ARM resource id of the sync database in the sync agent.
-     *
+     * 
      * @return the syncDatabaseId value.
      */
     public String syncDatabaseId() {
@@ -52,7 +56,7 @@ public final class SyncAgentInner extends ProxyResource {
 
     /**
      * Set the syncDatabaseId property: ARM resource id of the sync database in the sync agent.
-     *
+     * 
      * @param syncDatabaseId the syncDatabaseId value to set.
      * @return the SyncAgentInner object itself.
      */
@@ -66,7 +70,7 @@ public final class SyncAgentInner extends ProxyResource {
 
     /**
      * Get the lastAliveTime property: Last alive time of the sync agent.
-     *
+     * 
      * @return the lastAliveTime value.
      */
     public OffsetDateTime lastAliveTime() {
@@ -75,7 +79,7 @@ public final class SyncAgentInner extends ProxyResource {
 
     /**
      * Get the state property: State of the sync agent.
-     *
+     * 
      * @return the state value.
      */
     public SyncAgentState state() {
@@ -84,7 +88,7 @@ public final class SyncAgentInner extends ProxyResource {
 
     /**
      * Get the isUpToDate property: If the sync agent version is up to date.
-     *
+     * 
      * @return the isUpToDate value.
      */
     public Boolean isUpToDate() {
@@ -93,7 +97,7 @@ public final class SyncAgentInner extends ProxyResource {
 
     /**
      * Get the expiryTime property: Expiration time of the sync agent version.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -102,7 +106,7 @@ public final class SyncAgentInner extends ProxyResource {
 
     /**
      * Get the version property: Version of the sync agent.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -111,7 +115,7 @@ public final class SyncAgentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
