@@ -5,6 +5,7 @@ package com.azure.cosmos.test.faultinjection;
 
 import java.time.Duration;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /***
@@ -16,6 +17,7 @@ public final class FaultInjectionServerErrorResultBuilder {
     private Duration delay;
 
     private Boolean suppressServiceRequests = null;
+    private double applyPercentage = 1.0;
 
     FaultInjectionServerErrorResultBuilder(FaultInjectionServerErrorType serverErrorType) {
         this.serverErrorType = serverErrorType;
@@ -72,6 +74,20 @@ public final class FaultInjectionServerErrorResultBuilder {
     }
 
     /***
+     * What percent of times the fault injection rule will be applied.
+     *
+     * @param applyPercentage a double between (0,1] representing the percent of times that the rule will be applied.
+     *                        default value is 1.0 or 100%
+     * @return the builder
+     */
+    public FaultInjectionServerErrorResultBuilder applyPercentage(double applyPercentage) {
+        checkArgument(applyPercentage > 0 && applyPercentage <= 1, "Argument 'applyPercentage' should be between (0, 1]");
+        this.applyPercentage = applyPercentage;
+
+        return this;
+    }
+
+    /***
      * Create a new fault injection server error result.
      *
      * @return the {@link FaultInjectionServerErrorResult}.
@@ -93,6 +109,7 @@ public final class FaultInjectionServerErrorResultBuilder {
             this.serverErrorType,
             this.times,
             this.delay,
-            this.suppressServiceRequests);
+            this.suppressServiceRequests,
+            this.applyPercentage);
     }
 }

@@ -1069,6 +1069,50 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
         }
     }
 
+    @Test(groups = {"long"}, timeOut = TIMEOUT)
+    public void faultInjectionServerErrorRuleTests_ApplyPercentage() throws JsonProcessingException {
+        String applyPercentageRuleId = "applyPercentage-"+UUID.randomUUID();
+
+        FaultInjectionRule applyPercentageRule =
+            new FaultInjectionRuleBuilder(applyPercentageRuleId)
+                .condition(
+                    new FaultInjectionConditionBuilder()
+                        .operationType(FaultInjectionOperationType.READ_ITEM)
+                        .build()
+                )
+                .result(
+                    FaultInjectionResultBuilders
+                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                        .applyPercentage(.5)
+                        .times(1)//for each operation, only apply the rule one time
+                        .build()
+                )
+                .duration(Duration.ofMinutes(5))
+                .hitLimit(3)
+                .build();
+
+        try {
+            TestItem createdItem = TestItem.createNewItem();
+            cosmosAsyncContainer.createItem(createdItem).block();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(
+                cosmosAsyncContainer,
+                Arrays.asList(applyPercentageRule)).block();
+
+            for(int i = 0; i < 100; i++){
+                this.performDocumentOperation(cosmosAsyncContainer, OperationType.Read, createdItem);
+            }
+
+            //Because applyPercentage is based on Random probability,
+            //we expect that this assert will fail 0.66% of the time.
+            assertThat(applyPercentageRule.getHitCount()).isBetween(37L, 63L);
+
+        } finally {
+            applyPercentageRule.disable();
+        }
+    }
+
+
     private void validateFaultInjectionRuleApplied(
         CosmosDiagnostics cosmosDiagnostics,
         OperationType operationType,
