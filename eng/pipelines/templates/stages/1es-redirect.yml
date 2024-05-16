@@ -43,8 +43,8 @@ extends:
     sdl:
       componentgovernance:
         scanType: LogOnly
-        sourceScanPath: $(Build.SourcesDirectory)/eng
-        ignoreDirectories: $(Build.SourcesDirectory)/**
+        sourceScanPath: $(Build.SourcesDirectory)/sdk
+        ignoreDirectories: $(Build.SourcesDirectory)/sdk
         alertWarningLevel: Low
         failOnAlert: true
         verbosity: Verbose
