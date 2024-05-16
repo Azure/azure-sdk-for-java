@@ -17,28 +17,28 @@ public final class SecurityContactPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityContactProperties model = BinaryData.fromString(
-            "{\"emails\":\"dgssofwqmzqal\",\"phone\":\"mnjijpxacqqudf\",\"isEnabled\":true,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Passed\",\"roles\":[\"Owner\",\"Owner\",\"ServiceAdmin\",\"Contributor\"]}}")
+            "{\"emails\":\"bjkvreljeamu\",\"phone\":\"zmlovuanash\",\"isEnabled\":false,\"notificationsSources\":[{\"sourceType\":\"NotificationsSource\"},{\"sourceType\":\"NotificationsSource\"}],\"notificationsByRole\":{\"state\":\"Skipped\",\"roles\":[\"Contributor\"]}}")
             .toObject(SecurityContactProperties.class);
-        Assertions.assertEquals("dgssofwqmzqal", model.emails());
-        Assertions.assertEquals("mnjijpxacqqudf", model.phone());
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(State.PASSED, model.notificationsByRole().state());
-        Assertions.assertEquals(SecurityContactRole.OWNER, model.notificationsByRole().roles().get(0));
+        Assertions.assertEquals("bjkvreljeamu", model.emails());
+        Assertions.assertEquals("zmlovuanash", model.phone());
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(State.SKIPPED, model.notificationsByRole().state());
+        Assertions.assertEquals(SecurityContactRole.CONTRIBUTOR, model.notificationsByRole().roles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityContactProperties model
-            = new SecurityContactProperties().withEmails("dgssofwqmzqal").withPhone("mnjijpxacqqudf")
-                .withIsEnabled(true).withNotificationsSources(Arrays.asList(new NotificationsSource()))
-                .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.PASSED)
-                    .withRoles(Arrays.asList(SecurityContactRole.OWNER, SecurityContactRole.OWNER,
-                        SecurityContactRole.SERVICE_ADMIN, SecurityContactRole.CONTRIBUTOR)));
+        SecurityContactProperties model = new SecurityContactProperties().withEmails("bjkvreljeamu")
+            .withPhone("zmlovuanash")
+            .withIsEnabled(false)
+            .withNotificationsSources(Arrays.asList(new NotificationsSource(), new NotificationsSource()))
+            .withNotificationsByRole(new SecurityContactPropertiesNotificationsByRole().withState(State.SKIPPED)
+                .withRoles(Arrays.asList(SecurityContactRole.CONTRIBUTOR)));
         model = BinaryData.fromObject(model).toObject(SecurityContactProperties.class);
-        Assertions.assertEquals("dgssofwqmzqal", model.emails());
-        Assertions.assertEquals("mnjijpxacqqudf", model.phone());
-        Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(State.PASSED, model.notificationsByRole().state());
-        Assertions.assertEquals(SecurityContactRole.OWNER, model.notificationsByRole().roles().get(0));
+        Assertions.assertEquals("bjkvreljeamu", model.emails());
+        Assertions.assertEquals("zmlovuanash", model.phone());
+        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(State.SKIPPED, model.notificationsByRole().state());
+        Assertions.assertEquals(SecurityContactRole.CONTRIBUTOR, model.notificationsByRole().roles().get(0));
     }
 }

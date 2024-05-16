@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.security.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -33,8 +34,8 @@ import com.azure.resourcemanager.security.fluent.ApplicationOperationsClient;
 import com.azure.resourcemanager.security.fluent.ApplicationsClient;
 import com.azure.resourcemanager.security.fluent.AssessmentsClient;
 import com.azure.resourcemanager.security.fluent.AssessmentsMetadatasClient;
-import com.azure.resourcemanager.security.fluent.AutoProvisioningSettingsClient;
 import com.azure.resourcemanager.security.fluent.AutomationsClient;
+import com.azure.resourcemanager.security.fluent.AutoProvisioningSettingsClient;
 import com.azure.resourcemanager.security.fluent.AzureDevOpsOrgsClient;
 import com.azure.resourcemanager.security.fluent.AzureDevOpsProjectsClient;
 import com.azure.resourcemanager.security.fluent.AzureDevOpsReposClient;
@@ -44,9 +45,9 @@ import com.azure.resourcemanager.security.fluent.ConnectorsClient;
 import com.azure.resourcemanager.security.fluent.CustomAssessmentAutomationsClient;
 import com.azure.resourcemanager.security.fluent.CustomEntityStoreAssignmentsClient;
 import com.azure.resourcemanager.security.fluent.DefenderForStoragesClient;
+import com.azure.resourcemanager.security.fluent.DeviceSecurityGroupsClient;
 import com.azure.resourcemanager.security.fluent.DevOpsConfigurationsClient;
 import com.azure.resourcemanager.security.fluent.DevOpsOperationResultsClient;
-import com.azure.resourcemanager.security.fluent.DeviceSecurityGroupsClient;
 import com.azure.resourcemanager.security.fluent.DiscoveredSecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.ExternalSecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.GitHubOwnersClient;
@@ -70,7 +71,6 @@ import com.azure.resourcemanager.security.fluent.PricingsClient;
 import com.azure.resourcemanager.security.fluent.RegulatoryComplianceAssessmentsClient;
 import com.azure.resourcemanager.security.fluent.RegulatoryComplianceControlsClient;
 import com.azure.resourcemanager.security.fluent.RegulatoryComplianceStandardsClient;
-import com.azure.resourcemanager.security.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.security.fluent.SecureScoreControlDefinitionsClient;
 import com.azure.resourcemanager.security.fluent.SecureScoreControlsClient;
 import com.azure.resourcemanager.security.fluent.SecureScoresClient;
@@ -291,20 +291,6 @@ public final class SecurityCenterImpl implements SecurityCenter {
     }
 
     /**
-     * The AutomationsClient object to access its operations.
-     */
-    private final AutomationsClient automations;
-
-    /**
-     * Gets the AutomationsClient object to access its operations.
-     * 
-     * @return the AutomationsClient object.
-     */
-    public AutomationsClient getAutomations() {
-        return this.automations;
-    }
-
-    /**
      * The RegulatoryComplianceStandardsClient object to access its operations.
      */
     private final RegulatoryComplianceStandardsClient regulatoryComplianceStandards;
@@ -372,20 +358,6 @@ public final class SecurityCenterImpl implements SecurityCenter {
      */
     public ConnectorsClient getConnectors() {
         return this.connectors;
-    }
-
-    /**
-     * The SecurityContactsClient object to access its operations.
-     */
-    private final SecurityContactsClient securityContacts;
-
-    /**
-     * Gets the SecurityContactsClient object to access its operations.
-     * 
-     * @return the SecurityContactsClient object.
-     */
-    public SecurityContactsClient getSecurityContacts() {
-        return this.securityContacts;
     }
 
     /**
@@ -599,20 +571,6 @@ public final class SecurityCenterImpl implements SecurityCenter {
     }
 
     /**
-     * The ResourceProvidersClient object to access its operations.
-     */
-    private final ResourceProvidersClient resourceProviders;
-
-    /**
-     * Gets the ResourceProvidersClient object to access its operations.
-     * 
-     * @return the ResourceProvidersClient object.
-     */
-    public ResourceProvidersClient getResourceProviders() {
-        return this.resourceProviders;
-    }
-
-    /**
      * The SensitivitySettingsClient object to access its operations.
      */
     private final SensitivitySettingsClient sensitivitySettings;
@@ -641,143 +599,31 @@ public final class SecurityCenterImpl implements SecurityCenter {
     }
 
     /**
-     * The AzureDevOpsOrgsClient object to access its operations.
+     * The AutomationsClient object to access its operations.
      */
-    private final AzureDevOpsOrgsClient azureDevOpsOrgs;
+    private final AutomationsClient automations;
 
     /**
-     * Gets the AzureDevOpsOrgsClient object to access its operations.
+     * Gets the AutomationsClient object to access its operations.
      * 
-     * @return the AzureDevOpsOrgsClient object.
+     * @return the AutomationsClient object.
      */
-    public AzureDevOpsOrgsClient getAzureDevOpsOrgs() {
-        return this.azureDevOpsOrgs;
+    public AutomationsClient getAutomations() {
+        return this.automations;
     }
 
     /**
-     * The AzureDevOpsProjectsClient object to access its operations.
+     * The SecurityContactsClient object to access its operations.
      */
-    private final AzureDevOpsProjectsClient azureDevOpsProjects;
+    private final SecurityContactsClient securityContacts;
 
     /**
-     * Gets the AzureDevOpsProjectsClient object to access its operations.
+     * Gets the SecurityContactsClient object to access its operations.
      * 
-     * @return the AzureDevOpsProjectsClient object.
+     * @return the SecurityContactsClient object.
      */
-    public AzureDevOpsProjectsClient getAzureDevOpsProjects() {
-        return this.azureDevOpsProjects;
-    }
-
-    /**
-     * The AzureDevOpsReposClient object to access its operations.
-     */
-    private final AzureDevOpsReposClient azureDevOpsRepos;
-
-    /**
-     * Gets the AzureDevOpsReposClient object to access its operations.
-     * 
-     * @return the AzureDevOpsReposClient object.
-     */
-    public AzureDevOpsReposClient getAzureDevOpsRepos() {
-        return this.azureDevOpsRepos;
-    }
-
-    /**
-     * The DevOpsConfigurationsClient object to access its operations.
-     */
-    private final DevOpsConfigurationsClient devOpsConfigurations;
-
-    /**
-     * Gets the DevOpsConfigurationsClient object to access its operations.
-     * 
-     * @return the DevOpsConfigurationsClient object.
-     */
-    public DevOpsConfigurationsClient getDevOpsConfigurations() {
-        return this.devOpsConfigurations;
-    }
-
-    /**
-     * The GitHubOwnersClient object to access its operations.
-     */
-    private final GitHubOwnersClient gitHubOwners;
-
-    /**
-     * Gets the GitHubOwnersClient object to access its operations.
-     * 
-     * @return the GitHubOwnersClient object.
-     */
-    public GitHubOwnersClient getGitHubOwners() {
-        return this.gitHubOwners;
-    }
-
-    /**
-     * The GitHubReposClient object to access its operations.
-     */
-    private final GitHubReposClient gitHubRepos;
-
-    /**
-     * Gets the GitHubReposClient object to access its operations.
-     * 
-     * @return the GitHubReposClient object.
-     */
-    public GitHubReposClient getGitHubRepos() {
-        return this.gitHubRepos;
-    }
-
-    /**
-     * The GitLabGroupsClient object to access its operations.
-     */
-    private final GitLabGroupsClient gitLabGroups;
-
-    /**
-     * Gets the GitLabGroupsClient object to access its operations.
-     * 
-     * @return the GitLabGroupsClient object.
-     */
-    public GitLabGroupsClient getGitLabGroups() {
-        return this.gitLabGroups;
-    }
-
-    /**
-     * The GitLabSubgroupsClient object to access its operations.
-     */
-    private final GitLabSubgroupsClient gitLabSubgroups;
-
-    /**
-     * Gets the GitLabSubgroupsClient object to access its operations.
-     * 
-     * @return the GitLabSubgroupsClient object.
-     */
-    public GitLabSubgroupsClient getGitLabSubgroups() {
-        return this.gitLabSubgroups;
-    }
-
-    /**
-     * The GitLabProjectsClient object to access its operations.
-     */
-    private final GitLabProjectsClient gitLabProjects;
-
-    /**
-     * Gets the GitLabProjectsClient object to access its operations.
-     * 
-     * @return the GitLabProjectsClient object.
-     */
-    public GitLabProjectsClient getGitLabProjects() {
-        return this.gitLabProjects;
-    }
-
-    /**
-     * The DevOpsOperationResultsClient object to access its operations.
-     */
-    private final DevOpsOperationResultsClient devOpsOperationResults;
-
-    /**
-     * Gets the DevOpsOperationResultsClient object to access its operations.
-     * 
-     * @return the DevOpsOperationResultsClient object.
-     */
-    public DevOpsOperationResultsClient getDevOpsOperationResults() {
-        return this.devOpsOperationResults;
+    public SecurityContactsClient getSecurityContacts() {
+        return this.securityContacts;
     }
 
     /**
@@ -1173,6 +1019,146 @@ public final class SecurityCenterImpl implements SecurityCenter {
     }
 
     /**
+     * The AzureDevOpsOrgsClient object to access its operations.
+     */
+    private final AzureDevOpsOrgsClient azureDevOpsOrgs;
+
+    /**
+     * Gets the AzureDevOpsOrgsClient object to access its operations.
+     * 
+     * @return the AzureDevOpsOrgsClient object.
+     */
+    public AzureDevOpsOrgsClient getAzureDevOpsOrgs() {
+        return this.azureDevOpsOrgs;
+    }
+
+    /**
+     * The AzureDevOpsProjectsClient object to access its operations.
+     */
+    private final AzureDevOpsProjectsClient azureDevOpsProjects;
+
+    /**
+     * Gets the AzureDevOpsProjectsClient object to access its operations.
+     * 
+     * @return the AzureDevOpsProjectsClient object.
+     */
+    public AzureDevOpsProjectsClient getAzureDevOpsProjects() {
+        return this.azureDevOpsProjects;
+    }
+
+    /**
+     * The AzureDevOpsReposClient object to access its operations.
+     */
+    private final AzureDevOpsReposClient azureDevOpsRepos;
+
+    /**
+     * Gets the AzureDevOpsReposClient object to access its operations.
+     * 
+     * @return the AzureDevOpsReposClient object.
+     */
+    public AzureDevOpsReposClient getAzureDevOpsRepos() {
+        return this.azureDevOpsRepos;
+    }
+
+    /**
+     * The DevOpsConfigurationsClient object to access its operations.
+     */
+    private final DevOpsConfigurationsClient devOpsConfigurations;
+
+    /**
+     * Gets the DevOpsConfigurationsClient object to access its operations.
+     * 
+     * @return the DevOpsConfigurationsClient object.
+     */
+    public DevOpsConfigurationsClient getDevOpsConfigurations() {
+        return this.devOpsConfigurations;
+    }
+
+    /**
+     * The GitHubOwnersClient object to access its operations.
+     */
+    private final GitHubOwnersClient gitHubOwners;
+
+    /**
+     * Gets the GitHubOwnersClient object to access its operations.
+     * 
+     * @return the GitHubOwnersClient object.
+     */
+    public GitHubOwnersClient getGitHubOwners() {
+        return this.gitHubOwners;
+    }
+
+    /**
+     * The GitHubReposClient object to access its operations.
+     */
+    private final GitHubReposClient gitHubRepos;
+
+    /**
+     * Gets the GitHubReposClient object to access its operations.
+     * 
+     * @return the GitHubReposClient object.
+     */
+    public GitHubReposClient getGitHubRepos() {
+        return this.gitHubRepos;
+    }
+
+    /**
+     * The GitLabGroupsClient object to access its operations.
+     */
+    private final GitLabGroupsClient gitLabGroups;
+
+    /**
+     * Gets the GitLabGroupsClient object to access its operations.
+     * 
+     * @return the GitLabGroupsClient object.
+     */
+    public GitLabGroupsClient getGitLabGroups() {
+        return this.gitLabGroups;
+    }
+
+    /**
+     * The GitLabSubgroupsClient object to access its operations.
+     */
+    private final GitLabSubgroupsClient gitLabSubgroups;
+
+    /**
+     * Gets the GitLabSubgroupsClient object to access its operations.
+     * 
+     * @return the GitLabSubgroupsClient object.
+     */
+    public GitLabSubgroupsClient getGitLabSubgroups() {
+        return this.gitLabSubgroups;
+    }
+
+    /**
+     * The GitLabProjectsClient object to access its operations.
+     */
+    private final GitLabProjectsClient gitLabProjects;
+
+    /**
+     * Gets the GitLabProjectsClient object to access its operations.
+     * 
+     * @return the GitLabProjectsClient object.
+     */
+    public GitLabProjectsClient getGitLabProjects() {
+        return this.gitLabProjects;
+    }
+
+    /**
+     * The DevOpsOperationResultsClient object to access its operations.
+     */
+    private final DevOpsOperationResultsClient devOpsOperationResults;
+
+    /**
+     * Gets the DevOpsOperationResultsClient object to access its operations.
+     * 
+     * @return the DevOpsOperationResultsClient object.
+     */
+    public DevOpsOperationResultsClient getDevOpsOperationResults() {
+        return this.devOpsOperationResults;
+    }
+
+    /**
      * Initializes an instance of SecurityCenter client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -1197,13 +1183,11 @@ public final class SecurityCenterImpl implements SecurityCenter {
         this.informationProtectionPolicies = new InformationProtectionPoliciesClientImpl(this);
         this.workspaceSettings = new WorkspaceSettingsClientImpl(this);
         this.alertsSuppressionRules = new AlertsSuppressionRulesClientImpl(this);
-        this.automations = new AutomationsClientImpl(this);
         this.regulatoryComplianceStandards = new RegulatoryComplianceStandardsClientImpl(this);
         this.regulatoryComplianceControls = new RegulatoryComplianceControlsClientImpl(this);
         this.regulatoryComplianceAssessments = new RegulatoryComplianceAssessmentsClientImpl(this);
         this.subAssessments = new SubAssessmentsClientImpl(this);
         this.connectors = new ConnectorsClientImpl(this);
-        this.securityContacts = new SecurityContactsClientImpl(this);
         this.softwareInventories = new SoftwareInventoriesClientImpl(this);
         this.customAssessmentAutomations = new CustomAssessmentAutomationsClientImpl(this);
         this.customEntityStoreAssignments = new CustomEntityStoreAssignmentsClientImpl(this);
@@ -1219,19 +1203,10 @@ public final class SecurityCenterImpl implements SecurityCenter {
         this.sqlVulnerabilityAssessmentBaselineRules = new SqlVulnerabilityAssessmentBaselineRulesClientImpl(this);
         this.sqlVulnerabilityAssessmentScans = new SqlVulnerabilityAssessmentScansClientImpl(this);
         this.sqlVulnerabilityAssessmentScanResults = new SqlVulnerabilityAssessmentScanResultsClientImpl(this);
-        this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.sensitivitySettings = new SensitivitySettingsClientImpl(this);
         this.healthReports = new HealthReportsClientImpl(this);
-        this.azureDevOpsOrgs = new AzureDevOpsOrgsClientImpl(this);
-        this.azureDevOpsProjects = new AzureDevOpsProjectsClientImpl(this);
-        this.azureDevOpsRepos = new AzureDevOpsReposClientImpl(this);
-        this.devOpsConfigurations = new DevOpsConfigurationsClientImpl(this);
-        this.gitHubOwners = new GitHubOwnersClientImpl(this);
-        this.gitHubRepos = new GitHubReposClientImpl(this);
-        this.gitLabGroups = new GitLabGroupsClientImpl(this);
-        this.gitLabSubgroups = new GitLabSubgroupsClientImpl(this);
-        this.gitLabProjects = new GitLabProjectsClientImpl(this);
-        this.devOpsOperationResults = new DevOpsOperationResultsClientImpl(this);
+        this.automations = new AutomationsClientImpl(this);
+        this.securityContacts = new SecurityContactsClientImpl(this);
         this.securityConnectors = new SecurityConnectorsClientImpl(this);
         this.complianceResults = new ComplianceResultsClientImpl(this);
         this.advancedThreatProtections = new AdvancedThreatProtectionsClientImpl(this);
@@ -1262,6 +1237,16 @@ public final class SecurityCenterImpl implements SecurityCenter {
         this.serverVulnerabilityAssessmentsSettings = new ServerVulnerabilityAssessmentsSettingsClientImpl(this);
         this.apiCollections = new ApiCollectionsClientImpl(this);
         this.pricings = new PricingsClientImpl(this);
+        this.azureDevOpsOrgs = new AzureDevOpsOrgsClientImpl(this);
+        this.azureDevOpsProjects = new AzureDevOpsProjectsClientImpl(this);
+        this.azureDevOpsRepos = new AzureDevOpsReposClientImpl(this);
+        this.devOpsConfigurations = new DevOpsConfigurationsClientImpl(this);
+        this.gitHubOwners = new GitHubOwnersClientImpl(this);
+        this.gitHubRepos = new GitHubReposClientImpl(this);
+        this.gitLabGroups = new GitLabGroupsClientImpl(this);
+        this.gitLabSubgroups = new GitLabSubgroupsClientImpl(this);
+        this.gitLabProjects = new GitLabProjectsClientImpl(this);
+        this.devOpsOperationResults = new DevOpsOperationResultsClientImpl(this);
     }
 
     /**
@@ -1324,8 +1309,8 @@ public final class SecurityCenterImpl implements SecurityCenter {
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -1366,7 +1351,7 @@ public final class SecurityCenterImpl implements SecurityCenter {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

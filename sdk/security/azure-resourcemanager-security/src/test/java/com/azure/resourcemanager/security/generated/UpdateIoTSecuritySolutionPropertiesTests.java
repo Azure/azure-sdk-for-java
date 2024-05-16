@@ -17,33 +17,30 @@ public final class UpdateIoTSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateIoTSecuritySolutionProperties model = BinaryData.fromString(
-            "{\"userDefinedResources\":{\"query\":\"exlfciatxtjrrl\",\"querySubscriptions\":[\"dskjhhxdlaj\",\"oxcxscvslx\",\"hu\",\"vkrmukmyjmkx\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_Baseline\",\"name\":\"lojfkqidnqto\",\"status\":\"Enabled\"},{\"recommendationType\":\"IoT_EdgeLoggingOptions\",\"name\":\"qxcsqhtkbtnqlrn\",\"status\":\"Disabled\"}]}")
+            "{\"userDefinedResources\":{\"query\":\"qqagwwr\",\"querySubscriptions\":[\"omzisglrrcz\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PermissiveFirewallPolicy\",\"name\":\"ltn\",\"status\":\"Disabled\"}]}")
             .toObject(UpdateIoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("exlfciatxtjrrl", model.userDefinedResources().query());
-        Assertions.assertEquals("dskjhhxdlaj", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_BASELINE,
+        Assertions.assertEquals("qqagwwr", model.userDefinedResources().query());
+        Assertions.assertEquals("omzisglrrcz", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
             model.recommendationsConfiguration().get(0).recommendationType());
-        Assertions.assertEquals(RecommendationConfigStatus.ENABLED,
+        Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateIoTSecuritySolutionProperties model = new UpdateIoTSecuritySolutionProperties()
-            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("exlfciatxtjrrl")
-                .withQuerySubscriptions(Arrays.asList("dskjhhxdlaj", "oxcxscvslx", "hu", "vkrmukmyjmkx")))
-            .withRecommendationsConfiguration(Arrays.asList(
-                new RecommendationConfigurationProperties().withRecommendationType(RecommendationType.IO_T_BASELINE)
-                    .withStatus(RecommendationConfigStatus.ENABLED),
-                new RecommendationConfigurationProperties()
-                    .withRecommendationType(RecommendationType.IO_T_EDGE_LOGGING_OPTIONS)
-                    .withStatus(RecommendationConfigStatus.DISABLED)));
+            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("qqagwwr")
+                .withQuerySubscriptions(Arrays.asList("omzisglrrcz")))
+            .withRecommendationsConfiguration(Arrays.asList(new RecommendationConfigurationProperties()
+                .withRecommendationType(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY)
+                .withStatus(RecommendationConfigStatus.DISABLED)));
         model = BinaryData.fromObject(model).toObject(UpdateIoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("exlfciatxtjrrl", model.userDefinedResources().query());
-        Assertions.assertEquals("dskjhhxdlaj", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_BASELINE,
+        Assertions.assertEquals("qqagwwr", model.userDefinedResources().query());
+        Assertions.assertEquals("omzisglrrcz", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
             model.recommendationsConfiguration().get(0).recommendationType());
-        Assertions.assertEquals(RecommendationConfigStatus.ENABLED,
+        Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());
     }
 }

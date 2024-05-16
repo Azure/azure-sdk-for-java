@@ -9,8 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SecuritySolutionsReferenceDataListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/
-     * SecuritySolutionsReferenceData/GetSecuritySolutionsReferenceDataSubscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/SecuritySolutionsReferenceData/GetSecuritySolutionsReferenceDataSubscription_example.json
      */
     /**
      * Sample code: Get security solutions.

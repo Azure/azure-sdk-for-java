@@ -12,20 +12,21 @@ public final class AutomationActionEventHubTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationActionEventHub model = BinaryData.fromString(
-            "{\"actionType\":\"EventHub\",\"eventHubResourceId\":\"slz\",\"sasPolicyName\":\"cdsvmwbitek\",\"connectionString\":\"fobvfiybxqich\",\"isTrustedServiceEnabled\":true}")
+            "{\"actionType\":\"EventHub\",\"eventHubResourceId\":\"xfabl\",\"sasPolicyName\":\"pwbmwhria\",\"connectionString\":\"wrycgnwpl\",\"isTrustedServiceEnabled\":false}")
             .toObject(AutomationActionEventHub.class);
-        Assertions.assertEquals("slz", model.eventHubResourceId());
-        Assertions.assertEquals("fobvfiybxqich", model.connectionString());
-        Assertions.assertEquals(true, model.isTrustedServiceEnabled());
+        Assertions.assertEquals("xfabl", model.eventHubResourceId());
+        Assertions.assertEquals("wrycgnwpl", model.connectionString());
+        Assertions.assertEquals(false, model.isTrustedServiceEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationActionEventHub model = new AutomationActionEventHub().withEventHubResourceId("slz")
-            .withConnectionString("fobvfiybxqich").withIsTrustedServiceEnabled(true);
+        AutomationActionEventHub model = new AutomationActionEventHub().withEventHubResourceId("xfabl")
+            .withConnectionString("wrycgnwpl")
+            .withIsTrustedServiceEnabled(false);
         model = BinaryData.fromObject(model).toObject(AutomationActionEventHub.class);
-        Assertions.assertEquals("slz", model.eventHubResourceId());
-        Assertions.assertEquals("fobvfiybxqich", model.connectionString());
-        Assertions.assertEquals(true, model.isTrustedServiceEnabled());
+        Assertions.assertEquals("xfabl", model.eventHubResourceId());
+        Assertions.assertEquals("wrycgnwpl", model.connectionString());
+        Assertions.assertEquals(false, model.isTrustedServiceEnabled());
     }
 }

@@ -19,37 +19,40 @@ public final class SecurityConnectorsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityConnectorsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"qthwmgnmbscbb\",\"hierarchyIdentifierTrialEndDate\":\"2021-04-02T07:57:24Z\",\"environmentName\":\"GitLab\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"d\"},{\"offeringType\":\"CloudOffering\",\"description\":\"pedbwdpyqy\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"xubmdnafcbqw\",\"tags\":{\"hdbvqvwzkjop\":\"jelaqacigele\"},\"id\":\"beonrlkwzdq\",\"name\":\"bxcea\",\"type\":\"xcptsoqfyiaseqc\"},{\"properties\":{\"hierarchyIdentifier\":\"tzrazisgyk\",\"hierarchyIdentifierTrialEndDate\":\"2021-05-23T19:22:14Z\",\"environmentName\":\"GCP\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"wzohm\"},{\"offeringType\":\"CloudOffering\",\"description\":\"xxbsojklinhmd\"},{\"offeringType\":\"CloudOffering\",\"description\":\"ysprq\"},{\"offeringType\":\"CloudOffering\",\"description\":\"nzxojpslsvjgpli\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"iqwoyxqvapcoh\",\"tags\":{\"dzbenri\":\"cqpqojxcxzrzdc\",\"wflj\":\"cawetzqddt\",\"mtuatmzwcjjncqtj\":\"zn\",\"grebwggahttzlsw\":\"mizvgbgatzuuvbx\"},\"id\":\"ajqfutlx\",\"name\":\"oqza\",\"type\":\"unwqr\"},{\"properties\":{\"hierarchyIdentifier\":\"gqhaohcmbuocn\",\"hierarchyIdentifierTrialEndDate\":\"2021-05-14T07:13:07Z\",\"environmentName\":\"GitLab\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"ryxameblydyvkfkm\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"cxneh\",\"tags\":{\"fpyapucygvoavyu\":\"tod\",\"vpaseksgbu\":\"ssxlghieegjlg\"},\"id\":\"antuygdhgaqipirp\",\"name\":\"wrq\",\"type\":\"fulopmjnlexwhcb\"}],\"nextLink\":\"ibkeph\"}")
+            "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"ccxjm\",\"hierarchyIdentifierTrialEndDate\":\"2021-06-04T20:01:35Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"cypuuwwlt\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"qjctzenkeif\",\"tags\":{\"lyhb\":\"mkdasv\",\"chxgs\":\"cu\",\"vizbfhfo\":\"boldforobwj\"},\"id\":\"vacqpbtuodxesz\",\"name\":\"bbelawumuaslzk\",\"type\":\"rrwoycqucwyhahn\"},{\"properties\":{\"hierarchyIdentifier\":\"kywuhpsvfuu\",\"hierarchyIdentifierTrialEndDate\":\"2021-01-22T12:10:56Z\",\"environmentName\":\"AWS\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"wlalniexzsrzp\"},{\"offeringType\":\"CloudOffering\",\"description\":\"pqtybb\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"pgdakchzyvli\",\"tags\":{\"bn\":\"rkcxkj\",\"swqrntvlwijp\":\"mysu\"},\"id\":\"ttexoqqpwcyyufmh\",\"name\":\"uncuw\",\"type\":\"qspkcdqzhlctd\"},{\"properties\":{\"hierarchyIdentifier\":\"ndy\",\"hierarchyIdentifierTrialEndDate\":\"2021-08-29T15:16:01Z\",\"environmentName\":\"AWS\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"jjrcgegydc\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"oxjumvqqo\",\"tags\":{\"aiouaubrjt\":\"r\",\"fuojrngif\":\"oq\",\"dfqwmkyoq\":\"rzpasccbiuimzdly\"},\"id\":\"fdvruz\",\"name\":\"lzo\",\"type\":\"hpc\"}],\"nextLink\":\"nmdxotngfd\"}")
             .toObject(SecurityConnectorsList.class);
-        Assertions.assertEquals("xubmdnafcbqw", model.value().get(0).location());
-        Assertions.assertEquals("jelaqacigele", model.value().get(0).tags().get("hdbvqvwzkjop"));
-        Assertions.assertEquals("qthwmgnmbscbb", model.value().get(0).hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GIT_LAB, model.value().get(0).environmentName());
+        Assertions.assertEquals("qjctzenkeif", model.value().get(0).location());
+        Assertions.assertEquals("mkdasv", model.value().get(0).tags().get("lyhb"));
+        Assertions.assertEquals("ccxjm", model.value().get(0).hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GITHUB, model.value().get(0).environmentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecurityConnectorsList model = new SecurityConnectorsList().withValue(Arrays.asList(
-            new SecurityConnectorInner().withLocation("xubmdnafcbqw").withTags(mapOf("hdbvqvwzkjop", "jelaqacigele"))
-                .withHierarchyIdentifier("qthwmgnmbscbb").withEnvironmentName(CloudName.GIT_LAB)
+            new SecurityConnectorInner().withLocation("qjctzenkeif")
+                .withTags(mapOf("lyhb", "mkdasv", "chxgs", "cu", "vizbfhfo", "boldforobwj"))
+                .withHierarchyIdentifier("ccxjm")
+                .withEnvironmentName(CloudName.GITHUB)
+                .withOfferings(Arrays.asList(new CloudOffering()))
+                .withEnvironmentData(new EnvironmentData()),
+            new SecurityConnectorInner().withLocation("pgdakchzyvli")
+                .withTags(mapOf("bn", "rkcxkj", "swqrntvlwijp", "mysu"))
+                .withHierarchyIdentifier("kywuhpsvfuu")
+                .withEnvironmentName(CloudName.AWS)
                 .withOfferings(Arrays.asList(new CloudOffering(), new CloudOffering()))
                 .withEnvironmentData(new EnvironmentData()),
-            new SecurityConnectorInner().withLocation("iqwoyxqvapcoh")
-                .withTags(mapOf("dzbenri", "cqpqojxcxzrzdc", "wflj", "cawetzqddt", "mtuatmzwcjjncqtj", "zn",
-                    "grebwggahttzlsw", "mizvgbgatzuuvbx"))
-                .withHierarchyIdentifier("tzrazisgyk").withEnvironmentName(CloudName.GCP)
-                .withOfferings(
-                    Arrays.asList(new CloudOffering(), new CloudOffering(), new CloudOffering(), new CloudOffering()))
-                .withEnvironmentData(new EnvironmentData()),
-            new SecurityConnectorInner().withLocation("cxneh")
-                .withTags(mapOf("fpyapucygvoavyu", "tod", "vpaseksgbu", "ssxlghieegjlg"))
-                .withHierarchyIdentifier("gqhaohcmbuocn").withEnvironmentName(CloudName.GIT_LAB)
-                .withOfferings(Arrays.asList(new CloudOffering())).withEnvironmentData(new EnvironmentData())));
+            new SecurityConnectorInner().withLocation("oxjumvqqo")
+                .withTags(mapOf("aiouaubrjt", "r", "fuojrngif", "oq", "dfqwmkyoq", "rzpasccbiuimzdly"))
+                .withHierarchyIdentifier("ndy")
+                .withEnvironmentName(CloudName.AWS)
+                .withOfferings(Arrays.asList(new CloudOffering()))
+                .withEnvironmentData(new EnvironmentData())));
         model = BinaryData.fromObject(model).toObject(SecurityConnectorsList.class);
-        Assertions.assertEquals("xubmdnafcbqw", model.value().get(0).location());
-        Assertions.assertEquals("jelaqacigele", model.value().get(0).tags().get("hdbvqvwzkjop"));
-        Assertions.assertEquals("qthwmgnmbscbb", model.value().get(0).hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GIT_LAB, model.value().get(0).environmentName());
+        Assertions.assertEquals("qjctzenkeif", model.value().get(0).location());
+        Assertions.assertEquals("mkdasv", model.value().get(0).tags().get("lyhb"));
+        Assertions.assertEquals("ccxjm", model.value().get(0).hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GITHUB, model.value().get(0).environmentName());
     }
 
     // Use "Map.of" if available

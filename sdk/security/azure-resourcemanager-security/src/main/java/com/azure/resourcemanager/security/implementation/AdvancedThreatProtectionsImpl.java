@@ -10,8 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.AdvancedThreatProtectionsClient;
 import com.azure.resourcemanager.security.fluent.models.AdvancedThreatProtectionSettingInner;
-import com.azure.resourcemanager.security.models.AdvancedThreatProtectionSetting;
 import com.azure.resourcemanager.security.models.AdvancedThreatProtections;
+import com.azure.resourcemanager.security.models.AdvancedThreatProtectionSetting;
 
 public final class AdvancedThreatProtectionsImpl implements AdvancedThreatProtections {
     private static final ClientLogger LOGGER = new ClientLogger(AdvancedThreatProtectionsImpl.class);

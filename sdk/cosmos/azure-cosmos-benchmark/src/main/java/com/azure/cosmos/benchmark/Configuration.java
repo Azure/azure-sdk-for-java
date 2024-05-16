@@ -134,6 +134,9 @@ public class Configuration {
     @Parameter(names = "-aggressiveWarmupDuration", description = "The duration for which proactive connections are aggressively established", converter = DurationConverter.class)
     private Duration aggressiveWarmupDuration = Duration.ZERO;
 
+    @Parameter(names = "-isRegionScopedSessionContainerEnabled", description = "A flag to denote whether region scoped session container is enabled")
+    private String isRegionScopedSessionContainerEnabled = String.valueOf(false);
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -630,6 +633,10 @@ public class Configuration {
 
     public String getResultUploadContainer() {
         return Strings.emptyToNull(resultUploadContainer);
+    }
+
+    public boolean isRegionScopedSessionContainerEnabled() {
+        return Boolean.parseBoolean(isRegionScopedSessionContainerEnabled);
     }
 
     public void tryGetValuesFromSystem() {

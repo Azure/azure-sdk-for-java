@@ -6,50 +6,32 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.AllowedConnectionsResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AllowedConnectionsListByHomeRegionMockTests {
     @Test
     public void testListByHomeRegion() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-05-18T16:33:04Z\",\"connectableResources\":[{\"id\":\"bfb\",\"inboundConnectedResources\":[{}],\"outboundConnectedResources\":[{},{},{}]},{\"id\":\"zfbvexrvnh\",\"inboundConnectedResources\":[{},{},{}],\"outboundConnectedResources\":[{},{},{},{}]}]},\"location\":\"pvjtshlw\",\"id\":\"rsksdzmhwtsypp\",\"name\":\"fbwoetxi\",\"type\":\"rfwxhf\"}]}";
+            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-07-08T18:12:32Z\",\"connectableResources\":[{\"id\":\"w\",\"inboundConnectedResources\":[{},{}],\"outboundConnectedResources\":[{},{},{}]},{\"id\":\"lhfxmr\",\"inboundConnectedResources\":[{},{},{},{}],\"outboundConnectedResources\":[{}]},{\"id\":\"cjywkdy\",\"inboundConnectedResources\":[{},{},{},{}],\"outboundConnectedResources\":[{},{},{}]},{\"id\":\"uafanefictp\",\"inboundConnectedResources\":[{}],\"outboundConnectedResources\":[{}]}]},\"location\":\"sjbzvxpz\",\"id\":\"dqzu\",\"name\":\"fgti\",\"type\":\"czhfjdcc\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AllowedConnectionsResource> response
-            = manager.allowedConnections().listByHomeRegion("qwojdz", com.azure.core.util.Context.NONE);
+            = manager.allowedConnections().listByHomeRegion("evzp", com.azure.core.util.Context.NONE);
 
     }
 }

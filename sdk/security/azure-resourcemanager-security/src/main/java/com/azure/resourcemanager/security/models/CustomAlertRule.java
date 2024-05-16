@@ -7,23 +7,27 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A custom alert rule.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "ruleType",
-    defaultImpl = CustomAlertRule.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "ruleType", defaultImpl = CustomAlertRule.class, visible = true)
 @JsonTypeName("CustomAlertRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ThresholdCustomAlertRule", value = ThresholdCustomAlertRule.class),
     @JsonSubTypes.Type(name = "ListCustomAlertRule", value = ListCustomAlertRule.class) })
 @Fluent
 public class CustomAlertRule {
+    /*
+     * The type of the custom alert rule.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private String ruleType;
+
     /*
      * The display name of the custom alert.
      */
@@ -46,6 +50,16 @@ public class CustomAlertRule {
      * Creates an instance of CustomAlertRule class.
      */
     public CustomAlertRule() {
+        this.ruleType = "CustomAlertRule";
+    }
+
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    public String ruleType() {
+        return this.ruleType;
     }
 
     /**

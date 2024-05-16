@@ -130,12 +130,18 @@ class ChangeFeedQueryImpl<T> {
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, this.client.getConsistencyLevel().toString());
         }
 
-        return RxDocumentServiceRequest.create(clientContext,
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(clientContext,
             OperationType.ReadFeed,
             resourceType,
             documentsLink,
             headers,
             options);
+
+        if (request.requestContext != null) {
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
+        }
+
+        return request;
     }
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {

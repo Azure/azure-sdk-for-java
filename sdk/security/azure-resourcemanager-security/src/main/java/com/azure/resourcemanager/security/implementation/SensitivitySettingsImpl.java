@@ -10,8 +10,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.SensitivitySettingsClient;
 import com.azure.resourcemanager.security.fluent.models.GetSensitivitySettingsListResponseInner;
+import com.azure.resourcemanager.security.fluent.models.GetSensitivitySettingsResponseInner;
 import com.azure.resourcemanager.security.models.GetSensitivitySettingsListResponse;
+import com.azure.resourcemanager.security.models.GetSensitivitySettingsResponse;
 import com.azure.resourcemanager.security.models.SensitivitySettings;
+import com.azure.resourcemanager.security.models.UpdateSensitivitySettingsRequest;
 
 public final class SensitivitySettingsImpl implements SensitivitySettings {
     private static final ClientLogger LOGGER = new ClientLogger(SensitivitySettingsImpl.class);
@@ -24,6 +27,46 @@ public final class SensitivitySettingsImpl implements SensitivitySettings {
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<GetSensitivitySettingsResponse>
+        createOrUpdateWithResponse(UpdateSensitivitySettingsRequest sensitivitySettings, Context context) {
+        Response<GetSensitivitySettingsResponseInner> inner
+            = this.serviceClient().createOrUpdateWithResponse(sensitivitySettings, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GetSensitivitySettingsResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public GetSensitivitySettingsResponse createOrUpdate(UpdateSensitivitySettingsRequest sensitivitySettings) {
+        GetSensitivitySettingsResponseInner inner = this.serviceClient().createOrUpdate(sensitivitySettings);
+        if (inner != null) {
+            return new GetSensitivitySettingsResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<GetSensitivitySettingsResponse> getWithResponse(Context context) {
+        Response<GetSensitivitySettingsResponseInner> inner = this.serviceClient().getWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GetSensitivitySettingsResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public GetSensitivitySettingsResponse get() {
+        GetSensitivitySettingsResponseInner inner = this.serviceClient().get();
+        if (inner != null) {
+            return new GetSensitivitySettingsResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<GetSensitivitySettingsListResponse> listWithResponse(Context context) {

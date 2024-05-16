@@ -6,6 +6,7 @@ package com.azure.resourcemanager.security.implementation;
 
 import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner;
 import com.azure.resourcemanager.security.models.ExternalSecuritySolution;
+import com.azure.resourcemanager.security.models.ExternalSecuritySolutionKind;
 
 public final class ExternalSecuritySolutionImpl implements ExternalSecuritySolution {
     private ExternalSecuritySolutionInner innerObject;
@@ -28,6 +29,10 @@ public final class ExternalSecuritySolutionImpl implements ExternalSecuritySolut
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public ExternalSecuritySolutionKind kind() {
+        return this.innerModel().kind();
     }
 
     public String location() {

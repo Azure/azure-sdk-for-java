@@ -1,14 +1,14 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
+## 2.9.0-beta.1 (2024-05-15)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for providing a custom login URI to get access tokens from via the system property `azure.login.uri`.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `conscrypt-openjdk-uber` from `2.2.1` to version `2.5.2`.
 
 ## 2.8.1 (2023-12-04)
 

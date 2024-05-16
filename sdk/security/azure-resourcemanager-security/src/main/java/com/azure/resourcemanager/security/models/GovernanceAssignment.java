@@ -34,7 +34,7 @@ public interface GovernanceAssignment {
     String type();
 
     /**
-     * Gets the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see example.
+     * Gets the owner property: The Owner for the governance assignment - e.g. user&#064;contoso.com - see example.
      * 
      * @return the owner value.
      */
@@ -146,10 +146,10 @@ public interface GovernanceAssignment {
          */
         interface WithOwner {
             /**
-             * Specifies the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see
+             * Specifies the owner property: The Owner for the governance assignment - e.g. user&#064;contoso.com - see
              * example.
              * 
-             * @param owner The Owner for the governance assignment - e.g. user@contoso.com - see example.
+             * @param owner The Owner for the governance assignment - e.g. user&#064;contoso.com - see example.
              * @return the next definition stage.
              */
             WithCreate withOwner(String owner);
@@ -267,10 +267,10 @@ public interface GovernanceAssignment {
          */
         interface WithOwner {
             /**
-             * Specifies the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see
+             * Specifies the owner property: The Owner for the governance assignment - e.g. user&#064;contoso.com - see
              * example.
              * 
-             * @param owner The Owner for the governance assignment - e.g. user@contoso.com - see example.
+             * @param owner The Owner for the governance assignment - e.g. user&#064;contoso.com - see example.
              * @return the next definition stage.
              */
             Update withOwner(String owner);
