@@ -79,7 +79,7 @@ public final class CallConnectionProperties {
         this.targetParticipants = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUrl = callConnectionPropertiesInternal.getCallbackUri();
-        this.mediaStreamingSubscription = null; //#TODO (mediaStreamingSubscription) callConnectionPropertiesInternal.getMediaStreamingSubscription();
+        this.mediaStreamingSubscription = null; //#TODO (mediaStreamingSubscription)  callConnectionPropertiesInternal.getMediaStreamingSubscription();
         this.transcriptionSubscription = null; // #TODO (transcriptionSubscription) callConnectionPropertiesInternal.getTranscriptionSubscription();
         this.answeredBy = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
         this.correlationId = callConnectionPropertiesInternal.getCorrelationId();
