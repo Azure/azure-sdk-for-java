@@ -11,7 +11,6 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobUrlParts;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
