@@ -53,9 +53,7 @@ public final class DatabaseAccountUpdateProperties {
     private Boolean isVirtualNetworkFilterEnabled;
 
     /*
-     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an
-     * outage. Automatic failover will result in a new write region for the account and is chosen based on the failover
-     * priorities configured for the account.
+     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an outage. Automatic failover will result in a new write region for the account and is chosen based on the failover priorities configured for the account.
      */
     @JsonProperty(value = "enableAutomaticFailover")
     private Boolean enableAutomaticFailover;
@@ -103,8 +101,7 @@ public final class DatabaseAccountUpdateProperties {
     private String keyVaultKeyUri;
 
     /*
-     * The default identity for accessing key vault used in features like customer managed keys. The default identity
-     * needs to be explicitly set by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity" and more.
+     * The default identity for accessing key vault used in features like customer managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity" and more.
      */
     @JsonProperty(value = "defaultIdentity")
     private String defaultIdentity;
@@ -176,8 +173,7 @@ public final class DatabaseAccountUpdateProperties {
     private Capacity capacity;
 
     /*
-     * This property is ignored during the update operation, as the metadata is read-only. The object represents the
-     * metadata for the Account Keys of the Cosmos DB account.
+     * This property is ignored during the update operation, as the metadata is read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
      */
     @JsonProperty(value = "keysMetadata", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseAccountKeysMetadata keysMetadata;
@@ -189,8 +185,7 @@ public final class DatabaseAccountUpdateProperties {
     private Boolean enablePartitionMerge;
 
     /*
-     * Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with
-     * Tls 1.2.
+     * Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with Tls 1.2.
      */
     @JsonProperty(value = "minimalTlsVersion")
     private MinimalTlsVersion minimalTlsVersion;
@@ -202,8 +197,7 @@ public final class DatabaseAccountUpdateProperties {
     private Boolean enableBurstCapacity;
 
     /*
-     * Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property
-     * provides troubleshooting guidance.
+     * Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property provides troubleshooting guidance.
      */
     @JsonProperty(value = "customerManagedKeyStatus")
     private String customerManagedKeyStatus;

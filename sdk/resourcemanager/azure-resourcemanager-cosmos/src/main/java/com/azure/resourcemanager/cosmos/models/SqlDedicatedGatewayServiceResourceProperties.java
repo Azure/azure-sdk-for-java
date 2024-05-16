@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,15 +14,32 @@ import java.util.List;
 /**
  * Properties for SqlDedicatedGatewayServiceResource.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "serviceType",
+    defaultImpl = SqlDedicatedGatewayServiceResourceProperties.class,
+    visible = true)
 @JsonTypeName("SqlDedicatedGateway")
 @Fluent
 public final class SqlDedicatedGatewayServiceResourceProperties extends ServiceResourceProperties {
+    /*
+     * ServiceType for the service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "serviceType", required = true)
+    private ServiceType serviceType = ServiceType.SQL_DEDICATED_GATEWAY;
+
     /*
      * SqlDedicatedGateway endpoint for the service.
      */
     @JsonProperty(value = "sqlDedicatedGatewayEndpoint")
     private String sqlDedicatedGatewayEndpoint;
+
+    /*
+     * DedicatedGatewayType for the service.
+     */
+    @JsonProperty(value = "dedicatedGatewayType")
+    private DedicatedGatewayType dedicatedGatewayType;
 
     /*
      * An array that contains all of the locations for the service.
@@ -33,6 +51,16 @@ public final class SqlDedicatedGatewayServiceResourceProperties extends ServiceR
      * Creates an instance of SqlDedicatedGatewayServiceResourceProperties class.
      */
     public SqlDedicatedGatewayServiceResourceProperties() {
+    }
+
+    /**
+     * Get the serviceType property: ServiceType for the service.
+     * 
+     * @return the serviceType value.
+     */
+    @Override
+    public ServiceType serviceType() {
+        return this.serviceType;
     }
 
     /**
@@ -53,6 +81,27 @@ public final class SqlDedicatedGatewayServiceResourceProperties extends ServiceR
     public SqlDedicatedGatewayServiceResourceProperties
         withSqlDedicatedGatewayEndpoint(String sqlDedicatedGatewayEndpoint) {
         this.sqlDedicatedGatewayEndpoint = sqlDedicatedGatewayEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the dedicatedGatewayType property: DedicatedGatewayType for the service.
+     * 
+     * @return the dedicatedGatewayType value.
+     */
+    public DedicatedGatewayType dedicatedGatewayType() {
+        return this.dedicatedGatewayType;
+    }
+
+    /**
+     * Set the dedicatedGatewayType property: DedicatedGatewayType for the service.
+     * 
+     * @param dedicatedGatewayType the dedicatedGatewayType value to set.
+     * @return the SqlDedicatedGatewayServiceResourceProperties object itself.
+     */
+    public SqlDedicatedGatewayServiceResourceProperties
+        withDedicatedGatewayType(DedicatedGatewayType dedicatedGatewayType) {
+        this.dedicatedGatewayType = dedicatedGatewayType;
         return this;
     }
 

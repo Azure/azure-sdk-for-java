@@ -36,8 +36,7 @@ public final class SqlRoleDefinitionCreateUpdateParameters {
     }
 
     /**
-     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      * 
      * @return the roleName value.
      */
@@ -46,8 +45,7 @@ public final class SqlRoleDefinitionCreateUpdateParameters {
     }
 
     /**
-     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      * 
      * @param roleName the roleName value to set.
      * @return the SqlRoleDefinitionCreateUpdateParameters object itself.

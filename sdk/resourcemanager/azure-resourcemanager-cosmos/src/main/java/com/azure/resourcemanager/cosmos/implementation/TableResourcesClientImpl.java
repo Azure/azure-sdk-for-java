@@ -623,8 +623,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public SyncPoller<PollResult<TableGetResultsInner>, TableGetResultsInner> beginCreateUpdateTable(
         String resourceGroupName, String accountName, String tableName,
         TableCreateUpdateParameters createUpdateTableParameters, Context context) {
-        return this.beginCreateUpdateTableAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters,
-            context).getSyncPoller();
+        return this
+            .beginCreateUpdateTableAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -643,7 +645,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public Mono<TableGetResultsInner> createUpdateTableAsync(String resourceGroupName, String accountName,
         String tableName, TableCreateUpdateParameters createUpdateTableParameters) {
         return beginCreateUpdateTableAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1243,8 +1246,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateTableThroughput(String resourceGroupName, String accountName, String tableName,
             ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateTableThroughputAsync(resourceGroupName, accountName, tableName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateTableThroughputAsync(resourceGroupName, accountName, tableName, updateThroughputParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1263,7 +1268,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public Mono<ThroughputSettingsGetResultsInner> updateTableThroughputAsync(String resourceGroupName,
         String accountName, String tableName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
         return beginUpdateTableThroughputAsync(resourceGroupName, accountName, tableName, updateThroughputParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

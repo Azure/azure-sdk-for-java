@@ -18,8 +18,7 @@ import java.util.Map;
  */
 public final class CassandraClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBManagedCassandraClusterPatch.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBManagedCassandraClusterPatch.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterPatch.
@@ -27,7 +26,10 @@ public final class CassandraClustersUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBManagedCassandraClusterPatch(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getCassandraClusters()
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraClusters()
             .update("cassandra-prod-rg", "cassandra-prod", new ClusterResourceInner().withTags(mapOf("owner", "mike"))
                 .withProperties(new ClusterResourceProperties().withAuthenticationMethod(AuthenticationMethod.NONE)
                     .withExternalGossipCertificates(Arrays.asList(new Certificate().withPem(

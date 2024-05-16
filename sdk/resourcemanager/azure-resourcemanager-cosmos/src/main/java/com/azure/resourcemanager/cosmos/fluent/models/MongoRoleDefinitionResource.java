@@ -35,9 +35,7 @@ public final class MongoRoleDefinitionResource {
     private String databaseName;
 
     /*
-     * A set of privileges contained by the Role Definition. This will allow application of this Role Definition on the
-     * entire database account or any underlying Database / Collection. Scopes higher than Database are not enforceable
-     * as privilege.
+     * A set of privileges contained by the Role Definition. This will allow application of this Role Definition on the entire database account or any underlying Database / Collection. Scopes higher than Database are not enforceable as privilege.
      */
     @JsonProperty(value = "privileges")
     private List<Privilege> privileges;
@@ -55,8 +53,7 @@ public final class MongoRoleDefinitionResource {
     }
 
     /**
-     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      * 
      * @return the roleName value.
      */
@@ -65,8 +62,7 @@ public final class MongoRoleDefinitionResource {
     }
 
     /**
-     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      * 
      * @param roleName the roleName value to set.
      * @return the MongoRoleDefinitionResource object itself.
@@ -117,9 +113,9 @@ public final class MongoRoleDefinitionResource {
     }
 
     /**
-     * Get the privileges property: A set of privileges contained by the Role Definition. This will allow application
-     * of this Role Definition on the entire database account or any underlying Database / Collection. Scopes higher
-     * than Database are not enforceable as privilege.
+     * Get the privileges property: A set of privileges contained by the Role Definition. This will allow application of
+     * this Role Definition on the entire database account or any underlying Database / Collection. Scopes higher than
+     * Database are not enforceable as privilege.
      * 
      * @return the privileges value.
      */
@@ -128,9 +124,9 @@ public final class MongoRoleDefinitionResource {
     }
 
     /**
-     * Set the privileges property: A set of privileges contained by the Role Definition. This will allow application
-     * of this Role Definition on the entire database account or any underlying Database / Collection. Scopes higher
-     * than Database are not enforceable as privilege.
+     * Set the privileges property: A set of privileges contained by the Role Definition. This will allow application of
+     * this Role Definition on the entire database account or any underlying Database / Collection. Scopes higher than
+     * Database are not enforceable as privilege.
      * 
      * @param privileges the privileges value to set.
      * @return the MongoRoleDefinitionResource object itself.

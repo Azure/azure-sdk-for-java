@@ -11,8 +11,7 @@ import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
  */
 public final class MongoDBResourcesRetrieveContinuousBackupInformationSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBMongoDBCollectionBackupInformation.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBMongoDBCollectionBackupInformation.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionBackupInformation.
@@ -21,8 +20,11 @@ public final class MongoDBResourcesRetrieveContinuousBackupInformationSamples {
      */
     public static void
         cosmosDBMongoDBCollectionBackupInformation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getMongoDBResources().retrieveContinuousBackupInformation(
-            "rgName", "ddb1", "databaseName", "collectionName",
-            new ContinuousBackupRestoreLocation().withLocation("North Europe"), com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getMongoDBResources()
+            .retrieveContinuousBackupInformation("rgName", "ddb1", "databaseName", "collectionName",
+                new ContinuousBackupRestoreLocation().withLocation("North Europe"), com.azure.core.util.Context.NONE);
     }
 }

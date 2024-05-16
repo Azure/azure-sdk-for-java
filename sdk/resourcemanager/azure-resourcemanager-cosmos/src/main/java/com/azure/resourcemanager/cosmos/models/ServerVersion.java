@@ -33,6 +33,16 @@ public final class ServerVersion extends ExpandableStringEnum<ServerVersion> {
     public static final ServerVersion FOUR_TWO = fromString("4.2");
 
     /**
+     * Static value 5.0 for ServerVersion.
+     */
+    public static final ServerVersion FIVE_ZERO = fromString("5.0");
+
+    /**
+     * Static value 6.0 for ServerVersion.
+     */
+    public static final ServerVersion SIX_ZERO = fromString("6.0");
+
+    /**
      * Creates a new instance of ServerVersion value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

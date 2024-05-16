@@ -44,8 +44,7 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
     }
 
     /**
-     * Get the self property: A system generated property that specifies the addressable path of the container
-     * resource.
+     * Get the self property: A system generated property that specifies the addressable path of the container resource.
      * 
      * @return the self value.
      */

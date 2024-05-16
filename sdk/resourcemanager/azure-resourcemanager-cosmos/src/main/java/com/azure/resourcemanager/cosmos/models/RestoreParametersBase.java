@@ -14,9 +14,7 @@ import java.time.OffsetDateTime;
 @Fluent
 public class RestoreParametersBase {
     /*
-     * The id of the restorable database account from which the restore has to be initiated. For example:
-     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{
-     * restorableDatabaseAccountName}
+     * The id of the restorable database account from which the restore has to be initiated. For example: /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}
      */
     @JsonProperty(value = "restoreSource")
     private String restoreSource;

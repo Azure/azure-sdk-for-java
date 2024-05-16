@@ -789,8 +789,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
         beginCreateUpdateMongoDBDatabase(String resourceGroupName, String accountName, String databaseName,
             MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters) {
-        return this.beginCreateUpdateMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName,
-            createUpdateMongoDBDatabaseParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName,
+                createUpdateMongoDBDatabaseParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -810,8 +812,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<MongoDBDatabaseGetResultsInner>, MongoDBDatabaseGetResultsInner>
         beginCreateUpdateMongoDBDatabase(String resourceGroupName, String accountName, String databaseName,
             MongoDBDatabaseCreateUpdateParameters createUpdateMongoDBDatabaseParameters, Context context) {
-        return this.beginCreateUpdateMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName,
-            createUpdateMongoDBDatabaseParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateMongoDBDatabaseAsync(resourceGroupName, accountName, databaseName,
+                createUpdateMongoDBDatabaseParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1428,8 +1432,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateMongoDBDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
-            updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateMongoDBDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1450,8 +1456,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBDatabaseThroughput(String resourceGroupName, String accountName, String databaseName,
             ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateMongoDBDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
-            updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateMongoDBDatabaseThroughputAsync(resourceGroupName, accountName, databaseName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1976,7 +1984,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     private Mono<ThroughputSettingsGetResultsInner> migrateMongoDBDatabaseToManualThroughputAsync(
         String resourceGroupName, String accountName, String databaseName, Context context) {
         return beginMigrateMongoDBDatabaseToManualThroughputAsync(resourceGroupName, accountName, databaseName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2499,8 +2508,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<MongoDBCollectionGetResultsInner>, MongoDBCollectionGetResultsInner>
         beginCreateUpdateMongoDBCollection(String resourceGroupName, String accountName, String databaseName,
             String collectionName, MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters) {
-        return this.beginCreateUpdateMongoDBCollectionAsync(resourceGroupName, accountName, databaseName,
-            collectionName, createUpdateMongoDBCollectionParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName,
+                createUpdateMongoDBCollectionParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -2522,8 +2533,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
         beginCreateUpdateMongoDBCollection(String resourceGroupName, String accountName, String databaseName,
             String collectionName, MongoDBCollectionCreateUpdateParameters createUpdateMongoDBCollectionParameters,
             Context context) {
-        return this.beginCreateUpdateMongoDBCollectionAsync(resourceGroupName, accountName, databaseName,
-            collectionName, createUpdateMongoDBCollectionParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName,
+                createUpdateMongoDBCollectionParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2817,7 +2830,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     private Mono<Void> deleteMongoDBCollectionAsync(String resourceGroupName, String accountName, String databaseName,
         String collectionName, Context context) {
         return beginDeleteMongoDBCollectionAsync(resourceGroupName, accountName, databaseName, collectionName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3188,8 +3202,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBCollectionThroughput(String resourceGroupName, String accountName, String databaseName,
             String collectionName, ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return this.beginUpdateMongoDBCollectionThroughputAsync(resourceGroupName, accountName, databaseName,
-            collectionName, updateThroughputParameters).getSyncPoller();
+        return this
+            .beginUpdateMongoDBCollectionThroughputAsync(resourceGroupName, accountName, databaseName, collectionName,
+                updateThroughputParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -3211,8 +3227,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginUpdateMongoDBCollectionThroughput(String resourceGroupName, String accountName, String databaseName,
             String collectionName, ThroughputSettingsUpdateParameters updateThroughputParameters, Context context) {
-        return this.beginUpdateMongoDBCollectionThroughputAsync(resourceGroupName, accountName, databaseName,
-            collectionName, updateThroughputParameters, context).getSyncPoller();
+        return this
+            .beginUpdateMongoDBCollectionThroughputAsync(resourceGroupName, accountName, databaseName, collectionName,
+                updateThroughputParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -3480,8 +3498,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToAutoscale(String resourceGroupName, String accountName, String databaseName,
             String collectionName, Context context) {
-        return this.beginMigrateMongoDBCollectionToAutoscaleAsync(resourceGroupName, accountName, databaseName,
-            collectionName, context).getSyncPoller();
+        return this
+            .beginMigrateMongoDBCollectionToAutoscaleAsync(resourceGroupName, accountName, databaseName, collectionName,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -3716,8 +3736,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToManualThroughput(String resourceGroupName, String accountName,
             String databaseName, String collectionName) {
-        return this.beginMigrateMongoDBCollectionToManualThroughputAsync(resourceGroupName, accountName, databaseName,
-            collectionName).getSyncPoller();
+        return this
+            .beginMigrateMongoDBCollectionToManualThroughputAsync(resourceGroupName, accountName, databaseName,
+                collectionName)
+            .getSyncPoller();
     }
 
     /**
@@ -3737,8 +3759,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateMongoDBCollectionToManualThroughput(String resourceGroupName, String accountName,
             String databaseName, String collectionName, Context context) {
-        return this.beginMigrateMongoDBCollectionToManualThroughputAsync(resourceGroupName, accountName, databaseName,
-            collectionName, context).getSyncPoller();
+        return this
+            .beginMigrateMongoDBCollectionToManualThroughputAsync(resourceGroupName, accountName, databaseName,
+                collectionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -4123,8 +4147,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<MongoRoleDefinitionGetResultsInner>, MongoRoleDefinitionGetResultsInner>
         beginCreateUpdateMongoRoleDefinition(String mongoRoleDefinitionId, String resourceGroupName, String accountName,
             MongoRoleDefinitionCreateUpdateParameters createUpdateMongoRoleDefinitionParameters) {
-        return this.beginCreateUpdateMongoRoleDefinitionAsync(mongoRoleDefinitionId, resourceGroupName, accountName,
-            createUpdateMongoRoleDefinitionParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateMongoRoleDefinitionAsync(mongoRoleDefinitionId, resourceGroupName, accountName,
+                createUpdateMongoRoleDefinitionParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -4144,8 +4170,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<MongoRoleDefinitionGetResultsInner>, MongoRoleDefinitionGetResultsInner>
         beginCreateUpdateMongoRoleDefinition(String mongoRoleDefinitionId, String resourceGroupName, String accountName,
             MongoRoleDefinitionCreateUpdateParameters createUpdateMongoRoleDefinitionParameters, Context context) {
-        return this.beginCreateUpdateMongoRoleDefinitionAsync(mongoRoleDefinitionId, resourceGroupName, accountName,
-            createUpdateMongoRoleDefinitionParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateMongoRoleDefinitionAsync(mongoRoleDefinitionId, resourceGroupName, accountName,
+                createUpdateMongoRoleDefinitionParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -4425,7 +4453,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     private Mono<Void> deleteMongoRoleDefinitionAsync(String mongoRoleDefinitionId, String resourceGroupName,
         String accountName, Context context) {
         return beginDeleteMongoRoleDefinitionAsync(mongoRoleDefinitionId, resourceGroupName, accountName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4904,8 +4933,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<MongoUserDefinitionGetResultsInner>, MongoUserDefinitionGetResultsInner>
         beginCreateUpdateMongoUserDefinition(String mongoUserDefinitionId, String resourceGroupName, String accountName,
             MongoUserDefinitionCreateUpdateParameters createUpdateMongoUserDefinitionParameters) {
-        return this.beginCreateUpdateMongoUserDefinitionAsync(mongoUserDefinitionId, resourceGroupName, accountName,
-            createUpdateMongoUserDefinitionParameters).getSyncPoller();
+        return this
+            .beginCreateUpdateMongoUserDefinitionAsync(mongoUserDefinitionId, resourceGroupName, accountName,
+                createUpdateMongoUserDefinitionParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -4925,8 +4956,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<MongoUserDefinitionGetResultsInner>, MongoUserDefinitionGetResultsInner>
         beginCreateUpdateMongoUserDefinition(String mongoUserDefinitionId, String resourceGroupName, String accountName,
             MongoUserDefinitionCreateUpdateParameters createUpdateMongoUserDefinitionParameters, Context context) {
-        return this.beginCreateUpdateMongoUserDefinitionAsync(mongoUserDefinitionId, resourceGroupName, accountName,
-            createUpdateMongoUserDefinitionParameters, context).getSyncPoller();
+        return this
+            .beginCreateUpdateMongoUserDefinitionAsync(mongoUserDefinitionId, resourceGroupName, accountName,
+                createUpdateMongoUserDefinitionParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -5206,7 +5239,8 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     private Mono<Void> deleteMongoUserDefinitionAsync(String mongoUserDefinitionId, String resourceGroupName,
         String accountName, Context context) {
         return beginDeleteMongoUserDefinitionAsync(mongoUserDefinitionId, resourceGroupName, accountName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5551,8 +5585,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
             String collectionName, ContinuousBackupRestoreLocation location) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName,
-            collectionName, location).getSyncPoller();
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, collectionName,
+                location)
+            .getSyncPoller();
     }
 
     /**
@@ -5573,8 +5609,10 @@ public final class MongoDBResourcesClientImpl implements MongoDBResourcesClient 
     public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
         beginRetrieveContinuousBackupInformation(String resourceGroupName, String accountName, String databaseName,
             String collectionName, ContinuousBackupRestoreLocation location, Context context) {
-        return this.beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName,
-            collectionName, location, context).getSyncPoller();
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, databaseName, collectionName,
+                location, context)
+            .getSyncPoller();
     }
 
     /**

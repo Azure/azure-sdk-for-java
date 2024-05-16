@@ -21,8 +21,7 @@ public class SqlContainerResource {
     private String id;
 
     /*
-     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within
-     * the container
+     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the container
      */
     @JsonProperty(value = "indexingPolicy")
     private IndexingPolicy indexingPolicy;
@@ -40,8 +39,7 @@ public class SqlContainerResource {
     private Integer defaultTtl;
 
     /*
-     * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the
-     * Azure Cosmos DB service.
+     * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos DB service.
      */
     @JsonProperty(value = "uniqueKeyPolicy")
     private UniqueKeyPolicy uniqueKeyPolicy;
@@ -321,8 +319,8 @@ public class SqlContainerResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
         }
         if (indexingPolicy() != null) {
             indexingPolicy().validate();

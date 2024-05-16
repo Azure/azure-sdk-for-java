@@ -53,8 +53,9 @@ public final class FailoverPolicies {
      */
     public void validate() {
         if (failoverPolicies() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property failoverPolicies in model FailoverPolicies"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property failoverPolicies in model FailoverPolicies"));
         } else {
             failoverPolicies().forEach(e -> e.validate());
         }

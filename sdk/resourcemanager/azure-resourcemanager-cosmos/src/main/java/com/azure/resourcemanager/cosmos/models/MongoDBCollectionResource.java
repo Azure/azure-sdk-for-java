@@ -186,8 +186,8 @@ public class MongoDBCollectionResource {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model MongoDBCollectionResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model MongoDBCollectionResource"));
         }
         if (indexes() != null) {
             indexes().forEach(e -> e.validate());

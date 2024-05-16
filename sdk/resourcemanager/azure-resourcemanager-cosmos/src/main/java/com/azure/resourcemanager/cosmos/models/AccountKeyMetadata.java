@@ -14,8 +14,7 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class AccountKeyMetadata {
     /*
-     * Generation time in UTC of the key in ISO-8601 format. If the value is missing from the object, it means that the
-     * last key regeneration was triggered before 2022-06-18.
+     * Generation time in UTC of the key in ISO-8601 format. If the value is missing from the object, it means that the last key regeneration was triggered before 2022-06-18.
      */
     @JsonProperty(value = "generationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime generationTime;

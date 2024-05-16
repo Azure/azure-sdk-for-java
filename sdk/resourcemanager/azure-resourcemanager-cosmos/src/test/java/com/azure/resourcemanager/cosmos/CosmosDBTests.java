@@ -87,7 +87,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
                 .withDataModelSql()
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST3)
+                .withReadReplication(Region.US_WEST2)
                 .withMultipleWriteLocationsEnabled(true)
                 .withTag("tag1", "value1")
                 .create();
@@ -193,7 +193,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
                 .withDataModelMongoDB()
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST3)
+                .withReadReplication(Region.US_WEST2)
                 .withTag("tag1", "value1")
                 .create();
 

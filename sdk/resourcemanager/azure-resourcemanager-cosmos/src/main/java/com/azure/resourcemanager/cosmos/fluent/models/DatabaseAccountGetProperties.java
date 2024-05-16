@@ -33,12 +33,7 @@ import java.util.List;
 @Fluent
 public final class DatabaseAccountGetProperties {
     /*
-     * The status of the Cosmos DB account at the time the operation was called. The status can be one of following.
-     * 'Creating' – the Cosmos DB account is being created. When an account is in Creating state, only properties that
-     * are specified as input for the Create Cosmos DB account operation are returned. 'Succeeded' – the Cosmos DB
-     * account is active for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting' – the Cosmos DB
-     * account is being deleted. 'Failed' – the Cosmos DB account failed creation. 'DeletionFailed' – the Cosmos DB
-     * account deletion failed.
+     * The status of the Cosmos DB account at the time the operation was called. The status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in Creating state, only properties that are specified as input for the Create Cosmos DB account operation are returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation. 'DeletionFailed' – the Cosmos DB account deletion failed.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -68,9 +63,7 @@ public final class DatabaseAccountGetProperties {
     private Boolean isVirtualNetworkFilterEnabled;
 
     /*
-     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an
-     * outage. Automatic failover will result in a new write region for the account and is chosen based on the failover
-     * priorities configured for the account.
+     * Enables automatic failover of the write region in the rare event that the region is unavailable due to an outage. Automatic failover will result in a new write region for the account and is chosen based on the failover priorities configured for the account.
      */
     @JsonProperty(value = "enableAutomaticFailover")
     private Boolean enableAutomaticFailover;
@@ -154,8 +147,7 @@ public final class DatabaseAccountGetProperties {
     private String keyVaultKeyUri;
 
     /*
-     * The default identity for accessing key vault used in features like customer managed keys. The default identity
-     * needs to be explicitly set by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity" and more.
+     * The default identity for accessing key vault used in features like customer managed keys. The default identity needs to be explicitly set by the users. It can be "FirstPartyIdentity", "SystemAssignedIdentity" and more.
      */
     @JsonProperty(value = "defaultIdentity")
     private String defaultIdentity;
@@ -257,8 +249,7 @@ public final class DatabaseAccountGetProperties {
     private Boolean enablePartitionMerge;
 
     /*
-     * Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with
-     * Tls 1.2.
+     * Indicates the minimum allowed Tls version. The default value is Tls 1.2. Cassandra and Mongo APIs only work with Tls 1.2.
      */
     @JsonProperty(value = "minimalTlsVersion")
     private MinimalTlsVersion minimalTlsVersion;
@@ -270,8 +261,7 @@ public final class DatabaseAccountGetProperties {
     private Boolean enableBurstCapacity;
 
     /*
-     * Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property
-     * provides troubleshooting guidance.
+     * Indicates the status of the Customer Managed Key feature on the account. In case there are errors, the property provides troubleshooting guidance.
      */
     @JsonProperty(value = "customerManagedKeyStatus")
     private String customerManagedKeyStatus;
@@ -283,8 +273,8 @@ public final class DatabaseAccountGetProperties {
     }
 
     /**
-     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called.
-     * The status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
+     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called. The
+     * status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
      * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
      * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
      * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.

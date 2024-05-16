@@ -111,8 +111,9 @@ public final class SqlTriggerCreateUpdateParameters extends ArmResourcePropertie
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model SqlTriggerCreateUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model SqlTriggerCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

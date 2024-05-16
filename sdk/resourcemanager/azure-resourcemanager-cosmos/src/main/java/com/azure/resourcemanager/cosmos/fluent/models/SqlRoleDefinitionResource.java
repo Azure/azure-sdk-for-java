@@ -28,10 +28,7 @@ public final class SqlRoleDefinitionResource {
     private RoleDefinitionType type;
 
     /*
-     * A set of fully qualified Scopes at or below which Role Assignments may be created using this Role Definition.
-     * This will allow application of this Role Definition on the entire database account or any underlying Database /
-     * Collection. Must have at least one element. Scopes higher than Database account are not enforceable as
-     * assignable Scopes. Note that resources referenced in assignable Scopes need not exist.
+     * A set of fully qualified Scopes at or below which Role Assignments may be created using this Role Definition. This will allow application of this Role Definition on the entire database account or any underlying Database / Collection. Must have at least one element. Scopes higher than Database account are not enforceable as assignable Scopes. Note that resources referenced in assignable Scopes need not exist.
      */
     @JsonProperty(value = "assignableScopes")
     private List<String> assignableScopes;
@@ -49,8 +46,7 @@ public final class SqlRoleDefinitionResource {
     }
 
     /**
-     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Get the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      * 
      * @return the roleName value.
      */
@@ -59,8 +55,7 @@ public final class SqlRoleDefinitionResource {
     }
 
     /**
-     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database
-     * account.
+     * Set the roleName property: A user-friendly name for the Role Definition. Must be unique for the database account.
      * 
      * @param roleName the roleName value to set.
      * @return the SqlRoleDefinitionResource object itself.

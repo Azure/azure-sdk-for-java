@@ -38,9 +38,7 @@ public final class CassandraClusterPublicStatusDataCentersItemNode {
     private String cassandraProcessStatus;
 
     /*
-     * The amount of file system data in the data directory (e.g., 47.66 kB), excluding all content in the snapshots
-     * subdirectories. Because all SSTable data files are included, any data that is not cleaned up (such as
-     * TTL-expired cells or tombstones) is counted.
+     * The amount of file system data in the data directory (e.g., 47.66 kB), excluding all content in the snapshots subdirectories. Because all SSTable data files are included, any data that is not cleaned up (such as TTL-expired cells or tombstones) is counted.
      */
     @JsonProperty(value = "load")
     private String load;
@@ -94,8 +92,7 @@ public final class CassandraClusterPublicStatusDataCentersItemNode {
     private Long memoryUsedKB;
 
     /*
-     * Memory used by kernel buffers (Buffers in /proc/meminfo) and page cache and slabs (Cached and SReclaimable in
-     * /proc/meminfo), in kB.
+     * Memory used by kernel buffers (Buffers in /proc/meminfo) and page cache and slabs (Cached and SReclaimable in /proc/meminfo), in kB.
      */
     @JsonProperty(value = "memoryBuffersAndCachedKB")
     private Long memoryBuffersAndCachedKB;

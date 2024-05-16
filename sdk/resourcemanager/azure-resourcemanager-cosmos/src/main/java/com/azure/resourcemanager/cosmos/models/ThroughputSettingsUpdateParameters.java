@@ -86,8 +86,9 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model ThroughputSettingsUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ThroughputSettingsUpdateParameters"));
         } else {
             innerProperties().validate();
         }

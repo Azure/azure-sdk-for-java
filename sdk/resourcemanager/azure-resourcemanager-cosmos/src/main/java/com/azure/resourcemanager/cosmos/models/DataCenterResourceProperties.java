@@ -26,40 +26,31 @@ public final class DataCenterResourceProperties {
     private String dataCenterLocation;
 
     /*
-     * Resource id of a subnet the nodes in this data center should have their network interfaces connected to. The
-     * subnet must be in the same region specified in 'dataCenterLocation' and must be able to route to the subnet
-     * specified in the cluster's 'delegatedManagementSubnetId' property. This resource id will be of the form
-     * '/subscriptions/<subscription id>/resourceGroups/<resource
-     * group>/providers/Microsoft.Network/virtualNetworks/<virtual network>/subnets/<subnet>'.
+     * Resource id of a subnet the nodes in this data center should have their network interfaces connected to. The subnet must be in the same region specified in 'dataCenterLocation' and must be able to route to the subnet specified in the cluster's 'delegatedManagementSubnetId' property. This resource id will be of the form '/subscriptions/<subscription id>/resourceGroups/<resource group>/providers/Microsoft.Network/virtualNetworks/<virtual network>/subnets/<subnet>'.
      */
     @JsonProperty(value = "delegatedSubnetId")
     private String delegatedSubnetId;
 
     /*
-     * The number of nodes the data center should have. This is the desired number. After it is set, it may take some
-     * time for the data center to be scaled to match. To monitor the number of nodes and their status, use the
-     * fetchNodeStatus method on the cluster.
+     * The number of nodes the data center should have. This is the desired number. After it is set, it may take some time for the data center to be scaled to match. To monitor the number of nodes and their status, use the fetchNodeStatus method on the cluster.
      */
     @JsonProperty(value = "nodeCount")
     private Integer nodeCount;
 
     /*
-     * IP addresses for seed nodes in this data center. This is for reference. Generally you will want to use the
-     * seedNodes property on the cluster, which aggregates the seed nodes from all data centers in the cluster.
+     * IP addresses for seed nodes in this data center. This is for reference. Generally you will want to use the seedNodes property on the cluster, which aggregates the seed nodes from all data centers in the cluster.
      */
     @JsonProperty(value = "seedNodes", access = JsonProperty.Access.WRITE_ONLY)
     private List<SeedNode> seedNodes;
 
     /*
-     * A fragment of a cassandra.yaml configuration file to be included in the cassandra.yaml for all nodes in this
-     * data center. The fragment should be Base64 encoded, and only a subset of keys are allowed.
+     * A fragment of a cassandra.yaml configuration file to be included in the cassandra.yaml for all nodes in this data center. The fragment should be Base64 encoded, and only a subset of keys are allowed.
      */
     @JsonProperty(value = "base64EncodedCassandraYamlFragment")
     private String base64EncodedCassandraYamlFragment;
 
     /*
-     * Key uri to use for encryption of managed disks. Ensure the system assigned identity of the cluster has been
-     * assigned appropriate permissions(key get/wrap/unwrap permissions) on the key.
+     * Key uri to use for encryption of managed disks. Ensure the system assigned identity of the cluster has been assigned appropriate permissions(key get/wrap/unwrap permissions) on the key.
      */
     @JsonProperty(value = "managedDiskCustomerKeyUri")
     private String managedDiskCustomerKeyUri;
@@ -89,8 +80,7 @@ public final class DataCenterResourceProperties {
     private Integer diskCapacity;
 
     /*
-     * If the data center has Availability Zone support, apply it to the Virtual Machine ScaleSet that host the
-     * cassandra data center virtual machines.
+     * If the data center has Availability Zone support, apply it to the Virtual Machine ScaleSet that host the cassandra data center virtual machines.
      */
     @JsonProperty(value = "availabilityZone")
     private Boolean availabilityZone;
@@ -112,6 +102,12 @@ public final class DataCenterResourceProperties {
      */
     @JsonProperty(value = "provisionError")
     private CassandraError provisionError;
+
+    /*
+     * Ip of the VPN Endpoint for this data center.
+     */
+    @JsonProperty(value = "privateEndpointIpAddress")
+    private String privateEndpointIpAddress;
 
     /**
      * Creates an instance of DataCenterResourceProperties class.
@@ -161,9 +157,9 @@ public final class DataCenterResourceProperties {
 
     /**
      * Get the delegatedSubnetId property: Resource id of a subnet the nodes in this data center should have their
-     * network interfaces connected to. The subnet must be in the same region specified in 'dataCenterLocation' and
-     * must be able to route to the subnet specified in the cluster's 'delegatedManagementSubnetId' property. This
-     * resource id will be of the form '/subscriptions/&lt;subscription id&gt;/resourceGroups/&lt;resource
+     * network interfaces connected to. The subnet must be in the same region specified in 'dataCenterLocation' and must
+     * be able to route to the subnet specified in the cluster's 'delegatedManagementSubnetId' property. This resource
+     * id will be of the form '/subscriptions/&lt;subscription id&gt;/resourceGroups/&lt;resource
      * group&gt;/providers/Microsoft.Network/virtualNetworks/&lt;virtual network&gt;/subnets/&lt;subnet&gt;'.
      * 
      * @return the delegatedSubnetId value.
@@ -174,9 +170,9 @@ public final class DataCenterResourceProperties {
 
     /**
      * Set the delegatedSubnetId property: Resource id of a subnet the nodes in this data center should have their
-     * network interfaces connected to. The subnet must be in the same region specified in 'dataCenterLocation' and
-     * must be able to route to the subnet specified in the cluster's 'delegatedManagementSubnetId' property. This
-     * resource id will be of the form '/subscriptions/&lt;subscription id&gt;/resourceGroups/&lt;resource
+     * network interfaces connected to. The subnet must be in the same region specified in 'dataCenterLocation' and must
+     * be able to route to the subnet specified in the cluster's 'delegatedManagementSubnetId' property. This resource
+     * id will be of the form '/subscriptions/&lt;subscription id&gt;/resourceGroups/&lt;resource
      * group&gt;/providers/Microsoft.Network/virtualNetworks/&lt;virtual network&gt;/subnets/&lt;subnet&gt;'.
      * 
      * @param delegatedSubnetId the delegatedSubnetId value to set.
@@ -188,9 +184,9 @@ public final class DataCenterResourceProperties {
     }
 
     /**
-     * Get the nodeCount property: The number of nodes the data center should have. This is the desired number. After
-     * it is set, it may take some time for the data center to be scaled to match. To monitor the number of nodes and
-     * their status, use the fetchNodeStatus method on the cluster.
+     * Get the nodeCount property: The number of nodes the data center should have. This is the desired number. After it
+     * is set, it may take some time for the data center to be scaled to match. To monitor the number of nodes and their
+     * status, use the fetchNodeStatus method on the cluster.
      * 
      * @return the nodeCount value.
      */
@@ -199,9 +195,9 @@ public final class DataCenterResourceProperties {
     }
 
     /**
-     * Set the nodeCount property: The number of nodes the data center should have. This is the desired number. After
-     * it is set, it may take some time for the data center to be scaled to match. To monitor the number of nodes and
-     * their status, use the fetchNodeStatus method on the cluster.
+     * Set the nodeCount property: The number of nodes the data center should have. This is the desired number. After it
+     * is set, it may take some time for the data center to be scaled to match. To monitor the number of nodes and their
+     * status, use the fetchNodeStatus method on the cluster.
      * 
      * @param nodeCount the nodeCount value to set.
      * @return the DataCenterResourceProperties object itself.
@@ -212,9 +208,9 @@ public final class DataCenterResourceProperties {
     }
 
     /**
-     * Get the seedNodes property: IP addresses for seed nodes in this data center. This is for reference. Generally
-     * you will want to use the seedNodes property on the cluster, which aggregates the seed nodes from all data
-     * centers in the cluster.
+     * Get the seedNodes property: IP addresses for seed nodes in this data center. This is for reference. Generally you
+     * will want to use the seedNodes property on the cluster, which aggregates the seed nodes from all data centers in
+     * the cluster.
      * 
      * @return the seedNodes value.
      */
@@ -224,8 +220,8 @@ public final class DataCenterResourceProperties {
 
     /**
      * Get the base64EncodedCassandraYamlFragment property: A fragment of a cassandra.yaml configuration file to be
-     * included in the cassandra.yaml for all nodes in this data center. The fragment should be Base64 encoded, and
-     * only a subset of keys are allowed.
+     * included in the cassandra.yaml for all nodes in this data center. The fragment should be Base64 encoded, and only
+     * a subset of keys are allowed.
      * 
      * @return the base64EncodedCassandraYamlFragment value.
      */
@@ -235,8 +231,8 @@ public final class DataCenterResourceProperties {
 
     /**
      * Set the base64EncodedCassandraYamlFragment property: A fragment of a cassandra.yaml configuration file to be
-     * included in the cassandra.yaml for all nodes in this data center. The fragment should be Base64 encoded, and
-     * only a subset of keys are allowed.
+     * included in the cassandra.yaml for all nodes in this data center. The fragment should be Base64 encoded, and only
+     * a subset of keys are allowed.
      * 
      * @param base64EncodedCassandraYamlFragment the base64EncodedCassandraYamlFragment value to set.
      * @return the DataCenterResourceProperties object itself.
@@ -435,6 +431,26 @@ public final class DataCenterResourceProperties {
      */
     public DataCenterResourceProperties withProvisionError(CassandraError provisionError) {
         this.provisionError = provisionError;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointIpAddress property: Ip of the VPN Endpoint for this data center.
+     * 
+     * @return the privateEndpointIpAddress value.
+     */
+    public String privateEndpointIpAddress() {
+        return this.privateEndpointIpAddress;
+    }
+
+    /**
+     * Set the privateEndpointIpAddress property: Ip of the VPN Endpoint for this data center.
+     * 
+     * @param privateEndpointIpAddress the privateEndpointIpAddress value to set.
+     * @return the DataCenterResourceProperties object itself.
+     */
+    public DataCenterResourceProperties withPrivateEndpointIpAddress(String privateEndpointIpAddress) {
+        this.privateEndpointIpAddress = privateEndpointIpAddress;
         return this;
     }
 

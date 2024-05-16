@@ -111,8 +111,9 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model MongoDBCollectionCreateUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model MongoDBCollectionCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

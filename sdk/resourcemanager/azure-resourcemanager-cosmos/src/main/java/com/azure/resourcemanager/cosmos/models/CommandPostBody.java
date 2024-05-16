@@ -163,12 +163,12 @@ public final class CommandPostBody {
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property command in model CommandPostBody"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property command in model CommandPostBody"));
         }
         if (host() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property host in model CommandPostBody"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property host in model CommandPostBody"));
         }
     }
 

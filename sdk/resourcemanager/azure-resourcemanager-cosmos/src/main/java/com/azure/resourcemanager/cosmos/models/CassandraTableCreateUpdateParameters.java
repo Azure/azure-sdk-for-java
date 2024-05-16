@@ -111,8 +111,9 @@ public final class CassandraTableCreateUpdateParameters extends ArmResourcePrope
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model CassandraTableCreateUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model CassandraTableCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

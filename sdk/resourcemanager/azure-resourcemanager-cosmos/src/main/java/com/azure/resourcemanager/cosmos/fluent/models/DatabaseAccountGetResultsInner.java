@@ -68,8 +68,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Get the kind property: Indicates the type of database account. This can only be set at database account
-     * creation.
+     * Get the kind property: Indicates the type of database account. This can only be set at database account creation.
      * 
      * @return the kind value.
      */
@@ -78,8 +77,7 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Set the kind property: Indicates the type of database account. This can only be set at database account
-     * creation.
+     * Set the kind property: Indicates the type of database account. This can only be set at database account creation.
      * 
      * @param kind the kind value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
@@ -146,8 +144,8 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called.
-     * The status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
+     * Get the provisioningState property: The status of the Cosmos DB account at the time the operation was called. The
+     * status can be one of following. 'Creating' – the Cosmos DB account is being created. When an account is in
      * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
      * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
      * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.

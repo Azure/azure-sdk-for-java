@@ -41,8 +41,7 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Get the kind property: Indicates the type of database account. This can only be set at database account
-     * creation.
+     * Get the kind property: Indicates the type of database account. This can only be set at database account creation.
      * 
      * @return the kind value.
      */
@@ -51,8 +50,7 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
     }
 
     /**
-     * Set the kind property: Indicates the type of database account. This can only be set at database account
-     * creation.
+     * Set the kind property: Indicates the type of database account. This can only be set at database account creation.
      * 
      * @param kind the kind value to set.
      * @return the DatabaseAccountCreateUpdateParameters object itself.
@@ -877,8 +875,9 @@ public final class DatabaseAccountCreateUpdateParameters extends ArmResourceProp
             identity().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model DatabaseAccountCreateUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model DatabaseAccountCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }
