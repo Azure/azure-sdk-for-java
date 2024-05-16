@@ -41,7 +41,6 @@ import static com.azure.cosmos.rx.TestSuiteBase.safeClose;
 import static com.azure.cosmos.rx.TestSuiteBase.safeDeleteDatabase;
 import static org.assertj.core.api.Assertions.assertThat;
 
-//@Ignore("TODO: Ignore these test cases until the public emulator with vector indexes is released.")
 public class NonStreamingOrderByQueryVectorSearchTest {
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 20000;
@@ -59,7 +58,7 @@ public class NonStreamingOrderByQueryVectorSearchTest {
     private CosmosAsyncContainer quantizedIndexContainer;
     private CosmosAsyncContainer largeDataContainer;
 
-    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"query"}, timeOut = SETUP_TIMEOUT)
     public void before_NonStreamingOrderByQueryVectorSearchTest() {
         // set up the client
         client = new CosmosClientBuilder()
@@ -101,13 +100,13 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         }
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"query"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(database);
         safeClose(client);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
     public void flatIndexVectorSearch() {
         String queryVector = getQueryVector();
 
@@ -133,7 +132,7 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         validateOrdering(6, resultDocs, false);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"query"}, timeOut = TIMEOUT)
     public void quantizedIndexVectorSearch() {
         String queryVector = getQueryVector();
 
@@ -159,7 +158,7 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         validateOrdering(6, resultDocs, false);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT*1000)
+    @Test(groups = {"query"}, timeOut = TIMEOUT*1000)
     public void largeDataVectorSearch() {
         double embeddingValue = 0.0001;
         for (int i=1;i<=2000;i++) {
