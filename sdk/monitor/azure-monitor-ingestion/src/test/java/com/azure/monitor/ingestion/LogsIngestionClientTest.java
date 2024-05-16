@@ -6,6 +6,7 @@ package com.azure.monitor.ingestion;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.azure.monitor.ingestion.models.LogsUploadException;
@@ -65,6 +66,7 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
     }
 
     @Test
+    @LiveOnly
     public void testUploadLogsPartialFailure() {
         List<Object> logs = getObjects(100000);
         AtomicInteger count = new AtomicInteger();
