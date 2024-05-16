@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed an issue where HTTP response headers would be logged twice.
+
 ### Other Changes
 
 ## 1.49.0 (2024-05-01)
