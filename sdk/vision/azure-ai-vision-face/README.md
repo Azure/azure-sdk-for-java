@@ -387,11 +387,11 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/
+[source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-face/src/
 [face_java_package_maven]: https://central.sonatype.com/artifact/com.azure/azure-ai-vision-face/
 [face_ref_java_docs]: https://aka.ms/azsdk-java-face-ref
 [face_product_docs]: https://learn.microsoft.com/azure/ai-services/computer-vision/overview-identity
-[face_samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/samples
+[face_samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-face/src/samples
 
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_sub]: https://azure.microsoft.com/free/
@@ -406,15 +406,15 @@ For details on contributing to this repository, see the [contributing guide](htt
 [regional_endpoints]: https://azure.microsoft.com/global-infrastructure/services/?products=cognitive-services
 [azure_sdk_java_azure_key_credential]: https://learn.microsoft.com/java/api/com.azure.core.credential.azurekeycredential?view=azure-java-stable
 
-[face_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAsyncClient.java
-[face_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClient.java
-[face_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClientBuilder.java
-[face_administration_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAdministrationAsyncClient.java
-[face_administration_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAdministrationClient.java
-[face_administration_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAdministrationClientBuilder.java
-[face_session_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionAsyncClient.java
-[face_session_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClient.java
-[face_session_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClientBuilder.java
+[face_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAsyncClient.java
+[face_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClient.java
+[face_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClientBuilder.java
+[face_administration_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAdministrationAsyncClient.java
+[face_administration_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAdministrationClient.java
+[face_administration_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAdministrationClientBuilder.java
+[face_session_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionAsyncClient.java
+[face_session_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClient.java
+[face_session_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/vision/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClientBuilder.java
 
 [azure_sdk_java_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
