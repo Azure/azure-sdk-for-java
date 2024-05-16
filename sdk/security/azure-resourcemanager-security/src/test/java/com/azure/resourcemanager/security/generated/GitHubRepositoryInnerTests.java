@@ -15,21 +15,22 @@ public final class GitHubRepositoryInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitHubRepositoryInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningStatusMessage\":\"ln\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-22T06:37:05Z\",\"provisioningState\":\"DeletionFailure\",\"repoId\":\"pafolp\",\"repoName\":\"wamxqzrag\",\"repoFullName\":\"dphtv\",\"onboardingState\":\"NotApplicable\",\"repoUrl\":\"jvlej\",\"parentOwnerName\":\"csrlzknmzl\"},\"id\":\"nrupdwvnphcnzqtp\",\"name\":\"hmqrhvthlaiwdc\",\"type\":\"smlzzhzdtxetlgy\"}")
+            "{\"properties\":{\"provisioningStatusMessage\":\"dpuenxkgtlzlmtr\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-11T14:35:37Z\",\"provisioningState\":\"Canceled\",\"repoId\":\"hzkbnbmx\",\"repoName\":\"mwt\",\"repoFullName\":\"eqzusitoqcahfs\",\"onboardingState\":\"NotOnboarded\",\"repoUrl\":\"lreesrfwsszvlcwl\",\"parentOwnerName\":\"olntfx\"},\"id\":\"crqmipfjwfoygi\",\"name\":\"mshxxba\",\"type\":\"zabulnvgsk\"}")
             .toObject(GitHubRepositoryInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.properties().onboardingState());
-        Assertions.assertEquals("csrlzknmzl", model.properties().parentOwnerName());
+        Assertions.assertEquals(DevOpsProvisioningState.CANCELED, model.properties().provisioningState());
+        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.properties().onboardingState());
+        Assertions.assertEquals("olntfx", model.properties().parentOwnerName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitHubRepositoryInner model = new GitHubRepositoryInner().withProperties(
-            new GitHubRepositoryProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
-                .withOnboardingState(OnboardingState.NOT_APPLICABLE).withParentOwnerName("csrlzknmzl"));
+        GitHubRepositoryInner model = new GitHubRepositoryInner()
+            .withProperties(new GitHubRepositoryProperties().withProvisioningState(DevOpsProvisioningState.CANCELED)
+                .withOnboardingState(OnboardingState.NOT_ONBOARDED)
+                .withParentOwnerName("olntfx"));
         model = BinaryData.fromObject(model).toObject(GitHubRepositoryInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.properties().onboardingState());
-        Assertions.assertEquals("csrlzknmzl", model.properties().parentOwnerName());
+        Assertions.assertEquals(DevOpsProvisioningState.CANCELED, model.properties().provisioningState());
+        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.properties().onboardingState());
+        Assertions.assertEquals("olntfx", model.properties().parentOwnerName());
     }
 }

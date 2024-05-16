@@ -8,16 +8,24 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.fluent.models.AlertSyncSettingProperties;
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Represents an alert sync setting.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = AlertSyncSettings.class, visible = true)
 @JsonTypeName("AlertSyncSettings")
 @Fluent
 public final class AlertSyncSettings extends SettingInner {
+    /*
+     * the kind of the settings string
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private SettingKind kind = SettingKind.ALERT_SYNC_SETTINGS;
+
     /*
      * Alert sync setting data
      */
@@ -28,6 +36,16 @@ public final class AlertSyncSettings extends SettingInner {
      * Creates an instance of AlertSyncSettings class.
      */
     public AlertSyncSettings() {
+    }
+
+    /**
+     * Get the kind property: the kind of the settings string.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public SettingKind kind() {
+        return this.kind;
     }
 
     /**

@@ -12,18 +12,18 @@ public final class DefenderCspmAwsOfferingDataSensitivityDiscoveryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderCspmAwsOfferingDataSensitivityDiscovery model
-            = BinaryData.fromString("{\"enabled\":false,\"cloudRoleArn\":\"q\"}")
+            = BinaryData.fromString("{\"enabled\":true,\"cloudRoleArn\":\"urhzzf\"}")
                 .toObject(DefenderCspmAwsOfferingDataSensitivityDiscovery.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("q", model.cloudRoleArn());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("urhzzf", model.cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmAwsOfferingDataSensitivityDiscovery model
-            = new DefenderCspmAwsOfferingDataSensitivityDiscovery().withEnabled(false).withCloudRoleArn("q");
+            = new DefenderCspmAwsOfferingDataSensitivityDiscovery().withEnabled(true).withCloudRoleArn("urhzzf");
         model = BinaryData.fromObject(model).toObject(DefenderCspmAwsOfferingDataSensitivityDiscovery.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("q", model.cloudRoleArn());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("urhzzf", model.cloudRoleArn());
     }
 }

@@ -22,8 +22,7 @@ public final class JitNetworkAccessRequestPort {
     private int number;
 
     /*
-     * Mutually exclusive with the "allowedSourceAddressPrefixes" parameter. Should be an IP address or CIDR, for
-     * example "192.168.0.3" or "192.168.0.0/16".
+     * Mutually exclusive with the "allowedSourceAddressPrefixes" parameter. Should be an IP address or CIDR, for example "192.168.0.3" or "192.168.0.0/16".
      */
     @JsonProperty(value = "allowedSourceAddressPrefix")
     private String allowedSourceAddressPrefix;
@@ -217,16 +216,19 @@ public final class JitNetworkAccessRequestPort {
      */
     public void validate() {
         if (endTimeUtc() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property endTimeUtc in model JitNetworkAccessRequestPort"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endTimeUtc in model JitNetworkAccessRequestPort"));
         }
         if (status() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property status in model JitNetworkAccessRequestPort"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model JitNetworkAccessRequestPort"));
         }
         if (statusReason() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property statusReason in model JitNetworkAccessRequestPort"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property statusReason in model JitNetworkAccessRequestPort"));
         }
     }
 

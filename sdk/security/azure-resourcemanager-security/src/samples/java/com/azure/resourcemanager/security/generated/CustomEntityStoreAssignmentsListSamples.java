@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class CustomEntityStoreAssignmentsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
-     * CustomEntityStoreAssignments/customEntityStoreAssignmentListBySubscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomEntityStoreAssignments/customEntityStoreAssignmentListBySubscription_example.json
      */
     /**
      * Sample code: List custom entity store assignments in a subscription.

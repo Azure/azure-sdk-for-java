@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ApplicationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
-     * ListBySubscriptionApplications_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/ListBySubscriptionApplications_example.json
      */
     /**
      * Sample code: List applications security by subscription level scope.

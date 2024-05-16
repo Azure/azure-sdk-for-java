@@ -95,8 +95,9 @@ public final class SecurityAssessmentProperties extends SecurityAssessmentProper
     public void validate() {
         super.validate();
         if (status() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property status in model SecurityAssessmentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model SecurityAssessmentProperties"));
         } else {
             status().validate();
         }

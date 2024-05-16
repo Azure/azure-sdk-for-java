@@ -7,16 +7,28 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Details of the On Premise Sql resource that was assessed.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "source")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "source",
+    defaultImpl = OnPremiseSqlResourceDetails.class,
+    visible = true)
 @JsonTypeName("OnPremiseSql")
 @Fluent
 public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails {
+    /*
+     * The platform where the assessed resource resides
+     */
+    @JsonTypeId
+    @JsonProperty(value = "source", required = true)
+    private Source source = Source.ON_PREMISE_SQL;
+
     /*
      * The Sql server name installed on the machine
      */
@@ -33,6 +45,16 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
      * Creates an instance of OnPremiseSqlResourceDetails class.
      */
     public OnPremiseSqlResourceDetails() {
+    }
+
+    /**
+     * Get the source property: The platform where the assessed resource resides.
+     * 
+     * @return the source value.
+     */
+    @Override
+    public Source source() {
+        return this.source;
     }
 
     /**
@@ -120,12 +142,14 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
     public void validate() {
         super.validate();
         if (serverName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property serverName in model OnPremiseSqlResourceDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverName in model OnPremiseSqlResourceDetails"));
         }
         if (databaseName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property databaseName in model OnPremiseSqlResourceDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property databaseName in model OnPremiseSqlResourceDetails"));
         }
     }
 
