@@ -3,7 +3,6 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.models.InputTextItem;
 import org.junit.jupiter.api.Test;
 import com.azure.ai.translation.text.models.BreakSentenceItem;
 

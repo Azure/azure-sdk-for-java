@@ -3,7 +3,6 @@
 package com.azure.ai.translation.text;
 
 import com.azure.ai.translation.text.models.DictionaryLookupItem;
-import com.azure.ai.translation.text.models.InputTextItem;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

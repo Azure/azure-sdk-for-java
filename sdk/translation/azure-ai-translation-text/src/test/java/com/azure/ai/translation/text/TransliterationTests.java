@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.TransliteratedText;
 import org.junit.jupiter.api.Test;
 
