@@ -27,7 +27,7 @@ steps:
       workingDirectory: ${{ parameters.workingDirectory }}
     - task: Powershell@2
       inputs:
-        filePath: ./eng/common/scripts/Create-APIReview.ps1
+        filePath: ${{ parameters.SourceRootPath }}/eng/common/scripts/Create-APIReview.ps1
         arguments: >
           -ArtifactList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object Name)
           -ArtifactPath ${{parameters.ArtifactPath}}
@@ -41,7 +41,6 @@ steps:
           -RepoName '$(Build.Repository.Name)'    
           -MarkPackageAsShipped $${{parameters.MarkPackageAsShipped}}
         pwsh: true
-      workingDirectory: ${{ parameters.SourceRootPath }}
       displayName: Create API Review
       condition: >-
         and(
