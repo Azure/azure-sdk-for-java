@@ -23,13 +23,13 @@ steps:
     azureSubscription: 'Azure SDK Artifacts'
     ScriptType: 'FilePath'
     ScriptPath: ${{ parameters.ScriptPath }}
-    azurePowerShellVersion: LatestVersion
-    pwsh: true
     ScriptArguments: >
       -AzCopy $(Resolve-Path "$(Build.BinariesDirectory)/azcopy/azcopy_windows_amd64_*/azcopy.exe")[0]
       -DocLocation "${{ parameters.FolderForUpload }}"
       -BlobName "${{ parameters.BlobName }}"
       -PublicArtifactLocation "${{ parameters.ArtifactLocation }}"
       -RepoReplaceRegex "(https://github.com/${{ parameters.RepoId }}/(?:blob|tree)/)$(DefaultBranch)"
+    azurePowerShellVersion: LatestVersion
+    pwsh: true
     env:
       AZCOPY_AUTO_LOGIN_TYPE: 'PSCRED'
