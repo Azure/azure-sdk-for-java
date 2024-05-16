@@ -32,4 +32,4 @@ steps:
       -PublicArtifactLocation "${{ parameters.ArtifactLocation }}"
       -RepoReplaceRegex "(https://github.com/${{ parameters.RepoId }}/(?:blob|tree)/)$(DefaultBranch)"
     env:
-        AZCOPY_AUTO_LOGIN_TYPE: 'PSCRED'
+      AZCOPY_AUTO_LOGIN_TYPE: 'PSCRED'
