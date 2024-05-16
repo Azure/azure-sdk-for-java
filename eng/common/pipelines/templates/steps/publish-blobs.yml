@@ -17,6 +17,8 @@ steps:
   displayName: Download and Extract azcopy Zip
 
 - task: AzureCLI@2
+  displayName: 'Copy Docs to Blob'
+  continueOnError: false
   inputs:
     azureSubscription: 'Azure SDK Artifacts'
     scriptType: pscore
@@ -28,5 +30,3 @@ steps:
       -BlobName "${{ parameters.BlobName }}"
       -PublicArtifactLocation "${{ parameters.ArtifactLocation }}"
       -RepoReplaceRegex "(https://github.com/${{ parameters.RepoId }}/(?:blob|tree)/)$(DefaultBranch)"
-  displayName: 'Copy Docs to Blob'
-  continueOnError: false
