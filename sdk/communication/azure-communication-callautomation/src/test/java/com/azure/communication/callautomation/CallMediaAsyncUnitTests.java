@@ -18,9 +18,11 @@ import com.azure.communication.callautomation.models.RecognitionChoice;
 import com.azure.communication.callautomation.models.RecognizeInputType;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SsmlSource;
-import com.azure.communication.callautomation.models.StartHoldMusicOptions;
+/**import com.azure.communication.callautomation.models.StartHoldMusicOptions;*/
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
+import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
+import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.VoiceKind;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -449,5 +451,30 @@ public class CallMediaAsyncUnitTests {
         StepVerifier.create(
                 callMedia.updateTranscription("en-US")
             ).verifyComplete();
+    }
+
+    @Test
+    public void startMediaStreamingWithResponse() {
+        callMedia = getMockCallMedia(202);
+        StartMediaStreamingOptions options = new StartMediaStreamingOptions();
+        options.setOperationCallbackUrl("https://localhost");
+        options.setOperationContext("operationContext");
+        StepVerifier.create(
+                callMedia.startMediaStreamingWithResponseAsync(options))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode())
+            )
+            .verifyComplete();
+    }
+
+    @Test
+    public void stopMediaStreamingWithResponse() {
+        callMedia = getMockCallMedia(202);
+        StopMediaStreamingOptions options = new StopMediaStreamingOptions();
+        options.setOperationCallbackUrl("https://localhost");
+        StepVerifier.create(
+                callMedia.stopMediaStreamingWithResponseAsync(options))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode())
+            )
+            .verifyComplete();
     }
 }
