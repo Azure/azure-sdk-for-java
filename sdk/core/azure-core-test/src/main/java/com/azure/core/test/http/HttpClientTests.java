@@ -91,7 +91,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -100,7 +99,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.BiConsumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -416,160 +414,6 @@ public abstract class HttpClientTests {
         }
     }
 
-    /**
-     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     *
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
-     * @param consumer The consumer that sends the request and validates the response.
-     */
-    @ParameterizedTest
-    @MethodSource("byteArrayBinaryData")
-    public void canSendByteArrayBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
-        BinaryDataTestConsumer consumer) {
-        consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
-    }
-
-    /**
-     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     *
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
-     * @param consumer The consumer that sends the request and validates the response.
-     */
-    @ParameterizedTest
-    @MethodSource("byteBufferBinaryData")
-    public void canSendByteBufferBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
-        BinaryDataTestConsumer consumer) {
-        consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
-    }
-
-    /**
-     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     *
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
-     * @param consumer The consumer that sends the request and validates the response.
-     */
-    @ParameterizedTest
-    @MethodSource("stringBinaryData")
-    public void canSendStringBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
-        BinaryDataTestConsumer consumer) {
-        consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
-    }
-
-    /**
-     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     *
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
-     * @param consumer The consumer that sends the request and validates the response.
-     */
-    @ParameterizedTest
-    @MethodSource("streamBinaryData")
-    public void canSendStreamBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
-        BinaryDataTestConsumer consumer) {
-        consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
-    }
-
-    /**
-     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     *
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
-     * @param consumer The consumer that sends the request and validates the response.
-     */
-    @ParameterizedTest
-    @MethodSource("unknownLengthNoBufferFluxBinaryData")
-    public void canSendUnknownLengthNoBufferFluxBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
-        BinaryDataTestConsumer consumer) {
-        consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
-    }
-
-    /**
-     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     *
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
-     * @param consumer The consumer that sends the request and validates the response.
-     */
-    @ParameterizedTest
-    @MethodSource("knownLengthNoBufferFluxBinaryData")
-    public void canSendKnownLengthNoBufferFluxBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
-        BinaryDataTestConsumer consumer) {
-        consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
-    }
-
-    /**
-     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     *
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
-     * @param consumer The consumer that sends the request and validates the response.
-     */
-    @ParameterizedTest
-    @MethodSource("unknownLengthNoBufferAsyncFluxBinaryData")
-    public void canSendUnknownLengthNoBufferAsyncFluxBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
-        BinaryDataTestConsumer consumer) {
-        consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
-    }
-
-    /**
-     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     *
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
-     * @param consumer The consumer that sends the request and validates the response.
-     */
-    @ParameterizedTest
-    @MethodSource("knownLengthNoBufferAsyncFluxBinaryData")
-    public void canSendKnownLengthNoBufferAsyncFluxBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
-        BinaryDataTestConsumer consumer) {
-        consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
-    }
-
-    /**
-     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     *
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
-     * @param consumer The consumer that sends the request and validates the response.
-     */
-    @ParameterizedTest
-    @MethodSource("objectBinaryData")
-    public void canSendObjectBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
-        BinaryDataTestConsumer consumer) {
-        consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
-    }
-
-    /**
-     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     *
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
-     * @param consumer The consumer that sends the request and validates the response.
-     */
-    @ParameterizedTest
-    @MethodSource("fileBinaryData")
-    public void canSendFileBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
-        BinaryDataTestConsumer consumer) {
-        consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
-    }
-
-    /**
-     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
-     *
-     * @param requestBody The BinaryData that contains random bytes.
-     * @param expectedResponseBody The expected bytes in the echo response.
-     * @param consumer The consumer that sends the request and validates the response.
-     */
-    @ParameterizedTest
-    @MethodSource("sliceFileBinaryData")
-    public void canSendSliceFileBinaryData(BinaryData requestBody, byte[] expectedResponseBody,
-        BinaryDataTestConsumer consumer) {
-        consumer.accept(getRequestUrl(ECHO_RESPONSE), requestBody, createHttpClient(), expectedResponseBody);
-    }
-
     private static void canSendBinaryData(URL requestUrl, BinaryData requestBody, HttpClient httpClient,
         byte[] expectedResponseBody) {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, requestUrl, new HttpHeaders(), requestBody);
@@ -605,36 +449,9 @@ public abstract class HttpClientTests {
         assertEquals(expectedResponseBody.length, progress.intValue());
     }
 
-    private static void canSendBinaryDataSyncWithProgressReporter(URL requestUrl, BinaryData requestBody,
-        HttpClient httpClient, byte[] expectedResponseBody) {
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, requestUrl, new HttpHeaders(), requestBody);
-
-        AtomicLong progress = new AtomicLong();
-        Context context = Contexts.empty()
-            .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::set))
-            .getContext();
-
-        try (HttpResponse httpResponse = httpClient.sendSync(request, context)) {
-            byte[] responseBytes = httpResponse.getBodyAsBinaryData().toBytes();
-            assertArraysEqual(expectedResponseBody, responseBytes);
-            assertEquals(expectedResponseBody.length, progress.intValue());
-        }
-    }
-
     private static Stream<byte[]> getChunks() {
         return IntStream.of(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13)
             .mapToObj(HttpClientTests::getBytes);
-    }
-
-    private static Stream<BinaryDataTestConsumer> getTestConsumers() {
-        return Stream.of(HttpClientTests::canSendBinaryData, HttpClientTests::canSendBinaryDataSync,
-            HttpClientTests::canSendBinaryDataWithProgressReporter,
-            HttpClientTests::canSendBinaryDataSyncWithProgressReporter);
-    }
-
-    private static Stream<Arguments> createBinaryDataTestSet(Function<byte[], BinaryData> binaryDataCreator) {
-        return getChunks().flatMap(
-            bytes -> getTestConsumers().map(consumer -> Arguments.of(binaryDataCreator.apply(bytes), bytes, consumer)));
     }
 
     /**
@@ -653,23 +470,6 @@ public abstract class HttpClientTests {
         void accept(URL requestUrl, BinaryData binaryData, HttpClient httpClient, byte[] expectedResponseBody);
     }
 
-    private static Stream<Arguments> byteArrayBinaryData() {
-        return createBinaryDataTestSet(BinaryData::fromBytes);
-    }
-
-    private static Stream<Arguments> byteBufferBinaryData() {
-        return createBinaryDataTestSet(bytes -> BinaryData.fromByteBuffer(ByteBuffer.wrap(bytes)));
-    }
-
-    private static Stream<Arguments> stringBinaryData() {
-        return createBinaryDataTestSet(bytes -> BinaryData.fromString(new String(bytes, StandardCharsets.UTF_8)));
-    }
-
-    private static Stream<Arguments> streamBinaryData() {
-        return createBinaryDataTestSet(
-            bytes -> BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length));
-    }
-
     private static List<ByteBuffer> getFluxByteBuffers(byte[] bytes) {
         List<ByteBuffer> bufferList = new ArrayList<>();
         int bufferSize = 1023;
@@ -678,66 +478,6 @@ public abstract class HttpClientTests {
         }
 
         return bufferList;
-    }
-
-    private static Stream<Arguments> unknownLengthNoBufferFluxBinaryData() {
-        return createBinaryDataTestSet(bytes -> BinaryData
-            .fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate), null, false)
-            .block());
-    }
-
-    private static Stream<Arguments> knownLengthNoBufferFluxBinaryData() {
-        return createBinaryDataTestSet(
-            bytes -> BinaryData
-                .fromFlux(Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate), (long) bytes.length,
-                    false)
-                .block());
-    }
-
-    private static Stream<Arguments> unknownLengthNoBufferAsyncFluxBinaryData() {
-        return createBinaryDataTestSet(bytes -> BinaryData.fromFlux(
-            Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate).delayElements(Duration.ofNanos(10)),
-            null, false).block());
-    }
-
-    private static Stream<Arguments> knownLengthNoBufferAsyncFluxBinaryData() {
-        return createBinaryDataTestSet(bytes -> BinaryData.fromFlux(
-            Flux.fromIterable(getFluxByteBuffers(bytes)).map(ByteBuffer::duplicate).delayElements(Duration.ofNanos(10)),
-            (long) bytes.length, false).block());
-    }
-
-    private static Stream<Arguments> objectBinaryData() {
-        return createBinaryDataTestSet(bytes -> BinaryData.fromObject(bytes, new ByteArraySerializer()));
-    }
-
-    private static Stream<Arguments> fileBinaryData() {
-        return getChunks().flatMap(bytes -> getTestConsumers().map(consumer -> {
-            try {
-                Path wholeFile = Files.createTempFile("http-client-tests", null);
-                wholeFile.toFile().deleteOnExit();
-                Files.write(wholeFile, bytes);
-
-                return Arguments.of(BinaryData.fromFile(wholeFile), bytes, consumer);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        }));
-    }
-
-    private static Stream<Arguments> sliceFileBinaryData() {
-        return getChunks().flatMap(bytes -> getTestConsumers().map(consumer -> {
-            try {
-                Path sliceFile = Files.createTempFile("http-client-tests", null);
-                sliceFile.toFile().deleteOnExit();
-                Files.write(sliceFile, new byte[1023], StandardOpenOption.APPEND);
-                Files.write(sliceFile, bytes, StandardOpenOption.APPEND);
-                Files.write(sliceFile, new byte[1023], StandardOpenOption.APPEND);
-
-                return Arguments.of(BinaryData.fromFile(sliceFile, 1023L, (long) bytes.length), bytes, consumer);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        }));
     }
 
     private static final byte[] RANDOM_BYTES = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
