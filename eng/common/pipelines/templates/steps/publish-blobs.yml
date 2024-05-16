@@ -31,5 +31,5 @@ steps:
       -RepoReplaceRegex "(https://github.com/${{ parameters.RepoId }}/(?:blob|tree)/)$(DefaultBranch)""
     azurePowerShellVersion: latestVersion
     pwsh: true
-    eng:
+    env:
       AZCOPY_AUTO_LOGIN_TYPE: 'PSCRED'
