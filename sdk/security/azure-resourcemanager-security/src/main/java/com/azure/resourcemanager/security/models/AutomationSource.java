@@ -22,8 +22,7 @@ public final class AutomationSource {
     private EventSource eventSource;
 
     /*
-     * A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule
-     * sets (logical 'or').
+     * A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or').
      */
     @JsonProperty(value = "ruleSets")
     private List<AutomationRuleSet> ruleSets;

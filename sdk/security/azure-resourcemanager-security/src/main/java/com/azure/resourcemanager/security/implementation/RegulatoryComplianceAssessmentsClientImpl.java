@@ -56,8 +56,8 @@ public final class RegulatoryComplianceAssessmentsClientImpl implements Regulato
     }
 
     /**
-     * The interface defining all the services for SecurityCenterRegulatoryComplianceAssessments to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for SecurityCenterRegulatoryComplianceAssessments to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterRegula")

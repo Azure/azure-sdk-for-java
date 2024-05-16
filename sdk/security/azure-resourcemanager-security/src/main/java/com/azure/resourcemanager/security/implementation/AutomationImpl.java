@@ -115,14 +115,18 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
     }
 
     public Automation create() {
-        this.innerObject = serviceManager.serviceClient().getAutomations()
-            .createOrUpdateWithResponse(resourceGroupName, automationName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomations()
+            .createOrUpdateWithResponse(resourceGroupName, automationName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Automation create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAutomations()
-            .createOrUpdateWithResponse(resourceGroupName, automationName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomations()
+            .createOrUpdateWithResponse(resourceGroupName, automationName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -138,14 +142,18 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
     }
 
     public Automation apply() {
-        this.innerObject = serviceManager.serviceClient().getAutomations()
-            .updateWithResponse(resourceGroupName, automationName, updateAutomation, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomations()
+            .updateWithResponse(resourceGroupName, automationName, updateAutomation, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Automation apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAutomations()
-            .updateWithResponse(resourceGroupName, automationName, updateAutomation, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomations()
+            .updateWithResponse(resourceGroupName, automationName, updateAutomation, context)
+            .getValue();
         return this;
     }
 
@@ -157,20 +165,24 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
     }
 
     public Automation refresh() {
-        this.innerObject = serviceManager.serviceClient().getAutomations()
-            .getByResourceGroupWithResponse(resourceGroupName, automationName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomations()
+            .getByResourceGroupWithResponse(resourceGroupName, automationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Automation refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAutomations()
-            .getByResourceGroupWithResponse(resourceGroupName, automationName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomations()
+            .getByResourceGroupWithResponse(resourceGroupName, automationName, context)
+            .getValue();
         return this;
     }
 
     public Response<AutomationValidationStatus> validateWithResponse(AutomationInner automation, Context context) {
-        return serviceManager.automations().validateWithResponse(resourceGroupName, automationName, automation,
-            context);
+        return serviceManager.automations()
+            .validateWithResponse(resourceGroupName, automationName, automation, context);
     }
 
     public AutomationValidationStatus validate(AutomationInner automation) {

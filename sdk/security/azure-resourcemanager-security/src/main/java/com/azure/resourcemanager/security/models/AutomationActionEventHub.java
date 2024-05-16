@@ -6,6 +6,7 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -13,10 +14,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * The target Event Hub to which event data will be exported. To learn more about Microsoft Defender for Cloud
  * continuous export capabilities, visit https://aka.ms/ASCExportLearnMore.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actionType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "actionType",
+    defaultImpl = AutomationActionEventHub.class,
+    visible = true)
 @JsonTypeName("EventHub")
 @Fluent
 public final class AutomationActionEventHub extends AutomationAction {
+    /*
+     * The type of the action that will be triggered by the Automation
+     */
+    @JsonTypeId
+    @JsonProperty(value = "actionType", required = true)
+    private ActionType actionType = ActionType.EVENT_HUB;
+
     /*
      * The target Event Hub Azure Resource ID.
      */
@@ -45,6 +57,16 @@ public final class AutomationActionEventHub extends AutomationAction {
      * Creates an instance of AutomationActionEventHub class.
      */
     public AutomationActionEventHub() {
+    }
+
+    /**
+     * Get the actionType property: The type of the action that will be triggered by the Automation.
+     * 
+     * @return the actionType value.
+     */
+    @Override
+    public ActionType actionType() {
+        return this.actionType;
     }
 
     /**

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class OnUploadPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OnUploadProperties model = BinaryData.fromString("{\"isEnabled\":false,\"capGBPerMonth\":418634069}")
+        OnUploadProperties model = BinaryData.fromString("{\"isEnabled\":false,\"capGBPerMonth\":1422593899}")
             .toObject(OnUploadProperties.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(418634069, model.capGBPerMonth());
+        Assertions.assertEquals(1422593899, model.capGBPerMonth());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OnUploadProperties model = new OnUploadProperties().withIsEnabled(false).withCapGBPerMonth(418634069);
+        OnUploadProperties model = new OnUploadProperties().withIsEnabled(false).withCapGBPerMonth(1422593899);
         model = BinaryData.fromObject(model).toObject(OnUploadProperties.class);
         Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals(418634069, model.capGBPerMonth());
+        Assertions.assertEquals(1422593899, model.capGBPerMonth());
     }
 }

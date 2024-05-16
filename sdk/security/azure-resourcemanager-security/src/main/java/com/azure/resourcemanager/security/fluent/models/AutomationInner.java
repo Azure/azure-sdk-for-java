@@ -105,8 +105,8 @@ public final class AutomationInner extends Resource {
 
     /**
      * Get the scopes property: A collection of scopes on which the security automations logic is applied. Supported
-     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply
-     * on defined scopes.
+     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
+     * defined scopes.
      * 
      * @return the scopes value.
      */
@@ -116,8 +116,8 @@ public final class AutomationInner extends Resource {
 
     /**
      * Set the scopes property: A collection of scopes on which the security automations logic is applied. Supported
-     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply
-     * on defined scopes.
+     * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
+     * defined scopes.
      * 
      * @param scopes the scopes value to set.
      * @return the AutomationInner object itself.

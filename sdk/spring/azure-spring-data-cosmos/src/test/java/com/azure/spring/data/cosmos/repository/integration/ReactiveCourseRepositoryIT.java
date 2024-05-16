@@ -423,4 +423,37 @@ public class ReactiveCourseRepositoryIT {
         assertThat(queryDiagnostics).contains("\"UtilizedCompositeIndexes\"");
         assertThat(queryDiagnostics).contains("\"PotentialCompositeIndexes\"");
     }
+
+    @Test
+    public void testFindAllByStreetNotNull() {
+        Course TEST_COURSE_TEMP = new Course(COURSE_ID_5, null, DEPARTMENT_NAME_1);
+        final Mono<Course> saveFlux = repository.save(TEST_COURSE_TEMP);
+        StepVerifier.create(saveFlux).expectNextMatches(course -> {
+            if (course.getCourseId().equals(COURSE_ID_5)) {
+                return true;
+            }
+            return false;
+        }).verifyComplete();
+        final Flux<Course> result = repository.findAllByNameNotNull();
+        StepVerifier.create(result)
+            .expectNext(COURSE_1)
+            .expectNext(COURSE_2)
+            .expectNext(COURSE_3)
+            .expectNext(COURSE_4).verifyComplete();
+
+    }
+
+    @Test
+    public void testCountByStreetNotNull() {
+        Course TEST_COURSE_TEMP = new Course(COURSE_ID_5, null, DEPARTMENT_NAME_1);
+        final Mono<Course> saveFlux = repository.save(TEST_COURSE_TEMP);
+        StepVerifier.create(saveFlux).expectNextMatches(course -> {
+            if (course.getCourseId().equals(COURSE_ID_5)) {
+                return true;
+            }
+            return false;
+        }).verifyComplete();
+        final Mono<Long> result = repository.countByNameNotNull();
+        StepVerifier.create(result).expectNext(4L).verifyComplete();
+    }
 }

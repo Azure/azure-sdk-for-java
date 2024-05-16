@@ -18,26 +18,26 @@ public final class SecurityConnectorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecurityConnectorInner model = BinaryData.fromString(
-            "{\"properties\":{\"hierarchyIdentifier\":\"rctat\",\"hierarchyIdentifierTrialEndDate\":\"2021-04-07T20:43:54Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"rlcyrduc\"},{\"offeringType\":\"CloudOffering\",\"description\":\"go\"},{\"offeringType\":\"CloudOffering\",\"description\":\"y\"},{\"offeringType\":\"CloudOffering\",\"description\":\"rucvcrrpcjttbs\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"jeaq\",\"tags\":{\"oxmlghktuidv\":\"vvf\",\"lpdwwexymzvlazi\":\"ma\"},\"id\":\"bhpwvqsgnyy\",\"name\":\"uzivensrpmeyyvp\",\"type\":\"patlbijp\"}")
+            "{\"properties\":{\"hierarchyIdentifier\":\"yzihgrkyuizabsn\",\"hierarchyIdentifierTrialEndDate\":\"2021-11-10T17:16:29Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"evy\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"hsgz\",\"tags\":{\"gleohi\":\"bgomfgbegl\",\"eebtijvacvb\":\"etnluankrrfx\",\"evehjkuyxoaf\":\"qzbqqxlajrnwxa\"},\"id\":\"aoqltfaey\",\"name\":\"inmfgvxirp\",\"type\":\"hriypoqeyhlqhy\"}")
             .toObject(SecurityConnectorInner.class);
-        Assertions.assertEquals("jeaq", model.location());
-        Assertions.assertEquals("vvf", model.tags().get("oxmlghktuidv"));
-        Assertions.assertEquals("rctat", model.hierarchyIdentifier());
+        Assertions.assertEquals("hsgz", model.location());
+        Assertions.assertEquals("bgomfgbegl", model.tags().get("gleohi"));
+        Assertions.assertEquals("yzihgrkyuizabsn", model.hierarchyIdentifier());
         Assertions.assertEquals(CloudName.GITHUB, model.environmentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityConnectorInner model = new SecurityConnectorInner().withLocation("jeaq")
-            .withTags(mapOf("oxmlghktuidv", "vvf", "lpdwwexymzvlazi", "ma")).withHierarchyIdentifier("rctat")
+        SecurityConnectorInner model = new SecurityConnectorInner().withLocation("hsgz")
+            .withTags(mapOf("gleohi", "bgomfgbegl", "eebtijvacvb", "etnluankrrfx", "evehjkuyxoaf", "qzbqqxlajrnwxa"))
+            .withHierarchyIdentifier("yzihgrkyuizabsn")
             .withEnvironmentName(CloudName.GITHUB)
-            .withOfferings(
-                Arrays.asList(new CloudOffering(), new CloudOffering(), new CloudOffering(), new CloudOffering()))
+            .withOfferings(Arrays.asList(new CloudOffering()))
             .withEnvironmentData(new EnvironmentData());
         model = BinaryData.fromObject(model).toObject(SecurityConnectorInner.class);
-        Assertions.assertEquals("jeaq", model.location());
-        Assertions.assertEquals("vvf", model.tags().get("oxmlghktuidv"));
-        Assertions.assertEquals("rctat", model.hierarchyIdentifier());
+        Assertions.assertEquals("hsgz", model.location());
+        Assertions.assertEquals("bgomfgbegl", model.tags().get("gleohi"));
+        Assertions.assertEquals("yzihgrkyuizabsn", model.hierarchyIdentifier());
         Assertions.assertEquals(CloudName.GITHUB, model.environmentName());
     }
 

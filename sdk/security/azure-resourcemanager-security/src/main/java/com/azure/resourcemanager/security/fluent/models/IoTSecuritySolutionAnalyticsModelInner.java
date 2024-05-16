@@ -20,7 +20,7 @@ import java.util.List;
 @Fluent
 public final class IoTSecuritySolutionAnalyticsModelInner extends ProxyResource {
     /*
-     * Security Solution Aggregated Alert data
+     * Security Solution  Aggregated Alert data
      */
     @JsonProperty(value = "properties")
     private IoTSecuritySolutionAnalyticsModelProperties innerProperties;

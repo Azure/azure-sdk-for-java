@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class GovernanceRuleOwnerSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GovernanceRuleOwnerSource model = BinaryData.fromString("{\"type\":\"Manually\",\"value\":\"ddhcratizzr\"}")
+        GovernanceRuleOwnerSource model = BinaryData.fromString("{\"type\":\"Manually\",\"value\":\"dxrbuukzcle\"}")
             .toObject(GovernanceRuleOwnerSource.class);
         Assertions.assertEquals(GovernanceRuleOwnerSourceType.MANUALLY, model.type());
-        Assertions.assertEquals("ddhcratizzr", model.value());
+        Assertions.assertEquals("dxrbuukzcle", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GovernanceRuleOwnerSource model
-            = new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.MANUALLY).withValue("ddhcratizzr");
+            = new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.MANUALLY).withValue("dxrbuukzcle");
         model = BinaryData.fromObject(model).toObject(GovernanceRuleOwnerSource.class);
         Assertions.assertEquals(GovernanceRuleOwnerSourceType.MANUALLY, model.type());
-        Assertions.assertEquals("ddhcratizzr", model.value());
+        Assertions.assertEquals("dxrbuukzcle", model.value());
     }
 }

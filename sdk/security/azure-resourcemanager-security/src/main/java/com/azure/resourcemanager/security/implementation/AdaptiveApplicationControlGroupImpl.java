@@ -114,14 +114,18 @@ public final class AdaptiveApplicationControlGroupImpl implements AdaptiveApplic
     }
 
     public AdaptiveApplicationControlGroup create() {
-        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
-            .putWithResponse(ascLocation, groupName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdaptiveApplicationControls()
+            .putWithResponse(ascLocation, groupName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public AdaptiveApplicationControlGroup create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
-            .putWithResponse(ascLocation, groupName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdaptiveApplicationControls()
+            .putWithResponse(ascLocation, groupName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -137,14 +141,18 @@ public final class AdaptiveApplicationControlGroupImpl implements AdaptiveApplic
     }
 
     public AdaptiveApplicationControlGroup apply() {
-        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
-            .putWithResponse(ascLocation, groupName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdaptiveApplicationControls()
+            .putWithResponse(ascLocation, groupName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public AdaptiveApplicationControlGroup apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
-            .putWithResponse(ascLocation, groupName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdaptiveApplicationControls()
+            .putWithResponse(ascLocation, groupName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -157,14 +165,18 @@ public final class AdaptiveApplicationControlGroupImpl implements AdaptiveApplic
     }
 
     public AdaptiveApplicationControlGroup refresh() {
-        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
-            .getWithResponse(ascLocation, groupName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdaptiveApplicationControls()
+            .getWithResponse(ascLocation, groupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AdaptiveApplicationControlGroup refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAdaptiveApplicationControls()
-            .getWithResponse(ascLocation, groupName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAdaptiveApplicationControls()
+            .getWithResponse(ascLocation, groupName, context)
+            .getValue();
         return this;
     }
 

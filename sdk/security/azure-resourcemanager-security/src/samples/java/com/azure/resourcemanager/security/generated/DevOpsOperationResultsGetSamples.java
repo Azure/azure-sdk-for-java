@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class DevOpsOperationResultsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-09-01-preview/examples/
-     * SecurityConnectorsDevOps/GetDevOpsOperationResultsFailed_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetDevOpsOperationResultsFailed_example.json
      */
     /**
      * Sample code: Get_DevOpsOperationResults_Failed.
@@ -19,14 +17,13 @@ public final class DevOpsOperationResultsGetSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getDevOpsOperationResultsFailed(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.devOpsOperationResults().getWithResponse("myRg", "mySecurityConnectorName",
-            "8d4caace-e7b3-4b3e-af99-73f76829ebcf", com.azure.core.util.Context.NONE);
+        manager.devOpsOperationResults()
+            .getWithResponse("myRg", "mySecurityConnectorName", "8d4caace-e7b3-4b3e-af99-73f76829ebcf",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-09-01-preview/examples/
-     * SecurityConnectorsDevOps/GetDevOpsOperationResultsSucceeded_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetDevOpsOperationResultsSucceeded_example.json
      */
     /**
      * Sample code: Get_DevOpsOperationResults_Succeeded.
@@ -34,7 +31,8 @@ public final class DevOpsOperationResultsGetSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getDevOpsOperationResultsSucceeded(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.devOpsOperationResults().getWithResponse("myRg", "mySecurityConnectorName",
-            "4e826cf1-5c36-4808-a7d2-fb4f5170978b", com.azure.core.util.Context.NONE);
+        manager.devOpsOperationResults()
+            .getWithResponse("myRg", "mySecurityConnectorName", "4e826cf1-5c36-4808-a7d2-fb4f5170978b",
+                com.azure.core.util.Context.NONE);
     }
 }
