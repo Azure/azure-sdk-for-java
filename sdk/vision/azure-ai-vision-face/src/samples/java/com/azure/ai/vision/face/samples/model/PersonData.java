@@ -5,10 +5,7 @@ package com.azure.ai.vision.face.samples.model;
 
 import com.azure.ai.vision.face.models.FaceOperationResult;
 import com.azure.ai.vision.face.models.PersonDirectoryFace;
-import com.azure.ai.vision.face.models.PersonDirectoryPerson;
 import com.azure.core.util.polling.SyncPoller;
-
-import java.time.Duration;
 
 public class PersonData {
     private final String name;

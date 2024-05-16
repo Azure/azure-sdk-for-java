@@ -3,6 +3,8 @@
 
 package com.azure.ai.vision.face.samples;
 
+//import com.azure.ai.vision.face.*;
+
 import com.azure.ai.vision.face.FaceAdministrationClient;
 import com.azure.ai.vision.face.FaceAdministrationClientBuilder;
 import com.azure.ai.vision.face.FaceClient;
@@ -35,7 +37,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.vision.face.samples.utils.Utils.*;
+import static com.azure.ai.vision.face.samples.utils.Utils.log;
+import static com.azure.ai.vision.face.samples.utils.Utils.logObject;
+import static com.azure.ai.vision.face.samples.utils.Utils.safelyRun;
+
 
 public class IdentifyAgainstDynamicPersonDirectory {
     private static final RuntimeException[] EXCEPTION_CONTAINER = new RuntimeException[1];
@@ -200,8 +205,8 @@ public class IdentifyAgainstDynamicPersonDirectory {
         logObject("List DynamicPersonGroup with " + personData.getName() + " ", dynamicPersonGroupNames);
     }
 
-    private static void deleteDynamicPersonGroups
-        (FaceAdministrationClient administrationClient, List<String> dynamicPersonGroupsIds) {
+    private static void deleteDynamicPersonGroups(
+        FaceAdministrationClient administrationClient, List<String> dynamicPersonGroupsIds) {
 
         log("Deleting DynamicPeronGroups: " + dynamicPersonGroupsIds.size());
         List<SyncPoller<FaceOperationResult, Void>> pollers = dynamicPersonGroupsIds.stream()
@@ -321,7 +326,7 @@ public class IdentifyAgainstDynamicPersonDirectory {
     private static Pair<PersonData, SyncPoller<FaceOperationResult, PersonDirectoryPerson>> createPerson(
         FaceAdministrationClient administrationClient, PersonData personData) {
         log("Create Person: " + personData.getName());
-        return Utils.safelyRunWithExceptionCheck(EXCEPTION_CONTAINER, "createPerson", ()->
+        return Utils.safelyRunWithExceptionCheck(EXCEPTION_CONTAINER, "createPerson", () ->
             Pair.of(personData,
                 administrationClient.beginCreatePerson(personData.getName(), personData.getUserData())));
     }
