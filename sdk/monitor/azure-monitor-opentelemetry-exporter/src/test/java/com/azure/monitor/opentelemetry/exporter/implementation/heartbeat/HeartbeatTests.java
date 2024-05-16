@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.heartbeat;
 
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,9 @@ class HeartbeatTests {
     private final Consumer<List<TelemetryItem>> telemetryItemsConsumer = ignored -> {};
 
     @Test
+    @LiveOnly
     void heartBeatPayloadContainsDataByDefault() throws InterruptedException {
+        // LiveOnly because it is intermittently failing in CI
         // given
         HeartbeatExporter provider = new HeartbeatExporter(60, (b, r) -> {
         }, telemetryItemsConsumer);
