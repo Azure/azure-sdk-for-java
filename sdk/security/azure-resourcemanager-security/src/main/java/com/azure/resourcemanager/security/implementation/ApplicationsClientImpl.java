@@ -56,8 +56,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
     }
 
     /**
-     * The interface defining all the services for SecurityCenterApplications to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for SecurityCenterApplications to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterApplic")

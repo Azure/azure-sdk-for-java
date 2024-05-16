@@ -104,8 +104,8 @@ public class AssessmentStatus {
      */
     public void validate() {
         if (code() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property code in model AssessmentStatus"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property code in model AssessmentStatus"));
         }
     }
 

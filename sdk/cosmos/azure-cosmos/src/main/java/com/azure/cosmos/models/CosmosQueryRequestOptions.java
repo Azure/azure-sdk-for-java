@@ -511,6 +511,15 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
+    PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.actualRequestOptions.getPartitionKeyDefinition();
+    }
+
+    CosmosQueryRequestOptions setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
+        return this;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -602,6 +611,16 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public String getRequestContinuation(CosmosQueryRequestOptions options) {
                     return options.getRequestContinuation();
+                }
+
+                @Override
+                public void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition) {
+                    options.setPartitionKeyDefinition(partitionKeyDefinition);
+                }
+
+                @Override
+                public PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options) {
+                    return options.getPartitionKeyDefinition();
                 }
             });
     }

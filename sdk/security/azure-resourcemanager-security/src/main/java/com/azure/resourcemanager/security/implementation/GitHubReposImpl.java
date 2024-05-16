@@ -43,8 +43,8 @@ public final class GitHubReposImpl implements GitHubRepos {
 
     public Response<GitHubRepository> getWithResponse(String resourceGroupName, String securityConnectorName,
         String ownerName, String repoName, Context context) {
-        Response<GitHubRepositoryInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            securityConnectorName, ownerName, repoName, context);
+        Response<GitHubRepositoryInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, securityConnectorName, ownerName, repoName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GitHubRepositoryImpl(inner.getValue(), this.manager()));

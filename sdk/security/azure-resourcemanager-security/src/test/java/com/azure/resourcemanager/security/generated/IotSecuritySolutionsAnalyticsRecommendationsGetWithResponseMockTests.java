@@ -6,52 +6,35 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.IoTSecurityAggregatedRecommendation;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IotSecuritySolutionsAnalyticsRecommendationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"recommendationName\":\"qzlmln\",\"recommendationDisplayName\":\"catkuhs\",\"description\":\"gdkvviilyeshoxf\",\"recommendationTypeId\":\"jdmu\",\"detectedBy\":\"usx\",\"remediationSteps\":\"gozwplxzgzumno\",\"reportedSeverity\":\"Medium\",\"healthyDevices\":5305507363214945840,\"unhealthyDeviceCount\":5100018746064417589,\"logAnalyticsQuery\":\"giq\"},\"tags\":{\"bnhtty\":\"shy\",\"z\":\"zonzsurqcojasfz\"},\"id\":\"carciu\",\"name\":\"xyipdthjfvnhwsgn\",\"type\":\"putfelfchnu\"}";
+            = "{\"properties\":{\"recommendationName\":\"ynoy\",\"recommendationDisplayName\":\"flsmsbnlyoifg\",\"description\":\"zjqthykcvo\",\"recommendationTypeId\":\"cwfzotkxxl\",\"detectedBy\":\"ooxgbsd\",\"remediationSteps\":\"gcvypjhu\",\"reportedSeverity\":\"High\",\"healthyDevices\":4186193399949006969,\"unhealthyDeviceCount\":3588661982854941532,\"logAnalyticsQuery\":\"jcqgzwvxwi\"},\"tags\":{\"qrljdcukylaxrj\":\"ibmjk\"},\"id\":\"qoqovqhgphgx\",\"name\":\"wudgcyqruv\",\"type\":\"mryddnqivahfcq\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IoTSecurityAggregatedRecommendation response = manager.iotSecuritySolutionsAnalyticsRecommendations()
-            .getWithResponse("sht", "syzfeoctrzjw", "zwckzebmbvwdxgyy", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("orwp", "b", "tweobptscruykkie", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("shy", response.tags().get("bnhtty"));
-        Assertions.assertEquals("qzlmln", response.recommendationName());
+        Assertions.assertEquals("ibmjk", response.tags().get("qrljdcukylaxrj"));
+        Assertions.assertEquals("ynoy", response.recommendationName());
     }
 }

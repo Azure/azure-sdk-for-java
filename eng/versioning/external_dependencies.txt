@@ -54,7 +54,7 @@ commons-codec:commons-codec;1.15
 commons-net:commons-net;3.9.0
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
-io.fabric8:kubernetes-client;5.12.3
+io.fabric8:kubernetes-client;6.12.1
 io.micrometer:micrometer-core;1.9.17
 io.micrometer:micrometer-registry-azure-monitor;1.9.17
 io.micrometer:micrometer-registry-graphite;1.9.17
@@ -102,7 +102,7 @@ org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.gmavenplus:gmavenplus-plugin;3.0.2
 org.codehaus.groovy:groovy-jsr223;3.0.19
 org.codehaus.janino:janino;3.1.10
-org.conscrypt:conscrypt-openjdk-uber;2.2.1
+org.conscrypt:conscrypt-openjdk-uber;2.5.2
 org.glassfish.tyrus:tyrus-client;1.16
 org.hibernate.validator:hibernate-validator;6.2.5.Final
 org.javatuples:javatuples;1.2
@@ -380,7 +380,7 @@ cosmos-spark_3-2_org.apache.spark:spark-hive_2.12;3.2.0
 cosmos-spark_3-3_org.apache.spark:spark-hive_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;3.4.0
 cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;3.5.0
-cosmos_org.scala-lang:scala-library;2.12.10
+cosmos_org.scala-lang:scala-library;2.12.19
 cosmos_org.scala-lang.modules:scala-java8-compat_2.12;0.8.0
 cosmos_io.projectreactor:reactor-scala-extensions_2.12;0.8.0
 cosmos_commons-io:commons-io;2.4

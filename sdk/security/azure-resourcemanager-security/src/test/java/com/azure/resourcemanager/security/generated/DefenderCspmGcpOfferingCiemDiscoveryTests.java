@@ -12,21 +12,22 @@ public final class DefenderCspmGcpOfferingCiemDiscoveryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderCspmGcpOfferingCiemDiscovery model = BinaryData.fromString(
-            "{\"workloadIdentityProviderId\":\"kensckh\",\"serviceAccountEmailAddress\":\"carmoyfx\",\"azureActiveDirectoryAppName\":\"wykuqdnd\"}")
+            "{\"workloadIdentityProviderId\":\"dsvcz\",\"serviceAccountEmailAddress\":\"iahuqymjzucw\",\"azureActiveDirectoryAppName\":\"ejjqhddw\"}")
             .toObject(DefenderCspmGcpOfferingCiemDiscovery.class);
-        Assertions.assertEquals("kensckh", model.workloadIdentityProviderId());
-        Assertions.assertEquals("carmoyfx", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("wykuqdnd", model.azureActiveDirectoryAppName());
+        Assertions.assertEquals("dsvcz", model.workloadIdentityProviderId());
+        Assertions.assertEquals("iahuqymjzucw", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("ejjqhddw", model.azureActiveDirectoryAppName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmGcpOfferingCiemDiscovery model
-            = new DefenderCspmGcpOfferingCiemDiscovery().withWorkloadIdentityProviderId("kensckh")
-                .withServiceAccountEmailAddress("carmoyfx").withAzureActiveDirectoryAppName("wykuqdnd");
+            = new DefenderCspmGcpOfferingCiemDiscovery().withWorkloadIdentityProviderId("dsvcz")
+                .withServiceAccountEmailAddress("iahuqymjzucw")
+                .withAzureActiveDirectoryAppName("ejjqhddw");
         model = BinaryData.fromObject(model).toObject(DefenderCspmGcpOfferingCiemDiscovery.class);
-        Assertions.assertEquals("kensckh", model.workloadIdentityProviderId());
-        Assertions.assertEquals("carmoyfx", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("wykuqdnd", model.azureActiveDirectoryAppName());
+        Assertions.assertEquals("dsvcz", model.workloadIdentityProviderId());
+        Assertions.assertEquals("iahuqymjzucw", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("ejjqhddw", model.azureActiveDirectoryAppName());
     }
 }

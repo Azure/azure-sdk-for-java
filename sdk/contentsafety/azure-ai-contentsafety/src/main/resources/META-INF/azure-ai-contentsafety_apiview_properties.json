@@ -1,5 +1,5 @@
 {
-  "flavor": "Azure", 
+  "flavor": "azure", 
   "CrossLanguageDefinitionId": {
     "com.azure.ai.contentsafety.BlocklistAsyncClient": "ContentSafety.BlocklistClient",
     "com.azure.ai.contentsafety.BlocklistAsyncClient.addOrUpdateBlocklistItems": "Customizations.BlocklistClient.addOrUpdateBlocklistItems",

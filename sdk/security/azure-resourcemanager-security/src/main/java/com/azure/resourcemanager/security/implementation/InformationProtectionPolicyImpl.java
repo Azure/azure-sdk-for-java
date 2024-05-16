@@ -76,15 +76,18 @@ public final class InformationProtectionPolicyImpl
     }
 
     public InformationProtectionPolicy create() {
-        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getInformationProtectionPolicies()
             .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public InformationProtectionPolicy create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
-            .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInformationProtectionPolicies()
+            .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -100,15 +103,18 @@ public final class InformationProtectionPolicyImpl
     }
 
     public InformationProtectionPolicy apply() {
-        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getInformationProtectionPolicies()
             .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public InformationProtectionPolicy apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
-            .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInformationProtectionPolicies()
+            .createOrUpdateWithResponse(scope, informationProtectionPolicyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -126,14 +132,18 @@ public final class InformationProtectionPolicyImpl
     }
 
     public InformationProtectionPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
-            .getWithResponse(scope, informationProtectionPolicyName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInformationProtectionPolicies()
+            .getWithResponse(scope, informationProtectionPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public InformationProtectionPolicy refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getInformationProtectionPolicies()
-            .getWithResponse(scope, informationProtectionPolicyName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInformationProtectionPolicies()
+            .getWithResponse(scope, informationProtectionPolicyName, context)
+            .getValue();
         return this;
     }
 

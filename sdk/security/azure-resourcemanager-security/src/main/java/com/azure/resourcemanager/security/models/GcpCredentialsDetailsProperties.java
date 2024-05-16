@@ -7,17 +7,29 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * GCP cloud account connector based service to service credentials, the credentials are composed of the organization
- * ID and a JSON API key (write only).
+ * GCP cloud account connector based service to service credentials, the credentials are composed of the organization ID
+ * and a JSON API key (write only).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authenticationType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "authenticationType",
+    defaultImpl = GcpCredentialsDetailsProperties.class,
+    visible = true)
 @JsonTypeName("gcpCredentials")
 @Fluent
 public final class GcpCredentialsDetailsProperties extends AuthenticationDetailsProperties {
+    /*
+     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization credentials.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "authenticationType", required = true)
+    private AuthenticationType authenticationType = AuthenticationType.GCP_CREDENTIALS;
+
     /*
      * The organization ID of the GCP cloud account
      */
@@ -88,6 +100,17 @@ public final class GcpCredentialsDetailsProperties extends AuthenticationDetails
      * Creates an instance of GcpCredentialsDetailsProperties class.
      */
     public GcpCredentialsDetailsProperties() {
+    }
+
+    /**
+     * Get the authenticationType property: Connect to your cloud account, for AWS use either account credentials or
+     * role-based authentication. For GCP use account organization credentials.
+     * 
+     * @return the authenticationType value.
+     */
+    @Override
+    public AuthenticationType authenticationType() {
+        return this.authenticationType;
     }
 
     /**
@@ -319,48 +342,59 @@ public final class GcpCredentialsDetailsProperties extends AuthenticationDetails
     public void validate() {
         super.validate();
         if (organizationId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property organizationId in model GcpCredentialsDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property organizationId in model GcpCredentialsDetailsProperties"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property type in model GcpCredentialsDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property type in model GcpCredentialsDetailsProperties"));
         }
         if (projectId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property projectId in model GcpCredentialsDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property projectId in model GcpCredentialsDetailsProperties"));
         }
         if (privateKeyId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property privateKeyId in model GcpCredentialsDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property privateKeyId in model GcpCredentialsDetailsProperties"));
         }
         if (privateKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property privateKey in model GcpCredentialsDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property privateKey in model GcpCredentialsDetailsProperties"));
         }
         if (clientEmail() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clientEmail in model GcpCredentialsDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientEmail in model GcpCredentialsDetailsProperties"));
         }
         if (clientId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clientId in model GcpCredentialsDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientId in model GcpCredentialsDetailsProperties"));
         }
         if (authUri() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authUri in model GcpCredentialsDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authUri in model GcpCredentialsDetailsProperties"));
         }
         if (tokenUri() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property tokenUri in model GcpCredentialsDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tokenUri in model GcpCredentialsDetailsProperties"));
         }
         if (authProviderX509CertUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authProviderX509CertUrl in model GcpCredentialsDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authProviderX509CertUrl in model GcpCredentialsDetailsProperties"));
         }
         if (clientX509CertUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clientX509CertUrl in model GcpCredentialsDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientX509CertUrl in model GcpCredentialsDetailsProperties"));
         }
     }
 

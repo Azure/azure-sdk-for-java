@@ -96,8 +96,9 @@ public final class JitNetworkAccessPolicyProperties {
      */
     public void validate() {
         if (virtualMachines() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property virtualMachines in model JitNetworkAccessPolicyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualMachines in model JitNetworkAccessPolicyProperties"));
         } else {
             virtualMachines().forEach(e -> e.validate());
         }

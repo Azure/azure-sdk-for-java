@@ -14,28 +14,30 @@ public final class CustomAssessmentAutomationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomAssessmentAutomationRequest model = BinaryData.fromString(
-            "{\"properties\":{\"compressedQuery\":\"gszufoxciqopid\",\"supportedCloud\":\"GCP\",\"severity\":\"Medium\",\"displayName\":\"dhkha\",\"description\":\"khnzbonlw\",\"remediationDescription\":\"oegokdwbwh\"},\"id\":\"szzcmrvexztv\",\"name\":\"t\",\"type\":\"gsfraoyzkoow\"}")
+            "{\"properties\":{\"compressedQuery\":\"mbes\",\"supportedCloud\":\"AWS\",\"severity\":\"Low\",\"displayName\":\"tppjflcx\",\"description\":\"aokonzmnsik\",\"remediationDescription\":\"kqze\"},\"id\":\"qkdltfz\",\"name\":\"mhhv\",\"type\":\"gureodkwobdag\"}")
             .toObject(CustomAssessmentAutomationRequest.class);
-        Assertions.assertEquals("gszufoxciqopid", model.compressedQuery());
-        Assertions.assertEquals(SupportedCloudEnum.GCP, model.supportedCloud());
-        Assertions.assertEquals(SeverityEnum.MEDIUM, model.severity());
-        Assertions.assertEquals("dhkha", model.displayName());
-        Assertions.assertEquals("khnzbonlw", model.description());
-        Assertions.assertEquals("oegokdwbwh", model.remediationDescription());
+        Assertions.assertEquals("mbes", model.compressedQuery());
+        Assertions.assertEquals(SupportedCloudEnum.AWS, model.supportedCloud());
+        Assertions.assertEquals(SeverityEnum.LOW, model.severity());
+        Assertions.assertEquals("tppjflcx", model.displayName());
+        Assertions.assertEquals("aokonzmnsik", model.description());
+        Assertions.assertEquals("kqze", model.remediationDescription());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomAssessmentAutomationRequest model
-            = new CustomAssessmentAutomationRequest().withCompressedQuery("gszufoxciqopid")
-                .withSupportedCloud(SupportedCloudEnum.GCP).withSeverity(SeverityEnum.MEDIUM).withDisplayName("dhkha")
-                .withDescription("khnzbonlw").withRemediationDescription("oegokdwbwh");
+        CustomAssessmentAutomationRequest model = new CustomAssessmentAutomationRequest().withCompressedQuery("mbes")
+            .withSupportedCloud(SupportedCloudEnum.AWS)
+            .withSeverity(SeverityEnum.LOW)
+            .withDisplayName("tppjflcx")
+            .withDescription("aokonzmnsik")
+            .withRemediationDescription("kqze");
         model = BinaryData.fromObject(model).toObject(CustomAssessmentAutomationRequest.class);
-        Assertions.assertEquals("gszufoxciqopid", model.compressedQuery());
-        Assertions.assertEquals(SupportedCloudEnum.GCP, model.supportedCloud());
-        Assertions.assertEquals(SeverityEnum.MEDIUM, model.severity());
-        Assertions.assertEquals("dhkha", model.displayName());
-        Assertions.assertEquals("khnzbonlw", model.description());
-        Assertions.assertEquals("oegokdwbwh", model.remediationDescription());
+        Assertions.assertEquals("mbes", model.compressedQuery());
+        Assertions.assertEquals(SupportedCloudEnum.AWS, model.supportedCloud());
+        Assertions.assertEquals(SeverityEnum.LOW, model.severity());
+        Assertions.assertEquals("tppjflcx", model.displayName());
+        Assertions.assertEquals("aokonzmnsik", model.description());
+        Assertions.assertEquals("kqze", model.remediationDescription());
     }
 }

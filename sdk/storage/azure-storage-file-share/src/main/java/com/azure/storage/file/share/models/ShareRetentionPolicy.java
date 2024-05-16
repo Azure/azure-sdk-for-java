@@ -19,14 +19,12 @@ import javax.xml.stream.XMLStreamException;
 @Fluent
 public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentionPolicy> {
     /*
-     * Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and
-     * the user is responsible for deleting it.
+     * Indicates whether a retention policy is enabled for the File service. If false, metrics data is retained, and the user is responsible for deleting it.
      */
     private boolean enabled;
 
     /*
-     * Indicates the number of days that metrics data should be retained. All data older than this value will be
-     * deleted. Metrics data is deleted on a best-effort basis after the retention period expires.
+     * Indicates the number of days that metrics data should be retained. All data older than this value will be deleted. Metrics data is deleted on a best-effort basis after the retention period expires.
      */
     private Integer days;
 
@@ -37,8 +35,8 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
     }
 
     /**
-     * Get the enabled property: Indicates whether a retention policy is enabled for the File service. If false,
-     * metrics data is retained, and the user is responsible for deleting it.
+     * Get the enabled property: Indicates whether a retention policy is enabled for the File service. If false, metrics
+     * data is retained, and the user is responsible for deleting it.
      * 
      * @return the enabled value.
      */
@@ -47,8 +45,8 @@ public final class ShareRetentionPolicy implements XmlSerializable<ShareRetentio
     }
 
     /**
-     * Set the enabled property: Indicates whether a retention policy is enabled for the File service. If false,
-     * metrics data is retained, and the user is responsible for deleting it.
+     * Set the enabled property: Indicates whether a retention policy is enabled for the File service. If false, metrics
+     * data is retained, and the user is responsible for deleting it.
      * 
      * @param enabled the enabled value to set.
      * @return the ShareRetentionPolicy object itself.
