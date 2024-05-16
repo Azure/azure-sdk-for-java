@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ConnectFailed model. */
 @Immutable
-public final class ConnectFailed extends CallAutomationEventBaseWithReasonCode {
+public final class ConnectFailed extends CallAutomationEventBase {
     /*
      * Contains the resulting SIP code, sub-code and message.
      */

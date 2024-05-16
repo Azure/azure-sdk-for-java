@@ -64,7 +64,7 @@ public final class ConnectOptions {
      * @return operation context.
      */
     public String getOperationContext() {
-        return operationContext;
+        return this.operationContext;
     }
 
     /**
