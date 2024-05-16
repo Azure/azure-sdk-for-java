@@ -6,6 +6,7 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * The AWS connector environment data.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "environmentType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "environmentType",
+    defaultImpl = AwsEnvironmentData.class,
+    visible = true)
 @JsonTypeName("AwsAccount")
 @Fluent
 public final class AwsEnvironmentData extends EnvironmentData {
+    /*
+     * The type of the environment data.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "environmentType", required = true)
+    private EnvironmentType environmentType = EnvironmentType.AWS_ACCOUNT;
+
     /*
      * The AWS account's organizational data
      */
@@ -45,6 +57,16 @@ public final class AwsEnvironmentData extends EnvironmentData {
      * Creates an instance of AwsEnvironmentData class.
      */
     public AwsEnvironmentData() {
+    }
+
+    /**
+     * Get the environmentType property: The type of the environment data.
+     * 
+     * @return the environmentType value.
+     */
+    @Override
+    public EnvironmentType environmentType() {
+        return this.environmentType;
     }
 
     /**

@@ -21,8 +21,7 @@ public final class JitNetworkAccessPolicyInitiatePort {
     private int number;
 
     /*
-     * Source of the allowed traffic. If omitted, the request will be for the source IP address of the initiate
-     * request.
+     * Source of the allowed traffic. If omitted, the request will be for the source IP address of the initiate request.
      */
     @JsonProperty(value = "allowedSourceAddressPrefix")
     private String allowedSourceAddressPrefix;
@@ -108,8 +107,9 @@ public final class JitNetworkAccessPolicyInitiatePort {
      */
     public void validate() {
         if (endTimeUtc() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property endTimeUtc in model JitNetworkAccessPolicyInitiatePort"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endTimeUtc in model JitNetworkAccessPolicyInitiatePort"));
         }
     }
 

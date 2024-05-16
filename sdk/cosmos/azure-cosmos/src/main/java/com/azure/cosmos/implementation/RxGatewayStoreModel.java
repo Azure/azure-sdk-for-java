@@ -135,6 +135,10 @@ public class RxGatewayStoreModel implements RxStoreModel {
         this.useMultipleWriteLocations = useMultipleWriteLocations;
     }
 
+    public void setSessionContainer(ISessionContainer sessionContainer) {
+        this.sessionContainer = sessionContainer;
+    }
+
     boolean isUseMultipleWriteLocations() {
         return useMultipleWriteLocations;
     }
@@ -735,6 +739,9 @@ public class RxGatewayStoreModel implements RxStoreModel {
                                 .getEffectivePartitionKeyString(
                                     partitionKeyInternal,
                                     collectionValueHolder.v.getPartitionKey());
+
+                            request.setEffectivePartitionKey(effectivePartitionKeyString);
+
                             PartitionKeyRange range =
                                 collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
                             request.requestContext.resolvedPartitionKeyRange = range;

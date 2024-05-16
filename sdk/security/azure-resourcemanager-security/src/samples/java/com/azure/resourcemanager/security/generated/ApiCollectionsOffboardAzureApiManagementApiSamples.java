@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ApiCollectionsOffboardAzureApiManagementApiSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/
-     * APICollections_OffboardAzureApiManagementApi_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2023-11-15/examples/ApiCollections/APICollections_OffboardAzureApiManagementApi_example.json
      */
     /**
      * Sample code: Offboard an Azure API Management API from Microsoft Defender for APIs.
@@ -20,7 +18,8 @@ public final class ApiCollectionsOffboardAzureApiManagementApiSamples {
      */
     public static void offboardAnAzureAPIManagementAPIFromMicrosoftDefenderForAPIs(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.apiCollections().offboardAzureApiManagementApiWithResponse("rg1", "apimService1", "echo-api",
-            com.azure.core.util.Context.NONE);
+        manager.apiCollections()
+            .offboardAzureApiManagementApiWithResponse("rg1", "apimService1", "echo-api",
+                com.azure.core.util.Context.NONE);
     }
 }

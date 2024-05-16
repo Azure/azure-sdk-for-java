@@ -342,4 +342,62 @@ public class AddressRepositoryIT {
         assertThat(queryDiagnostics).contains("\"UtilizedCompositeIndexes\"");
         assertThat(queryDiagnostics).contains("\"PotentialCompositeIndexes\"");
     }
+
+    @Test
+    public void testFindFirstByOrderByStreetAsc() {
+        final Address result = repository.findFirstByOrderByStreetAsc();
+        assertThat(result).isEqualTo(TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testFindFirstByOrderByStreetDesc() {
+        final Address result = repository.findFirstByOrderByStreetDesc();
+        assertThat(result).isEqualTo(TEST_ADDRESS2_PARTITION1);
+    }
+
+    @Test
+    public void testFindTopByOrderByStreetAsc() {
+        final Address result = repository.findTopByOrderByStreetAsc();
+        assertThat(result).isEqualTo(TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testFindTopByOrderByStreetDesc() {
+        final Address result = repository.findTopByOrderByStreetDesc();
+        assertThat(result).isEqualTo(TEST_ADDRESS2_PARTITION1);
+    }
+
+    @Test
+    public void testFindAllByStreetNotNull() {
+        Address TEST_ADDRESS_TEMP = new Address(
+            TestConstants.POSTAL_CODE, null, TestConstants.CITY);
+        final List<Address> result = TestUtils.toList(repository.findAllByStreetNotNull());
+        assertThat(result.size()).isEqualTo(4);
+        assertThat(result).isEqualTo(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,
+            TEST_ADDRESS2_PARTITION1, TEST_ADDRESS4_PARTITION3));
+
+    }
+
+    @Test
+    public void testFindFirst2ByOrderByStreetAsc() {
+        List<Address> result = TestUtils.toList(repository.findFirst2ByOrderByStreetAsc());
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result).isEqualTo(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2));
+    }
+
+    @Test
+    public void testFindTop3ByOrderByStreetDesc() {
+        List<Address> result = TestUtils.toList(repository.findTop3ByOrderByStreetDesc());
+        assertThat(result.size()).isEqualTo(3);
+        assertThat(result).isEqualTo(Lists.newArrayList(TEST_ADDRESS2_PARTITION1,
+            TEST_ADDRESS4_PARTITION3, TEST_ADDRESS1_PARTITION2));
+    }
+
+    @Test
+    public void testCountByStreetNotNull() {
+        Address TEST_ADDRESS_TEMP = new Address(
+            TestConstants.POSTAL_CODE, null, TestConstants.CITY);
+        final Long result = repository.countByStreetNotNull();
+        assertThat(result).isEqualTo(4);
+    }
 }

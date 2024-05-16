@@ -6,57 +6,42 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.Application;
 import com.azure.resourcemanager.security.models.ApplicationSourceResourceType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ApplicationOperationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"displayName\":\"jttwykoxv\",\"description\":\"ofxxdplrelfk\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datahcbtuxlbpxrhrfj\",\"datanrazwefiktlhq\",\"datashtos\"]},\"id\":\"jixy\",\"name\":\"secigzzdwj\",\"type\":\"acfvvtdpcbpzf\"}";
+            = "{\"properties\":{\"displayName\":\"wwd\",\"description\":\"tveqmg\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataw\",\"dataeyxr\"]},\"id\":\"ear\",\"name\":\"hpwbuklvsmfasgt\",\"type\":\"v\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Application response = manager.applicationOperations().define("seiancsqoac").withDisplayName("dgsapleqfg")
-            .withDescription("env").withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
-            .withConditionSets(Arrays.asList("datalvyakeszsuuvul", "dataqcwggchxvl", "datagfbrv", "datacicaovphirlzbi"))
+        Application response = manager.applicationOperations()
+            .define("jcq")
+            .withDisplayName("j")
+            .withDescription("qmmfjewfeqbavdos")
+            .withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
+            .withConditionSets(Arrays.asList("datagufmwe", "datavxgwz", "datakwdtlcj", "datap"))
             .create();
 
-        Assertions.assertEquals("jttwykoxv", response.displayName());
-        Assertions.assertEquals("ofxxdplrelfk", response.description());
+        Assertions.assertEquals("wwd", response.displayName());
+        Assertions.assertEquals("tveqmg", response.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, response.sourceResourceType());
     }
 }

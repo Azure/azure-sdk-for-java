@@ -22,8 +22,7 @@ public final class UpdateSensitivitySettingsRequest {
     private List<UUID> sensitiveInfoTypesIds;
 
     /*
-     * The order of the sensitivity threshold label. Any label at or above this order will be considered sensitive. If
-     * set to -1, sensitivity by labels is turned off
+     * The order of the sensitivity threshold label. Any label at or above this order will be considered sensitive. If set to -1, sensitivity by labels is turned off
      */
     @JsonProperty(value = "sensitivityThresholdLabelOrder")
     private Float sensitivityThresholdLabelOrder;
@@ -111,8 +110,9 @@ public final class UpdateSensitivitySettingsRequest {
      */
     public void validate() {
         if (sensitiveInfoTypesIds() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sensitiveInfoTypesIds in model UpdateSensitivitySettingsRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sensitiveInfoTypesIds in model UpdateSensitivitySettingsRequest"));
         }
     }
 

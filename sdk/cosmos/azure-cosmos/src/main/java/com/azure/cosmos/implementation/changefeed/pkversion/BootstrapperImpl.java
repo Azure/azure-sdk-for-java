@@ -3,8 +3,13 @@
 package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
+import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -24,13 +29,16 @@ class BootstrapperImpl implements Bootstrapper {
     private volatile boolean isInitialized;
     private volatile boolean isLockAcquired;
 
-    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime) {
+    private final LeaseStoreManager pkRangeBasedLeaseStoreManager;
+    private final ChangeFeedMode changeFeedModeToStart;
+
+    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, LeaseStoreManager pkRangeBasedLeaseStoreManager, Duration sleepTime, ChangeFeedMode changeFeedModeToStart) {
         if (synchronizer == null) {
-            throw new IllegalArgumentException("synchronizer");
+            throw new IllegalArgumentException("synchronizer cannot be null!");
         }
 
         if (leaseStore == null) {
-            throw new IllegalArgumentException("leaseStore");
+            throw new IllegalArgumentException("leaseStore cannot be null!");
         }
 
         if (lockTime == null || lockTime.isNegative() || lockTime.isZero()) {
@@ -41,12 +49,22 @@ class BootstrapperImpl implements Bootstrapper {
             throw new IllegalArgumentException("sleepTime should be non-null and positive");
         }
 
+        if (pkRangeBasedLeaseStoreManager == null) {
+            throw new IllegalArgumentException("pkRangeBasedLeaseStoreManager cannot be null!");
+        }
+
+        if (changeFeedModeToStart == null) {
+            throw new IllegalArgumentException("changeFeedModeToStart cannot be null!");
+        }
+
         this.synchronizer = synchronizer;
         this.leaseStore = leaseStore;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
 
         this.isInitialized = false;
+        this.pkRangeBasedLeaseStoreManager = pkRangeBasedLeaseStoreManager;
+        this.changeFeedModeToStart = changeFeedModeToStart;
     }
 
     @Override
@@ -59,7 +77,7 @@ class BootstrapperImpl implements Bootstrapper {
                 this.isInitialized = initialized;
 
                 if (initialized) {
-                    return Mono.empty();
+                    return this.validateLeaseCFModeInteroperabilityForPkRangeBasedLease();
                 } else {
                     logger.info("Acquire initialization lock");
                     return this.leaseStore.acquireInitializationLock(this.lockTime)
@@ -88,5 +106,31 @@ class BootstrapperImpl implements Bootstrapper {
             })
             .repeat( () -> !this.isInitialized)
             .then();
+    }
+
+    private Mono<Void> validateLeaseCFModeInteroperabilityForPkRangeBasedLease() {
+
+        // fetches only 1 epk-based leases for a given lease prefix
+        return this.pkRangeBasedLeaseStoreManager
+            .getTopLeases(1)
+            // pick one lease corresponding to a lease prefix (lease prefix denotes a unique feed)
+            .next()
+            .flatMap(lease -> {
+
+                if (lease.getVersion() == LeaseVersion.PARTITION_KEY_BASED_LEASE) {
+                    if (!Strings.isNullOrEmpty(lease.getId())) {
+
+                        if (!Strings.isNullOrEmpty(lease.getContinuationToken())) {
+                            ChangeFeedState changeFeedState = ChangeFeedState.fromString(lease.getContinuationToken());
+
+                            if (changeFeedState.getMode() != this.changeFeedModeToStart) {
+                                return Mono.error(new IllegalStateException("Change feed mode in the pre-existing lease is : " + changeFeedState.getMode() + " while the expected change feed mode is : " + this.changeFeedModeToStart));
+                            }
+                        }
+                    }
+                }
+
+                return Mono.empty();
+            });
     }
 }

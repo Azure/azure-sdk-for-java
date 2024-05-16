@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -12,14 +14,35 @@ import java.util.List;
 /**
  * Login by a local user that isn't allowed. Allow list consists of login names to allow.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "ruleType",
+    defaultImpl = LocalUserNotAllowed.class,
+    visible = true)
 @JsonTypeName("LocalUserNotAllowed")
 @Fluent
 public final class LocalUserNotAllowed extends AllowlistCustomAlertRule {
+    /*
+     * The type of the custom alert rule.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private String ruleType = "LocalUserNotAllowed";
+
     /**
      * Creates an instance of LocalUserNotAllowed class.
      */
     public LocalUserNotAllowed() {
+    }
+
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
     }
 
     /**

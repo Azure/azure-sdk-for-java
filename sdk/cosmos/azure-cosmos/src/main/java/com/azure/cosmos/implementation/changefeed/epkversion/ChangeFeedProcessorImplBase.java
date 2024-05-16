@@ -404,13 +404,17 @@ public abstract class ChangeFeedProcessorImplBase<T> implements ChangeFeedProces
                 leaseStoreManager,
                 this.lockTime,
                 this.sleepTime,
-                pkRangeIdVersionLeaseStoreManager);
+                pkRangeIdVersionLeaseStoreManager,
+                leaseStoreManager,
+                this.changeFeedMode);
         } else {
             bootstrapper = new BootstrapperImpl(
                 synchronizer,
                 leaseStoreManager,
                 this.lockTime,
-                this.sleepTime);
+                this.sleepTime,
+                leaseStoreManager,
+                this.changeFeedMode);
         }
 
         FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager = this.getFeedRangeThroughputControlConfigManager();

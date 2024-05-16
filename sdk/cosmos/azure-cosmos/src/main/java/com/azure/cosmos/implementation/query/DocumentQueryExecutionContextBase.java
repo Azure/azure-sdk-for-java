@@ -25,6 +25,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
@@ -95,13 +96,14 @@ implements IDocumentQueryExecutionContext<T> {
 
     public RxDocumentServiceRequest createDocumentServiceRequest(Map<String, String> requestHeaders,
                                                                  SqlQuerySpec querySpec,
-                                                                 PartitionKeyInternal partitionKey) {
+                                                                 PartitionKeyInternal partitionKey,
+                                                                 PartitionKeyDefinition partitionKeyDefinition) {
 
         RxDocumentServiceRequest request = querySpec != null
                 ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
                 : this.createReadFeedDocumentServiceRequest(requestHeaders);
 
-        this.populatePartitionKeyInfo(request, partitionKey);
+        this.populatePartitionKeyInfo(request, partitionKey, partitionKeyDefinition);
 
         return request;
     }
@@ -278,7 +280,7 @@ implements IDocumentQueryExecutionContext<T> {
         return requestHeaders;
     }
 
-    private void populatePartitionKeyInfo(RxDocumentServiceRequest request, PartitionKeyInternal partitionKey) {
+    private void populatePartitionKeyInfo(RxDocumentServiceRequest request, PartitionKeyInternal partitionKey, PartitionKeyDefinition partitionKeyDefinition) {
         if (request == null) {
             throw new NullPointerException("request");
         }
@@ -286,6 +288,7 @@ implements IDocumentQueryExecutionContext<T> {
         if (this.resourceTypeEnum.isPartitioned()) {
             if (partitionKey != null) {
                 request.setPartitionKeyInternal(partitionKey);
+                request.setPartitionKeyDefinition(partitionKeyDefinition);
                 request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKey.toJson());
             }
         }
@@ -330,6 +333,8 @@ implements IDocumentQueryExecutionContext<T> {
             if (endToEndOperationLatencyConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
             }
+
+            executeQueryRequest.setPartitionKeyDefinition(qryOptAccessor.getPartitionKeyDefinition(this.cosmosQueryRequestOptions));
 
             executeQueryRequest.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -17,9 +18,9 @@ import java.util.List;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "ruleType",
-    defaultImpl = AllowlistCustomAlertRule.class)
+    defaultImpl = AllowlistCustomAlertRule.class,
+    visible = true)
 @JsonTypeName("AllowlistCustomAlertRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ConnectionToIpNotAllowed", value = ConnectionToIpNotAllowed.class),
@@ -28,6 +29,13 @@ import java.util.List;
     @JsonSubTypes.Type(name = "ProcessNotAllowed", value = ProcessNotAllowed.class) })
 @Fluent
 public class AllowlistCustomAlertRule extends ListCustomAlertRule {
+    /*
+     * The type of the custom alert rule.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private String ruleType = "AllowlistCustomAlertRule";
+
     /*
      * The values to allow. The format of the values depends on the rule type.
      */
@@ -38,6 +46,16 @@ public class AllowlistCustomAlertRule extends ListCustomAlertRule {
      * Creates an instance of AllowlistCustomAlertRule class.
      */
     public AllowlistCustomAlertRule() {
+    }
+
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
     }
 
     /**
@@ -78,8 +96,9 @@ public class AllowlistCustomAlertRule extends ListCustomAlertRule {
     public void validate() {
         super.validate();
         if (allowlistValues() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property allowlistValues in model AllowlistCustomAlertRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property allowlistValues in model AllowlistCustomAlertRule"));
         }
     }
 

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SecureScoresGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/
-     * GetSecureScoresSingle_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/secureScores/GetSecureScoresSingle_example.json
      */
     /**
      * Sample code: Get single secure score.

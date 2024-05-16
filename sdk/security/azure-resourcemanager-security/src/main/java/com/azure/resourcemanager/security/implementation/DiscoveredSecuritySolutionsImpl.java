@@ -54,8 +54,8 @@ public final class DiscoveredSecuritySolutionsImpl implements DiscoveredSecurity
 
     public Response<DiscoveredSecuritySolution> getWithResponse(String resourceGroupName, String ascLocation,
         String discoveredSecuritySolutionName, Context context) {
-        Response<DiscoveredSecuritySolutionInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            ascLocation, discoveredSecuritySolutionName, context);
+        Response<DiscoveredSecuritySolutionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, ascLocation, discoveredSecuritySolutionName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DiscoveredSecuritySolutionImpl(inner.getValue(), this.manager()));

@@ -145,6 +145,7 @@ public class CosmosClientBuilder implements
     private SessionRetryOptions sessionRetryOptions;
     private Supplier<CosmosExcludedRegions> cosmosExcludedRegionsSupplier;
     private CosmosItemSerializer defaultCustomSerializer;
+    private boolean isRegionScopedSessionCapturingEnabled = false;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -166,6 +167,58 @@ public class CosmosClientBuilder implements
 
     CosmosClientMetadataCachesSnapshot metadataCaches() {
         return this.state;
+    }
+
+    /**
+     * Sets a {@code boolean} flag to reduce the frequency of retries when the client
+     * strives to meet Session Consistency guarantees for operations
+     * that can be scoped to a single logical partition. Read your writes for a given logical partition
+     * should see higher stickiness to regions where the logical partition was written to prior or saw requests in
+     * thus reducing unnecessary cross-region retries. Reduction of retries would reduce CPU utilization spikes on VMs
+     * where the client is deployed along with latency savings through reduction of cross-region calls.
+     *
+     * <p>
+     *     DISCLAIMER: Setting the {@link CosmosClientBuilder#isRegionScopedSessionCapturingEnabled} flag to {@code true}
+     *     will impact all operations executed through this instance of the client provided that
+     *     both the operation and the account support multi-region writes.
+     * </p>
+     * <p>
+     *     Setting {@link CosmosClientBuilder#isRegionScopedSessionCapturingEnabled} flag to {@code true} can be space intensive, so
+     *     ensure to maintain a singleton instance of {@link CosmosClient} or {@link CosmosAsyncClient}.
+     * </p>
+     *
+     * Operations supported:
+     * <ul>
+     *     <li>Read</li>
+     *     <li>Create</li>
+     *     <li>Upsert</li>
+     *     <li>Delete</li>
+     *     <li>Replace</li>
+     *     <li>Batch</li>
+     *     <li>Patch</li>
+     *     <li>Query when scoped to a single logical partition by specifying {@code PartitionKey} with {@link com.azure.cosmos.models.CosmosQueryRequestOptions}</li>
+     *     <li>Change feed when scoped to a single logical partition by using {@code FeedRange.forLogicalPartition()} with {@link com.azure.cosmos.models.CosmosChangeFeedRequestOptions}</li>
+     * </ul>
+     *
+     * <p>
+     *     NOTE: Bulk operations are not supported.
+     * </p>
+     *
+     * @param isRegionScopedSessionCapturingEnabled A {@code boolean} flag
+     * @return current {@link CosmosClientBuilder}
+     * */
+    CosmosClientBuilder regionScopedSessionCapturingEnabled(boolean isRegionScopedSessionCapturingEnabled) {
+        this.isRegionScopedSessionCapturingEnabled = isRegionScopedSessionCapturingEnabled;
+        return this;
+    }
+
+    /**
+     * Gets the {@code boolean} flag {@link CosmosClientBuilder#isRegionScopedSessionCapturingEnabled}
+     *
+     * @return isRegionScopedSessionCapturingEnabled A {@code boolean} flag
+     * */
+    boolean isRegionScopedSessionCapturingEnabled() {
+        return this.isRegionScopedSessionCapturingEnabled;
     }
 
     /**
@@ -775,6 +828,20 @@ public class CosmosClientBuilder implements
         this.writeRetryPolicy = WriteRetryPolicy.DISABLED;
     }
 
+    void resetSessionCapturingType() {
+        String sessionCapturingType = Configs.getSessionCapturingType();
+
+        if (!StringUtils.isEmpty(sessionCapturingType)) {
+            if (sessionCapturingType.equalsIgnoreCase("REGION_SCOPED")) {
+                logger.info("Session capturing type is set to REGION_SCOPED");
+                this.isRegionScopedSessionCapturingEnabled = true;
+            } else {
+                logger.info("Session capturing type is set to {} which is not a known session capturing type.", sessionCapturingType);
+                this.isRegionScopedSessionCapturingEnabled = false;
+            }
+        }
+    }
+
     /**
      * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
@@ -1089,6 +1156,7 @@ public class CosmosClientBuilder implements
     CosmosAsyncClient buildAsyncClient(boolean logStartupInfo) {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
+        this.resetSessionCapturingType();
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
@@ -1122,6 +1190,7 @@ public class CosmosClientBuilder implements
     public CosmosClient buildClient() {
         StopWatch stopwatch = new StopWatch();
         stopwatch.start();
+        this.resetSessionCapturingType();
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
@@ -1246,13 +1315,13 @@ public class CosmosClientBuilder implements
                     "configuration: serviceEndpoint [{}], preferredRegions [{}], excludedRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
                     "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], " +
-                    "diagnostics [{}], tracing [{}], nativeTransport [{}] fastClientOpen [{}]",
+                    "diagnostics [{}], tracing [{}], nativeTransport [{}] fastClientOpen [{}] isRegionScopedSessionCapturingEnabled [{}]",
                 client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(), getExcludedRegions(),
                 getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
                 isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
                 isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg,
                 tracingCfg, io.netty.channel.epoll.Epoll.isAvailable(),
-                io.netty.channel.epoll.Epoll.isTcpFastOpenClientSideAvailable());
+                io.netty.channel.epoll.Epoll.isTcpFastOpenClientSideAvailable(), isRegionScopedSessionCapturingEnabled());
         }
     }
 
@@ -1312,6 +1381,16 @@ public class CosmosClientBuilder implements
                 @Override
                 public CosmosItemSerializer getDefaultCustomSerializer(CosmosClientBuilder builder) {
                     return builder.getCustomItemSerializer();
+                }
+
+                @Override
+                public void setRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder, boolean isRegionScopedSessionCapturingEnabled) {
+                    builder.regionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled);
+                }
+
+                @Override
+                public boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder) {
+                    return builder.isRegionScopedSessionCapturingEnabled();
                 }
             });
     }

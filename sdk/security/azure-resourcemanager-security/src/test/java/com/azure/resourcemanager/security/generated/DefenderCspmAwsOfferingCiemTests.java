@@ -14,22 +14,22 @@ public final class DefenderCspmAwsOfferingCiemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderCspmAwsOfferingCiem model = BinaryData.fromString(
-            "{\"ciemDiscovery\":{\"cloudRoleArn\":\"kpyehhfdyldh\"},\"ciemOidc\":{\"cloudRoleArn\":\"d\",\"azureActiveDirectoryAppName\":\"zqiyuqhtder\"}}")
+            "{\"ciemDiscovery\":{\"cloudRoleArn\":\"wnibittoz\"},\"ciemOidc\":{\"cloudRoleArn\":\"qumqvfmwcaddt\",\"azureActiveDirectoryAppName\":\"txegtvgwyurbelfn\"}}")
             .toObject(DefenderCspmAwsOfferingCiem.class);
-        Assertions.assertEquals("kpyehhfdyldh", model.ciemDiscovery().cloudRoleArn());
-        Assertions.assertEquals("d", model.ciemOidc().cloudRoleArn());
-        Assertions.assertEquals("zqiyuqhtder", model.ciemOidc().azureActiveDirectoryAppName());
+        Assertions.assertEquals("wnibittoz", model.ciemDiscovery().cloudRoleArn());
+        Assertions.assertEquals("qumqvfmwcaddt", model.ciemOidc().cloudRoleArn());
+        Assertions.assertEquals("txegtvgwyurbelfn", model.ciemOidc().azureActiveDirectoryAppName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmAwsOfferingCiem model = new DefenderCspmAwsOfferingCiem()
-            .withCiemDiscovery(new DefenderCspmAwsOfferingCiemDiscovery().withCloudRoleArn("kpyehhfdyldh"))
-            .withCiemOidc(new DefenderCspmAwsOfferingCiemOidc().withCloudRoleArn("d")
-                .withAzureActiveDirectoryAppName("zqiyuqhtder"));
+            .withCiemDiscovery(new DefenderCspmAwsOfferingCiemDiscovery().withCloudRoleArn("wnibittoz"))
+            .withCiemOidc(new DefenderCspmAwsOfferingCiemOidc().withCloudRoleArn("qumqvfmwcaddt")
+                .withAzureActiveDirectoryAppName("txegtvgwyurbelfn"));
         model = BinaryData.fromObject(model).toObject(DefenderCspmAwsOfferingCiem.class);
-        Assertions.assertEquals("kpyehhfdyldh", model.ciemDiscovery().cloudRoleArn());
-        Assertions.assertEquals("d", model.ciemOidc().cloudRoleArn());
-        Assertions.assertEquals("zqiyuqhtder", model.ciemOidc().azureActiveDirectoryAppName());
+        Assertions.assertEquals("wnibittoz", model.ciemDiscovery().cloudRoleArn());
+        Assertions.assertEquals("qumqvfmwcaddt", model.ciemOidc().cloudRoleArn());
+        Assertions.assertEquals("txegtvgwyurbelfn", model.ciemOidc().azureActiveDirectoryAppName());
     }
 }

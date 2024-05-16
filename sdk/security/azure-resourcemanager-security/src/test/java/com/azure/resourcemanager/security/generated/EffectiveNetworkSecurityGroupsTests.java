@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class EffectiveNetworkSecurityGroupsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EffectiveNetworkSecurityGroups model = BinaryData
-            .fromString(
-                "{\"networkInterface\":\"yehqbeivdlhydwb\",\"networkSecurityGroups\":[\"grlpuny\",\"jlkesmmpath\"]}")
+        EffectiveNetworkSecurityGroups model = BinaryData.fromString(
+            "{\"networkInterface\":\"dogiyetesyp\",\"networkSecurityGroups\":[\"bztjhqtfbovnynkb\",\"etnjuhpsprkz\",\"aupia\"]}")
             .toObject(EffectiveNetworkSecurityGroups.class);
-        Assertions.assertEquals("yehqbeivdlhydwb", model.networkInterface());
-        Assertions.assertEquals("grlpuny", model.networkSecurityGroups().get(0));
+        Assertions.assertEquals("dogiyetesyp", model.networkInterface());
+        Assertions.assertEquals("bztjhqtfbovnynkb", model.networkSecurityGroups().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EffectiveNetworkSecurityGroups model = new EffectiveNetworkSecurityGroups()
-            .withNetworkInterface("yehqbeivdlhydwb").withNetworkSecurityGroups(Arrays.asList("grlpuny", "jlkesmmpath"));
+        EffectiveNetworkSecurityGroups model = new EffectiveNetworkSecurityGroups().withNetworkInterface("dogiyetesyp")
+            .withNetworkSecurityGroups(Arrays.asList("bztjhqtfbovnynkb", "etnjuhpsprkz", "aupia"));
         model = BinaryData.fromObject(model).toObject(EffectiveNetworkSecurityGroups.class);
-        Assertions.assertEquals("yehqbeivdlhydwb", model.networkInterface());
-        Assertions.assertEquals("grlpuny", model.networkSecurityGroups().get(0));
+        Assertions.assertEquals("dogiyetesyp", model.networkInterface());
+        Assertions.assertEquals("bztjhqtfbovnynkb", model.networkSecurityGroups().get(0));
     }
 }
