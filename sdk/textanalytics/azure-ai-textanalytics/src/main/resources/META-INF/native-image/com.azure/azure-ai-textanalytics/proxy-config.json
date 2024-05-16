@@ -1,8 +1,0 @@
-[
-  [
-    "com.azure.ai.textanalytics.implementation.AnalyzeTextsImpl$AnalyzeTextsService"
-  ],
-  [
-    "com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl$MicrosoftCognitiveLanguageServiceTextAnalysisService"
-  ]
-]

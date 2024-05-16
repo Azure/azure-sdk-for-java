@@ -1,4 +1,0 @@
-trigger: none
-
-stages:
-  - template: /sdk/storage/tests-template.yml

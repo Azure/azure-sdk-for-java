@@ -1,1 +1,0 @@
-## Azure Cosmos DB OLTP Spark 3 connector account data resolver sample
