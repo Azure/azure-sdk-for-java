@@ -49,7 +49,7 @@ extends:
                 azcopy copy 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}/*' '$(Artifacts)' --recursive=true
                 $copiedFiles = Get-ChildItem $(Artifacts) -Recurse | Select-Object -ExpandProperty FullName
                 if($copiedFiles.Count -eq 0) {
-                  Write-Error "No files copied. at path 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}'."
+                  Write-Error "No files copied from 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}'."
                   exit 1
                 }
 
