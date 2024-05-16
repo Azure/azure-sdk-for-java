@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for DoneEvent.
+ * Terminal event indicating the successful end of a stream.
  */
 public final class DoneEvent extends ExpandableStringEnum<DoneEvent> {
 

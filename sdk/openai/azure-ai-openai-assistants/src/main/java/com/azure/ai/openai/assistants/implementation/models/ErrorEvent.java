@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for ErrorEvent.
+ * Terminal event indicating a server side error while streaming.
  */
 public final class ErrorEvent extends ExpandableStringEnum<ErrorEvent> {
 
