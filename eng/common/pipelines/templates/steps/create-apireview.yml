@@ -18,6 +18,13 @@ steps:
   # Automatic API review is generated for a package when pipeline runs irrespective of how pipeline gets triggered.
   # Below condition ensures that API review is generated only for manual pipeline runs when flag GenerateApiReviewForManualOnly is set to true. 
   - ${{ if or(ne(parameters.GenerateApiReviewForManualOnly, true), eq(variables['Build.Reason'], 'Manual')) }}:
+    - pwsh: |
+        $currentDirectory = Get-Location
+        $folders = Get-ChildItem -Directory | Select-Object -ExpandProperty Name
+        Write-Host "Current Directory: $currentDirectory"
+        Write-Host "Folders: $folders"
+      displayName: "List folders"
+      workingDirectory: ${{ parameters.workingDirectory }}
     - task: Powershell@2
       inputs:
         filePath: ./eng/common/scripts/Create-APIReview.ps1
@@ -34,7 +41,7 @@ steps:
           -RepoName '$(Build.Repository.Name)'    
           -MarkPackageAsShipped $${{parameters.MarkPackageAsShipped}}
         pwsh: true
-        workingDirectory: ${{ parameters.SourceRootPath }}
+      workingDirectory: ${{ parameters.SourceRootPath }}
       displayName: Create API Review
       condition: >-
         and(
