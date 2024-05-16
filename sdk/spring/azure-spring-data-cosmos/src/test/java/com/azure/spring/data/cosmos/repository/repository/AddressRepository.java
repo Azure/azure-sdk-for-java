@@ -87,5 +87,23 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
     List<Address> annotatedFindByCitiesWithSort(@Param("cities") List<String> cities, Sort sort);
 
     @Query(value = "SELECT * FROM C")
+
     List<Address> annotatedFindAllWithSort(Sort sort);
+
+    Address findFirstByOrderByStreetAsc();
+
+    Address findFirstByOrderByStreetDesc();
+
+    Address findTopByOrderByStreetAsc();
+
+    Address findTopByOrderByStreetDesc();
+
+    List<Address> findAllByStreetNotNull();
+
+    List<Address> findFirst2ByOrderByStreetAsc();
+
+    List<Address> findTop3ByOrderByStreetDesc();
+
+    Long countByStreetNotNull();
+
 }
