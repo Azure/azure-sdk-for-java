@@ -69,7 +69,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
      */
     public AppConfigurationPropertySourceLocator(AppConfigurationProviderProperties appProperties,
         AppConfigurationReplicaClientFactory clientFactory, AppConfigurationKeyVaultClientFactory keyVaultClientFactory,
-        Duration refreshInterval, List<ConfigStore> configStores, ReplicaLookUp replicaLookUp, FeatureFlagClient featureFlagLoader) {
+        Duration refreshInterval, List<ConfigStore> configStores, ReplicaLookUp replicaLookUp,
+        FeatureFlagClient featureFlagLoader) {
         this.refreshInterval = refreshInterval;
         this.appProperties = appProperties;
         this.configStores = configStores;
@@ -91,6 +92,9 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         ConfigurableEnvironment env = (ConfigurableEnvironment) environment;
         boolean currentlyLoaded = env.getPropertySources().stream().anyMatch(source -> {
             String storeName = configStores.get(0).getEndpoint();
+            if (configStores.get(0).getSelects().size() == 0) {
+                return false;
+            }
             AppConfigurationKeyValueSelector selectedKey = configStores.get(0).getSelects().get(0);
             return source.getName()
                 .startsWith(BOOTSTRAP_PROPERTY_SOURCE_NAME + "-" + selectedKey.getKeyFilter() + storeName + "/");
@@ -164,7 +168,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     // Refresh failed for a config store ending attempt
                     failedToGeneratePropertySource(configStore, newState, new RuntimeException(message));
                 }
-                
+
                 if (configStore.getFeatureFlags().getEnabled()) {
                     AppConfigurationFeatureManagementPropertySource acfmps = new AppConfigurationFeatureManagementPropertySource(
                         featureFlagClient);
