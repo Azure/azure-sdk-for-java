@@ -50,12 +50,10 @@ public class TranslateProfanity {
             .setProfanityAction(ProfanityAction.MARKED)
             .setProfanityMarker(ProfanityMarker.ASTERISK);
 
-        List<TranslatedTextItem> translations = client.translate("This is ***.", translateOptions);
+        TranslatedTextItem translation = client.translate("This is ***.", translateOptions);
 
-        for (TranslatedTextItem translation : translations) {
-            for (TranslationText textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-            }
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
     }
 }

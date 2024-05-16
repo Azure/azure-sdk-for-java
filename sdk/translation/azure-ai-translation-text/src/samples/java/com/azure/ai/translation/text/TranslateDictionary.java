@@ -43,12 +43,10 @@ public class TranslateDictionary {
             .setSourceLanguage("en")
             .addTargetLanguage("cs");
 
-        List<TranslatedTextItem> translations = client.translate("The word < mstrans:dictionary translation =\"wordomatic\">wordomatic</mstrans:dictionary> is a dictionary entry.", translateOptions);
+        TranslatedTextItem translation = client.translate("The word < mstrans:dictionary translation =\"wordomatic\">wordomatic</mstrans:dictionary> is a dictionary entry.", translateOptions);
 
-        for (TranslatedTextItem translation : translations) {
-            for (TranslationText textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-            }
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
     }
 }

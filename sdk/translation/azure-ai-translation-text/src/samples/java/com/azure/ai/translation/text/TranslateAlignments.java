@@ -39,13 +39,11 @@ public class TranslateAlignments {
             .addTargetLanguage("cs")
             .setIncludeAlignment(true);
 
-        List<TranslatedTextItem> translations = client.translate("The answer lies in machine translation.", translateOptions);
+        TranslatedTextItem translation = client.translate("The answer lies in machine translation.", translateOptions);
 
-        for (TranslatedTextItem translation : translations) {
-            for (TranslationText textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-                System.out.println("Alignments: " + textTranslation.getAlignment().getProjections());
-            }
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Alignments: " + textTranslation.getAlignment().getProjections());
         }
     }
 }

@@ -36,11 +36,9 @@ public class Transliterate {
         String toScript = "Latn";
         String content = "这是个测试。";
 
-        List<TransliteratedText> transliterations = client.transliterate(language, fromScript, toScript, content);
+        TransliteratedText transliteration = client.transliterate(language, fromScript, toScript, content);
 
-        for (TransliteratedText transliteration : transliterations) {
-            System.out.println("Input text was transliterated to '" + transliteration.getScript() + "' script. Transliterated text: '" + transliteration.getText() + "'.");
-        }
+        System.out.println("Input text was transliterated to '" + transliteration.getScript() + "' script. Transliterated text: '" + transliteration.getText() + "'.");
         // END: getTextTranslationTransliterate
     }
 }

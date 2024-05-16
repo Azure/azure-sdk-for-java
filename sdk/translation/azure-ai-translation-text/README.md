@@ -129,12 +129,10 @@ TranslateOptions translateOptions = new TranslateOptions()
     .setSourceLanguage("en")
     .addTargetLanguage("es");
 
-List<TranslatedTextItem> translations = client.translate("This is a test.", translateOptions);
+TranslatedTextItem translation = client.translate("This is a test.", translateOptions);
 
-for (TranslatedTextItem translation : translations) {
-    for (TranslationText textTranslation : translation.getTranslations()) {
-        System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-    }
+for (TranslationText textTranslation : translation.getTranslations()) {
+    System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
 }
 ```
 
@@ -150,11 +148,9 @@ String fromScript = "Hans";
 String toScript = "Latn";
 String content = "这是个测试。";
 
-List<TransliteratedText> transliterations = client.transliterate(language, fromScript, toScript, content);
+TransliteratedText transliteration = client.transliterate(language, fromScript, toScript, content);
 
-for (TransliteratedText transliteration : transliterations) {
-    System.out.println("Input text was transliterated to '" + transliteration.getScript() + "' script. Transliterated text: '" + transliteration.getText() + "'.");
-}
+System.out.println("Input text was transliterated to '" + transliteration.getScript() + "' script. Transliterated text: '" + transliteration.getText() + "'.");
 ```
 
 Please refer to the service documentation for a conceptual discussion of [transliterate][transliterate_doc].
@@ -168,11 +164,9 @@ String sourceLanguage = "zh-Hans";
 String sourceScript = "Latn";
 String content = "zhè shì gè cè shì。";
 
-List<BreakSentenceItem> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
+BreakSentenceItem breakSentence = client.findSentenceBoundaries(content, sourceLanguage, sourceScript);
 
-for (BreakSentenceItem breakSentence : breakSentences) {
-    System.out.println("The detected sentence boundaries: " + breakSentence.getSentencesLengths());
-}
+System.out.println("The detected sentence boundaries: " + breakSentence.getSentencesLengths());
 ```
 
 Please refer to the service documentation for a conceptual discussion of [break sentence][breaksentence_doc].
@@ -186,12 +180,10 @@ String sourceLanguage = "en";
 String targetLanguage = "es";
 String content = "fly";
 
-List<DictionaryLookupItem> dictionaryEntries = client.lookupDictionaryEntries(sourceLanguage, targetLanguage, content);
+DictionaryLookupItem dictionaryEntry = client.lookupDictionaryEntries(sourceLanguage, targetLanguage, content);
 
-for (DictionaryLookupItem dictionaryEntry : dictionaryEntries) {
-    System.out.println("For the given input " + dictionaryEntry.getTranslations().size() + " entries were found in the dictionary.");
-    System.out.println("First entry: '" + dictionaryEntry.getTranslations().get(0).getDisplayTarget() + "', confidence: " + dictionaryEntry.getTranslations().get(0).getConfidence());
-}
+System.out.println("For the given input " + dictionaryEntry.getTranslations().size() + " entries were found in the dictionary.");
+System.out.println("First entry: '" + dictionaryEntry.getTranslations().get(0).getDisplayTarget() + "', confidence: " + dictionaryEntry.getTranslations().get(0).getConfidence());
 ```
 
 Please refer to the service documentation for a conceptual discussion of [dictionary lookup][dictionarylookup_doc].

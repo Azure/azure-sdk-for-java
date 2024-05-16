@@ -40,14 +40,12 @@ public class TranslateWithTransliteration {
             .setSourceLanguageScript("Latn")
             .setTargetLanguageScript("Latn");
 
-        List<TranslatedTextItem> translations = client.translate("hudha akhtabar.", translateOptions);
+        TranslatedTextItem translation = client.translate("hudha akhtabar.", translateOptions);
 
-        for (TranslatedTextItem translation : translations) {
-            System.out.println("Source Text: " + translation.getSourceText().getText());
-            for (TranslationText textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-                System.out.println("Transliterated text (" + textTranslation.getTransliteration().getScript() + "): " + textTranslation.getTransliteration().getText());
-            }
+        System.out.println("Source Text: " + translation.getSourceText().getText());
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Transliterated text (" + textTranslation.getTransliteration().getScript() + "): " + textTranslation.getTransliteration().getText());
         }
     }
 }

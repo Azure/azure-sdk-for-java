@@ -42,12 +42,10 @@ public class TranslateNoTranslate {
             .setSourceLanguage("cs")
             .setTextType(TextType.HTML);
 
-        List<TranslatedTextItem> translations = client.translate("<div class=\"notranslate\">This will not be translated.</div><div>This will be translated. </div>", translateOptions);
+        TranslatedTextItem translation = client.translate("<div class=\"notranslate\">This will not be translated.</div><div>This will be translated. </div>", translateOptions);
 
-        for (TranslatedTextItem translation : translations) {
-            for (TranslationText textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-            }
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
     }
 }

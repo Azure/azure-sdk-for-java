@@ -34,11 +34,9 @@ public class BreakSentence {
         String sourceScript = "Latn";
         String content = "zhè shì gè cè shì。";
 
-        List<BreakSentenceItem> breakSentences = client.findSentenceBoundaries(content, null, sourceLanguage, sourceScript);
+        BreakSentenceItem breakSentence = client.findSentenceBoundaries(content, sourceLanguage, sourceScript);
 
-        for (BreakSentenceItem breakSentence : breakSentences) {
-            System.out.println("The detected sentence boundaries: " + breakSentence.getSentencesLengths());
-        }
+        System.out.println("The detected sentence boundaries: " + breakSentence.getSentencesLengths());
         // END: getTextTranslationSentenceBoundaries
     }
 }

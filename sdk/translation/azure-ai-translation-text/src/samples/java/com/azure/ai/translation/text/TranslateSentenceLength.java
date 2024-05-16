@@ -39,14 +39,12 @@ public class TranslateSentenceLength {
             .addTargetLanguage("cs")
             .setIncludeSentenceLength(true);
 
-            List<TranslatedTextItem> translations = client.translate("The answer lies in machine translation. This is a test.", translateOptions);
+        TranslatedTextItem translation = client.translate("The answer lies in machine translation. This is a test.", translateOptions);
 
-        for (TranslatedTextItem translation : translations) {
-            for (TranslationText textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-                System.out.println("Source Sentence length: " + textTranslation.getSentenceBoundaries().getSourceSentencesLengths());
-                System.out.println("Translated Sentence length: " + textTranslation.getSentenceBoundaries().getTranslatedSentencesLengths());
-            }
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Source Sentence length: " + textTranslation.getSentenceBoundaries().getSourceSentencesLengths());
+            System.out.println("Translated Sentence length: " + textTranslation.getSentenceBoundaries().getTranslatedSentencesLengths());
         }
     }
 }

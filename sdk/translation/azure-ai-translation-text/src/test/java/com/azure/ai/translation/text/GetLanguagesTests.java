@@ -26,7 +26,7 @@ public class GetLanguagesTests extends TextTranslationClientBase {
     public void getSupportedLanguagesTranslationScope() {
         ArrayList<LanguageScope> scopes = new ArrayList<>();
         scopes.add(LanguageScope.TRANSLATION);
-        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(null, scopes, null, null);
+        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(scopes, null, null);
         assertFalse(response.getTranslation().isEmpty());
         assertTrue(response.getTranslation().containsKey("af"));
         assertNotNull(response.getTranslation().get("af").getDirectionality());
@@ -38,7 +38,7 @@ public class GetLanguagesTests extends TextTranslationClientBase {
     public void getSupportedLanguagesTransliterationScope() {
         ArrayList<LanguageScope> scopes = new ArrayList<>();
         scopes.add(LanguageScope.TRANSLITERATION);
-        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(null, scopes, null, null);
+        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(scopes, null, null);
         assertFalse(response.getTransliteration().isEmpty());
         assertTrue(response.getTransliteration().containsKey("be"));
 
@@ -62,7 +62,7 @@ public class GetLanguagesTests extends TextTranslationClientBase {
     public void getSupportedLanguagesTransliterationScopeMultipleScripts() {
         ArrayList<LanguageScope> scopes = new ArrayList<>();
         scopes.add(LanguageScope.TRANSLITERATION);
-        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(null, scopes, null, null);
+        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(scopes, null, null);
         assertFalse(response.getTransliteration().isEmpty());
         assertTrue(response.getTransliteration().containsKey("zh-Hant"));
 
@@ -78,7 +78,7 @@ public class GetLanguagesTests extends TextTranslationClientBase {
     public void getSupportedLanguagesDictionaryScope() {
         ArrayList<LanguageScope> scopes = new ArrayList<>();
         scopes.add(LanguageScope.DICTIONARY);
-        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(null, scopes, null, null);
+        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(scopes, null, null);
         assertFalse(response.getDictionary().isEmpty());
         assertTrue(response.getDictionary().containsKey("de"));
 
@@ -96,7 +96,7 @@ public class GetLanguagesTests extends TextTranslationClientBase {
     public void getSupportedLanguagesDictionaryScopeMultipleTranslations() {
         ArrayList<LanguageScope> scopes = new ArrayList<>();
         scopes.add(LanguageScope.DICTIONARY);
-        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(null, scopes, null, null);
+        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(scopes, null, null);
         assertFalse(response.getDictionary().isEmpty());
         assertTrue(response.getDictionary().containsKey("en"));
 
@@ -109,7 +109,7 @@ public class GetLanguagesTests extends TextTranslationClientBase {
 
     @Test
     public void getSupportedLanguagesWithCulture() {
-        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(null, null, "es", null);
+        GetSupportedLanguagesResult response = getTranslationClient().getSupportedLanguages(null, "es", null);
         assertFalse(response.getTransliteration().isEmpty());
         assertFalse(response.getTranslation().isEmpty());
         assertFalse(response.getDictionary().isEmpty());

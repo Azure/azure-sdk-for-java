@@ -15,27 +15,27 @@ public class BreakSentenceTests extends TextTranslationClientBase {
 
     @Test
     public void breakSentenceWithAutoDetect() {
-        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries("hello world");
-        assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(0.98, response.get(0).getDetectedLanguage().getConfidence());
-        assertEquals(11, response.get(0).getSentencesLengths().get(0));
+        BreakSentenceItem response = getTranslationClient().findSentenceBoundaries("hello world");
+        assertEquals("en", response.getDetectedLanguage().getLanguage());
+        assertEquals(0.98, response.getDetectedLanguage().getConfidence());
+        assertEquals(11, response.getSentencesLengths().get(0));
     }
 
     @Test
     public void breakSentenceWithLanguage() {
         String content = "Mi familia es muy muy bonita. no padre .mi madre es bonita y muy bajo . mi hermano es alto. Me gusta mi familia.";
 
-        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content, null, "es", null);
+        BreakSentenceItem response = getTranslationClient().findSentenceBoundaries(content, "es", null);
         int[] expectedLengths = new int[]{ 30, 42, 20, 20 };
         for (int i = 0; i < expectedLengths.length; i++) {
-            assertEquals(expectedLengths[i], response.get(0).getSentencesLengths().get(i));
+            assertEquals(expectedLengths[i], response.getSentencesLengths().get(i));
         }
     }
 
     @Test
     public void breakSentenceWithLanguageAndScript() {
-        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries("zhè shì gè cè shì。", null, "zh-Hans", "Latn");
-        assertEquals(18, response.get(0).getSentencesLengths().get(0));
+        BreakSentenceItem response = getTranslationClient().findSentenceBoundaries("zhè shì gè cè shì。", "zh-Hans", "Latn");
+        assertEquals(18, response.getSentencesLengths().get(0));
     }
 
     @Test

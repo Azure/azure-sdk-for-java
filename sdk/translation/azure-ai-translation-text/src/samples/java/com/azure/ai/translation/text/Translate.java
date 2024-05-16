@@ -39,12 +39,10 @@ public class Translate {
             .setSourceLanguage("en")
             .addTargetLanguage("es");
 
-        List<TranslatedTextItem> translations = client.translate("This is a test.", translateOptions);
+        TranslatedTextItem translation = client.translate("This is a test.", translateOptions);
 
-        for (TranslatedTextItem translation : translations) {
-            for (TranslationText textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-            }
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
         // END: getTextTranslationMultiple
     }

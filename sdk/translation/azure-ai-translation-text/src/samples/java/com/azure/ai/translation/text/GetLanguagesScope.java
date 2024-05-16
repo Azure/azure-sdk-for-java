@@ -29,7 +29,7 @@ public class GetLanguagesScope {
 
         ArrayList<LanguageScope> scopes = new ArrayList<>();
         scopes.add(LanguageScope.TRANSLATION);
-        GetSupportedLanguagesResult languages = client.getSupportedLanguages(null, scopes, null, null);
+        GetSupportedLanguagesResult languages = client.getSupportedLanguages(scopes, null, null);
 
         System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
         System.out.println("Number of supported languages for transliterate operation: " + (languages.getTransliteration() == null ? 0 : languages.getTransliteration().size()) + ".");

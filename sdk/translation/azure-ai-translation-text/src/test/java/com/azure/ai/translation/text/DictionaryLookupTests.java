@@ -13,10 +13,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DictionaryLookupTests extends TextTranslationClientBase {
     @Test
     public void singleInputItem() {
-        List<DictionaryLookupItem> response = getTranslationClient().lookupDictionaryEntries("en", "es", "fly");
+        DictionaryLookupItem response = getTranslationClient().lookupDictionaryEntries("en", "es", "fly");
 
-        assertEquals("fly", response.get(0).getNormalizedSource());
-        assertEquals("fly", response.get(0).getDisplaySource());
+        assertEquals("fly", response.getNormalizedSource());
+        assertEquals("fly", response.getDisplaySource());
     }
 
     @Test

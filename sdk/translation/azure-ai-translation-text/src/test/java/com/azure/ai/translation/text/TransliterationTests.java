@@ -14,8 +14,8 @@ public class TransliterationTests extends TextTranslationClientBase {
 
     @Test
     public void verifyTransliteration() {
-        List<TransliteratedText> response = getTranslationClient().transliterate("zh-Hans", "Hans", "Latn", "这里怎么一回事?");
-        assertTrue(response.get(0).getText().length() > 1);
+        TransliteratedText response = getTranslationClient().transliterate("zh-Hans", "Hans", "Latn", "这里怎么一回事?");
+        assertTrue(response.getText().length() > 1);
     }
 
     @Test

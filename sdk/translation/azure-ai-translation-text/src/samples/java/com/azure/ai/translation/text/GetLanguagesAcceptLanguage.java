@@ -29,7 +29,7 @@ public class GetLanguagesAcceptLanguage {
             .buildClient();
 
         String acceptLanguage = "es";
-        GetSupportedLanguagesResult languages = client.getSupportedLanguages(null, null, acceptLanguage, null);
+        GetSupportedLanguagesResult languages = client.getSupportedLanguages(null, acceptLanguage, null);
 
         System.out.println("Number of supported languages for translate operation: " + languages.getTranslation().size() + ".");
         System.out.println("Number of supported languages for transliterate operation: " + languages.getTransliteration().size() + ".");

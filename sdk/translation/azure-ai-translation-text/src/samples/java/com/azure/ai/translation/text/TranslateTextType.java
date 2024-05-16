@@ -40,12 +40,10 @@ public class TranslateTextType {
             .setSourceLanguage("cs")
             .setTextType(TextType.HTML);
 
-        List<TranslatedTextItem> translations = client.translate("<html><body>This <b>is</b> a test.</body></html>", translateOptions);
+        TranslatedTextItem translation = client.translate("<html><body>This <b>is</b> a test.</body></html>", translateOptions);
 
-        for (TranslatedTextItem translation : translations) {
-            for (TranslationText textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-            }
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
     }
 }

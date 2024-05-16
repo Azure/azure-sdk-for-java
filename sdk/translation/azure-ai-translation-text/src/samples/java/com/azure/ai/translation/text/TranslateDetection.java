@@ -38,17 +38,15 @@ public class TranslateDetection {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        List<TranslatedTextItem> translations = client.translate("cs", "This is a test.");
+        TranslatedTextItem translation = client.translate("cs", "This is a test.");
 
-        for (TranslatedTextItem translation : translations) {
-            if (translation.getDetectedLanguage() != null) {
-                DetectedLanguage detectedLanguage = translation.getDetectedLanguage();
-                System.out.println("Detected languages of the input text: " + detectedLanguage.getLanguage() + " with score: " + detectedLanguage.getConfidence() + ".");
-            }
+        if (translation.getDetectedLanguage() != null) {
+            DetectedLanguage detectedLanguage = translation.getDetectedLanguage();
+            System.out.println("Detected languages of the input text: " + detectedLanguage.getLanguage() + " with score: " + detectedLanguage.getConfidence() + ".");
+        }
 
-            for (TranslationText textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-            }
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
     }
 }
