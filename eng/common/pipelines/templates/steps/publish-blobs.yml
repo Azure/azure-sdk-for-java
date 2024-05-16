@@ -28,7 +28,7 @@ steps:
       -DocLocation "${{ parameters.FolderForUpload }}"
       -BlobName "${{ parameters.BlobName }}"
       -PublicArtifactLocation "${{ parameters.ArtifactLocation }}"
-      -RepoReplaceRegex "(https://github.com/${{ parameters.RepoId }}/(?:blob|tree)/)$(DefaultBranch)""
+      -RepoReplaceRegex "(https://github.com/${{ parameters.RepoId }}/(?:blob|tree)/)$(DefaultBranch)"
     azurePowerShellVersion: latestVersion
     pwsh: true
     env:
