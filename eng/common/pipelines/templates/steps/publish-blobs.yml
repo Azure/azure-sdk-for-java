@@ -17,7 +17,7 @@ steps:
   displayName: Download and Extract azcopy Zip
 
 - task: AzurePowerShell@5
-  displayName: 'Copy Docs to Blob'
+  displayName: 'Copy Docs to Blob Storage'
   continueOnError: false
   inputs:
     azureSubscription: 'Azure SDK Artifacts'
@@ -28,8 +28,8 @@ steps:
       -DocLocation "${{ parameters.FolderForUpload }}"
       -BlobName "${{ parameters.BlobName }}"
       -PublicArtifactLocation "${{ parameters.ArtifactLocation }}"
-      -RepoReplaceRegex "(https://github.com/${{ parameters.RepoId }}/(?:blob|tree)/)$(DefaultBranch)"
-    azurePowerShellVersion: LatestVersion
+      -RepoReplaceRegex "(https://github.com/${{ parameters.RepoId }}/(?:blob|tree)/)$(DefaultBranch)""
+    azurePowerShellVersion: latestVersion
     pwsh: true
-    env:
+    eng:
       AZCOPY_AUTO_LOGIN_TYPE: 'PSCRED'
