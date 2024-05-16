@@ -1,6 +1,6 @@
 package com.azure.ai.openai.assistants.implementation.streaming;
 
-import com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent;
+import com.azure.ai.openai.assistants.models.AssistantStreamEvent;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
@@ -14,8 +14,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.DONE;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.ERROR;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.DONE;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.ERROR;
 
 /**
  * A class that handles the deserialization of server sent events.

@@ -1,6 +1,6 @@
 package com.azure.ai.openai.assistants.implementation.streaming;
 
-import com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent;
+import com.azure.ai.openai.assistants.models.AssistantStreamEvent;
 import com.azure.ai.openai.assistants.models.MessageDeltaChunk;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.RunStepDeltaChunk;
@@ -17,28 +17,28 @@ import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.core.util.BinaryData;
 
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_CREATED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_MESSAGE_COMPLETED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_MESSAGE_CREATED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_MESSAGE_DELTA;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_MESSAGE_INCOMPLETE;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_MESSAGE_IN_PROGRESS;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_CANCELLED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_CANCELLING;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_COMPLETED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_CREATED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_EXPIRED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_FAILED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_IN_PROGRESS;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_QUEUED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_REQUIRES_ACTION;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_CANCELLED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_COMPLETED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_CREATED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_DELTA;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_EXPIRED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_FAILED;
-import static com.azure.ai.openai.assistants.implementation.models.AssistantStreamEvent.THREAD_RUN_STEP_IN_PROGRESS;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_CREATED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_MESSAGE_COMPLETED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_MESSAGE_CREATED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_MESSAGE_DELTA;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_MESSAGE_INCOMPLETE;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_MESSAGE_IN_PROGRESS;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_CANCELLED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_CANCELLING;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_COMPLETED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_CREATED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_EXPIRED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_FAILED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_IN_PROGRESS;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_QUEUED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_REQUIRES_ACTION;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_STEP_CANCELLED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_STEP_COMPLETED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_STEP_CREATED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_STEP_DELTA;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_STEP_EXPIRED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_STEP_FAILED;
+import static com.azure.ai.openai.assistants.models.AssistantStreamEvent.THREAD_RUN_STEP_IN_PROGRESS;
 
 /**
  * Deserializes the server sent event into the appropriate type. Which subtype of {@link StreamUpdate} is used, is
