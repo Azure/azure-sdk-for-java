@@ -23,4 +23,4 @@
  *
  * Dictionary example Returns grammatical structure and context examples for the source term and target term pair.
  */
-package com.azure.ai.translation.text;
+package com.azure.ai.translation.text.options;
