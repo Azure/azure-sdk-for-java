@@ -43,13 +43,19 @@ extends:
             inputs:
               azureSubscription: 'azuresdkpartnerdrops - Storage Partner Drops'
               ScriptType: 'InlineScript'
-              azurePowerShellVersion: LatestVersion 
+              azurePowerShellVersion: LatestVersion
               pwsh: true
               Inline: |
                 azcopy copy 'https://azuresdkpartnerdrops.blob.core.windows.net/drops/${{ parameters.BlobPath }}/*' '$(Artifacts)' --recursive=true
-                echo "Copied files:"
-                dir '$(Artifacts)' -r | % { $_.FullName }
-            env: 
+                $copiedFiles = Get-ChildItem $(Artifacts) -Recurse | Select-Object -ExpandProperty FullName
+                if($copiedFiles.Count -eq 0) {
+                  Write-Error "No files copied."
+                  exit 1
+                }
+
+                Write-Host "Copied files:"
+                Write-Host $copiedFiles
+            env:
               AZCOPY_AUTO_LOGIN_TYPE: 'PSCRED'
 
           - template: tools/java-esrp-signing/java-esrp-signing.yml@azure-sdk-build-tools
