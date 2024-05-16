@@ -295,6 +295,13 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         return this;
     }
 
+    /**
+     * Sets the Authentication Scope used to authorize requests sent to the service.
+     *
+     * @param scope Token Scope.
+     * @return The updated {@link TextTranslationClientBuilder} object.
+     * @throws NullPointerException If {@code scope} is null.
+     */
     public TextTranslationClientBuilder scope(String scope) {
         Objects.requireNonNull(scope, "'scope' cannot be null.");
         this.scope = scope;
