@@ -12,7 +12,9 @@ variables:
 - name: MAVEN_OPTS
   value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 - name: NodeVersion
-  value: '16.x'
+  value: '18.x'
+- name: fromTypeSpec
+  value: $[ne(variables['TSP_CONFIG'], '')]
 
 steps:
 - bash: |
@@ -29,6 +31,12 @@ steps:
 - bash: |
     npm install -g autorest
   displayName: 'Install autorest'
+  condition: eq(variables.fromTypeSpec, false)
+
+- bash: |
+    npm install -g @azure-tools/typespec-client-generator-cli
+  displayName: 'Install tsp-client'
+  condition: eq(variables.fromTypeSpec, true)
 
 # - template: /eng/common/testproxy/test-proxy-tool.yml
 #   parameters:
@@ -38,13 +46,27 @@ steps:
 - bash: |
     export PATH=$JAVA_HOME_11_X64/bin:$PATH
     java -version
+    set -x
+    ./eng/mgmt/automation/generate.py --tsp-config "$(TSP_CONFIG)" --version "$(VERSION)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
+  displayName: Generation from TypeSpec
+  condition: eq(variables.fromTypeSpec, true)
+
+- bash: |
+    export PATH=$JAVA_HOME_11_X64/bin:$PATH
+    java -version
+    set -x
     ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --autorest-options="$(AUTOREST_OPTIONS)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
-  displayName: Generation
+  displayName: Generation from Swagger
+  condition: eq(variables.fromTypeSpec, false)
 
 - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
   parameters:
     PRBranchName: fluent-lite-generation-$(Build.BuildId)
-    CommitMsg: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
-    PRTitle: '[Automation] Generate Fluent Lite from $(README)#$(TAG)'
+    ${{ if eq(variables.fromTypeSpec, true) }}:
+      CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
+      PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
+    ${{ else }}:
+      CommitMsg: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
+      PRTitle: '[Automation] Generate Fluent Lite from Swagger $(README)#$(TAG)'
     PRLabels: 'Mgmt - Track 2'
     OpenAsDraft: '$(DRAFT_PULL_REQUEST)'
