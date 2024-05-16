@@ -68,17 +68,19 @@ public final class ManagedPrivateEndpointResourceImpl implements ManagedPrivateE
     }
 
     public ManagedPrivateEndpointResource create() {
-        this.innerObject = serviceManager
-            .serviceClient().getManagedPrivateEndpoints().createOrUpdateWithResponse(resourceGroupName, factoryName,
-                managedVirtualNetworkName, managedPrivateEndpointName, this.innerModel(), createIfMatch, Context.NONE)
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedPrivateEndpoints()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
+                managedPrivateEndpointName, this.innerModel(), createIfMatch, Context.NONE)
             .getValue();
         return this;
     }
 
     public ManagedPrivateEndpointResource create(Context context) {
-        this.innerObject = serviceManager
-            .serviceClient().getManagedPrivateEndpoints().createOrUpdateWithResponse(resourceGroupName, factoryName,
-                managedVirtualNetworkName, managedPrivateEndpointName, this.innerModel(), createIfMatch, context)
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedPrivateEndpoints()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
+                managedPrivateEndpointName, this.innerModel(), createIfMatch, context)
             .getValue();
         return this;
     }
@@ -97,17 +99,19 @@ public final class ManagedPrivateEndpointResourceImpl implements ManagedPrivateE
     }
 
     public ManagedPrivateEndpointResource apply() {
-        this.innerObject = serviceManager
-            .serviceClient().getManagedPrivateEndpoints().createOrUpdateWithResponse(resourceGroupName, factoryName,
-                managedVirtualNetworkName, managedPrivateEndpointName, this.innerModel(), updateIfMatch, Context.NONE)
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedPrivateEndpoints()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
+                managedPrivateEndpointName, this.innerModel(), updateIfMatch, Context.NONE)
             .getValue();
         return this;
     }
 
     public ManagedPrivateEndpointResource apply(Context context) {
-        this.innerObject = serviceManager
-            .serviceClient().getManagedPrivateEndpoints().createOrUpdateWithResponse(resourceGroupName, factoryName,
-                managedVirtualNetworkName, managedPrivateEndpointName, this.innerModel(), updateIfMatch, context)
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedPrivateEndpoints()
+            .createOrUpdateWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName,
+                managedPrivateEndpointName, this.innerModel(), updateIfMatch, context)
             .getValue();
         return this;
     }
@@ -126,7 +130,8 @@ public final class ManagedPrivateEndpointResourceImpl implements ManagedPrivateE
 
     public ManagedPrivateEndpointResource refresh() {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getManagedPrivateEndpoints()
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedPrivateEndpoints()
             .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
                 localIfNoneMatch, Context.NONE)
             .getValue();
@@ -135,7 +140,8 @@ public final class ManagedPrivateEndpointResourceImpl implements ManagedPrivateE
 
     public ManagedPrivateEndpointResource refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getManagedPrivateEndpoints()
+        this.innerObject = serviceManager.serviceClient()
+            .getManagedPrivateEndpoints()
             .getWithResponse(resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName,
                 localIfNoneMatch, context)
             .getValue();

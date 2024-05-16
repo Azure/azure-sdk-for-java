@@ -32,42 +32,38 @@ public final class FleetsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"eTag\":\"ocqxtccmg\",\"identity\":{\"principalId\":\"6e86e448-f36b-44ad-9f84-29f581e02083\",\"tenantId\":\"bbbfe47a-5f2c-421c-b795-19f68e56e261\",\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{\"yrxvwfudwpznt\":{\"principalId\":\"db6eaaca-046e-4ecf-91ea-fd19f88bf68c\",\"clientId\":\"5f1af6a8-7d33-4033-beec-d0fa07f93f88\"},\"zhlrqjb\":{\"principalId\":\"c280dbb2-1086-4371-83bf-0c745c2544ff\",\"clientId\":\"8adafffd-ac26-4e43-acef-4a1d3a424d6e\"}}},\"location\":\"kfrlhrxsbky\",\"tags\":{\"uzbpzkafku\":\"ca\",\"rnwb\":\"b\",\"hspkdeemao\":\"ehhseyvjusrts\",\"gkvtmelmqkrhah\":\"mx\"},\"id\":\"ljuahaquhcdh\",\"name\":\"duala\",\"type\":\"xqpvfadmw\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"hubProfile\":{\"dnsPrefix\":\"ualupjmkh\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":true,\"subnetId\":\"wsrtjriplrbpbe\"},\"agentProfile\":{\"subnetId\":\"hfgblc\",\"vmSize\":\"xzvlvqhjkbegib\"},\"fqdn\":\"mxiebw\",\"kubernetesVersion\":\"loayqcgw\",\"portalFqdn\":\"zjuzgwyz\"}},\"eTag\":\"txon\",\"identity\":{\"principalId\":\"d9cbcaae-185a-4c33-b65f-fa3ba1ac71e0\",\"tenantId\":\"99090434-d79d-44c1-982c-8934279d6e17\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"pwxqp\":{\"principalId\":\"6a0edaef-09b1-4267-b714-1d38e709addf\",\"clientId\":\"d363efcd-20e2-4ba2-8849-0dd6549a5d5b\"},\"nftguvriuhpr\":{\"principalId\":\"7f0e4551-41c9-4a06-ad29-46b787bef3b7\",\"clientId\":\"a3fee02b-3f85-4ee8-9a21-80bebc9a3a19\"},\"yvxqtayriwwroy\":{\"principalId\":\"9e6d17b2-2647-4639-99a8-07d5e6807eb1\",\"clientId\":\"ed2224d7-dc4b-482c-a8c4-de7635b113b6\"},\"xrmcqibycnojvk\":{\"principalId\":\"68c73235-241f-41d1-9369-c9a8ec8868cb\",\"clientId\":\"d87be1cf-3a12-44f1-9baf-36d6fcc45259\"}}},\"location\":\"e\",\"tags\":{\"apj\":\"gzva\",\"zlmwlxkvugfhz\":\"zhpvgqzcjrvxd\",\"hnnpr\":\"vawjvzunlu\",\"ultskzbbtdz\":\"xipeilpjzuaejx\"},\"id\":\"mv\",\"name\":\"ekg\",\"type\":\"wozuhkf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ContainerServiceFleetManager manager =
-            ContainerServiceFleetManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ContainerServiceFleetManager manager = ContainerServiceFleetManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Fleet> response = manager.fleets().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kfrlhrxsbky", response.iterator().next().location());
-        Assertions.assertEquals("ca", response.iterator().next().tags().get("uzbpzkafku"));
-        Assertions
-            .assertEquals(
-                ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("e", response.iterator().next().location());
+        Assertions.assertEquals("gzva", response.iterator().next().tags().get("apj"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED,
+            response.iterator().next().identity().type());
+        Assertions.assertEquals("ualupjmkh", response.iterator().next().hubProfile().dnsPrefix());
+        Assertions.assertEquals(true,
+            response.iterator().next().hubProfile().apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals(true,
+            response.iterator().next().hubProfile().apiServerAccessProfile().enableVnetIntegration());
+        Assertions.assertEquals("wsrtjriplrbpbe",
+            response.iterator().next().hubProfile().apiServerAccessProfile().subnetId());
+        Assertions.assertEquals("hfgblc", response.iterator().next().hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("xzvlvqhjkbegib", response.iterator().next().hubProfile().agentProfile().vmSize());
     }
 }

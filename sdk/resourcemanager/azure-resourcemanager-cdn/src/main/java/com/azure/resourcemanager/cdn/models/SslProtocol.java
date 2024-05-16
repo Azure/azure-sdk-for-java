@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The protocol of an established TLS connection. */
+/**
+ * The protocol of an established TLS connection.
+ */
 public final class SslProtocol extends ExpandableStringEnum<SslProtocol> {
-    /** Static value TLSv1 for SslProtocol. */
+    /**
+     * Static value TLSv1 for SslProtocol.
+     */
     public static final SslProtocol TLSV1 = fromString("TLSv1");
 
-    /** Static value TLSv1.1 for SslProtocol. */
+    /**
+     * Static value TLSv1.1 for SslProtocol.
+     */
     public static final SslProtocol TLSV1_1 = fromString("TLSv1.1");
 
-    /** Static value TLSv1.2 for SslProtocol. */
+    /**
+     * Static value TLSv1.2 for SslProtocol.
+     */
     public static final SslProtocol TLSV1_2 = fromString("TLSv1.2");
 
     /**
      * Creates a new instance of SslProtocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class SslProtocol extends ExpandableStringEnum<SslProtocol> {
 
     /**
      * Creates or finds a SslProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SslProtocol.
      */
@@ -41,7 +49,7 @@ public final class SslProtocol extends ExpandableStringEnum<SslProtocol> {
 
     /**
      * Gets known SslProtocol values.
-     *
+     * 
      * @return known SslProtocol values.
      */
     public static Collection<SslProtocol> values() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An individual synchronization error. */
+/**
+ * An individual synchronization error.
+ */
 @Immutable
 public final class CatalogSyncError {
     /*
@@ -23,13 +25,15 @@ public final class CatalogSyncError {
     @JsonProperty(value = "errorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<CatalogErrorDetails> errorDetails;
 
-    /** Creates an instance of CatalogSyncError class. */
+    /**
+     * Creates an instance of CatalogSyncError class.
+     */
     public CatalogSyncError() {
     }
 
     /**
      * Get the path property: The path of the file the error is associated with.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -38,7 +42,7 @@ public final class CatalogSyncError {
 
     /**
      * Get the errorDetails property: Errors associated with the file.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<CatalogErrorDetails> errorDetails() {
@@ -47,7 +51,7 @@ public final class CatalogSyncError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

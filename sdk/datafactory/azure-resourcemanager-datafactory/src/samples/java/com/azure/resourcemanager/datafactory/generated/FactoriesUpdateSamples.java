@@ -13,8 +13,7 @@ import java.util.Map;
  */
 public final class FactoriesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Update.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_Update.json
      */
     /**
      * Sample code: Factories_Update.
@@ -22,8 +21,10 @@ public final class FactoriesUpdateSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        Factory resource = manager.factories().getByResourceGroupWithResponse("exampleResourceGroup",
-            "exampleFactoryName", null, com.azure.core.util.Context.NONE).getValue();
+        Factory resource = manager.factories()
+            .getByResourceGroupWithResponse("exampleResourceGroup", "exampleFactoryName", null,
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("exampleTag", "exampleValue")).apply();
     }
 

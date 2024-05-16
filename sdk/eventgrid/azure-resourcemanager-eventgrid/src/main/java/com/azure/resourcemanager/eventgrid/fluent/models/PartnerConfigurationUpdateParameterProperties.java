@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PartnerConfigurationUpdateParameterProperties {
     /*
-     * The default time used to validate the maximum expiration time for each authorized partners in days. Allowed
-     * values ar between 1 and 365 days.
+     * The default time used to validate the maximum expiration time for each authorized partners in days. Allowed values ar between 1 and 365 days.
      */
     @JsonProperty(value = "defaultMaximumExpirationTimeInDays")
     private Integer defaultMaximumExpirationTimeInDays;

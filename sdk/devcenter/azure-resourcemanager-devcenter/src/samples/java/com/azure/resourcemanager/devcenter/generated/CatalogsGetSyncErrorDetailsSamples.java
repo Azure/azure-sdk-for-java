@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-/** Samples for Catalogs GetSyncErrorDetails. */
+/**
+ * Samples for Catalogs GetSyncErrorDetails.
+ */
 public final class CatalogsGetSyncErrorDetailsSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Catalogs_GetSyncErrorDetails.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Catalogs_GetSyncErrorDetails.json
      */
     /**
      * Sample code: Catalogs_GetSyncErrorDetails.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void catalogsGetSyncErrorDetails(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager
-            .catalogs()
+        manager.catalogs()
             .getSyncErrorDetailsWithResponse("rg1", "Contoso", "CentralCatalog", com.azure.core.util.Context.NONE);
     }
 }

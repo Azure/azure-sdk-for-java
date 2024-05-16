@@ -4,6 +4,7 @@
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.implementation.FunctionsToolCallHelper;
+import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
@@ -38,9 +39,10 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonReader;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -48,6 +50,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -254,16 +257,35 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return object;
     }
 
-    static <T> T assertAndGetValueFromResponse(Response<BinaryData> actualResponse, TypeReference<T> typeReference, int expectedCode) {
+    static <T> PageableList<T> asserAndGetPageableListFromResponse(Response<BinaryData> actualResponse, int expectedCode,
+                                                     CheckedFunction<JsonReader, List<T>> readListFunction) {
         assertNotNull(actualResponse);
         assertEquals(expectedCode, actualResponse.getStatusCode());
         assertInstanceOf(Response.class, actualResponse);
         BinaryData binaryData = actualResponse.getValue();
         assertNotNull(binaryData);
-        T object = binaryData.toObject(typeReference);
+        PageableList<T> object = null;
+        try {
+            object = PageableListAccessHelper.create(binaryData, readListFunction);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         assertNotNull(object);
-        assertInstanceOf(typeReference.getJavaClass(), object);
         return object;
+    }
+
+    protected interface CheckedFunction<T, R> extends Function<T, R> {
+
+        @Override
+        default R apply(T t) {
+            try {
+                return applyThrows(t);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        R applyThrows(T t) throws Exception;
     }
 
     protected static void assertFileEquals(OpenAIFile expected, OpenAIFile actual) {

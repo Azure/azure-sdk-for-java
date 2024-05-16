@@ -22,6 +22,8 @@ public final class JdkHttpClientLocalTestServer {
     private static volatile LocalTestServer proxyServer;
     private static final Semaphore PROXY_SERVER_SEMAPHORE = new Semaphore(1);
 
+    public static final String TIMEOUT = "/timeout";
+
     public static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     public static final byte[] LONG_BODY = createLongBody();
 
@@ -104,6 +106,16 @@ public final class JdkHttpClientLocalTestServer {
                 resp.getHttpOutput().write(SHORT_BODY, 5, 3);
                 resp.getHttpOutput().flush();
                 resp.getHttpOutput().complete(Callback.NOOP);
+            } else if (get && TIMEOUT.equals(path)) {
+                try {
+                    Thread.sleep(5000);
+                    resp.setStatus(200);
+                    resp.getHttpOutput().write(SHORT_BODY);
+                    resp.getHttpOutput().flush();
+                    resp.getHttpOutput().complete(Callback.NOOP);
+                } catch (InterruptedException e) {
+                    throw new ServletException(e);
+                }
             } else {
                 throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
             }

@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static com.azure.search.documents.TestHelpers.setupSharedIndex;
+import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -76,6 +77,7 @@ public class SuggestTests extends SearchTestBase {
 
         searchIndexClient.getSearchClient(BOOKS_INDEX_NAME)
             .uploadDocuments(Arrays.asList(doc1, doc2));
+        waitForIndexing();
     }
 
     @AfterAll

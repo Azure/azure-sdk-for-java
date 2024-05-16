@@ -5,23 +5,25 @@
 package com.azure.monitor.query.implementation.metricsbatch.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The resource management error additional info.
  */
 @Immutable
-public final class ErrorAdditionalInfo {
+public final class ErrorAdditionalInfo implements JsonSerializable<ErrorAdditionalInfo> {
     /*
      * The additional info type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The additional info.
      */
-    @JsonProperty(value = "info", access = JsonProperty.Access.WRITE_ONLY)
     private Object info;
 
     /**
@@ -46,5 +48,39 @@ public final class ErrorAdditionalInfo {
      */
     public Object getInfo() {
         return this.info;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorAdditionalInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorAdditionalInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorAdditionalInfo.
+     */
+    public static ErrorAdditionalInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorAdditionalInfo deserializedErrorAdditionalInfo = new ErrorAdditionalInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedErrorAdditionalInfo.type = reader.getString();
+                } else if ("info".equals(fieldName)) {
+                    deserializedErrorAdditionalInfo.info = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorAdditionalInfo;
+        });
     }
 }

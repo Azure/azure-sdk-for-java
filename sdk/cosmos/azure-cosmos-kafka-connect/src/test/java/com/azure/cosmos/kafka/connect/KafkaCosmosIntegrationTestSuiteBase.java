@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -33,6 +34,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
 
     protected static Network network;
     protected static KafkaContainer kafkaContainer;
+    protected static KafkaSchemaRegistryContainer schemaRegistryContainer;
     protected static KafkaCosmosConnectContainer kafkaCosmosConnectContainer;
 
     @BeforeSuite(groups = { "kafka-integration" }, timeOut = 10 * SUITE_SETUP_TIMEOUT)
@@ -69,33 +71,40 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
         kafkaContainer = new KafkaContainer(getDockerImageName("confluentinc/cp-kafka:"))
             .withNetwork(network)
             .withNetworkAliases("broker")
-            .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT);
+            .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
+            .withLogConsumer(new Slf4jLogConsumer(logger));
 
-        kafkaCosmosConnectContainer = new KafkaCosmosConnectContainer(getDockerImageName("confluentinc/cp-kafka-connect:"))
+        schemaRegistryContainer = new KafkaSchemaRegistryContainer(getDockerImageName("confluentinc/cp-schema-registry:"))
             .withNetwork(network)
             .dependsOn(kafkaContainer)
             .withLocalKafkaContainer(kafkaContainer)
             .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
+            .withLogConsumer(new Slf4jLogConsumer(logger));
+
+        Startables.deepStart(Stream.of(kafkaContainer, schemaRegistryContainer)).join();
+
+        kafkaCosmosConnectContainer = new KafkaCosmosConnectContainer(getDockerImageName("confluentinc/cp-kafka-connect:"))
+            .withNetwork(network)
+            .dependsOn(kafkaContainer, schemaRegistryContainer)
+            .withLocalKafkaContainer(kafkaContainer)
+            .withLocalSchemaRegistryContainer(schemaRegistryContainer)
+            .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
             .withFileSystemBind("src/test/connectorPlugins", "/kafka/connect/cosmos-connector")
             .withLogConsumer(new Slf4jLogConsumer(logger));
 
-        Startables.deepStart(Stream.of(kafkaContainer, kafkaCosmosConnectContainer)).join();
-
-        // the mapped bootstrap server port can only be obtained after the container started
-        kafkaCosmosConnectContainer.withLocalBootstrapServer(kafkaContainer.getBootstrapServers());
+        Startables.deepStart(kafkaCosmosConnectContainer).join();
     }
 
     private static void setupDockerContainersForCloud() {
         logger.info("Setting up docker containers with self-managed cloud clusters...");
         kafkaCosmosConnectContainer = new KafkaCosmosConnectContainer(getDockerImageName("confluentinc/cp-kafka-connect:"))
             .withCloudKafkaContainer()
+            .withCloudSchemaRegistryContainer()
             .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
             .withFileSystemBind("src/test/connectorPlugins", "/kafka/connect/cosmos-connector")
             .withLogConsumer(new Slf4jLogConsumer(logger));
 
         Startables.deepStart(Stream.of(kafkaCosmosConnectContainer)).join();
-
-        kafkaCosmosConnectContainer.withCloudBootstrapServer();
     }
 
     private static void createConnectorJar() throws IOException, InterruptedException {
@@ -128,7 +137,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
         if (exitCode == 0) {
             logger.info("Build script completed successfully");
             //validate the jar exists
-            File jarFile = findFile("src/test/connectorPlugins/connectors", "jar-with-dependencies.jar");
+            File jarFile = findFile("src/test/connectorPlugins/connectors", "azure-cosmos-kafka-connect");
 
             assertThat(jarFile).isNotNull();
             assertThat(jarFile.exists()).isTrue();
@@ -138,17 +147,53 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
         }
     }
 
-    private static File findFile(String folder, String filenameFilterEndsWith) {
+    private static File findFile(String folder, String filenameFilterStartsWith) {
         File file = new File(folder);
         if (!file.exists() || !file.isDirectory()) {
             return null;
         }
         return Arrays.stream(file.listFiles())
-            .filter(f -> f.getName().endsWith(filenameFilterEndsWith))
+            .filter(f -> f.getName().startsWith(filenameFilterStartsWith))
             .findFirst().orElse(null);
     }
 
     private static DockerImageName getDockerImageName(String prefix) {
         return DockerImageName.parse(prefix + KafkaCosmosTestConfigurations.CONFLUENT_VERSION);
+    }
+
+    protected String getSchemaRegistryInternalBaseUrl() {
+        if (schemaRegistryContainer == null) {
+            return KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL;
+        }
+
+        return schemaRegistryContainer.getInternalBaseUrl();
+    }
+
+    protected void addAvroConverterForValue(Map<String, String> connectorConfig) {
+        if (schemaRegistryContainer == null) {
+            connectorConfig.put("value.converter", "io.confluent.connect.avro.AvroConverter");
+            connectorConfig.put("value.converter.schemas.enable", "true");
+            connectorConfig.put("value.converter.schema.registry.url", getSchemaRegistryInternalBaseUrl());
+            connectorConfig.put("value.converter.basic.auth.credentials.source", "USER_INFO");
+            connectorConfig.put("value.converter.basic.auth.user.info", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO);
+        } else {
+            connectorConfig.put("value.converter", "io.confluent.connect.avro.AvroConverter");
+            connectorConfig.put("value.converter.schemas.enable", "true");
+            connectorConfig.put("value.converter.schema.registry.url", getSchemaRegistryInternalBaseUrl());
+        }
+    }
+
+    protected void addAvroConverterForKey(Map<String, String> connectorConfig) {
+        if (schemaRegistryContainer == null) {
+            connectorConfig.put("key.converter", "io.confluent.connect.avro.AvroConverter");
+            connectorConfig.put("key.converter.schemas.enable", "true");
+            connectorConfig.put("key.converter.schema.registry.url", getSchemaRegistryInternalBaseUrl());
+            connectorConfig.put("key.converter.basic.auth.credentials.source", "USER_INFO");
+            connectorConfig.put("key.converter.basic.auth.user.info", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO);
+        } else {
+            connectorConfig.put("key.converter", "io.confluent.connect.avro.AvroConverter");
+            connectorConfig.put("key.converter.schemas.enable", "true");
+            connectorConfig.put("key.converter.schema.registry.url", getSchemaRegistryInternalBaseUrl());
+        }
     }
 }

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -117,8 +116,8 @@ public class AzureMessageSyncTest extends AssistantsClientTestBase {
             assertEquals(2, listedMessages.getData().size());
             // List messages with response
             Response<BinaryData> listedMessagesResponse = client.listMessagesWithResponse(threadId, new RequestOptions());
-            PageableList<ThreadMessage> listedMessagesWithResponse = assertAndGetValueFromResponse(
-                listedMessagesResponse, new TypeReference<PageableList<ThreadMessage>>() {}, 200);
+            PageableList<ThreadMessage> listedMessagesWithResponse = asserAndGetPageableListFromResponse(
+                listedMessagesResponse, 200, reader -> reader.readArray(ThreadMessage::fromJson));
             assertNotNull(listedMessagesWithResponse);
             assertNotNull(listedMessagesWithResponse.getData());
             assertEquals(2, listedMessagesWithResponse.getData().size());
@@ -168,8 +167,8 @@ public class AzureMessageSyncTest extends AssistantsClientTestBase {
             validateOpenAIPageableListOfMessageFile(listMessageFiles, messageId, Arrays.asList(fileId1, fileId2));
             // List messages with response
             Response<BinaryData> listedMessagesResponse = client.listMessageFilesWithResponse(threadId, messageId, new RequestOptions());
-            PageableList<MessageFile> listMessageFilesResponse = assertAndGetValueFromResponse(
-                listedMessagesResponse, new TypeReference<PageableList<MessageFile>>() {}, 200);
+            PageableList<MessageFile> listMessageFilesResponse = asserAndGetPageableListFromResponse(
+                listedMessagesResponse, 200, reader -> reader.readArray(MessageFile::fromJson));
             validateOpenAIPageableListOfMessageFile(listMessageFilesResponse, messageId, Arrays.asList(fileId1, fileId2));
         });
         deleteFile(client, fileId1);

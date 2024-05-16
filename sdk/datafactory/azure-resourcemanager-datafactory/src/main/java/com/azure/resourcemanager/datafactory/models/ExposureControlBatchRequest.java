@@ -54,8 +54,9 @@ public final class ExposureControlBatchRequest {
      */
     public void validate() {
         if (exposureControlRequests() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property exposureControlRequests in model ExposureControlBatchRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property exposureControlRequests in model ExposureControlBatchRequest"));
         } else {
             exposureControlRequests().forEach(e -> e.validate());
         }

@@ -6,23 +6,22 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.resourcemanager.devcenter.models.Schedule;
 
-/** Samples for Schedules Update. */
+/**
+ * Samples for Schedules Update.
+ */
 public final class SchedulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Schedules_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Schedules_Patch.json
      */
     /**
      * Sample code: Schedules_Update.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void schedulesUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        Schedule resource =
-            manager
-                .schedules()
-                .getWithResponse(
-                    "rg1", "TestProject", "DevPool", "autoShutdown", null, com.azure.core.util.Context.NONE)
-                .getValue();
+        Schedule resource = manager.schedules()
+            .getWithResponse("rg1", "TestProject", "DevPool", "autoShutdown", null, com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTime("18:00").apply();
     }
 }

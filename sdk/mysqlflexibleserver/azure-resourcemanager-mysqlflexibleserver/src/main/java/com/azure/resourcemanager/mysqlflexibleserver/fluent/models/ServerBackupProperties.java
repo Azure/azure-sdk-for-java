@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The properties of a server backup. */
+/**
+ * The properties of a server backup.
+ */
 @Fluent
 public final class ServerBackupProperties {
     /*
@@ -29,13 +31,15 @@ public final class ServerBackupProperties {
     @JsonProperty(value = "source")
     private String source;
 
-    /** Creates an instance of ServerBackupProperties class. */
+    /**
+     * Creates an instance of ServerBackupProperties class.
+     */
     public ServerBackupProperties() {
     }
 
     /**
      * Get the backupType property: Backup type.
-     *
+     * 
      * @return the backupType value.
      */
     public String backupType() {
@@ -44,7 +48,7 @@ public final class ServerBackupProperties {
 
     /**
      * Set the backupType property: Backup type.
-     *
+     * 
      * @param backupType the backupType value to set.
      * @return the ServerBackupProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class ServerBackupProperties {
 
     /**
      * Get the completedTime property: Backup completed time (ISO8601 format).
-     *
+     * 
      * @return the completedTime value.
      */
     public OffsetDateTime completedTime() {
@@ -64,7 +68,7 @@ public final class ServerBackupProperties {
 
     /**
      * Set the completedTime property: Backup completed time (ISO8601 format).
-     *
+     * 
      * @param completedTime the completedTime value to set.
      * @return the ServerBackupProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class ServerBackupProperties {
 
     /**
      * Get the source property: Backup source.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -84,7 +88,7 @@ public final class ServerBackupProperties {
 
     /**
      * Set the source property: Backup source.
-     *
+     * 
      * @param source the source value to set.
      * @return the ServerBackupProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class ServerBackupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

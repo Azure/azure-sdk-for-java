@@ -99,7 +99,7 @@ public class TracingJavaDocCodeSnippets {
         Span parent = tracer.spanBuilder("parent").startSpan();
         io.opentelemetry.context.Context traceContext = io.opentelemetry.context.Context.current().with(parent);
 
-        // do some  work
+        // do some work
 
         // You can pass parent explicitly using PARENT_TRACE_CONTEXT_KEY in the com.azure.core.util.Context.
         // Or, when using async clients, pass it in reactor.util.context.Context under the same key.

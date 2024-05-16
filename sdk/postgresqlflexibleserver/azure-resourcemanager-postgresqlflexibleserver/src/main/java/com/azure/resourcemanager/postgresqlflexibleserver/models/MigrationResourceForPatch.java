@@ -89,8 +89,8 @@ public final class MigrationResourceForPatch {
     }
 
     /**
-     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Get the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @return the sourceDbServerFullyQualifiedDomainName value.
      */
@@ -99,8 +99,8 @@ public final class MigrationResourceForPatch {
     }
 
     /**
-     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Set the sourceDbServerFullyQualifiedDomainName property: Source server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @param sourceDbServerFullyQualifiedDomainName the sourceDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceForPatch object itself.
@@ -115,8 +115,8 @@ public final class MigrationResourceForPatch {
     }
 
     /**
-     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Get the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @return the targetDbServerFullyQualifiedDomainName value.
      */
@@ -125,8 +125,8 @@ public final class MigrationResourceForPatch {
     }
 
     /**
-     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is
-     * a optional value, if customer provide it, dms will always use it for connection.
+     * Set the targetDbServerFullyQualifiedDomainName property: Target server fully qualified domain name or ip. It is a
+     * optional value, if customer provide it, dms will always use it for connection.
      * 
      * @param targetDbServerFullyQualifiedDomainName the targetDbServerFullyQualifiedDomainName value to set.
      * @return the MigrationResourceForPatch object itself.
@@ -193,7 +193,8 @@ public final class MigrationResourceForPatch {
      * @return the setupLogicalReplicationOnSourceDbIfNeeded value.
      */
     public LogicalReplicationOnSourceDbEnum setupLogicalReplicationOnSourceDbIfNeeded() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().setupLogicalReplicationOnSourceDbIfNeeded();
     }
 
@@ -260,6 +261,29 @@ public final class MigrationResourceForPatch {
             this.innerProperties = new MigrationResourcePropertiesForPatch();
         }
         this.innerProperties().withMigrationWindowStartTimeInUtc(migrationWindowStartTimeInUtc);
+        return this;
+    }
+
+    /**
+     * Get the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @return the migrateRoles value.
+     */
+    public MigrateRolesEnum migrateRoles() {
+        return this.innerProperties() == null ? null : this.innerProperties().migrateRoles();
+    }
+
+    /**
+     * Set the migrateRoles property: To migrate roles and permissions we need to send this flag as True.
+     * 
+     * @param migrateRoles the migrateRoles value to set.
+     * @return the MigrationResourceForPatch object itself.
+     */
+    public MigrationResourceForPatch withMigrateRoles(MigrateRolesEnum migrateRoles) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MigrationResourcePropertiesForPatch();
+        }
+        this.innerProperties().withMigrateRoles(migrateRoles);
         return this;
     }
 

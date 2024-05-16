@@ -781,7 +781,7 @@ public class QueueAsyncApiTests extends QueueTestBase {
         QueueMessageItem dequeueMsg = queueAsyncClient.receiveMessage().block();
 
         assertAsyncResponseStatusCode(queueAsyncClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
-            dequeueMsg.getPopReceipt(), null, Duration.ofSeconds(1), null), 204);
+            dequeueMsg.getPopReceipt(), null, Duration.ofSeconds(1)), 204);
 
         sleepIfRunningAgainstService(2000);
 

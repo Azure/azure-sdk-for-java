@@ -6,16 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The location of Amazon S3 Compatible dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AmazonS3CompatibleLocation.class,
+    visible = true)
 @JsonTypeName("AmazonS3CompatibleLocation")
 @Fluent
 public final class AmazonS3CompatibleLocation extends DatasetLocation {
+    /*
+     * Type of dataset storage location.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AmazonS3CompatibleLocation";
+
     /*
      * Specify the bucketName of Amazon S3 Compatible. Type: string (or Expression with resultType string)
      */
@@ -32,6 +44,16 @@ public final class AmazonS3CompatibleLocation extends DatasetLocation {
      * Creates an instance of AmazonS3CompatibleLocation class.
      */
     public AmazonS3CompatibleLocation() {
+    }
+
+    /**
+     * Get the type property: Type of dataset storage location.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

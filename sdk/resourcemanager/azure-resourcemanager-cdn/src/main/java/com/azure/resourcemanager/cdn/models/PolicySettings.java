@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines contents of a web application firewall global configuration. */
+/**
+ * Defines contents of a web application firewall global configuration.
+ */
 @Fluent
 public final class PolicySettings {
     /*
@@ -41,13 +43,15 @@ public final class PolicySettings {
     @JsonProperty(value = "defaultCustomBlockResponseBody")
     private String defaultCustomBlockResponseBody;
 
-    /** Creates an instance of PolicySettings class. */
+    /**
+     * Creates an instance of PolicySettings class.
+     */
     public PolicySettings() {
     }
 
     /**
      * Get the enabledState property: describes if the policy is in enabled state or disabled state.
-     *
+     * 
      * @return the enabledState value.
      */
     public PolicyEnabledState enabledState() {
@@ -56,7 +60,7 @@ public final class PolicySettings {
 
     /**
      * Set the enabledState property: describes if the policy is in enabled state or disabled state.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the PolicySettings object itself.
      */
@@ -67,7 +71,7 @@ public final class PolicySettings {
 
     /**
      * Get the mode property: Describes if it is in detection mode or prevention mode at policy level.
-     *
+     * 
      * @return the mode value.
      */
     public PolicyMode mode() {
@@ -76,7 +80,7 @@ public final class PolicySettings {
 
     /**
      * Set the mode property: Describes if it is in detection mode or prevention mode at policy level.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the PolicySettings object itself.
      */
@@ -88,7 +92,7 @@ public final class PolicySettings {
     /**
      * Get the defaultRedirectUrl property: If action type is redirect, this field represents the default redirect URL
      * for the client.
-     *
+     * 
      * @return the defaultRedirectUrl value.
      */
     public String defaultRedirectUrl() {
@@ -98,7 +102,7 @@ public final class PolicySettings {
     /**
      * Set the defaultRedirectUrl property: If action type is redirect, this field represents the default redirect URL
      * for the client.
-     *
+     * 
      * @param defaultRedirectUrl the defaultRedirectUrl value to set.
      * @return the PolicySettings object itself.
      */
@@ -110,7 +114,7 @@ public final class PolicySettings {
     /**
      * Get the defaultCustomBlockResponseStatusCode property: If the action type is block, this field defines the
      * default customer overridable http response status code.
-     *
+     * 
      * @return the defaultCustomBlockResponseStatusCode value.
      */
     public PolicySettingsDefaultCustomBlockResponseStatusCode defaultCustomBlockResponseStatusCode() {
@@ -120,7 +124,7 @@ public final class PolicySettings {
     /**
      * Set the defaultCustomBlockResponseStatusCode property: If the action type is block, this field defines the
      * default customer overridable http response status code.
-     *
+     * 
      * @param defaultCustomBlockResponseStatusCode the defaultCustomBlockResponseStatusCode value to set.
      * @return the PolicySettings object itself.
      */
@@ -133,7 +137,7 @@ public final class PolicySettings {
     /**
      * Get the defaultCustomBlockResponseBody property: If the action type is block, customer can override the response
      * body. The body must be specified in base64 encoding.
-     *
+     * 
      * @return the defaultCustomBlockResponseBody value.
      */
     public String defaultCustomBlockResponseBody() {
@@ -143,7 +147,7 @@ public final class PolicySettings {
     /**
      * Set the defaultCustomBlockResponseBody property: If the action type is block, customer can override the response
      * body. The body must be specified in base64 encoding.
-     *
+     * 
      * @param defaultCustomBlockResponseBody the defaultCustomBlockResponseBody value to set.
      * @return the PolicySettings object itself.
      */
@@ -154,7 +158,7 @@ public final class PolicySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

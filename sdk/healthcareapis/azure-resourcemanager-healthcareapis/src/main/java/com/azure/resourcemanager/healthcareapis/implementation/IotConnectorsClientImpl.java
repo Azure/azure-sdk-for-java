@@ -620,7 +620,8 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
     private Mono<IotConnectorInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
         String iotConnectorName, IotConnectorInner iotConnector, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -878,7 +879,8 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
     private Mono<IotConnectorInner> updateAsync(String resourceGroupName, String iotConnectorName, String workspaceName,
         IotConnectorPatchResource iotConnectorPatchResource, Context context) {
         return beginUpdateAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

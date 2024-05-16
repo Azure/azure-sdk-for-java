@@ -54,8 +54,9 @@ public final class MongoDbAtlasCollectionDatasetTypeProperties {
      */
     public void validate() {
         if (collection() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property collection in model MongoDbAtlasCollectionDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property collection in model MongoDbAtlasCollectionDatasetTypeProperties"));
         }
     }
 

@@ -40,8 +40,7 @@ public final class CopyActivityTypeProperties {
     private Object translator;
 
     /*
-     * Specifies whether to copy data via an interim staging. Default value is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * Specifies whether to copy data via an interim staging. Default value is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableStaging")
     private Object enableStaging;
@@ -53,15 +52,13 @@ public final class CopyActivityTypeProperties {
     private StagingSettings stagingSettings;
 
     /*
-     * Maximum number of concurrent sessions opened on the source or sink to avoid overloading the data store. Type:
-     * integer (or Expression with resultType integer), minimum: 0.
+     * Maximum number of concurrent sessions opened on the source or sink to avoid overloading the data store. Type: integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "parallelCopies")
     private Object parallelCopies;
 
     /*
-     * Maximum number of data integration units that can be used to perform this data movement. Type: integer (or
-     * Expression with resultType integer), minimum: 0.
+     * Maximum number of data integration units that can be used to perform this data movement. Type: integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "dataIntegrationUnits")
     private Object dataIntegrationUnits;
@@ -442,14 +439,16 @@ public final class CopyActivityTypeProperties {
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property source in model CopyActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property source in model CopyActivityTypeProperties"));
         } else {
             source().validate();
         }
         if (sink() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sink in model CopyActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property sink in model CopyActivityTypeProperties"));
         } else {
             sink().validate();
         }

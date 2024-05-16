@@ -11,7 +11,9 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrateg
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines a multi-stage process to perform update operations across members of a Fleet. */
+/**
+ * Defines a multi-stage process to perform update operations across members of a Fleet.
+ */
 @Fluent
 public final class FleetUpdateStrategyInner extends ProxyResource {
     /*
@@ -35,13 +37,15 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of FleetUpdateStrategyInner class. */
+    /**
+     * Creates an instance of FleetUpdateStrategyInner class.
+     */
     public FleetUpdateStrategyInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FleetUpdateStrategyProperties innerProperties() {
@@ -50,10 +54,10 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
 
     /**
      * Get the etag property: If eTag is provided in the response body, it may also be provided as a header per the
-     * normal etag convention. Entity tags are used for comparing two or more entities from the same requested resource.
-     * HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26),
-     * and If-Range (section 14.27) header fields.
-     *
+     * normal etag convention. Entity tags are used for comparing two or more entities from the same requested
+     * resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match
+     * (section 14.26), and If-Range (section 14.27) header fields.
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -62,7 +66,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -71,7 +75,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the UpdateStrategy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public FleetUpdateStrategyProvisioningState provisioningState() {
@@ -80,7 +84,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
 
     /**
      * Get the strategy property: Defines the update sequence of the clusters.
-     *
+     * 
      * @return the strategy value.
      */
     public UpdateRunStrategy strategy() {
@@ -89,7 +93,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
 
     /**
      * Set the strategy property: Defines the update sequence of the clusters.
-     *
+     * 
      * @param strategy the strategy value to set.
      * @return the FleetUpdateStrategyInner object itself.
      */
@@ -103,7 +107,7 @@ public final class FleetUpdateStrategyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

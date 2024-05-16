@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** One or more actions that will execute, modifying the request and/or response. */
+/**
+ * One or more actions that will execute, modifying the request and/or response.
+ */
 @Fluent
 public final class RulesEngineAction {
     /*
@@ -29,13 +31,15 @@ public final class RulesEngineAction {
     @JsonProperty(value = "routeConfigurationOverride")
     private RouteConfiguration routeConfigurationOverride;
 
-    /** Creates an instance of RulesEngineAction class. */
+    /**
+     * Creates an instance of RulesEngineAction class.
+     */
     public RulesEngineAction() {
     }
 
     /**
      * Get the requestHeaderActions property: A list of header actions to apply from the request from AFD to the origin.
-     *
+     * 
      * @return the requestHeaderActions value.
      */
     public List<HeaderAction> requestHeaderActions() {
@@ -44,7 +48,7 @@ public final class RulesEngineAction {
 
     /**
      * Set the requestHeaderActions property: A list of header actions to apply from the request from AFD to the origin.
-     *
+     * 
      * @param requestHeaderActions the requestHeaderActions value to set.
      * @return the RulesEngineAction object itself.
      */
@@ -56,7 +60,7 @@ public final class RulesEngineAction {
     /**
      * Get the responseHeaderActions property: A list of header actions to apply from the response from AFD to the
      * client.
-     *
+     * 
      * @return the responseHeaderActions value.
      */
     public List<HeaderAction> responseHeaderActions() {
@@ -66,7 +70,7 @@ public final class RulesEngineAction {
     /**
      * Set the responseHeaderActions property: A list of header actions to apply from the response from AFD to the
      * client.
-     *
+     * 
      * @param responseHeaderActions the responseHeaderActions value to set.
      * @return the RulesEngineAction object itself.
      */
@@ -77,7 +81,7 @@ public final class RulesEngineAction {
 
     /**
      * Get the routeConfigurationOverride property: Override the route configuration.
-     *
+     * 
      * @return the routeConfigurationOverride value.
      */
     public RouteConfiguration routeConfigurationOverride() {
@@ -86,7 +90,7 @@ public final class RulesEngineAction {
 
     /**
      * Set the routeConfigurationOverride property: Override the route configuration.
-     *
+     * 
      * @param routeConfigurationOverride the routeConfigurationOverride value to set.
      * @return the RulesEngineAction object itself.
      */
@@ -97,7 +101,7 @@ public final class RulesEngineAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,8 +11,7 @@ import com.azure.resourcemanager.datafactory.models.UserAccessPolicy;
  */
 public final class FactoriesGetDataPlaneAccessSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * Factories_GetDataPlaneAccess.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_GetDataPlaneAccess.json
      */
     /**
      * Sample code: Factories_GetDataPlaneAccess.
@@ -20,9 +19,13 @@ public final class FactoriesGetDataPlaneAccessSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesGetDataPlaneAccess(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().getDataPlaneAccessWithResponse("exampleResourceGroup", "exampleFactoryName",
-            new UserAccessPolicy().withPermissions("r").withAccessResourcePath("").withProfileName("DefaultProfile")
-                .withStartTime("2018-11-10T02:46:20.2659347Z").withExpireTime("2018-11-10T09:46:20.2659347Z"),
-            com.azure.core.util.Context.NONE);
+        manager.factories()
+            .getDataPlaneAccessWithResponse("exampleResourceGroup", "exampleFactoryName",
+                new UserAccessPolicy().withPermissions("r")
+                    .withAccessResourcePath("")
+                    .withProfileName("DefaultProfile")
+                    .withStartTime("2018-11-10T02:46:20.2659347Z")
+                    .withExpireTime("2018-11-10T09:46:20.2659347Z"),
+                com.azure.core.util.Context.NONE);
     }
 }

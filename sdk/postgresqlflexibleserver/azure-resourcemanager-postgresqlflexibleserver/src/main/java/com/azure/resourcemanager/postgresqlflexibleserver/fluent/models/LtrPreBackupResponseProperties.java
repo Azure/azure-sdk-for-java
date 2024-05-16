@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LtrPreBackupResponseProperties {
     /*
-     * Number of storage containers the plugin will use during backup. More than one containers may be used for size
-     * limitations, parallelism, or redundancy etc.
+     * Number of storage containers the plugin will use during backup. More than one containers may be used for size limitations, parallelism, or redundancy etc.
      */
     @JsonProperty(value = "numberOfContainers", required = true)
     private int numberOfContainers;

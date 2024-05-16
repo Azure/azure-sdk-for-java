@@ -24,14 +24,15 @@ public final class ShareDirectoryInfo {
      * @param lastModified Last time the directory was modified.
      * @param smbProperties The SMB properties of the directory.
      */
-    public ShareDirectoryInfo(final String eTag, final OffsetDateTime lastModified,
-                              final FileSmbProperties smbProperties) {
+    public ShareDirectoryInfo(String eTag, OffsetDateTime lastModified, FileSmbProperties smbProperties) {
         this.eTag = eTag;
         this.lastModified = lastModified;
         this.smbProperties = smbProperties;
     }
 
     /**
+     * Gets the entity tag that corresponds to the directory.
+     *
      * @return The entity tag that corresponds to the directory.
      */
     public String getETag() {
@@ -39,6 +40,8 @@ public final class ShareDirectoryInfo {
     }
 
     /**
+     * Gets the last time the directory was modified.
+     *
      * @return The last time the share was modified.
      */
     public OffsetDateTime getLastModified() {
@@ -46,6 +49,8 @@ public final class ShareDirectoryInfo {
     }
 
     /**
+     * Gets the SMB properties of the directory.
+     *
      * @return The SMB Properties of the directory.
      */
     public FileSmbProperties getSmbProperties() {

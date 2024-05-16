@@ -18,7 +18,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = FindingInference.class, visible = true)
 @JsonTypeName("finding")
 @Immutable
-public final class FindingInference extends FhirR4Extendible1 {
+public final class FindingInference extends RadiologyInsightsInference {
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FINDING;
 
     /*
      * Finding data : contains extensions, fields and components linked with the finding.
@@ -39,24 +47,6 @@ public final class FindingInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the finding property: Finding data : contains extensions, fields and components linked with the finding.
-     *
-     * @return the finding value.
-     */
-    @Generated
-    public FhirR4Observation getFinding() {
-        return this.finding;
-    }
-
-    /*
-     * Inference type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FINDING;
-
-    /**
      * Get the kind property: Inference type.
      *
      * @return the kind value.
@@ -65,5 +55,15 @@ public final class FindingInference extends FhirR4Extendible1 {
     @Override
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
+    }
+
+    /**
+     * Get the finding property: Finding data : contains extensions, fields and components linked with the finding.
+     *
+     * @return the finding value.
+     */
+    @Generated
+    public FhirR4Observation getFinding() {
+        return this.finding;
     }
 }

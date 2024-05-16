@@ -7,7 +7,9 @@ package com.azure.resourcemanager.frontdoor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Key Vault containing the SSL certificate. */
+/**
+ * The Key Vault containing the SSL certificate.
+ */
 @Fluent
 public final class KeyVaultCertificateSourceParametersVault {
     /*
@@ -16,13 +18,15 @@ public final class KeyVaultCertificateSourceParametersVault {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of KeyVaultCertificateSourceParametersVault class. */
+    /**
+     * Creates an instance of KeyVaultCertificateSourceParametersVault class.
+     */
     public KeyVaultCertificateSourceParametersVault() {
     }
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class KeyVaultCertificateSourceParametersVault {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the KeyVaultCertificateSourceParametersVault object itself.
      */
@@ -42,7 +46,7 @@ public final class KeyVaultCertificateSourceParametersVault {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

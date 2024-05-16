@@ -24,6 +24,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class GenericProcedureRecommendation extends ProcedureRecommendation {
 
     /*
+     * Procedure type : generic.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private String kind = "genericProcedureRecommendation";
+
+    /*
      * Procedure modality : SNOMED CT code.
      */
     @Generated
@@ -49,6 +57,17 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
+     * Get the kind property: Procedure type : generic.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public String getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the code property: Procedure modality : SNOMED CT code.
      *
      * @return the code value.
@@ -67,24 +86,5 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     @Generated
     public String getDescription() {
         return this.description;
-    }
-
-    /*
-     * Procedure type : generic.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private String kind = "genericProcedureRecommendation";
-
-    /**
-     * Get the kind property: Procedure type : generic.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public String getKind() {
-        return this.kind;
     }
 }

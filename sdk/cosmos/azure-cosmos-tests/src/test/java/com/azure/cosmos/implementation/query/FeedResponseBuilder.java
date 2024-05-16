@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -66,9 +67,15 @@ public class FeedResponseBuilder<T extends Resource> {
         if (isChangeFeed) {
             when(rsp.getStatusCode()).thenReturn(noMoreChangesInChangeFeed?
                     HttpConstants.StatusCodes.NOT_MODIFIED : 200);
-            return BridgeInternal.toChangeFeedResponsePage(rsp, null, klass);
+            return ImplementationBridgeHelpers
+                .FeedResponseHelper
+                .getFeedResponseAccessor()
+                .createChangeFeedResponse(rsp, null, klass);
         } else {
-            return BridgeInternal.toFeedResponsePage(rsp, null, klass);
+            return ImplementationBridgeHelpers
+                .FeedResponseHelper
+                .getFeedResponseAccessor()
+                .createFeedResponse(rsp, null, klass);
         }
     }
 

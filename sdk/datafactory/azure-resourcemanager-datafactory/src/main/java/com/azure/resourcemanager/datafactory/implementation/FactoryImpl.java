@@ -142,14 +142,16 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
     }
 
     public Factory create() {
-        this.innerObject = serviceManager.serviceClient().getFactories()
+        this.innerObject = serviceManager.serviceClient()
+            .getFactories()
             .createOrUpdateWithResponse(resourceGroupName, factoryName, this.innerModel(), createIfMatch, Context.NONE)
             .getValue();
         return this;
     }
 
     public Factory create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFactories()
+        this.innerObject = serviceManager.serviceClient()
+            .getFactories()
             .createOrUpdateWithResponse(resourceGroupName, factoryName, this.innerModel(), createIfMatch, context)
             .getValue();
         return this;
@@ -168,14 +170,18 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
     }
 
     public Factory apply() {
-        this.innerObject = serviceManager.serviceClient().getFactories()
-            .updateWithResponse(resourceGroupName, factoryName, updateFactoryUpdateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFactories()
+            .updateWithResponse(resourceGroupName, factoryName, updateFactoryUpdateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Factory apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFactories()
-            .updateWithResponse(resourceGroupName, factoryName, updateFactoryUpdateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFactories()
+            .updateWithResponse(resourceGroupName, factoryName, updateFactoryUpdateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -188,32 +194,36 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
 
     public Factory refresh() {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getFactories()
-            .getByResourceGroupWithResponse(resourceGroupName, factoryName, localIfNoneMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFactories()
+            .getByResourceGroupWithResponse(resourceGroupName, factoryName, localIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Factory refresh(Context context) {
         String localIfNoneMatch = null;
-        this.innerObject = serviceManager.serviceClient().getFactories()
-            .getByResourceGroupWithResponse(resourceGroupName, factoryName, localIfNoneMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFactories()
+            .getByResourceGroupWithResponse(resourceGroupName, factoryName, localIfNoneMatch, context)
+            .getValue();
         return this;
     }
 
     public Response<GitHubAccessTokenResponse>
         getGitHubAccessTokenWithResponse(GitHubAccessTokenRequest gitHubAccessTokenRequest, Context context) {
-        return serviceManager.factories().getGitHubAccessTokenWithResponse(resourceGroupName, factoryName,
-            gitHubAccessTokenRequest, context);
+        return serviceManager.factories()
+            .getGitHubAccessTokenWithResponse(resourceGroupName, factoryName, gitHubAccessTokenRequest, context);
     }
 
     public GitHubAccessTokenResponse getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest) {
-        return serviceManager.factories().getGitHubAccessToken(resourceGroupName, factoryName,
-            gitHubAccessTokenRequest);
+        return serviceManager.factories()
+            .getGitHubAccessToken(resourceGroupName, factoryName, gitHubAccessTokenRequest);
     }
 
     public Response<AccessPolicyResponse> getDataPlaneAccessWithResponse(UserAccessPolicy policy, Context context) {
-        return serviceManager.factories().getDataPlaneAccessWithResponse(resourceGroupName, factoryName, policy,
-            context);
+        return serviceManager.factories()
+            .getDataPlaneAccessWithResponse(resourceGroupName, factoryName, policy, context);
     }
 
     public AccessPolicyResponse getDataPlaneAccess(UserAccessPolicy policy) {

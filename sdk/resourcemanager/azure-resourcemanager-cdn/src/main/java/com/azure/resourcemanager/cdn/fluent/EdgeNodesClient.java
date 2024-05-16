@@ -11,11 +11,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cdn.fluent.models.EdgeNodeInner;
 
-/** An instance of this class provides access to all the operations defined in EdgeNodesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EdgeNodesClient.
+ */
 public interface EdgeNodesClient {
     /**
      * Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list CDN edgenodes as paginated response with {@link PagedFlux}.
@@ -25,7 +27,7 @@ public interface EdgeNodesClient {
 
     /**
      * Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list CDN edgenodes as paginated response with {@link PagedIterable}.
@@ -35,7 +37,7 @@ public interface EdgeNodesClient {
 
     /**
      * Edgenodes are the global Point of Presence (POP) locations used to deliver CDN content to end users.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

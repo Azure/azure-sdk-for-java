@@ -150,6 +150,9 @@ public class ReactiveUUIDIdDomainRepositoryIT {
 
         Mono<Boolean> booleanMono = this.repository.existsById(DOMAIN_1.getNumber());
         StepVerifier.create(booleanMono).expectNext(true).expectComplete().verify();
+
+        booleanMono = this.repository.existsById(UUID.randomUUID());
+        StepVerifier.create(booleanMono).expectNext(false).expectComplete().verify();
     }
 
     private static class InvalidDomain {

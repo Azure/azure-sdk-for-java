@@ -107,18 +107,21 @@ public final class AppFiguresLinkedServiceTypeProperties {
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property username in model AppFiguresLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model AppFiguresLinkedServiceTypeProperties"));
         }
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property password in model AppFiguresLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model AppFiguresLinkedServiceTypeProperties"));
         } else {
             password().validate();
         }
         if (clientKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clientKey in model AppFiguresLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientKey in model AppFiguresLinkedServiceTypeProperties"));
         } else {
             clientKey().validate();
         }

@@ -18,12 +18,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The JSON object that contains the properties required to create an endpoint. */
+/**
+ * The JSON object that contains the properties required to create an endpoint.
+ */
 @Fluent
 public final class FrontDoorProperties extends FrontDoorUpdateParameters {
     /*
      * Resource status of the Front Door or Front Door SubResource.
-     *
+     * 
      * Resource status of the Front Door.
      */
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
@@ -60,15 +62,17 @@ public final class FrontDoorProperties extends FrontDoorUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> extendedProperties;
 
-    /** Creates an instance of FrontDoorProperties class. */
+    /**
+     * Creates an instance of FrontDoorProperties class.
+     */
     public FrontDoorProperties() {
     }
 
     /**
      * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status of the Front Door.
-     *
+     * 
+     * Resource status of the Front Door.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
@@ -77,7 +81,7 @@ public final class FrontDoorProperties extends FrontDoorUpdateParameters {
 
     /**
      * Get the provisioningState property: Provisioning state of the Front Door.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -86,7 +90,7 @@ public final class FrontDoorProperties extends FrontDoorUpdateParameters {
 
     /**
      * Get the cname property: The host that each frontendEndpoint must CNAME to.
-     *
+     * 
      * @return the cname value.
      */
     public String cname() {
@@ -95,7 +99,7 @@ public final class FrontDoorProperties extends FrontDoorUpdateParameters {
 
     /**
      * Get the frontdoorId property: The Id of the frontdoor.
-     *
+     * 
      * @return the frontdoorId value.
      */
     public String frontdoorId() {
@@ -104,7 +108,7 @@ public final class FrontDoorProperties extends FrontDoorUpdateParameters {
 
     /**
      * Get the rulesEngines property: Rules Engine Configurations available to routing rules.
-     *
+     * 
      * @return the rulesEngines value.
      */
     public List<RulesEngineInner> rulesEngines() {
@@ -113,63 +117,79 @@ public final class FrontDoorProperties extends FrontDoorUpdateParameters {
 
     /**
      * Get the extendedProperties property: Key-Value pair representing additional properties for frontdoor.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
         return this.extendedProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontDoorProperties withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontDoorProperties withRoutingRules(List<RoutingRule> routingRules) {
         super.withRoutingRules(routingRules);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontDoorProperties withLoadBalancingSettings(List<LoadBalancingSettingsModel> loadBalancingSettings) {
         super.withLoadBalancingSettings(loadBalancingSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontDoorProperties withHealthProbeSettings(List<HealthProbeSettingsModel> healthProbeSettings) {
         super.withHealthProbeSettings(healthProbeSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontDoorProperties withBackendPools(List<BackendPool> backendPools) {
         super.withBackendPools(backendPools);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontDoorProperties withFrontendEndpoints(List<FrontendEndpointInner> frontendEndpoints) {
         super.withFrontendEndpoints(frontendEndpoints);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontDoorProperties withBackendPoolsSettings(BackendPoolsSettings backendPoolsSettings) {
         super.withBackendPoolsSettings(backendPoolsSettings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontDoorProperties withEnabledState(FrontDoorEnabledState enabledState) {
         super.withEnabledState(enabledState);
@@ -178,7 +198,7 @@ public final class FrontDoorProperties extends FrontDoorUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

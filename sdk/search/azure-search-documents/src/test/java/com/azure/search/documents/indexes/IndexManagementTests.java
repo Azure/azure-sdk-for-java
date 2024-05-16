@@ -375,11 +375,12 @@ public class IndexManagementTests extends SearchTestBase {
         Map<String, SearchIndex> actualIndexes = client.listIndexes().stream()
             .collect(Collectors.toMap(SearchIndex::getName, si -> si));
 
-        compareMaps(expectedIndexes, actualIndexes, (expected, actual) -> assertObjectEquals(expected, actual, true));
+        compareMaps(expectedIndexes, actualIndexes, (expected, actual) -> assertObjectEquals(expected, actual, true),
+            false);
 
         StepVerifier.create(asyncClient.listIndexes().collectMap(SearchIndex::getName))
             .assertNext(actualIndexes2 -> compareMaps(expectedIndexes, actualIndexes2,
-                (expected, actual) -> assertObjectEquals(expected, actual, true)))
+                (expected, actual) -> assertObjectEquals(expected, actual, true), false))
             .verifyComplete();
     }
 
@@ -397,14 +398,12 @@ public class IndexManagementTests extends SearchTestBase {
         Set<String> actualIndexNames = client.listIndexNames(Context.NONE).stream()
             .collect(Collectors.toSet());
 
-        assertEquals(expectedIndexNames.size(), actualIndexNames.size());
+        // Only check that listing returned the expected index names. Don't check the number of indexes returned as
+        // other tests may have created indexes.
         assertTrue(actualIndexNames.containsAll(expectedIndexNames));
 
         StepVerifier.create(asyncClient.listIndexNames().collect(Collectors.toSet()))
-            .assertNext(actualIndexNames2 -> {
-                assertEquals(expectedIndexNames.size(), actualIndexNames2.size());
-                assertTrue(actualIndexNames2.containsAll(expectedIndexNames));
-            })
+            .assertNext(actualIndexNames2 -> assertTrue(actualIndexNames2.containsAll(expectedIndexNames)))
             .verifyComplete();
     }
 

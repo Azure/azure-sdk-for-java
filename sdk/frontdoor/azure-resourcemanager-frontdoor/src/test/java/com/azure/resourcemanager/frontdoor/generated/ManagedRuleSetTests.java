@@ -5,10 +5,13 @@
 package com.azure.resourcemanager.frontdoor.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.frontdoor.models.ActionType;
+import com.azure.resourcemanager.frontdoor.models.ManagedRuleEnabledState;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleExclusion;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleExclusionMatchVariable;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleExclusionSelectorMatchOperator;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleGroupOverride;
+import com.azure.resourcemanager.frontdoor.models.ManagedRuleOverride;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleSet;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleSetActionType;
 import java.util.Arrays;
@@ -17,60 +20,283 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedRuleSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedRuleSet model =
-            BinaryData
-                .fromString(
-                    "{\"ruleSetType\":\"wzo\",\"ruleSetVersion\":\"xjtfelluwfzit\",\"ruleSetAction\":\"Block\",\"exclusions\":[{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"Contains\",\"selector\":\"jkjlxofpdvhpfx\"},{\"matchVariable\":\"RequestBodyJsonArgNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"ininmay\"}],\"ruleGroupOverrides\":[{\"ruleGroupName\":\"bbkpodep\",\"exclusions\":[],\"rules\":[]}]}")
-                .toObject(ManagedRuleSet.class);
-        Assertions.assertEquals("wzo", model.ruleSetType());
-        Assertions.assertEquals("xjtfelluwfzit", model.ruleSetVersion());
-        Assertions.assertEquals(ManagedRuleSetActionType.BLOCK, model.ruleSetAction());
-        Assertions
-            .assertEquals(
-                ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES, model.exclusions().get(0).matchVariable());
-        Assertions
-            .assertEquals(
-                ManagedRuleExclusionSelectorMatchOperator.CONTAINS, model.exclusions().get(0).selectorMatchOperator());
-        Assertions.assertEquals("jkjlxofpdvhpfx", model.exclusions().get(0).selector());
-        Assertions.assertEquals("bbkpodep", model.ruleGroupOverrides().get(0).ruleGroupName());
+        ManagedRuleSet model = BinaryData.fromString(
+            "{\"ruleSetType\":\"pnddhsgcbacphejk\",\"ruleSetVersion\":\"tynqgoul\",\"ruleSetAction\":\"Log\",\"exclusions\":[{\"matchVariable\":\"RequestHeaderNames\",\"selectorMatchOperator\":\"EqualsAny\",\"selector\":\"yqkgfg\"}],\"ruleGroupOverrides\":[{\"ruleGroupName\":\"adgakeqsrxybz\",\"exclusions\":[{\"matchVariable\":\"RequestCookieNames\",\"selectorMatchOperator\":\"Contains\",\"selector\":\"ytb\"}],\"rules\":[{\"ruleId\":\"fouflmmnkzsmo\",\"enabledState\":\"Disabled\",\"action\":\"Block\",\"exclusions\":[{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"kwtmutduqktapspw\"},{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"Contains\",\"selector\":\"ertumkdo\"},{\"matchVariable\":\"RequestBodyPostArgNames\",\"selectorMatchOperator\":\"Equals\",\"selector\":\"whbmd\"}]}]},{\"ruleGroupName\":\"bbjfddgmbmbexp\",\"exclusions\":[{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"qrolfpf\"},{\"matchVariable\":\"RequestBodyPostArgNames\",\"selectorMatchOperator\":\"EqualsAny\",\"selector\":\"lgbquxig\"},{\"matchVariable\":\"RequestBodyJsonArgNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"gzjaoyfhrtxilne\"}],\"rules\":[{\"ruleId\":\"jysvl\",\"enabledState\":\"Enabled\",\"action\":\"Block\",\"exclusions\":[{\"matchVariable\":\"RequestHeaderNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"lyxwjkcprbnwbx\"},{\"matchVariable\":\"RequestBodyPostArgNames\",\"selectorMatchOperator\":\"EqualsAny\",\"selector\":\"tbvpysszdnru\"}]},{\"ruleId\":\"qguhmuo\",\"enabledState\":\"Disabled\",\"action\":\"Redirect\",\"exclusions\":[{\"matchVariable\":\"RequestHeaderNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"nguitnwuizgazxu\"}]}]},{\"ruleGroupName\":\"izuckyfihrfidfvz\",\"exclusions\":[{\"matchVariable\":\"RequestBodyJsonArgNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"tymw\"},{\"matchVariable\":\"RequestHeaderNames\",\"selectorMatchOperator\":\"EqualsAny\",\"selector\":\"kfthwxmntei\"},{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"pvkmijcmmxdcuf\"},{\"matchVariable\":\"RequestCookieNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"rpymzidnsez\"}],\"rules\":[{\"ruleId\":\"bzsgfyccsne\",\"enabledState\":\"Enabled\",\"action\":\"AnomalyScoring\",\"exclusions\":[{\"matchVariable\":\"RequestHeaderNames\",\"selectorMatchOperator\":\"EqualsAny\",\"selector\":\"chboosflnrosf\"},{\"matchVariable\":\"RequestCookieNames\",\"selectorMatchOperator\":\"Equals\",\"selector\":\"eeh\"},{\"matchVariable\":\"RequestBodyPostArgNames\",\"selectorMatchOperator\":\"Contains\",\"selector\":\"ypyqrimzinp\"},{\"matchVariable\":\"RequestBodyJsonArgNames\",\"selectorMatchOperator\":\"EqualsAny\",\"selector\":\"jdkirsoodqx\"}]},{\"ruleId\":\"crmnohjtckwhds\",\"enabledState\":\"Enabled\",\"action\":\"AnomalyScoring\",\"exclusions\":[{\"matchVariable\":\"RequestCookieNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"sqwpgrjb\"},{\"matchVariable\":\"RequestBodyPostArgNames\",\"selectorMatchOperator\":\"Contains\",\"selector\":\"rcjxvsnbyxqabn\"},{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"EqualsAny\",\"selector\":\"pcyshu\"},{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"Equals\",\"selector\":\"fblj\"}]},{\"ruleId\":\"gpbtoqcjmklj\",\"enabledState\":\"Disabled\",\"action\":\"Allow\",\"exclusions\":[{\"matchVariable\":\"RequestBodyPostArgNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"jzyulpk\"},{\"matchVariable\":\"RequestCookieNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"krlkhbzhfepg\"},{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"e\"},{\"matchVariable\":\"RequestBodyPostArgNames\",\"selectorMatchOperator\":\"Equals\",\"selector\":\"ocxscpaierhhbcs\"}]}]},{\"ruleGroupName\":\"l\",\"exclusions\":[{\"matchVariable\":\"RequestHeaderNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"tjaodxobnb\"},{\"matchVariable\":\"RequestCookieNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"qp\"}],\"rules\":[{\"ruleId\":\"ajionpimexgstxg\",\"enabledState\":\"Enabled\",\"action\":\"Block\",\"exclusions\":[{\"matchVariable\":\"RequestHeaderNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"r\"},{\"matchVariable\":\"RequestBodyJsonArgNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"jwzrl\"}]},{\"ruleId\":\"vmclw\",\"enabledState\":\"Disabled\",\"action\":\"Log\",\"exclusions\":[{\"matchVariable\":\"RequestBodyPostArgNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"bzaqsqsycbkbfk\"},{\"matchVariable\":\"RequestBodyJsonArgNames\",\"selectorMatchOperator\":\"StartsWith\",\"selector\":\"dkexxppofm\"}]},{\"ruleId\":\"axcfjpgddtocjjx\",\"enabledState\":\"Enabled\",\"action\":\"Allow\",\"exclusions\":[{\"matchVariable\":\"QueryStringArgNames\",\"selectorMatchOperator\":\"EndsWith\",\"selector\":\"dzxibqeojnxqbzvd\"}]}]}]}")
+            .toObject(ManagedRuleSet.class);
+        Assertions.assertEquals("pnddhsgcbacphejk", model.ruleSetType());
+        Assertions.assertEquals("tynqgoul", model.ruleSetVersion());
+        Assertions.assertEquals(ManagedRuleSetActionType.LOG, model.ruleSetAction());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES,
+            model.exclusions().get(0).matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.EQUALS_ANY,
+            model.exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("yqkgfg", model.exclusions().get(0).selector());
+        Assertions.assertEquals("adgakeqsrxybz", model.ruleGroupOverrides().get(0).ruleGroupName());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES,
+            model.ruleGroupOverrides().get(0).exclusions().get(0).matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.CONTAINS,
+            model.ruleGroupOverrides().get(0).exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("ytb", model.ruleGroupOverrides().get(0).exclusions().get(0).selector());
+        Assertions.assertEquals("fouflmmnkzsmo", model.ruleGroupOverrides().get(0).rules().get(0).ruleId());
+        Assertions.assertEquals(ManagedRuleEnabledState.DISABLED,
+            model.ruleGroupOverrides().get(0).rules().get(0).enabledState());
+        Assertions.assertEquals(ActionType.BLOCK, model.ruleGroupOverrides().get(0).rules().get(0).action());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES,
+            model.ruleGroupOverrides().get(0).rules().get(0).exclusions().get(0).matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH,
+            model.ruleGroupOverrides().get(0).rules().get(0).exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("kwtmutduqktapspw",
+            model.ruleGroupOverrides().get(0).rules().get(0).exclusions().get(0).selector());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedRuleSet model =
-            new ManagedRuleSet()
-                .withRuleSetType("wzo")
-                .withRuleSetVersion("xjtfelluwfzit")
-                .withRuleSetAction(ManagedRuleSetActionType.BLOCK)
-                .withExclusions(
-                    Arrays
-                        .asList(
-                            new ManagedRuleExclusion()
-                                .withMatchVariable(ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
-                                .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.CONTAINS)
-                                .withSelector("jkjlxofpdvhpfx"),
-                            new ManagedRuleExclusion()
-                                .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES)
-                                .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
-                                .withSelector("ininmay")))
+        ManagedRuleSet model
+            = new ManagedRuleSet().withRuleSetType("pnddhsgcbacphejk")
+                .withRuleSetVersion("tynqgoul")
+                .withRuleSetAction(ManagedRuleSetActionType.LOG)
+                .withExclusions(Arrays.asList(
+                    new ManagedRuleExclusion().withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES)
+                        .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.EQUALS_ANY)
+                        .withSelector("yqkgfg")))
                 .withRuleGroupOverrides(
                     Arrays
                         .asList(
-                            new ManagedRuleGroupOverride()
-                                .withRuleGroupName("bbkpodep")
-                                .withExclusions(Arrays.asList())
-                                .withRules(Arrays.asList())));
+                            new ManagedRuleGroupOverride().withRuleGroupName("adgakeqsrxybz")
+                                .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                                    .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES)
+                                    .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.CONTAINS)
+                                    .withSelector("ytb")))
+                                .withRules(Arrays.asList(new ManagedRuleOverride().withRuleId("fouflmmnkzsmo")
+                                    .withEnabledState(ManagedRuleEnabledState.DISABLED)
+                                    .withAction(ActionType.BLOCK)
+                                    .withExclusions(Arrays.asList(
+                                        new ManagedRuleExclusion()
+                                            .withMatchVariable(ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
+                                            .withSelectorMatchOperator(
+                                                ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                            .withSelector("kwtmutduqktapspw"),
+                                        new ManagedRuleExclusion()
+                                            .withMatchVariable(ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
+                                            .withSelectorMatchOperator(
+                                                ManagedRuleExclusionSelectorMatchOperator.CONTAINS)
+                                            .withSelector("ertumkdo"),
+                                        new ManagedRuleExclusion()
+                                            .withMatchVariable(
+                                                ManagedRuleExclusionMatchVariable.REQUEST_BODY_POST_ARG_NAMES)
+                                            .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.EQUALS)
+                                            .withSelector("whbmd"))))),
+                            new ManagedRuleGroupOverride().withRuleGroupName("bbjfddgmbmbexp")
+                                .withExclusions(Arrays.asList(
+                                    new ManagedRuleExclusion()
+                                        .withMatchVariable(ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
+                                        .withSelectorMatchOperator(
+                                            ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                        .withSelector("qrolfpf"),
+                                    new ManagedRuleExclusion()
+                                        .withMatchVariable(
+                                            ManagedRuleExclusionMatchVariable.REQUEST_BODY_POST_ARG_NAMES)
+                                        .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.EQUALS_ANY)
+                                        .withSelector("lgbquxig"),
+                                    new ManagedRuleExclusion()
+                                        .withMatchVariable(
+                                            ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES)
+                                        .withSelectorMatchOperator(
+                                            ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                        .withSelector("gzjaoyfhrtxilne")))
+                                .withRules(Arrays.asList(
+                                    new ManagedRuleOverride().withRuleId("jysvl")
+                                        .withEnabledState(ManagedRuleEnabledState.ENABLED)
+                                        .withAction(ActionType.BLOCK)
+                                        .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                                            .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES)
+                                            .withSelectorMatchOperator(
+                                                ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
+                                            .withSelector("lyxwjkcprbnwbx"),
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.REQUEST_BODY_POST_ARG_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.EQUALS_ANY)
+                                                .withSelector("tbvpysszdnru"))),
+                                    new ManagedRuleOverride().withRuleId("qguhmuo")
+                                        .withEnabledState(ManagedRuleEnabledState.DISABLED)
+                                        .withAction(ActionType.REDIRECT)
+                                        .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                                            .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES)
+                                            .withSelectorMatchOperator(
+                                                ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                            .withSelector("nguitnwuizgazxu"))))),
+                            new ManagedRuleGroupOverride().withRuleGroupName("izuckyfihrfidfvz")
+                                .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                                    .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES)
+                                    .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
+                                    .withSelector("tymw"),
+                                    new ManagedRuleExclusion()
+                                        .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES)
+                                        .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.EQUALS_ANY)
+                                        .withSelector("kfthwxmntei"),
+                                    new ManagedRuleExclusion()
+                                        .withMatchVariable(ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
+                                        .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
+                                        .withSelector("pvkmijcmmxdcuf"),
+                                    new ManagedRuleExclusion()
+                                        .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES)
+                                        .withSelectorMatchOperator(
+                                            ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                        .withSelector("rpymzidnsez")))
+                                .withRules(Arrays.asList(
+                                    new ManagedRuleOverride().withRuleId("bzsgfyccsne")
+                                        .withEnabledState(ManagedRuleEnabledState.ENABLED)
+                                        .withAction(ActionType.ANOMALY_SCORING)
+                                        .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                                            .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES)
+                                            .withSelectorMatchOperator(
+                                                ManagedRuleExclusionSelectorMatchOperator.EQUALS_ANY)
+                                            .withSelector("chboosflnrosf"),
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.EQUALS)
+                                                .withSelector("eeh"),
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.REQUEST_BODY_POST_ARG_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.CONTAINS)
+                                                .withSelector("ypyqrimzinp"),
+                                            new ManagedRuleExclusion().withMatchVariable(
+                                                ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.EQUALS_ANY)
+                                                .withSelector("jdkirsoodqx"))),
+                                    new ManagedRuleOverride().withRuleId("crmnohjtckwhds")
+                                        .withEnabledState(ManagedRuleEnabledState.ENABLED)
+                                        .withAction(ActionType.ANOMALY_SCORING)
+                                        .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                                            .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES)
+                                            .withSelectorMatchOperator(
+                                                ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                            .withSelector("sqwpgrjb"),
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.REQUEST_BODY_POST_ARG_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.CONTAINS)
+                                                .withSelector("rcjxvsnbyxqabn"),
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.EQUALS_ANY)
+                                                .withSelector("pcyshu"),
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.EQUALS)
+                                                .withSelector("fblj"))),
+                                    new ManagedRuleOverride().withRuleId("gpbtoqcjmklj")
+                                        .withEnabledState(ManagedRuleEnabledState.DISABLED)
+                                        .withAction(ActionType.ALLOW)
+                                        .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                                            .withMatchVariable(
+                                                ManagedRuleExclusionMatchVariable.REQUEST_BODY_POST_ARG_NAMES)
+                                            .withSelectorMatchOperator(
+                                                ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                            .withSelector("jzyulpk"),
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                                .withSelector("krlkhbzhfepg"),
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                                .withSelector("e"),
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.REQUEST_BODY_POST_ARG_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.EQUALS)
+                                                .withSelector("ocxscpaierhhbcs"))))),
+                            new ManagedRuleGroupOverride().withRuleGroupName("l")
+                                .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                                    .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES)
+                                    .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
+                                    .withSelector("tjaodxobnb"),
+                                    new ManagedRuleExclusion()
+                                        .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES)
+                                        .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
+                                        .withSelector("qp")))
+                                .withRules(Arrays.asList(
+                                    new ManagedRuleOverride().withRuleId("ajionpimexgstxg")
+                                        .withEnabledState(ManagedRuleEnabledState.ENABLED)
+                                        .withAction(ActionType.BLOCK)
+                                        .withExclusions(Arrays.asList(
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
+                                                .withSelector("r"),
+                                            new ManagedRuleExclusion().withMatchVariable(
+                                                ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
+                                                .withSelector("jwzrl"))),
+                                    new ManagedRuleOverride().withRuleId("vmclw")
+                                        .withEnabledState(ManagedRuleEnabledState.DISABLED)
+                                        .withAction(ActionType.LOG)
+                                        .withExclusions(Arrays.asList(
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.REQUEST_BODY_POST_ARG_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
+                                                .withSelector("bzaqsqsycbkbfk"),
+                                            new ManagedRuleExclusion()
+                                                .withMatchVariable(
+                                                    ManagedRuleExclusionMatchVariable.REQUEST_BODY_JSON_ARG_NAMES)
+                                                .withSelectorMatchOperator(
+                                                    ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH)
+                                                .withSelector("dkexxppofm"))),
+                                    new ManagedRuleOverride().withRuleId("axcfjpgddtocjjx")
+                                        .withEnabledState(ManagedRuleEnabledState.ENABLED)
+                                        .withAction(ActionType.ALLOW)
+                                        .withExclusions(Arrays.asList(new ManagedRuleExclusion()
+                                            .withMatchVariable(ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES)
+                                            .withSelectorMatchOperator(
+                                                ManagedRuleExclusionSelectorMatchOperator.ENDS_WITH)
+                                            .withSelector("dzxibqeojnxqbzvd")))))));
         model = BinaryData.fromObject(model).toObject(ManagedRuleSet.class);
-        Assertions.assertEquals("wzo", model.ruleSetType());
-        Assertions.assertEquals("xjtfelluwfzit", model.ruleSetVersion());
-        Assertions.assertEquals(ManagedRuleSetActionType.BLOCK, model.ruleSetAction());
-        Assertions
-            .assertEquals(
-                ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES, model.exclusions().get(0).matchVariable());
-        Assertions
-            .assertEquals(
-                ManagedRuleExclusionSelectorMatchOperator.CONTAINS, model.exclusions().get(0).selectorMatchOperator());
-        Assertions.assertEquals("jkjlxofpdvhpfx", model.exclusions().get(0).selector());
-        Assertions.assertEquals("bbkpodep", model.ruleGroupOverrides().get(0).ruleGroupName());
+        Assertions.assertEquals("pnddhsgcbacphejk", model.ruleSetType());
+        Assertions.assertEquals("tynqgoul", model.ruleSetVersion());
+        Assertions.assertEquals(ManagedRuleSetActionType.LOG, model.ruleSetAction());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES,
+            model.exclusions().get(0).matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.EQUALS_ANY,
+            model.exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("yqkgfg", model.exclusions().get(0).selector());
+        Assertions.assertEquals("adgakeqsrxybz", model.ruleGroupOverrides().get(0).ruleGroupName());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES,
+            model.ruleGroupOverrides().get(0).exclusions().get(0).matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.CONTAINS,
+            model.ruleGroupOverrides().get(0).exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("ytb", model.ruleGroupOverrides().get(0).exclusions().get(0).selector());
+        Assertions.assertEquals("fouflmmnkzsmo", model.ruleGroupOverrides().get(0).rules().get(0).ruleId());
+        Assertions.assertEquals(ManagedRuleEnabledState.DISABLED,
+            model.ruleGroupOverrides().get(0).rules().get(0).enabledState());
+        Assertions.assertEquals(ActionType.BLOCK, model.ruleGroupOverrides().get(0).rules().get(0).action());
+        Assertions.assertEquals(ManagedRuleExclusionMatchVariable.QUERY_STRING_ARG_NAMES,
+            model.ruleGroupOverrides().get(0).rules().get(0).exclusions().get(0).matchVariable());
+        Assertions.assertEquals(ManagedRuleExclusionSelectorMatchOperator.STARTS_WITH,
+            model.ruleGroupOverrides().get(0).rules().get(0).exclusions().get(0).selectorMatchOperator());
+        Assertions.assertEquals("kwtmutduqktapspw",
+            model.ruleGroupOverrides().get(0).rules().get(0).exclusions().get(0).selector());
     }
 }

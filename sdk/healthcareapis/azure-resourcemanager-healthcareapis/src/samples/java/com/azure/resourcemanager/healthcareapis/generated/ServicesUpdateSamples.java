@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class ServicesUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/legacy/
-     * ServicePatch.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/ServicePatch.json
      */
     /**
      * Sample code: Patch service.
@@ -24,7 +22,8 @@ public final class ServicesUpdateSamples {
      */
     public static void patchService(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
         ServicesDescription resource = manager.services()
-            .getByResourceGroupWithResponse("rg1", "service1", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rg1", "service1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

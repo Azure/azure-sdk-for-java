@@ -19,20 +19,20 @@ public final class LogFilesImpl implements LogFiles {
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    public LogFilesImpl(
-        LogFilesClient innerClient, com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
+    public LogFilesImpl(LogFilesClient innerClient,
+        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<LogFile> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<LogFileInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LogFile> listByServer(String resourceGroupName, String serverName, Context context) {
         PagedIterable<LogFileInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LogFileImpl(inner1, this.manager()));
     }
 
     private LogFilesClient serviceClient() {

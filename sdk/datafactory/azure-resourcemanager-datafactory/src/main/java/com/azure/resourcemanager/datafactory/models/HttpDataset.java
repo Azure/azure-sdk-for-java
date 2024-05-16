@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.HttpDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,17 @@ import java.util.Map;
 /**
  * A file in an HTTP web server.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = HttpDataset.class, visible = true)
 @JsonTypeName("HttpFile")
 @Fluent
 public final class HttpDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "HttpFile";
+
     /*
      * Properties specific to this dataset type.
      */
@@ -29,6 +37,16 @@ public final class HttpDataset extends Dataset {
      * Creates an instance of HttpDataset class.
      */
     public HttpDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -129,8 +147,8 @@ public final class HttpDataset extends Dataset {
     }
 
     /**
-     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the requestMethod value.
      */
@@ -139,8 +157,8 @@ public final class HttpDataset extends Dataset {
     }
 
     /**
-     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
+     * string).
      * 
      * @param requestMethod the requestMethod value to set.
      * @return the HttpDataset object itself.
@@ -154,8 +172,7 @@ public final class HttpDataset extends Dataset {
     }
 
     /**
-     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType
-     * string).
+     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
      * 
      * @return the requestBody value.
      */
@@ -164,8 +181,7 @@ public final class HttpDataset extends Dataset {
     }
 
     /**
-     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType
-     * string).
+     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
      * 
      * @param requestBody the requestBody value to set.
      * @return the HttpDataset object itself.

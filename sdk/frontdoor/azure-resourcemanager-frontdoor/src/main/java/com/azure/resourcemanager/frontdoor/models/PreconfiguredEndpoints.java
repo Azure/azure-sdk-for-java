@@ -7,11 +7,13 @@ package com.azure.resourcemanager.frontdoor.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PreconfiguredEndpoints. */
+/**
+ * Resource collection API of PreconfiguredEndpoints.
+ */
 public interface PreconfiguredEndpoints {
     /**
      * Gets a list of Preconfigured Endpoints.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface PreconfiguredEndpoints {
 
     /**
      * Gets a list of Preconfigured Endpoints.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.

@@ -11,19 +11,24 @@ public final class FileServerReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileServerReadSettings model = BinaryData.fromString(
-            "{\"type\":\"FileServerReadSettings\",\"recursive\":\"dataajbcbrtiqpjlakam\",\"wildcardFolderPath\":\"dataqluicrqxqjzmosml\",\"wildcardFileName\":\"datappfgtnsxdj\",\"fileListPath\":\"datatnjpkpmdlttmfhde\",\"enablePartitionDiscovery\":\"dataiaaiqyxlromxpe\",\"partitionRootPath\":\"dataxcnh\",\"deleteFilesAfterCompletion\":\"datacbtyor\",\"modifiedDatetimeStart\":\"datadamyumrobbaxnym\",\"modifiedDatetimeEnd\":\"datag\",\"fileFilter\":\"dataqmkakgw\",\"maxConcurrentConnections\":\"dataznob\",\"disableMetricsCollection\":\"datagyheyayktutflhe\",\"\":{\"zszjqzmqjhghih\":\"dataefsahmdcoeexw\"}}")
+            "{\"type\":\"jkmpa\",\"recursive\":\"datawsynt\",\"wildcardFolderPath\":\"datarluqaqn\",\"wildcardFileName\":\"datag\",\"fileListPath\":\"datab\",\"enablePartitionDiscovery\":\"datajbozkl\",\"partitionRootPath\":\"dataifvpsmvk\",\"deleteFilesAfterCompletion\":\"datauw\",\"modifiedDatetimeStart\":\"datanplqf\",\"modifiedDatetimeEnd\":\"dataxfqmdjzgo\",\"fileFilter\":\"datakp\",\"maxConcurrentConnections\":\"dataeylpofaogvmqzagr\",\"disableMetricsCollection\":\"dataqhwfskmkdr\",\"\":{\"ldwcxjvexlutxcmc\":\"datapn\",\"yypvhdulds\":\"datacotqocn\"}}")
             .toObject(FileServerReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileServerReadSettings model = new FileServerReadSettings().withMaxConcurrentConnections("dataznob")
-            .withDisableMetricsCollection("datagyheyayktutflhe").withRecursive("dataajbcbrtiqpjlakam")
-            .withWildcardFolderPath("dataqluicrqxqjzmosml").withWildcardFileName("datappfgtnsxdj")
-            .withFileListPath("datatnjpkpmdlttmfhde").withEnablePartitionDiscovery("dataiaaiqyxlromxpe")
-            .withPartitionRootPath("dataxcnh").withDeleteFilesAfterCompletion("datacbtyor")
-            .withModifiedDatetimeStart("datadamyumrobbaxnym").withModifiedDatetimeEnd("datag")
-            .withFileFilter("dataqmkakgw");
+        FileServerReadSettings model = new FileServerReadSettings().withMaxConcurrentConnections("dataeylpofaogvmqzagr")
+            .withDisableMetricsCollection("dataqhwfskmkdr")
+            .withRecursive("datawsynt")
+            .withWildcardFolderPath("datarluqaqn")
+            .withWildcardFileName("datag")
+            .withFileListPath("datab")
+            .withEnablePartitionDiscovery("datajbozkl")
+            .withPartitionRootPath("dataifvpsmvk")
+            .withDeleteFilesAfterCompletion("datauw")
+            .withModifiedDatetimeStart("datanplqf")
+            .withModifiedDatetimeEnd("dataxfqmdjzgo")
+            .withFileFilter("datakp");
         model = BinaryData.fromObject(model).toObject(FileServerReadSettings.class);
     }
 }

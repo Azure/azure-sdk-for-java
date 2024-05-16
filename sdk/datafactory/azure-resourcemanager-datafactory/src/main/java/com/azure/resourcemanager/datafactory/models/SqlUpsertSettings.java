@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SqlUpsertSettings {
     /*
-     * Specifies whether to use temp db for upsert interim table. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specifies whether to use temp db for upsert interim table. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useTempDB")
     private Object useTempDB;
@@ -26,8 +25,7 @@ public final class SqlUpsertSettings {
     private Object interimSchemaName;
 
     /*
-     * Key column names for unique row identification. Type: array of strings (or Expression with resultType array of
-     * strings).
+     * Key column names for unique row identification. Type: array of strings (or Expression with resultType array of strings).
      */
     @JsonProperty(value = "keys")
     private Object keys;
@@ -83,8 +81,8 @@ public final class SqlUpsertSettings {
     }
 
     /**
-     * Get the keys property: Key column names for unique row identification. Type: array of strings (or Expression
-     * with resultType array of strings).
+     * Get the keys property: Key column names for unique row identification. Type: array of strings (or Expression with
+     * resultType array of strings).
      * 
      * @return the keys value.
      */
@@ -93,8 +91,8 @@ public final class SqlUpsertSettings {
     }
 
     /**
-     * Set the keys property: Key column names for unique row identification. Type: array of strings (or Expression
-     * with resultType array of strings).
+     * Set the keys property: Key column names for unique row identification. Type: array of strings (or Expression with
+     * resultType array of strings).
      * 
      * @param keys the keys value to set.
      * @return the SqlUpsertSettings object itself.

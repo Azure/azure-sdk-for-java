@@ -9,21 +9,31 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 
 public class CosmosMetadataConfig {
     private final int metadataPollDelayInMs;
-    private final String metadataTopicName;
+    private final CosmosMetadataStorageType storageType;
+    private final String storageName;
 
-    public CosmosMetadataConfig(int metadataPollDelayInMs, String metadataTopicName) {
-        checkArgument(StringUtils.isNotEmpty(metadataTopicName), "Argument 'metadataTopicName' can not be null");
+    public CosmosMetadataConfig(
+        int metadataPollDelayInMs,
+        CosmosMetadataStorageType metadataStorageType,
+        String storageName) {
+
         checkArgument(metadataPollDelayInMs > 0, "Argument 'metadataPollDelayInMs' should be larger than 0");
+        checkArgument(StringUtils.isNotEmpty(storageName), "Argument 'storageName' should not be null");
 
         this.metadataPollDelayInMs = metadataPollDelayInMs;
-        this.metadataTopicName = metadataTopicName;
+        this.storageType = metadataStorageType;
+        this.storageName = storageName;
     }
 
     public int getMetadataPollDelayInMs() {
         return metadataPollDelayInMs;
     }
 
-    public String getMetadataTopicName() {
-        return metadataTopicName;
+    public String getStorageName() {
+        return storageName;
+    }
+
+    public CosmosMetadataStorageType getStorageType() {
+        return storageType;
     }
 }

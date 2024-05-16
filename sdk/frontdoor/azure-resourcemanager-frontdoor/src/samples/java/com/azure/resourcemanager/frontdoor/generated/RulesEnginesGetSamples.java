@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.frontdoor.generated;
 
-/** Samples for RulesEngines Get. */
+/**
+ * Samples for RulesEngines Get.
+ */
 public final class RulesEnginesGetSamples {
     /*
      * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2021-06-01/examples/FrontdoorRulesEngineGet.json
      */
     /**
      * Sample code: Get Rules Engine Configuration.
-     *
+     * 
      * @param manager Entry point to FrontDoorManager.
      */
     public static void getRulesEngineConfiguration(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {

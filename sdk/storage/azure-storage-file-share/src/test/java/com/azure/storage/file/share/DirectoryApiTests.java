@@ -1649,11 +1649,7 @@ public class DirectoryApiTests extends FileShareTestBase {
                 return;
             } catch (Exception e) {
                 // Test failed; wait before retrying
-                try {
-                    Thread.sleep(retryDelayMillis);
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                }
+                sleepIfRunningAgainstService(retryDelayMillis);
             }
         }
     }

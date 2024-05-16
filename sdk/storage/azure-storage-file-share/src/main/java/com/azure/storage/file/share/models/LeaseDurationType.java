@@ -4,18 +4,23 @@
 
 package com.azure.storage.file.share.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** When a share is leased, specifies whether the lease is of infinite or fixed duration. */
+/**
+ * When a share is leased, specifies whether the lease is of infinite or fixed duration.
+ */
 public enum LeaseDurationType {
-    /** Enum value infinite. */
+    /**
+     * Enum value infinite.
+     */
     INFINITE("infinite"),
 
-    /** Enum value fixed. */
+    /**
+     * Enum value fixed.
+     */
     FIXED("fixed");
 
-    /** The actual serialized value for a LeaseDurationType instance. */
+    /**
+     * The actual serialized value for a LeaseDurationType instance.
+     */
     private final String value;
 
     LeaseDurationType(String value) {
@@ -24,11 +29,10 @@ public enum LeaseDurationType {
 
     /**
      * Parses a serialized value to a LeaseDurationType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed LeaseDurationType object, or null if unable to parse.
      */
-    @JsonCreator
     public static LeaseDurationType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum LeaseDurationType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

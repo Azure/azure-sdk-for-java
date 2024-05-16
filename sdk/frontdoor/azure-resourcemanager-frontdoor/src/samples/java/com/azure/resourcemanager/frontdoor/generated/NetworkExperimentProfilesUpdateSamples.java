@@ -9,25 +9,29 @@ import com.azure.resourcemanager.frontdoor.models.State;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for NetworkExperimentProfiles Update. */
+/**
+ * Samples for NetworkExperimentProfiles Update.
+ */
 public final class NetworkExperimentProfilesUpdateSamples {
     /*
      * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-11-01/examples/NetworkExperimentUpdateProfile.json
      */
     /**
      * Sample code: Updates an Experiment.
-     *
+     * 
      * @param manager Entry point to FrontDoorManager.
      */
     public static void updatesAnExperiment(com.azure.resourcemanager.frontdoor.FrontDoorManager manager) {
-        Profile resource =
-            manager
-                .networkExperimentProfiles()
-                .getByResourceGroupWithResponse("MyResourceGroup", "MyProfile", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("key1", "value1", "key2", "value2")).withEnabledState(State.ENABLED).apply();
+        Profile resource = manager.networkExperimentProfiles()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyProfile", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withEnabledState(State.ENABLED)
+            .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

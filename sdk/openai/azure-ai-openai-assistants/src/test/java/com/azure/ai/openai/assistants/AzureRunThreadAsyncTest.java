@@ -12,7 +12,6 @@ import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -70,11 +69,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(500);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -137,11 +132,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(500);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -197,11 +188,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(500);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -262,11 +249,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(500);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -356,8 +339,8 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
             // List runs with response
             StepVerifier.create(client.listRunsWithResponse(threadId, new RequestOptions()))
                     .assertNext(response -> {
-                        PageableList<ThreadRun> runs = assertAndGetValueFromResponse(response,
-                            new TypeReference<PageableList<ThreadRun>>() {}, 200);
+                        PageableList<ThreadRun> runs = asserAndGetPageableListFromResponse(response, 200,
+                            reader -> reader.readArray(ThreadRun::fromJson));
                         List<ThreadRun> data = runs.getData();
                         assertNotNull(data);
                         assertEquals(1, data.size());
@@ -395,11 +378,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
                             runReference.set(threadRun);
                         })
                         .verifyComplete();
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleepIfRunningAgainstService(500);
                 run = runReference.get();
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -428,8 +407,8 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
             // List run steps with response
             StepVerifier.create(client.listRunStepsWithResponse(threadId, runId, new RequestOptions()))
                     .assertNext(response -> {
-                        PageableList<RunStep> runStepsWithResponse = assertAndGetValueFromResponse(response,
-                            new TypeReference<PageableList<RunStep>>() {}, 200);
+                        PageableList<RunStep> runStepsWithResponse = asserAndGetPageableListFromResponse(response, 200,
+                            reader -> reader.readArray(RunStep::fromJson));
                         assertNotNull(runStepsWithResponse);
                         List<RunStep> runStepsDataWithResponse = runStepsWithResponse.getData();
                         assertNotNull(runStepsDataWithResponse);

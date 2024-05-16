@@ -96,6 +96,13 @@ public interface Snapshot
     Boolean awaitCopyStartCompletion(Duration maxWaitTime);
 
     /**
+     * Whether the snapshot can be accessed from public network.
+     *
+     * @return whether the snapshot can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
+    /**
      * Await CopyStart completion in async manner.
      *
      * @return a representation of the deferred computation of this call
@@ -406,6 +413,16 @@ public interface Snapshot
             WithCreate withSku(SnapshotSkuType sku);
         }
 
+        /** The stage of snapshot definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Disables public network access for the snapshot.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -416,7 +433,8 @@ public interface Snapshot
                 WithSize,
                 WithSku,
                 WithIncremental,
-                WithCopyStart {
+                WithCopyStart,
+                WithPublicNetworkAccess {
         }
     }
 
@@ -443,6 +461,22 @@ public interface Snapshot
              */
             Update withOSType(OperatingSystemTypes osType);
         }
+
+        /** The stage of snapshot update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the snapshot.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the snapshot.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -450,6 +484,7 @@ public interface Snapshot
         extends Appliable<Snapshot>,
             Resource.UpdateWithTags<Snapshot.Update>,
             UpdateStages.WithSku,
-            UpdateStages.WithOSSettings {
+            UpdateStages.WithOSSettings,
+            UpdateStages.WithPublicNetworkAccess {
     }
 }

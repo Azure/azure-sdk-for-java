@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.frontdoor.models.EndpointType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the properties of a preconfigured endpoint. */
+/**
+ * Defines the properties of a preconfigured endpoint.
+ */
 @Fluent
 public final class PreconfiguredEndpointProperties {
     /*
@@ -35,13 +37,15 @@ public final class PreconfiguredEndpointProperties {
     @JsonProperty(value = "backend")
     private String backend;
 
-    /** Creates an instance of PreconfiguredEndpointProperties class. */
+    /**
+     * Creates an instance of PreconfiguredEndpointProperties class.
+     */
     public PreconfiguredEndpointProperties() {
     }
 
     /**
      * Get the description property: The description of the endpoint.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -50,7 +54,7 @@ public final class PreconfiguredEndpointProperties {
 
     /**
      * Set the description property: The description of the endpoint.
-     *
+     * 
      * @param description the description value to set.
      * @return the PreconfiguredEndpointProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class PreconfiguredEndpointProperties {
 
     /**
      * Get the endpoint property: The endpoint that is preconfigured.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -70,7 +74,7 @@ public final class PreconfiguredEndpointProperties {
 
     /**
      * Set the endpoint property: The endpoint that is preconfigured.
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the PreconfiguredEndpointProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class PreconfiguredEndpointProperties {
 
     /**
      * Get the endpointType property: The type of endpoint.
-     *
+     * 
      * @return the endpointType value.
      */
     public EndpointType endpointType() {
@@ -90,7 +94,7 @@ public final class PreconfiguredEndpointProperties {
 
     /**
      * Set the endpointType property: The type of endpoint.
-     *
+     * 
      * @param endpointType the endpointType value to set.
      * @return the PreconfiguredEndpointProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class PreconfiguredEndpointProperties {
 
     /**
      * Get the backend property: The preconfigured endpoint backend.
-     *
+     * 
      * @return the backend value.
      */
     public String backend() {
@@ -110,7 +114,7 @@ public final class PreconfiguredEndpointProperties {
 
     /**
      * Set the backend property: The preconfigured endpoint backend.
-     *
+     * 
      * @param backend the backend value to set.
      * @return the PreconfiguredEndpointProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class PreconfiguredEndpointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
