@@ -1,0 +1,49 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.monitor.query.models;
+
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
+/** Defines values for MetricClass. */
+public final class MetricClass extends ExpandableStringEnum<MetricClass> {
+    /** Static value Availability for MetricClass. */
+    public static final MetricClass AVAILABILITY = fromString("Availability");
+
+    /** Static value Transactions for MetricClass. */
+    public static final MetricClass TRANSACTIONS = fromString("Transactions");
+
+    /** Static value Errors for MetricClass. */
+    public static final MetricClass ERRORS = fromString("Errors");
+
+    /** Static value Latency for MetricClass. */
+    public static final MetricClass LATENCY = fromString("Latency");
+
+    /** Static value Saturation for MetricClass. */
+    public static final MetricClass SATURATION = fromString("Saturation");
+
+    /**
+     * Creates an instance of MetricClass.
+     */
+    public MetricClass() { }
+
+    /**
+     * Creates or finds a MetricClass from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding MetricClass.
+     */
+    public static MetricClass fromString(String name) {
+        return fromString(name, MetricClass.class);
+    }
+
+    /**
+     * Returns the known MetricClass values.
+     *
+     * @return The {@link Collection} of known MetricClass values.
+     */
+    public static Collection<MetricClass> values() {
+        return values(MetricClass.class);
+    }
+}

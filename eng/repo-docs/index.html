@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<!-- saved from url=(0077)https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style data-styles="">ion-icon{visibility:hidden}.hydrated{visibility:inherit}</style>
+    
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <title>Azure SDK For Java - Github.io Landing Page</title>
+
+    <link href="./template_files/css" rel="stylesheet" type="text/css">
+
+    <style type="text/css">
+        html {
+            font-family: sans-serif;
+            -ms-text-size-adjust: 100%
+        }
+        
+        a {
+            background-color: transparent
+        }
+        
+        h1 {
+            margin: .67em 0
+        }
+        
+        hr {
+            height: 0
+        }
+        
+        *,
+        :after,
+        :before,
+        body.status-page img,
+        input[type=checkbox],
+        input[type=radio],
+        input[type=search] {
+            box-sizing: border-box
+        }
+        
+        html {
+            font-size: 10px;
+            -webkit-tap-highlight-color: transparent
+        }
+        
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.428571429;
+            color: #333
+        }
+        
+        a {
+            color: #67808c;
+            text-decoration: none
+        }
+        
+        a:focus,
+        a:hover {
+            color: #465760;
+            text-decoration: underline
+        }
+        
+        a:focus {
+            outline: -webkit-focus-ring-color auto 5px;
+            outline-offset: -2px
+        }
+        
+        hr {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border-top: 1px solid #eee
+        }
+        
+        .h1,
+        .h2,
+        .h3,
+        .h4,
+        .h5,
+        .h6,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: inherit;
+            font-weight: 500;
+            line-height: 1.1;
+            color: inherit
+        }
+        
+        .h1 .small,
+        .h1 small,
+        .h2 .small,
+        .h2 small,
+        .h3 .small,
+        .h3 small,
+        .h4 .small,
+        .h4 small,
+        .h5 .small,
+        .h5 small,
+        .h6 .small,
+        .h6 small,
+        h1 .small,
+        h1 small,
+        h2 .small,
+        h2 small,
+        h3 .small,
+        h3 small,
+        h4 .small,
+        h4 small,
+        h5 .small,
+        h5 small,
+        h6 .small,
+        h6 small {
+            font-weight: 400;
+            line-height: 1;
+            color: #777
+        }
+        
+        .h1,
+        .h2,
+        .h3,
+        h1,
+        h2,
+        h3 {
+            margin-top: 20px;
+            margin-bottom: 10px
+        }
+        
+        .h1 .small,
+        .h1 small,
+        .h2 .small,
+        .h2 small,
+        .h3 .small,
+        .h3 small,
+        h1 .small,
+        h1 small,
+        h2 .small,
+        h2 small,
+        h3 .small,
+        h3 small {
+            font-size: 65%
+        }
+        
+        .h4,
+        .h5,
+        .h6,
+        h4,
+        h5,
+        h6 {
+            margin-top: 10px;
+            margin-bottom: 10px
+        }
+        
+        .h4 .small,
+        .h4 small,
+        .h5 .small,
+        .h5 small,
+        .h6 .small,
+        .h6 small,
+        h4 .small,
+        h4 small,
+        h5 .small,
+        h5 small,
+        h6 .small,
+        h6 small {
+            font-size: 75%
+        }
+        
+        .h1,
+        h1 {
+            font-size: 36px
+        }
+        
+        .h2,
+        h2 {
+            font-size: 30px
+        }
+        
+        .h3,
+        h3 {
+            font-size: 24px
+        }
+        
+        .h4,
+        h4 {
+            font-size: 18px
+        }
+        
+        .h5,
+        h5 {
+            font-size: 14px
+        }
+        
+        .h6,
+        h6 {
+            font-size: 12px
+        }
+        
+        p {
+            margin: 0 0 10px
+        }
+        
+        .container-fluid:after,
+        .container-fluid:before,
+        .container:after,
+        .container:before,
+        .row:after,
+        .row:before,
+        .setup-page .steps:after,
+        .setup-page .steps:before {
+            display: table;
+            content: " "
+        }
+        
+        .container,
+        .container-fluid {
+            margin-right: auto;
+            margin-left: auto;
+            padding-left: 15px;
+            padding-right: 15px
+        }
+        
+        @media (min-width:992px) {
+            .container {
+                width: 970px
+            }
+        }
+        
+        @media (min-width:1200px) {
+            .container {
+                width: 1170px
+            }
+        }
+        
+        .list-group {
+            margin-bottom: 20px;
+            padding-left: 0
+        }
+        
+        .list-group-item {
+            position: relative;
+            display: block;
+            padding: 10px 15px;
+            margin-bottom: -1px;
+            background-color: #fff;
+            border: 1px solid #ddd
+        }
+        
+        .list-group-item:first-child {
+            border-top-right-radius: 3px;
+            border-top-left-radius: 3px
+        }
+        
+        .list-group-item:last-child {
+            margin-bottom: 0;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px
+        }
+        
+        a.list-group-item,
+        button.list-group-item {
+            color: #555
+        }
+        
+        a.list-group-item .list-group-item-heading,
+        button.list-group-item .list-group-item-heading {
+            color: #333
+        }
+        
+        a.list-group-item:focus,
+        a.list-group-item:hover,
+        button.list-group-item:focus,
+        button.list-group-item:hover {
+            text-decoration: none;
+            color: #555;
+            background-color: #f5f5f5
+        }
+        
+        html {
+            min-height: 100%;
+            overflow-y: scroll
+        }
+        
+        body {
+            margin-bottom: 60px;
+            padding-bottom: 60px;
+            -webkit-backface-visibility: hidden
+        }
+        
+        body.status-page {
+            padding-top: 40px;
+            font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: #F0F3F4;
+            color: #333;
+            font-size: 1.4em;
+            font-weight: 400
+        }
+        
+        body.status-page.no-padding {
+            padding-top: 0!important
+        }
+        
+        body.status-page hr {
+            margin-top: 10px;
+            margin-bottom: 10px
+        }
+        
+        body.status-page h1,
+        body.status-page h2,
+        body.status-page h3,
+        body.status-page h4,
+        body.status-page h5 {
+            margin-bottom: 20px
+        }
+        
+        body.status-page img.emoji {
+            height: 20px;
+            width: 20px;
+            vertical-align: middle;
+            max-width: none
+        }
+        
+        body.status-page p,
+        body.status-page strong {
+            color: #333
+        }
+        
+        body.status-page .tooltip .tooltip-inner {
+            padding: 8px 12px;
+            font-size: 14px;
+            word-wrap: break-word
+        }
+        
+        body.status-page .container {
+            max-width: 960px
+        }
+        
+        body.status-page .page-header {
+            margin-top: 10px
+        }
+        
+        body.status-page .list-group {
+            padding-left: 0
+        }
+        
+        body.status-page .list-group .list-group-item {
+            border-radius: 0;
+            background-color: #fff;
+            border: 1px solid #e8e8e8;
+            font-size: 1.1em;
+            padding: 15px;
+            overflow: hidden;
+        }
+        
+        body.status-page .list-group .list-group-item a {
+            font-weight: 400
+        }
+        
+        body.status-page .list-group .list-group-item h4 {
+            margin: 0;
+            font-weight: 400;
+            max-width: 90%
+        }
+        
+        body.status-page .list-group .list-group-item p,
+        body.status-page .list-group .list-group-item time {
+            margin-bottom: 0;
+            line-height: 1.3em
+        }
+        
+        body.status-page .list-group .list-group-item.group-name {
+            background-color: #e8e8e8;
+            padding-top: .6em;
+            padding-bottom: .6em;
+            cursor: pointer;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none
+        }
+        
+        body.status-page .list-group .list-group-item.break {
+            padding: 1px;
+            background-color: #f0f3f4
+        }
+        
+        body.status-page .list-group.components {
+            border-color: #e8e8e8
+        }
+        
+        body.status-page .list-group.components:last-child {
+            margin-bottom: 30px
+        }
+        
+        body.status-page .list-group.components+.components {
+            margin-top: 5px
+        }
+        
+        body.status-page .list-group.components p {
+            margin-bottom: 10px
+        }
+        
+        body.status-page .list-group.components .badge {
+            color: transparent
+        }
+        
+        body.status-page .list-group.components a {
+            color: #333!important
+        }
+        
+        body.status-page footer {
+            width: 100%;
+            bottom: 0;
+            height: 60px;
+            padding: 30px 0 60px;
+            border-top: 1px solid #e8e8e8;
+            color: #666;
+            font-size: 13px;
+            line-height: 30px;
+            text-align: center;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, .5)
+        }
+        
+        body.status-page .section-components,
+        body.status-page .section-metrics,
+        body.status-page .section-scheduled,
+        body.status-page .section-timeline {
+            margin-top: 40px
+        }
+        
+        body.status-page {
+            background-color: #F0F3F4;
+            color: #333333;
+        }
+
+        body.status-page .about-app p {
+           font-size: 1.2em;
+        }
+        
+        p,
+        strong {
+            color: #333333 !important;
+        }
+        
+        .links {
+            color: #3498db !important;
+        }
+        
+        .footer a {
+            color: #333333;
+        }
+
+        .pull-right {
+            float: right!important;
+        }
+    </style>
+<script src="./template_files/ionicons.eyhlcpv8.js.download" type="module" crossorigin="true" data-resources-url="https://unpkg.com/ionicons@4.2.2/dist/ionicons/" data-namespace="ionicons"></script><template data-tmpl-style-tag="ion-icon"></template></head>
+
+<body class="status-page ">
+
+    <div class="container">
+        <div class="section-messages">
+        </div>
+
+        <div class="about-app">
+            <h2>Azure Java SDK</h2>
+            <p>Refer to the links below for reference documentation generated from the Azure SDK for Java source code.</p>
+        </div>
+
+        <div class="section-components">
+            <ul class="list-group components">
+                <li class="list-group-item group-name">
+                    <strong>Latest Client Libraries</strong>
+                </li>
+
+                <div class="group-items ">
+                    <li class="list-group-item sub-component">
+                        <ion-icon name="copy" role="img" class="hydrated" aria-label="logo github"></ion-icon>
+                        <a href="./track2reports/index.html" target="_blank" class="links">JavaDocs</a>
+                    </li>
+                </div>
+            </ul>
+        </div>
+
+        <div class="section-components">
+            <ul class="list-group components">
+                <li class="list-group-item group-name">
+                    <strong>Previous Client Libraries</strong>
+                </li>
+
+                <div class="group-items ">
+                    <li class="list-group-item sub-component">
+                        <ion-icon name="copy" role="img" class="hydrated" aria-label="logo github"></ion-icon>
+                        <a href="./track1reports/index.html" target="_blank" class="links">JavaDocs</a>
+                    </li>
+                </div>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5">
+                    <p>Powered by <a href="https://azure.com/" class="links">Azure</a>.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+<script src="https://unpkg.com/ionicons@4.2.2/dist/ionicons.js"></script>
+</body></html>

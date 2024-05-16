@@ -1,0 +1,264 @@
+{
+  "id": "7d925bf9-d583-4c6d-a49f-137bee7cff91",
+  "mypk": "7d925bf9-d583-4c6d-a49f-137bee7cff91",
+  "nonSensitive": "cf012e6a-3dd1-4f1a-bd93-dc2b7fee5e97",
+  "sensitiveString": "testingString",
+  "sensitiveInt": 30,
+  "sensitiveFloat": 20,
+  "sensitiveLong": 1234,
+  "sensitiveDouble": 10.123,
+  "sensitiveBoolean": true,
+  "sensitiveNestedPojo": {
+    "id": "nestedPojo",
+    "mypk": "nestedPojo",
+    "nonSensitive": null,
+    "sensitiveString": "nestedPojo",
+    "sensitiveInt": 123,
+    "sensitiveFloat": 0,
+    "sensitiveLong": 1234,
+    "sensitiveDouble": 10.123,
+    "sensitiveBoolean": true,
+    "sensitiveNestedPojo": null,
+    "sensitiveIntArray": null,
+    "sensitiveStringArray": [
+      "str1",
+      "str1"
+    ],
+    "sensitiveString3DArray": [
+      [
+        [
+          "str1",
+          "str2"
+        ],
+        [
+          "str3",
+          "str4"
+        ]
+      ],
+      [
+        [
+          "str5",
+          "str6"
+        ],
+        [
+          "str7",
+          "str8"
+        ]
+      ]
+    ],
+    "sensitiveChildPojo2DArray": null,
+    "sensitiveChildPojoList": null
+  },
+  "sensitiveIntArray": [
+    1,
+    2
+  ],
+  "sensitiveStringArray": [
+    "str1",
+    "str1"
+  ],
+  "sensitiveString3DArray": [
+    [
+      [
+        "str1",
+        "str2"
+      ],
+      [
+        "str3",
+        "str4"
+      ]
+    ],
+    [
+      [
+        "str5",
+        "str6"
+      ],
+      [
+        "str7",
+        "str8"
+      ]
+    ]
+  ],
+  "sensitiveChildPojo2DArray": [
+    [
+      {
+        "id": "childPojo1",
+        "mypk": null,
+        "nonSensitive": null,
+        "sensitiveString": "child1TestingString",
+        "sensitiveInt": 123,
+        "sensitiveFloat": 0,
+        "sensitiveLong": 1234,
+        "sensitiveDouble": 10.123,
+        "sensitiveBoolean": true,
+        "sensitiveNestedPojo": null,
+        "sensitiveIntArray": null,
+        "sensitiveStringArray": [
+          "str1",
+          "str1"
+        ],
+        "sensitiveString3DArray": [
+          [
+            [
+              "str1",
+              "str2"
+            ],
+            [
+              "str3",
+              "str4"
+            ]
+          ],
+          [
+            [
+              "str5",
+              "str6"
+            ],
+            [
+              "str7",
+              "str8"
+            ]
+          ]
+        ],
+        "sensitiveChildPojo2DArray": null,
+        "sensitiveChildPojoList": null
+      },
+      {
+        "id": "childPojo2",
+        "mypk": null,
+        "nonSensitive": null,
+        "sensitiveString": "child2TestingString",
+        "sensitiveInt": 123,
+        "sensitiveFloat": 0,
+        "sensitiveLong": 1234,
+        "sensitiveDouble": 10.123,
+        "sensitiveBoolean": true,
+        "sensitiveNestedPojo": null,
+        "sensitiveIntArray": null,
+        "sensitiveStringArray": null,
+        "sensitiveString3DArray": null,
+        "sensitiveChildPojo2DArray": null,
+        "sensitiveChildPojoList": null
+      }
+    ],
+    [
+      {
+        "id": "childPojo1",
+        "mypk": null,
+        "nonSensitive": null,
+        "sensitiveString": "child1TestingString",
+        "sensitiveInt": 123,
+        "sensitiveFloat": 0,
+        "sensitiveLong": 1234,
+        "sensitiveDouble": 10.123,
+        "sensitiveBoolean": true,
+        "sensitiveNestedPojo": null,
+        "sensitiveIntArray": null,
+        "sensitiveStringArray": [
+          "str1",
+          "str1"
+        ],
+        "sensitiveString3DArray": [
+          [
+            [
+              "str1",
+              "str2"
+            ],
+            [
+              "str3",
+              "str4"
+            ]
+          ],
+          [
+            [
+              "str5",
+              "str6"
+            ],
+            [
+              "str7",
+              "str8"
+            ]
+          ]
+        ],
+        "sensitiveChildPojo2DArray": null,
+        "sensitiveChildPojoList": null
+      },
+      {
+        "id": "childPojo2",
+        "mypk": null,
+        "nonSensitive": null,
+        "sensitiveString": "child2TestingString",
+        "sensitiveInt": 123,
+        "sensitiveFloat": 0,
+        "sensitiveLong": 1234,
+        "sensitiveDouble": 10.123,
+        "sensitiveBoolean": true,
+        "sensitiveNestedPojo": null,
+        "sensitiveIntArray": null,
+        "sensitiveStringArray": null,
+        "sensitiveString3DArray": null,
+        "sensitiveChildPojo2DArray": null,
+        "sensitiveChildPojoList": null
+      }
+    ]
+  ],
+  "sensitiveChildPojoList": [
+    {
+      "id": "childPojo1",
+      "mypk": null,
+      "nonSensitive": null,
+      "sensitiveString": "child1TestingString",
+      "sensitiveInt": 123,
+      "sensitiveFloat": 0,
+      "sensitiveLong": 1234,
+      "sensitiveDouble": 10.123,
+      "sensitiveBoolean": true,
+      "sensitiveNestedPojo": null,
+      "sensitiveIntArray": null,
+      "sensitiveStringArray": [
+        "str1",
+        "str1"
+      ],
+      "sensitiveString3DArray": [
+        [
+          [
+            "str1",
+            "str2"
+          ],
+          [
+            "str3",
+            "str4"
+          ]
+        ],
+        [
+          [
+            "str5",
+            "str6"
+          ],
+          [
+            "str7",
+            "str8"
+          ]
+        ]
+      ],
+      "sensitiveChildPojo2DArray": null,
+      "sensitiveChildPojoList": null
+    },
+    {
+      "id": "childPojo2",
+      "mypk": null,
+      "nonSensitive": null,
+      "sensitiveString": "child2TestingString",
+      "sensitiveInt": 123,
+      "sensitiveFloat": 0,
+      "sensitiveLong": 1234,
+      "sensitiveDouble": 10.123,
+      "sensitiveBoolean": true,
+      "sensitiveNestedPojo": null,
+      "sensitiveIntArray": null,
+      "sensitiveStringArray": null,
+      "sensitiveString3DArray": null,
+      "sensitiveChildPojo2DArray": null,
+      "sensitiveChildPojoList": null
+    }
+  ]
+}

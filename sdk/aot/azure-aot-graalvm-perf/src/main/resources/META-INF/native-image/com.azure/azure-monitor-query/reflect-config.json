@@ -1,0 +1,20 @@
+[
+  {
+    "name": "com.azure.monitor.query.perf.LogsBatchQueryTest",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.azure.monitor.query.perf.LogsQueryAsModelTest",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.azure.monitor.query.perf.MetricsQueryTest",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  }
+]

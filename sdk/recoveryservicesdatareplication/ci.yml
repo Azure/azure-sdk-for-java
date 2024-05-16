@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/recoveryservicesdatareplication/ci.yml
+      - sdk/recoveryservicesdatareplication/azure-resourcemanager-recoveryservicesdatareplication/
+    exclude:
+      - sdk/recoveryservicesdatareplication/pom.xml
+      - sdk/recoveryservicesdatareplication/azure-resourcemanager-recoveryservicesdatareplication/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/recoveryservicesdatareplication/ci.yml
+      - sdk/recoveryservicesdatareplication/azure-resourcemanager-recoveryservicesdatareplication/
+    exclude:
+      - sdk/recoveryservicesdatareplication/pom.xml
+      - sdk/recoveryservicesdatareplication/azure-resourcemanager-recoveryservicesdatareplication/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerrecoveryservicesdatareplication
+    displayName: azure-resourcemanager-recoveryservicesdatareplication
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: recoveryservicesdatareplication
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-recoveryservicesdatareplication
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerrecoveryservicesdatareplication
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerrecoveryservicesdatareplication }}

@@ -1,0 +1,96 @@
+parameters:
+  - name: Matrix
+    type: object
+  - name: TestTask
+    type: object
+  - name: MaxParallel
+    type: number
+    default: 0
+  - name: Timeout
+    type: number
+    default: 90
+
+
+jobs:
+  - job: SmokeTest
+    timeoutInMinutes: ${{ parameters.Timeout }}
+
+    strategy:
+      maxParallel: ${{ parameters.MaxParallel }}
+      matrix: ${{ parameters.Matrix }}
+
+    pool:
+      name: $(Pool)
+      vmImage: $(OSVmImage)
+
+    variables:
+      azureCloudArmParameters: "@{ storageEndpointSuffix = 'core.windows.net'; azureCloud = 'AzureCloud'; }"
+      azureUSGovernmentArmParameters: "@{ storageEndpointSuffix = 'core.usgovcloudapi.net'; azureCloud = 'AzureUSGovernment'; }"
+      azureChinaCloudArmParameters: "@{ storageEndpointSuffix = 'core.chinacloudapi.cn'; azureCloud = 'AzureChinaCloud'; }"
+
+
+    steps:
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+        parameters:
+          AgentImage: $(OSVmImage)
+
+      - task: Maven@3
+        displayName: Use the latest package version from the dev feed
+        inputs:
+          mavenPomFile: $(PomFile)
+          goals: 'versions:use-latest-versions'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests "-Dincludes=com.azure:*"'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - task: UsePythonVersion@0
+        displayName: 'Use Python 3.6'
+        inputs:
+          versionSpec: '3.6'
+
+      - task: PythonScript@0
+        inputs:
+          scriptPath: common/smoke-tests/validate_version_dates.py
+          workingDirectory: common/smoke-tests
+        continueOnError: true
+        displayName: Validate consistent dependency dev versions for com.azure packages
+
+      - pwsh: Get-Content $(PomFile)
+        displayName: Show pom.xml
+
+      - task: Maven@3
+        displayName: Show dependency tree
+        inputs:
+          mavenPomFile: $(PomFile)
+          goals: 'dependency:tree'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - task: Maven@3
+        displayName: 'Build and Package'
+        inputs:
+          mavenPomFile: $(PomFile)
+          goals: 'package'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+
+      - template: /eng/common/TestResources/deploy-test-resources.yml
+        parameters:
+          ServiceDirectory: $(ServiceDirectory)
+          ArmTemplateParameters: $(ArmTemplateParameters)
+          SubscriptionConfiguration: $(SubscriptionConfiguration)
+
+      - ${{ parameters.TestTask }}
+
+      - template: /eng/common/TestResources/remove-test-resources.yml
+        parameters:
+          ServiceDirectory: '$(Build.SourcesDirectory)/common/smoke-tests/'
+          SubscriptionConfiguration: $(SubscriptionConfiguration)

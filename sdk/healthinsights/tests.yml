@@ -1,0 +1,21 @@
+parameters:
+- name: Location
+  displayName: Location
+  type: string
+  default: eastus
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: healthinsights
+    Artifacts:
+      - name: azure-health-insights-cancerprofiling
+        groupId: com.azure
+        safeName: azurehealthinsightscancerprofiling
+      - name: azure-health-insights-clinicalmatching
+        groupId: com.azure
+        safeName: azurehealthinsightsclinicalmatching
+      - name: azure-health-insights-radiologyinsights
+        groupId: com.azure
+        safeName: azurehealthinsightsradiologyinsights
+    Location: '${{ parameters.Location }}'

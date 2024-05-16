@@ -1,0 +1,17 @@
+{
+  "location": "westus",
+  "name": "heya-ubuntu-linux-vm",
+  "offer": "UbuntuServer",
+  "osType": "Linux",
+  "placementGroupId": "",
+  "platformFaultDomain": "0",
+  "platformUpdateDomain": "0",
+  "publisher": "Canonical",
+  "resourceGroupName": "heya-java-ipa",
+  "sku": "18.04-LTS",
+  "subscriptionId": "65b2f83e-7bf1-4be3-bafc-3a4163265a52",
+  "tags": "azsecpack:nonprod;platformsettings.host_environment.service.platform_optedin_for_rootcerts:true",
+  "version": "18.04.202101081",
+  "vmId": "2a1216c3-a2a0-4fc5-a941-b1f5acde7051",
+  "vmSize": "Standard_D2s_v3"
+}

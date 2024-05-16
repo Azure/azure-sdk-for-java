@@ -1,0 +1,22 @@
+[
+  {
+    "topic": "/subscriptions/319a9601-1ec0-0000-aebc-8fe82724c81e/resourceGroups/testrg/providers/Microsoft.Storage/storageAccounts/myaccount",
+    "subject": "/blobServices/default/containers/testcontainer/blobs/file1.txt",
+    "eventType": "Microsoft.Storage.BlobCreated",
+    "eventTime": "2017-08-16T01:57:26.005121Z",
+    "id": "602a88ef-0001-00e6-1233-1646070610ea",
+    "data": {
+      "api": "PutBlockList",
+      "clientRequestId": "799304a4-bbc5-45b6-9849-ec2c66be800a",
+      "requestId": "602a88ef-0001-00e6-1233-164607000000",
+      "eTag": "0x8D4E44A24ABE7F1",
+      "contentType": "text/plain",
+      "contentLength": 447,
+      "blobType": "BlockBlob",
+      "url": "https://myaccount.blob.core.windows.net/testcontainer/file1.txt",
+      "sequencer": "00000000000000EB000000000000C65A"
+    },
+    "dataVersion": "",
+    "metadataVersion": "1"
+  }
+]

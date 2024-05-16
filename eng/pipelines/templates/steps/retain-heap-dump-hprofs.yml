@@ -1,0 +1,15 @@
+parameters:
+  - name: OomArtifactName
+    type: string
+    default: 'oom-hprofs'
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Check for and copy OOM hprofs'
+    inputs:
+      pwsh: true
+      filePath: eng/pipelines/scripts/Get-Heap-Dump-Hprofs.ps1
+      arguments: >
+        -StagingDirectory $(System.DefaultWorkingDirectory)
+        -OomArtifactName ${{ parameters.OomArtifactName }}
+    condition: always()

@@ -1,0 +1,19 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\Qtemplates/uploadForm.html\\E"
+      },
+      {
+        "pattern": "\\Qapplication.yaml\\E"
+      },
+      {
+        "pattern": "\\Qstatic/azure.png\\E"
+      },
+      {
+        "pattern": "\\Qstatic/styles.css\\E"
+      }
+    ]
+  },
+  "bundles": []
+}

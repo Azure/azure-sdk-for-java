@@ -1,0 +1,98 @@
+parameters:
+  - name: JavaBuildVersion
+    type: string
+    default: $(JavaBuildVersion)
+  - name: JavadocSafeJavaBuildVersion
+    type: string
+    default: $(JavadocSafeJavaBuildVersion)
+  - name: AdditionalLintingOptions
+    type: string
+    default: ''
+  - name: BuildParallelization
+    type: string
+    default: '2C'
+  - name: RunLinting
+    type: boolean
+    default: false
+  - name: ContinueOnError
+    type: boolean
+    default: false
+  - name: SDKType
+    type: string
+    default: client
+
+steps:
+  # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
+  - task: Maven@3
+    displayName: 'Build and Install'
+    inputs:
+      mavenPomFile: pom.xml
+      goals: 'install'
+      options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests $(DefaultSkipOptions) -pl $(ProjectList) -am'
+      mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: ${{ parameters.JavaBuildVersion }}
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+    continueOnError: ${{ parameters.ContinueOnError }}
+    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
+
+  - task: Maven@3
+    ${{ if ne(parameters.SDKType, 'client') }}:
+      displayName: 'Run SpotBugs and Checkstyle'
+    ${{ else }}:
+      displayName: 'Run SpotBugs, Checkstyle, and RevApi'
+    inputs:
+      mavenPomFile: pom.xml
+      ${{ if ne(parameters.SDKType, 'client') }}:
+        options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -pl $(ProjectList)'
+        goals: 'checkstyle:check spotbugs:check'
+      ${{ else }}:
+        options: '$(DefaultOptions) --no-transfer-progress -T 1C -Dcheckstyle.failOnViolation=false -Dcheckstyle.failsOnError=false -Dspotbugs.failOnError=false -Drevapi.failBuildOnProblemsFound=false -pl $(ProjectList)'
+        goals: 'checkstyle:check spotbugs:check revapi:check'
+      mavenOptions: '$(MemoryOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: ${{ parameters.JavaBuildVersion }}
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+    continueOnError: ${{ parameters.ContinueOnError }}
+    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
+
+  - task: PowerShell@2
+    inputs:
+      filePath: $(System.DefaultWorkingDirectory)/eng/pipelines/scripts/Get-Linting-Reports.ps1
+      arguments: -StagingDirectory $(System.DefaultWorkingDirectory)
+      pwsh: true
+      workingDirectory: $(Pipeline.Workspace)
+    displayName: 'Generate Linting Reports'
+    continueOnError: ${{ parameters.ContinueOnError }}
+    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
+
+  - pwsh: |
+      if (Test-Path -Path "$(System.DefaultWorkingDirectory)/troubleshooting/linting-report.zip") {
+        Write-Host "Linting errors have been found, download the 'linting-report.zip' artifact to see what was found."
+        exit 1
+      }
+    displayName: 'Fail Pipeline if Linting Reports Exist'
+    continueOnError: ${{ parameters.ContinueOnError }}
+    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
+
+  - task: Maven@3
+    ${{ if ne(parameters.SDKType, 'client') }}:
+      displayName: 'Run Javadoc and Spotless'
+    ${{ else }}:
+      displayName: 'Run Javadoc'
+    inputs:
+      mavenPomFile: pom.xml
+      options: '$(DefaultOptions) --no-transfer-progress ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
+      mavenOptions: '$(MemoryOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: ${{ parameters.JavadocSafeJavaBuildVersion }} # TODO (vcolin7): Change to ${{ parameters.JavaBuildVersion }} once Javadoc migration to Java 21 is complete. See: https://github.com/Azure/azure-sdk-for-java/issues/38267.
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      ${{ if ne(parameters.SDKType, 'client') }}:
+        goals: 'javadoc:jar'
+      ${{ else }}:
+        goals: 'javadoc:jar codesnippet:verify-codesnippet spotless:check'
+    continueOnError: ${{ parameters.ContinueOnError }}
+    condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))

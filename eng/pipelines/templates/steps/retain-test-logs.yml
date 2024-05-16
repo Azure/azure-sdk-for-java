@@ -1,0 +1,15 @@
+parameters:
+  - name: TestLogsArtifactName
+    type: string
+    default: 'test-logs'
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Check for and copy test logs'
+    inputs:
+      pwsh: true
+      filePath: eng/pipelines/scripts/Get-Test-Logs.ps1
+      arguments: >
+        -StagingDirectory $(System.DefaultWorkingDirectory)
+        -TestLogsArtifactName ${{ parameters.TestLogsArtifactName }}
+    condition: always()

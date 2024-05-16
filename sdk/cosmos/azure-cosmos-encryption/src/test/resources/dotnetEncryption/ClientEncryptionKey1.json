@@ -1,0 +1,15 @@
+{
+  "id": "key1",
+  "encryptionAlgorithm": "AEAD_AES_256_CBC_HMAC_SHA256",
+  "wrappedDataEncryptionKey": "erCEofwSJks5AfV7djB0GZd5MBm5Nik7sWnJTdJ2UyQ=",
+  "keyWrapMetadata": {
+    "type": "TESTKEYSTORE_VAULT",
+    "name": "key1",
+    "value": "tempmetadata1"
+  },
+  "_cts": 1646433175,
+  "_etag": "\"00000000-0000-0000-3017-cb2514ab01d8\"",
+  "_ts": 1646433175,
+  "_self": "dbs/6momAA==/clientencryptionkeys/6momAAAAAAC7fCpnAgAAAA==/",
+  "_rid": "6momAAAAAAC7fCpnAgAAAA=="
+}

@@ -1,0 +1,159 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "baseName": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The base resource name."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "eastus",
+      "metadata": {
+        "description": "The location of the resource. By default, this is the same as the resource group."
+      }
+    },
+    "testApplicationOid": {
+      "type": "string",
+      "metadata": {
+        "description": "The AAD Client ID of the test application service principal."
+      }
+    },
+    "blobStorageAccount": {
+      "type": "string",
+      "defaultValue": "azuresdktrainingdata"
+    },
+    "trainingDataContainer": {
+      "type": "string",
+      "defaultValue": "trainingdata"
+    },
+    "selectionMarkTrainingDataContainer": {
+      "type": "string",
+      "defaultValue": "selectionmark"
+    },
+    "blobResourceId": {
+      "type": "string",
+      "defaultValue": "[resourceId('2cd617ea-1866-46b1-90e3-fffb087ebf9b', 'TrainingData', 'Microsoft.Storage/storageAccounts', parameters('blobStorageAccount'))]"
+    },
+    "trainingDataSasProperties": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('trainingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'P2M')]",
+        "signedPermission": "rl",
+        "signedResource": "c"
+      }
+    },
+    "selectionMarkTrainingDataSasProperties": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('selectionMarkTrainingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'P2M')]",
+        "signedPermission": "rl",
+        "signedResource": "c"
+      }
+    },
+    "testingDataContainer": {
+      "type": "string",
+      "defaultValue": "testingdata"
+    },
+    "testingDataSasProperties": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('testingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'P2M')]",
+        "signedPermission": "rl",
+        "signedResource": "c"
+      }
+    },
+    "multiPageTestingDataContainer": {
+      "type": "string",
+      "defaultValue": "multipage-training-data"
+    },
+    "multiPageTestingDataSasProperties": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('multiPageTestingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'P2M')]",
+        "signedPermission": "rl",
+        "signedResource": "c"
+      }
+    },
+    "classifierTrainingDataContainer": {
+      "type": "string",
+      "defaultValue": "training-data-classifier"
+    },
+    "classifierTrainingSasProperties": {
+      "type": "object",
+      "defaultValue": {
+        "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('classifierTrainingDataContainer'))]",
+        "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT3H')]",
+        "signedPermission": "rl",
+        "signedResource": "c"
+      }
+    },
+    "cognitiveServicesEndpointSuffix": {
+      "type": "string",
+      "defaultValue": ".cognitiveservices.azure.com",
+      "metadata": {
+        "description": "Endpoint suffix for the Cognitive Services resource. Defaults to '.cognitiveservices.azure.com'"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.CognitiveServices/accounts",
+      "name": "[parameters('baseName')]",
+      "apiVersion": "2023-10-01-preview",
+      "sku": {
+        "name": "S0"
+      },
+      "kind": "FormRecognizer",
+      "location": "[parameters('location')]",
+      "properties": {
+        "customSubDomainName": "[parameters('baseName')]"
+      }
+    }
+  ],
+  "outputs": {
+    "DOCUMENTINTELLIGENCE_ENDPOINT": {
+      "type": "string",
+      "value": "[concat('https://', parameters('baseName'), parameters('cognitiveServicesEndpointSuffix'), '/')]"
+    },
+    "DOCUMENTINTELLIGENCE_API_KEY": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName')), '2023-10-01-preview').key1]"
+    },
+    "DOCUMENTINTELLIGENCE_TRAINING_DATA_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('trainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('trainingDataSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENTINTELLIGENCE_TESTING_DATA_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('testingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('testingDataSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENTINTELLIGENCE_SELECTION_MARK_DATA_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('selectionMarkTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('selectionMarkTrainingDataSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENTINTELLIGENCE_CLASSIFIER_TRAINING_DATA_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('classifierTrainingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('classifierTrainingSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENTINTELLIGENCE_MULTIPAGE_TRAINING_DATA_CONTAINER_SAS_URL": {
+      "type": "string",
+      "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('multiPageTestingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('multiPageTestingDataSasProperties')).serviceSasToken)]"
+    },
+    "DOCUMENTINTELLIGENCE_TARGET_RESOURCE_REGION": {
+      "type": "string",
+      "value": "[parameters('location')]"
+    },
+    "DOCUMENTINTELLIGENCE_TARGET_RESOURCE_ID": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName'))]"
+    }
+  }
+}

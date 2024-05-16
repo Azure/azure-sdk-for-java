@@ -1,0 +1,61 @@
+{
+    "Version": "2021b",
+    "ReferenceUtcTimestamp": "2022-04-18T08:18:45.5848163Z",
+    "TimeZones": [
+        {
+            "Id": "America/Los_Angeles",
+            "Aliases": [
+                "US/Pacific"
+            ],
+            "Countries": [
+                {
+                    "Name": "United States",
+                    "Code": "US"
+                }
+            ],
+            "Names": {
+                "ISO6391LanguageCode": "en",
+                "Generic": "Pacific Time",
+                "Standard": "Pacific Standard Time",
+                "Daylight": "Pacific Daylight Time"
+            },
+            "ReferenceTime": {
+                "Tag": "PDT",
+                "StandardOffset": "-08:00:00",
+                "DaylightSavings": "01:00:00",
+                "WallTime": "2022-04-18T01:18:45.5848163-07:00",
+                "PosixTzValidYear": 2022,
+                "PosixTz": "PST+8PDT,M3.2.0,M11.1.0",
+                "Sunrise": "2022-04-18T06:14:52.0094126-07:00",
+                "Sunset": "2022-04-18T19:59:54.1613381-07:00"
+            },
+            "RepresentativePoint": {
+                "Latitude": 34.05222222222222,
+                "Longitude": -118.24277777777777
+            },
+            "TimeTransitions": [
+                {
+                    "Tag": "PDT",
+                    "StandardOffset": "-08:00:00",
+                    "DaylightSavings": "01:00:00",
+                    "UtcStart": "2022-03-13T10:00:00Z",
+                    "UtcEnd": "2022-11-06T09:00:00Z"
+                },
+                {
+                    "Tag": "PST",
+                    "StandardOffset": "-08:00:00",
+                    "DaylightSavings": "00:00:00",
+                    "UtcStart": "2022-11-06T09:00:00Z",
+                    "UtcEnd": "2023-03-12T10:00:00Z"
+                },
+                {
+                    "Tag": "PDT",
+                    "StandardOffset": "-08:00:00",
+                    "DaylightSavings": "01:00:00",
+                    "UtcStart": "2023-03-12T10:00:00Z",
+                    "UtcEnd": "2023-11-05T09:00:00Z"
+                }
+            ]
+        }
+    ]
+}

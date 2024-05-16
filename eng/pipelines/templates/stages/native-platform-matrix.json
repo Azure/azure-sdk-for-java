@@ -1,0 +1,29 @@
+{
+  "displayNames": {
+    "true": "TestFromSource"
+  },
+  "matrix": {
+    "Agent": {
+      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+    },
+    "JavaTestVersion": [ "1.11" ],
+    "AZURE_TEST_HTTP_CLIENTS": [ "netty" ],
+    "TestFromSource": false,
+    "RunAggregateReports": false,
+    "TestGoals": "surefire:test",
+    "TestOptions": ""
+  },
+  "include": [
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.11",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "TestFromSource": false,
+      "RunAggregateReports": false,
+      "TestGoals": "verify",
+      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+    }
+  ]
+}

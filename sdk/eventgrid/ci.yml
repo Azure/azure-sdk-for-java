@@ -1,0 +1,74 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/eventgrid/ci.yml
+      - sdk/eventgrid/azure-messaging-eventgrid/
+      - sdk/eventgrid/azure-messaging-eventgrid-namespaces/
+      - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/
+    exclude:
+      - sdk/eventgrid/pom.xml
+      - sdk/eventgrid/azure-messaging-eventgrid/pom.xml
+      - sdk/eventgrid/azure-messaging-eventgrid-namespaces/pom.xml
+      - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/pom.xml
+      - sdk/eventgrid/azure-resourcemanager-eventgrid/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/eventgrid/ci.yml
+      - sdk/eventgrid/azure-messaging-eventgrid/
+      - sdk/eventgrid/azure-messaging-eventgrid-namespaces/
+      - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/
+    exclude:
+      - sdk/eventgrid/pom.xml
+      - sdk/eventgrid/azure-messaging-eventgrid/pom.xml
+      - sdk/eventgrid/azure-messaging-eventgrid-namespaces/pom.xml
+      - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/pom.xml
+      - sdk/eventgrid/azure-resourcemanager-eventgrid/
+
+parameters:
+- name: release_azuremessagingeventgrid
+  displayName: 'azure-messaging-eventgrid'
+  type: boolean
+  default: true
+- name: release_azuremessagingeventgridnamespaces
+  displayName: 'azure-messaging-eventgrid-namespaces'
+  type: boolean
+  default: true
+- name: release_azuremessagingeventgridcloudnativecloudevents
+  displayName: 'azure-messaging-eventgrid-cloudnative-cloudevents'
+  type: boolean
+  default: true
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: eventgrid
+    JavadocSafeJavaBuildVersion: '1.21'
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-messaging-eventgrid
+        groupId: com.azure
+        safeName: azuremessagingeventgrid
+        releaseInBatch: ${{ parameters.release_azuremessagingeventgrid }}
+      - name: azure-messaging-eventgrid-namespaces
+        groupId: com.azure
+        safeName: azuremessagingeventgridnamespaces
+        releaseInBatch: ${{ parameters.release_azuremessagingeventgridnamespaces }}        
+      - name: azure-messaging-eventgrid-cloudnative-cloudevents
+        groupId: com.azure
+        safeName: azuremessagingeventgridcloudnativecloudevents
+        releaseInBatch: ${{ parameters.release_azuremessagingeventgridcloudnativecloudevents }}

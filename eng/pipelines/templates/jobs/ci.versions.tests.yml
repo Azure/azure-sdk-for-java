@@ -1,0 +1,122 @@
+parameters:
+  - name: SDKType
+    type: string
+    default: client
+  - name: Artifacts
+    type: object
+    default: []
+  - name: TestPipeline
+    type: boolean
+    default: false
+  - name: PreTestSteps
+    type: object
+    default: []
+  - name: CloudConfig
+    type: object
+    default: {}
+  - name: PreBuildSteps
+    type: object
+    default: []
+  - name: TestGoals
+    type: string
+    default: $(TestGoals)
+  - name: TestOptions
+    type: string
+    default: $(TestOptions)
+  - name: TestParallelization
+    type: string
+    default: '1C'
+  - name: BuildParallelization
+    type: string
+    default: '2C'
+  - name: VersionOverrides
+    type: object
+    default: []
+
+jobs:
+  - job:
+    condition: ne(variables['Skip.Test'], 'true')
+
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
+      # Convert artifact parameter objects to json and set them as variables to be used in
+      # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
+      # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
+      - name: ArtifactsJson
+        value: '${{ convertToJson(parameters.Artifacts) }}'
+
+    pool:
+      name: $(LINUXPOOL)
+      image: $(LINUXVMIMAGE)
+      os: linux
+
+    templateContext:
+      outputs:
+        - output: pipelineArtifact
+          artifactName: 'repository-$(System.JobName)'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+          displayName: 'Capture repo state for analysis'
+          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+          sbomEnabled: false
+
+        - ${{ each versionOverride in parameters.VersionOverrides }}:
+          # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
+          # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
+          # during testing if tests failed, and linting reports.
+          - output: pipelineArtifact
+            artifactName: 'troubleshooting-vo-${{ versionOverride }}-troubleshooting-$(System.StageName)-$(System.JobName)'
+            targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
+            displayName: 'Capture troubleshooting artifacts for version override ${{ versionOverride }}'
+            condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
+            sbomEnabled: false
+
+    steps:
+      - pwsh: |
+          Write-Host "##vso[task.setvariable variable=AZURE_VERSION_OVERRIDE_TESTS]true"
+          Write-Host "##vso[task.setvariable variable=TestVersionSupport]true"
+        displayName: "Set version override variables"
+
+      - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
+        parameters:
+          CheckoutRecordings: true
+          OS: $(LINUXVMIMAGE)
+
+      - template: /eng/common/testproxy/test-proxy-tool.yml
+        parameters:
+          runProxy: true
+
+      - pwsh: |
+          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
+          foreach($file in $files){
+              Write-Host "##[group]$file"
+              cat $file
+              Write-Host "##[endgroup]"
+          }
+        displayName: Dump Test-Proxy Logs
+        condition: succeededOrFailed()
+
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+        parameters:
+          JdkVersion: $(JavaTestVersion)
+
+      - ${{ parameters.PreBuildSteps }}
+
+      - ${{ parameters.PreTestSteps }}
+
+      - ${{ each versionOverride in parameters.VersionOverrides }}:
+        - template: /eng/pipelines/templates/steps/build-and-test.yml
+          parameters:
+            ParallelTestPlayback: 'true'
+            TestGoals: ${{ parameters.TestGoals }}
+            TestOptions: ${{ parameters.TestOptions }}
+            TestParallelization: ${{ parameters.TestParallelization }}
+            BuildParallelization: ${{ parameters.BuildParallelization }}
+            VersionOverride: ${{ versionOverride }}
+
+        - pwsh: |
+            git checkout -- .
+            Write-Host "##vso[task.setvariable variable=FirstTestOverrideRan]true"
+          displayName: "Reset version override changes"
+
+      - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml

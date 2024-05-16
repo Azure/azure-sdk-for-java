@@ -1,0 +1,18 @@
+steps:
+  - task: PowerShell@2
+    displayName: Setup http fault injector
+    inputs:
+      pwsh: true
+      filePath: $(Build.SourcesDirectory)/eng/scripts/setup-http-fault-injector.ps1
+      arguments: -SourcesDirectory $(Build.SourcesDirectory)
+
+  - pwsh: |
+      Start-Process http-fault-injector -NoNewWindow -PassThru -RedirectStandardOutput "$(Build.SourcesDirectory)/http-fault-injector.log"
+    displayName: 'Start http-fault-injector - windows'
+    condition: and(succeeded(), eq(variables['Agent.OS'],'Windows_NT'))
+
+  # nohup does NOT continue beyond the current session if you use it within powershell
+  - bash: |
+      nohup http-fault-injector > "$(Build.SourcesDirectory)/http-fault-injector.log" &
+    displayName: "Start http-fault-injector - linux/mac"
+    condition: and(succeeded(), ne(variables['Agent.OS'],'Windows_NT'))

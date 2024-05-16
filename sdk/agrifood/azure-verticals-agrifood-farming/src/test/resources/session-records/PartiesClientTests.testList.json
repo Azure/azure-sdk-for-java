@@ -1,0 +1,30 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.farmbeats.azure.net/parties/contoso-party?api-version=2022-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-verticals-agrifood-farming/1.0.0-beta.3 (17.0.6; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "821b9a53-7312-4fb1-8c90-a8c69268b3e0"
+    },
+    "Response" : {
+      "api-supported-versions" : "2022-11-01-preview",
+      "x-frame-options" : "SAMEORIGIN",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "8572920b-a78a-4b17-8b08-a04326b6af4e",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 15 Feb 2023 23:50:52 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "content-security-policy" : "self",
+      "x-content-type-options" : "nosniff",
+      "x-ms-throttle-information" : "100",
+      "etag" : "200018a4-0000-0600-0000-63ed57680000",
+      "Content-Length" : "254",
+      "x-ms-request-id" : "669c430683d37065b505173dd136d76f",
+      "Body" : "{\"id\":\"contoso-party\",\"eTag\":\"200018a4-0000-0600-0000-63ed57680000\",\"createdDateTime\":\"2023-02-15T22:06:32Z\",\"modifiedDateTime\":\"2023-02-15T22:06:32Z\",\"createdBy\":\"9002b50e-dc98-445e-a865-72dce38ecafd\",\"modifiedBy\":\"9002b50e-dc98-445e-a865-72dce38ecafd\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

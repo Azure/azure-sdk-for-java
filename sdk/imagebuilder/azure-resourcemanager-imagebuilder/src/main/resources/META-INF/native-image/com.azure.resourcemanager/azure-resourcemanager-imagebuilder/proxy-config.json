@@ -1,0 +1,1 @@
+[ [ "com.azure.resourcemanager.imagebuilder.implementation.VirtualMachineImageTemplatesClientImpl$VirtualMachineImageTemplatesService" ], [ "com.azure.resourcemanager.imagebuilder.implementation.TriggersClientImpl$TriggersService" ], [ "com.azure.resourcemanager.imagebuilder.implementation.OperationsClientImpl$OperationsService" ] ]

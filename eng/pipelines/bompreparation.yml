@@ -1,0 +1,26 @@
+trigger: none
+
+pr: none
+
+stages:
+  - stage: AnalyzeAndGeneratePatches
+
+    jobs:
+      - job: PatchGeneration
+        timeoutInMinutes: 180
+
+        pool:
+          vmImage: 'windows-2022'
+
+        steps:
+        - pwsh: |
+            $(Build.SourcesDirectory)/eng/scripts/patchreleases.ps1
+            Copy-Item eng/scripts/patchreport.html $(Build.ArtifactStagingDirectory)/staging
+            Copy-Item eng/scripts/bompom.html $(Build.ArtifactStagingDirectory)/staging
+          displayName: 'Analyze and generate patches'
+
+        - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+          parameters:
+            DisplayName: 'Publish Report Artifacts'
+            ArtifactPath: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'patchreport'

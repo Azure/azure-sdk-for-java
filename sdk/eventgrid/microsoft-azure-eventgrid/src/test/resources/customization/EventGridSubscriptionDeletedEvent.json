@@ -1,0 +1,14 @@
+[
+  {
+    "id": "2d1781af-3a4c-4d7c-bd0c-e34b19da4e66",
+    "topic": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "subject": "",
+    "data": {
+      "eventSubscriptionId": "/subscriptions/id/resourceGroups/rg/providers/Microsoft.EventGrid/topics/topic1/providers/Microsoft.EventGrid/eventSubscriptions/eventsubscription1"
+    },
+    "eventType": "Microsoft.EventGrid.SubscriptionDeletedEvent",
+    "eventTime": "2018-01-25T22:12:19.4556811Z",
+    "metadataVersion": "1",
+    "dataVersion": "1"
+  }
+]

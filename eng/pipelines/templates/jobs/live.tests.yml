@@ -1,0 +1,156 @@
+parameters:
+  ServiceDirectory: ''
+  TestResourceDirectories:
+  EnvVars: {}
+  MaxParallel: 0
+  PreSteps: []
+  PostSteps: []
+  TimeoutInMinutes: 60
+  TestMode: 'LIVE'
+  TestResultsFiles: ''
+  CloudConfig: {}
+  ArmTemplateParameters: '@{}'
+  Location: ''
+  Matrix: ''
+  DependsOn: ''
+  UsePlatformContainer: false
+  DisableAzureResourceCreation: false
+  BuildParallelization: '2C'
+  TestGoals: $(TestGoals)
+  TestOptions: $(TestOptions)
+  TestParallelization: '1'
+  TestVersionSupport: $(TestVersionSupport)
+  UseHttpFaultInjector: false
+  OSName:
+
+jobs:
+  - job:
+    dependsOn: ${{ parameters.DependsOn }}
+    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
+    strategy:
+      maxParallel: ${{ parameters.MaxParallel }}
+      matrix: $[ ${{ parameters.Matrix }} ]
+
+    variables:
+      - name: ArmTemplateParameters
+        value: '@{}'
+
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+
+    pool:
+      # 1es pipeline templates converts `image` to demands: ImageOverride under the hood
+      # which is incompatible with image selection in the default non-1es hosted pools
+      ${{ if eq(parameters.OSName, 'macOS') }}:
+        vmImage: $(OSVmImage)
+      ${{ else }}:
+        image: $(OSVmImage)
+      name: $(Pool)
+      os: ${{ parameters.OSName }}
+
+    ${{ if eq(parameters.UsePlatformContainer, 'true') }}:
+      # Add a default so the job doesn't fail when the matrix is empty
+      container: $[ variables['Container'] ]
+
+    templateContext:
+      outputs:
+        # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
+        # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
+        # during testing if tests failed, and linting reports.
+        - output: pipelineArtifact
+          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)
+          targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
+          displayName: 'Capture troubleshooting artifacts'
+          condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
+          sbomEnabled: false
+
+        - output: pipelineArtifact
+          artifactName: 'repository-$(System.JobName)'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+          displayName: 'Capture repo state for analysis'
+          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+          sbomEnabled: false
+
+    steps:
+      - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
+        parameters:
+          OS: ${{ parameters.OSName }}
+
+      # macOS has known issues running HTTP fault injector, change this once
+      # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
+      - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
+        - template: /eng/pipelines/templates/steps/http-fault-injector.yml
+
+      # If the Java test versions isn't one of the LTS versions, or in other words is the latest Java version we're
+      # testing against and that isn't an LTS version at the time (ex. latest LTS is Java 17 but we're testing against
+      # Java 18), then install the latest Java version and use that to run tests.
+      - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
+        parameters:
+          LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
+
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+        parameters:
+          JdkVersion: $(JavaTestVersion)
+
+      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+        - template: /eng/common/TestResources/build-test-resource-config.yml
+          parameters:
+            SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
+            SubscriptionConfigurations: ${{ parameters.CloudConfig.SubscriptionConfigurations }}
+            EnvVars: ${{ parameters.EnvVars }}
+
+        - ${{ if parameters.TestResourceDirectories }}:
+          - ${{ each directory in parameters.TestResourceDirectories }}:
+            - template: /eng/common/TestResources/deploy-test-resources.yml
+              parameters:
+                ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+                  Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
+                ServiceDirectory: '${{ directory }}'
+                SubscriptionConfiguration: $(SubscriptionConfiguration)
+                ArmTemplateParameters: $(ArmTemplateParameters)
+        - ${{ if not(parameters.TestResourceDirectories) }}:
+          - template: /eng/common/TestResources/deploy-test-resources.yml
+            parameters:
+              ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+                Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
+              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+              SubscriptionConfiguration: $(SubscriptionConfiguration)
+              ArmTemplateParameters: $(ArmTemplateParameters)
+
+      - ${{ parameters.PreSteps }}
+
+      - template: /eng/pipelines/templates/steps/build-and-test.yml
+        parameters:
+          ParallelTestPlayback: 'false'
+          BuildParallelization: ${{ parameters.BuildParallelization }}
+          IsLiveTest: true
+          TestGoals: ${{ parameters.TestGoals }}
+          TestOptions: ${{ parameters.TestOptions }}
+          TestParallelization: ${{ parameters.TestParallelization }}
+          TestVersionSupport: ${{ parameters.TestVersionSupport }}
+          TestEnvVars:
+            AZURE_TEST_MODE: ${{ parameters.TestMode }}
+            AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+            ${{ each var in parameters.EnvVars }}:
+              ${{ var.key }}: ${{ var.value }}
+
+      - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
+
+      # macOS has known issues running HTTP fault injector, change this once
+      # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
+      - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
+        - template: /eng/pipelines/templates/steps/publish-http-fault-injector-logs.yml
+
+      - ${{ parameters.PostSteps }}
+
+      - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
+        - ${{ if parameters.TestResourceDirectories }}:
+          - ${{ each directory in parameters.TestResourceDirectories }}:
+            - template: /eng/common/TestResources/remove-test-resources.yml
+              parameters:
+                ServiceDirectory: '${{ directory }}'
+                SubscriptionConfiguration: $(SubscriptionConfiguration)
+        - ${{ if not(parameters.TestResourceDirectories) }}:
+          - template: /eng/common/TestResources/remove-test-resources.yml
+            parameters:
+              ServiceDirectory: '${{ parameters.ServiceDirectory }}'
+              SubscriptionConfiguration: $(SubscriptionConfiguration)

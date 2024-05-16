@@ -1,0 +1,65 @@
+{
+    "formatVersion": "0.0.1",
+    "matrix": [
+        [
+            {
+                "statusCode": 200,
+                "response": {
+                    "routeSummary": {
+                        "lengthInMeters": 495,
+                        "travelTimeInSeconds": 134,
+                        "trafficDelayInSeconds": 0,
+                        "trafficLengthInMeters": 0,
+                        "departureTime": "2022-03-14T19:28:13+01:00",
+                        "arrivalTime": "2022-03-14T19:30:26+01:00"
+                    }
+                }
+            },
+            {
+                "statusCode": 200,
+                "response": {
+                    "routeSummary": {
+                        "lengthInMeters": 664055,
+                        "travelTimeInSeconds": 20539,
+                        "trafficDelayInSeconds": 93,
+                        "trafficLengthInMeters": 6834,
+                        "departureTime": "2022-03-14T19:28:13+01:00",
+                        "arrivalTime": "2022-03-15T01:10:32+01:00"
+                    }
+                }
+            }
+        ],
+        [
+            {
+                "statusCode": 200,
+                "response": {
+                    "routeSummary": {
+                        "lengthInMeters": 338,
+                        "travelTimeInSeconds": 110,
+                        "trafficDelayInSeconds": 0,
+                        "trafficLengthInMeters": 0,
+                        "departureTime": "2022-03-14T19:28:13+01:00",
+                        "arrivalTime": "2022-03-14T19:30:03+01:00"
+                    }
+                }
+            },
+            {
+                "statusCode": 200,
+                "response": {
+                    "routeSummary": {
+                        "lengthInMeters": 663898,
+                        "travelTimeInSeconds": 20498,
+                        "trafficDelayInSeconds": 93,
+                        "trafficLengthInMeters": 6834,
+                        "departureTime": "2022-03-14T19:28:13+01:00",
+                        "arrivalTime": "2022-03-15T01:09:50+01:00"
+                    }
+                }
+            }
+        ]
+    ],
+    "summary": {
+        "successfulRoutes": 4,
+        "totalRoutes": 4
+    }
+}

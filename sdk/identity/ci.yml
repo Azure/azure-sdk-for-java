@@ -1,0 +1,85 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/identity/
+    exclude:
+      - sdk/identity/pom.xml
+      - sdk/identity/azure-identity/pom.xml
+      - sdk/identity/azure-identity-perf/pom.xml
+      - sdk/identity/azure-identity-broker/pom.xml
+      - sdk/identity/azure-identity-extensions/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/identity/
+    exclude:
+      - sdk/identity/pom.xml
+      - sdk/identity/azure-identity/pom.xml
+      - sdk/identity/azure-identity-perf/pom.xml
+      - sdk/identity/azure-identity-broker/pom.xml
+      - sdk/identity/azure-identity-extensions/
+
+parameters:
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
+- name: release_azureidentity
+  displayName: 'azure-identity'
+  type: boolean
+  default: true
+- name: release_azureidentitybroker
+  displayName: 'azure-identity-broker'
+  type: boolean
+  default: true
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: identity
+    TimeoutInMinutes: 90
+    EnableBatchRelease: true
+    ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
+    Artifacts:
+      - name: azure-identity
+        groupId: com.azure
+        safeName: azureidentity
+        releaseInBatch: ${{ parameters.release_azureidentity }}
+      - name: azure-identity-broker
+        groupId: com.azure
+        safeName: azureidentitybroker
+        releaseInBatch: ${{ parameters.release_azureidentitybroker }}
+    AdditionalModules:
+      - name: azure-identity-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure
+    LiveTestStages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          CalledFromClient: true
+          ServiceDirectory: identity
+          SupportedClouds: 'Public,UsGov,China'
+          CloudConfig:
+            Public:
+              SubscriptionConfigurations:
+                - $(sub-config-azure-cloud-test-resources)
+          Artifacts:
+            - name: azure-identity
+              groupId: com.azure
+              safeName: azureidentity

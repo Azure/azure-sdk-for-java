@@ -1,0 +1,13 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\Qazure-monitor-opentelemetry-exporter.properties\\E"
+      },
+      {
+        "pattern":"\\Qio/opentelemetry/api/version.properties\\E"
+      }
+    ]
+  },
+  "bundles": []
+}

@@ -1,0 +1,7 @@
+{
+  "$metadata": {
+    "$model": "HVAC_MODEL_ID"
+  },
+  "TargetTemperature": 80,
+  "TargetHumidity": 25
+}

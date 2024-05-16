@@ -1,0 +1,59 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.farmbeats.azure.net/parties/contoso-party?api-version=2022-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-verticals-agrifood-farming/1.0.0-beta.3 (17.0.6; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "2438f474-91c7-4d7e-bb8e-bcab7467b8dc",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "api-supported-versions" : "2022-11-01-preview",
+      "x-frame-options" : "SAMEORIGIN",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "5dc83098-a527-4286-855d-5dd99b77aa3d",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 22 Feb 2023 13:02:43 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "content-security-policy" : "self",
+      "x-content-type-options" : "nosniff",
+      "Vary" : "Accept-Encoding",
+      "x-ms-throttle-information" : "1000",
+      "etag" : "6200f43f-0000-0600-0000-63f612720000",
+      "Content-Length" : "270",
+      "x-ms-request-id" : "2c8149e5252167ee95095a8746f38494",
+      "Body" : "{\"id\":\"contoso-party\",\"eTag\":\"6200f43f-0000-0600-0000-63f612720000\",\"createdDateTime\":\"2023-02-22T10:08:57Z\",\"modifiedDateTime\":\"2023-02-22T13:02:42Z\",\"name\":\"party1\",\"createdBy\":\"9002b50e-dc98-445e-a865-72dce38ecafd\",\"modifiedBy\":\"9002b50e-dc98-445e-a865-72dce38ecafd\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.farmbeats.azure.net/parties/contoso-party?api-version=2022-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-verticals-agrifood-farming/1.0.0-beta.3 (17.0.6; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "c6b1cad8-3a91-41bd-b8dd-cbf3acfac1e0"
+    },
+    "Response" : {
+      "api-supported-versions" : "2022-11-01-preview",
+      "x-frame-options" : "SAMEORIGIN",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "61c9314f-79e9-4f32-94b1-d0f06e2b8fcc",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 22 Feb 2023 13:02:43 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "content-security-policy" : "self",
+      "x-content-type-options" : "nosniff",
+      "Vary" : "Accept-Encoding",
+      "x-ms-throttle-information" : "100",
+      "etag" : "6200f43f-0000-0600-0000-63f612720000",
+      "Content-Length" : "270",
+      "x-ms-request-id" : "b509fb5d848560fe899bbb0d04ba6b14",
+      "Body" : "{\"id\":\"contoso-party\",\"eTag\":\"6200f43f-0000-0600-0000-63f612720000\",\"createdDateTime\":\"2023-02-22T10:08:57Z\",\"modifiedDateTime\":\"2023-02-22T13:02:42Z\",\"name\":\"party1\",\"createdBy\":\"9002b50e-dc98-445e-a865-72dce38ecafd\",\"modifiedBy\":\"9002b50e-dc98-445e-a865-72dce38ecafd\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
