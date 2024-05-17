@@ -28,6 +28,7 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     @Override
     public void beforeTest() {
         if (getTestMode() != TestMode.LIVE) {
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3424"));
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Arrays.asList("Ocp-Apim-Subscription-Region", "Ocp-Apim-ResourceId"))));
         }
