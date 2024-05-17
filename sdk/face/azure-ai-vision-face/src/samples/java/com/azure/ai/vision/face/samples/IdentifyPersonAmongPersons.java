@@ -96,7 +96,7 @@ public class IdentifyPersonAmongPersons {
 
     private static Pair<PersonData, SyncPoller<FaceOperationResult, PersonDirectoryPerson>> createPerson(
             FaceAdministrationClient administrationClient, PersonData personData) {
-        return Utils.safelyRunWithExceptionCheck(EXCEPTION_CONTAINER, "createPerson", ()->
+        return Utils.safelyRunWithExceptionCheck(EXCEPTION_CONTAINER, "createPerson", () ->
                 Pair.of(personData,
                         administrationClient.beginCreatePerson(personData.getName(), personData.getUserData())));
     }
