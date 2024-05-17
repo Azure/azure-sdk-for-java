@@ -46,6 +46,7 @@ import java.util.stream.Stream;
 
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.DEFAULT_PATH;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.PREBUILT_CLIENT_PATH;
+import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -544,7 +545,7 @@ public class NettyAsyncHttpClientBuilderTests {
     @ParameterizedTest
     @MethodSource("getTimeoutMillisSupplier")
     public void getTimeoutMillis(Duration timeout, long expected) {
-        assertEquals(expected, NettyAsyncHttpClientBuilder.getTimeoutMillis(timeout, 60000));
+        assertEquals(expected, getTimeout(timeout, Duration.ofMillis(60000)).toMillis());
     }
 
     private static Stream<Arguments> getTimeoutMillisSupplier() {

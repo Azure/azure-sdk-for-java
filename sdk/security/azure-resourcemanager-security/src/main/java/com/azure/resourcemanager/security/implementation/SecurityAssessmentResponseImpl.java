@@ -91,14 +91,18 @@ public final class SecurityAssessmentResponseImpl
     }
 
     public SecurityAssessmentResponse create() {
-        this.innerObject = serviceManager.serviceClient().getAssessments()
-            .createOrUpdateWithResponse(resourceId, assessmentName, createAssessment, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssessments()
+            .createOrUpdateWithResponse(resourceId, assessmentName, createAssessment, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SecurityAssessmentResponse create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAssessments()
-            .createOrUpdateWithResponse(resourceId, assessmentName, createAssessment, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssessments()
+            .createOrUpdateWithResponse(resourceId, assessmentName, createAssessment, context)
+            .getValue();
         return this;
     }
 
@@ -115,14 +119,18 @@ public final class SecurityAssessmentResponseImpl
     }
 
     public SecurityAssessmentResponse apply() {
-        this.innerObject = serviceManager.serviceClient().getAssessments()
-            .createOrUpdateWithResponse(resourceId, assessmentName, updateAssessment, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssessments()
+            .createOrUpdateWithResponse(resourceId, assessmentName, updateAssessment, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SecurityAssessmentResponse apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAssessments()
-            .createOrUpdateWithResponse(resourceId, assessmentName, updateAssessment, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssessments()
+            .createOrUpdateWithResponse(resourceId, assessmentName, updateAssessment, context)
+            .getValue();
         return this;
     }
 
@@ -138,15 +146,19 @@ public final class SecurityAssessmentResponseImpl
 
     public SecurityAssessmentResponse refresh() {
         ExpandEnum localExpand = null;
-        this.innerObject = serviceManager.serviceClient().getAssessments()
-            .getWithResponse(resourceId, assessmentName, localExpand, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssessments()
+            .getWithResponse(resourceId, assessmentName, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SecurityAssessmentResponse refresh(Context context) {
         ExpandEnum localExpand = null;
-        this.innerObject = serviceManager.serviceClient().getAssessments()
-            .getWithResponse(resourceId, assessmentName, localExpand, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssessments()
+            .getWithResponse(resourceId, assessmentName, localExpand, context)
+            .getValue();
         return this;
     }
 

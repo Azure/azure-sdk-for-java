@@ -18,9 +18,7 @@ import java.util.Map;
  */
 public final class AutomationsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/
-     * PatchAutomation_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-12-01-preview/examples/Automations/PatchAutomation_example.json
      */
     /**
      * Sample code: Update a security automation.
@@ -28,10 +26,14 @@ public final class AutomationsUpdateSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void updateASecurityAutomation(com.azure.resourcemanager.security.SecurityManager manager) {
-        Automation resource = manager.automations().getByResourceGroupWithResponse("exampleResourceGroup",
-            "exampleAutomation", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("Example", "exampleTag")).withDescription(
-            "An example of a security automation that triggers one LogicApp resource (myTest1) on any security assessment")
+        Automation resource = manager.automations()
+            .getByResourceGroupWithResponse("exampleResourceGroup", "exampleAutomation",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("Example", "exampleTag"))
+            .withDescription(
+                "An example of a security automation that triggers one LogicApp resource (myTest1) on any security assessment")
             .withScopes(Arrays.asList(new AutomationScope().withDescription(
                 "A description that helps to identify this scope - for example: security assessments that relate to the resource group myResourceGroup within the subscription a5caac9c-5c04-49af-b3d0-e204f40345d5")
                 .withScopePath("/subscriptions/a5caac9c-5c04-49af-b3d0-e204f40345d5/resourceGroups/myResourceGroup")))

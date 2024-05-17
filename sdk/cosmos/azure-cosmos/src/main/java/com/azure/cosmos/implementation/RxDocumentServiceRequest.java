@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.PriorityLevel;
 import io.netty.buffer.ByteBuf;
@@ -61,7 +62,8 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     // has the non serialized value of the partition-key
     private PartitionKeyInternal partitionKeyInternal;
-
+    private PartitionKeyDefinition partitionKeyDefinition;
+    private String effectivePartitionKey;
     private FeedRangeInternal feedRange;
     private Range<String> effectiveRange;
     private int numberOfItemsInBatchRequest;
@@ -923,6 +925,14 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.partitionKeyInternal;
     }
 
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.partitionKeyDefinition;
+    }
+
     public boolean isChangeFeedRequest() {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
     }
@@ -1179,5 +1189,13 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void setResponseTimeout(Duration responseTimeout) {
         this.responseTimeout = responseTimeout;
+    }
+
+    public String getEffectivePartitionKey() {
+        return effectivePartitionKey;
+    }
+
+    public void setEffectivePartitionKey(String effectivePartitionKey) {
+        this.effectivePartitionKey = effectivePartitionKey;
     }
 }

@@ -14,23 +14,24 @@ public final class SecuritySolutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SecuritySolutionInner model = BinaryData.fromString(
-            "{\"properties\":{\"securityFamily\":\"Ngfw\",\"provisioningState\":\"Failed\",\"template\":\"ihufoihp\",\"protectionStatus\":\"iybxvgnzuzpb\"},\"location\":\"zc\",\"id\":\"cpiuzvk\",\"name\":\"nhdimjuktirz\",\"type\":\"a\"}")
+            "{\"properties\":{\"securityFamily\":\"Ngfw\",\"provisioningState\":\"Failed\",\"template\":\"nsxzajlns\",\"protectionStatus\":\"hwjuyxxbxqvmvua\"},\"location\":\"uadx\",\"id\":\"xeqbwp\",\"name\":\"tghyksarcdr\",\"type\":\"xsl\"}")
             .toObject(SecuritySolutionInner.class);
         Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
-        Assertions.assertEquals("ihufoihp", model.template());
-        Assertions.assertEquals("iybxvgnzuzpb", model.protectionStatus());
+        Assertions.assertEquals("nsxzajlns", model.template());
+        Assertions.assertEquals("hwjuyxxbxqvmvua", model.protectionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecuritySolutionInner model = new SecuritySolutionInner().withSecurityFamily(SecurityFamily.NGFW)
-            .withProvisioningState(ProvisioningState.FAILED).withTemplate("ihufoihp")
-            .withProtectionStatus("iybxvgnzuzpb");
+            .withProvisioningState(ProvisioningState.FAILED)
+            .withTemplate("nsxzajlns")
+            .withProtectionStatus("hwjuyxxbxqvmvua");
         model = BinaryData.fromObject(model).toObject(SecuritySolutionInner.class);
         Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
-        Assertions.assertEquals("ihufoihp", model.template());
-        Assertions.assertEquals("iybxvgnzuzpb", model.protectionStatus());
+        Assertions.assertEquals("nsxzajlns", model.template());
+        Assertions.assertEquals("hwjuyxxbxqvmvua", model.protectionStatus());
     }
 }
