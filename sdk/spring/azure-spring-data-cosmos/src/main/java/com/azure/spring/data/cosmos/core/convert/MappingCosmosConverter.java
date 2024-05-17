@@ -214,7 +214,6 @@ public class MappingCosmosConverter
                 throw new MappingException("No such field found: " + fieldName, e);
             } catch (IllegalAccessException e) {
                 throw new MappingException("Illegal access to field: " + fieldName, e);
-                //LOGGER.warn("No value found for transient field: " + fieldName + " with error: " + e.getMessage());
             }
         });
         return transientValuesMap;
