@@ -5,7 +5,6 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
-import com.azure.ai.openai.assistants.implementation.OpenAIUtils;
 import com.azure.ai.openai.assistants.implementation.models.CreateAssistantFileRequest;
 import com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
@@ -56,6 +55,7 @@ import com.azure.core.util.BinaryData;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import com.azure.ai.openai.assistants.implementation.OpenAIUtils;
 import com.azure.ai.openai.assistants.implementation.streaming.OpenAIServerSentEvents;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import java.nio.ByteBuffer;
@@ -3109,7 +3109,7 @@ public final class AssistantsClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * byte[]
      * }</pre>
