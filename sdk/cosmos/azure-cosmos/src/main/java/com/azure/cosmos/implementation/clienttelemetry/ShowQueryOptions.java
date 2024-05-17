@@ -12,12 +12,12 @@ public enum ShowQueryOptions {
 	NONE("None"),
 	
 	/**
-	 * Show query parameters only.
+	 * Print parameterized query only.
 	 */
 	PARAMETERIZED_ONLY("ParameterizedOnly"),
 	
 	/**
-	 *  Show query parameters and non parameters
+	 *  Print both parameterized and non parameterized query.
 	 */
 	PARAMETERIZED_AND_NON_PARAMETERIZED("ParameterizedAndNonParameterized");
     
