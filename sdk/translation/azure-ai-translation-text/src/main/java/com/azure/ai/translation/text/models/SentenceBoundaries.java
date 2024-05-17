@@ -13,7 +13,7 @@ import java.util.List;
  * An object returning sentence boundaries in the input and output texts.
  */
 @Immutable
-public final class SentenceLength {
+public final class SentenceBoundaries {
 
     /*
      * An integer array representing the lengths of the sentences in the input text. 
@@ -21,7 +21,7 @@ public final class SentenceLength {
      */
     @Generated
     @JsonProperty(value = "srcSentLen")
-    private final List<Integer> srcSentLen;
+    private final List<Integer> sourceSentencesLengths;
 
     /*
      * An integer array representing the lengths of the sentences in the translated text. 
@@ -29,41 +29,43 @@ public final class SentenceLength {
      */
     @Generated
     @JsonProperty(value = "transSentLen")
-    private final List<Integer> transSentLen;
+    private final List<Integer> translatedSentencesLengths;
 
     /**
-     * Creates an instance of SentenceLength class.
+     * Creates an instance of SentenceBoundaries class.
      *
-     * @param srcSentLen the srcSentLen value to set.
-     * @param transSentLen the transSentLen value to set.
+     * @param sourceSentencesLengths the sourceSentencesLengths value to set.
+     * @param translatedSentencesLengths the translatedSentencesLengths value to set.
      */
     @Generated
     @JsonCreator
-    private SentenceLength(@JsonProperty(value = "srcSentLen") List<Integer> srcSentLen,
-        @JsonProperty(value = "transSentLen") List<Integer> transSentLen) {
-        this.srcSentLen = srcSentLen;
-        this.transSentLen = transSentLen;
+    private SentenceBoundaries(@JsonProperty(value = "srcSentLen") List<Integer> sourceSentencesLengths,
+        @JsonProperty(value = "transSentLen") List<Integer> translatedSentencesLengths) {
+        this.sourceSentencesLengths = sourceSentencesLengths;
+        this.translatedSentencesLengths = translatedSentencesLengths;
     }
 
     /**
-     * Get the srcSentLen property: An integer array representing the lengths of the sentences in the input text.
+     * Get the sourceSentencesLengths property: An integer array representing the lengths of the sentences in the input
+     * text.
      * The length of the array is the number of sentences, and the values are the length of each sentence.
      *
-     * @return the srcSentLen value.
+     * @return the sourceSentencesLengths value.
      */
     @Generated
-    public List<Integer> getSrcSentLen() {
-        return this.srcSentLen;
+    public List<Integer> getSourceSentencesLengths() {
+        return this.sourceSentencesLengths;
     }
 
     /**
-     * Get the transSentLen property: An integer array representing the lengths of the sentences in the translated text.
+     * Get the translatedSentencesLengths property: An integer array representing the lengths of the sentences in the
+     * translated text.
      * The length of the array is the number of sentences, and the values are the length of each sentence.
      *
-     * @return the transSentLen value.
+     * @return the translatedSentencesLengths value.
      */
     @Generated
-    public List<Integer> getTransSentLen() {
-        return this.transSentLen;
+    public List<Integer> getTranslatedSentencesLengths() {
+        return this.translatedSentencesLengths;
     }
 }

@@ -8,41 +8,41 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Translator profanity markers.
+ * Language Directionality.
  */
-public enum ProfanityMarker {
+public enum LanguageDirectionality {
     /**
-     * Profanity is marked with asterisk.
+     * Language is written left to right.
      */
-    ASTERISK("Asterisk"),
+    LEFT_TO_RIGHT("ltr"),
 
     /**
-     * Profanity is marked with the tags.
+     * Language is written right to left.
      */
-    TAG("Tag");
+    RIGHT_TO_LEFT("rtl");
 
     /**
-     * The actual serialized value for a ProfanityMarker instance.
+     * The actual serialized value for a LanguageDirectionality instance.
      */
     private final String value;
 
-    ProfanityMarker(String value) {
+    LanguageDirectionality(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ProfanityMarker instance.
+     * Parses a serialized value to a LanguageDirectionality instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ProfanityMarker object, or null if unable to parse.
+     * @return the parsed LanguageDirectionality object, or null if unable to parse.
      */
     @JsonCreator
-    public static ProfanityMarker fromString(String value) {
+    public static LanguageDirectionality fromString(String value) {
         if (value == null) {
             return null;
         }
-        ProfanityMarker[] items = ProfanityMarker.values();
-        for (ProfanityMarker item : items) {
+        LanguageDirectionality[] items = LanguageDirectionality.values();
+        for (LanguageDirectionality item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

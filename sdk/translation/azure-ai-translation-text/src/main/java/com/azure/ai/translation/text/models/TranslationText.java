@@ -12,14 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Translation result.
  */
 @Immutable
-public final class Translation {
-
-    /*
-     * A string representing the language code of the target language.
-     */
-    @Generated
-    @JsonProperty(value = "to")
-    private final String to;
+public final class TranslationText {
 
     /*
      * A string giving the translated text.
@@ -47,29 +40,30 @@ public final class Translation {
      */
     @Generated
     @JsonProperty(value = "sentLen")
-    private SentenceLength sentLen;
+    private SentenceBoundaries sentenceBoundaries;
 
     /**
-     * Creates an instance of Translation class.
+     * Creates an instance of TranslationText class.
      *
-     * @param to the to value to set.
+     * @param targetLanguage the targetLanguage value to set.
      * @param text the text value to set.
      */
     @Generated
     @JsonCreator
-    private Translation(@JsonProperty(value = "to") String to, @JsonProperty(value = "text") String text) {
-        this.to = to;
+    private TranslationText(@JsonProperty(value = "to") String targetLanguage,
+        @JsonProperty(value = "text") String text) {
+        this.targetLanguage = targetLanguage;
         this.text = text;
     }
 
     /**
-     * Get the to property: A string representing the language code of the target language.
+     * Get the targetLanguage property: A string representing the language code of the target language.
      *
-     * @return the to value.
+     * @return the targetLanguage value.
      */
     @Generated
-    public String getTo() {
-        return this.to;
+    public String getTargetLanguage() {
+        return this.targetLanguage;
     }
 
     /**
@@ -104,12 +98,19 @@ public final class Translation {
     }
 
     /**
-     * Get the sentLen property: Sentence boundaries in the input and output texts.
+     * Get the sentenceBoundaries property: Sentence boundaries in the input and output texts.
      *
-     * @return the sentLen value.
+     * @return the sentenceBoundaries value.
      */
     @Generated
-    public SentenceLength getSentLen() {
-        return this.sentLen;
+    public SentenceBoundaries getSentenceBoundaries() {
+        return this.sentenceBoundaries;
     }
+
+    /*
+     * A string representing the language code of the target language.
+     */
+    @Generated
+    @JsonProperty(value = "to")
+    private final String targetLanguage;
 }

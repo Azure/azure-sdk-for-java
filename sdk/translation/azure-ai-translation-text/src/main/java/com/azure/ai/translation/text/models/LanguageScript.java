@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Common properties of language script.
  */
 @Immutable
-public class CommonScriptModel {
+public class LanguageScript {
 
     /*
      * Code identifying the script.
@@ -40,24 +40,25 @@ public class CommonScriptModel {
      */
     @Generated
     @JsonProperty(value = "dir")
-    private final String dir;
+    private final LanguageDirectionality directionality;
 
     /**
-     * Creates an instance of CommonScriptModel class.
+     * Creates an instance of LanguageScript class.
      *
      * @param code the code value to set.
      * @param name the name value to set.
      * @param nativeName the nativeName value to set.
-     * @param dir the dir value to set.
+     * @param directionality the directionality value to set.
      */
     @Generated
     @JsonCreator
-    protected CommonScriptModel(@JsonProperty(value = "code") String code, @JsonProperty(value = "name") String name,
-        @JsonProperty(value = "nativeName") String nativeName, @JsonProperty(value = "dir") String dir) {
+    protected LanguageScript(@JsonProperty(value = "code") String code, @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "nativeName") String nativeName,
+        @JsonProperty(value = "dir") LanguageDirectionality directionality) {
         this.code = code;
         this.name = name;
         this.nativeName = nativeName;
-        this.dir = dir;
+        this.directionality = directionality;
     }
 
     /**
@@ -91,13 +92,13 @@ public class CommonScriptModel {
     }
 
     /**
-     * Get the dir property: Directionality, which is rtl for right-to-left languages or ltr for left-to-right
-     * languages.
+     * Get the directionality property: Directionality, which is rtl for right-to-left languages or ltr for
+     * left-to-right languages.
      *
-     * @return the dir value.
+     * @return the directionality value.
      */
     @Generated
-    public String getDir() {
-        return this.dir;
+    public LanguageDirectionality getDirectionality() {
+        return this.directionality;
     }
 }
