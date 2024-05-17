@@ -32,6 +32,7 @@ import com.azure.spring.data.cosmos.domain.AutoScaleSample;
 import com.azure.spring.data.cosmos.domain.BasicItem;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
+import com.azure.spring.data.cosmos.domain.PersonWithTransientEtag;
 import com.azure.spring.data.cosmos.domain.PersonWithTransientId;
 import com.azure.spring.data.cosmos.domain.PersonWithTransientPartitionKey;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -876,6 +877,19 @@ public class ReactiveCosmosTemplateIT {
         } catch (IllegalArgumentException ex) {
             //assert that the exception is thrown
             assertThat(ex.getMessage()).contains("id");
+        }
+    }
+
+    @Test
+    public void createWithTransientEtagFails() throws ClassNotFoundException {
+        try{
+            final CosmosEntityInformation<PersonWithTransientEtag, String> transientEtag =
+                new CosmosEntityInformation<>(PersonWithTransientEtag.class);
+            cosmosTemplate.createContainerIfNotExists(transientEtag);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            //assert that the exception is thrown
+            assertThat(ex.getMessage()).contains("_etag");
         }
     }
 

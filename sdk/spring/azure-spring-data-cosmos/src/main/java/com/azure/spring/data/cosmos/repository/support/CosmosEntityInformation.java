@@ -517,7 +517,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             Iterator<Field> iterator = fields.iterator();
             while (iterator.hasNext()) {
                 Field field = iterator.next();
-                if (field.equals(partitionKeyField) || field.getName().equals("id")) {
+                if (field.equals(partitionKeyField) || field.getName().equalsIgnoreCase("id") || field.getName().equalsIgnoreCase("_etag")) {
                     //throw exception if partition key or id field is declared transient
                     throw new IllegalArgumentException("Field cannot be declared transient: " + field.getName());
                 }
