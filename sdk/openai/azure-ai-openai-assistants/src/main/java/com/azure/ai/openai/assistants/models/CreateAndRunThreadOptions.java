@@ -273,8 +273,7 @@ public final class CreateAndRunThreadOptions implements JsonSerializable<CreateA
      *
      * @return the stream value.
      */
-    @Generated
-    public Boolean isStream() {
+    Boolean isStream() {
         return this.stream;
     }
 
@@ -285,8 +284,7 @@ public final class CreateAndRunThreadOptions implements JsonSerializable<CreateA
      * @param stream the stream value to set.
      * @return the CreateAndRunThreadOptions object itself.
      */
-    @Generated
-    public CreateAndRunThreadOptions setStream(Boolean stream) {
+    CreateAndRunThreadOptions setStream(Boolean stream) {
         this.stream = stream;
         return this;
     }

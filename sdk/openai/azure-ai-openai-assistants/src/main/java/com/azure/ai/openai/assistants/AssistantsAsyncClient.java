@@ -2349,9 +2349,11 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<StreamUpdate> createThreadAndRunStream(CreateAndRunThreadOptions createAndRunThreadOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        createAndRunThreadOptions.setStream(true);
+        BinaryData inputJson = BinaryData.fromObject(createAndRunThreadOptions);
+        BinaryData adjustedJson = AssistantsClientImpl.injectStreamJsonField(inputJson, true);
+
         Flux<ByteBuffer> responseStream
-            = createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions), requestOptions)
+            = createThreadAndRunWithResponse(adjustedJson, requestOptions)
                 .flatMapMany(response -> response.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
         return eventStream.getEvents();
