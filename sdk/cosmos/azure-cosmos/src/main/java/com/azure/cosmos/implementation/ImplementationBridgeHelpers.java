@@ -33,7 +33,6 @@ import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
-import com.azure.cosmos.implementation.clienttelemetry.ShowQueryOptions;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
@@ -1493,7 +1492,7 @@ public class ImplementationBridgeHelpers {
             void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing);
             void setTracer(CosmosClientTelemetryConfig config, Tracer tracer);
             double getSamplingRate(CosmosClientTelemetryConfig config);
-            ShowQueryOptions showQueryOptions(CosmosClientTelemetryConfig config);
+            boolean showQueryStatement(CosmosClientTelemetryConfig config);
             double[] getDefaultPercentiles(CosmosClientTelemetryConfig config);
             boolean shouldPublishHistograms(CosmosClientTelemetryConfig config);
             boolean shouldApplyDiagnosticThresholdsForTransportLevelMeters(CosmosClientTelemetryConfig config);

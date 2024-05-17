@@ -28,7 +28,6 @@ import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
-import com.azure.cosmos.implementation.clienttelemetry.ShowQueryOptions;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -108,9 +107,6 @@ public class CosmosAsyncContainer {
 
     private static final ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper.CosmosReadManyRequestOptionsAccessor readManyOptionsAccessor =
         ImplementationBridgeHelpers.CosmosReadManyRequestOptionsHelper.getCosmosReadManyRequestOptionsAccessor();
-
-    private static final ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor clientTelemetryConfigAccessor =
-        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
 
     private final CosmosAsyncDatabase database;
     private final String id;
@@ -963,17 +959,7 @@ public class CosmosAsyncContainer {
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
             
-            ShowQueryOptions showQueryOptions = clientTelemetryConfigAccessor.showQueryOptions(client.getClientTelemetryConfig());
-
-            if (ShowQueryOptions.PARAMETERIZED_ONLY.equals(showQueryOptions)
-                    && sqlQuerySpec.getParameters() != null
-                    && sqlQuerySpec.getParameters().size() > 0) {
-
-                    pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
-            } else if (ShowQueryOptions.PARAMETERIZED_AND_NON_PARAMETERIZED.equals(showQueryOptions)) {
-
-                    pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
-            }
+            pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
 
             QueryFeedOperationState state = new QueryFeedOperationState(
                 client,
