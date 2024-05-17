@@ -114,7 +114,7 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         } else if (random.nextDouble() > this.result.getInjectionRate()) {
             requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
                 requestArgs.getTransportRequestId(),
-                String.format("%s Apply percentage: Rule will not be applied. Configured applyPercentage %f%%", this.id, this.result.getInjectionRate() * 100)
+                String.format("%s Injection Rate: Rule will not be applied. Configured injectionRate %.2f%%", this.id, this.result.getInjectionRate() * 100)
             );
             return false;
         } else {
