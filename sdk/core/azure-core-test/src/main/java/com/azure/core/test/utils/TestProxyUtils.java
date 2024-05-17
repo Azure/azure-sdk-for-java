@@ -64,9 +64,6 @@ public class TestProxyUtils {
 
     private static final List<TestProxySanitizer> HEADER_KEY_REGEX_TO_REDACT = Arrays.asList(
 
-        // upper and lower case versions intentional
-        // new TestProxySanitizer("Operation-location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER),
-        // new TestProxySanitizer("Operation-Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER),
         new TestProxySanitizer("ServiceBusDlqSupplementaryAuthorization",
             "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)", REDACTED_VALUE, TestProxySanitizerType.HEADER)
                 .setGroupForReplace("secret"),
