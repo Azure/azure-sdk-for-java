@@ -15,13 +15,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class TranslationText {
 
     /*
-     * A string representing the language code of the target language.
-     */
-    @Generated
-    @JsonProperty(value = "to")
-    private final String to;
-
-    /*
      * A string giving the translated text.
      */
     @Generated
@@ -52,23 +45,25 @@ public final class TranslationText {
     /**
      * Creates an instance of TranslationText class.
      *
-     * @param to the to value to set.
+     * @param targetLanguage the targetLanguage value to set.
      * @param text the text value to set.
      */
     @Generated
     @JsonCreator
-    private TranslationText(@JsonProperty(value = "to") String to, @JsonProperty(value = "text") String text) {
-        this.to = to;
+    private TranslationText(@JsonProperty(value = "to") String targetLanguage,
+        @JsonProperty(value = "text") String text) {
+        this.targetLanguage = targetLanguage;
         this.text = text;
     }
 
     /**
-     * Get the to property: A string representing the language code of the target language.
+     * Get the targetLanguage property: A string representing the language code of the target language.
      *
-     * @return the to value.
+     * @return the targetLanguage value.
      */
+    @Generated
     public String getTargetLanguage() {
-        return this.to;
+        return this.targetLanguage;
     }
 
     /**
@@ -111,4 +106,11 @@ public final class TranslationText {
     public SentenceBoundaries getSentenceBoundaries() {
         return this.sentenceBoundaries;
     }
+
+    /*
+     * A string representing the language code of the target language.
+     */
+    @Generated
+    @JsonProperty(value = "to")
+    private final String targetLanguage;
 }

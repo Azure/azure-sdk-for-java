@@ -15,13 +15,6 @@ import java.util.List;
 @Immutable
 public final class TransliterableScript extends LanguageScript {
 
-    /*
-     * List of scripts available to convert text to.
-     */
-    @Generated
-    @JsonProperty(value = "toScripts")
-    private final List<LanguageScript> toScripts;
-
     /**
      * Creates an instance of TransliterableScript class.
      *
@@ -29,24 +22,32 @@ public final class TransliterableScript extends LanguageScript {
      * @param name the name value to set.
      * @param nativeName the nativeName value to set.
      * @param directionality the directionality value to set.
-     * @param toScripts the toScripts value to set.
+     * @param targetLanguageScripts the targetLanguageScripts value to set.
      */
     @Generated
     @JsonCreator
     private TransliterableScript(@JsonProperty(value = "code") String code, @JsonProperty(value = "name") String name,
         @JsonProperty(value = "nativeName") String nativeName,
         @JsonProperty(value = "dir") LanguageDirectionality directionality,
-        @JsonProperty(value = "toScripts") List<LanguageScript> toScripts) {
+        @JsonProperty(value = "toScripts") List<LanguageScript> targetLanguageScripts) {
         super(code, name, nativeName, directionality);
-        this.toScripts = toScripts;
+        this.targetLanguageScripts = targetLanguageScripts;
     }
 
     /**
-     * Get the toScripts property: List of scripts available to convert text to.
+     * Get the targetLanguageScripts property: List of scripts available to convert text to.
      *
-     * @return the toScripts value.
+     * @return the targetLanguageScripts value.
      */
+    @Generated
     public List<LanguageScript> getTargetLanguageScripts() {
-        return this.toScripts;
+        return this.targetLanguageScripts;
     }
+
+    /*
+     * List of scripts available to convert text to.
+     */
+    @Generated
+    @JsonProperty(value = "toScripts")
+    private final List<LanguageScript> targetLanguageScripts;
 }
