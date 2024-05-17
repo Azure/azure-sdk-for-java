@@ -53,8 +53,8 @@ public final class SkipProperties {
      */
     public void validate() {
         if (targets() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property targets in model SkipProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property targets in model SkipProperties"));
         } else {
             targets().forEach(e -> e.validate());
         }
