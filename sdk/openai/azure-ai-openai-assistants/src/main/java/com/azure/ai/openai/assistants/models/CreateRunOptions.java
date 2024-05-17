@@ -277,8 +277,7 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
      *
      * @return the stream value.
      */
-    @Generated
-    public Boolean isStream() {
+    Boolean isStream() {
         return this.stream;
     }
 
@@ -289,8 +288,7 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
      * @param stream the stream value to set.
      * @return the CreateRunOptions object itself.
      */
-    @Generated
-    public CreateRunOptions setStream(Boolean stream) {
+    CreateRunOptions setStream(Boolean stream) {
         this.stream = stream;
         return this;
     }

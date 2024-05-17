@@ -3000,8 +3000,11 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<StreamUpdate> createRunStream(String threadId, String assistantId) {
         RequestOptions requestOptions = new RequestOptions();
+        BinaryData inputJson = BinaryData.fromObject(new CreateRunOptions(assistantId));
+        BinaryData adjustedJson = AssistantsClientImpl.injectStreamJsonField(inputJson, true);
+
         Flux<ByteBuffer> responseStream
-            = createRunWithResponse(threadId, BinaryData.fromObject(new CreateRunOptions(assistantId).setStream(true)),
+            = createRunWithResponse(threadId, BinaryData.fromObject(adjustedJson),
                 requestOptions).flatMapMany(it -> it.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(responseStream);
         return openAIServerSentEvents.getEvents();
@@ -3024,8 +3027,10 @@ public final class AssistantsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions) {
         RequestOptions requestOptions = new RequestOptions();
+        BinaryData inputJson = BinaryData.fromObject(createRunOptions);
+        BinaryData adjustedJson = AssistantsClientImpl.injectStreamJsonField(inputJson, true);
         Flux<ByteBuffer> responseStream
-            = createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions.setStream(true)), requestOptions)
+            = createRunWithResponse(threadId, adjustedJson, requestOptions)
                 .flatMapMany(it -> it.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(responseStream);
         return openAIServerSentEvents.getEvents();
@@ -3167,7 +3172,7 @@ public final class AssistantsAsyncClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * byte[]
      * }</pre>

@@ -2947,9 +2947,11 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions) {
         RequestOptions requestOptions = new RequestOptions();
-        createRunOptions.setStream(true);
+        BinaryData inputJson = BinaryData.fromObject(createRunOptions);
+        BinaryData adjustedJson = AssistantsClientImpl.injectStreamJsonField(inputJson, true);
+
         Flux<ByteBuffer> responseStream
-            = createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions).getValue()
+            = createRunWithResponse(threadId, adjustedJson, requestOptions).getValue()
                 .toFluxByteBuffer();
         OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
         return new IterableStream<>(eventStream.getEvents());
@@ -2971,8 +2973,11 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<StreamUpdate> createRunStream(String threadId, String assistantId) {
         RequestOptions requestOptions = new RequestOptions();
+        BinaryData inputJson = BinaryData.fromObject(new CreateRunOptions(assistantId));
+        BinaryData adjustedJson = AssistantsClientImpl.injectStreamJsonField(inputJson, true);
+
         Flux<ByteBuffer> responseStream
-            = createRunWithResponse(threadId, BinaryData.fromObject(new CreateRunOptions(assistantId).setStream(true)),
+            = createRunWithResponse(threadId, BinaryData.fromObject(adjustedJson),
                 requestOptions).getValue().toFluxByteBuffer();
         OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
         return new IterableStream<>(eventStream.getEvents());
@@ -3107,7 +3112,7 @@ public final class AssistantsClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * byte[]
      * }</pre>
