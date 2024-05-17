@@ -5,6 +5,7 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
+import com.azure.ai.openai.assistants.implementation.OpenAIUtils;
 import com.azure.ai.openai.assistants.implementation.models.CreateAssistantFileRequest;
 import com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
@@ -2350,11 +2351,9 @@ public final class AssistantsAsyncClient {
     public Flux<StreamUpdate> createThreadAndRunStream(CreateAndRunThreadOptions createAndRunThreadOptions) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData inputJson = BinaryData.fromObject(createAndRunThreadOptions);
-        BinaryData adjustedJson = AssistantsClientImpl.injectStreamJsonField(inputJson, true);
-
-        Flux<ByteBuffer> responseStream
-            = createThreadAndRunWithResponse(adjustedJson, requestOptions)
-                .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        BinaryData adjustedJson = OpenAIUtils.injectStreamJsonField(inputJson, true);
+        Flux<ByteBuffer> responseStream = createThreadAndRunWithResponse(adjustedJson, requestOptions)
+            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
         return eventStream.getEvents();
     }
@@ -3003,11 +3002,10 @@ public final class AssistantsAsyncClient {
     public Flux<StreamUpdate> createRunStream(String threadId, String assistantId) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData inputJson = BinaryData.fromObject(new CreateRunOptions(assistantId));
-        BinaryData adjustedJson = AssistantsClientImpl.injectStreamJsonField(inputJson, true);
-
+        BinaryData adjustedJson = OpenAIUtils.injectStreamJsonField(inputJson, true);
         Flux<ByteBuffer> responseStream
-            = createRunWithResponse(threadId, BinaryData.fromObject(adjustedJson),
-                requestOptions).flatMapMany(it -> it.getValue().toFluxByteBuffer());
+            = createRunWithResponse(threadId, BinaryData.fromObject(adjustedJson), requestOptions)
+                .flatMapMany(it -> it.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(responseStream);
         return openAIServerSentEvents.getEvents();
     }
@@ -3030,10 +3028,9 @@ public final class AssistantsAsyncClient {
     public Flux<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions) {
         RequestOptions requestOptions = new RequestOptions();
         BinaryData inputJson = BinaryData.fromObject(createRunOptions);
-        BinaryData adjustedJson = AssistantsClientImpl.injectStreamJsonField(inputJson, true);
-        Flux<ByteBuffer> responseStream
-            = createRunWithResponse(threadId, adjustedJson, requestOptions)
-                .flatMapMany(it -> it.getValue().toFluxByteBuffer());
+        BinaryData adjustedJson = OpenAIUtils.injectStreamJsonField(inputJson, true);
+        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, adjustedJson, requestOptions)
+            .flatMapMany(it -> it.getValue().toFluxByteBuffer());
         OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(responseStream);
         return openAIServerSentEvents.getEvents();
     }

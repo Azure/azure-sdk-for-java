@@ -36,8 +36,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
-import java.util.Map;
-
 /**
  * Initializes a new instance of the AssistantsClient type.
  */
@@ -54,7 +52,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets An OpenAI endpoint supporting assistants functionality.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -68,7 +66,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public AssistantsServiceVersion getServiceVersion() {
@@ -82,7 +80,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -96,7 +94,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -105,7 +103,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     *
+     * 
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
      * @param serviceVersion Service version.
      */
@@ -116,7 +114,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
      * @param serviceVersion Service version.
@@ -127,7 +125,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Initializes an instance of AssistantsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint An OpenAI endpoint supporting assistants functionality.
@@ -822,7 +820,7 @@ public final class AssistantsClientImpl {
     /**
      * Creates a new assistant.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     model: String (Required)
@@ -842,9 +840,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -867,7 +865,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -888,7 +886,7 @@ public final class AssistantsClientImpl {
     /**
      * Creates a new assistant.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     model: String (Required)
@@ -908,9 +906,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -933,7 +931,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantCreationOptions The request details to use when creating a new assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -970,7 +968,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1001,7 +999,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1037,7 +1035,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1068,7 +1066,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1085,7 +1083,7 @@ public final class AssistantsClientImpl {
     /**
      * Retrieves an existing assistant.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1108,7 +1106,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1128,7 +1126,7 @@ public final class AssistantsClientImpl {
     /**
      * Retrieves an existing assistant.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1151,7 +1149,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1169,7 +1167,7 @@ public final class AssistantsClientImpl {
     /**
      * Modifies an existing assistant.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1189,9 +1187,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1214,7 +1212,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to modify.
      * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1236,7 +1234,7 @@ public final class AssistantsClientImpl {
     /**
      * Modifies an existing assistant.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1256,9 +1254,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1281,7 +1279,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to modify.
      * @param updateAssistantOptions The request details to use when modifying an existing assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1302,7 +1300,7 @@ public final class AssistantsClientImpl {
     /**
      * Deletes an assistant.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1310,7 +1308,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1331,7 +1329,7 @@ public final class AssistantsClientImpl {
     /**
      * Deletes an assistant.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1339,7 +1337,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1357,15 +1355,15 @@ public final class AssistantsClientImpl {
     /**
      * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     file_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1374,7 +1372,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to attach the file to.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1396,15 +1394,15 @@ public final class AssistantsClientImpl {
     /**
      * Attaches a previously uploaded file to an assistant for use by tools that can read files.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     file_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1413,7 +1411,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to attach the file to.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1452,7 +1450,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1469,7 +1467,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1507,7 +1505,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1524,7 +1522,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant to retrieve the list of attached files for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1543,7 +1541,7 @@ public final class AssistantsClientImpl {
     /**
      * Retrieves a file attached to an assistant.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1552,7 +1550,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant associated with the attached file.
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1574,7 +1572,7 @@ public final class AssistantsClientImpl {
     /**
      * Retrieves a file attached to an assistant.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1583,7 +1581,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant associated with the attached file.
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1606,7 +1604,7 @@ public final class AssistantsClientImpl {
      * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
      * files.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1614,7 +1612,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant from which the specified file should be unlinked.
      * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1637,7 +1635,7 @@ public final class AssistantsClientImpl {
      * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
      * files.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1645,7 +1643,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param assistantId The ID of the assistant from which the specified file should be unlinked.
      * @param fileId The ID of the file to unlink from the specified assistant.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1666,7 +1664,7 @@ public final class AssistantsClientImpl {
     /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     messages (Optional): [
@@ -1686,9 +1684,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1699,7 +1697,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1720,7 +1718,7 @@ public final class AssistantsClientImpl {
     /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     messages (Optional): [
@@ -1740,9 +1738,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1753,7 +1751,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1773,7 +1771,7 @@ public final class AssistantsClientImpl {
     /**
      * Gets information about an existing thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1784,7 +1782,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1804,7 +1802,7 @@ public final class AssistantsClientImpl {
     /**
      * Gets information about an existing thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1815,7 +1813,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1833,7 +1831,7 @@ public final class AssistantsClientImpl {
     /**
      * Modifies an existing thread.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -1841,9 +1839,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1854,7 +1852,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to modify.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1876,7 +1874,7 @@ public final class AssistantsClientImpl {
     /**
      * Modifies an existing thread.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -1884,9 +1882,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1897,7 +1895,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to modify.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1917,7 +1915,7 @@ public final class AssistantsClientImpl {
     /**
      * Deletes an existing thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1925,7 +1923,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1945,7 +1943,7 @@ public final class AssistantsClientImpl {
     /**
      * Deletes an existing thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1953,7 +1951,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1971,7 +1969,7 @@ public final class AssistantsClientImpl {
     /**
      * Creates a new message on a specified thread.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     role: String(user/assistant) (Required)
@@ -1984,9 +1982,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2013,7 +2011,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to create the new message on.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2035,7 +2033,7 @@ public final class AssistantsClientImpl {
     /**
      * Creates a new message on a specified thread.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     role: String(user/assistant) (Required)
@@ -2048,9 +2046,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2077,7 +2075,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to create the new message on.
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2114,7 +2112,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2149,7 +2147,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2186,7 +2184,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2221,7 +2219,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list messages from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2239,7 +2237,7 @@ public final class AssistantsClientImpl {
     /**
      * Gets an existing message from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2266,7 +2264,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2288,7 +2286,7 @@ public final class AssistantsClientImpl {
     /**
      * Gets an existing message from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2315,7 +2313,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve the specified message from.
      * @param messageId The ID of the message to retrieve from the specified thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2335,7 +2333,7 @@ public final class AssistantsClientImpl {
     /**
      * Modifies an existing message on an existing thread.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -2343,9 +2341,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2372,7 +2370,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
      * @param request The request parameter.
@@ -2395,7 +2393,7 @@ public final class AssistantsClientImpl {
     /**
      * Modifies an existing message on an existing thread.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -2403,9 +2401,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2432,7 +2430,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
      * @param request The request parameter.
@@ -2471,7 +2469,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2488,7 +2486,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to list files from.
      * @param messageId The ID of the message to list files from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2527,7 +2525,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2544,7 +2542,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to list files from.
      * @param messageId The ID of the message to list files from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2565,7 +2563,7 @@ public final class AssistantsClientImpl {
     /**
      * Gets information about a file attachment to a message within a thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2574,7 +2572,7 @@ public final class AssistantsClientImpl {
      *     message_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to get information from.
      * @param messageId The ID of the message to get information from.
      * @param fileId The ID of the file to get information about.
@@ -2597,7 +2595,7 @@ public final class AssistantsClientImpl {
     /**
      * Gets information about a file attachment to a message within a thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2606,7 +2604,7 @@ public final class AssistantsClientImpl {
      *     message_id: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread containing the message to get information from.
      * @param messageId The ID of the message to get information from.
      * @param fileId The ID of the file to get information about.
@@ -2628,7 +2626,7 @@ public final class AssistantsClientImpl {
     /**
      * Creates a new run for an assistant thread.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -2646,9 +2644,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2690,7 +2688,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to run.
      * @param createRunOptions The details for the run to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2712,7 +2710,7 @@ public final class AssistantsClientImpl {
     /**
      * Creates a new run for an assistant thread.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -2730,9 +2728,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2774,7 +2772,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to run.
      * @param createRunOptions The details for the run to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2812,7 +2810,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2862,7 +2860,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2899,7 +2897,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2949,7 +2947,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to list runs from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2967,7 +2965,7 @@ public final class AssistantsClientImpl {
     /**
      * Gets an existing run from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3009,7 +3007,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3031,7 +3029,7 @@ public final class AssistantsClientImpl {
     /**
      * Gets an existing run from an existing thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3073,7 +3071,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread to retrieve run information from.
      * @param runId The ID of the thread to retrieve information about.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3092,7 +3090,7 @@ public final class AssistantsClientImpl {
     /**
      * Modifies an existing thread run.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -3100,9 +3098,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3144,7 +3142,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param request The request parameter.
@@ -3167,7 +3165,7 @@ public final class AssistantsClientImpl {
     /**
      * Modifies an existing thread run.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -3175,9 +3173,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3219,7 +3217,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
      * @param request The request parameter.
@@ -3242,7 +3240,7 @@ public final class AssistantsClientImpl {
      * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
      * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     tool_outputs (Required): [
@@ -3254,9 +3252,9 @@ public final class AssistantsClientImpl {
      *     stream: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3298,7 +3296,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
@@ -3322,7 +3320,7 @@ public final class AssistantsClientImpl {
      * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
      * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     tool_outputs (Required): [
@@ -3334,9 +3332,9 @@ public final class AssistantsClientImpl {
      *     stream: Boolean (Optional)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3378,7 +3376,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
      * @param request The request parameter.
@@ -3400,7 +3398,7 @@ public final class AssistantsClientImpl {
     /**
      * Cancels a run of an in progress thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3442,7 +3440,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3464,7 +3462,7 @@ public final class AssistantsClientImpl {
     /**
      * Cancels a run of an in progress thread.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3506,7 +3504,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread being run.
      * @param runId The ID of the run to cancel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3525,7 +3523,7 @@ public final class AssistantsClientImpl {
     /**
      * Creates a new assistant thread and immediately starts a run using that new thread.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -3559,9 +3557,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3603,7 +3601,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3624,7 +3622,7 @@ public final class AssistantsClientImpl {
     /**
      * Creates a new assistant thread and immediately starts a run using that new thread.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -3658,9 +3656,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3702,7 +3700,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3722,7 +3720,7 @@ public final class AssistantsClientImpl {
     /**
      * Gets a single run step from a thread run.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3754,7 +3752,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
      * @param stepId The ID of the step to retrieve information about.
@@ -3776,7 +3774,7 @@ public final class AssistantsClientImpl {
     /**
      * Gets a single run step from a thread run.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3808,7 +3806,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the specific run to retrieve the step from.
      * @param stepId The ID of the step to retrieve information about.
@@ -3847,7 +3845,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -3887,7 +3885,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3926,7 +3924,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -3966,7 +3964,7 @@ public final class AssistantsClientImpl {
      *     has_more: boolean (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run to list steps from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3994,7 +3992,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4010,7 +4008,7 @@ public final class AssistantsClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4036,7 +4034,7 @@ public final class AssistantsClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4052,7 +4050,7 @@ public final class AssistantsClientImpl {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -4069,7 +4067,7 @@ public final class AssistantsClientImpl {
     /**
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4080,7 +4078,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4101,7 +4099,7 @@ public final class AssistantsClientImpl {
     /**
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4112,7 +4110,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4131,7 +4129,7 @@ public final class AssistantsClientImpl {
     /**
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -4139,7 +4137,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4159,7 +4157,7 @@ public final class AssistantsClientImpl {
     /**
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -4167,7 +4165,7 @@ public final class AssistantsClientImpl {
      *     object: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4185,7 +4183,7 @@ public final class AssistantsClientImpl {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4196,7 +4194,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4216,7 +4214,7 @@ public final class AssistantsClientImpl {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4227,7 +4225,7 @@ public final class AssistantsClientImpl {
      *     purpose: String(fine-tune/fine-tune-results/assistants/assistants_output) (Required)
      * }
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4245,11 +4243,11 @@ public final class AssistantsClientImpl {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * byte[]
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4268,11 +4266,11 @@ public final class AssistantsClientImpl {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * byte[]
      * }</pre>
-     *
+     * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4285,20 +4283,5 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getFileContentSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Injects a boolean field `stream` into the input JSON.
-     *
-     * @param inputJson The input JSON to inject the field into.
-     * @param stream The value of the field to inject.
-     * @return The input JSON with the field injected.
-     */
-    @SuppressWarnings("unchecked")
-    public static BinaryData injectStreamJsonField(BinaryData inputJson, boolean stream) {
-        Map<String, Object> mapJson = inputJson.toObject(Map.class);
-        mapJson.put("stream", stream);
-        inputJson = BinaryData.fromObject(mapJson);
-        return inputJson;
     }
 }
