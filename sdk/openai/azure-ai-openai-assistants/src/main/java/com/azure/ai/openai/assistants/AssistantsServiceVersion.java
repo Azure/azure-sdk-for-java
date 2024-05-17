@@ -13,12 +13,7 @@ public enum AssistantsServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-02-15-preview.
      */
-    V2024_02_15_PREVIEW("2024-02-15-preview"),
-
-    /**
-     * Enum value 2024-05-01-preview.
-     */
-    V2024_05_01_PREVIEW("2024-05-01-preview");
+    V2024_02_15_PREVIEW("2024-02-15-preview");
 
     private final String version;
 
@@ -40,6 +35,6 @@ public enum AssistantsServiceVersion implements ServiceVersion {
      * @return The latest {@link AssistantsServiceVersion}.
      */
     public static AssistantsServiceVersion getLatest() {
-        return V2024_05_01_PREVIEW;
+        return V2024_02_15_PREVIEW;
     }
 }
