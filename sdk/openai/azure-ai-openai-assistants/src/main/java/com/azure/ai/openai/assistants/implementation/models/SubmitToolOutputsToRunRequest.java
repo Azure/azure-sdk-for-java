@@ -20,7 +20,7 @@ import java.util.List;
 public final class SubmitToolOutputsToRunRequest implements JsonSerializable<SubmitToolOutputsToRunRequest> {
 
     /*
-     * The list of tool outputs requested by tool calls from the specified run.
+     * A list of tools for which the outputs are being submitted.
      */
     @Generated
     private final List<ToolOutput> toolOutputs;
@@ -36,7 +36,7 @@ public final class SubmitToolOutputsToRunRequest implements JsonSerializable<Sub
     }
 
     /**
-     * Get the toolOutputs property: The list of tool outputs requested by tool calls from the specified run.
+     * Get the toolOutputs property: A list of tools for which the outputs are being submitted.
      *
      * @return the toolOutputs value.
      */

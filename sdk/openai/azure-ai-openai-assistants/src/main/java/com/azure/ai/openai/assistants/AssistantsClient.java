@@ -14,6 +14,7 @@ import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOf
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadRun;
+import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateThreadRequest;
@@ -35,7 +36,6 @@ import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.RunStep;
-import com.azure.ai.openai.assistants.models.SubmitToolOutputsOptions;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
@@ -55,7 +55,6 @@ import com.azure.core.util.BinaryData;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.streaming.OpenAIServerSentEvents;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import java.nio.ByteBuffer;
@@ -3182,7 +3181,9 @@ public final class AssistantsClient {
      *
      * @param threadId The ID of the thread that was run.
      * @param runId The ID of the run that requires tool outputs.
-     * @param submitToolOutputsOptions Submit the results for the requested tool calls from the service.
+     * @param toolOutputs A list of tools for which the outputs are being submitted.
+     * @param stream If `true`, returns a stream of events that happen during the Run as server-sent events, terminating
+     * when the Run enters a terminal state with a `data: [DONE]` message.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3193,11 +3194,39 @@ public final class AssistantsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadRun submitToolOutputsToRun(String threadId, String runId,
-        SubmitToolOutputsOptions submitToolOutputsOptions) {
+    public ThreadRun submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs,
+        Boolean stream) {
         // Generated convenience method for submitToolOutputsToRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return submitToolOutputsToRunWithResponse(threadId, runId, BinaryData.fromObject(submitToolOutputsOptions),
-            requestOptions).getValue().toObject(ThreadRun.class);
+        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(stream);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).getValue()
+            .toObject(ThreadRun.class);
+    }
+
+    /**
+     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
+     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
+     *
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run that requires tool outputs.
+     * @param toolOutputs A list of tools for which the outputs are being submitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreadRun submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs) {
+        // Generated convenience method for submitToolOutputsToRunWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).getValue()
+            .toObject(ThreadRun.class);
     }
 }
