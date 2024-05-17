@@ -231,10 +231,6 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
                     }
                     return feedResponse;
                 })
-                .concatWith(Flux.defer(() -> {
-                    return Flux.just(feedResponseAccessor.createFeedResponse(Utils.immutableListOf(),
-                        null, null));
-                }))
                 .map(feedOfOrderByRowResults -> {
                     List<Document> unwrappedResults = new ArrayList<>();
                     for (OrderByRowResult<Document> orderByRowResult : feedOfOrderByRowResults.getResults()) {

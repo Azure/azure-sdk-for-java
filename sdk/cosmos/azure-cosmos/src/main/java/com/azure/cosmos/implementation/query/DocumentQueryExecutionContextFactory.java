@@ -395,11 +395,7 @@ public class DocumentQueryExecutionContextFactory {
                 int pageSizeWithTopOrLimit = Math.min(queryInfo.hasTop() ? queryInfo.getTop() : Integer.MAX_VALUE,
                                            queryInfo.hasLimit() && queryInfo.hasOffset() ?
                                                queryInfo.getLimit() + queryInfo.getOffset() : Integer.MAX_VALUE);
-                if (initialPageSize > 0) {
-                    initialPageSize = Math.min(pageSizeWithTopOrLimit, initialPageSize);
-                } else {
-                    initialPageSize = pageSizeWithTopOrLimit;
-                }
+                initialPageSize = pageSizeWithTopOrLimit;
             }
         }
 

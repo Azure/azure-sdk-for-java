@@ -39,7 +39,7 @@ public class NonStreamingOrderByUtils {
                 toNonStreamingOrderByQueryResultObservable(producer, tracker, queryMetricsMap, initialPageSize,
                     consumeComparer, clientSideRequestStatistics))
             .toArray(Flux[]::new);
-        return Flux.mergeComparingDelayError(1,consumeComparer, fluxes);
+        return Flux.mergeComparingDelayError(1, consumeComparer, fluxes);
     }
 
     private static Flux<OrderByRowResult<Document>> toNonStreamingOrderByQueryResultObservable(DocumentProducer<Document> producer,
@@ -92,23 +92,21 @@ public class NonStreamingOrderByUtils {
                             r.toJson(),
                             documentProducerFeedResponse.sourceFeedRange,
                             null);
-                        if (!Configs.getAzureCosmosNonStreamingOrderByDisabled()) {
-                            if (priorityQueue.size() < initialPageSize) {
-                                priorityQueue.add(orderByRowResult);
-                            } else {
-                                priorityQueue.add(orderByRowResult);
-                                priorityQueue.poll();
+                        priorityQueue.add(orderByRowResult);
+                        if (priorityQueue.size() > initialPageSize) {
+                            PriorityBlockingQueue<OrderByRowResult<Document>> resultPriorityQueue = new PriorityBlockingQueue<>(initialPageSize + 1, consumeComparer);
+                            for (int i=0;i<initialPageSize;i++) {
+                                resultPriorityQueue.add(priorityQueue.poll());
                             }
-                        } else {
-                            priorityQueue.add(orderByRowResult);
+                            priorityQueue.clear();
+                            priorityQueue.addAll(resultPriorityQueue);
                         }
-
                     });
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     // Returning an empty Flux since we are only processing and managing state here
                     return Flux.empty();
                 }, 1)
-                .thenMany(Flux.defer(() -> Flux.fromIterable(priorityQueue)));
+                .thenMany(Flux.defer(()-> Flux.fromIterable(priorityQueue)));
         }
     }
 }
