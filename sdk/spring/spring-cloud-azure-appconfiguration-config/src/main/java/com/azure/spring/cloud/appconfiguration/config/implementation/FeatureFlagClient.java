@@ -2,26 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.AUDIENCE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.CONDITIONS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE_CAPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS_CAPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE_SERVICE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.SELECT_ALL_FEATURE_FLAGS;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.TARGETING_FILTER;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.TELEMETRY;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USERS;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USERS_CAPS;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toMap;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -30,7 +20,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 import org.bouncycastle.jcajce.provider.digest.SHA256;
 import org.springframework.stereotype.Component;
@@ -38,13 +27,11 @@ import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.FeatureTelemetry;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -118,7 +105,6 @@ public class FeatureFlagClient {
      * @param item Used to create Features before being converted to be set into properties.
      * @return Feature created from KeyValueItem
      */
-    @SuppressWarnings("unchecked")
     protected static Feature createFeature(FeatureFlagConfigurationSetting item, String originEndpoint) {
         String requirementType = DEFAULT_REQUIREMENT_TYPE;
         FeatureTelemetry featureTelemetry = new FeatureTelemetry();
@@ -139,30 +125,6 @@ public class FeatureFlagClient {
         }
 
         Feature feature = new Feature(item, requirementType, featureTelemetry);
-        Map<Integer, FeatureFlagFilter> featureEnabledFor = feature.getConditions().getClientFilters();
-
-        for (FeatureFlagFilter featureFilter : featureEnabledFor.values()) {
-            Map<String, Object> parameters = featureFilter.getParameters();
-
-            if (parameters == null || !TARGETING_FILTER.equals(featureFilter.getName())) {
-                continue;
-            }
-
-            Object audienceObject = parameters.get(AUDIENCE);
-            if (audienceObject != null) {
-                parameters = (Map<String, Object>) audienceObject;
-            }
-
-            List<Object> users = convertToListOrEmptyList(parameters, USERS_CAPS);
-            List<Object> groupRollouts = convertToListOrEmptyList(parameters, GROUPS_CAPS);
-
-            switchKeyValues(parameters, USERS_CAPS, USERS, mapValuesByIndex(users));
-            switchKeyValues(parameters, GROUPS_CAPS, GROUPS, mapValuesByIndex(groupRollouts));
-            switchKeyValues(parameters, DEFAULT_ROLLOUT_PERCENTAGE_CAPS, DEFAULT_ROLLOUT_PERCENTAGE,
-                parameters.get(DEFAULT_ROLLOUT_PERCENTAGE_CAPS));
-
-            featureFilter.setParameters(parameters);
-        }
 
         if (feature.getTelemetry() != null) {
             final FeatureTelemetry telemetry = feature.getTelemetry();
@@ -179,22 +141,6 @@ public class FeatureFlagClient {
             }
         }
         return feature;
-    }
-
-    private static Map<String, Object> mapValuesByIndex(List<Object> users) {
-        return IntStream.range(0, users.size()).boxed().collect(toMap(String::valueOf, users::get));
-    }
-
-    private static void switchKeyValues(Map<String, Object> parameters, String oldKey, String newKey, Object value) {
-        parameters.put(newKey, value);
-        parameters.remove(oldKey);
-    }
-
-    private static List<Object> convertToListOrEmptyList(Map<String, Object> parameters, String key) {
-        List<Object> listObjects = CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key),
-            new TypeReference<List<Object>>() {
-            });
-        return listObjects == null ? emptyList() : listObjects;
     }
 
     /**
