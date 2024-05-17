@@ -4,9 +4,6 @@
 
 package com.azure.ai.translation.text.models;
 
-import com.azure.ai.translation.text.models.ProfanityAction;
-import com.azure.ai.translation.text.models.ProfanityMarker;
-import com.azure.ai.translation.text.models.TextType;
 import com.azure.core.annotation.Fluent;
 import java.util.ArrayList;
 import java.util.List;
