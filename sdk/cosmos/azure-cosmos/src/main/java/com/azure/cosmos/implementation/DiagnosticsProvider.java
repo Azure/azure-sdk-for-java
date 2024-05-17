@@ -16,6 +16,7 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.clienttelemetry.ShowQueryOptions;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.guava25.base.Splitter;
@@ -1166,7 +1167,11 @@ public final class DiagnosticsProvider {
         }
         
         private boolean showQueryStatement() {
-            return clientTelemetryConfigAccessor.showQueryStatement(this.config);
+            if(ShowQueryOptions.PARAMETERIZED_AND_NON_PARAMETERIZED.equals(clientTelemetryConfigAccessor.showQueryOptions(this.config))
+                   || ShowQueryOptions.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor.showQueryOptions(this.config))) {
+                   return true;
+            }
+            return false;
         }
 
         @Override
