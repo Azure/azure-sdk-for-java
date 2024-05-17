@@ -621,7 +621,11 @@ public final class CosmosDiagnosticsContext {
         if (this.actualItemCount.get() >= 0) {
             ctxNode.put("actualItems", this.actualItemCount.get());
         }
-
+        
+        if (this.queryStatement != null && queryStatement.length() > 0) {
+            ctxNode.put("queryStatement", this.queryStatement);
+        }
+        
         if (this.finalError != null) {
             if (this.finalError instanceof CosmosException) {
                 ctxNode.put("exception", ((CosmosException)this.finalError).toString(false));
