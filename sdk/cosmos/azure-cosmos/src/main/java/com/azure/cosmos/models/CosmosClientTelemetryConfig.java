@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
+import com.azure.cosmos.implementation.clienttelemetry.ShowQueryOptions;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -75,7 +76,7 @@ public final class CosmosClientTelemetryConfig {
 
     private double samplingRate;
     
-    private boolean showQueryStatement = false;
+    private ShowQueryOptions showQueryOptions = ShowQueryOptions.NONE;
 
     /**
      * Instantiates a new Cosmos client telemetry configuration.
@@ -399,12 +400,13 @@ public final class CosmosClientTelemetryConfig {
     
     /**
      * Enables printing query in db.statement attribute. By default, query is not printed.
-     * Users have to option to enable it, but has to beware customer data may be shown.
-     * It's the user's responsiblity to sanitize the query if necessary.
+     * Users have the option to enable printing parameterized or both parameterized and non-parameterized queries, 
+     * but has to beware that customer data may be shown when the later option is chosen
+     * It's the user's responsibility to sanitize the queries if necessary.
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosClientTelemetryConfig showQueryStatement() {
-        this.showQueryStatement = true;
+    public CosmosClientTelemetryConfig showQueryOptions(ShowQueryOptions showQueryOptions) {
+        this.showQueryOptions = showQueryOptions;
         return this;
     }
 
@@ -450,7 +452,7 @@ public final class CosmosClientTelemetryConfig {
             ", clientTelemetryEnabled=" + this.effectiveIsClientTelemetryEnabled +
             ", clientMetricsEnabled=" + this.isClientMetricsEnabled +
             ", transportLevelTracingEnabled=" + this.isTransportLevelTracingEnabled +
-            ", showQueryStatement=" + this.showQueryStatement +
+            ", showQueryOptions=" + this.showQueryOptions +
             ", customTracerProvided=" + (this.tracer != null) +
             ", customDiagnosticHandlers=" + handlers +
             "}";
@@ -676,8 +678,8 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
-                public boolean showQueryStatement(CosmosClientTelemetryConfig config) {
-                    return config.showQueryStatement;
+                public ShowQueryOptions showQueryOptions(CosmosClientTelemetryConfig config) {
+                    return config.showQueryOptions;
                 }
        
                 @Override
