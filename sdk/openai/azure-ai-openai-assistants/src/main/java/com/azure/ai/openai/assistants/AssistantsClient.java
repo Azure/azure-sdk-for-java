@@ -3107,7 +3107,7 @@ public final class AssistantsClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * byte[]
      * }</pre>
@@ -3193,8 +3193,7 @@ public final class AssistantsClient {
      * @return data representing a single evaluation run of an assistant thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ThreadRun submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs,
-        Boolean stream) {
+    ThreadRun submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs, Boolean stream) {
         // Generated convenience method for submitToolOutputsToRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(stream);
@@ -3223,7 +3222,7 @@ public final class AssistantsClient {
     public ThreadRun submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs) {
         // Generated convenience method for submitToolOutputsToRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(false);
+        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs);
         BinaryData request = BinaryData.fromObject(requestObj);
         return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).getValue()
             .toObject(ThreadRun.class);

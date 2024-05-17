@@ -3167,7 +3167,7 @@ public final class AssistantsAsyncClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * byte[]
      * }</pre>
@@ -3224,7 +3224,8 @@ public final class AssistantsAsyncClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<StreamUpdate> submitToolOutputsToRunStream(String threadId, String runId, List<ToolOutput> toolOutputs) {
+    public Flux<StreamUpdate> submitToolOutputsToRunStream(String threadId, String runId,
+        List<ToolOutput> toolOutputs) {
         RequestOptions requestOptions = new RequestOptions();
         SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(false);
         Flux<ByteBuffer> responseStream
