@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentProfile model
-            = BinaryData.fromString("{\"subnetId\":\"ot\",\"vmSize\":\"qgoulznd\"}").toObject(AgentProfile.class);
-        Assertions.assertEquals("ot", model.subnetId());
-        Assertions.assertEquals("qgoulznd", model.vmSize());
+        AgentProfile model = BinaryData.fromString("{\"subnetId\":\"qduujitcjczdz\",\"vmSize\":\"ndhkrw\"}")
+            .toObject(AgentProfile.class);
+        Assertions.assertEquals("qduujitcjczdz", model.subnetId());
+        Assertions.assertEquals("ndhkrw", model.vmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentProfile model = new AgentProfile().withSubnetId("ot").withVmSize("qgoulznd");
+        AgentProfile model = new AgentProfile().withSubnetId("qduujitcjczdz").withVmSize("ndhkrw");
         model = BinaryData.fromObject(model).toObject(AgentProfile.class);
-        Assertions.assertEquals("ot", model.subnetId());
-        Assertions.assertEquals("qgoulznd", model.vmSize());
+        Assertions.assertEquals("qduujitcjczdz", model.subnetId());
+        Assertions.assertEquals("ndhkrw", model.vmSize());
     }
 }

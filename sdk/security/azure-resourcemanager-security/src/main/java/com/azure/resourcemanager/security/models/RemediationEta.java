@@ -79,12 +79,12 @@ public final class RemediationEta {
      */
     public void validate() {
         if (eta() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property eta in model RemediationEta"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property eta in model RemediationEta"));
         }
         if (justification() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property justification in model RemediationEta"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property justification in model RemediationEta"));
         }
     }
 

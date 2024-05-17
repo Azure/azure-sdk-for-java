@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.test;
 
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
@@ -153,6 +154,6 @@ public class ThreadDumper implements BeforeAllCallback, BeforeEachCallback, Afte
     }
 
     private static String getFullTestName(ExtensionContext context) {
-        return TestBase.getTestName(context.getTestMethod(), context.getDisplayName(), context.getTestClass());
+        return TestingHelpers.getTestName(context.getTestMethod(), context.getDisplayName(), context.getTestClass());
     }
 }

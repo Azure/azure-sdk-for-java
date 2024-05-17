@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerservicefleet.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -24,8 +25,8 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.containerservicefleet.fluent.ContainerServiceFleetManagementClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetMembersClient;
-import com.azure.resourcemanager.containerservicefleet.fluent.FleetUpdateStrategiesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.FleetsClient;
+import com.azure.resourcemanager.containerservicefleet.fluent.FleetUpdateStrategiesClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservicefleet.fluent.UpdateRunsClient;
 import java.io.IOException;
@@ -213,7 +214,7 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-02-02-preview";
+        this.apiVersion = "2024-04-01";
         this.operations = new OperationsClientImpl(this);
         this.fleets = new FleetsClientImpl(this);
         this.fleetMembers = new FleetMembersClientImpl(this);
@@ -281,8 +282,8 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -323,7 +324,7 @@ public final class ContainerServiceFleetManagementClientImpl implements Containe
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

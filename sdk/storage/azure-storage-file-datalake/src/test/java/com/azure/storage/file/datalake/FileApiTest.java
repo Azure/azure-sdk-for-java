@@ -3473,9 +3473,9 @@ public class FileApiTest extends DataLakeTestBase {
         if (outFile.exists()) {
             assertTrue(outFile.delete());
         }
-        ReadToFileOptions readToFileOptions = new ReadToFileOptions();
-        readToFileOptions.setUserPrincipalName(upnHeader).setFilePath(outFile.getPath()).setRange(null)
-            .setParallelTransferOptions(null).setDownloadRetryOptions(null).setDataLakeRequestConditions(null)
+        ReadToFileOptions readToFileOptions = new ReadToFileOptions(outFile.getPath());
+        readToFileOptions.setUserPrincipalName(upnHeader).setRange(null).setParallelTransferOptions(null)
+            .setDownloadRetryOptions(null).setDataLakeRequestConditions(null)
             .setRangeGetContentMd5(false).setOpenOptions(null);
 
         PathProperties readToFileResponse = fc.readToFile(readToFileOptions);

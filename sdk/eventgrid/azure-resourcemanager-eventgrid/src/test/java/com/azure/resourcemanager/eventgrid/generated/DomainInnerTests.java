@@ -65,31 +65,44 @@ public final class DomainInnerTests {
             .withTags(
                 mapOf("sxnkjzkdeslpvlo", "mkfssxqukkfplgm", "baiuebbaumny", "wiyighxpkdw", "txp", "upedeojnabckhs"))
             .withSku(new ResourceSku().withName(Sku.PREMIUM))
-            .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED).withPrincipalId("dbabp")
+            .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED)
+                .withPrincipalId("dbabp")
                 .withTenantId("wrqlfktsthsuco")
                 .withUserAssignedIdentities(mapOf("fey",
                     new UserIdentityProperties().withPrincipalId("yazttbtwwrqpue").withClientId("kzywbiex"), "zjancuxr",
                     new UserIdentityProperties().withPrincipalId("axibxujw").withClientId("qwalmuzyoxaepd"),
                     "dbpgnxytxhp", new UserIdentityProperties().withPrincipalId("wbavxbniwdj").withClientId("zt"),
                     "wtctyqi", new UserIdentityProperties().withPrincipalId("bzpfzab").withClientId("cuh"))))
-            .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO).withInputSchema(InputSchema.CLOUD_EVENT_SCHEMA_V1_0)
+            .withMinimumTlsVersionAllowed(TlsVersion.ONE_ZERO)
+            .withInputSchema(InputSchema.CLOUD_EVENT_SCHEMA_V1_0)
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                .withInlineEventTypes(mapOf("phxepcyvahf", new InlineEventProperties().withDescription("tcktvfcivfsnky")
-                    .withDisplayName("ctq").withDocumentationUrl("fbebrjcxer").withDataSchemaUrl("wutttxfvjrbi"),
+                .withInlineEventTypes(mapOf("phxepcyvahf",
+                    new InlineEventProperties().withDescription("tcktvfcivfsnky")
+                        .withDisplayName("ctq")
+                        .withDocumentationUrl("fbebrjcxer")
+                        .withDataSchemaUrl("wutttxfvjrbi"),
                     "sncghkjeszz",
-                    new InlineEventProperties().withDescription("jky").withDisplayName("j")
-                        .withDocumentationUrl("ujqgidok").withDataSchemaUrl("ljyoxgvcltb"),
+                    new InlineEventProperties().withDescription("jky")
+                        .withDisplayName("j")
+                        .withDocumentationUrl("ujqgidok")
+                        .withDataSchemaUrl("ljyoxgvcltb"),
                     "gr",
-                    new InlineEventProperties().withDescription("ijhtxf").withDisplayName("xbf")
-                        .withDocumentationUrl("xnehmpvec").withDataSchemaUrl("odebfqkkrbmpu"),
+                    new InlineEventProperties().withDescription("ijhtxf")
+                        .withDisplayName("xbf")
+                        .withDocumentationUrl("xnehmpvec")
+                        .withDataSchemaUrl("odebfqkkrbmpu"),
                     "ynhijggme",
-                    new InlineEventProperties().withDescription("flz").withDisplayName("bxzpuzycisp")
-                        .withDocumentationUrl("zahmgkbrpyydhibn").withDataSchemaUrl("qkpikadrgvtqagnb"))))
-            .withInputSchemaMapping(new InputSchemaMapping()).withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                    new InlineEventProperties().withDescription("flz")
+                        .withDisplayName("bxzpuzycisp")
+                        .withDocumentationUrl("zahmgkbrpyydhibn")
+                        .withDataSchemaUrl("qkpikadrgvtqagnb"))))
+            .withInputSchemaMapping(new InputSchemaMapping())
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
             .withInboundIpRules(Arrays.asList(new InboundIpRule().withIpMask("unmpxttd").withAction(IpActionType.ALLOW),
                 new InboundIpRule().withIpMask("nlankxmyskpb").withAction(IpActionType.ALLOW),
                 new InboundIpRule().withIpMask("tkcxywnytnrsy").withAction(IpActionType.ALLOW)))
-            .withDisableLocalAuth(true).withAutoCreateTopicWithFirstSubscription(false)
+            .withDisableLocalAuth(true)
+            .withAutoCreateTopicWithFirstSubscription(false)
             .withAutoDeleteTopicWithLastSubscription(false)
             .withDataResidencyBoundary(DataResidencyBoundary.WITHIN_GEOPAIR);
         model = BinaryData.fromObject(model).toObject(DomainInner.class);

@@ -1,8 +1,0 @@
-trigger: none
-
-extends:
-  template: /sdk/communication/communication-tests-template.yml
-  parameters:
-    PackageName: azure-communication-networktraversal
-    SafeName: azurecommunicationnetworktraversal
-    Clouds: 'Public'

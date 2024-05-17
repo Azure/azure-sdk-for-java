@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AzureDevOpsReposGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-09-01-preview/examples/
-     * SecurityConnectorsDevOps/GetAzureDevOpsRepos_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/GetAzureDevOpsRepos_example.json
      */
     /**
      * Sample code: Get_AzureDevOpsRepos.
@@ -19,7 +17,8 @@ public final class AzureDevOpsReposGetSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getAzureDevOpsRepos(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.azureDevOpsRepos().getWithResponse("myRg", "mySecurityConnectorName", "myAzDevOpsOrg",
-            "myAzDevOpsProject", "myAzDevOpsRepo", com.azure.core.util.Context.NONE);
+        manager.azureDevOpsRepos()
+            .getWithResponse("myRg", "mySecurityConnectorName", "myAzDevOpsOrg", "myAzDevOpsProject", "myAzDevOpsRepo",
+                com.azure.core.util.Context.NONE);
     }
 }

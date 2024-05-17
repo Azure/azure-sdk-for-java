@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+  <Match>
+    <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
+    <Or>
+      <Class name="io.clientcore.http.jdk.httpclient.JdkHttpClient" />
+      <Class name="io.clientcore.http.jdk.httpclient.implementation.JdkHttpRequest" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="CT_CONSTRUCTOR_THROW" />
+    <Class name="io.clientcore.http.jdk.httpclient.JdkHttpClient" />
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Class name="io.clientcore.http.jdk.httpclient.implementation.JdkHttpResponse" />
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP2" />
+    <Or>
+      <Class name="io.clientcore.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber" />
+      <Class name="io.clientcore.http.jdk.httpclient.implementation.JdkHttpResponse" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_BAD_PRACTICE" />
+    <Class name="io.clientcore.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber" />
+  </Match>
+  <Match>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
+    <Class name="io.clientcore.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber" />
+  </Match>
+</FindBugsFilter>

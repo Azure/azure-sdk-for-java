@@ -9,7 +9,9 @@ import com.azure.resourcemanager.devcenter.fluent.models.ProjectEnvironmentTypeI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the project environment type list operation. */
+/**
+ * Result of the project environment type list operation.
+ */
 @Immutable
 public final class ProjectEnvironmentTypeListResult {
     /*
@@ -24,13 +26,15 @@ public final class ProjectEnvironmentTypeListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ProjectEnvironmentTypeListResult class. */
+    /**
+     * Creates an instance of ProjectEnvironmentTypeListResult class.
+     */
     public ProjectEnvironmentTypeListResult() {
     }
 
     /**
      * Get the value property: Current page of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ProjectEnvironmentTypeInner> value() {
@@ -39,7 +43,7 @@ public final class ProjectEnvironmentTypeListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ProjectEnvironmentTypeListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

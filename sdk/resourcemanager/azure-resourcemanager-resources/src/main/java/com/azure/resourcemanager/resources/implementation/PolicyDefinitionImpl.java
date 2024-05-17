@@ -64,6 +64,16 @@ final class PolicyDefinitionImpl extends
     }
 
     @Override
+    public String mode() {
+        return innerModel().mode();
+    }
+
+    @Override
+    public Object metadata() {
+        return innerModel().metadata();
+    }
+
+    @Override
     public String id() {
         return innerModel().id();
     }
@@ -136,6 +146,18 @@ final class PolicyDefinitionImpl extends
             new ParameterDefinitionsValue()
                 .withType(parameterType)
                 .withDefaultValue(defaultValue));
+        return this;
+    }
+
+    @Override
+    public PolicyDefinitionImpl withMode(String mode) {
+        innerModel().withMode(mode);
+        return this;
+    }
+
+    @Override
+    public PolicyDefinitionImpl withMetadata(Object metadata) {
+        innerModel().withMetadata(metadata);
         return this;
     }
 }

@@ -2559,8 +2559,10 @@ public class MaxRetryCountTests extends TestSuiteBase {
         }
 
         if (nonIdempotentWriteRetriesEnabled != null) {
-            builder.setNonIdempotentWriteRetryPolicy(
-                nonIdempotentWriteRetriesEnabled, true);
+            builder.nonIdempotentWriteRetryOptions(
+                new NonIdempotentWriteRetryOptions()
+                    .setEnabled(nonIdempotentWriteRetriesEnabled)
+                    .setTrackingIdUsed(true));
         }
 
         return builder.buildAsyncClient();

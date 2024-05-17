@@ -63,6 +63,23 @@ public class TestUtils {
         );
     }
 
+    public static QueryFeedOperationState createDummyQueryFeedOperationState(ResourceType resourceType,
+                                                                             OperationType operationType,
+                                                                             CosmosQueryRequestOptions options,
+                                                                             CosmosAsyncClient cosmosClient) {
+        return new QueryFeedOperationState(
+            cosmosClient,
+            "SomeSpanName",
+            "SomeDBName",
+            "SomeContainerName",
+            resourceType,
+            operationType,
+            null,
+            options,
+            new CosmosPagedFluxOptions()
+        );
+    }
+
     public static DiagnosticsClientContext mockDiagnosticsClientContext() {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
         Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();

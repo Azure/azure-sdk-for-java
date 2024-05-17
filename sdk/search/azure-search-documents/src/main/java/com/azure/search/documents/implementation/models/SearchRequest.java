@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.models.HybridSearch;
 import com.azure.search.documents.models.QueryDebugMode;
 import com.azure.search.documents.models.QueryLanguage;
 import com.azure.search.documents.models.QuerySpellerType;
@@ -222,6 +223,11 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
      * 'preFilter'.
      */
     private VectorFilterMode vectorFilterMode;
+
+    /*
+     * The query parameters to configure hybrid search behaviors.
+     */
+    private HybridSearch hybridSearch;
 
     /**
      * Creates an instance of SearchRequest class.
@@ -945,6 +951,26 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         return this;
     }
 
+    /**
+     * Get the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     * 
+     * @return the hybridSearch value.
+     */
+    public HybridSearch getHybridSearch() {
+        return this.hybridSearch;
+    }
+
+    /**
+     * Set the hybridSearch property: The query parameters to configure hybrid search behaviors.
+     * 
+     * @param hybridSearch the hybridSearch value to set.
+     * @return the SearchRequest object itself.
+     */
+    public SearchRequest setHybridSearch(HybridSearch hybridSearch) {
+        this.hybridSearch = hybridSearch;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -983,6 +1009,7 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
         jsonWriter.writeArrayField("vectorQueries", this.vectorQueries, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("vectorFilterMode",
             this.vectorFilterMode == null ? null : this.vectorFilterMode.toString());
+        jsonWriter.writeJsonField("hybridSearch", this.hybridSearch);
         return jsonWriter.writeEndObject();
     }
 
@@ -1066,6 +1093,8 @@ public final class SearchRequest implements JsonSerializable<SearchRequest> {
                     deserializedSearchRequest.vectorQueries = vectorQueries;
                 } else if ("vectorFilterMode".equals(fieldName)) {
                     deserializedSearchRequest.vectorFilterMode = VectorFilterMode.fromString(reader.getString());
+                } else if ("hybridSearch".equals(fieldName)) {
+                    deserializedSearchRequest.hybridSearch = HybridSearch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

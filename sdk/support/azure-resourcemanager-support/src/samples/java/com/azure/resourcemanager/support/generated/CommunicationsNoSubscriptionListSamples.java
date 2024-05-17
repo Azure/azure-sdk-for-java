@@ -9,8 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class CommunicationsNoSubscriptionListSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListCommunicationsForSupportTicket.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListCommunicationsForSupportTicket.json
      */
     /**
      * Sample code: List communications for a no-subscription support ticket.
@@ -23,8 +22,7 @@ public final class CommunicationsNoSubscriptionListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListWebCommunicationsForSupportTicketCreatedOnOrAfter.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListWebCommunicationsForSupportTicketCreatedOnOrAfter.json
      */
     /**
      * Sample code: List web communication created on or after a specific date for a no-subscription support ticket.
@@ -33,13 +31,13 @@ public final class CommunicationsNoSubscriptionListSamples {
      */
     public static void listWebCommunicationCreatedOnOrAfterASpecificDateForANoSubscriptionSupportTicket(
         com.azure.resourcemanager.support.SupportManager manager) {
-        manager.communicationsNoSubscriptions().list("testticket", null,
-            "communicationType eq 'web' and createdDate ge 2020-03-10T22:08:51Z", com.azure.core.util.Context.NONE);
+        manager.communicationsNoSubscriptions()
+            .list("testticket", null, "communicationType eq 'web' and createdDate ge 2020-03-10T22:08:51Z",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * ListWebCommunicationsForSupportTicket.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListWebCommunicationsForSupportTicket.json
      */
     /**
      * Sample code: List web communications for a no-subscription support ticket.
@@ -48,7 +46,7 @@ public final class CommunicationsNoSubscriptionListSamples {
      */
     public static void
         listWebCommunicationsForANoSubscriptionSupportTicket(com.azure.resourcemanager.support.SupportManager manager) {
-        manager.communicationsNoSubscriptions().list("testticket", null, "communicationType eq 'web'",
-            com.azure.core.util.Context.NONE);
+        manager.communicationsNoSubscriptions()
+            .list("testticket", null, "communicationType eq 'web'", com.azure.core.util.Context.NONE);
     }
 }

@@ -1,7 +1,32 @@
 ## Release History
 
-### 4.58.0 (2024-04-16)
+### 4.60.0-beta.1 (Unreleased)
 
+#### Features Added
+* Added `cosmosVectorEmbeddingPolicy` in `cosmosContainerProperties` and `vectorIndexes` in `indexPolicy` to support vector search in CosmosDB - See[39379](https://github.com/Azure/azure-sdk-for-java/pull/39379)
+* Added the capability to regionally scope session tokens used for operations scoped to a logical partition. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003)
+
+#### Breaking Changes
+
+#### Bugs Fixed
+* Ensured that `excludedRegions` is getting honored change feed operations. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003) 
+
+#### Other Changes
+* Added change to throw `IllegalStateException` when change feed mode is switched from `AllVersionsAndDeletes` to `Incremental` and vice-versa for the same deployment unit for EPK-Range based leases. See [PR 38740](https://github.com/Azure/azure-sdk-for-java/pull/38740)
+
+### 4.59.0 (2024-04-27)
+#### Features Added
+* Added public APIs `getCustomItemSerializer` and `setCustomItemSerializer` to allow customers to specify custom payload transformations or serialization settings. - See [PR 38997](https://github.com/Azure/azure-sdk-for-java/pull/38997) and [PR 39933](https://github.com/Azure/azure-sdk-for-java/pull/39933) 
+
+#### Other Changes
+* Load Blackbird or Afterburner into the ObjectMapper depending upon Java version and presence of modules in classpath. Make Afterburner and Blackbird optional maven dependencies. See - [PR 39689](https://github.com/Azure/azure-sdk-for-java/pull/39689)
+
+### 4.53.5-hotfix (2024-04-25)
+
+#### Bugs Fixed
+* Fixed an issue in QuorumReader when quorum could not be selected even though 1 secondary and Primary are reachable and in sync. - See [PR 38832](https://github.com/Azure/azure-sdk-for-java/pull/38832)
+
+### 4.58.0 (2024-04-16)
 #### Other Changes
 * Changed initial `targetBatchSize` to be capped by both `initialBatchSize` and `maxBatchSize` configured in `CosmosBulkExecutionOptions` - See[39500](https://github.com/Azure/azure-sdk-for-java/pull/39500)
 * Ensured that `exceptionMessage` is populated even for non-cosmos Exceptions in `GatewayStatistics` - See [PR 39507](https://github.com/Azure/azure-sdk-for-java/pull/39507)
@@ -82,6 +107,13 @@
 * Using customized `subStatusCodes` for client generated `InternalServerErrorException`. - See [PR 38518](https://github.com/Azure/azure-sdk-for-java/pull/38518)
 * Added an option to opt-out of E2E timeout defined in CosmosClientBuilder for non-point operations via system property or environment variable. - See [PR 38388](https://github.com/Azure/azure-sdk-for-java/pull/38388)
 * Using `ConnectionTimeout` as the `RNTBD` connection `acquisitionTimeout`. - See [PR 38695](https://github.com/Azure/azure-sdk-for-java/pull/38695)
+
+### 4.53.2-hotfix (2024-02-04)
+
+#### Other Changes
+* Reduced CPU overhead slightly for workloads with high throughput of point operations - especially when diagnostics like traces or metrics are enabled. - See [PR 38232](https://github.com/Azure/azure-sdk-for-java/pull/38232)
+* Changed to add `transportRequestChannelAcquisitionContext` in CosmosDiagnostics based on duration in `channelAcquisitionStarted` stage. By default, if `channelAcquisitionStarted` took more than 1s, `transportRequestChannelAcquisitionContext` will be added. - See [PR 38416](https://github.com/Azure/azure-sdk-for-java/pull/38416)
+* Added an option to opt-out of E2E timeout defined in CosmosClientBuilder for non-point operations via system property or environment variable. - See [PR 38388](https://github.com/Azure/azure-sdk-for-java/pull/38388)
 
 ### 4.54.0 (2024-01-03)
 

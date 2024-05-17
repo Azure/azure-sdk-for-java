@@ -6,22 +6,22 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.resourcemanager.devcenter.models.Pool;
 
-/** Samples for Pools Update. */
+/**
+ * Samples for Pools Update.
+ */
 public final class PoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Pools_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Pools_Patch.json
      */
     /**
      * Sample code: Pools_Update.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void poolsUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        Pool resource =
-            manager
-                .pools()
-                .getWithResponse("rg1", "DevProject", "DevPool", com.azure.core.util.Context.NONE)
-                .getValue();
+        Pool resource = manager.pools()
+            .getWithResponse("rg1", "DevProject", "DevPool", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withDevBoxDefinitionName("WebDevBox2").apply();
     }
 }

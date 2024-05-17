@@ -13,7 +13,7 @@ import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaBuilder;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.sink.SinkRecord;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,10 +23,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TemplateStrategyTest {
-    IdStrategy strategy = new TemplateStrategy();
 
-    @Test
+    @Test(groups = { "unit" })
     public void simpleKey() {
+        IdStrategy strategy = new TemplateStrategy();
         Map<String, String> map = new HashMap<>();
         map.put(TemplateStrategyConfig.TEMPLATE_CONFIG, "${key}");
         strategy.configure(map);
@@ -38,8 +38,9 @@ public class TemplateStrategyTest {
         assertEquals("test", id);
     }
 
-    @Test
+    @Test(groups = { "unit" })
     public void kafkaMetadata() {
+        IdStrategy strategy = new TemplateStrategy();
         Map<String, String> map = new HashMap<>();
         map.put(TemplateStrategyConfig.TEMPLATE_CONFIG, "${topic}-${partition}-${offset}");
         strategy.configure(map);
@@ -52,8 +53,9 @@ public class TemplateStrategyTest {
         assertEquals("mytopic-0-1", id);
     }
 
-    @Test
+    @Test(groups = { "unit" })
     public void unknownVariablePreserved() {
+        IdStrategy strategy = new TemplateStrategy();
         Map<String, String> map = new HashMap<>();
         map.put(TemplateStrategyConfig.TEMPLATE_CONFIG, "${unknown}");
 
@@ -62,8 +64,9 @@ public class TemplateStrategyTest {
         assertEquals("${unknown}", id);
     }
 
-    @Test
+    @Test(groups = { "unit" })
     public void nestedStruct() {
+        IdStrategy strategy = new TemplateStrategy();
         Map<String, String> map = new HashMap<>();
         map.put(TemplateStrategyConfig.TEMPLATE_CONFIG, "${key}");
 
@@ -89,8 +92,9 @@ public class TemplateStrategyTest {
             id);
     }
 
-    @Test
+    @Test(groups = { "unit" })
     public void fullKeyStrategyUsesFullKey() {
+        IdStrategy strategy = new TemplateStrategy();
         strategy = new FullKeyStrategy();
         strategy.configure(new HashMap<>());
         SinkRecord record = mock(SinkRecord.class);
@@ -111,8 +115,9 @@ public class TemplateStrategyTest {
             id);
     }
 
-    @Test
+    @Test(groups = { "unit" })
     public void metadataStrategyUsesMetadataWithDeliminator() {
+        IdStrategy strategy = new TemplateStrategy();
         Map<String, String> map = new HashMap<>();
         map.put(KafkaMetadataStrategyConfig.DELIMITER_CONFIG, "_");
 
@@ -127,8 +132,9 @@ public class TemplateStrategyTest {
         assertEquals("topic_0_1", id);
     }
 
-    @Test
+    @Test(groups = { "unit" })
     public void generatedIdSanitized() {
+        IdStrategy strategy = new TemplateStrategy();
         Map<String, String> map = new HashMap<>();
         map.put(TemplateStrategyConfig.TEMPLATE_CONFIG, "#my/special\\id?");
 

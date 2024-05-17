@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -465,6 +466,27 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
+    /**
+     * Gets the custom item serializer defined for this instance of request options
+     * @return the custom item serializer
+     */
+    public CosmosItemSerializer getCustomItemSerializer() {
+        return this.actualRequestOptions.getCustomItemSerializer();
+    }
+
+    /**
+     * Allows specifying a custom item serializer to be used for this operation. If the serializer
+     * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
+     * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
+     * @param customItemSerializer the custom item serializer for this operation
+     * @return  the CosmosItemRequestOptions.
+     */
+    public CosmosQueryRequestOptions setCustomItemSerializer(CosmosItemSerializer customItemSerializer) {
+        this.actualRequestOptions.setCustomItemSerializer(customItemSerializer);
+
+        return this;
+    }
+
     CosmosQueryRequestOptionsBase<?> getImpl() {
         return this.actualRequestOptions;
     }
@@ -486,6 +508,15 @@ public class CosmosQueryRequestOptions {
      */
     CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
         this.actualRequestOptions.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
+        return this;
+    }
+
+    PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.actualRequestOptions.getPartitionKeyDefinition();
+    }
+
+    CosmosQueryRequestOptions setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
         return this;
     }
 
@@ -580,6 +611,16 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public String getRequestContinuation(CosmosQueryRequestOptions options) {
                     return options.getRequestContinuation();
+                }
+
+                @Override
+                public void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition) {
+                    options.setPartitionKeyDefinition(partitionKeyDefinition);
+                }
+
+                @Override
+                public PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options) {
+                    return options.getPartitionKeyDefinition();
                 }
             });
     }

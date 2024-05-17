@@ -196,8 +196,8 @@ public final class ServiceBusManagementClientImpl {
     }
 
     /**
-     * The interface defining all the services for ServiceBusManagementClient to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for ServiceBusManagementClient to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("https://{endpoint}")
     @ServiceInterface(name = "ServiceBusManagement")

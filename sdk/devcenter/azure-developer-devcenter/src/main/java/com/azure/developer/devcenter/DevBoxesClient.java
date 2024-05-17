@@ -148,7 +148,7 @@ public final class DevBoxesClient {
     }
 
     /**
-     * Lists available schedules for a pool.
+     * Lists all schedules within a pool that are configured by your project administrator.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -161,8 +161,8 @@ public final class DevBoxesClient {
      * }
      * }</pre>
      *
-     * @param projectName Name of the project.
-     * @param poolName Pool name.
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param poolName The name of a pool of Dev Boxes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -263,7 +263,7 @@ public final class DevBoxesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result as paginated response with {@link PagedIterable}.
+     * @return paged collection of DevBox items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -329,7 +329,7 @@ public final class DevBoxesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result as paginated response with {@link PagedIterable}.
+     * @return paged collection of DevBox items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -396,7 +396,7 @@ public final class DevBoxesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the Dev Box list result as paginated response with {@link PagedIterable}.
+     * @return paged collection of DevBox items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -600,8 +600,8 @@ public final class DevBoxesClient {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     name: String (Optional)
-     *     status: String(Running/Completed/Canceled/Failed) (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
@@ -647,8 +647,8 @@ public final class DevBoxesClient {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     name: String (Optional)
-     *     status: String(Running/Completed/Canceled/Failed) (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
@@ -701,8 +701,8 @@ public final class DevBoxesClient {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     name: String (Optional)
-     *     status: String(Running/Completed/Canceled/Failed) (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
@@ -748,8 +748,8 @@ public final class DevBoxesClient {
      * <pre>{@code
      * {
      *     id: String (Required)
-     *     name: String (Optional)
-     *     status: String(Running/Completed/Canceled/Failed) (Required)
+     *     name: String (Required)
+     *     status: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
      *     resourceId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
      *     endTime: OffsetDateTime (Optional)
@@ -988,7 +988,7 @@ public final class DevBoxesClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the actions list result as paginated response with {@link PagedIterable}.
+     * @return paged collection of DevBoxActionDelayResult items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1040,10 +1040,10 @@ public final class DevBoxesClient {
     }
 
     /**
-     * Lists available schedules for a pool.
+     * Lists all schedules within a pool that are configured by your project administrator.
      *
-     * @param projectName Name of the project.
-     * @param poolName Pool name.
+     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param poolName The name of a pool of Dev Boxes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1092,7 +1092,7 @@ public final class DevBoxesClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Dev Box list result as paginated response with {@link PagedIterable}.
+     * @return paged collection of DevBox items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1114,7 +1114,7 @@ public final class DevBoxesClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Dev Box list result as paginated response with {@link PagedIterable}.
+     * @return paged collection of DevBox items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1137,7 +1137,7 @@ public final class DevBoxesClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Dev Box list result as paginated response with {@link PagedIterable}.
+     * @return paged collection of DevBox items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1458,7 +1458,7 @@ public final class DevBoxesClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the actions list result as paginated response with {@link PagedIterable}.
+     * @return paged collection of DevBoxActionDelayResult items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

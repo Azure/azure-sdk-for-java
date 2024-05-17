@@ -6,55 +6,37 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
 import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategy;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class FleetUpdateStrategiesListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"fpel\",\"groups\":[{\"name\":\"pv\"}],\"afterStageWaitInSeconds\":43527729},{\"name\":\"pqvujzraehtwdwrf\",\"groups\":[{\"name\":\"iby\"}],\"afterStageWaitInSeconds\":403427600},{\"name\":\"l\",\"groups\":[{\"name\":\"hfwpracstwit\"},{\"name\":\"khevxccedc\"},{\"name\":\"nmdyodnwzxl\"},{\"name\":\"jc\"}],\"afterStageWaitInSeconds\":573145067},{\"name\":\"ltiugcxnavv\",\"groups\":[{\"name\":\"ibyqunyowxwlmdj\"}],\"afterStageWaitInSeconds\":1085300316}]}},\"eTag\":\"g\",\"id\":\"fvpdbo\",\"name\":\"acizsjqlhkrr\",\"type\":\"bdeibqipqk\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"df\",\"groups\":[{\"name\":\"ae\"},{\"name\":\"kojvd\"},{\"name\":\"pzfoqoui\"}],\"afterStageWaitInSeconds\":1370358053}]}},\"eTag\":\"arz\",\"id\":\"zuf\",\"name\":\"x\",\"type\":\"iqopidoamciod\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        ContainerServiceFleetManager manager = ContainerServiceFleetManager.configure().withHttpClient(httpClient)
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerServiceFleetManager manager = ContainerServiceFleetManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<FleetUpdateStrategy> response = manager.fleetUpdateStrategies().listByFleet("sfgytguslfead",
-            "ygqukyhejh", com.azure.core.util.Context.NONE);
+        PagedIterable<FleetUpdateStrategy> response
+            = manager.fleetUpdateStrategies().listByFleet("gkfbtndoaong", "jcntuj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fpel", response.iterator().next().strategy().stages().get(0).name());
-        Assertions.assertEquals("pv", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(43527729,
+        Assertions.assertEquals("df", response.iterator().next().strategy().stages().get(0).name());
+        Assertions.assertEquals("ae", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1370358053,
             response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

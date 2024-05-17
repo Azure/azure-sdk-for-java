@@ -9,9 +9,7 @@ package com.azure.resourcemanager.eventgrid.generated;
  */
 public final class CaCertificatesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * CaCertificates_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/CaCertificates_Delete.json
      */
     /**
      * Sample code: CaCertificates_Delete.
@@ -19,7 +17,8 @@ public final class CaCertificatesDeleteSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void caCertificatesDelete(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.caCertificates().delete("examplerg", "exampleNamespaceName1", "exampleCACertificateName1",
-            com.azure.core.util.Context.NONE);
+        manager.caCertificates()
+            .delete("examplerg", "exampleNamespaceName1", "exampleCACertificateName1",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -9,16 +9,21 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class FilesCreateSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * CreateFileForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/CreateFileForSubscription.json
      */
     /**
-     * Sample code: Create a subscription scoped file.
+     * Sample code: Create a file under a subscription workspace.
      * 
      * @param manager Entry point to SupportManager.
      */
-    public static void createASubscriptionScopedFile(com.azure.resourcemanager.support.SupportManager manager) {
-        manager.files().define("test.txt").withExistingFileWorkspace("testworkspace").withChunkSize(41423)
-            .withFileSize(41423).withNumberOfChunks(1).create();
+    public static void
+        createAFileUnderASubscriptionWorkspace(com.azure.resourcemanager.support.SupportManager manager) {
+        manager.files()
+            .define("test.txt")
+            .withExistingFileWorkspace("testworkspace")
+            .withChunkSize(41423)
+            .withFileSize(41423)
+            .withNumberOfChunks(1)
+            .create();
     }
 }

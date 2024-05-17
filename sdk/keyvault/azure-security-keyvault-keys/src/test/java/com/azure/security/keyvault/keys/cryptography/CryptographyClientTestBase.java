@@ -15,6 +15,7 @@ import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
@@ -52,6 +53,8 @@ import java.util.function.Consumer;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public abstract class CryptographyClientTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(CryptographyClientTestBase.class);
+
     protected boolean isHsmEnabled = false;
     protected boolean runManagedHsmTest = false;
 
@@ -338,10 +341,6 @@ public abstract class CryptographyClientTestBase extends TestProxyTestBase {
     }
 
     public void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleepIfRunningAgainstService(millis);
     }
 }

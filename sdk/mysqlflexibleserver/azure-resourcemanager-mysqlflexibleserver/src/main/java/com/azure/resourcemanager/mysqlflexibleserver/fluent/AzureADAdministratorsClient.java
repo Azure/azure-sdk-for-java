@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.AzureADAdministratorInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorName;
 
-/** An instance of this class provides access to all the operations defined in AzureADAdministratorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AzureADAdministratorsClient.
+ */
 public interface AzureADAdministratorsClient {
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -30,14 +32,12 @@ public interface AzureADAdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureADAdministratorInner>, AzureADAdministratorInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
+        String resourceGroupName, String serverName, AdministratorName administratorName,
         AzureADAdministratorInner parameters);
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -50,15 +50,12 @@ public interface AzureADAdministratorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureADAdministratorInner>, AzureADAdministratorInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        AzureADAdministratorInner parameters,
-        Context context);
+        String resourceGroupName, String serverName, AdministratorName administratorName,
+        AzureADAdministratorInner parameters, Context context);
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -69,15 +66,12 @@ public interface AzureADAdministratorsClient {
      * @return represents a Administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureADAdministratorInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        AzureADAdministratorInner parameters);
+    AzureADAdministratorInner createOrUpdate(String resourceGroupName, String serverName,
+        AdministratorName administratorName, AzureADAdministratorInner parameters);
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -89,16 +83,12 @@ public interface AzureADAdministratorsClient {
      * @return represents a Administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureADAdministratorInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        AzureADAdministratorInner parameters,
-        Context context);
+    AzureADAdministratorInner createOrUpdate(String resourceGroupName, String serverName,
+        AdministratorName administratorName, AzureADAdministratorInner parameters, Context context);
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -108,12 +98,12 @@ public interface AzureADAdministratorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, AdministratorName administratorName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        AdministratorName administratorName);
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -124,12 +114,12 @@ public interface AzureADAdministratorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        AdministratorName administratorName, Context context);
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -142,7 +132,7 @@ public interface AzureADAdministratorsClient {
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -156,7 +146,7 @@ public interface AzureADAdministratorsClient {
 
     /**
      * Gets information about an azure ad administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -167,12 +157,12 @@ public interface AzureADAdministratorsClient {
      * @return information about an azure ad administrator along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureADAdministratorInner> getWithResponse(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context);
+    Response<AzureADAdministratorInner> getWithResponse(String resourceGroupName, String serverName,
+        AdministratorName administratorName, Context context);
 
     /**
      * Gets information about an azure ad administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -186,7 +176,7 @@ public interface AzureADAdministratorsClient {
 
     /**
      * List all the AAD administrators in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,7 +189,7 @@ public interface AzureADAdministratorsClient {
 
     /**
      * List all the AAD administrators in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.

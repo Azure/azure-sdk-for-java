@@ -47,6 +47,9 @@ public final class TableProperties implements JsonSerializable<TableProperties> 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

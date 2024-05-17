@@ -7,16 +7,28 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Represents a security solution which sends CEF logs to an OMS workspace.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = CefExternalSecuritySolution.class,
+    visible = true)
 @JsonTypeName("CEF")
 @Fluent
 public final class CefExternalSecuritySolution extends ExternalSecuritySolutionInner {
+    /*
+     * The kind of the external solution
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private ExternalSecuritySolutionKind kind = ExternalSecuritySolutionKind.CEF;
+
     /*
      * The external security solution properties for CEF solutions
      */
@@ -27,6 +39,16 @@ public final class CefExternalSecuritySolution extends ExternalSecuritySolutionI
      * Creates an instance of CefExternalSecuritySolution class.
      */
     public CefExternalSecuritySolution() {
+    }
+
+    /**
+     * Get the kind property: The kind of the external solution.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public ExternalSecuritySolutionKind kind() {
+        return this.kind;
     }
 
     /**

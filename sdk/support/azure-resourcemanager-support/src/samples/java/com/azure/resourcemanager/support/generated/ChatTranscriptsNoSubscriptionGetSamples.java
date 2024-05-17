@@ -9,8 +9,7 @@ package com.azure.resourcemanager.support.generated;
  */
 public final class ChatTranscriptsNoSubscriptionGetSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2023-06-01-preview/examples/
-     * GetchatTranscriptDetailsForSupportTicket.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/GetchatTranscriptDetailsForSupportTicket.json
      */
     /**
      * Sample code: Get chat transcript details for a subscription support ticket.
@@ -19,7 +18,7 @@ public final class ChatTranscriptsNoSubscriptionGetSamples {
      */
     public static void getChatTranscriptDetailsForASubscriptionSupportTicket(
         com.azure.resourcemanager.support.SupportManager manager) {
-        manager.chatTranscriptsNoSubscriptions().getWithResponse("testticket", "b371192a-b094-4a71-b093-7246029b0a54",
-            com.azure.core.util.Context.NONE);
+        manager.chatTranscriptsNoSubscriptions()
+            .getWithResponse("testticket", "b371192a-b094-4a71-b093-7246029b0a54", com.azure.core.util.Context.NONE);
     }
 }

@@ -772,6 +772,26 @@ public class ReactiveCosmosTemplateIT {
     }
 
     @Test
+    public void testNotExists() {
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList("randomFirstName"), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        final Mono<Boolean> exists = cosmosTemplate.exists(query, Person.class, containerName);
+        StepVerifier.create(exists).expectNext(false).verifyComplete();
+
+        // add ignore testing
+        final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList("randomFirstName".toUpperCase()), Part.IgnoreCaseType.ALWAYS);
+        final CosmosQuery queryIgnoreCase = new CosmosQuery(criteriaIgnoreCase);
+        final Mono<Boolean> existsIgnoreCase = cosmosTemplate.exists(queryIgnoreCase, Person.class, containerName);
+        StepVerifier.create(existsIgnoreCase).expectNext(false).verifyComplete();
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+    }
+
+    @Test
     public void testCount() {
         final Mono<Long> count = cosmosTemplate.count(containerName);
         StepVerifier.create(count).expectNext((long) 1).verifyComplete();

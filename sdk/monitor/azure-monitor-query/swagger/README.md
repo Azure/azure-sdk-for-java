@@ -148,6 +148,7 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 enable-sync-stack: true
 stream-style-serialization: true
+customization-class: src/main/java/MetricsClientCustomization.java
 ```
 
 ### Change Interval to type 'Duration'

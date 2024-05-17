@@ -14,20 +14,20 @@ public final class ServiceBusQueueEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceBusQueueEventSubscriptionDestination model = BinaryData.fromString(
-            "{\"endpointType\":\"ServiceBusQueue\",\"properties\":{\"resourceId\":\"dcueljtiahxmfq\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"vsxzqbglcjka\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"pth\"}]}}")
+            "{\"endpointType\":\"ServiceBusQueue\",\"properties\":{\"resourceId\":\"mc\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"doabhj\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"xqweu\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"mp\"}]}}")
             .toObject(ServiceBusQueueEventSubscriptionDestination.class);
-        Assertions.assertEquals("dcueljtiahxmfq", model.resourceId());
-        Assertions.assertEquals("vsxzqbglcjka", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("mc", model.resourceId());
+        Assertions.assertEquals("doabhj", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceBusQueueEventSubscriptionDestination model
-            = new ServiceBusQueueEventSubscriptionDestination().withResourceId("dcueljtiahxmfq")
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("vsxzqbglcjka"),
-                    new DeliveryAttributeMapping().withName("pth")));
+            = new ServiceBusQueueEventSubscriptionDestination().withResourceId("mc")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("doabhj"),
+                    new DeliveryAttributeMapping().withName("xqweu"), new DeliveryAttributeMapping().withName("mp")));
         model = BinaryData.fromObject(model).toObject(ServiceBusQueueEventSubscriptionDestination.class);
-        Assertions.assertEquals("dcueljtiahxmfq", model.resourceId());
-        Assertions.assertEquals("vsxzqbglcjka", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("mc", model.resourceId());
+        Assertions.assertEquals("doabhj", model.deliveryAttributeMappings().get(0).name());
     }
 }

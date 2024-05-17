@@ -10,6 +10,9 @@ extends:
       - name: azure-messaging-eventgrid
         groupId: com.azure
         safeName: azuremessagingeventgrid
+      - name: azure-messaging-eventgrid-namespaces
+        groupId: com.azure
+        safeName: azuremessagingeventgridnamespaces
       - name: azure-messaging-eventgrid-cloudnative-cloudevents
         groupId: com.azure
         safeName: azuremessagingeventgridcloudnativecloudevents

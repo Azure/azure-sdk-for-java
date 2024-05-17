@@ -4,17 +4,23 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.HighAvailabilityValidationEstimationInner;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CreateMode;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Identity;
+import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailabilityValidationEstimation;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ImportSourceProperties;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
+import com.azure.resourcemanager.mysqlflexibleserver.models.MySqlServerIdentity;
+import com.azure.resourcemanager.mysqlflexibleserver.models.MySqlServerSku;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
+import com.azure.resourcemanager.mysqlflexibleserver.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerForUpdate;
@@ -22,10 +28,10 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.ServerGtidSetParamet
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerRestartParameter;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerState;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerVersion;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Sku;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Storage;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class ServerImpl implements Server, Server.Definition, Server.Update {
@@ -58,11 +64,11 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
-    public Identity identity() {
+    public MySqlServerIdentity identity() {
         return this.innerModel().identity();
     }
 
-    public Sku sku() {
+    public MySqlServerSku sku() {
         return this.innerModel().sku();
     }
 
@@ -134,8 +140,21 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerModel().network();
     }
 
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnection> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public MaintenanceWindow maintenanceWindow() {
         return this.innerModel().maintenanceWindow();
+    }
+
+    public ImportSourceProperties importSourceProperties() {
+        return this.innerModel().importSourceProperties();
     }
 
     public Region region() {
@@ -170,20 +189,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .create(resourceGroupName, serverName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .create(resourceGroupName, serverName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Server create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .create(resourceGroupName, serverName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .create(resourceGroupName, serverName, this.innerModel(), context);
         return this;
     }
 
@@ -199,47 +214,39 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .update(resourceGroupName, serverName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .update(resourceGroupName, serverName, updateParameters, Context.NONE);
         return this;
     }
 
     public Server apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .update(resourceGroupName, serverName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .update(resourceGroupName, serverName, updateParameters, context);
         return this;
     }
 
     ServerImpl(ServerInner innerObject, com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "flexibleServers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
     }
 
     public Server refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Server refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .getByResourceGroupWithResponse(resourceGroupName, serverName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServers()
+            .getByResourceGroupWithResponse(resourceGroupName, serverName, context)
+            .getValue();
         return this;
     }
 
@@ -249,6 +256,17 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
 
     public void failover(Context context) {
         serviceManager.servers().failover(resourceGroupName, serverName, context);
+    }
+
+    public Response<HighAvailabilityValidationEstimation> validateEstimateHighAvailabilityWithResponse(
+        HighAvailabilityValidationEstimationInner parameters, Context context) {
+        return serviceManager.servers()
+            .validateEstimateHighAvailabilityWithResponse(resourceGroupName, serverName, parameters, context);
+    }
+
+    public HighAvailabilityValidationEstimation
+        validateEstimateHighAvailability(HighAvailabilityValidationEstimationInner parameters) {
+        return serviceManager.servers().validateEstimateHighAvailability(resourceGroupName, serverName, parameters);
     }
 
     public void restart(ServerRestartParameter parameters) {
@@ -303,7 +321,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
-    public ServerImpl withIdentity(Identity identity) {
+    public ServerImpl withIdentity(MySqlServerIdentity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
             return this;
@@ -313,7 +331,7 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
-    public ServerImpl withSku(Sku sku) {
+    public ServerImpl withSku(MySqlServerSku sku) {
         if (isInCreateMode()) {
             this.innerModel().withSku(sku);
             return this;
@@ -426,6 +444,11 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
             this.updateParameters.withNetwork(network);
             return this;
         }
+    }
+
+    public ServerImpl withImportSourceProperties(ImportSourceProperties importSourceProperties) {
+        this.innerModel().withImportSourceProperties(importSourceProperties);
+        return this;
     }
 
     public ServerImpl withMaintenanceWindow(MaintenanceWindow maintenanceWindow) {

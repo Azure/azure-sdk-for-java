@@ -19,8 +19,8 @@ import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
-import com.azure.resourcemanager.appservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -493,6 +493,8 @@ public class FunctionAppsTests extends AppServiceTest {
 
     @Test
     public void canCreateAndUpdateFunctionAppOnACA() {
+        rgName2 = null;
+
         Region region = Region.US_EAST;
         ResourceGroup resourceGroup = appServiceManager.resourceManager()
             .resourceGroups()

@@ -131,7 +131,7 @@ public class ReactorHandlerProviderTest {
     @SuppressWarnings("deprecation")
     public void constructorNull() {
         // Act
-        assertThrows(NullPointerException.class, () -> new ReactorHandlerProvider(null));
+        assertThrows(NullPointerException.class, () -> new ReactorHandlerProvider(null, null));
     }
 
     @Test

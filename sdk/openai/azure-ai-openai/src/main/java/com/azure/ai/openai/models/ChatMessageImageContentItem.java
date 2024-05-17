@@ -5,21 +5,14 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A structured chat content item containing an image reference.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = ChatMessageImageContentItem.class,
-    visible = true)
-@JsonTypeName("image_url")
 @Immutable
 public final class ChatMessageImageContentItem extends ChatMessageContentItem {
 
@@ -27,7 +20,6 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
      * An internet location, which must be accessible to the model,from which the image may be retrieved.
      */
     @Generated
-    @JsonProperty(value = "image_url")
     private final ChatMessageImageUrl imageUrl;
 
     /**
@@ -36,8 +28,7 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
      * @param imageUrl the imageUrl value to set.
      */
     @Generated
-    @JsonCreator
-    public ChatMessageImageContentItem(@JsonProperty(value = "image_url") ChatMessageImageUrl imageUrl) {
+    public ChatMessageImageContentItem(ChatMessageImageUrl imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -56,8 +47,6 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
      * The discriminated object type.
      */
     @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
     private String type = "image_url";
 
     /**
@@ -69,5 +58,49 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
     @Override
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("image_url", this.imageUrl);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatMessageImageContentItem from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatMessageImageContentItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatMessageImageContentItem.
+     */
+    @Generated
+    public static ChatMessageImageContentItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChatMessageImageUrl imageUrl = null;
+            String type = "image_url";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("image_url".equals(fieldName)) {
+                    imageUrl = ChatMessageImageUrl.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ChatMessageImageContentItem deserializedChatMessageImageContentItem
+                = new ChatMessageImageContentItem(imageUrl);
+            deserializedChatMessageImageContentItem.type = type;
+            return deserializedChatMessageImageContentItem;
+        });
     }
 }

@@ -13,13 +13,15 @@ import com.azure.resourcemanager.hybridcompute.models.PatchOperationStatus;
 import com.azure.resourcemanager.hybridcompute.models.PatchServiceUsed;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
-/** Describes the properties of an AssessPatches result. */
+/**
+ * Describes the properties of an AssessPatches result.
+ */
 @Fluent
 public final class MachineAssessPatchesResultInner {
     /*
-     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes.
-     * At that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
+     * The overall success or failure status of the operation. It remains "InProgress" until the operation completes. At that point it will become "Unknown", "Failed", "Succeeded", or "CompletedWithWarnings."
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private PatchOperationStatus status;
@@ -28,11 +30,10 @@ public final class MachineAssessPatchesResultInner {
      * The activity ID of the operation that produced this result.
      */
     @JsonProperty(value = "assessmentActivityId", access = JsonProperty.Access.WRITE_ONLY)
-    private String assessmentActivityId;
+    private UUID assessmentActivityId;
 
     /*
-     * The overall reboot status of the VM. It will be true when partially installed patches require a reboot to
-     * complete installation but the reboot has not yet occurred.
+     * The overall reboot status of the VM. It will be true when partially installed patches require a reboot to complete installation but the reboot has not yet occurred.
      */
     @JsonProperty(value = "rebootPending", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean rebootPending;
@@ -79,7 +80,9 @@ public final class MachineAssessPatchesResultInner {
     @JsonProperty(value = "errorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError errorDetails;
 
-    /** Creates an instance of MachineAssessPatchesResultInner class. */
+    /**
+     * Creates an instance of MachineAssessPatchesResultInner class.
+     */
     public MachineAssessPatchesResultInner() {
     }
 
@@ -87,7 +90,7 @@ public final class MachineAssessPatchesResultInner {
      * Get the status property: The overall success or failure status of the operation. It remains "InProgress" until
      * the operation completes. At that point it will become "Unknown", "Failed", "Succeeded", or
      * "CompletedWithWarnings.".
-     *
+     * 
      * @return the status value.
      */
     public PatchOperationStatus status() {
@@ -96,17 +99,17 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the assessmentActivityId property: The activity ID of the operation that produced this result.
-     *
+     * 
      * @return the assessmentActivityId value.
      */
-    public String assessmentActivityId() {
+    public UUID assessmentActivityId() {
         return this.assessmentActivityId;
     }
 
     /**
      * Get the rebootPending property: The overall reboot status of the VM. It will be true when partially installed
      * patches require a reboot to complete installation but the reboot has not yet occurred.
-     *
+     * 
      * @return the rebootPending value.
      */
     public Boolean rebootPending() {
@@ -116,7 +119,7 @@ public final class MachineAssessPatchesResultInner {
     /**
      * Get the availablePatchCountByClassification property: Summarization of patches available for installation on the
      * machine by classification.
-     *
+     * 
      * @return the availablePatchCountByClassification value.
      */
     public AvailablePatchCountByClassification availablePatchCountByClassification() {
@@ -126,7 +129,7 @@ public final class MachineAssessPatchesResultInner {
     /**
      * Set the availablePatchCountByClassification property: Summarization of patches available for installation on the
      * machine by classification.
-     *
+     * 
      * @param availablePatchCountByClassification the availablePatchCountByClassification value to set.
      * @return the MachineAssessPatchesResultInner object itself.
      */
@@ -138,7 +141,7 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the startDateTime property: The UTC timestamp when the operation began.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -147,7 +150,7 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the lastModifiedDateTime property: The UTC timestamp when the operation finished.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -156,7 +159,7 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the startedBy property: Indicates if operation was triggered by user or by platform.
-     *
+     * 
      * @return the startedBy value.
      */
     public PatchOperationStartedBy startedBy() {
@@ -165,7 +168,7 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the patchServiceUsed property: Specifies the patch service used for the operation.
-     *
+     * 
      * @return the patchServiceUsed value.
      */
     public PatchServiceUsed patchServiceUsed() {
@@ -174,7 +177,7 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Get the osType property: The operating system type of the machine.
-     *
+     * 
      * @return the osType value.
      */
     public OsType osType() {
@@ -184,7 +187,7 @@ public final class MachineAssessPatchesResultInner {
     /**
      * Get the errorDetails property: The errors that were encountered during execution of the operation. The details
      * array contains the list of them.
-     *
+     * 
      * @return the errorDetails value.
      */
     public ManagementError errorDetails() {
@@ -193,7 +196,7 @@ public final class MachineAssessPatchesResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -134,18 +134,21 @@ public final class JitNetworkAccessRequestInner {
      */
     public void validate() {
         if (virtualMachines() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property virtualMachines in model JitNetworkAccessRequestInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualMachines in model JitNetworkAccessRequestInner"));
         } else {
             virtualMachines().forEach(e -> e.validate());
         }
         if (startTimeUtc() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property startTimeUtc in model JitNetworkAccessRequestInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startTimeUtc in model JitNetworkAccessRequestInner"));
         }
         if (requestor() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property requestor in model JitNetworkAccessRequestInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property requestor in model JitNetworkAccessRequestInner"));
         }
     }
 

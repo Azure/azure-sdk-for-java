@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class CustomAssessmentAutomationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/
-     * CustomAssessmentAutomations/customAssessmentAutomationListBySubscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2021-07-01-preview/examples/CustomAssessmentAutomations/customAssessmentAutomationListBySubscription_example.json
      */
     /**
      * Sample code: List Custom Assessment Automations in a subscription.

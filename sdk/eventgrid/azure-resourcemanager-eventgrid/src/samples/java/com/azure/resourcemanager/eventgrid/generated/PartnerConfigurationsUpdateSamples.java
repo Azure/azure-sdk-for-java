@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class PartnerConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
-     * PartnerConfigurations_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/PartnerConfigurations_Update.json
      */
     /**
      * Sample code: PartnerConfigurations_Update.
@@ -23,10 +21,11 @@ public final class PartnerConfigurationsUpdateSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerConfigurationsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.partnerConfigurations().update(
-            "examplerg", new PartnerConfigurationUpdateParameters()
-                .withTags(mapOf("tag1", "value11", "tag2", "value22")).withDefaultMaximumExpirationTimeInDays(100),
-            com.azure.core.util.Context.NONE);
+        manager.partnerConfigurations()
+            .update("examplerg",
+                new PartnerConfigurationUpdateParameters().withTags(mapOf("tag1", "value11", "tag2", "value22"))
+                    .withDefaultMaximumExpirationTimeInDays(100),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

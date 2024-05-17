@@ -9,9 +9,7 @@ package com.azure.resourcemanager.selfhelp.generated;
  */
 public final class TroubleshootersRestartSamples {
     /*
-     * x-ms-original-file:
-     * specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Troubleshooter_Restart.
-     * json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Restart.json
      */
     /**
      * Sample code: Troubleshooters_Restart.
@@ -19,8 +17,9 @@ public final class TroubleshootersRestartSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void troubleshootersRestart(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.troubleshooters().restartWithResponse(
-            "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
-            "abf168ed-1b54-454a-86f6-e4b62253d3b1", com.azure.core.util.Context.NONE);
+        manager.troubleshooters()
+            .restartWithResponse(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
+                "abf168ed-1b54-454a-86f6-e4b62253d3b1", com.azure.core.util.Context.NONE);
     }
 }

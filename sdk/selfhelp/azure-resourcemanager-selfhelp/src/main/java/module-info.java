@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.selfhelp {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.selfhelp;
     exports com.azure.resourcemanager.selfhelp.fluent;
     exports com.azure.resourcemanager.selfhelp.fluent.models;
     exports com.azure.resourcemanager.selfhelp.models;
-
     opens com.azure.resourcemanager.selfhelp.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.selfhelp.models to com.azure.core, com.fasterxml.jackson.databind;
 }

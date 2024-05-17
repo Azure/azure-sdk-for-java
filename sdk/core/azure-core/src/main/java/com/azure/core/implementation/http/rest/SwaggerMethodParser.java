@@ -285,6 +285,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.responseEagerlyRead = isResponseEagerlyRead(unwrappedReturnType);
         this.ignoreResponseBody = isResponseBodyIgnored(unwrappedReturnType);
         this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
+
+        RestProxyUtils.validateResumeOperationIsNotPresent(swaggerMethod);
     }
 
     /**

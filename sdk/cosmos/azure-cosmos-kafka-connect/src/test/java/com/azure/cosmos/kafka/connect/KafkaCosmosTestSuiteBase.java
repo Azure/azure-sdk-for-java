@@ -88,7 +88,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         credential = new AzureKeyCredential(KafkaCosmosTestConfigurations.MASTER_KEY);
     }
 
-    @BeforeSuite(groups = { "kafka", "kafka-integration" }, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = { "kafka", "kafka-integration", "kafka-emulator" }, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -132,7 +132,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
             StringUtils.isEmpty(singlePartitionContainerName) ? UUID.randomUUID().toString() : singlePartitionContainerName;
     }
 
-    @AfterSuite(groups = { "kafka", "kafka-integration" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = { "kafka", "kafka-integration", "kafka-emulator" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");

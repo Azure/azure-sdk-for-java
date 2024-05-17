@@ -21,40 +21,38 @@ public final class AutomationUpdateModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AutomationUpdateModel model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"fthnzdn\",\"isEnabled\":false,\"scopes\":[{\"description\":\"yq\",\"scopePath\":\"ynduha\"},{\"description\":\"qlkth\",\"scopePath\":\"aqolbgycduiertg\"}],\"sources\":[{\"eventSource\":\"AttackPathsSnapshot\",\"ruleSets\":[{\"rules\":[{},{},{}]},{\"rules\":[{},{},{}]},{\"rules\":[{},{},{}]}]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]},\"tags\":{\"iydmcwyhzdxs\":\"dnbbglzps\",\"od\":\"adbzmnvdfznud\",\"cblylpstdbhhxsr\":\"xzb\",\"erscdntne\":\"dzu\"}}")
+            "{\"properties\":{\"description\":\"bwnhhtql\",\"isEnabled\":true,\"scopes\":[{\"description\":\"ipifhpfeoajvg\",\"scopePath\":\"txjcsheafidlt\"},{\"description\":\"sr\",\"scopePath\":\"mks\"},{\"description\":\"h\",\"scopePath\":\"ftxfkf\"}],\"sources\":[{\"eventSource\":\"SubAssessments\",\"ruleSets\":[{\"rules\":[{}]}]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]},\"tags\":{\"hm\":\"biqtgdq\",\"lllibph\":\"wsldrizetpwbr\",\"a\":\"qzmiza\"}}")
             .toObject(AutomationUpdateModel.class);
-        Assertions.assertEquals("dnbbglzps", model.tags().get("iydmcwyhzdxs"));
-        Assertions.assertEquals("fthnzdn", model.description());
-        Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("yq", model.scopes().get(0).description());
-        Assertions.assertEquals("ynduha", model.scopes().get(0).scopePath());
-        Assertions.assertEquals(EventSource.ATTACK_PATHS_SNAPSHOT, model.sources().get(0).eventSource());
+        Assertions.assertEquals("biqtgdq", model.tags().get("hm"));
+        Assertions.assertEquals("bwnhhtql", model.description());
+        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals("ipifhpfeoajvg", model.scopes().get(0).description());
+        Assertions.assertEquals("txjcsheafidlt", model.scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS, model.sources().get(0).eventSource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationUpdateModel model = new AutomationUpdateModel()
-            .withTags(
-                mapOf("iydmcwyhzdxs", "dnbbglzps", "od", "adbzmnvdfznud", "cblylpstdbhhxsr", "xzb", "erscdntne", "dzu"))
-            .withDescription("fthnzdn").withIsEnabled(false)
-            .withScopes(Arrays.asList(new AutomationScope().withDescription("yq").withScopePath("ynduha"),
-                new AutomationScope().withDescription("qlkth").withScopePath("aqolbgycduiertg")))
-            .withSources(Arrays.asList(new AutomationSource().withEventSource(EventSource.ATTACK_PATHS_SNAPSHOT)
-                .withRuleSets(Arrays.asList(
-                    new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule(),
-                        new AutomationTriggeringRule(), new AutomationTriggeringRule())),
-                    new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule(),
-                        new AutomationTriggeringRule(), new AutomationTriggeringRule())),
-                    new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule(),
-                        new AutomationTriggeringRule(), new AutomationTriggeringRule()))))))
-            .withActions(Arrays.asList(new AutomationAction(), new AutomationAction()));
+        AutomationUpdateModel model
+            = new AutomationUpdateModel().withTags(mapOf("hm", "biqtgdq", "lllibph", "wsldrizetpwbr", "a", "qzmiza"))
+                .withDescription("bwnhhtql")
+                .withIsEnabled(true)
+                .withScopes(
+                    Arrays.asList(new AutomationScope().withDescription("ipifhpfeoajvg").withScopePath("txjcsheafidlt"),
+                        new AutomationScope().withDescription("sr").withScopePath("mks"),
+                        new AutomationScope().withDescription("h").withScopePath("ftxfkf")))
+                .withSources(Arrays.asList(new AutomationSource().withEventSource(EventSource.SUB_ASSESSMENTS)
+                    .withRuleSets(Arrays
+                        .asList(new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule()))))))
+                .withActions(Arrays.asList(new AutomationAction(), new AutomationAction(), new AutomationAction(),
+                    new AutomationAction()));
         model = BinaryData.fromObject(model).toObject(AutomationUpdateModel.class);
-        Assertions.assertEquals("dnbbglzps", model.tags().get("iydmcwyhzdxs"));
-        Assertions.assertEquals("fthnzdn", model.description());
-        Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("yq", model.scopes().get(0).description());
-        Assertions.assertEquals("ynduha", model.scopes().get(0).scopePath());
-        Assertions.assertEquals(EventSource.ATTACK_PATHS_SNAPSHOT, model.sources().get(0).eventSource());
+        Assertions.assertEquals("biqtgdq", model.tags().get("hm"));
+        Assertions.assertEquals("bwnhhtql", model.description());
+        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals("ipifhpfeoajvg", model.scopes().get(0).description());
+        Assertions.assertEquals("txjcsheafidlt", model.scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS, model.sources().get(0).eventSource());
     }
 
     // Use "Map.of" if available

@@ -6,53 +6,35 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.TopicSpace;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TopicSpacesListByNamespaceMockTests {
     @Test
     public void testListByNamespace() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"ihqbtod\",\"topicTemplates\":[\"xbvkvwzdmvdd\",\"wcrugyozzz\",\"wnjdvvlrh\"],\"provisioningState\":\"Deleting\"},\"id\":\"kvx\",\"name\":\"ndqzbvbpsuv\",\"type\":\"hxtozfgdk\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"xwacyyjmlxp\",\"topicTemplates\":[\"dzkf\",\"vuiiu\",\"ibfkcjytq\"],\"provisioningState\":\"Deleting\"},\"id\":\"eqqfop\",\"name\":\"nopm\",\"type\":\"tdsfh\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        EventGridManager manager = EventGridManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EventGridManager manager = EventGridManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<TopicSpace> response = manager.topicSpaces()
+            .listByNamespace("anhz", "knjxizbaxdy", "zkz", 1973773763, com.azure.core.util.Context.NONE);
 
-        PagedIterable<TopicSpace> response = manager.topicSpaces().listByNamespace("aeuwqdwxhhlbmyph", "xnrp",
-            "hewokyqsfkxf", 1422383624, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("ihqbtod", response.iterator().next().description());
-        Assertions.assertEquals("xbvkvwzdmvdd", response.iterator().next().topicTemplates().get(0));
+        Assertions.assertEquals("xwacyyjmlxp", response.iterator().next().description());
+        Assertions.assertEquals("dzkf", response.iterator().next().topicTemplates().get(0));
     }
 }
