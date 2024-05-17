@@ -1,0 +1,24 @@
+[
+  {
+    "extension": "revapi.differences",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.resourcemanager\\.cosmos\\.models.*",
+          "justification": "Removing Jackson annotations from Resourcemanager Cosmos in transition to stream-style."
+        },
+        {
+          "ignore": true,
+          "regex": true,
+          "code": "java\\.annotation\\.added",
+          "old": ".*? com\\.azure\\.resourcemanager\\.cosmos\\.models.*",
+          "justification": "Removing Jackson annotations from Resourcemanager Cosmos in transition to stream-style."
+        }
+      ]
+    }
+  }
+]
