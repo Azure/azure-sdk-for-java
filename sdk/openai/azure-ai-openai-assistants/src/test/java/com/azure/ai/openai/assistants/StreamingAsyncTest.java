@@ -8,7 +8,6 @@ import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.StreamRequiredAction;
 import com.azure.ai.openai.assistants.models.StreamRunCreation;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
-import com.azure.ai.openai.assistants.models.SubmitToolOutputsOptions;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.BinaryData;
@@ -82,7 +81,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
                     .setOutput("x^2 + y^2 = z^2"));
             }
 
-            StepVerifier.create(client.submitToolOutputsToRunStream(runStep.get().getThreadId(), runStep.get().getRunId(), new SubmitToolOutputsOptions(toolOutputs)))
+            StepVerifier.create(client.submitToolOutputsToRunStream(runStep.get().getThreadId(), runStep.get().getRunId(), toolOutputs))
                 .thenConsumeWhile(streamUpdate -> true, streamUpdate -> {
                     String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
                     assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
@@ -152,7 +151,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
                     .setOutput("x^2 + y^2 = z^2"));
             }
 
-            StepVerifier.create(client.submitToolOutputsToRunStream(runStep.get().getThreadId(), runStep.get().getRunId(), new SubmitToolOutputsOptions(toolOutputs)))
+            StepVerifier.create(client.submitToolOutputsToRunStream(runStep.get().getThreadId(), runStep.get().getRunId(), toolOutputs))
                 .thenConsumeWhile(streamUpdate -> {
                     String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
                     assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));

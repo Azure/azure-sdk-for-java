@@ -12,17 +12,14 @@ import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
 import com.azure.ai.openai.assistants.models.RequiredToolCall;
 import com.azure.ai.openai.assistants.models.RunStepDeltaCodeInterpreterToolCall;
 import com.azure.ai.openai.assistants.models.RunStepDeltaToolCallObject;
-import com.azure.ai.openai.assistants.models.StreamMessageUpdate;
 import com.azure.ai.openai.assistants.models.StreamRequiredAction;
 import com.azure.ai.openai.assistants.models.StreamRunCreation;
 import com.azure.ai.openai.assistants.models.StreamRunStepUpdate;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
-import com.azure.ai.openai.assistants.models.SubmitToolOutputsOptions;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
-import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,7 +77,7 @@ public class StreamingFunctionCallExample {
         System.out.println("Submitting tool outputs");
         System.out.println("Generating python code:");
         client.submitToolOutputsToRunStream(threadId.get(), runId.get(),
-            new SubmitToolOutputsOptions(prepareToolOutputs((SubmitToolOutputsAction) requiredAction.get()))
+            prepareToolOutputs((SubmitToolOutputsAction) requiredAction.get())
         ).doOnNext(streamUpdate -> {
             if (streamUpdate instanceof StreamRunStepUpdate) {
                 RunStepDeltaToolCallObject runStepDetails = (RunStepDeltaToolCallObject) ((StreamRunStepUpdate) streamUpdate).getMessage().getDelta().getStepDetails();
