@@ -56,6 +56,10 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
 
     @Override
     protected HttpClient createHttpClient() {
+        // For testing purposes we're using a custom Dispatcher that will swallow UnexpectedLengthException exceptions
+        // thrown during testing as these are expected. By default, the OkHttp Dispatcher will use
+        // Thread.getDefaultUncaughtExceptionHandler() to handle uncaught exceptions, which prints the exception stack
+        // trace to System.err, which is just noise during testing.
         return new OkHttpAsyncHttpClientBuilder().dispatcher(createQuietDispatcher(UnexpectedLengthException.class, ""))
             .build();
     }
