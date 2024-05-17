@@ -34,6 +34,11 @@ class QueryPlanRetriever {
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
     private static final String TRUE = "True";
+
+    // For a limited time, if the query runs against a region or emulator that has not yet been updated with the
+    // new NonStreamingOrderBy query feature the client might run into some issue of not being able to recognize this,
+    // and throw a 400 exception. If the environment variable `AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY` is set to
+    // True to opt out of this new query feature, we will return the OLD query features to operate correctly.
     private static final String SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
                                                                QueryFeature.CompositeAggregate.name() + ", " +
                                                                QueryFeature.MultipleOrderBy.name() + ", " +

@@ -78,7 +78,6 @@ public class NonStreamingOrderByUtils {
             // item and then remove the element. If we don't do this, then when adding this element the size of the pq
             // will be increased automatically by 50% and then there would be inconsistent results for later pages.
             PriorityBlockingQueue<OrderByRowResult<Document>> priorityQueue = new PriorityBlockingQueue<>(initialPageSize + 1, consumeComparer);
-
             return source.flatMap(documentProducerFeedResponse -> {
                     clientSideRequestStatistics.addAll(
                         diagnosticsAccessor.getClientSideRequestStatisticsForQueryPipelineAggregations(documentProducerFeedResponse
@@ -94,19 +93,19 @@ public class NonStreamingOrderByUtils {
                             null);
                         priorityQueue.add(orderByRowResult);
                         if (priorityQueue.size() > initialPageSize) {
-                            PriorityBlockingQueue<OrderByRowResult<Document>> resultPriorityQueue = new PriorityBlockingQueue<>(initialPageSize + 1, consumeComparer);
-                            for (int i=0;i<initialPageSize;i++) {
-                                resultPriorityQueue.add(priorityQueue.poll());
+                            PriorityBlockingQueue<OrderByRowResult<Document>> tempPriorityQueue = new PriorityBlockingQueue<>(initialPageSize + 1, consumeComparer);
+                            for (int i = 0; i < initialPageSize; i++) {
+                                tempPriorityQueue.add(priorityQueue.poll());
                             }
                             priorityQueue.clear();
-                            priorityQueue.addAll(resultPriorityQueue);
+                            priorityQueue.addAll(tempPriorityQueue);
                         }
                     });
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     // Returning an empty Flux since we are only processing and managing state here
                     return Flux.empty();
                 }, 1)
-                .thenMany(Flux.defer(()-> Flux.fromIterable(priorityQueue)));
+                .thenMany(Flux.defer(() -> Flux.fromIterable(priorityQueue)));
         }
     }
 }

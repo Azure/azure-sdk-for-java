@@ -59,8 +59,6 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
     private final Collection<ClientSideRequestStatistics> clientSideRequestStatistics;
     private Flux<OrderByRowResult<Document>> orderByObservable;
 
-    private int maxPageSizePerPartition;
-
     public NonStreamingOrderByDocumentQueryExecutionContext(
         DiagnosticsClientContext diagnosticsClientContext,
         IDocumentQueryClient client,
@@ -170,7 +168,7 @@ public class NonStreamingOrderByDocumentQueryExecutionContext
             createRetryPolicyFunc,
             Document.class,
             correlatedActivityId,
-            maxPageSizePerPartition,
+            initialPageSize,
             continuationToken,
             top,
             this.getOperationContextTextProvider());
