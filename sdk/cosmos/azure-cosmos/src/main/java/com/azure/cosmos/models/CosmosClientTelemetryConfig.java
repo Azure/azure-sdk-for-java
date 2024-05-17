@@ -403,6 +403,7 @@ public final class CosmosClientTelemetryConfig {
      * Users have the option to enable printing parameterized or both parameterized and non-parameterized queries, 
      * but has to beware that customer data may be shown when the later option is chosen
      * It's the user's responsibility to sanitize the queries if necessary.
+     * @param showQueryOptions the options for printing none, parameterized or all of the query statements
      * @return current CosmosClientTelemetryConfig
      */
     public CosmosClientTelemetryConfig showQueryOptions(ShowQueryOptions showQueryOptions) {
