@@ -29,7 +29,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.vision.face.samples.utils.Utils.*;
+import static com.azure.ai.vision.face.samples.utils.Utils.log;
+import static com.azure.ai.vision.face.samples.utils.Utils.safelyRun;
 
 public class VerifyFromDynamicPersonDirectory {
     private static final RuntimeException[] EXCEPTION_CONTAINER = new RuntimeException[1];
@@ -106,7 +107,7 @@ public class VerifyFromDynamicPersonDirectory {
     private static Pair<PersonData, SyncPoller<FaceOperationResult, PersonDirectoryPerson>> createPerson(
         FaceAdministrationClient administrationClient, PersonData personData) {
         log("Create Person: " + personData.getName());
-        return Utils.safelyRunWithExceptionCheck(EXCEPTION_CONTAINER, "createPerson", ()->
+        return Utils.safelyRunWithExceptionCheck(EXCEPTION_CONTAINER, "createPerson", () ->
             Pair.of(personData,
                 administrationClient.beginCreatePerson(personData.getName(), personData.getUserData())));
     }
@@ -160,7 +161,7 @@ public class VerifyFromDynamicPersonDirectory {
     private static void deletePersons(FaceAdministrationClient administrationClient, List<PersonData> personDataList) {
         log("Deleting Persons: " + personDataList.size());
         List<SyncPoller<FaceOperationResult, Void>> pollers = personDataList.stream()
-            .map(personData -> Utils.safelyRun(
+            .map(personData -> safelyRun(
                 () -> administrationClient
                     .beginDeletePerson(personData.getPersonId())))
             .filter(Objects::nonNull)

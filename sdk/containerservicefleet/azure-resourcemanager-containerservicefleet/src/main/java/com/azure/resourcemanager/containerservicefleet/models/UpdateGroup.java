@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class UpdateGroup {
     /*
      * Name of the group.
-     * It must match a group name of an existing fleet member.
+     * It must match a group name of an existing fleet member. 
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -55,8 +55,8 @@ public final class UpdateGroup {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model UpdateGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model UpdateGroup"));
         }
     }
 

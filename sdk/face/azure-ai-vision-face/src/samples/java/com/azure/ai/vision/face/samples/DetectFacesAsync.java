@@ -5,25 +5,23 @@ package com.azure.ai.vision.face.samples;
 
 import com.azure.ai.vision.face.FaceAsyncClient;
 import com.azure.ai.vision.face.FaceClientBuilder;
-import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
-import com.azure.ai.vision.face.samples.utils.Resources;
-import com.azure.ai.vision.face.samples.utils.Utils;
 import com.azure.ai.vision.face.models.DetectOptions;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
 import com.azure.ai.vision.face.models.FaceDetectionResult;
 import com.azure.ai.vision.face.models.FaceRecognitionModel;
+import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
+import com.azure.ai.vision.face.samples.utils.Resources;
+import com.azure.ai.vision.face.samples.utils.Utils;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-import static com.azure.ai.vision.face.samples.utils.Utils.log;
 import static com.azure.ai.vision.face.models.FaceAttributeType.Detection01;
 import static com.azure.ai.vision.face.models.FaceAttributeType.Detection03;
 import static com.azure.ai.vision.face.models.FaceAttributeType.Recognition04;
+import static com.azure.ai.vision.face.samples.utils.Utils.log;
 
 public class DetectFacesAsync {
     public static void main(String[] args) {
