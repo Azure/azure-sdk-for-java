@@ -138,9 +138,6 @@ class AppConfigurationReplicaClient {
             throw e;
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
-        } catch (Exception e) {
-            System.out.println(e);
-            throw e;
         }
     }
 
